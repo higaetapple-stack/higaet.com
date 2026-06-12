@@ -9,14 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TechnologiesRouteImport } from './routes/technologies'
+import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
+import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
+import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const TechnologiesRoute = TechnologiesRouteImport.update({
+  id: '/technologies',
+  path: '/technologies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GlobalEducationRoute = GlobalEducationRouteImport.update({
+  id: '/global-education',
+  path: '/global-education',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -32,6 +48,11 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcademyRoute = AcademyRouteImport.update({
+  id: '/academy',
+  path: '/academy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -41,6 +62,21 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TechnologiesIndexRoute = TechnologiesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const GlobalEducationIndexRoute = GlobalEducationIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const AcademyIndexRoute = AcademyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcademyRoute,
 } as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
@@ -56,11 +92,17 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/academy': typeof AcademyRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/global-education': typeof GlobalEducationRouteWithChildren
+  '/technologies': typeof TechnologiesRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/academy/': typeof AcademyIndexRoute
+  '/global-education/': typeof GlobalEducationIndexRoute
+  '/technologies/': typeof TechnologiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,27 +112,42 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/academy': typeof AcademyIndexRoute
+  '/global-education': typeof GlobalEducationIndexRoute
+  '/technologies': typeof TechnologiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/academy': typeof AcademyRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/global-education': typeof GlobalEducationRouteWithChildren
+  '/technologies': typeof TechnologiesRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/academy/': typeof AcademyIndexRoute
+  '/global-education/': typeof GlobalEducationIndexRoute
+  '/technologies/': typeof TechnologiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/academy'
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/global-education'
+    | '/technologies'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/academy/'
+    | '/global-education/'
+    | '/technologies/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,27 +157,53 @@ export interface FileRouteTypes {
     | '/contact'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/academy'
+    | '/global-education'
+    | '/technologies'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/academy'
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/global-education'
+    | '/technologies'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/academy/'
+    | '/global-education/'
+    | '/technologies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AcademyRoute: typeof AcademyRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
+  GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
+  TechnologiesRoute: typeof TechnologiesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/technologies': {
+      id: '/technologies'
+      path: '/technologies'
+      fullPath: '/technologies'
+      preLoaderRoute: typeof TechnologiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/global-education': {
+      id: '/global-education'
+      path: '/global-education'
+      fullPath: '/global-education'
+      preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -142,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/academy': {
+      id: '/academy'
+      path: '/academy'
+      fullPath: '/academy'
+      preLoaderRoute: typeof AcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -155,6 +245,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/technologies/': {
+      id: '/technologies/'
+      path: '/'
+      fullPath: '/technologies/'
+      preLoaderRoute: typeof TechnologiesIndexRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/global-education/': {
+      id: '/global-education/'
+      path: '/'
+      fullPath: '/global-education/'
+      preLoaderRoute: typeof GlobalEducationIndexRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/academy/': {
+      id: '/academy/'
+      path: '/'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexRouteImport
+      parentRoute: typeof AcademyRoute
     }
     '/careers/$slug': {
       id: '/careers/$slug'
@@ -172,6 +283,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AcademyRouteChildren {
+  AcademyIndexRoute: typeof AcademyIndexRoute
+}
+
+const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyIndexRoute: AcademyIndexRoute,
+}
+
+const AcademyRouteWithChildren =
+  AcademyRoute._addFileChildren(AcademyRouteChildren)
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
@@ -194,13 +316,50 @@ const CareersRouteChildren: CareersRouteChildren = {
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
+interface GlobalEducationRouteChildren {
+  GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
+}
+
+const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
+  GlobalEducationIndexRoute: GlobalEducationIndexRoute,
+}
+
+const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
+  GlobalEducationRouteChildren,
+)
+
+interface TechnologiesRouteChildren {
+  TechnologiesIndexRoute: typeof TechnologiesIndexRoute
+}
+
+const TechnologiesRouteChildren: TechnologiesRouteChildren = {
+  TechnologiesIndexRoute: TechnologiesIndexRoute,
+}
+
+const TechnologiesRouteWithChildren = TechnologiesRoute._addFileChildren(
+  TechnologiesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AcademyRoute: AcademyRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
+  GlobalEducationRoute: GlobalEducationRouteWithChildren,
+  TechnologiesRoute: TechnologiesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
