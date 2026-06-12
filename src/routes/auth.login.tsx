@@ -46,15 +46,10 @@ function LoginPage() {
     }
   };
 
-  const onGoogle = async () => {
-    try {
-      const { lovable } = await import("@/integrations/lovable/index");
-      const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-      if (r.error) toast.error("Google sign-in failed");
-    } catch {
-      toast.error("Google sign-in is not configured yet.");
-    }
-  };
+  // Google sign-in is wired in via Lovable Cloud in Phase 2 once social providers are configured.
+  // Keeping the button hidden in Phase 1 to avoid a stub experience.
+
+
 
   return (
     <AuthCard
@@ -92,13 +87,7 @@ function LoginPage() {
           {loading && <Loader2 className="size-4 animate-spin" />}
           Sign in
         </button>
-        <button
-          type="button"
-          onClick={onGoogle}
-          className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border text-ink text-sm font-medium px-4 py-2.5 rounded-md hover:bg-muted transition-colors"
-        >
-          Continue with Google
-        </button>
+
         <div className="text-right">
           <Link to="/auth/forgot-password" className="text-xs text-muted-foreground hover:text-ink">
             Forgot password?
