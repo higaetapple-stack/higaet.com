@@ -9,38 +9,352 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TechnologiesRouteImport } from './routes/technologies'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as GlobalEducationRouteImport } from './routes/global-education'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AcademyRouteImport } from './routes/academy'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
+import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
+import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthRegisterRouteImport } from './routes/auth.register'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TechnologiesRoute = TechnologiesRouteImport.update({
+  id: '/technologies',
+  path: '/technologies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GlobalEducationRoute = GlobalEducationRouteImport.update({
+  id: '/global-education',
+  path: '/global-education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcademyRoute = AcademyRouteImport.update({
+  id: '/academy',
+  path: '/academy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TechnologiesIndexRoute = TechnologiesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const GlobalEducationIndexRoute = GlobalEducationIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const AcademyIndexRoute = AcademyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CareersRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/academy': typeof AcademyRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
+  '/careers': typeof CareersRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/global-education': typeof GlobalEducationRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/technologies': typeof TechnologiesRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/academy/': typeof AcademyIndexRoute
+  '/global-education/': typeof GlobalEducationIndexRoute
+  '/technologies/': typeof TechnologiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
+  '/careers': typeof CareersRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/academy': typeof AcademyIndexRoute
+  '/global-education': typeof GlobalEducationIndexRoute
+  '/technologies': typeof TechnologiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/academy': typeof AcademyRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
+  '/careers': typeof CareersRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/global-education': typeof GlobalEducationRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/technologies': typeof TechnologiesRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/academy/': typeof AcademyIndexRoute
+  '/global-education/': typeof GlobalEducationIndexRoute
+  '/technologies/': typeof TechnologiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/academy'
+    | '/auth'
+    | '/blog'
+    | '/careers'
+    | '/contact'
+    | '/global-education'
+    | '/privacy'
+    | '/sitemap.xml'
+    | '/technologies'
+    | '/terms'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/register'
+    | '/blog/$slug'
+    | '/careers/$slug'
+    | '/academy/'
+    | '/global-education/'
+    | '/technologies/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/blog'
+    | '/careers'
+    | '/contact'
+    | '/privacy'
+    | '/sitemap.xml'
+    | '/terms'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/register'
+    | '/blog/$slug'
+    | '/careers/$slug'
+    | '/academy'
+    | '/global-education'
+    | '/technologies'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/academy'
+    | '/auth'
+    | '/blog'
+    | '/careers'
+    | '/contact'
+    | '/global-education'
+    | '/privacy'
+    | '/sitemap.xml'
+    | '/technologies'
+    | '/terms'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/register'
+    | '/blog/$slug'
+    | '/careers/$slug'
+    | '/academy/'
+    | '/global-education/'
+    | '/technologies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AcademyRoute: typeof AcademyRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
+  BlogRoute: typeof BlogRouteWithChildren
+  CareersRoute: typeof CareersRouteWithChildren
+  ContactRoute: typeof ContactRoute
+  GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TechnologiesRoute: typeof TechnologiesRouteWithChildren
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/technologies': {
+      id: '/technologies'
+      path: '/technologies'
+      fullPath: '/technologies'
+      preLoaderRoute: typeof TechnologiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/global-education': {
+      id: '/global-education'
+      path: '/global-education'
+      fullPath: '/global-education'
+      preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academy': {
+      id: '/academy'
+      path: '/academy'
+      fullPath: '/academy'
+      preLoaderRoute: typeof AcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +362,148 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/technologies/': {
+      id: '/technologies/'
+      path: '/'
+      fullPath: '/technologies/'
+      preLoaderRoute: typeof TechnologiesIndexRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/global-education/': {
+      id: '/global-education/'
+      path: '/'
+      fullPath: '/global-education/'
+      preLoaderRoute: typeof GlobalEducationIndexRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/academy/': {
+      id: '/academy/'
+      path: '/'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof CareersRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
+interface AcademyRouteChildren {
+  AcademyIndexRoute: typeof AcademyIndexRoute
+}
+
+const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyIndexRoute: AcademyIndexRoute,
+}
+
+const AcademyRouteWithChildren =
+  AcademyRoute._addFileChildren(AcademyRouteChildren)
+
+interface AuthRouteChildren {
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
+interface CareersRouteChildren {
+  CareersSlugRoute: typeof CareersSlugRoute
+}
+
+const CareersRouteChildren: CareersRouteChildren = {
+  CareersSlugRoute: CareersSlugRoute,
+}
+
+const CareersRouteWithChildren =
+  CareersRoute._addFileChildren(CareersRouteChildren)
+
+interface GlobalEducationRouteChildren {
+  GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
+}
+
+const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
+  GlobalEducationIndexRoute: GlobalEducationIndexRoute,
+}
+
+const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
+  GlobalEducationRouteChildren,
+)
+
+interface TechnologiesRouteChildren {
+  TechnologiesIndexRoute: typeof TechnologiesIndexRoute
+}
+
+const TechnologiesRouteChildren: TechnologiesRouteChildren = {
+  TechnologiesIndexRoute: TechnologiesIndexRoute,
+}
+
+const TechnologiesRouteWithChildren = TechnologiesRoute._addFileChildren(
+  TechnologiesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AcademyRoute: AcademyRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+  BlogRoute: BlogRouteWithChildren,
+  CareersRoute: CareersRouteWithChildren,
+  ContactRoute: ContactRoute,
+  GlobalEducationRoute: GlobalEducationRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TechnologiesRoute: TechnologiesRouteWithChildren,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

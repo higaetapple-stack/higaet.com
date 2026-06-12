@@ -1,0 +1,13 @@
+{
+  "name": "HIGAET — Helen Institute of Gen AI Engineering & Technology",
+  "short_name": "HIGAET",
+  "description": "AI education, global university pathways, and enterprise engineering — one institute.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#18181b",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }
+  ]
+}
