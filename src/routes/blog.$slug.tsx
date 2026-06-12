@@ -131,7 +131,7 @@ function PostPage() {
           </header>
 
           <div className="prose-content mt-12 max-w-3xl space-y-6 text-foreground/90 leading-relaxed">
-            {post.body.map((p, i) => (
+            {post.body.map((p: string, i: number) => (
               <p key={i} className="text-base md:text-lg text-muted-foreground">
                 {p}
               </p>

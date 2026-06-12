@@ -209,7 +209,7 @@ function JobPage() {
           <div>
             <h2 className="font-display text-xl font-medium mb-4 text-ink">What you'll do</h2>
             <ul className="space-y-3 text-muted-foreground">
-              {job.responsibilities.map((r) => (
+              {job.responsibilities.map((r: string) => (
                 <li key={r} className="flex gap-3"><span className="text-ink mt-1.5">·</span>{r}</li>
               ))}
             </ul>
@@ -217,7 +217,7 @@ function JobPage() {
           <div>
             <h2 className="font-display text-xl font-medium mb-4 text-ink">What we look for</h2>
             <ul className="space-y-3 text-muted-foreground">
-              {job.requirements.map((r) => (
+              {job.requirements.map((r: string) => (
                 <li key={r} className="flex gap-3"><span className="text-ink mt-1.5">·</span>{r}</li>
               ))}
             </ul>
