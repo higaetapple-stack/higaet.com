@@ -19,7 +19,7 @@ export const LeadSchema = z.object({
     .optional()
     .or(z.literal("")),
   message: z.string().trim().max(2000).optional().or(z.literal("")),
-  division: LeadDivision.default("main"),
-  source: z.string().trim().max(120).default("website"),
+  division: LeadDivision,
+  source: z.string().trim().max(120),
 });
 export type LeadPayload = z.infer<typeof LeadSchema>;
