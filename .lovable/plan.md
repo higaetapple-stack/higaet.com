@@ -1,145 +1,121 @@
+# HIGAET Academy — Phase 1
 
-# Sprint 3A — Career Portal
+Build Phase 1 of HIGAET Academy inside the existing TanStack Start codebase, reusing the established design system, component library, SEO framework, analytics, and routing patterns. No separate project, no duplicate infrastructure.
 
-Pipeline: Profile → Resume → Public Portfolio → Job Board → Apply. Admin-managed employer module (no employer auth yet). Defer interview tracker, placement records, employer self-serve to 3A.2.
+## Scope (this phase only)
 
-## 1. Database migration (single approval)
+1. Activate the Academy brand identity within the shared design system
+2. Academy route shell + layout under `/academy`
+3. Academy Homepage (`/academy`)
+4. Academy Navigation (sticky sub-header bound to `data-brand="academy"`)
+5. Academy Mega Menu (categories, learning paths, top courses, CTAs)
+6. Academy Search (client-side, course/category index — API-ready)
 
-### Profile additions (career & portfolio)
-Alter `public.profiles` add:
-- `bio text`
-- `location text`
-- `github_url text`, `linkedin_url text`, `website_url text`
-- `skills text[]` default `{}`
-- `career_goals text`
-- `education jsonb` default `'[]'` (array of `{school, degree, field, start, end}`)
-- `experience jsonb` default `'[]'` (array of `{company, title, start, end, summary}`)
-- `portfolio_slug citext unique` (nullable until student claims it)
-- `portfolio_visibility` enum: `private | unlisted | public` default `private`
-- privacy toggles: `show_email`, `show_phone`, `show_resume`, `show_certificates`, `show_projects` (boolean, defaults set sensibly)
+Out of scope: Course Detail, Learning Paths, Offline Training, Placements, Faculty, FAQ, Contact (Phases 2–5).
 
-New enum `portfolio_visibility`. Slug validation via trigger (lowercase, `[a-z0-9-]{3,40}`).
+## Architecture
 
-Public read access for portfolio: add policy `profiles public portfolio read` on `profiles` FOR SELECT TO anon, authenticated USING `portfolio_visibility = 'public'` — but server fn will project only safe fields. (Anon grant required on `profiles` for SELECT — scoped via policy.)
+- **Route group**: All Academy pages live under `src/routes/academy.*.tsx`. Phase 1 creates the layout file `academy.tsx` (renders `<Outlet />` inside an Academy-branded `SiteShell`) and `academy.index.tsx` (the homepage).
+- **Brand scoping**: Wrap the Academy subtree in a container with `data-brand="academy"`. All Academy-specific accent utilities resolve through the existing `--academy` / `--academy-soft` tokens (already defined in `src/styles.css`). No hardcoded colors in components.
+- **Reused components** (no duplication): `Container`, `Section`, `PageHero`, `FeatureGrid`, `StatBand`, `CTASection`, `TrustedBy`, `TestimonialCarousel`, `FAQ`, `Breadcrumbs`, `JsonLd`, `LeadForm`, `CookieConsent`, `Footer`, `SiteShell`, analytics + cookie consent.
+- **Academy-only components** (new, only where behavior genuinely differs):
+  - `AcademyHeader.tsx` — sub-header with Academy nav + mega menu trigger + search trigger (sits below the shared HIGAET ecosystem `Header`, scoped to `/academy/*`)
+  - `AcademyMegaMenu.tsx` — accessible mega panel: Categories · Popular Courses · Learning Paths · Resources · CTA
+  - `AcademySearch.tsx` — command-palette-style overlay (⌘K / `/`), debounced filter over the in-memory index, keyboard nav, ARIA combobox
+  - `CourseCard.tsx` — preview card used by mega menu, homepage rails, and future course listings
+  - `CategoryTile.tsx` — category entry with icon, blurb, course count
+  - `LearningPathCard.tsx` — path preview (duration, level, outcomes)
 
-### New tables
+## Content registries (API-ready)
 
-**employers** — admin-curated company directory.
-Fields: `name`, `slug` (unique), `website`, `logo_url`, `description`, `industry`, `hq_location`, `size`, `verified bool`, `created_by uuid`.
-Policies: anon SELECT (public), admin write.
+All Phase 1 content lives in typed registries under `src/content/academy/` so they can be swapped for the future Node.js + Express + MySQL backend without touching components.
 
-**job_postings**
-Fields: `employer_id`, `title`, `slug` (unique), `description`, `requirements`, `responsibilities`, `location`, `remote_type` enum (`onsite|hybrid|remote`), `employment_type` enum (`full_time|part_time|contract|internship`), `experience_level` enum (`entry|mid|senior`), `salary_min`, `salary_max`, `salary_currency` default `INR`, `skills text[]`, `apply_url text` (optional external), `status` enum (`draft|open|closed|archived`) default `draft`, `posted_at`, `closes_at`, `created_by`.
-Policies: anon SELECT where `status='open'`; admin all.
+- `src/content/academy/categories.ts` — 16 categories: AI, Generative AI, Machine Learning, Data Science, Python, Full-Stack, React, Node.js, Cloud, DevOps, Cybersecurity, UI/UX, Business Analytics, Software Testing, Digital Marketing, Career Development
+- `src/content/academy/courses.ts` — ~24 original course entries (title, slug, category, level, duration, summary, outcomes[], skills[], prerequisites[], careerOutcomes[], faqs[]) — Phase 1 surfaces them on the homepage and in search; detail pages arrive in Phase 2
+- `src/content/academy/learning-paths.ts` — ~6 learning paths (e.g., GenAI Engineer, Full-Stack Developer, Data Scientist) with sequenced course slugs
+- `src/content/academy/search-index.ts` — flattened search records derived from the registries (course + category + path titles, summaries, tags)
+- `src/content/academy/testimonials.ts` — clearly labeled placeholder testimonials (TODO marker on names + photos)
 
-**job_applications**
-Fields: `job_id`, `student_id`, `resume_snapshot jsonb`, `cover_letter text`, `portfolio_url text`, `status` enum (`submitted|under_review|shortlisted|rejected|withdrawn`) default `submitted`, `applied_at`, `notes` (admin only).
-Unique `(job_id, student_id)`.
-Policies: student insert+select own, admin all. Faculty/placement_officer read-only.
+All content is original, written for HIGAET Academy's positioning; no copying of upGrad or competitor copy.
 
-**saved_jobs**
-Fields: `student_id`, `job_id`, `saved_at`. Unique `(student_id, job_id)`.
-Policies: student manage own.
+## Homepage sections (`/academy`)
 
-All tables: GRANTs, RLS, `updated_at` trigger where applicable. Service role full.
+1. Brand-scoped hero — "Future-ready learning for AI, software, and technology careers" + dual CTA (Browse Courses, Talk to a Counsellor) + integrated search input
+2. Trust band — placeholder partner/recruiter logos (TODO-marked)
+3. Top categories grid (16 tiles → category landing, Phase 2)
+4. Featured Learning Paths (3-card carousel)
+5. Popular Courses rail (6 cards)
+6. Why HIGAET Academy — 4-feature grid (mentorship, projects, placements, certification)
+7. Outcomes stat band — placeholder metrics (TODO-marked)
+8. Student stories — `TestimonialCarousel` (placeholder)
+9. FAQ — 6 Academy-specific questions (Course schema-aware)
+10. Lead capture CTA — reuses `LeadForm` (source: `academy_home`)
 
-### Helper functions
-- `public.generate_portfolio_slug(_full_name text, _id uuid)` returns text — generates unique slug.
-- Trigger on `profiles` insert/update of `portfolio_visibility='public'`: if `portfolio_slug IS NULL` auto-assign.
+## Navigation & Mega Menu
 
-## 2. Server functions
+- Shared HIGAET `Header` stays as the ecosystem-wide top bar (Home / Academy / Global Education Hub / Technologies / About / Contact)
+- `AcademyHeader` mounts inside `academy.tsx` layout, below the shared header, with: Courses ▾ (mega menu), Learning Paths, Certifications, Placements, Corporate Training, Search, "Apply Now" CTA
+- Mega menu opens on hover (desktop) / click (touch), closes on Esc / outside click, traps focus, returns focus to trigger
+- Mobile: collapses into an accordion drawer
 
-`src/lib/career.functions.ts` (requireSupabaseAuth)
-- `getMyCareerProfile`, `updateCareerProfile(input)` (bio, social, skills, education, experience, goals, privacy)
-- `updatePortfolioSettings({ visibility, slug, show_* })` with slug-claim collision handling
-- `getMyResumeData()` — joins profile + certificates + projects (approved submissions) + enrollments completed → DTO for resume render
-- `listJobs(filters)` — open jobs with employer join (student-facing)
-- `getJob(slug)` — single job + my application status + saved state
-- `applyToJob({ job_id, cover_letter, portfolio_url, include_resume })` — snapshots current resume DTO into `resume_snapshot`
-- `withdrawApplication(id)`
-- `listMyApplications()`
-- `toggleSaveJob(job_id)`
-- `listMySavedJobs()`
+## Search
 
-`src/lib/career-admin.functions.ts` (admin guard)
-- Employers CRUD: `adminListEmployers`, `adminCreateEmployer`, `adminUpdateEmployer`, `adminDeleteEmployer`
-- Jobs CRUD: `adminListJobs`, `adminCreateJob`, `adminUpdateJob`, `adminArchiveJob`
-- Applications: `adminListApplications(filters)`, `adminUpdateApplicationStatus`
+- Trigger: search icon, `/`, or ⌘K / Ctrl+K
+- Overlay with input + grouped results (Courses · Categories · Learning Paths)
+- Client-side fuzzy match over `search-index.ts` (no extra deps — small custom scorer over title/tags/summary)
+- Keyboard nav (↑↓ Enter Esc), ARIA `combobox` + `listbox`, screen-reader live region for result count
+- Results route to placeholder anchors on `/academy` for Phase 1; deep routes land in Phase 2 (links typed so the future routes are a non-breaking addition)
 
-`src/lib/portfolio.functions.ts` (public — no auth)
-- `getPublicPortfolio({ slug })` — fetches profile via admin client; returns ONLY whitelisted fields per `show_*` flags; includes certificates (number + program + issue_date) and projects (title + summary + repo/demo) and skills/social. Unlisted = accessible by direct slug but `head()` adds `noindex`. Private = 404.
+## SEO / AEO / GEO / AIO
 
-## 3. Routes
+- `/academy` `head()`: unique title, description, canonical, og:title, og:description, og:image (use existing brand asset if available; otherwise omit per leaf-only rule), twitter card
+- JSON-LD via `JsonLd`: `EducationalOrganization` (HIGAET Academy), `WebSite` with `SearchAction` pointing at the Academy search, `BreadcrumbList`, `FAQPage` for the homepage FAQ, `ItemList` for Featured Learning Paths and Popular Courses
+- Sitemap: extend `src/routes/sitemap[.]xml.ts` with `/academy` (priority 0.9)
+- Original content only; semantic headings (single `<h1>`); accessible color contrast verified against `--academy` token
 
-### Student
-- `/dashboard/career` — overview tabs (Profile, Resume, Portfolio, Applications, Saved)
-- `/dashboard/career/profile` — edit form (bio, location, social, skills, education, experience, goals)
-- `/dashboard/career/portfolio` — visibility, slug claim, privacy toggles, preview link
-- `/dashboard/career/resume` — auto-generated printable resume with template switcher (2 templates: `classic`, `modern`); `window.print()` for PDF export
-- `/dashboard/career/applications` — list + statuses + withdraw
+## Analytics
 
-### Public
-- `/portfolio/$slug` — public/unlisted portfolio page. head() title `{Name} | {Headline} | HIGAET Portfolio`, description from bio; canonical+og:url; JSON-LD `Person`. Unlisted adds `meta robots noindex`.
-- `/careers/jobs` — searchable/filterable job board (search by title/skill, filter employment_type, remote_type, location)
-- `/careers/jobs/$slug` — job detail + apply CTA (signed-in students only)
+- Reuse existing `src/lib/analytics.ts` (GA4 / GTM / Meta Pixel / Clarity), gated by cookie consent
+- Track Phase 1 events: `academy_home_view`, `academy_search_open`, `academy_search_query`, `academy_search_result_click`, `academy_mega_menu_open`, `academy_lead_submit`
 
-### Admin
-- `/dashboard/admin/employers` — list + create/edit dialog
-- `/dashboard/admin/jobs` — list + create/edit (linked to employer) + archive
-- `/dashboard/admin/applications` — pipeline list + status update
+## Accessibility & Performance
 
-### Sidebar/Tab updates
-- Add "Career" item to student `RoleSidebar`.
-- Add Employers, Jobs, Applications to admin tabs in `_authenticated.dashboard.admin.tsx`.
+- Semantic landmarks, single `<main>`, focus management on mega menu and search overlay
+- All interactive elements keyboard reachable; visible focus rings using `--ring`
+- Code-split: search overlay and mega menu lazy-load on first interaction
+- No oversized hero images; text-led design consistent with Technologies
 
-## 4. Components
+## Files to add / edit
 
-- `src/components/career/ResumeClassic.tsx`, `ResumeModern.tsx` — print-styled templates
-- `src/components/career/JobCard.tsx`, `JobFiltersBar.tsx`
-- `src/components/portfolio/PortfolioHero.tsx`, `PortfolioSection.tsx`
-- `src/components/career/ApplicationStatusBadge.tsx`
-- `src/components/career/SkillsInput.tsx` (tag input)
+### New
+- `src/routes/academy.tsx` (layout, `data-brand="academy"`, `<Outlet />`)
+- `src/routes/academy.index.tsx` (homepage)
+- `src/components/site/AcademyHeader.tsx`
+- `src/components/site/AcademyMegaMenu.tsx`
+- `src/components/site/AcademySearch.tsx`
+- `src/components/site/CourseCard.tsx`
+- `src/components/site/CategoryTile.tsx`
+- `src/components/site/LearningPathCard.tsx`
+- `src/content/academy/categories.ts`
+- `src/content/academy/courses.ts`
+- `src/content/academy/learning-paths.ts`
+- `src/content/academy/search-index.ts`
+- `src/content/academy/testimonials.ts`
+- `src/content/academy/index.ts` (barrel)
 
-## 5. Out of scope (3A.2 / later)
-- Interview tracker stages
-- Placement records / offers
-- Skills matrix / assessments
-- Employer self-serve auth + recruiter role
-- Career analytics
-- Resume PDF server-rendering (print is fine for v1)
+### Edited
+- `src/components/site/Header.tsx` — add "Academy" link to ecosystem nav (no behavior change for Technologies)
+- `src/routes/sitemap[.]xml.ts` — append `/academy`
+- `src/styles.css` — only if a missing Academy utility surfaces; otherwise unchanged (`--academy` already defined)
 
-## Execution order
-1. Migration → wait for approval → types regen.
-2. `career.functions.ts`, `career-admin.functions.ts`, `portfolio.functions.ts`.
-3. Career dashboard + Profile + Portfolio settings + Resume.
-4. Public `/portfolio/$slug` + JSON-LD + privacy gating.
-5. Public job board + job detail + apply flow.
-6. Admin employers/jobs/applications.
-7. Sidebar/Admin tabs wiring.
+## Acceptance criteria
 
-Proceed?
+- `/academy` renders with the Academy accent applied via `data-brand`; Technologies pages visually unchanged
+- Mega menu and search work via mouse, keyboard, and touch; both pass focus-trap and Esc-close checks
+- All content originates from the registries; no string literals duplicated across components
+- Lighthouse: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95 on `/academy`
+- JSON-LD validates (Organization, WebSite+SearchAction, BreadcrumbList, FAQPage, ItemList)
+- Sitemap includes `/academy`
+- All placeholder assets (logos, photos, testimonials) carry visible `TODO` markers in source comments and registry fields
 
-## Sprint 4: HIGAET Global Education Hub (4A + 4B) — COMPLETE
-
-**4A — Public Study Abroad Platform**
-- DB: countries, universities, university_programs, scholarships (seeded 8 countries + 20 universities).
-- Public DB-driven routes: /global-education/countries, /countries/$slug, /universities, /universities/$slug, /scholarships.
-- Lead form (existing `LeadForm`) now persists to `study_abroad_leads` (division=global) and `technologies_leads` (division=tech) via `submitLead`.
-
-**4B — Admissions CRM**
-- DB: study_abroad_leads, applications, application_documents.
-- Student portal: /dashboard/applications (list) and /$id (timeline + document uploads + edit panel).
-- Application lifecycle: lead → counseling → started → docs_submitted → submitted → offer.
-- Document types: passport, transcript, resume, sop, lor, english_test, financial, other (version-tracked, URL-based upload).
-
-**Admin CMS (under /dashboard/admin)**
-- Tabs grouped as Academy / Career / Global / Tech.
-- New CRUD: Countries, Universities, Uni programs, Scholarships.
-- New inboxes: SA leads, SA applications, Tech leads.
-
-**Technologies placeholder**: Existing /technologies/* routes already cover hero, services, ecosystem, contact. Tech contact form persists to `technologies_leads`.
-
-**Deferred**:
-- 4C Counselor workspace (assigned students, tasks, follow-ups).
-- 4D Visa case tracking (visa_cases, visa_documents, visa_status_history).
-- File-storage bucket for document uploads (currently URL-based).
+Stop after Phase 1 and report counts (categories, courses, paths, new routes, new components) before moving on.
