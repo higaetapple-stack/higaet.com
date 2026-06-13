@@ -23,6 +23,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
+import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
@@ -35,6 +36,8 @@ import { Route as TechnologiesContactRouteImport } from './routes/technologies.c
 import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
 import { Route as TechnologiesCareersRouteImport } from './routes/technologies.careers'
 import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
+import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as JobsSlugRouteImport } from './routes/jobs.$slug'
 import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global-education.visa-guidance'
 import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
 import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
@@ -169,6 +172,11 @@ const TechnologiesIndexRoute = TechnologiesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => TechnologiesRoute,
 } as any)
+const JobsIndexRoute = JobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlobalEducationIndexRoute = GlobalEducationIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -232,6 +240,16 @@ const TechnologiesAiSolutionsRoute = TechnologiesAiSolutionsRouteImport.update({
   id: '/ai-solutions',
   path: '/ai-solutions',
   getParentRoute: () => TechnologiesRoute,
+} as any)
+const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
+  id: '/portfolio/$slug',
+  path: '/portfolio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsSlugRoute = JobsSlugRouteImport.update({
+  id: '/jobs/$slug',
+  path: '/jobs/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const GlobalEducationVisaGuidanceRoute =
   GlobalEducationVisaGuidanceRouteImport.update({
@@ -635,6 +653,8 @@ export interface FileRoutesByFullPath {
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/jobs/$slug': typeof JobsSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
   '/technologies/careers': typeof TechnologiesCareersRoute
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
@@ -647,6 +667,7 @@ export interface FileRoutesByFullPath {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
+  '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
   '/dashboard/career': typeof AuthenticatedDashboardCareerRouteWithChildren
@@ -722,6 +743,8 @@ export interface FileRoutesByTo {
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/jobs/$slug': typeof JobsSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
   '/technologies/careers': typeof TechnologiesCareersRoute
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
@@ -734,6 +757,7 @@ export interface FileRoutesByTo {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
+  '/jobs': typeof JobsIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorRoute
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRouteWithChildren
@@ -813,6 +837,8 @@ export interface FileRoutesById {
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/jobs/$slug': typeof JobsSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
   '/technologies/careers': typeof TechnologiesCareersRoute
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
@@ -825,6 +851,7 @@ export interface FileRoutesById {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
+  '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
   '/_authenticated/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
   '/_authenticated/dashboard/career': typeof AuthenticatedDashboardCareerRouteWithChildren
@@ -906,6 +933,8 @@ export interface FileRouteTypes {
     | '/global-education/study-abroad'
     | '/global-education/universities'
     | '/global-education/visa-guidance'
+    | '/jobs/$slug'
+    | '/portfolio/$slug'
     | '/technologies/ai-solutions'
     | '/technologies/careers'
     | '/technologies/case-studies'
@@ -918,6 +947,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/academy/'
     | '/global-education/'
+    | '/jobs/'
     | '/technologies/'
     | '/dashboard/admin'
     | '/dashboard/career'
@@ -993,6 +1023,8 @@ export interface FileRouteTypes {
     | '/global-education/study-abroad'
     | '/global-education/universities'
     | '/global-education/visa-guidance'
+    | '/jobs/$slug'
+    | '/portfolio/$slug'
     | '/technologies/ai-solutions'
     | '/technologies/careers'
     | '/technologies/case-studies'
@@ -1005,6 +1037,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/academy'
     | '/global-education'
+    | '/jobs'
     | '/technologies'
     | '/dashboard/counselor'
     | '/dashboard/faculty'
@@ -1083,6 +1116,8 @@ export interface FileRouteTypes {
     | '/global-education/study-abroad'
     | '/global-education/universities'
     | '/global-education/visa-guidance'
+    | '/jobs/$slug'
+    | '/portfolio/$slug'
     | '/technologies/ai-solutions'
     | '/technologies/careers'
     | '/technologies/case-studies'
@@ -1095,6 +1130,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/academy/'
     | '/global-education/'
+    | '/jobs/'
     | '/technologies/'
     | '/_authenticated/dashboard/admin'
     | '/_authenticated/dashboard/career'
@@ -1149,7 +1185,10 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TechnologiesRoute: typeof TechnologiesRouteWithChildren
   TermsRoute: typeof TermsRoute
+  JobsSlugRoute: typeof JobsSlugRoute
+  PortfolioSlugRoute: typeof PortfolioSlugRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
+  JobsIndexRoute: typeof JobsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1252,6 +1291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesIndexRouteImport
       parentRoute: typeof TechnologiesRoute
     }
+    '/jobs/': {
+      id: '/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof JobsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/global-education/': {
       id: '/global-education/'
       path: '/'
@@ -1335,6 +1381,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/technologies/ai-solutions'
       preLoaderRoute: typeof TechnologiesAiSolutionsRouteImport
       parentRoute: typeof TechnologiesRoute
+    }
+    '/portfolio/$slug': {
+      id: '/portfolio/$slug'
+      path: '/portfolio/$slug'
+      fullPath: '/portfolio/$slug'
+      preLoaderRoute: typeof PortfolioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs/$slug': {
+      id: '/jobs/$slug'
+      path: '/jobs/$slug'
+      fullPath: '/jobs/$slug'
+      preLoaderRoute: typeof JobsSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/global-education/visa-guidance': {
       id: '/global-education/visa-guidance'
@@ -2107,7 +2167,10 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TechnologiesRoute: TechnologiesRouteWithChildren,
   TermsRoute: TermsRoute,
+  JobsSlugRoute: JobsSlugRoute,
+  PortfolioSlugRoute: PortfolioSlugRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
+  JobsIndexRoute: JobsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
