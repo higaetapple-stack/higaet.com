@@ -1,9 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
 import { toast } from "sonner";
 import { myClientWorkspace } from "@/lib/technologies.functions";
 import { myProposalsAndContracts, getTechDocSignedUrl, updateProposalStatus } from "@/lib/tech-commercial.functions";
+import { myFinance, submitClientReceipt } from "@/lib/tech-finance.functions";
+import { myRequestsAndTickets, submitClientRequest, submitClientTicket } from "@/lib/tech-support.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard/technologies/client/")({
   component: ClientPortal,
