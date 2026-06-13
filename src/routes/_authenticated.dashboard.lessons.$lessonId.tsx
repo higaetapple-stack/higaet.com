@@ -39,7 +39,7 @@ function LessonPlayer() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["lesson", lessonId],
-    queryFn: () => fetch({ data: { id: lessonId } }),
+    queryFn: () => fetchLesson({ data: { id: lessonId } }),
   });
 
   const completeMut = useMutation({
