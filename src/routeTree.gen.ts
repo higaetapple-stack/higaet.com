@@ -29,7 +29,10 @@ import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global
 import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
 import { Route as GlobalEducationStudentServicesRouteImport } from './routes/global-education.student-services'
 import { Route as GlobalEducationScholarshipsRouteImport } from './routes/global-education.scholarships'
+import { Route as GlobalEducationFaqRouteImport } from './routes/global-education.faq'
 import { Route as GlobalEducationCountriesRouteImport } from './routes/global-education.countries'
+import { Route as GlobalEducationContactRouteImport } from './routes/global-education.contact'
+import { Route as GlobalEducationAdmissionProcessRouteImport } from './routes/global-education.admission-process'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
@@ -150,10 +153,26 @@ const GlobalEducationScholarshipsRoute =
     path: '/scholarships',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
+const GlobalEducationFaqRoute = GlobalEducationFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
 const GlobalEducationCountriesRoute =
   GlobalEducationCountriesRouteImport.update({
     id: '/countries',
     path: '/countries',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationContactRoute = GlobalEducationContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const GlobalEducationAdmissionProcessRoute =
+  GlobalEducationAdmissionProcessRouteImport.update({
+    id: '/admission-process',
+    path: '/admission-process',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
@@ -255,7 +274,10 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
+  '/global-education/contact': typeof GlobalEducationContactRoute
   '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/faq': typeof GlobalEducationFaqRoute
   '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
   '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
@@ -289,7 +311,10 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
+  '/global-education/contact': typeof GlobalEducationContactRoute
   '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/faq': typeof GlobalEducationFaqRoute
   '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
   '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
@@ -327,7 +352,10 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
+  '/global-education/contact': typeof GlobalEducationContactRoute
   '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/faq': typeof GlobalEducationFaqRoute
   '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
   '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
@@ -366,7 +394,10 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/admission-process'
+    | '/global-education/contact'
     | '/global-education/countries'
+    | '/global-education/faq'
     | '/global-education/scholarships'
     | '/global-education/student-services'
     | '/global-education/study-abroad'
@@ -400,7 +431,10 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/admission-process'
+    | '/global-education/contact'
     | '/global-education/countries'
+    | '/global-education/faq'
     | '/global-education/scholarships'
     | '/global-education/student-services'
     | '/global-education/study-abroad'
@@ -437,7 +471,10 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/admission-process'
+    | '/global-education/contact'
     | '/global-education/countries'
+    | '/global-education/faq'
     | '/global-education/scholarships'
     | '/global-education/student-services'
     | '/global-education/study-abroad'
@@ -605,11 +642,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalEducationScholarshipsRouteImport
       parentRoute: typeof GlobalEducationRoute
     }
+    '/global-education/faq': {
+      id: '/global-education/faq'
+      path: '/faq'
+      fullPath: '/global-education/faq'
+      preLoaderRoute: typeof GlobalEducationFaqRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
     '/global-education/countries': {
       id: '/global-education/countries'
       path: '/countries'
       fullPath: '/global-education/countries'
       preLoaderRoute: typeof GlobalEducationCountriesRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/contact': {
+      id: '/global-education/contact'
+      path: '/contact'
+      fullPath: '/global-education/contact'
+      preLoaderRoute: typeof GlobalEducationContactRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/admission-process': {
+      id: '/global-education/admission-process'
+      path: '/admission-process'
+      fullPath: '/global-education/admission-process'
+      preLoaderRoute: typeof GlobalEducationAdmissionProcessRouteImport
       parentRoute: typeof GlobalEducationRoute
     }
     '/careers/$slug': {
@@ -778,7 +836,10 @@ const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
 interface GlobalEducationRouteChildren {
+  GlobalEducationAdmissionProcessRoute: typeof GlobalEducationAdmissionProcessRoute
+  GlobalEducationContactRoute: typeof GlobalEducationContactRoute
   GlobalEducationCountriesRoute: typeof GlobalEducationCountriesRoute
+  GlobalEducationFaqRoute: typeof GlobalEducationFaqRoute
   GlobalEducationScholarshipsRoute: typeof GlobalEducationScholarshipsRoute
   GlobalEducationStudentServicesRoute: typeof GlobalEducationStudentServicesRoute
   GlobalEducationStudyAbroadRoute: typeof GlobalEducationStudyAbroadRoute
@@ -788,7 +849,10 @@ interface GlobalEducationRouteChildren {
 }
 
 const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
+  GlobalEducationAdmissionProcessRoute: GlobalEducationAdmissionProcessRoute,
+  GlobalEducationContactRoute: GlobalEducationContactRoute,
   GlobalEducationCountriesRoute: GlobalEducationCountriesRoute,
+  GlobalEducationFaqRoute: GlobalEducationFaqRoute,
   GlobalEducationScholarshipsRoute: GlobalEducationScholarshipsRoute,
   GlobalEducationStudentServicesRoute: GlobalEducationStudentServicesRoute,
   GlobalEducationStudyAbroadRoute: GlobalEducationStudyAbroadRoute,
