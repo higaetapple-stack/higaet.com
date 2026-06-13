@@ -14,8 +14,211 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_agent_configs: {
+        Row: {
+          collection_ids: string[]
+          created_at: string
+          description: string | null
+          enabled: boolean
+          id: string
+          max_chunks: number
+          model: string
+          name: string
+          slug: string
+          system_prompt: string
+          temperature: number
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          collection_ids?: string[]
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          max_chunks?: number
+          model?: string
+          name: string
+          slug: string
+          system_prompt: string
+          temperature?: number
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          collection_ids?: string[]
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          max_chunks?: number
+          model?: string
+          name?: string
+          slug?: string
+          system_prompt?: string
+          temperature?: number
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      ai_chunks: {
+        Row: {
+          chunk_order: number
+          chunk_text: string
+          collection_id: string | null
+          created_at: string
+          document_id: string | null
+          embedded_at: string | null
+          embedding: string | null
+          embedding_status: string
+          id: string
+          metadata: Json
+          source_id: string | null
+          token_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          chunk_order?: number
+          chunk_text: string
+          collection_id?: string | null
+          created_at?: string
+          document_id?: string | null
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_status?: string
+          id?: string
+          metadata?: Json
+          source_id?: string | null
+          token_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          chunk_order?: number
+          chunk_text?: string
+          collection_id?: string | null
+          created_at?: string
+          document_id?: string | null
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_status?: string
+          id?: string
+          metadata?: Json
+          source_id?: string | null
+          token_count?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_chunks_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "ai_collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_chunks_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "ai_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_chunks_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_conversation_logs: {
+        Row: {
+          agent_id: string | null
+          completion_tokens: number | null
+          created_at: string
+          error: string | null
+          id: string
+          latency_ms: number | null
+          model: string | null
+          prompt: string
+          prompt_tokens: number | null
+          response: string | null
+          retrieved_chunk_ids: string[]
+          user_id: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          completion_tokens?: number | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          latency_ms?: number | null
+          model?: string | null
+          prompt: string
+          prompt_tokens?: number | null
+          response?: string | null
+          retrieved_chunk_ids?: string[]
+          user_id?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          completion_tokens?: number | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          latency_ms?: number | null
+          model?: string | null
+          prompt?: string
+          prompt_tokens?: number | null
+          response?: string | null
+          retrieved_chunk_ids?: string[]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_conversation_logs_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "ai_agent_configs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_documents: {
         Row: {
+          chunk_status: string
+          collection_id: string | null
           content: string | null
           created_at: string
           embedding_status: string
@@ -31,6 +234,8 @@ export type Database = {
           url: string | null
         }
         Insert: {
+          chunk_status?: string
+          collection_id?: string | null
           content?: string | null
           created_at?: string
           embedding_status?: string
@@ -46,6 +251,8 @@ export type Database = {
           url?: string | null
         }
         Update: {
+          chunk_status?: string
+          collection_id?: string | null
           content?: string | null
           created_at?: string
           embedding_status?: string
@@ -61,6 +268,13 @@ export type Database = {
           url?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "ai_documents_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "ai_collections"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "ai_documents_source_id_fkey"
             columns: ["source_id"]
@@ -110,6 +324,41 @@ export type Database = {
             columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "ai_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_feedback: {
+        Row: {
+          conversation_log_id: string
+          created_at: string
+          id: string
+          note: string | null
+          rating: number
+          user_id: string | null
+        }
+        Insert: {
+          conversation_log_id: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          rating: number
+          user_id?: string | null
+        }
+        Update: {
+          conversation_log_id?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          rating?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_feedback_conversation_log_id_fkey"
+            columns: ["conversation_log_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversation_logs"
             referencedColumns: ["id"]
           },
         ]
@@ -1031,6 +1280,7 @@ export type Database = {
       knowledge_sources: {
         Row: {
           active: boolean
+          collection_id: string | null
           config: Json
           created_at: string
           description: string | null
@@ -1041,6 +1291,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          collection_id?: string | null
           config?: Json
           created_at?: string
           description?: string | null
@@ -1051,6 +1302,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          collection_id?: string | null
           config?: Json
           created_at?: string
           description?: string | null
@@ -1059,7 +1311,15 @@ export type Database = {
           source_type?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_sources_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "ai_collections"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       lessons: {
         Row: {
@@ -3269,6 +3529,21 @@ export type Database = {
       is_program_eligible: {
         Args: { _program: string; _student: string }
         Returns: boolean
+      }
+      match_ai_chunks: {
+        Args: {
+          collection_ids?: string[]
+          match_count?: number
+          query_embedding: string
+        }
+        Returns: {
+          chunk_text: string
+          collection_id: string
+          document_id: string
+          id: string
+          metadata: Json
+          similarity: number
+        }[]
       }
       verify_certificate: {
         Args: { _number: string }
