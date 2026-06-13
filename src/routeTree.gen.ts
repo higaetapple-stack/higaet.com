@@ -88,6 +88,21 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
+import { Route as TechnologiesIndustriesStartupsRouteImport } from './routes/technologies.industries.startups'
+import { Route as TechnologiesIndustriesSmeRouteImport } from './routes/technologies.industries.sme'
+import { Route as TechnologiesIndustriesRetailRouteImport } from './routes/technologies.industries.retail'
+import { Route as TechnologiesIndustriesRealEstateRouteImport } from './routes/technologies.industries.real-estate'
+import { Route as TechnologiesIndustriesManufacturingRouteImport } from './routes/technologies.industries.manufacturing'
+import { Route as TechnologiesIndustriesLogisticsRouteImport } from './routes/technologies.industries.logistics'
+import { Route as TechnologiesIndustriesHospitalityRouteImport } from './routes/technologies.industries.hospitality'
+import { Route as TechnologiesIndustriesHealthcareRouteImport } from './routes/technologies.industries.healthcare'
+import { Route as TechnologiesIndustriesGovernmentRouteImport } from './routes/technologies.industries.government'
+import { Route as TechnologiesIndustriesFintechRouteImport } from './routes/technologies.industries.fintech'
+import { Route as TechnologiesIndustriesFinanceRouteImport } from './routes/technologies.industries.finance'
+import { Route as TechnologiesIndustriesEnterpriseRouteImport } from './routes/technologies.industries.enterprise'
+import { Route as TechnologiesIndustriesEducationRouteImport } from './routes/technologies.industries.education'
+import { Route as TechnologiesIndustriesEcommerceRouteImport } from './routes/technologies.industries.ecommerce'
+import { Route as TechnologiesIndustriesBankingRouteImport } from './routes/technologies.industries.banking'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
@@ -596,6 +611,96 @@ const AuthenticatedDashboardIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const TechnologiesIndustriesStartupsRoute =
+  TechnologiesIndustriesStartupsRouteImport.update({
+    id: '/startups',
+    path: '/startups',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesSmeRoute =
+  TechnologiesIndustriesSmeRouteImport.update({
+    id: '/sme',
+    path: '/sme',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesRetailRoute =
+  TechnologiesIndustriesRetailRouteImport.update({
+    id: '/retail',
+    path: '/retail',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesRealEstateRoute =
+  TechnologiesIndustriesRealEstateRouteImport.update({
+    id: '/real-estate',
+    path: '/real-estate',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesManufacturingRoute =
+  TechnologiesIndustriesManufacturingRouteImport.update({
+    id: '/manufacturing',
+    path: '/manufacturing',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesLogisticsRoute =
+  TechnologiesIndustriesLogisticsRouteImport.update({
+    id: '/logistics',
+    path: '/logistics',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesHospitalityRoute =
+  TechnologiesIndustriesHospitalityRouteImport.update({
+    id: '/hospitality',
+    path: '/hospitality',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesHealthcareRoute =
+  TechnologiesIndustriesHealthcareRouteImport.update({
+    id: '/healthcare',
+    path: '/healthcare',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesGovernmentRoute =
+  TechnologiesIndustriesGovernmentRouteImport.update({
+    id: '/government',
+    path: '/government',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesFintechRoute =
+  TechnologiesIndustriesFintechRouteImport.update({
+    id: '/fintech',
+    path: '/fintech',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesFinanceRoute =
+  TechnologiesIndustriesFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesEnterpriseRoute =
+  TechnologiesIndustriesEnterpriseRouteImport.update({
+    id: '/enterprise',
+    path: '/enterprise',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesEducationRoute =
+  TechnologiesIndustriesEducationRouteImport.update({
+    id: '/education',
+    path: '/education',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesEcommerceRoute =
+  TechnologiesIndustriesEcommerceRouteImport.update({
+    id: '/ecommerce',
+    path: '/ecommerce',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesBankingRoute =
+  TechnologiesIndustriesBankingRouteImport.update({
+    id: '/banking',
+    path: '/banking',
+    getParentRoute: () => TechnologiesIndustriesRoute,
   } as any)
 const GlobalEducationUniversitiesSlugRoute =
   GlobalEducationUniversitiesSlugRouteImport.update({
@@ -1164,7 +1269,7 @@ export interface FileRoutesByFullPath {
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
-  '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1194,6 +1299,21 @@ export interface FileRoutesByFullPath {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/industries/banking': typeof TechnologiesIndustriesBankingRoute
+  '/technologies/industries/ecommerce': typeof TechnologiesIndustriesEcommerceRoute
+  '/technologies/industries/education': typeof TechnologiesIndustriesEducationRoute
+  '/technologies/industries/enterprise': typeof TechnologiesIndustriesEnterpriseRoute
+  '/technologies/industries/finance': typeof TechnologiesIndustriesFinanceRoute
+  '/technologies/industries/fintech': typeof TechnologiesIndustriesFintechRoute
+  '/technologies/industries/government': typeof TechnologiesIndustriesGovernmentRoute
+  '/technologies/industries/healthcare': typeof TechnologiesIndustriesHealthcareRoute
+  '/technologies/industries/hospitality': typeof TechnologiesIndustriesHospitalityRoute
+  '/technologies/industries/logistics': typeof TechnologiesIndustriesLogisticsRoute
+  '/technologies/industries/manufacturing': typeof TechnologiesIndustriesManufacturingRoute
+  '/technologies/industries/real-estate': typeof TechnologiesIndustriesRealEstateRoute
+  '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
+  '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
+  '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -1325,7 +1445,7 @@ export interface FileRoutesByTo {
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
-  '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1351,6 +1471,21 @@ export interface FileRoutesByTo {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/industries/banking': typeof TechnologiesIndustriesBankingRoute
+  '/technologies/industries/ecommerce': typeof TechnologiesIndustriesEcommerceRoute
+  '/technologies/industries/education': typeof TechnologiesIndustriesEducationRoute
+  '/technologies/industries/enterprise': typeof TechnologiesIndustriesEnterpriseRoute
+  '/technologies/industries/finance': typeof TechnologiesIndustriesFinanceRoute
+  '/technologies/industries/fintech': typeof TechnologiesIndustriesFintechRoute
+  '/technologies/industries/government': typeof TechnologiesIndustriesGovernmentRoute
+  '/technologies/industries/healthcare': typeof TechnologiesIndustriesHealthcareRoute
+  '/technologies/industries/hospitality': typeof TechnologiesIndustriesHospitalityRoute
+  '/technologies/industries/logistics': typeof TechnologiesIndustriesLogisticsRoute
+  '/technologies/industries/manufacturing': typeof TechnologiesIndustriesManufacturingRoute
+  '/technologies/industries/real-estate': typeof TechnologiesIndustriesRealEstateRoute
+  '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
+  '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
+  '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
@@ -1484,7 +1619,7 @@ export interface FileRoutesById {
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
-  '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1514,6 +1649,21 @@ export interface FileRoutesById {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/industries/banking': typeof TechnologiesIndustriesBankingRoute
+  '/technologies/industries/ecommerce': typeof TechnologiesIndustriesEcommerceRoute
+  '/technologies/industries/education': typeof TechnologiesIndustriesEducationRoute
+  '/technologies/industries/enterprise': typeof TechnologiesIndustriesEnterpriseRoute
+  '/technologies/industries/finance': typeof TechnologiesIndustriesFinanceRoute
+  '/technologies/industries/fintech': typeof TechnologiesIndustriesFintechRoute
+  '/technologies/industries/government': typeof TechnologiesIndustriesGovernmentRoute
+  '/technologies/industries/healthcare': typeof TechnologiesIndustriesHealthcareRoute
+  '/technologies/industries/hospitality': typeof TechnologiesIndustriesHospitalityRoute
+  '/technologies/industries/logistics': typeof TechnologiesIndustriesLogisticsRoute
+  '/technologies/industries/manufacturing': typeof TechnologiesIndustriesManufacturingRoute
+  '/technologies/industries/real-estate': typeof TechnologiesIndustriesRealEstateRoute
+  '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
+  '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
+  '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -1681,6 +1831,21 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/industries/banking'
+    | '/technologies/industries/ecommerce'
+    | '/technologies/industries/education'
+    | '/technologies/industries/enterprise'
+    | '/technologies/industries/finance'
+    | '/technologies/industries/fintech'
+    | '/technologies/industries/government'
+    | '/technologies/industries/healthcare'
+    | '/technologies/industries/hospitality'
+    | '/technologies/industries/logistics'
+    | '/technologies/industries/manufacturing'
+    | '/technologies/industries/real-estate'
+    | '/technologies/industries/retail'
+    | '/technologies/industries/sme'
+    | '/technologies/industries/startups'
     | '/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -1838,6 +2003,21 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/industries/banking'
+    | '/technologies/industries/ecommerce'
+    | '/technologies/industries/education'
+    | '/technologies/industries/enterprise'
+    | '/technologies/industries/finance'
+    | '/technologies/industries/fintech'
+    | '/technologies/industries/government'
+    | '/technologies/industries/healthcare'
+    | '/technologies/industries/hospitality'
+    | '/technologies/industries/logistics'
+    | '/technologies/industries/manufacturing'
+    | '/technologies/industries/real-estate'
+    | '/technologies/industries/retail'
+    | '/technologies/industries/sme'
+    | '/technologies/industries/startups'
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
@@ -2000,6 +2180,21 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/industries/banking'
+    | '/technologies/industries/ecommerce'
+    | '/technologies/industries/education'
+    | '/technologies/industries/enterprise'
+    | '/technologies/industries/finance'
+    | '/technologies/industries/fintech'
+    | '/technologies/industries/government'
+    | '/technologies/industries/healthcare'
+    | '/technologies/industries/hospitality'
+    | '/technologies/industries/logistics'
+    | '/technologies/industries/manufacturing'
+    | '/technologies/industries/real-estate'
+    | '/technologies/industries/retail'
+    | '/technologies/industries/sme'
+    | '/technologies/industries/startups'
     | '/_authenticated/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -2653,6 +2848,111 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/technologies/industries/startups': {
+      id: '/technologies/industries/startups'
+      path: '/startups'
+      fullPath: '/technologies/industries/startups'
+      preLoaderRoute: typeof TechnologiesIndustriesStartupsRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/sme': {
+      id: '/technologies/industries/sme'
+      path: '/sme'
+      fullPath: '/technologies/industries/sme'
+      preLoaderRoute: typeof TechnologiesIndustriesSmeRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/retail': {
+      id: '/technologies/industries/retail'
+      path: '/retail'
+      fullPath: '/technologies/industries/retail'
+      preLoaderRoute: typeof TechnologiesIndustriesRetailRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/real-estate': {
+      id: '/technologies/industries/real-estate'
+      path: '/real-estate'
+      fullPath: '/technologies/industries/real-estate'
+      preLoaderRoute: typeof TechnologiesIndustriesRealEstateRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/manufacturing': {
+      id: '/technologies/industries/manufacturing'
+      path: '/manufacturing'
+      fullPath: '/technologies/industries/manufacturing'
+      preLoaderRoute: typeof TechnologiesIndustriesManufacturingRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/logistics': {
+      id: '/technologies/industries/logistics'
+      path: '/logistics'
+      fullPath: '/technologies/industries/logistics'
+      preLoaderRoute: typeof TechnologiesIndustriesLogisticsRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/hospitality': {
+      id: '/technologies/industries/hospitality'
+      path: '/hospitality'
+      fullPath: '/technologies/industries/hospitality'
+      preLoaderRoute: typeof TechnologiesIndustriesHospitalityRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/healthcare': {
+      id: '/technologies/industries/healthcare'
+      path: '/healthcare'
+      fullPath: '/technologies/industries/healthcare'
+      preLoaderRoute: typeof TechnologiesIndustriesHealthcareRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/government': {
+      id: '/technologies/industries/government'
+      path: '/government'
+      fullPath: '/technologies/industries/government'
+      preLoaderRoute: typeof TechnologiesIndustriesGovernmentRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/fintech': {
+      id: '/technologies/industries/fintech'
+      path: '/fintech'
+      fullPath: '/technologies/industries/fintech'
+      preLoaderRoute: typeof TechnologiesIndustriesFintechRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/finance': {
+      id: '/technologies/industries/finance'
+      path: '/finance'
+      fullPath: '/technologies/industries/finance'
+      preLoaderRoute: typeof TechnologiesIndustriesFinanceRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/enterprise': {
+      id: '/technologies/industries/enterprise'
+      path: '/enterprise'
+      fullPath: '/technologies/industries/enterprise'
+      preLoaderRoute: typeof TechnologiesIndustriesEnterpriseRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/education': {
+      id: '/technologies/industries/education'
+      path: '/education'
+      fullPath: '/technologies/industries/education'
+      preLoaderRoute: typeof TechnologiesIndustriesEducationRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/ecommerce': {
+      id: '/technologies/industries/ecommerce'
+      path: '/ecommerce'
+      fullPath: '/technologies/industries/ecommerce'
+      preLoaderRoute: typeof TechnologiesIndustriesEcommerceRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/banking': {
+      id: '/technologies/industries/banking'
+      path: '/banking'
+      fullPath: '/technologies/industries/banking'
+      preLoaderRoute: typeof TechnologiesIndustriesBankingRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
     }
     '/global-education/universities/$slug': {
       id: '/global-education/universities/$slug'
@@ -3796,6 +4096,54 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
   GlobalEducationRouteChildren,
 )
 
+interface TechnologiesIndustriesRouteChildren {
+  TechnologiesIndustriesBankingRoute: typeof TechnologiesIndustriesBankingRoute
+  TechnologiesIndustriesEcommerceRoute: typeof TechnologiesIndustriesEcommerceRoute
+  TechnologiesIndustriesEducationRoute: typeof TechnologiesIndustriesEducationRoute
+  TechnologiesIndustriesEnterpriseRoute: typeof TechnologiesIndustriesEnterpriseRoute
+  TechnologiesIndustriesFinanceRoute: typeof TechnologiesIndustriesFinanceRoute
+  TechnologiesIndustriesFintechRoute: typeof TechnologiesIndustriesFintechRoute
+  TechnologiesIndustriesGovernmentRoute: typeof TechnologiesIndustriesGovernmentRoute
+  TechnologiesIndustriesHealthcareRoute: typeof TechnologiesIndustriesHealthcareRoute
+  TechnologiesIndustriesHospitalityRoute: typeof TechnologiesIndustriesHospitalityRoute
+  TechnologiesIndustriesLogisticsRoute: typeof TechnologiesIndustriesLogisticsRoute
+  TechnologiesIndustriesManufacturingRoute: typeof TechnologiesIndustriesManufacturingRoute
+  TechnologiesIndustriesRealEstateRoute: typeof TechnologiesIndustriesRealEstateRoute
+  TechnologiesIndustriesRetailRoute: typeof TechnologiesIndustriesRetailRoute
+  TechnologiesIndustriesSmeRoute: typeof TechnologiesIndustriesSmeRoute
+  TechnologiesIndustriesStartupsRoute: typeof TechnologiesIndustriesStartupsRoute
+}
+
+const TechnologiesIndustriesRouteChildren: TechnologiesIndustriesRouteChildren =
+  {
+    TechnologiesIndustriesBankingRoute: TechnologiesIndustriesBankingRoute,
+    TechnologiesIndustriesEcommerceRoute: TechnologiesIndustriesEcommerceRoute,
+    TechnologiesIndustriesEducationRoute: TechnologiesIndustriesEducationRoute,
+    TechnologiesIndustriesEnterpriseRoute:
+      TechnologiesIndustriesEnterpriseRoute,
+    TechnologiesIndustriesFinanceRoute: TechnologiesIndustriesFinanceRoute,
+    TechnologiesIndustriesFintechRoute: TechnologiesIndustriesFintechRoute,
+    TechnologiesIndustriesGovernmentRoute:
+      TechnologiesIndustriesGovernmentRoute,
+    TechnologiesIndustriesHealthcareRoute:
+      TechnologiesIndustriesHealthcareRoute,
+    TechnologiesIndustriesHospitalityRoute:
+      TechnologiesIndustriesHospitalityRoute,
+    TechnologiesIndustriesLogisticsRoute: TechnologiesIndustriesLogisticsRoute,
+    TechnologiesIndustriesManufacturingRoute:
+      TechnologiesIndustriesManufacturingRoute,
+    TechnologiesIndustriesRealEstateRoute:
+      TechnologiesIndustriesRealEstateRoute,
+    TechnologiesIndustriesRetailRoute: TechnologiesIndustriesRetailRoute,
+    TechnologiesIndustriesSmeRoute: TechnologiesIndustriesSmeRoute,
+    TechnologiesIndustriesStartupsRoute: TechnologiesIndustriesStartupsRoute,
+  }
+
+const TechnologiesIndustriesRouteWithChildren =
+  TechnologiesIndustriesRoute._addFileChildren(
+    TechnologiesIndustriesRouteChildren,
+  )
+
 interface TechnologiesRouteChildren {
   TechnologiesAiSolutionsRoute: typeof TechnologiesAiSolutionsRoute
   TechnologiesApiDevelopmentRoute: typeof TechnologiesApiDevelopmentRoute
@@ -3812,7 +4160,7 @@ interface TechnologiesRouteChildren {
   TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
   TechnologiesDigitalTransformationRoute: typeof TechnologiesDigitalTransformationRoute
   TechnologiesEnterpriseSoftwareRoute: typeof TechnologiesEnterpriseSoftwareRoute
-  TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRoute
+  TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRouteWithChildren
   TechnologiesItConsultingRoute: typeof TechnologiesItConsultingRoute
   TechnologiesLegacyModernizationRoute: typeof TechnologiesLegacyModernizationRoute
   TechnologiesMobileDevelopmentRoute: typeof TechnologiesMobileDevelopmentRoute
@@ -3846,7 +4194,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesDigitalTransformationRoute:
     TechnologiesDigitalTransformationRoute,
   TechnologiesEnterpriseSoftwareRoute: TechnologiesEnterpriseSoftwareRoute,
-  TechnologiesIndustriesRoute: TechnologiesIndustriesRoute,
+  TechnologiesIndustriesRoute: TechnologiesIndustriesRouteWithChildren,
   TechnologiesItConsultingRoute: TechnologiesItConsultingRoute,
   TechnologiesLegacyModernizationRoute: TechnologiesLegacyModernizationRoute,
   TechnologiesMobileDevelopmentRoute: TechnologiesMobileDevelopmentRoute,
