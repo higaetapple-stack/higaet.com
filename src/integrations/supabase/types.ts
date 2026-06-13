@@ -1758,6 +1758,285 @@ export type Database = {
           },
         ]
       }
+      tech_clients: {
+        Row: {
+          company: string
+          contact_person: string | null
+          created_at: string
+          email: string | null
+          id: string
+          industry: string | null
+          notes: string | null
+          owner: string | null
+          phone: string | null
+          portal_user: string | null
+          slug: string | null
+          status: Database["public"]["Enums"]["tech_client_status"]
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          company: string
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          owner?: string | null
+          phone?: string | null
+          portal_user?: string | null
+          slug?: string | null
+          status?: Database["public"]["Enums"]["tech_client_status"]
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          company?: string
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          owner?: string | null
+          phone?: string | null
+          portal_user?: string | null
+          slug?: string | null
+          status?: Database["public"]["Enums"]["tech_client_status"]
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_clients_owner_fkey"
+            columns: ["owner"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_clients_portal_user_fkey"
+            columns: ["portal_user"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_project_documents: {
+        Row: {
+          category: string | null
+          created_at: string
+          file_name: string | null
+          file_size: number | null
+          file_url: string
+          id: string
+          project_id: string
+          uploaded_by: string | null
+          visible_to_client: boolean
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          file_name?: string | null
+          file_size?: number | null
+          file_url: string
+          id?: string
+          project_id: string
+          uploaded_by?: string | null
+          visible_to_client?: boolean
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          file_name?: string | null
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          project_id?: string
+          uploaded_by?: string | null
+          visible_to_client?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_project_documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_project_documents_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_project_members: {
+        Row: {
+          added_by: string | null
+          allocation_pct: number | null
+          created_at: string
+          id: string
+          project_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          added_by?: string | null
+          allocation_pct?: number | null
+          created_at?: string
+          id?: string
+          project_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          added_by?: string | null
+          allocation_pct?: number | null
+          created_at?: string
+          id?: string
+          project_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_project_members_added_by_fkey"
+            columns: ["added_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_project_members_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_project_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_project_milestones: {
+        Row: {
+          completion_pct: number
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          order_index: number
+          project_id: string
+          status: Database["public"]["Enums"]["tech_milestone_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completion_pct?: number
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          order_index?: number
+          project_id: string
+          status?: Database["public"]["Enums"]["tech_milestone_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completion_pct?: number
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          order_index?: number
+          project_id?: string
+          status?: Database["public"]["Enums"]["tech_milestone_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_projects: {
+        Row: {
+          budget: number | null
+          client_id: string
+          created_at: string
+          currency: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          name: string
+          project_manager: string | null
+          slug: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["tech_project_status"]
+          updated_at: string
+        }
+        Insert: {
+          budget?: number | null
+          client_id: string
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          project_manager?: string | null
+          slug?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["tech_project_status"]
+          updated_at?: string
+        }
+        Update: {
+          budget?: number | null
+          client_id?: string
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          project_manager?: string | null
+          slug?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["tech_project_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_projects_project_manager_fkey"
+            columns: ["project_manager"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       technologies_leads: {
         Row: {
           assigned_to: string | null
@@ -2230,6 +2509,7 @@ export type Database = {
         | "enterprise_client"
         | "admin"
         | "super_admin"
+        | "tech_client"
       application_status:
         | "submitted"
         | "under_review"
@@ -2267,6 +2547,26 @@ export type Database = {
         | "failed"
         | "needs_revision"
       submission_type: "file" | "github" | "portfolio" | "text" | "mixed"
+      tech_client_status:
+        | "lead"
+        | "discovery"
+        | "proposal"
+        | "approved"
+        | "active"
+        | "completed"
+        | "archived"
+      tech_milestone_status:
+        | "not_started"
+        | "in_progress"
+        | "blocked"
+        | "done"
+        | "cancelled"
+      tech_project_status:
+        | "planning"
+        | "active"
+        | "on_hold"
+        | "completed"
+        | "cancelled"
       visa_status:
         | "draft"
         | "documents_pending"
@@ -2413,6 +2713,7 @@ export const Constants = {
         "enterprise_client",
         "admin",
         "super_admin",
+        "tech_client",
       ],
       application_status: [
         "submitted",
@@ -2455,6 +2756,29 @@ export const Constants = {
         "needs_revision",
       ],
       submission_type: ["file", "github", "portfolio", "text", "mixed"],
+      tech_client_status: [
+        "lead",
+        "discovery",
+        "proposal",
+        "approved",
+        "active",
+        "completed",
+        "archived",
+      ],
+      tech_milestone_status: [
+        "not_started",
+        "in_progress",
+        "blocked",
+        "done",
+        "cancelled",
+      ],
+      tech_project_status: [
+        "planning",
+        "active",
+        "on_hold",
+        "completed",
+        "cancelled",
+      ],
       visa_status: [
         "draft",
         "documents_pending",
