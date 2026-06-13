@@ -242,6 +242,62 @@ export type Database = {
           },
         ]
       }
+      employers: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          hq_location: string | null
+          id: string
+          industry: string | null
+          logo_url: string | null
+          name: string
+          size: string | null
+          slug: string
+          updated_at: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          hq_location?: string | null
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          name: string
+          size?: string | null
+          slug: string
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          hq_location?: string | null
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          name?: string
+          size?: string | null
+          slug?: string
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enrollments: {
         Row: {
           created_at: string
@@ -283,6 +339,150 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_applications: {
+        Row: {
+          applied_at: string
+          cover_letter: string | null
+          id: string
+          job_id: string
+          notes: string | null
+          portfolio_url: string | null
+          resume_snapshot: Json | null
+          status: Database["public"]["Enums"]["application_status"]
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          applied_at?: string
+          cover_letter?: string | null
+          id?: string
+          job_id: string
+          notes?: string | null
+          portfolio_url?: string | null
+          resume_snapshot?: Json | null
+          status?: Database["public"]["Enums"]["application_status"]
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          applied_at?: string
+          cover_letter?: string | null
+          id?: string
+          job_id?: string
+          notes?: string | null
+          portfolio_url?: string | null
+          resume_snapshot?: Json | null
+          status?: Database["public"]["Enums"]["application_status"]
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_postings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_applications_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_postings: {
+        Row: {
+          apply_url: string | null
+          closes_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string
+          employer_id: string
+          employment_type: Database["public"]["Enums"]["job_employment_type"]
+          experience_level: Database["public"]["Enums"]["job_experience_level"]
+          id: string
+          location: string | null
+          posted_at: string | null
+          remote_type: Database["public"]["Enums"]["job_remote_type"]
+          requirements: string | null
+          responsibilities: string | null
+          salary_currency: string
+          salary_max: number | null
+          salary_min: number | null
+          skills: string[]
+          slug: string
+          status: Database["public"]["Enums"]["job_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          apply_url?: string | null
+          closes_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description: string
+          employer_id: string
+          employment_type?: Database["public"]["Enums"]["job_employment_type"]
+          experience_level?: Database["public"]["Enums"]["job_experience_level"]
+          id?: string
+          location?: string | null
+          posted_at?: string | null
+          remote_type?: Database["public"]["Enums"]["job_remote_type"]
+          requirements?: string | null
+          responsibilities?: string | null
+          salary_currency?: string
+          salary_max?: number | null
+          salary_min?: number | null
+          skills?: string[]
+          slug: string
+          status?: Database["public"]["Enums"]["job_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          apply_url?: string | null
+          closes_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          employer_id?: string
+          employment_type?: Database["public"]["Enums"]["job_employment_type"]
+          experience_level?: Database["public"]["Enums"]["job_experience_level"]
+          id?: string
+          location?: string | null
+          posted_at?: string | null
+          remote_type?: Database["public"]["Enums"]["job_remote_type"]
+          requirements?: string | null
+          responsibilities?: string | null
+          salary_currency?: string
+          salary_max?: number | null
+          salary_min?: number | null
+          skills?: string[]
+          slug?: string
+          status?: Database["public"]["Enums"]["job_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_postings_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_postings_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employers"
             referencedColumns: ["id"]
           },
         ]
@@ -343,33 +543,81 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
+          career_goals: string | null
           created_at: string
+          education: Json
           email: string | null
+          experience: Json
           full_name: string | null
+          github_url: string | null
           headline: string | null
           id: string
+          linkedin_url: string | null
+          location: string | null
           phone: string | null
+          portfolio_slug: string | null
+          portfolio_visibility: Database["public"]["Enums"]["portfolio_visibility"]
+          show_certificates: boolean
+          show_email: boolean
+          show_phone: boolean
+          show_projects: boolean
+          show_resume: boolean
+          skills: string[]
           updated_at: string
+          website_url: string | null
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
+          career_goals?: string | null
           created_at?: string
+          education?: Json
           email?: string | null
+          experience?: Json
           full_name?: string | null
+          github_url?: string | null
           headline?: string | null
           id: string
+          linkedin_url?: string | null
+          location?: string | null
           phone?: string | null
+          portfolio_slug?: string | null
+          portfolio_visibility?: Database["public"]["Enums"]["portfolio_visibility"]
+          show_certificates?: boolean
+          show_email?: boolean
+          show_phone?: boolean
+          show_projects?: boolean
+          show_resume?: boolean
+          skills?: string[]
           updated_at?: string
+          website_url?: string | null
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
+          career_goals?: string | null
           created_at?: string
+          education?: Json
           email?: string | null
+          experience?: Json
           full_name?: string | null
+          github_url?: string | null
           headline?: string | null
           id?: string
+          linkedin_url?: string | null
+          location?: string | null
           phone?: string | null
+          portfolio_slug?: string | null
+          portfolio_visibility?: Database["public"]["Enums"]["portfolio_visibility"]
+          show_certificates?: boolean
+          show_email?: boolean
+          show_phone?: boolean
+          show_projects?: boolean
+          show_resume?: boolean
+          skills?: string[]
           updated_at?: string
+          website_url?: string | null
         }
         Relationships: []
       }
@@ -586,6 +834,42 @@ export type Database = {
           },
         ]
       }
+      saved_jobs: {
+        Row: {
+          id: string
+          job_id: string
+          saved_at: string
+          student_id: string
+        }
+        Insert: {
+          id?: string
+          job_id: string
+          saved_at?: string
+          student_id: string
+        }
+        Update: {
+          id?: string
+          job_id?: string
+          saved_at?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_jobs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_postings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "saved_jobs_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       submissions: {
         Row: {
           assignment_id: string
@@ -691,6 +975,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_portfolio_slug: {
+        Args: { _full_name: string; _id: string }
+        Returns: string
+      }
       has_any_role: {
         Args: {
           _roles: Database["public"]["Enums"]["app_role"][]
@@ -731,9 +1019,21 @@ export type Database = {
         | "enterprise_client"
         | "admin"
         | "super_admin"
+      application_status:
+        | "submitted"
+        | "under_review"
+        | "shortlisted"
+        | "rejected"
+        | "withdrawn"
+        | "hired"
       course_status: "draft" | "published" | "archived"
       enrollment_status: "active" | "paused" | "completed" | "withdrawn"
+      job_employment_type: "full_time" | "part_time" | "contract" | "internship"
+      job_experience_level: "entry" | "mid" | "senior"
+      job_remote_type: "onsite" | "hybrid" | "remote"
+      job_status: "draft" | "open" | "closed" | "archived"
       lesson_type: "video" | "reading" | "lab" | "quiz"
+      portfolio_visibility: "private" | "unlisted" | "public"
       program_status: "draft" | "published" | "archived"
       project_submission_status:
         | "draft"
@@ -886,9 +1186,22 @@ export const Constants = {
         "admin",
         "super_admin",
       ],
+      application_status: [
+        "submitted",
+        "under_review",
+        "shortlisted",
+        "rejected",
+        "withdrawn",
+        "hired",
+      ],
       course_status: ["draft", "published", "archived"],
       enrollment_status: ["active", "paused", "completed", "withdrawn"],
+      job_employment_type: ["full_time", "part_time", "contract", "internship"],
+      job_experience_level: ["entry", "mid", "senior"],
+      job_remote_type: ["onsite", "hybrid", "remote"],
+      job_status: ["draft", "open", "closed", "archived"],
       lesson_type: ["video", "reading", "lab", "quiz"],
+      portfolio_visibility: ["private", "unlisted", "public"],
       program_status: ["draft", "published", "archived"],
       project_submission_status: [
         "draft",

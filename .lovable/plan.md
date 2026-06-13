@@ -1,86 +1,120 @@
-# Sprint 2C — Academic Operations
 
-Completes the learning lifecycle: Enroll → Learn → Submit → Grade → Certify → Showcase.
+# Sprint 3A — Career Portal
 
-## Scope
+Pipeline: Profile → Resume → Public Portfolio → Job Board → Apply. Admin-managed employer module (no employer auth yet). Defer interview tracker, placement records, employer self-serve to 3A.2.
 
-### Module 1 — Assignment Submission (Student)
-- `/dashboard/assignments` — list pending/submitted with due dates, status, grades.
-- `/dashboard/assignments/$id` — read instructions, submit text + file URL + external URL (GitHub/Portfolio), resubmit while status = pending/needs_revision, view feedback + score.
-- Submission types stored as `submission_type` enum: `file | github | portfolio | text | mixed`. Files uploaded to a new private `submissions` storage bucket; row stores object path.
+## 1. Database migration (single approval)
 
-### Module 2 — Faculty Grading Portal
-- `/dashboard/faculty/submissions` — filter by course/assignment/status; row actions: view, grade (0–100), feedback, mark passed/failed/needs_revision.
-- Server fn `gradeSubmission` writes `score`, `status`, `feedback`, `graded_by`, `graded_at`; gated to faculty assigned to the course (via `course_faculty`) or admin.
+### Profile additions (career & portfolio)
+Alter `public.profiles` add:
+- `bio text`
+- `location text`
+- `github_url text`, `linkedin_url text`, `website_url text`
+- `skills text[]` default `{}`
+- `career_goals text`
+- `education jsonb` default `'[]'` (array of `{school, degree, field, start, end}`)
+- `experience jsonb` default `'[]'` (array of `{company, title, start, end, summary}`)
+- `portfolio_slug citext unique` (nullable until student claims it)
+- `portfolio_visibility` enum: `private | unlisted | public` default `private`
+- privacy toggles: `show_email`, `show_phone`, `show_resume`, `show_certificates`, `show_projects` (boolean, defaults set sensibly)
 
-### Module 3 — Certificate Engine
-- Eligibility helper (`isProgramEligible(programId, studentId)`): 100% lessons complete in all program courses AND all `is_required` assignments in those courses have a `passed` submission.
-- Server fn `issueCertificate` (admin/faculty or auto on completion): generates `certificate_number` (HIGAET-YYYY-XXXXXX), `verification_hash` (sha256 of number+student+program+date), stores in `certificates`.
-- Auto-issue trigger: after `markLessonComplete` and after `gradeSubmission(passed)`, check eligibility and insert certificate if missing.
-- Public route `/verify-certificate/$id` (server route under `/api/public/` for data, page route for UI): shows student name, program, issue date, certificate number, verification status. No auth.
-- Student certificate page `/dashboard/certificates` — list + download (HTML→print view at `/dashboard/certificates/$id`).
+New enum `portfolio_visibility`. Slug validation via trigger (lowercase, `[a-z0-9-]{3,40}`).
 
-### Module 4 — Achievement Widgets
-- Extend dashboard summary: certificates earned, assignments completed, average score, projects completed.
+Public read access for portfolio: add policy `profiles public portfolio read` on `profiles` FOR SELECT TO anon, authenticated USING `portfolio_visibility = 'public'` — but server fn will project only safe fields. (Anon grant required on `profiles` for SELECT — scoped via policy.)
 
-### Module 5 — Capstone Projects
-- New tables `projects` (program-scoped: title, brief, guidelines, due_at) and `project_submissions` (student_id, project_id, repo_url, demo_url, summary, status, score, feedback, graded_by, graded_at).
-- Admin CRUD under `/dashboard/admin/projects`. Student view `/dashboard/projects` + detail.
+### New tables
 
-### Module 6 — Program Completion Status
-- Derived enum on enrollment cards: `not_started | in_progress | completed | certified` from progress + certificate row.
-- Show on `/dashboard/programs` and program detail.
+**employers** — admin-curated company directory.
+Fields: `name`, `slug` (unique), `website`, `logo_url`, `description`, `industry`, `hq_location`, `size`, `verified bool`, `created_by uuid`.
+Policies: anon SELECT (public), admin write.
 
-### Admin Enhancements
-- `/dashboard/admin/certificates` (already exists for templates) → add issuance + revocation tab.
-- `/dashboard/admin/analytics` — counts: enrollments, active students (progress in last 30d), submissions, completion rate, certificates issued.
+**job_postings**
+Fields: `employer_id`, `title`, `slug` (unique), `description`, `requirements`, `responsibilities`, `location`, `remote_type` enum (`onsite|hybrid|remote`), `employment_type` enum (`full_time|part_time|contract|internship`), `experience_level` enum (`entry|mid|senior`), `salary_min`, `salary_max`, `salary_currency` default `INR`, `skills text[]`, `apply_url text` (optional external), `status` enum (`draft|open|closed|archived`) default `draft`, `posted_at`, `closes_at`, `created_by`.
+Policies: anon SELECT where `status='open'`; admin all.
 
-## Technical Plan
+**job_applications**
+Fields: `job_id`, `student_id`, `resume_snapshot jsonb`, `cover_letter text`, `portfolio_url text`, `status` enum (`submitted|under_review|shortlisted|rejected|withdrawn`) default `submitted`, `applied_at`, `notes` (admin only).
+Unique `(job_id, student_id)`.
+Policies: student insert+select own, admin all. Faculty/placement_officer read-only.
 
-### Migration (single)
-1. Enums: `submission_status` (`pending`, `reviewed`, `passed`, `failed`, `needs_revision`), `submission_type`, `project_status`.
-2. Alter `assignments`: add `is_required boolean default true`.
-3. Alter `submissions`: add `submission_type`, `file_path text`, `external_url text`, `text_response text`, `feedback text`, `graded_by uuid`, `graded_at timestamptz`; ensure `status` uses new enum.
-4. Alter `certificates`: add `certificate_number text unique`, `verification_hash text`, `issued_by uuid`, `issue_date date default current_date`, `revoked boolean default false`, `revoked_at timestamptz`.
-5. Create `projects` + `project_submissions` with GRANTs + RLS.
-6. RLS policies:
-   - submissions: student CRUD own (insert/update while not finalized); faculty assigned to course can SELECT + UPDATE grading fields; admin all.
-   - certificates: student SELECT own; public SELECT by `certificate_number` (anon allowed only via SECURITY DEFINER fn — keep table policy authenticated, expose `verify_certificate(_number text)` RPC `security definer`).
-   - projects: authenticated SELECT for enrolled students + faculty/admin; admin write.
-7. Storage: private bucket `submissions` via `storage_create_bucket`; RLS on `storage.objects` so student writes/reads own folder `{user_id}/...`, faculty reads any in their courses (simplest: faculty+admin read all).
+**saved_jobs**
+Fields: `student_id`, `job_id`, `saved_at`. Unique `(student_id, job_id)`.
+Policies: student manage own.
 
-### Server Functions (`src/lib/academic.functions.ts`)
-- Student: `listMyAssignments`, `getAssignment`, `submitAssignment`, `listMyCertificates`, `getMyAchievementStats`, `listMyProjects`, `submitProject`.
-- Faculty: `listSubmissionsToGrade`, `gradeSubmission`, `listProjectsToReview`, `gradeProjectSubmission`.
-- Admin: `adminIssueCertificate`, `adminRevokeCertificate`, `adminListAnalytics`, `adminListProjects`, `adminCreateProject`, `adminUpdateProject`, `adminDeleteProject`.
-- Public RPC wrapper: `verifyCertificate({ number })` — calls `public.verify_certificate` (no auth middleware).
-- Helper: `checkAndIssueCertificate(programId, studentId)` invoked from `markLessonComplete` and `gradeSubmission`.
+All tables: GRANTs, RLS, `updated_at` trigger where applicable. Service role full.
 
-### Routes
-- `_authenticated.dashboard.assignments.index.tsx`
-- `_authenticated.dashboard.assignments.$assignmentId.tsx`
-- `_authenticated.dashboard.faculty.submissions.tsx`
-- `_authenticated.dashboard.certificates.index.tsx`
-- `_authenticated.dashboard.certificates.$id.tsx` (printable)
-- `_authenticated.dashboard.projects.index.tsx` + `.$id.tsx`
-- `_authenticated.dashboard.admin.projects.tsx`
-- `_authenticated.dashboard.admin.analytics.tsx`
-- `_authenticated.dashboard.admin.certificates.tsx` — extend with issuance/revocation tab
-- Public: `verify-certificate.$id.tsx`
+### Helper functions
+- `public.generate_portfolio_slug(_full_name text, _id uuid)` returns text — generates unique slug.
+- Trigger on `profiles` insert/update of `portfolio_visibility='public'`: if `portfolio_slug IS NULL` auto-assign.
 
-### Out of scope (deferred)
-- PDF certificate generation (use printable HTML for now; PDF in Sprint 3 if needed).
-- Rubric builder UI (free-text feedback only).
-- Plagiarism / AI-detection.
-- Self-serve enrollment + payments.
+## 2. Server functions
+
+`src/lib/career.functions.ts` (requireSupabaseAuth)
+- `getMyCareerProfile`, `updateCareerProfile(input)` (bio, social, skills, education, experience, goals, privacy)
+- `updatePortfolioSettings({ visibility, slug, show_* })` with slug-claim collision handling
+- `getMyResumeData()` — joins profile + certificates + projects (approved submissions) + enrollments completed → DTO for resume render
+- `listJobs(filters)` — open jobs with employer join (student-facing)
+- `getJob(slug)` — single job + my application status + saved state
+- `applyToJob({ job_id, cover_letter, portfolio_url, include_resume })` — snapshots current resume DTO into `resume_snapshot`
+- `withdrawApplication(id)`
+- `listMyApplications()`
+- `toggleSaveJob(job_id)`
+- `listMySavedJobs()`
+
+`src/lib/career-admin.functions.ts` (admin guard)
+- Employers CRUD: `adminListEmployers`, `adminCreateEmployer`, `adminUpdateEmployer`, `adminDeleteEmployer`
+- Jobs CRUD: `adminListJobs`, `adminCreateJob`, `adminUpdateJob`, `adminArchiveJob`
+- Applications: `adminListApplications(filters)`, `adminUpdateApplicationStatus`
+
+`src/lib/portfolio.functions.ts` (public — no auth)
+- `getPublicPortfolio({ slug })` — fetches profile via admin client; returns ONLY whitelisted fields per `show_*` flags; includes certificates (number + program + issue_date) and projects (title + summary + repo/demo) and skills/social. Unlisted = accessible by direct slug but `head()` adds `noindex`. Private = 404.
+
+## 3. Routes
+
+### Student
+- `/dashboard/career` — overview tabs (Profile, Resume, Portfolio, Applications, Saved)
+- `/dashboard/career/profile` — edit form (bio, location, social, skills, education, experience, goals)
+- `/dashboard/career/portfolio` — visibility, slug claim, privacy toggles, preview link
+- `/dashboard/career/resume` — auto-generated printable resume with template switcher (2 templates: `classic`, `modern`); `window.print()` for PDF export
+- `/dashboard/career/applications` — list + statuses + withdraw
+
+### Public
+- `/portfolio/$slug` — public/unlisted portfolio page. head() title `{Name} | {Headline} | HIGAET Portfolio`, description from bio; canonical+og:url; JSON-LD `Person`. Unlisted adds `meta robots noindex`.
+- `/careers/jobs` — searchable/filterable job board (search by title/skill, filter employment_type, remote_type, location)
+- `/careers/jobs/$slug` — job detail + apply CTA (signed-in students only)
+
+### Admin
+- `/dashboard/admin/employers` — list + create/edit dialog
+- `/dashboard/admin/jobs` — list + create/edit (linked to employer) + archive
+- `/dashboard/admin/applications` — pipeline list + status update
+
+### Sidebar/Tab updates
+- Add "Career" item to student `RoleSidebar`.
+- Add Employers, Jobs, Applications to admin tabs in `_authenticated.dashboard.admin.tsx`.
+
+## 4. Components
+
+- `src/components/career/ResumeClassic.tsx`, `ResumeModern.tsx` — print-styled templates
+- `src/components/career/JobCard.tsx`, `JobFiltersBar.tsx`
+- `src/components/portfolio/PortfolioHero.tsx`, `PortfolioSection.tsx`
+- `src/components/career/ApplicationStatusBadge.tsx`
+- `src/components/career/SkillsInput.tsx` (tag input)
+
+## 5. Out of scope (3A.2 / later)
+- Interview tracker stages
+- Placement records / offers
+- Skills matrix / assessments
+- Employer self-serve auth + recruiter role
+- Career analytics
+- Resume PDF server-rendering (print is fine for v1)
 
 ## Execution order
-1. Migration (approval gate) → types regen.
-2. Storage bucket + storage RLS.
-3. Server functions file.
-4. Student assignment UI + faculty grading UI.
-5. Certificate engine + public verification page.
-6. Projects (admin + student).
-7. Achievement widgets + admin analytics.
+1. Migration → wait for approval → types regen.
+2. `career.functions.ts`, `career-admin.functions.ts`, `portfolio.functions.ts`.
+3. Career dashboard + Profile + Portfolio settings + Resume.
+4. Public `/portfolio/$slug` + JSON-LD + privacy gating.
+5. Public job board + job detail + apply flow.
+6. Admin employers/jobs/applications.
+7. Sidebar/Admin tabs wiring.
 
 Proceed?

@@ -14,6 +14,9 @@ type Tab = {
     | "/dashboard/admin/users"
     | "/dashboard/admin/assignments"
     | "/dashboard/admin/certificates"
+    | "/dashboard/admin/employers"
+    | "/dashboard/admin/jobs"
+    | "/dashboard/admin/applications"
     | "/dashboard/admin/analytics"
     | "/dashboard/admin/settings";
   label: string;
@@ -28,6 +31,9 @@ const TABS: Tab[] = [
   { to: "/dashboard/admin/users", label: "Users & Roles" },
   { to: "/dashboard/admin/assignments", label: "Assignments" },
   { to: "/dashboard/admin/certificates", label: "Certificates" },
+  { to: "/dashboard/admin/employers", label: "Employers" },
+  { to: "/dashboard/admin/jobs", label: "Jobs" },
+  { to: "/dashboard/admin/applications", label: "Applications" },
   { to: "/dashboard/admin/analytics", label: "Analytics" },
   { to: "/dashboard/admin/settings", label: "Settings" },
 ];
