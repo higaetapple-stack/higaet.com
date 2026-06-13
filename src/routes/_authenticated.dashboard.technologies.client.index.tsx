@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { myClientWorkspace } from "@/lib/technologies.functions";
 
-export const Route = createFileRoute("/_authenticated/dashboard/technologies/client")({
+export const Route = createFileRoute("/_authenticated/dashboard/technologies/client/")({
   component: ClientPortal,
 });
 

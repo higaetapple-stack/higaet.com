@@ -89,6 +89,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as AuthenticatedDashboardTechnologiesClientRouteImport } from './routes/_authenticated.dashboard.technologies.client'
 import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
 import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
@@ -568,6 +569,12 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardTechnologiesClientRoute =
+  AuthenticatedDashboardTechnologiesClientRouteImport.update({
+    id: '/client',
+    path: '/client',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
 const AuthenticatedDashboardProjectsIdRoute =
   AuthenticatedDashboardProjectsIdRouteImport.update({
     id: '/projects/$id',
@@ -968,6 +975,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
+  '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1088,6 +1096,7 @@ export interface FileRoutesByTo {
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
+  '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1219,6 +1228,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
+  '/_authenticated/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1350,6 +1360,7 @@ export interface FileRouteTypes {
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
+    | '/dashboard/technologies/client'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -1470,6 +1481,7 @@ export interface FileRouteTypes {
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
+    | '/dashboard/technologies/client'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -1600,6 +1612,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/lessons/$lessonId'
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/projects/$id'
+    | '/_authenticated/dashboard/technologies/client'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -2202,6 +2215,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/technologies/client': {
+      id: '/_authenticated/dashboard/technologies/client'
+      path: '/client'
+      fullPath: '/dashboard/technologies/client'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
     '/_authenticated/dashboard/projects/$id': {
       id: '/_authenticated/dashboard/projects/$id'
       path: '/projects/$id'
@@ -2748,6 +2768,7 @@ const AuthenticatedDashboardProgramsRouteWithChildren =
   )
 
 interface AuthenticatedDashboardTechnologiesRouteChildren {
+  AuthenticatedDashboardTechnologiesClientRoute: typeof AuthenticatedDashboardTechnologiesClientRoute
   AuthenticatedDashboardTechnologiesIndexRoute: typeof AuthenticatedDashboardTechnologiesIndexRoute
   AuthenticatedDashboardTechnologiesClientsIdRoute: typeof AuthenticatedDashboardTechnologiesClientsIdRoute
   AuthenticatedDashboardTechnologiesProjectsIdRoute: typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
@@ -2757,6 +2778,8 @@ interface AuthenticatedDashboardTechnologiesRouteChildren {
 
 const AuthenticatedDashboardTechnologiesRouteChildren: AuthenticatedDashboardTechnologiesRouteChildren =
   {
+    AuthenticatedDashboardTechnologiesClientRoute:
+      AuthenticatedDashboardTechnologiesClientRoute,
     AuthenticatedDashboardTechnologiesIndexRoute:
       AuthenticatedDashboardTechnologiesIndexRoute,
     AuthenticatedDashboardTechnologiesClientsIdRoute:
