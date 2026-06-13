@@ -149,6 +149,7 @@ import { Route as TechnologiesEngagementOffshoreDevelopmentCenterRouteImport } f
 import { Route as TechnologiesEngagementFixedPriceProjectsRouteImport } from './routes/technologies.engagement.fixed-price-projects'
 import { Route as TechnologiesEngagementDedicatedDevelopmentTeamRouteImport } from './routes/technologies.engagement.dedicated-development-team'
 import { Route as TechnologiesEngagementBuildOperateTransferRouteImport } from './routes/technologies.engagement.build-operate-transfer'
+import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
@@ -1021,6 +1022,12 @@ const TechnologiesEngagementBuildOperateTransferRoute =
     path: '/build-operate-transfer',
     getParentRoute: () => TechnologiesEngagementRoute,
   } as any)
+const TechnologiesCaseStudiesSlugRoute =
+  TechnologiesCaseStudiesSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => TechnologiesCaseStudiesRoute,
+  } as any)
 const GlobalEducationUniversitiesSlugRoute =
   GlobalEducationUniversitiesSlugRouteImport.update({
     id: '/$slug',
@@ -1577,7 +1584,7 @@ export interface FileRoutesByFullPath {
   '/technologies/api-development': typeof TechnologiesApiDevelopmentRoute
   '/technologies/business-intelligence': typeof TechnologiesBusinessIntelligenceRoute
   '/technologies/careers': typeof TechnologiesCareersRoute
-  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
   '/technologies/contact': typeof TechnologiesContactRoute
@@ -1620,6 +1627,7 @@ export interface FileRoutesByFullPath {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -1799,7 +1807,7 @@ export interface FileRoutesByTo {
   '/technologies/api-development': typeof TechnologiesApiDevelopmentRoute
   '/technologies/business-intelligence': typeof TechnologiesBusinessIntelligenceRoute
   '/technologies/careers': typeof TechnologiesCareersRoute
-  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
   '/technologies/contact': typeof TechnologiesContactRoute
@@ -1838,6 +1846,7 @@ export interface FileRoutesByTo {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -2019,7 +2028,7 @@ export interface FileRoutesById {
   '/technologies/api-development': typeof TechnologiesApiDevelopmentRoute
   '/technologies/business-intelligence': typeof TechnologiesBusinessIntelligenceRoute
   '/technologies/careers': typeof TechnologiesCareersRoute
-  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
   '/technologies/contact': typeof TechnologiesContactRoute
@@ -2062,6 +2071,7 @@ export interface FileRoutesById {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -2290,6 +2300,7 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/case-studies/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2508,6 +2519,7 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/case-studies/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2731,6 +2743,7 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/case-studies/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -3870,6 +3883,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/technologies/engagement/build-operate-transfer'
       preLoaderRoute: typeof TechnologiesEngagementBuildOperateTransferRouteImport
       parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/case-studies/$slug': {
+      id: '/technologies/case-studies/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/case-studies/$slug'
+      preLoaderRoute: typeof TechnologiesCaseStudiesSlugRouteImport
+      parentRoute: typeof TechnologiesCaseStudiesRoute
     }
     '/global-education/universities/$slug': {
       id: '/global-education/universities/$slug'
@@ -5013,6 +5033,20 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
   GlobalEducationRouteChildren,
 )
 
+interface TechnologiesCaseStudiesRouteChildren {
+  TechnologiesCaseStudiesSlugRoute: typeof TechnologiesCaseStudiesSlugRoute
+}
+
+const TechnologiesCaseStudiesRouteChildren: TechnologiesCaseStudiesRouteChildren =
+  {
+    TechnologiesCaseStudiesSlugRoute: TechnologiesCaseStudiesSlugRoute,
+  }
+
+const TechnologiesCaseStudiesRouteWithChildren =
+  TechnologiesCaseStudiesRoute._addFileChildren(
+    TechnologiesCaseStudiesRouteChildren,
+  )
+
 interface TechnologiesEngagementRouteChildren {
   TechnologiesEngagementBuildOperateTransferRoute: typeof TechnologiesEngagementBuildOperateTransferRoute
   TechnologiesEngagementDedicatedDevelopmentTeamRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
@@ -5189,7 +5223,7 @@ interface TechnologiesRouteChildren {
   TechnologiesApiDevelopmentRoute: typeof TechnologiesApiDevelopmentRoute
   TechnologiesBusinessIntelligenceRoute: typeof TechnologiesBusinessIntelligenceRoute
   TechnologiesCareersRoute: typeof TechnologiesCareersRoute
-  TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRoute
+  TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRouteWithChildren
   TechnologiesCloudMigrationRoute: typeof TechnologiesCloudMigrationRoute
   TechnologiesCloudSolutionsRoute: typeof TechnologiesCloudSolutionsRoute
   TechnologiesContactRoute: typeof TechnologiesContactRoute
@@ -5223,7 +5257,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesApiDevelopmentRoute: TechnologiesApiDevelopmentRoute,
   TechnologiesBusinessIntelligenceRoute: TechnologiesBusinessIntelligenceRoute,
   TechnologiesCareersRoute: TechnologiesCareersRoute,
-  TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRoute,
+  TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRouteWithChildren,
   TechnologiesCloudMigrationRoute: TechnologiesCloudMigrationRoute,
   TechnologiesCloudSolutionsRoute: TechnologiesCloudSolutionsRoute,
   TechnologiesContactRoute: TechnologiesContactRoute,
