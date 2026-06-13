@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Briefcase,
   Plane,
+  Building2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AppRole } from "@/lib/auth.functions";
