@@ -94,6 +94,7 @@ import { Route as AuthenticatedDashboardCareerPortfolioRouteImport } from './rou
 import { Route as AuthenticatedDashboardCareerApplicationsRouteImport } from './routes/_authenticated.dashboard.career.applications'
 import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } from './routes/_authenticated.dashboard.assignments.$assignmentId'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
+import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
@@ -568,6 +569,12 @@ const AuthenticatedDashboardAdminUsersRoute =
     path: '/users',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminStoriesRoute =
+  AuthenticatedDashboardAdminStoriesRouteImport.update({
+    id: '/stories',
+    path: '/stories',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminSettingsRoute =
   AuthenticatedDashboardAdminSettingsRouteImport.update({
     id: '/settings',
@@ -718,6 +725,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
+  '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -810,6 +818,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
+  '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -910,6 +919,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
+  '/_authenticated/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/_authenticated/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -1010,6 +1020,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/settings'
+    | '/dashboard/admin/stories'
     | '/dashboard/admin/users'
     | '/dashboard/assignments/$assignmentId'
     | '/dashboard/career/applications'
@@ -1102,6 +1113,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/settings'
+    | '/dashboard/admin/stories'
     | '/dashboard/admin/users'
     | '/dashboard/assignments/$assignmentId'
     | '/dashboard/career/applications'
@@ -1201,6 +1213,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
     | '/_authenticated/dashboard/admin/settings'
+    | '/_authenticated/dashboard/admin/stories'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/assignments/$assignmentId'
     | '/_authenticated/dashboard/career/applications'
@@ -1840,6 +1853,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminUsersRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/stories': {
+      id: '/_authenticated/dashboard/admin/stories'
+      path: '/stories'
+      fullPath: '/dashboard/admin/stories'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminStoriesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/settings': {
       id: '/_authenticated/dashboard/admin/settings'
       path: '/settings'
@@ -1938,6 +1958,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
+  AuthenticatedDashboardAdminStoriesRoute: typeof AuthenticatedDashboardAdminStoriesRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -1965,6 +1986,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminProjectsRoute,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
+    AuthenticatedDashboardAdminStoriesRoute:
+      AuthenticatedDashboardAdminStoriesRoute,
     AuthenticatedDashboardAdminUsersRoute:
       AuthenticatedDashboardAdminUsersRoute,
     AuthenticatedDashboardAdminIndexRoute:
