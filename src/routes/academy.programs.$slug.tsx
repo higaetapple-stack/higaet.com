@@ -60,7 +60,10 @@ export const Route = createFileRoute("/academy/programs/$slug")({
 });
 
 function ProgramDetail() {
-  const { program } = Route.useLoaderData();
+  const { program } = Route.useLoaderData() as { program: Program };
+  const categoryLabel = CATEGORY_LABELS[program.category as ProgramCategory];
+
+
 
   return (
     <>
