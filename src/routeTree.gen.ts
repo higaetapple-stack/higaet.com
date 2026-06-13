@@ -99,13 +99,20 @@ import { Route as AuthenticatedDashboardCareerApplicationsRouteImport } from './
 import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } from './routes/_authenticated.dashboard.assignments.$assignmentId'
 import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './routes/_authenticated.dashboard.applications.$id'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
+import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
+import { Route as AuthenticatedDashboardAdminUniprogramsRouteImport } from './routes/_authenticated.dashboard.admin.uniprograms'
+import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './routes/_authenticated.dashboard.admin.tech-leads'
 import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
+import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
+import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
+import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
+import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
@@ -603,6 +610,24 @@ const AuthenticatedDashboardAdminUsersRoute =
     path: '/users',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminUniversitiesRoute =
+  AuthenticatedDashboardAdminUniversitiesRouteImport.update({
+    id: '/universities',
+    path: '/universities',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminUniprogramsRoute =
+  AuthenticatedDashboardAdminUniprogramsRouteImport.update({
+    id: '/uniprograms',
+    path: '/uniprograms',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminTechLeadsRoute =
+  AuthenticatedDashboardAdminTechLeadsRouteImport.update({
+    id: '/tech-leads',
+    path: '/tech-leads',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminStoriesRoute =
   AuthenticatedDashboardAdminStoriesRouteImport.update({
     id: '/stories',
@@ -613,6 +638,24 @@ const AuthenticatedDashboardAdminSettingsRoute =
   AuthenticatedDashboardAdminSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminScholarshipsRoute =
+  AuthenticatedDashboardAdminScholarshipsRouteImport.update({
+    id: '/scholarships',
+    path: '/scholarships',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSaLeadsRoute =
+  AuthenticatedDashboardAdminSaLeadsRouteImport.update({
+    id: '/sa-leads',
+    path: '/sa-leads',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSaApplicationsRoute =
+  AuthenticatedDashboardAdminSaApplicationsRouteImport.update({
+    id: '/sa-applications',
+    path: '/sa-applications',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminProjectsRoute =
@@ -643,6 +686,12 @@ const AuthenticatedDashboardAdminEmployersRoute =
   AuthenticatedDashboardAdminEmployersRouteImport.update({
     id: '/employers',
     path: '/employers',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCountriesRoute =
+  AuthenticatedDashboardAdminCountriesRouteImport.update({
+    id: '/countries',
+    path: '/countries',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminCertificatesRoute =
@@ -756,13 +805,20 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
+  '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
+  '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
+  '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
@@ -854,13 +910,20 @@ export interface FileRoutesByTo {
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
+  '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
+  '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
+  '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
@@ -960,13 +1023,20 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/_authenticated/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/_authenticated/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  '/_authenticated/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
+  '/_authenticated/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/_authenticated/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
+  '/_authenticated/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
+  '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/_authenticated/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
@@ -1066,13 +1136,20 @@ export interface FileRouteTypes {
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
+    | '/dashboard/admin/countries'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/sa-applications'
+    | '/dashboard/admin/sa-leads'
+    | '/dashboard/admin/scholarships'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
+    | '/dashboard/admin/tech-leads'
+    | '/dashboard/admin/uniprograms'
+    | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/applications/$id'
     | '/dashboard/assignments/$assignmentId'
@@ -1164,13 +1241,20 @@ export interface FileRouteTypes {
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
+    | '/dashboard/admin/countries'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/sa-applications'
+    | '/dashboard/admin/sa-leads'
+    | '/dashboard/admin/scholarships'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
+    | '/dashboard/admin/tech-leads'
+    | '/dashboard/admin/uniprograms'
+    | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/applications/$id'
     | '/dashboard/assignments/$assignmentId'
@@ -1269,13 +1353,20 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/applications'
     | '/_authenticated/dashboard/admin/assignments'
     | '/_authenticated/dashboard/admin/certificates'
+    | '/_authenticated/dashboard/admin/countries'
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
+    | '/_authenticated/dashboard/admin/sa-applications'
+    | '/_authenticated/dashboard/admin/sa-leads'
+    | '/_authenticated/dashboard/admin/scholarships'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/stories'
+    | '/_authenticated/dashboard/admin/tech-leads'
+    | '/_authenticated/dashboard/admin/uniprograms'
+    | '/_authenticated/dashboard/admin/universities'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/applications/$id'
     | '/_authenticated/dashboard/assignments/$assignmentId'
@@ -1953,6 +2044,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminUsersRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/universities': {
+      id: '/_authenticated/dashboard/admin/universities'
+      path: '/universities'
+      fullPath: '/dashboard/admin/universities'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUniversitiesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/uniprograms': {
+      id: '/_authenticated/dashboard/admin/uniprograms'
+      path: '/uniprograms'
+      fullPath: '/dashboard/admin/uniprograms'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUniprogramsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/tech-leads': {
+      id: '/_authenticated/dashboard/admin/tech-leads'
+      path: '/tech-leads'
+      fullPath: '/dashboard/admin/tech-leads'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminTechLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/stories': {
       id: '/_authenticated/dashboard/admin/stories'
       path: '/stories'
@@ -1965,6 +2077,27 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/dashboard/admin/settings'
       preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/scholarships': {
+      id: '/_authenticated/dashboard/admin/scholarships'
+      path: '/scholarships'
+      fullPath: '/dashboard/admin/scholarships'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminScholarshipsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sa-leads': {
+      id: '/_authenticated/dashboard/admin/sa-leads'
+      path: '/sa-leads'
+      fullPath: '/dashboard/admin/sa-leads'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSaLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sa-applications': {
+      id: '/_authenticated/dashboard/admin/sa-applications'
+      path: '/sa-applications'
+      fullPath: '/dashboard/admin/sa-applications'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSaApplicationsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/projects': {
@@ -2000,6 +2133,13 @@ declare module '@tanstack/react-router' {
       path: '/employers'
       fullPath: '/dashboard/admin/employers'
       preLoaderRoute: typeof AuthenticatedDashboardAdminEmployersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/countries': {
+      id: '/_authenticated/dashboard/admin/countries'
+      path: '/countries'
+      fullPath: '/dashboard/admin/countries'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCountriesRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/certificates': {
@@ -2052,13 +2192,20 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminApplicationsRoute: typeof AuthenticatedDashboardAdminApplicationsRoute
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
+  AuthenticatedDashboardAdminCountriesRoute: typeof AuthenticatedDashboardAdminCountriesRoute
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
+  AuthenticatedDashboardAdminSaApplicationsRoute: typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  AuthenticatedDashboardAdminSaLeadsRoute: typeof AuthenticatedDashboardAdminSaLeadsRoute
+  AuthenticatedDashboardAdminScholarshipsRoute: typeof AuthenticatedDashboardAdminScholarshipsRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminStoriesRoute: typeof AuthenticatedDashboardAdminStoriesRoute
+  AuthenticatedDashboardAdminTechLeadsRoute: typeof AuthenticatedDashboardAdminTechLeadsRoute
+  AuthenticatedDashboardAdminUniprogramsRoute: typeof AuthenticatedDashboardAdminUniprogramsRoute
+  AuthenticatedDashboardAdminUniversitiesRoute: typeof AuthenticatedDashboardAdminUniversitiesRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -2075,6 +2222,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminAssignmentsRoute,
     AuthenticatedDashboardAdminCertificatesRoute:
       AuthenticatedDashboardAdminCertificatesRoute,
+    AuthenticatedDashboardAdminCountriesRoute:
+      AuthenticatedDashboardAdminCountriesRoute,
     AuthenticatedDashboardAdminEmployersRoute:
       AuthenticatedDashboardAdminEmployersRoute,
     AuthenticatedDashboardAdminEnrollmentsRoute:
@@ -2084,10 +2233,22 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
       AuthenticatedDashboardAdminProjectsRoute,
+    AuthenticatedDashboardAdminSaApplicationsRoute:
+      AuthenticatedDashboardAdminSaApplicationsRoute,
+    AuthenticatedDashboardAdminSaLeadsRoute:
+      AuthenticatedDashboardAdminSaLeadsRoute,
+    AuthenticatedDashboardAdminScholarshipsRoute:
+      AuthenticatedDashboardAdminScholarshipsRoute,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
     AuthenticatedDashboardAdminStoriesRoute:
       AuthenticatedDashboardAdminStoriesRoute,
+    AuthenticatedDashboardAdminTechLeadsRoute:
+      AuthenticatedDashboardAdminTechLeadsRoute,
+    AuthenticatedDashboardAdminUniprogramsRoute:
+      AuthenticatedDashboardAdminUniprogramsRoute,
+    AuthenticatedDashboardAdminUniversitiesRoute:
+      AuthenticatedDashboardAdminUniversitiesRoute,
     AuthenticatedDashboardAdminUsersRoute:
       AuthenticatedDashboardAdminUsersRoute,
     AuthenticatedDashboardAdminIndexRoute:
