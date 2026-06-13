@@ -5,14 +5,14 @@ export const Route = createFileRoute("/_authenticated/dashboard/career")({
   component: CareerLayout,
 });
 
-const TABS = [
+const TABS: { to: any; label: string; exact?: boolean }[] = [
   { to: "/dashboard/career", label: "Overview", exact: true },
   { to: "/dashboard/career/profile", label: "Profile" },
   { to: "/dashboard/career/portfolio", label: "Portfolio" },
   { to: "/dashboard/career/resume", label: "Resume" },
   { to: "/dashboard/career/applications", label: "Applications" },
   { to: "/dashboard/career/saved", label: "Saved jobs" },
-] as const;
+];
 
 function CareerLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
