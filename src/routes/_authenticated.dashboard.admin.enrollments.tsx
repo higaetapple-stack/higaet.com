@@ -79,7 +79,7 @@ function EnrollmentsPage() {
           <Select value={filterProgram} onValueChange={setFilterProgram}>
             <SelectTrigger className="w-56"><SelectValue placeholder="Filter by program" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All programs</SelectItem>
+              <SelectItem value="all">All programs</SelectItem>
               {programsQ.data?.map((p: any) => (
                 <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
               ))}
