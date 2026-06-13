@@ -128,6 +128,7 @@ import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
 import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
+import { Route as AuthenticatedDashboardTechnologiesProjectsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.projects.index'
 import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
 import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
 import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
@@ -798,6 +799,12 @@ const AuthenticatedDashboardAdminAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardTechnologiesProjectsIndexRoute =
+  AuthenticatedDashboardTechnologiesProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
 const AuthenticatedDashboardAdminProgramsIndexRoute =
   AuthenticatedDashboardAdminProgramsIndexRouteImport.update({
     id: '/programs/',
@@ -952,6 +959,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/dashboard/technologies/projects/': typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
   '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
 }
 export interface FileRoutesByTo {
@@ -1068,6 +1076,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/dashboard/technologies/projects': typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
   '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
 }
 export interface FileRoutesById {
@@ -1195,6 +1204,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/_authenticated/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/_authenticated/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/_authenticated/dashboard/technologies/projects/': typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
   '/_authenticated/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
 }
 export interface FileRouteTypes {
@@ -1322,6 +1332,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/visa/$id'
     | '/dashboard/admin/crm/'
     | '/dashboard/admin/programs/'
+    | '/dashboard/technologies/projects/'
     | '/dashboard/admin/crm/$type/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1438,6 +1449,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/visa/$id'
     | '/dashboard/admin/crm'
     | '/dashboard/admin/programs'
+    | '/dashboard/technologies/projects'
     | '/dashboard/admin/crm/$type/$id'
   id:
     | '__root__'
@@ -1564,6 +1576,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/visa/$id'
     | '/_authenticated/dashboard/admin/crm/'
     | '/_authenticated/dashboard/admin/programs/'
+    | '/_authenticated/dashboard/technologies/projects/'
     | '/_authenticated/dashboard/admin/crm/$type/$id'
   fileRoutesById: FileRoutesById
 }
@@ -2423,6 +2436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminAnalyticsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/technologies/projects/': {
+      id: '/_authenticated/dashboard/technologies/projects/'
+      path: '/projects'
+      fullPath: '/dashboard/technologies/projects/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
     '/_authenticated/dashboard/admin/programs/': {
       id: '/_authenticated/dashboard/admin/programs/'
       path: '/programs'
@@ -2669,12 +2689,15 @@ const AuthenticatedDashboardProgramsRouteWithChildren =
 
 interface AuthenticatedDashboardTechnologiesRouteChildren {
   AuthenticatedDashboardTechnologiesIndexRoute: typeof AuthenticatedDashboardTechnologiesIndexRoute
+  AuthenticatedDashboardTechnologiesProjectsIndexRoute: typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
 }
 
 const AuthenticatedDashboardTechnologiesRouteChildren: AuthenticatedDashboardTechnologiesRouteChildren =
   {
     AuthenticatedDashboardTechnologiesIndexRoute:
       AuthenticatedDashboardTechnologiesIndexRoute,
+    AuthenticatedDashboardTechnologiesProjectsIndexRoute:
+      AuthenticatedDashboardTechnologiesProjectsIndexRoute,
   }
 
 const AuthenticatedDashboardTechnologiesRouteWithChildren =
