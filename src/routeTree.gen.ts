@@ -33,6 +33,7 @@ import { Route as TechnologiesSaasProductsRouteImport } from './routes/technolog
 import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/technologies.product-development'
 import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
 import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
+import { Route as TechnologiesCustomSoftwareDevelopmentRouteImport } from './routes/technologies.custom-software-development'
 import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
 import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
 import { Route as TechnologiesCareersRouteImport } from './routes/technologies.careers'
@@ -276,6 +277,12 @@ const TechnologiesDigitalMarketingRoute =
   TechnologiesDigitalMarketingRouteImport.update({
     id: '/digital-marketing',
     path: '/digital-marketing',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesCustomSoftwareDevelopmentRoute =
+  TechnologiesCustomSoftwareDevelopmentRouteImport.update({
+    id: '/custom-software-development',
+    path: '/custom-software-development',
     getParentRoute: () => TechnologiesRoute,
   } as any)
 const TechnologiesContactRoute = TechnologiesContactRouteImport.update({
@@ -1023,6 +1030,7 @@ export interface FileRoutesByFullPath {
   '/technologies/careers': typeof TechnologiesCareersRoute
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
   '/technologies/contact': typeof TechnologiesContactRoute
+  '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/industries': typeof TechnologiesIndustriesRoute
   '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
@@ -1165,6 +1173,7 @@ export interface FileRoutesByTo {
   '/technologies/careers': typeof TechnologiesCareersRoute
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
   '/technologies/contact': typeof TechnologiesContactRoute
+  '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/industries': typeof TechnologiesIndustriesRoute
   '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
@@ -1305,6 +1314,7 @@ export interface FileRoutesById {
   '/technologies/careers': typeof TechnologiesCareersRoute
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
   '/technologies/contact': typeof TechnologiesContactRoute
+  '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/industries': typeof TechnologiesIndustriesRoute
   '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
@@ -1453,6 +1463,7 @@ export interface FileRouteTypes {
     | '/technologies/careers'
     | '/technologies/case-studies'
     | '/technologies/contact'
+    | '/technologies/custom-software-development'
     | '/technologies/digital-marketing'
     | '/technologies/industries'
     | '/technologies/product-development'
@@ -1595,6 +1606,7 @@ export interface FileRouteTypes {
     | '/technologies/careers'
     | '/technologies/case-studies'
     | '/technologies/contact'
+    | '/technologies/custom-software-development'
     | '/technologies/digital-marketing'
     | '/technologies/industries'
     | '/technologies/product-development'
@@ -1734,6 +1746,7 @@ export interface FileRouteTypes {
     | '/technologies/careers'
     | '/technologies/case-studies'
     | '/technologies/contact'
+    | '/technologies/custom-software-development'
     | '/technologies/digital-marketing'
     | '/technologies/industries'
     | '/technologies/product-development'
@@ -2023,6 +2036,13 @@ declare module '@tanstack/react-router' {
       path: '/digital-marketing'
       fullPath: '/technologies/digital-marketing'
       preLoaderRoute: typeof TechnologiesDigitalMarketingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/custom-software-development': {
+      id: '/technologies/custom-software-development'
+      path: '/custom-software-development'
+      fullPath: '/technologies/custom-software-development'
+      preLoaderRoute: typeof TechnologiesCustomSoftwareDevelopmentRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/contact': {
@@ -3424,6 +3444,7 @@ interface TechnologiesRouteChildren {
   TechnologiesCareersRoute: typeof TechnologiesCareersRoute
   TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRoute
   TechnologiesContactRoute: typeof TechnologiesContactRoute
+  TechnologiesCustomSoftwareDevelopmentRoute: typeof TechnologiesCustomSoftwareDevelopmentRoute
   TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
   TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRoute
   TechnologiesProductDevelopmentRoute: typeof TechnologiesProductDevelopmentRoute
@@ -3437,6 +3458,8 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesCareersRoute: TechnologiesCareersRoute,
   TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRoute,
   TechnologiesContactRoute: TechnologiesContactRoute,
+  TechnologiesCustomSoftwareDevelopmentRoute:
+    TechnologiesCustomSoftwareDevelopmentRoute,
   TechnologiesDigitalMarketingRoute: TechnologiesDigitalMarketingRoute,
   TechnologiesIndustriesRoute: TechnologiesIndustriesRoute,
   TechnologiesProductDevelopmentRoute: TechnologiesProductDevelopmentRoute,
