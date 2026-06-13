@@ -1,11 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { ExternalLink } from "lucide-react";
+import { PageHero } from "@/components/site/PageHero";
+import { Section } from "@/components/site/Section";
+import { listScholarshipsPublic } from "@/lib/study-abroad.functions";
 
 export const Route = createFileRoute("/global-education/scholarships")({
   head: () => ({
     meta: [
-      { title: "Study Abroad Scholarships — HIGAET Global Education Hub" },
-      { name: "description", content: "Scholarship discovery and application support for international students applying to universities abroad." },
+      { title: "Study-Abroad Scholarships — HIGAET" },
+      { name: "description", content: "Active merit, need-based, and institutional scholarships for international students applying through HIGAET." },
+      { property: "og:url", content: "/global-education/scholarships" },
     ],
     links: [{ rel: "canonical", href: "/global-education/scholarships" }],
   }),
@@ -13,31 +19,37 @@ export const Route = createFileRoute("/global-education/scholarships")({
 });
 
 function ScholarshipsPage() {
+  const fetcher = useServerFn(listScholarshipsPublic);
+  const q = useQuery({ queryKey: ["public-scholarships"], queryFn: () => fetcher() });
   return (
-    <DivisionDetailPage
-      brand="global"
-      eyebrow="Scholarships"
-      title="Scholarship strategy for global admissions."
-      subtitle="Identify funding options, strengthen applications, and coordinate scholarship deadlines alongside university admissions."
-      overviewTitle="Funding support requires timing and evidence."
-      overviewBody="We help students identify realistic scholarships and prepare the academic, personal, and financial evidence needed for stronger applications."
-      points={[
-        { title: "Scholarship mapping", body: "Track merit, need-based, institution, and external funding opportunities." },
-        { title: "Eligibility review", body: "Assess academic, test score, profile, and documentation requirements." },
-        { title: "Application support", body: "Help shape statements, achievements, and supporting evidence." },
-        { title: "Deadline control", body: "Coordinate scholarship timelines with admission and visa milestones." },
-      ]}
-      outcomes={[
-        "A realistic funding plan across selected universities.",
-        "Improved application materials for scholarship review.",
-        "Reduced deadline risk through coordinated planning.",
-        "Better clarity for family budgeting and final decisions.",
-      ]}
-      ctaTitle="Explore scholarship possibilities."
-      ctaBody="Ask our counsellors to review your profile and identify funding routes worth pursuing."
-      primaryLabel="Review my profile"
-      secondaryHref="/global-education/admission-process"
-      secondaryLabel="Admission process"
-    />
+    <>
+      <PageHero brand="global" eyebrow="Scholarships" title="Funding routes that reduce your cost." subtitle="Filter by destination and apply directly. Our counsellors help you strengthen each application." />
+      <Section>
+        {q.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+        <ul className="divide-y divide-border ring-1 ring-border rounded-2xl bg-card">
+          {(q.data ?? []).map((s: any) => (
+            <li key={s.id} className="p-5 flex items-start gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-ink font-medium">{s.name}</span>
+                  {s.countries && <Link to="/global-education/countries/$slug" params={{ slug: s.countries.slug }} className="text-xs text-global">{s.countries.flag_emoji} {s.countries.name}</Link>}
+                </div>
+                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{s.description}</p>
+                <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                  {s.coverage && <span>{s.coverage}</span>}
+                  {s.eligibility && <span className="line-clamp-1">Eligibility: {s.eligibility}</span>}
+                </div>
+              </div>
+              <div className="text-right">
+                {s.amount_usd && <div className="text-ink font-medium">${Number(s.amount_usd).toLocaleString()}</div>}
+                {s.deadline && <div className="text-xs text-muted-foreground">Apply by {s.deadline}</div>}
+                {s.apply_url && <a href={s.apply_url} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs text-global">Apply <ExternalLink className="size-3" /></a>}
+              </div>
+            </li>
+          ))}
+          {q.data?.length === 0 && <li className="p-6 text-sm text-muted-foreground text-center">No scholarships listed yet.</li>}
+        </ul>
+      </Section>
+    </>
   );
 }
