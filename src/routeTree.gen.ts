@@ -71,6 +71,7 @@ import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_aut
 import { Route as AuthenticatedDashboardFacultyRouteImport } from './routes/_authenticated.dashboard.faculty'
 import { Route as AuthenticatedDashboardCounselorRouteImport } from './routes/_authenticated.dashboard.counselor'
 import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated.dashboard.admin'
+import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -399,6 +400,12 @@ const AuthenticatedDashboardAdminRoute =
     path: '/admin',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardAdminIndexRoute =
+  AuthenticatedDashboardAdminIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -452,7 +459,7 @@ export interface FileRoutesByFullPath {
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
-  '/dashboard/admin': typeof AuthenticatedDashboardAdminRoute
+  '/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorRoute
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRoute
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
@@ -462,6 +469,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
+  '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -511,7 +519,6 @@ export interface FileRoutesByTo {
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
-  '/dashboard/admin': typeof AuthenticatedDashboardAdminRoute
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorRoute
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRoute
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
@@ -521,6 +528,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
+  '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -576,7 +584,7 @@ export interface FileRoutesById {
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
-  '/_authenticated/dashboard/admin': typeof AuthenticatedDashboardAdminRoute
+  '/_authenticated/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
   '/_authenticated/dashboard/counselor': typeof AuthenticatedDashboardCounselorRoute
   '/_authenticated/dashboard/faculty': typeof AuthenticatedDashboardFacultyRoute
   '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
@@ -586,6 +594,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
+  '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -651,6 +660,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
+    | '/dashboard/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -700,7 +710,6 @@ export interface FileRouteTypes {
     | '/academy'
     | '/global-education'
     | '/technologies'
-    | '/dashboard/admin'
     | '/dashboard/counselor'
     | '/dashboard/faculty'
     | '/dashboard/profile'
@@ -710,6 +719,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
+    | '/dashboard/admin'
   id:
     | '__root__'
     | '/'
@@ -774,6 +784,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
+    | '/_authenticated/dashboard/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1228,11 +1239,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/admin/': {
+      id: '/_authenticated/dashboard/admin/'
+      path: '/'
+      fullPath: '/dashboard/admin/'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardAdminRouteChildren {
+  AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
+}
+
+const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRouteChildren =
+  {
+    AuthenticatedDashboardAdminIndexRoute:
+      AuthenticatedDashboardAdminIndexRoute,
+  }
+
+const AuthenticatedDashboardAdminRouteWithChildren =
+  AuthenticatedDashboardAdminRoute._addFileChildren(
+    AuthenticatedDashboardAdminRouteChildren,
+  )
+
 interface AuthenticatedDashboardRouteChildren {
-  AuthenticatedDashboardAdminRoute: typeof AuthenticatedDashboardAdminRoute
+  AuthenticatedDashboardAdminRoute: typeof AuthenticatedDashboardAdminRouteWithChildren
   AuthenticatedDashboardCounselorRoute: typeof AuthenticatedDashboardCounselorRoute
   AuthenticatedDashboardFacultyRoute: typeof AuthenticatedDashboardFacultyRoute
   AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
@@ -1242,7 +1275,8 @@ interface AuthenticatedDashboardRouteChildren {
 
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
-    AuthenticatedDashboardAdminRoute: AuthenticatedDashboardAdminRoute,
+    AuthenticatedDashboardAdminRoute:
+      AuthenticatedDashboardAdminRouteWithChildren,
     AuthenticatedDashboardCounselorRoute: AuthenticatedDashboardCounselorRoute,
     AuthenticatedDashboardFacultyRoute: AuthenticatedDashboardFacultyRoute,
     AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
