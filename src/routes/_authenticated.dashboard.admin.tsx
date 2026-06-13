@@ -31,6 +31,7 @@ const TABS: Tab[] = [
   { to: "/dashboard/admin/scholarships", label: "Scholarships", group: "Global" },
   { to: "/dashboard/admin/sa-leads", label: "SA leads", group: "Global" },
   { to: "/dashboard/admin/sa-applications", label: "SA apps", group: "Global" },
+  { to: "/dashboard/admin/visa", label: "Visa", group: "Global" },
   { to: "/dashboard/admin/tech-leads", label: "Tech leads", group: "Tech" },
   { to: "/dashboard/admin/users", label: "Users & Roles" },
   { to: "/dashboard/admin/analytics", label: "Analytics" },

@@ -11,6 +11,7 @@ const TABS: Array<{ to: string; label: string; exact?: boolean }> = [
   { to: "/dashboard/counselor/applications", label: "My applications" },
   { to: "/dashboard/counselor/tasks", label: "Tasks" },
   { to: "/dashboard/counselor/follow-ups", label: "Follow-ups" },
+  { to: "/dashboard/counselor/visa", label: "Visa cases" },
 ];
 
 function CounselorLayout() {

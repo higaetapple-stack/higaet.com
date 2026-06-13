@@ -1977,6 +1977,210 @@ export type Database = {
         }
         Relationships: []
       }
+      visa_cases: {
+        Row: {
+          application_id: string | null
+          assigned_counselor: string | null
+          country_id: string | null
+          created_at: string
+          decision_at: string | null
+          id: string
+          interview_date: string | null
+          interview_location: string | null
+          interview_notes: string | null
+          interview_time: string | null
+          notes: string | null
+          status: Database["public"]["Enums"]["visa_status"]
+          student_id: string
+          submitted_at: string | null
+          updated_at: string
+          visa_type: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          assigned_counselor?: string | null
+          country_id?: string | null
+          created_at?: string
+          decision_at?: string | null
+          id?: string
+          interview_date?: string | null
+          interview_location?: string | null
+          interview_notes?: string | null
+          interview_time?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["visa_status"]
+          student_id: string
+          submitted_at?: string | null
+          updated_at?: string
+          visa_type?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          assigned_counselor?: string | null
+          country_id?: string | null
+          created_at?: string
+          decision_at?: string | null
+          id?: string
+          interview_date?: string | null
+          interview_location?: string | null
+          interview_notes?: string | null
+          interview_time?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["visa_status"]
+          student_id?: string
+          submitted_at?: string | null
+          updated_at?: string
+          visa_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visa_cases_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_cases_assigned_counselor_fkey"
+            columns: ["assigned_counselor"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_cases_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_cases_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visa_documents: {
+        Row: {
+          created_at: string
+          document_type: string
+          file_name: string | null
+          file_size: number | null
+          file_url: string
+          id: string
+          notes: string | null
+          updated_at: string
+          uploaded_at: string
+          uploaded_by: string | null
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+          visa_case_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_type: string
+          file_name?: string | null
+          file_size?: number | null
+          file_url: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          uploaded_at?: string
+          uploaded_by?: string | null
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+          visa_case_id: string
+        }
+        Update: {
+          created_at?: string
+          document_type?: string
+          file_name?: string | null
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          uploaded_at?: string
+          uploaded_by?: string | null
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+          visa_case_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visa_documents_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_documents_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_documents_visa_case_id_fkey"
+            columns: ["visa_case_id"]
+            isOneToOne: false
+            referencedRelation: "visa_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visa_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: Database["public"]["Enums"]["visa_status"]
+          notes: string | null
+          old_status: Database["public"]["Enums"]["visa_status"] | null
+          visa_case_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: Database["public"]["Enums"]["visa_status"]
+          notes?: string | null
+          old_status?: Database["public"]["Enums"]["visa_status"] | null
+          visa_case_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["visa_status"]
+          notes?: string | null
+          old_status?: Database["public"]["Enums"]["visa_status"] | null
+          visa_case_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visa_status_history_changed_by_fkey"
+            columns: ["changed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_status_history_visa_case_id_fkey"
+            columns: ["visa_case_id"]
+            isOneToOne: false
+            referencedRelation: "visa_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -2063,6 +2267,16 @@ export type Database = {
         | "failed"
         | "needs_revision"
       submission_type: "file" | "github" | "portfolio" | "text" | "mixed"
+      visa_status:
+        | "draft"
+        | "documents_pending"
+        | "ready_to_submit"
+        | "submitted"
+        | "interview_scheduled"
+        | "administrative_processing"
+        | "approved"
+        | "rejected"
+        | "closed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2241,6 +2455,17 @@ export const Constants = {
         "needs_revision",
       ],
       submission_type: ["file", "github", "portfolio", "text", "mixed"],
+      visa_status: [
+        "draft",
+        "documents_pending",
+        "ready_to_submit",
+        "submitted",
+        "interview_scheduled",
+        "administrative_processing",
+        "approved",
+        "rejected",
+        "closed",
+      ],
     },
   },
 } as const
