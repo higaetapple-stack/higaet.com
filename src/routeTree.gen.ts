@@ -96,6 +96,7 @@ import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } fro
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
+import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
@@ -579,6 +580,12 @@ const AuthenticatedDashboardAdminProjectsRoute =
     path: '/projects',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminPlacementsRoute =
+  AuthenticatedDashboardAdminPlacementsRouteImport.update({
+    id: '/placements',
+    path: '/placements',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminJobsRoute =
   AuthenticatedDashboardAdminJobsRouteImport.update({
     id: '/jobs',
@@ -708,6 +715,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
+  '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
@@ -799,6 +807,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
+  '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
@@ -898,6 +907,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
+  '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
@@ -997,6 +1007,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
+    | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
@@ -1088,6 +1099,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
+    | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
@@ -1186,6 +1198,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/jobs'
+    | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/users'
@@ -1841,6 +1854,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminProjectsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/placements': {
+      id: '/_authenticated/dashboard/admin/placements'
+      path: '/placements'
+      fullPath: '/dashboard/admin/placements'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminPlacementsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/jobs': {
       id: '/_authenticated/dashboard/admin/jobs'
       path: '/jobs'
@@ -1915,6 +1935,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
+  AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
@@ -1938,6 +1959,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
     AuthenticatedDashboardAdminEnrollmentsRoute:
       AuthenticatedDashboardAdminEnrollmentsRoute,
     AuthenticatedDashboardAdminJobsRoute: AuthenticatedDashboardAdminJobsRoute,
+    AuthenticatedDashboardAdminPlacementsRoute:
+      AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
       AuthenticatedDashboardAdminProjectsRoute,
     AuthenticatedDashboardAdminSettingsRoute:
