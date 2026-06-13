@@ -7,15 +7,19 @@ import {
   deleteCertificateTemplate,
   listCertificateTemplates,
   listPrograms,
+  listUsersWithRoles,
   upsertCertificateTemplate,
 } from "@/lib/admin.functions";
+import { adminIssueCertificate, adminListCertificates, adminRevokeCertificate } from "@/lib/academic.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Pencil, Trash2, BadgeCheck, ShieldOff } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/certificates")({
   component: CertificatesPage,
