@@ -27,9 +27,9 @@ function faq(name: string, area: string): TechDetailContent["faqs"] {
 
 // Need iterator over input — but `Omit<..., "path">` keeps types tight per page.
 import {
-  Atom, Boxes, Brain, Bot, Cloud, Code2, Cpu, Database, GitBranch, Globe2, Layers,
-  Network, Package, Repeat, Rocket, Server, Settings2, ShieldCheck, Smartphone,
-  Sparkles, Wrench, Zap,
+  BarChart3, Boxes, Brain, Bot, Cloud, Code2, Cpu, Database, GitBranch, Globe2, Layers,
+  Network, Repeat, Server, Settings2, ShieldCheck, Smartphone,
+  Sparkles, Zap,
 } from "lucide-react";
 
 export const TECHNOLOGIES: Record<string, TechDetailContent> = {
