@@ -68,11 +68,12 @@ function UniversityDetail() {
     <>
       <PageHero
         brand="global"
-        eyebrow={<Link to="/global-education/universities" className="inline-flex items-center gap-1"><ArrowLeft className="size-3" /> All universities</Link>}
+        eyebrow="University"
         title={u.name}
         subtitle={`${u.countries?.flag_emoji ?? ""} ${u.countries?.name ?? ""} · ${u.city ?? ""}`}
       >
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 items-center">
+          <Link to="/global-education/universities" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-ink"><ArrowLeft className="size-3" /> All universities</Link>
           <Button onClick={() => setOpen(true)} className="bg-global text-white hover:bg-global/90">Start application</Button>
           {u.website_url && <a href={u.website_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 ring-1 ring-border px-4 py-2 rounded-md text-sm">Official site <ExternalLink className="size-4" /></a>}
         </div>
