@@ -308,5 +308,3 @@ export function IndustryDetailPage({ content: c }: { content: IndustryDetailCont
 }
 
 export type IndustryIcon = ComponentType<LucideProps>;
-// Keep cn import used to avoid lint complaints when extending later.
-export const __noop = cn;
