@@ -52,6 +52,7 @@ import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholar
 import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
 import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
 import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
+import { Route as AcademyLearningPathsRouteImport } from './routes/academy.learning-paths'
 import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
 import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
 import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
@@ -289,6 +290,11 @@ const AcademyOfflineTrainingRoute = AcademyOfflineTrainingRouteImport.update({
   path: '/offline-training',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyLearningPathsRoute = AcademyLearningPathsRouteImport.update({
+  id: '/learning-paths',
+  path: '/learning-paths',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
   id: '/internships',
   path: '/internships',
@@ -360,6 +366,7 @@ export interface FileRoutesByFullPath {
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
   '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/learning-paths': typeof AcademyLearningPathsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
@@ -412,6 +419,7 @@ export interface FileRoutesByTo {
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
   '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/learning-paths': typeof AcademyLearningPathsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
@@ -468,6 +476,7 @@ export interface FileRoutesById {
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
   '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/learning-paths': typeof AcademyLearningPathsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
@@ -525,6 +534,7 @@ export interface FileRouteTypes {
     | '/academy/corporate-training'
     | '/academy/faq'
     | '/academy/internships'
+    | '/academy/learning-paths'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
@@ -577,6 +587,7 @@ export interface FileRouteTypes {
     | '/academy/corporate-training'
     | '/academy/faq'
     | '/academy/internships'
+    | '/academy/learning-paths'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
@@ -632,6 +643,7 @@ export interface FileRouteTypes {
     | '/academy/corporate-training'
     | '/academy/faq'
     | '/academy/internships'
+    | '/academy/learning-paths'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
@@ -987,6 +999,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyOfflineTrainingRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/learning-paths': {
+      id: '/academy/learning-paths'
+      path: '/learning-paths'
+      fullPath: '/academy/learning-paths'
+      preLoaderRoute: typeof AcademyLearningPathsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/internships': {
       id: '/academy/internships'
       path: '/internships'
@@ -1067,6 +1086,7 @@ interface AcademyRouteChildren {
   AcademyCorporateTrainingRoute: typeof AcademyCorporateTrainingRoute
   AcademyFaqRoute: typeof AcademyFaqRoute
   AcademyInternshipsRoute: typeof AcademyInternshipsRoute
+  AcademyLearningPathsRoute: typeof AcademyLearningPathsRoute
   AcademyOfflineTrainingRoute: typeof AcademyOfflineTrainingRoute
   AcademyOnlineCoursesRoute: typeof AcademyOnlineCoursesRoute
   AcademyPlacementsRoute: typeof AcademyPlacementsRoute
@@ -1086,6 +1106,7 @@ const AcademyRouteChildren: AcademyRouteChildren = {
   AcademyCorporateTrainingRoute: AcademyCorporateTrainingRoute,
   AcademyFaqRoute: AcademyFaqRoute,
   AcademyInternshipsRoute: AcademyInternshipsRoute,
+  AcademyLearningPathsRoute: AcademyLearningPathsRoute,
   AcademyOfflineTrainingRoute: AcademyOfflineTrainingRoute,
   AcademyOnlineCoursesRoute: AcademyOnlineCoursesRoute,
   AcademyPlacementsRoute: AcademyPlacementsRoute,

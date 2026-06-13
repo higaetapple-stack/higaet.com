@@ -5,13 +5,14 @@ import { cn } from "@/lib/utils";
 const ACADEMY_NAV = [
   { to: "/academy", label: "Overview", exact: true },
   { to: "/academy/programs", label: "Programs" },
+  { to: "/academy/learning-paths", label: "Paths" },
   { to: "/academy/campuses", label: "Campuses" },
-  { to: "/academy/scholarship", label: "Scholarship (HAT)" },
+  { to: "/academy/scholarship", label: "Scholarship" },
   { to: "/academy/placements", label: "Placements" },
   { to: "/academy/corporate-training", label: "Corporate" },
   { to: "/academy/success-stories", label: "Stories" },
   { to: "/academy/faq", label: "FAQ" },
-  { to: "/academy/contact", label: "Contact" },
+  { to: "/academy/admissions", label: "Admissions" },
 ] as const;
 
 export const Route = createFileRoute("/academy")({
