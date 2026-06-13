@@ -4,7 +4,7 @@
  * (overview, curriculum, eligibility, fees, faculty, outcomes, FAQ).
  */
 
-export type ProgramCategory = "ai" | "data" | "cloud" | "cyber" | "product";
+export type ProgramCategory = "ai" | "data" | "cloud" | "cyber" | "product" | "engineering";
 
 export type Program = {
   slug: string;
