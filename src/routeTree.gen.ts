@@ -40,6 +40,7 @@ import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/tec
 import { Route as TechnologiesMobileDevelopmentRouteImport } from './routes/technologies.mobile-development'
 import { Route as TechnologiesLegacyModernizationRouteImport } from './routes/technologies.legacy-modernization'
 import { Route as TechnologiesItConsultingRouteImport } from './routes/technologies.it-consulting'
+import { Route as TechnologiesInsightsRouteImport } from './routes/technologies.insights'
 import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
 import { Route as TechnologiesExpertiseRouteImport } from './routes/technologies.expertise'
 import { Route as TechnologiesEnterpriseSoftwareRouteImport } from './routes/technologies.enterprise-software'
@@ -90,6 +91,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
+import { Route as TechnologiesInsightsSlugRouteImport } from './routes/technologies.insights.$slug'
 import { Route as TechnologiesIndustriesStartupsRouteImport } from './routes/technologies.industries.startups'
 import { Route as TechnologiesIndustriesSmeRouteImport } from './routes/technologies.industries.sme'
 import { Route as TechnologiesIndustriesRetailRouteImport } from './routes/technologies.industries.retail'
@@ -400,6 +402,11 @@ const TechnologiesItConsultingRoute =
     path: '/it-consulting',
     getParentRoute: () => TechnologiesRoute,
   } as any)
+const TechnologiesInsightsRoute = TechnologiesInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
   id: '/industries',
   path: '/industries',
@@ -668,6 +675,12 @@ const AuthenticatedDashboardIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const TechnologiesInsightsSlugRoute =
+  TechnologiesInsightsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => TechnologiesInsightsRoute,
   } as any)
 const TechnologiesIndustriesStartupsRoute =
   TechnologiesIndustriesStartupsRouteImport.update({
@@ -1598,6 +1611,7 @@ export interface FileRoutesByFullPath {
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
+  '/technologies/insights': typeof TechnologiesInsightsRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1687,6 +1701,7 @@ export interface FileRoutesByFullPath {
   '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
+  '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -1821,6 +1836,7 @@ export interface FileRoutesByTo {
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
+  '/technologies/insights': typeof TechnologiesInsightsRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1906,6 +1922,7 @@ export interface FileRoutesByTo {
   '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
+  '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
@@ -2042,6 +2059,7 @@ export interface FileRoutesById {
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
+  '/technologies/insights': typeof TechnologiesInsightsRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -2131,6 +2149,7 @@ export interface FileRoutesById {
   '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
+  '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -2271,6 +2290,7 @@ export interface FileRouteTypes {
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
+    | '/technologies/insights'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
     | '/technologies/mobile-development'
@@ -2360,6 +2380,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/retail'
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
+    | '/technologies/insights/$slug'
     | '/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -2494,6 +2515,7 @@ export interface FileRouteTypes {
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
+    | '/technologies/insights'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
     | '/technologies/mobile-development'
@@ -2579,6 +2601,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/retail'
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
+    | '/technologies/insights/$slug'
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
@@ -2714,6 +2737,7 @@ export interface FileRouteTypes {
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
+    | '/technologies/insights'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
     | '/technologies/mobile-development'
@@ -2803,6 +2827,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/retail'
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
+    | '/technologies/insights/$slug'
     | '/_authenticated/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -3119,6 +3144,13 @@ declare module '@tanstack/react-router' {
       path: '/it-consulting'
       fullPath: '/technologies/it-consulting'
       preLoaderRoute: typeof TechnologiesItConsultingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/insights': {
+      id: '/technologies/insights'
+      path: '/insights'
+      fullPath: '/technologies/insights'
+      preLoaderRoute: typeof TechnologiesInsightsRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/industries': {
@@ -3470,6 +3502,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/technologies/insights/$slug': {
+      id: '/technologies/insights/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/insights/$slug'
+      preLoaderRoute: typeof TechnologiesInsightsSlugRouteImport
+      parentRoute: typeof TechnologiesInsightsRoute
     }
     '/technologies/industries/startups': {
       id: '/technologies/industries/startups'
@@ -5218,6 +5257,17 @@ const TechnologiesIndustriesRouteWithChildren =
     TechnologiesIndustriesRouteChildren,
   )
 
+interface TechnologiesInsightsRouteChildren {
+  TechnologiesInsightsSlugRoute: typeof TechnologiesInsightsSlugRoute
+}
+
+const TechnologiesInsightsRouteChildren: TechnologiesInsightsRouteChildren = {
+  TechnologiesInsightsSlugRoute: TechnologiesInsightsSlugRoute,
+}
+
+const TechnologiesInsightsRouteWithChildren =
+  TechnologiesInsightsRoute._addFileChildren(TechnologiesInsightsRouteChildren)
+
 interface TechnologiesRouteChildren {
   TechnologiesAiSolutionsRoute: typeof TechnologiesAiSolutionsRoute
   TechnologiesApiDevelopmentRoute: typeof TechnologiesApiDevelopmentRoute
@@ -5237,6 +5287,7 @@ interface TechnologiesRouteChildren {
   TechnologiesEnterpriseSoftwareRoute: typeof TechnologiesEnterpriseSoftwareRoute
   TechnologiesExpertiseRoute: typeof TechnologiesExpertiseRouteWithChildren
   TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRouteWithChildren
+  TechnologiesInsightsRoute: typeof TechnologiesInsightsRouteWithChildren
   TechnologiesItConsultingRoute: typeof TechnologiesItConsultingRoute
   TechnologiesLegacyModernizationRoute: typeof TechnologiesLegacyModernizationRoute
   TechnologiesMobileDevelopmentRoute: typeof TechnologiesMobileDevelopmentRoute
@@ -5273,6 +5324,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesEnterpriseSoftwareRoute: TechnologiesEnterpriseSoftwareRoute,
   TechnologiesExpertiseRoute: TechnologiesExpertiseRouteWithChildren,
   TechnologiesIndustriesRoute: TechnologiesIndustriesRouteWithChildren,
+  TechnologiesInsightsRoute: TechnologiesInsightsRouteWithChildren,
   TechnologiesItConsultingRoute: TechnologiesItConsultingRoute,
   TechnologiesLegacyModernizationRoute: TechnologiesLegacyModernizationRoute,
   TechnologiesMobileDevelopmentRoute: TechnologiesMobileDevelopmentRoute,

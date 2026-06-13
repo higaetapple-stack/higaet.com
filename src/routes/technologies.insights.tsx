@@ -16,9 +16,9 @@ import {
 } from "@/content/insights";
 
 const searchSchema = z.object({
-  category: fallback(z.string().optional(), undefined).default(undefined),
-  tag: fallback(z.string().optional(), undefined).default(undefined),
-  q: fallback(z.string().optional(), undefined).default(undefined),
+  category: fallback(z.string().optional(), undefined as string | undefined),
+  tag: fallback(z.string().optional(), undefined as string | undefined),
+  q: fallback(z.string().optional(), undefined as string | undefined),
 });
 
 const PATH = "/technologies/insights";
