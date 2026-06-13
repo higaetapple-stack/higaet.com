@@ -81,6 +81,17 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/technologies/industries/startups", changefreq: "monthly", priority: "0.7" },
   { path: "/technologies/industries/sme", changefreq: "monthly", priority: "0.7" },
   { path: "/technologies/industries/enterprise", changefreq: "monthly", priority: "0.7" },
+  // Technology Expertise
+  { path: "/technologies/expertise", changefreq: "monthly", priority: "0.8" },
+  ...[
+    "react","nextjs","angular","vuejs","html5","css3","javascript","typescript",
+    "nodejs","express","python","java","spring-boot","dotnet","php","laravel","go",
+    "react-native","flutter","android","ios",
+    "mysql","postgresql","mongodb","redis",
+    "aws","azure","gcp","docker","kubernetes",
+    "openai","generative-ai","machine-learning","nlp","computer-vision","ai-automation",
+    "data-engineering-tech","business-intelligence-tech",
+  ].map((slug) => ({ path: `/technologies/expertise/${slug}`, changefreq: "monthly" as const, priority: "0.6" })),
   { path: "/technologies/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/technologies/contact", changefreq: "monthly", priority: "0.6" },
 ];
