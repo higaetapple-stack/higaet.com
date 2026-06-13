@@ -52,11 +52,13 @@ import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholar
 import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
 import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
 import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
+import { Route as AcademyLearningPathsRouteImport } from './routes/academy.learning-paths'
 import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
 import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
 import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
+import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
@@ -288,6 +290,11 @@ const AcademyOfflineTrainingRoute = AcademyOfflineTrainingRouteImport.update({
   path: '/offline-training',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyLearningPathsRoute = AcademyLearningPathsRouteImport.update({
+  id: '/learning-paths',
+  path: '/learning-paths',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
   id: '/internships',
   path: '/internships',
@@ -312,6 +319,11 @@ const AcademyContactRoute = AcademyContactRouteImport.update({
 const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
   id: '/certifications',
   path: '/certifications',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
+  id: '/admissions',
+  path: '/admissions',
   getParentRoute: () => AcademyRoute,
 } as any)
 const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
@@ -348,11 +360,13 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
   '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/learning-paths': typeof AcademyLearningPathsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
@@ -399,11 +413,13 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
   '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/learning-paths': typeof AcademyLearningPathsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
@@ -454,11 +470,13 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
   '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/learning-paths': typeof AcademyLearningPathsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
@@ -510,11 +528,13 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
     | '/academy/corporate-training'
     | '/academy/faq'
     | '/academy/internships'
+    | '/academy/learning-paths'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
@@ -561,11 +581,13 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
     | '/academy/corporate-training'
     | '/academy/faq'
     | '/academy/internships'
+    | '/academy/learning-paths'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
@@ -615,11 +637,13 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
     | '/academy/corporate-training'
     | '/academy/faq'
     | '/academy/internships'
+    | '/academy/learning-paths'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
@@ -975,6 +999,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyOfflineTrainingRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/learning-paths': {
+      id: '/academy/learning-paths'
+      path: '/learning-paths'
+      fullPath: '/academy/learning-paths'
+      preLoaderRoute: typeof AcademyLearningPathsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/internships': {
       id: '/academy/internships'
       path: '/internships'
@@ -1010,6 +1041,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyCertificationsRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/admissions': {
+      id: '/academy/admissions'
+      path: '/admissions'
+      fullPath: '/academy/admissions'
+      preLoaderRoute: typeof AcademyAdmissionsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/programs/': {
       id: '/academy/programs/'
       path: '/programs'
@@ -1042,11 +1080,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AcademyRouteChildren {
+  AcademyAdmissionsRoute: typeof AcademyAdmissionsRoute
   AcademyCertificationsRoute: typeof AcademyCertificationsRoute
   AcademyContactRoute: typeof AcademyContactRoute
   AcademyCorporateTrainingRoute: typeof AcademyCorporateTrainingRoute
   AcademyFaqRoute: typeof AcademyFaqRoute
   AcademyInternshipsRoute: typeof AcademyInternshipsRoute
+  AcademyLearningPathsRoute: typeof AcademyLearningPathsRoute
   AcademyOfflineTrainingRoute: typeof AcademyOfflineTrainingRoute
   AcademyOnlineCoursesRoute: typeof AcademyOnlineCoursesRoute
   AcademyPlacementsRoute: typeof AcademyPlacementsRoute
@@ -1060,11 +1100,13 @@ interface AcademyRouteChildren {
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyAdmissionsRoute: AcademyAdmissionsRoute,
   AcademyCertificationsRoute: AcademyCertificationsRoute,
   AcademyContactRoute: AcademyContactRoute,
   AcademyCorporateTrainingRoute: AcademyCorporateTrainingRoute,
   AcademyFaqRoute: AcademyFaqRoute,
   AcademyInternshipsRoute: AcademyInternshipsRoute,
+  AcademyLearningPathsRoute: AcademyLearningPathsRoute,
   AcademyOfflineTrainingRoute: AcademyOfflineTrainingRoute,
   AcademyOnlineCoursesRoute: AcademyOnlineCoursesRoute,
   AcademyPlacementsRoute: AcademyPlacementsRoute,
