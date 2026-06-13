@@ -8,7 +8,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { PROGRAMS, CATEGORY_LABELS, type ProgramCategory } from "@/lib/academy-programs";
 import { cn } from "@/lib/utils";
 
-const CATEGORY_KEYS = ["all", "ai", "data", "cloud", "cyber", "product"] as const;
+const CATEGORY_KEYS = ["all", "ai", "data", "cloud", "cyber", "product", "engineering"] as const;
 
 const programSearch = z.object({
   category: fallback(z.enum(CATEGORY_KEYS), "all").default("all"),
