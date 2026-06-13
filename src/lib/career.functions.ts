@@ -62,7 +62,7 @@ export const updateCareerProfile = createServerFn({ method: "POST" })
     const sb = context.supabase;
     const patch: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(data)) if (v !== undefined) patch[k] = v === "" ? null : v;
-    const { error } = await sb.from("profiles").update(patch).eq("id", context.userId);
+    const { error } = await sb.from("profiles").update(patch as any).eq("id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
