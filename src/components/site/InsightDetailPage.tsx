@@ -294,7 +294,7 @@ export function InsightDetailPage({ content: i }: { content: InsightContent }) {
         <h2 className="mt-4 mb-8 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance max-w-[40ch]">
           Questions readers ask us next.
         </h2>
-        <FAQ items={i.faqs} />
+        <FAQ items={i.faqs.map((f) => ({ q: f.question, a: f.answer }))} />
       </Section>
 
       <CTASection
