@@ -33,8 +33,7 @@ function getEmbedUrl(url: string): string | null {
 
 function LessonPlayer() {
   const { lessonId } = Route.useParams();
-  const navigate = useNavigate();
-  const fetch = useServerFn(getLesson);
+  const fetchLesson = useServerFn(getLesson);
   const mark = useServerFn(markLessonComplete);
   const qc = useQueryClient();
 
