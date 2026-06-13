@@ -25,14 +25,14 @@ function EnrollmentsPage() {
   const fetchUsers = useServerFn(listUsersWithRoles);
   const qc = useQueryClient();
 
-  const [filterProgram, setFilterProgram] = useState<string>("");
+  const [filterProgram, setFilterProgram] = useState<string>("all");
   const [open, setOpen] = useState(false);
   const [picked, setPicked] = useState<{ user_id: string; program_id: string }>({ user_id: "", program_id: "" });
   const [search, setSearch] = useState("");
 
   const enrollmentsQ = useQuery({
     queryKey: ["admin-enrollments", filterProgram],
-    queryFn: () => fetchEnrollments({ data: { program_id: filterProgram || undefined } }),
+    queryFn: () => fetchEnrollments({ data: { program_id: filterProgram !== "all" ? filterProgram : undefined } }),
   });
   const programsQ = useQuery({ queryKey: ["admin-programs"], queryFn: () => fetchPrograms() });
   const studentsQ = useQuery({
