@@ -361,12 +361,18 @@ export const getDashboardSummary = createServerFn({ method: "GET" })
       continueProgramSlug = (enrolled[0] as any).programs?.slug ?? null;
     }
 
+    const { count: pendingAssignments } = await sb
+      .from("submissions")
+      .select("id", { count: "exact", head: true })
+      .eq("student_id", context.userId)
+      .eq("status", "pending");
+
     return {
       stats: {
         programs_enrolled: enrolled.length,
         lessons_completed: completedCount ?? 0,
         certificates_earned: certsCount ?? 0,
-        assignments_pending: 0, // 2C
+        assignments_pending: pendingAssignments ?? 0,
       },
       recent_activity: (completedRows ?? []).map((r: any) => ({
         lesson_title: r.lessons?.title,
