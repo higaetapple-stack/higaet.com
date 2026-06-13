@@ -15,6 +15,7 @@ import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -40,6 +41,7 @@ import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/tec
 import { Route as TechnologiesMobileDevelopmentRouteImport } from './routes/technologies.mobile-development'
 import { Route as TechnologiesLegacyModernizationRouteImport } from './routes/technologies.legacy-modernization'
 import { Route as TechnologiesItConsultingRouteImport } from './routes/technologies.it-consulting'
+import { Route as TechnologiesInsightsRouteImport } from './routes/technologies.insights'
 import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
 import { Route as TechnologiesExpertiseRouteImport } from './routes/technologies.expertise'
 import { Route as TechnologiesEnterpriseSoftwareRouteImport } from './routes/technologies.enterprise-software'
@@ -51,6 +53,7 @@ import { Route as TechnologiesDedicatedTeamRouteImport } from './routes/technolo
 import { Route as TechnologiesDataEngineeringRouteImport } from './routes/technologies.data-engineering'
 import { Route as TechnologiesCustomSoftwareDevelopmentRouteImport } from './routes/technologies.custom-software-development'
 import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
+import { Route as TechnologiesCompanyRouteImport } from './routes/technologies.company'
 import { Route as TechnologiesCloudSolutionsRouteImport } from './routes/technologies.cloud-solutions'
 import { Route as TechnologiesCloudMigrationRouteImport } from './routes/technologies.cloud-migration'
 import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
@@ -90,6 +93,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
+import { Route as TechnologiesInsightsSlugRouteImport } from './routes/technologies.insights.$slug'
 import { Route as TechnologiesIndustriesStartupsRouteImport } from './routes/technologies.industries.startups'
 import { Route as TechnologiesIndustriesSmeRouteImport } from './routes/technologies.industries.sme'
 import { Route as TechnologiesIndustriesRetailRouteImport } from './routes/technologies.industries.retail'
@@ -149,6 +153,7 @@ import { Route as TechnologiesEngagementOffshoreDevelopmentCenterRouteImport } f
 import { Route as TechnologiesEngagementFixedPriceProjectsRouteImport } from './routes/technologies.engagement.fixed-price-projects'
 import { Route as TechnologiesEngagementDedicatedDevelopmentTeamRouteImport } from './routes/technologies.engagement.dedicated-development-team'
 import { Route as TechnologiesEngagementBuildOperateTransferRouteImport } from './routes/technologies.engagement.build-operate-transfer'
+import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologies.company.$slug'
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
@@ -264,6 +269,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
   id: '/global-education',
   path: '/global-education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -400,6 +410,11 @@ const TechnologiesItConsultingRoute =
     path: '/it-consulting',
     getParentRoute: () => TechnologiesRoute,
   } as any)
+const TechnologiesInsightsRoute = TechnologiesInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
   id: '/industries',
   path: '/industries',
@@ -459,6 +474,11 @@ const TechnologiesCustomSoftwareDevelopmentRoute =
 const TechnologiesContactRoute = TechnologiesContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCompanyRoute = TechnologiesCompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
   getParentRoute: () => TechnologiesRoute,
 } as any)
 const TechnologiesCloudSolutionsRoute =
@@ -668,6 +688,12 @@ const AuthenticatedDashboardIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const TechnologiesInsightsSlugRoute =
+  TechnologiesInsightsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => TechnologiesInsightsRoute,
   } as any)
 const TechnologiesIndustriesStartupsRoute =
   TechnologiesIndustriesStartupsRouteImport.update({
@@ -1022,6 +1048,11 @@ const TechnologiesEngagementBuildOperateTransferRoute =
     path: '/build-operate-transfer',
     getParentRoute: () => TechnologiesEngagementRoute,
   } as any)
+const TechnologiesCompanySlugRoute = TechnologiesCompanySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TechnologiesCompanyRoute,
+} as any)
 const TechnologiesCaseStudiesSlugRoute =
   TechnologiesCaseStudiesSlugRouteImport.update({
     id: '/$slug',
@@ -1545,6 +1576,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -1587,6 +1619,7 @@ export interface FileRoutesByFullPath {
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
+  '/technologies/company': typeof TechnologiesCompanyRouteWithChildren
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
@@ -1598,6 +1631,7 @@ export interface FileRoutesByFullPath {
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
+  '/technologies/insights': typeof TechnologiesInsightsRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1628,6 +1662,7 @@ export interface FileRoutesByFullPath {
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
+  '/technologies/company/$slug': typeof TechnologiesCompanySlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -1687,6 +1722,7 @@ export interface FileRoutesByFullPath {
   '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
+  '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -1771,6 +1807,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -1810,6 +1847,7 @@ export interface FileRoutesByTo {
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
+  '/technologies/company': typeof TechnologiesCompanyRouteWithChildren
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
@@ -1821,6 +1859,7 @@ export interface FileRoutesByTo {
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
+  '/technologies/insights': typeof TechnologiesInsightsRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -1847,6 +1886,7 @@ export interface FileRoutesByTo {
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
+  '/technologies/company/$slug': typeof TechnologiesCompanySlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -1906,6 +1946,7 @@ export interface FileRoutesByTo {
   '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
+  '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
@@ -1989,6 +2030,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -2031,6 +2073,7 @@ export interface FileRoutesById {
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
+  '/technologies/company': typeof TechnologiesCompanyRouteWithChildren
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
@@ -2042,6 +2085,7 @@ export interface FileRoutesById {
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
+  '/technologies/insights': typeof TechnologiesInsightsRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
   '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
@@ -2072,6 +2116,7 @@ export interface FileRoutesById {
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
+  '/technologies/company/$slug': typeof TechnologiesCompanySlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -2131,6 +2176,7 @@ export interface FileRoutesById {
   '/technologies/industries/retail': typeof TechnologiesIndustriesRetailRoute
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
+  '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -2218,6 +2264,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/cookies'
     | '/global-education'
     | '/privacy'
     | '/sitemap.xml'
@@ -2260,6 +2307,7 @@ export interface FileRouteTypes {
     | '/technologies/case-studies'
     | '/technologies/cloud-migration'
     | '/technologies/cloud-solutions'
+    | '/technologies/company'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
     | '/technologies/data-engineering'
@@ -2271,6 +2319,7 @@ export interface FileRouteTypes {
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
+    | '/technologies/insights'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
     | '/technologies/mobile-development'
@@ -2301,6 +2350,7 @@ export interface FileRouteTypes {
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
+    | '/technologies/company/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2360,6 +2410,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/retail'
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
+    | '/technologies/insights/$slug'
     | '/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -2444,6 +2495,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/cookies'
     | '/privacy'
     | '/sitemap.xml'
     | '/success-stories'
@@ -2483,6 +2535,7 @@ export interface FileRouteTypes {
     | '/technologies/case-studies'
     | '/technologies/cloud-migration'
     | '/technologies/cloud-solutions'
+    | '/technologies/company'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
     | '/technologies/data-engineering'
@@ -2494,6 +2547,7 @@ export interface FileRouteTypes {
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
+    | '/technologies/insights'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
     | '/technologies/mobile-development'
@@ -2520,6 +2574,7 @@ export interface FileRouteTypes {
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
+    | '/technologies/company/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2579,6 +2634,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/retail'
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
+    | '/technologies/insights/$slug'
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
@@ -2661,6 +2717,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/cookies'
     | '/global-education'
     | '/privacy'
     | '/sitemap.xml'
@@ -2703,6 +2760,7 @@ export interface FileRouteTypes {
     | '/technologies/case-studies'
     | '/technologies/cloud-migration'
     | '/technologies/cloud-solutions'
+    | '/technologies/company'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
     | '/technologies/data-engineering'
@@ -2714,6 +2772,7 @@ export interface FileRouteTypes {
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
+    | '/technologies/insights'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
     | '/technologies/mobile-development'
@@ -2744,6 +2803,7 @@ export interface FileRouteTypes {
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
+    | '/technologies/company/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2803,6 +2863,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/retail'
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
+    | '/technologies/insights/$slug'
     | '/_authenticated/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -2890,6 +2951,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -2944,6 +3006,13 @@ declare module '@tanstack/react-router' {
       path: '/global-education'
       fullPath: '/global-education'
       preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -3121,6 +3190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesItConsultingRouteImport
       parentRoute: typeof TechnologiesRoute
     }
+    '/technologies/insights': {
+      id: '/technologies/insights'
+      path: '/insights'
+      fullPath: '/technologies/insights'
+      preLoaderRoute: typeof TechnologiesInsightsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
     '/technologies/industries': {
       id: '/technologies/industries'
       path: '/industries'
@@ -3196,6 +3272,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/technologies/contact'
       preLoaderRoute: typeof TechnologiesContactRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/company': {
+      id: '/technologies/company'
+      path: '/company'
+      fullPath: '/technologies/company'
+      preLoaderRoute: typeof TechnologiesCompanyRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/cloud-solutions': {
@@ -3470,6 +3553,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/technologies/insights/$slug': {
+      id: '/technologies/insights/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/insights/$slug'
+      preLoaderRoute: typeof TechnologiesInsightsSlugRouteImport
+      parentRoute: typeof TechnologiesInsightsRoute
     }
     '/technologies/industries/startups': {
       id: '/technologies/industries/startups'
@@ -3883,6 +3973,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/technologies/engagement/build-operate-transfer'
       preLoaderRoute: typeof TechnologiesEngagementBuildOperateTransferRouteImport
       parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/company/$slug': {
+      id: '/technologies/company/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/company/$slug'
+      preLoaderRoute: typeof TechnologiesCompanySlugRouteImport
+      parentRoute: typeof TechnologiesCompanyRoute
     }
     '/technologies/case-studies/$slug': {
       id: '/technologies/case-studies/$slug'
@@ -5047,6 +5144,17 @@ const TechnologiesCaseStudiesRouteWithChildren =
     TechnologiesCaseStudiesRouteChildren,
   )
 
+interface TechnologiesCompanyRouteChildren {
+  TechnologiesCompanySlugRoute: typeof TechnologiesCompanySlugRoute
+}
+
+const TechnologiesCompanyRouteChildren: TechnologiesCompanyRouteChildren = {
+  TechnologiesCompanySlugRoute: TechnologiesCompanySlugRoute,
+}
+
+const TechnologiesCompanyRouteWithChildren =
+  TechnologiesCompanyRoute._addFileChildren(TechnologiesCompanyRouteChildren)
+
 interface TechnologiesEngagementRouteChildren {
   TechnologiesEngagementBuildOperateTransferRoute: typeof TechnologiesEngagementBuildOperateTransferRoute
   TechnologiesEngagementDedicatedDevelopmentTeamRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
@@ -5218,6 +5326,17 @@ const TechnologiesIndustriesRouteWithChildren =
     TechnologiesIndustriesRouteChildren,
   )
 
+interface TechnologiesInsightsRouteChildren {
+  TechnologiesInsightsSlugRoute: typeof TechnologiesInsightsSlugRoute
+}
+
+const TechnologiesInsightsRouteChildren: TechnologiesInsightsRouteChildren = {
+  TechnologiesInsightsSlugRoute: TechnologiesInsightsSlugRoute,
+}
+
+const TechnologiesInsightsRouteWithChildren =
+  TechnologiesInsightsRoute._addFileChildren(TechnologiesInsightsRouteChildren)
+
 interface TechnologiesRouteChildren {
   TechnologiesAiSolutionsRoute: typeof TechnologiesAiSolutionsRoute
   TechnologiesApiDevelopmentRoute: typeof TechnologiesApiDevelopmentRoute
@@ -5226,6 +5345,7 @@ interface TechnologiesRouteChildren {
   TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRouteWithChildren
   TechnologiesCloudMigrationRoute: typeof TechnologiesCloudMigrationRoute
   TechnologiesCloudSolutionsRoute: typeof TechnologiesCloudSolutionsRoute
+  TechnologiesCompanyRoute: typeof TechnologiesCompanyRouteWithChildren
   TechnologiesContactRoute: typeof TechnologiesContactRoute
   TechnologiesCustomSoftwareDevelopmentRoute: typeof TechnologiesCustomSoftwareDevelopmentRoute
   TechnologiesDataEngineeringRoute: typeof TechnologiesDataEngineeringRoute
@@ -5237,6 +5357,7 @@ interface TechnologiesRouteChildren {
   TechnologiesEnterpriseSoftwareRoute: typeof TechnologiesEnterpriseSoftwareRoute
   TechnologiesExpertiseRoute: typeof TechnologiesExpertiseRouteWithChildren
   TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRouteWithChildren
+  TechnologiesInsightsRoute: typeof TechnologiesInsightsRouteWithChildren
   TechnologiesItConsultingRoute: typeof TechnologiesItConsultingRoute
   TechnologiesLegacyModernizationRoute: typeof TechnologiesLegacyModernizationRoute
   TechnologiesMobileDevelopmentRoute: typeof TechnologiesMobileDevelopmentRoute
@@ -5260,6 +5381,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRouteWithChildren,
   TechnologiesCloudMigrationRoute: TechnologiesCloudMigrationRoute,
   TechnologiesCloudSolutionsRoute: TechnologiesCloudSolutionsRoute,
+  TechnologiesCompanyRoute: TechnologiesCompanyRouteWithChildren,
   TechnologiesContactRoute: TechnologiesContactRoute,
   TechnologiesCustomSoftwareDevelopmentRoute:
     TechnologiesCustomSoftwareDevelopmentRoute,
@@ -5273,6 +5395,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesEnterpriseSoftwareRoute: TechnologiesEnterpriseSoftwareRoute,
   TechnologiesExpertiseRoute: TechnologiesExpertiseRouteWithChildren,
   TechnologiesIndustriesRoute: TechnologiesIndustriesRouteWithChildren,
+  TechnologiesInsightsRoute: TechnologiesInsightsRouteWithChildren,
   TechnologiesItConsultingRoute: TechnologiesItConsultingRoute,
   TechnologiesLegacyModernizationRoute: TechnologiesLegacyModernizationRoute,
   TechnologiesMobileDevelopmentRoute: TechnologiesMobileDevelopmentRoute,
@@ -5301,6 +5424,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
