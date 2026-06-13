@@ -17,6 +17,8 @@ type Tab = {
     | "/dashboard/admin/employers"
     | "/dashboard/admin/jobs"
     | "/dashboard/admin/applications"
+    | "/dashboard/admin/placements"
+    | "/dashboard/admin/stories"
     | "/dashboard/admin/analytics"
     | "/dashboard/admin/settings";
   label: string;
@@ -34,9 +36,12 @@ const TABS: Tab[] = [
   { to: "/dashboard/admin/employers", label: "Employers" },
   { to: "/dashboard/admin/jobs", label: "Jobs" },
   { to: "/dashboard/admin/applications", label: "Applications" },
+  { to: "/dashboard/admin/placements", label: "Placements" },
+  { to: "/dashboard/admin/stories", label: "Stories" },
   { to: "/dashboard/admin/analytics", label: "Analytics" },
   { to: "/dashboard/admin/settings", label: "Settings" },
 ];
+
 
 function AdminLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
