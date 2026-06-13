@@ -73,6 +73,7 @@ import { Route as AuthenticatedDashboardCounselorRouteImport } from './routes/_a
 import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated.dashboard.admin'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
+import { Route as AuthenticatedDashboardCoursesCourseIdRouteImport } from './routes/_authenticated.dashboard.courses.$courseId'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
@@ -419,6 +420,12 @@ const AuthenticatedDashboardProgramsSlugRoute =
     path: '/$slug',
     getParentRoute: () => AuthenticatedDashboardProgramsRoute,
   } as any)
+const AuthenticatedDashboardCoursesCourseIdRoute =
+  AuthenticatedDashboardCoursesCourseIdRouteImport.update({
+    id: '/courses/$courseId',
+    path: '/courses/$courseId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardAdminUsersRoute =
   AuthenticatedDashboardAdminUsersRouteImport.update({
     id: '/users',
@@ -522,6 +529,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
+  '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -588,6 +596,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
+  '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -661,6 +670,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
+  '/_authenticated/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -734,6 +744,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
+    | '/dashboard/courses/$courseId'
     | '/dashboard/programs/$slug'
     | '/dashboard/admin/'
     | '/dashboard/admin/programs/$id'
@@ -800,6 +811,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
+    | '/dashboard/courses/$courseId'
     | '/dashboard/programs/$slug'
     | '/dashboard/admin'
     | '/dashboard/admin/programs/$id'
@@ -872,6 +884,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/certificates'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/users'
+    | '/_authenticated/dashboard/courses/$courseId'
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/admin/programs/$id'
@@ -1344,6 +1357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProgramsSlugRouteImport
       parentRoute: typeof AuthenticatedDashboardProgramsRoute
     }
+    '/_authenticated/dashboard/courses/$courseId': {
+      id: '/_authenticated/dashboard/courses/$courseId'
+      path: '/courses/$courseId'
+      fullPath: '/dashboard/courses/$courseId'
+      preLoaderRoute: typeof AuthenticatedDashboardCoursesCourseIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/admin/users': {
       id: '/_authenticated/dashboard/admin/users'
       path: '/users'
@@ -1444,6 +1464,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
   AuthenticatedDashboardProgramsRoute: typeof AuthenticatedDashboardProgramsRouteWithChildren
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardCoursesCourseIdRoute: typeof AuthenticatedDashboardCoursesCourseIdRoute
 }
 
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
@@ -1456,6 +1477,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardProgramsRoute:
       AuthenticatedDashboardProgramsRouteWithChildren,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardCoursesCourseIdRoute:
+      AuthenticatedDashboardCoursesCourseIdRoute,
   }
 
 const AuthenticatedDashboardRouteWithChildren =
