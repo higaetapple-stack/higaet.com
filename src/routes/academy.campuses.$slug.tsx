@@ -40,7 +40,7 @@ export const Route = createFileRoute("/academy/campuses/$slug")({
 });
 
 function CampusDetail() {
-  const { campus } = Route.useLoaderData();
+  const { campus } = Route.useLoaderData() as { campus: Campus };
 
   return (
     <>
