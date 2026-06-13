@@ -307,7 +307,9 @@ const ROLES: AppRole[] = [
 export const listUsersWithRoles = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { role?: AppRole | "all" }) =>
-    z.object({ role: z.enum([...ROLES, "all"] as [string, ...string[]]).optional() }).parse(d),
+    z
+      .object({ role: z.enum(["all", ...ROLES] as unknown as [string, ...string[]]).optional() })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
