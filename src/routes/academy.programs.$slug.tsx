@@ -5,10 +5,10 @@ import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { LeadForm } from "@/components/site/LeadForm";
-import { getProgram, CATEGORY_LABELS, PROGRAMS } from "@/lib/academy-programs";
+import { getProgram, CATEGORY_LABELS, type Program, type ProgramCategory } from "@/lib/academy-programs";
 
 export const Route = createFileRoute("/academy/programs/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { program: Program } => {
     const program = getProgram(params.slug);
     if (!program) throw notFound();
     return { program };
