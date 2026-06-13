@@ -92,6 +92,16 @@ const STATIC_ENTRIES: SitemapEntry[] = [
     "openai","generative-ai","machine-learning","nlp","computer-vision","ai-automation",
     "data-engineering-tech","business-intelligence-tech",
   ].map((slug) => ({ path: `/technologies/expertise/${slug}`, changefreq: "monthly" as const, priority: "0.6" })),
+  // Engagement Models
+  { path: "/technologies/engagement", changefreq: "monthly", priority: "0.8" },
+  ...[
+    "dedicated-development-team",
+    "staff-augmentation",
+    "fixed-price-projects",
+    "time-and-materials",
+    "offshore-development-center",
+    "build-operate-transfer",
+  ].map((slug) => ({ path: `/technologies/engagement/${slug}`, changefreq: "monthly" as const, priority: "0.7" })),
   { path: "/technologies/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/technologies/contact", changefreq: "monthly", priority: "0.6" },
 ];
