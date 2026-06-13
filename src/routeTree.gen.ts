@@ -89,7 +89,6 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
-import { Route as AuthenticatedDashboardTechnologiesClientRouteImport } from './routes/_authenticated.dashboard.technologies.client'
 import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
 import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
@@ -131,6 +130,7 @@ import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
 import { Route as AuthenticatedDashboardTechnologiesProjectsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.projects.index'
 import { Route as AuthenticatedDashboardTechnologiesClientsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.clients.index'
+import { Route as AuthenticatedDashboardTechnologiesClientIndexRouteImport } from './routes/_authenticated.dashboard.technologies.client.index'
 import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
 import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
 import { Route as AuthenticatedDashboardTechnologiesProjectsIdRouteImport } from './routes/_authenticated.dashboard.technologies.projects.$id'
@@ -569,12 +569,6 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesClientRoute =
-  AuthenticatedDashboardTechnologiesClientRouteImport.update({
-    id: '/client',
-    path: '/client',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
-  } as any)
 const AuthenticatedDashboardProjectsIdRoute =
   AuthenticatedDashboardProjectsIdRouteImport.update({
     id: '/projects/$id',
@@ -821,6 +815,12 @@ const AuthenticatedDashboardTechnologiesClientsIndexRoute =
     path: '/clients/',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
+const AuthenticatedDashboardTechnologiesClientIndexRoute =
+  AuthenticatedDashboardTechnologiesClientIndexRouteImport.update({
+    id: '/client/',
+    path: '/client/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
 const AuthenticatedDashboardAdminProgramsIndexRoute =
   AuthenticatedDashboardAdminProgramsIndexRouteImport.update({
     id: '/programs/',
@@ -975,7 +975,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
-  '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -990,6 +989,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/projects/$id': typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
   '/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/dashboard/technologies/client/': typeof AuthenticatedDashboardTechnologiesClientIndexRoute
   '/dashboard/technologies/clients/': typeof AuthenticatedDashboardTechnologiesClientsIndexRoute
   '/dashboard/technologies/projects/': typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
   '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
@@ -1096,7 +1096,6 @@ export interface FileRoutesByTo {
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
-  '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1111,6 +1110,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/projects/$id': typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientIndexRoute
   '/dashboard/technologies/clients': typeof AuthenticatedDashboardTechnologiesClientsIndexRoute
   '/dashboard/technologies/projects': typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
   '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
@@ -1228,7 +1228,6 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
-  '/_authenticated/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1243,6 +1242,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/projects/$id': typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
   '/_authenticated/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/_authenticated/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/_authenticated/dashboard/technologies/client/': typeof AuthenticatedDashboardTechnologiesClientIndexRoute
   '/_authenticated/dashboard/technologies/clients/': typeof AuthenticatedDashboardTechnologiesClientsIndexRoute
   '/_authenticated/dashboard/technologies/projects/': typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
   '/_authenticated/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
@@ -1360,7 +1360,6 @@ export interface FileRouteTypes {
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
-    | '/dashboard/technologies/client'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -1375,6 +1374,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/projects/$id'
     | '/dashboard/admin/crm/'
     | '/dashboard/admin/programs/'
+    | '/dashboard/technologies/client/'
     | '/dashboard/technologies/clients/'
     | '/dashboard/technologies/projects/'
     | '/dashboard/admin/crm/$type/$id'
@@ -1481,7 +1481,6 @@ export interface FileRouteTypes {
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
-    | '/dashboard/technologies/client'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -1496,6 +1495,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/projects/$id'
     | '/dashboard/admin/crm'
     | '/dashboard/admin/programs'
+    | '/dashboard/technologies/client'
     | '/dashboard/technologies/clients'
     | '/dashboard/technologies/projects'
     | '/dashboard/admin/crm/$type/$id'
@@ -1612,7 +1612,6 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/lessons/$lessonId'
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/projects/$id'
-    | '/_authenticated/dashboard/technologies/client'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -1627,6 +1626,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/projects/$id'
     | '/_authenticated/dashboard/admin/crm/'
     | '/_authenticated/dashboard/admin/programs/'
+    | '/_authenticated/dashboard/technologies/client/'
     | '/_authenticated/dashboard/technologies/clients/'
     | '/_authenticated/dashboard/technologies/projects/'
     | '/_authenticated/dashboard/admin/crm/$type/$id'
@@ -2215,13 +2215,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
-    '/_authenticated/dashboard/technologies/client': {
-      id: '/_authenticated/dashboard/technologies/client'
-      path: '/client'
-      fullPath: '/dashboard/technologies/client'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
-    }
     '/_authenticated/dashboard/projects/$id': {
       id: '/_authenticated/dashboard/projects/$id'
       path: '/projects/$id'
@@ -2509,6 +2502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientsIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
     }
+    '/_authenticated/dashboard/technologies/client/': {
+      id: '/_authenticated/dashboard/technologies/client/'
+      path: '/client'
+      fullPath: '/dashboard/technologies/client/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
     '/_authenticated/dashboard/admin/programs/': {
       id: '/_authenticated/dashboard/admin/programs/'
       path: '/programs'
@@ -2768,24 +2768,24 @@ const AuthenticatedDashboardProgramsRouteWithChildren =
   )
 
 interface AuthenticatedDashboardTechnologiesRouteChildren {
-  AuthenticatedDashboardTechnologiesClientRoute: typeof AuthenticatedDashboardTechnologiesClientRoute
   AuthenticatedDashboardTechnologiesIndexRoute: typeof AuthenticatedDashboardTechnologiesIndexRoute
   AuthenticatedDashboardTechnologiesClientsIdRoute: typeof AuthenticatedDashboardTechnologiesClientsIdRoute
   AuthenticatedDashboardTechnologiesProjectsIdRoute: typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
+  AuthenticatedDashboardTechnologiesClientIndexRoute: typeof AuthenticatedDashboardTechnologiesClientIndexRoute
   AuthenticatedDashboardTechnologiesClientsIndexRoute: typeof AuthenticatedDashboardTechnologiesClientsIndexRoute
   AuthenticatedDashboardTechnologiesProjectsIndexRoute: typeof AuthenticatedDashboardTechnologiesProjectsIndexRoute
 }
 
 const AuthenticatedDashboardTechnologiesRouteChildren: AuthenticatedDashboardTechnologiesRouteChildren =
   {
-    AuthenticatedDashboardTechnologiesClientRoute:
-      AuthenticatedDashboardTechnologiesClientRoute,
     AuthenticatedDashboardTechnologiesIndexRoute:
       AuthenticatedDashboardTechnologiesIndexRoute,
     AuthenticatedDashboardTechnologiesClientsIdRoute:
       AuthenticatedDashboardTechnologiesClientsIdRoute,
     AuthenticatedDashboardTechnologiesProjectsIdRoute:
       AuthenticatedDashboardTechnologiesProjectsIdRoute,
+    AuthenticatedDashboardTechnologiesClientIndexRoute:
+      AuthenticatedDashboardTechnologiesClientIndexRoute,
     AuthenticatedDashboardTechnologiesClientsIndexRoute:
       AuthenticatedDashboardTechnologiesClientsIndexRoute,
     AuthenticatedDashboardTechnologiesProjectsIndexRoute:
