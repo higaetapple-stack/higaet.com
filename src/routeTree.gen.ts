@@ -43,6 +43,7 @@ import { Route as TechnologiesItConsultingRouteImport } from './routes/technolog
 import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
 import { Route as TechnologiesExpertiseRouteImport } from './routes/technologies.expertise'
 import { Route as TechnologiesEnterpriseSoftwareRouteImport } from './routes/technologies.enterprise-software'
+import { Route as TechnologiesEngagementRouteImport } from './routes/technologies.engagement'
 import { Route as TechnologiesDigitalTransformationRouteImport } from './routes/technologies.digital-transformation'
 import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
 import { Route as TechnologiesDevopsRouteImport } from './routes/technologies.devops'
@@ -142,6 +143,12 @@ import { Route as TechnologiesExpertiseAwsRouteImport } from './routes/technolog
 import { Route as TechnologiesExpertiseAngularRouteImport } from './routes/technologies.expertise.angular'
 import { Route as TechnologiesExpertiseAndroidRouteImport } from './routes/technologies.expertise.android'
 import { Route as TechnologiesExpertiseAiAutomationRouteImport } from './routes/technologies.expertise.ai-automation'
+import { Route as TechnologiesEngagementTimeAndMaterialsRouteImport } from './routes/technologies.engagement.time-and-materials'
+import { Route as TechnologiesEngagementStaffAugmentationRouteImport } from './routes/technologies.engagement.staff-augmentation'
+import { Route as TechnologiesEngagementOffshoreDevelopmentCenterRouteImport } from './routes/technologies.engagement.offshore-development-center'
+import { Route as TechnologiesEngagementFixedPriceProjectsRouteImport } from './routes/technologies.engagement.fixed-price-projects'
+import { Route as TechnologiesEngagementDedicatedDevelopmentTeamRouteImport } from './routes/technologies.engagement.dedicated-development-team'
+import { Route as TechnologiesEngagementBuildOperateTransferRouteImport } from './routes/technologies.engagement.build-operate-transfer'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
@@ -408,6 +415,11 @@ const TechnologiesEnterpriseSoftwareRoute =
     path: '/enterprise-software',
     getParentRoute: () => TechnologiesRoute,
   } as any)
+const TechnologiesEngagementRoute = TechnologiesEngagementRouteImport.update({
+  id: '/engagement',
+  path: '/engagement',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesDigitalTransformationRoute =
   TechnologiesDigitalTransformationRouteImport.update({
     id: '/digital-transformation',
@@ -972,6 +984,42 @@ const TechnologiesExpertiseAiAutomationRoute =
     id: '/ai-automation',
     path: '/ai-automation',
     getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesEngagementTimeAndMaterialsRoute =
+  TechnologiesEngagementTimeAndMaterialsRouteImport.update({
+    id: '/time-and-materials',
+    path: '/time-and-materials',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementStaffAugmentationRoute =
+  TechnologiesEngagementStaffAugmentationRouteImport.update({
+    id: '/staff-augmentation',
+    path: '/staff-augmentation',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementOffshoreDevelopmentCenterRoute =
+  TechnologiesEngagementOffshoreDevelopmentCenterRouteImport.update({
+    id: '/offshore-development-center',
+    path: '/offshore-development-center',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementFixedPriceProjectsRoute =
+  TechnologiesEngagementFixedPriceProjectsRouteImport.update({
+    id: '/fixed-price-projects',
+    path: '/fixed-price-projects',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementDedicatedDevelopmentTeamRoute =
+  TechnologiesEngagementDedicatedDevelopmentTeamRouteImport.update({
+    id: '/dedicated-development-team',
+    path: '/dedicated-development-team',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementBuildOperateTransferRoute =
+  TechnologiesEngagementBuildOperateTransferRouteImport.update({
+    id: '/build-operate-transfer',
+    path: '/build-operate-transfer',
+    getParentRoute: () => TechnologiesEngagementRoute,
   } as any)
 const GlobalEducationUniversitiesSlugRoute =
   GlobalEducationUniversitiesSlugRouteImport.update({
@@ -1539,6 +1587,7 @@ export interface FileRoutesByFullPath {
   '/technologies/devops': typeof TechnologiesDevopsRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
+  '/technologies/engagement': typeof TechnologiesEngagementRouteWithChildren
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
@@ -1571,6 +1620,12 @@ export interface FileRoutesByFullPath {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
+  '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
+  '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
+  '/technologies/engagement/offshore-development-center': typeof TechnologiesEngagementOffshoreDevelopmentCenterRoute
+  '/technologies/engagement/staff-augmentation': typeof TechnologiesEngagementStaffAugmentationRoute
+  '/technologies/engagement/time-and-materials': typeof TechnologiesEngagementTimeAndMaterialsRoute
   '/technologies/expertise/ai-automation': typeof TechnologiesExpertiseAiAutomationRoute
   '/technologies/expertise/android': typeof TechnologiesExpertiseAndroidRoute
   '/technologies/expertise/angular': typeof TechnologiesExpertiseAngularRoute
@@ -1754,6 +1809,7 @@ export interface FileRoutesByTo {
   '/technologies/devops': typeof TechnologiesDevopsRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
+  '/technologies/engagement': typeof TechnologiesEngagementRouteWithChildren
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
@@ -1782,6 +1838,12 @@ export interface FileRoutesByTo {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
+  '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
+  '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
+  '/technologies/engagement/offshore-development-center': typeof TechnologiesEngagementOffshoreDevelopmentCenterRoute
+  '/technologies/engagement/staff-augmentation': typeof TechnologiesEngagementStaffAugmentationRoute
+  '/technologies/engagement/time-and-materials': typeof TechnologiesEngagementTimeAndMaterialsRoute
   '/technologies/expertise/ai-automation': typeof TechnologiesExpertiseAiAutomationRoute
   '/technologies/expertise/android': typeof TechnologiesExpertiseAndroidRoute
   '/technologies/expertise/angular': typeof TechnologiesExpertiseAngularRoute
@@ -1967,6 +2029,7 @@ export interface FileRoutesById {
   '/technologies/devops': typeof TechnologiesDevopsRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
+  '/technologies/engagement': typeof TechnologiesEngagementRouteWithChildren
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
   '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
@@ -1999,6 +2062,12 @@ export interface FileRoutesById {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
+  '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
+  '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
+  '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
+  '/technologies/engagement/offshore-development-center': typeof TechnologiesEngagementOffshoreDevelopmentCenterRoute
+  '/technologies/engagement/staff-augmentation': typeof TechnologiesEngagementStaffAugmentationRoute
+  '/technologies/engagement/time-and-materials': typeof TechnologiesEngagementTimeAndMaterialsRoute
   '/technologies/expertise/ai-automation': typeof TechnologiesExpertiseAiAutomationRoute
   '/technologies/expertise/android': typeof TechnologiesExpertiseAndroidRoute
   '/technologies/expertise/angular': typeof TechnologiesExpertiseAngularRoute
@@ -2188,6 +2257,7 @@ export interface FileRouteTypes {
     | '/technologies/devops'
     | '/technologies/digital-marketing'
     | '/technologies/digital-transformation'
+    | '/technologies/engagement'
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
@@ -2220,6 +2290,12 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/engagement/build-operate-transfer'
+    | '/technologies/engagement/dedicated-development-team'
+    | '/technologies/engagement/fixed-price-projects'
+    | '/technologies/engagement/offshore-development-center'
+    | '/technologies/engagement/staff-augmentation'
+    | '/technologies/engagement/time-and-materials'
     | '/technologies/expertise/ai-automation'
     | '/technologies/expertise/android'
     | '/technologies/expertise/angular'
@@ -2403,6 +2479,7 @@ export interface FileRouteTypes {
     | '/technologies/devops'
     | '/technologies/digital-marketing'
     | '/technologies/digital-transformation'
+    | '/technologies/engagement'
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
@@ -2431,6 +2508,12 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/engagement/build-operate-transfer'
+    | '/technologies/engagement/dedicated-development-team'
+    | '/technologies/engagement/fixed-price-projects'
+    | '/technologies/engagement/offshore-development-center'
+    | '/technologies/engagement/staff-augmentation'
+    | '/technologies/engagement/time-and-materials'
     | '/technologies/expertise/ai-automation'
     | '/technologies/expertise/android'
     | '/technologies/expertise/angular'
@@ -2615,6 +2698,7 @@ export interface FileRouteTypes {
     | '/technologies/devops'
     | '/technologies/digital-marketing'
     | '/technologies/digital-transformation'
+    | '/technologies/engagement'
     | '/technologies/enterprise-software'
     | '/technologies/expertise'
     | '/technologies/industries'
@@ -2647,6 +2731,12 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
+    | '/technologies/engagement/build-operate-transfer'
+    | '/technologies/engagement/dedicated-development-team'
+    | '/technologies/engagement/fixed-price-projects'
+    | '/technologies/engagement/offshore-development-center'
+    | '/technologies/engagement/staff-augmentation'
+    | '/technologies/engagement/time-and-materials'
     | '/technologies/expertise/ai-automation'
     | '/technologies/expertise/android'
     | '/technologies/expertise/angular'
@@ -3037,6 +3127,13 @@ declare module '@tanstack/react-router' {
       path: '/enterprise-software'
       fullPath: '/technologies/enterprise-software'
       preLoaderRoute: typeof TechnologiesEnterpriseSoftwareRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/engagement': {
+      id: '/technologies/engagement'
+      path: '/engagement'
+      fullPath: '/technologies/engagement'
+      preLoaderRoute: typeof TechnologiesEngagementRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/digital-transformation': {
@@ -3731,6 +3828,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/technologies/expertise/ai-automation'
       preLoaderRoute: typeof TechnologiesExpertiseAiAutomationRouteImport
       parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/engagement/time-and-materials': {
+      id: '/technologies/engagement/time-and-materials'
+      path: '/time-and-materials'
+      fullPath: '/technologies/engagement/time-and-materials'
+      preLoaderRoute: typeof TechnologiesEngagementTimeAndMaterialsRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/staff-augmentation': {
+      id: '/technologies/engagement/staff-augmentation'
+      path: '/staff-augmentation'
+      fullPath: '/technologies/engagement/staff-augmentation'
+      preLoaderRoute: typeof TechnologiesEngagementStaffAugmentationRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/offshore-development-center': {
+      id: '/technologies/engagement/offshore-development-center'
+      path: '/offshore-development-center'
+      fullPath: '/technologies/engagement/offshore-development-center'
+      preLoaderRoute: typeof TechnologiesEngagementOffshoreDevelopmentCenterRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/fixed-price-projects': {
+      id: '/technologies/engagement/fixed-price-projects'
+      path: '/fixed-price-projects'
+      fullPath: '/technologies/engagement/fixed-price-projects'
+      preLoaderRoute: typeof TechnologiesEngagementFixedPriceProjectsRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/dedicated-development-team': {
+      id: '/technologies/engagement/dedicated-development-team'
+      path: '/dedicated-development-team'
+      fullPath: '/technologies/engagement/dedicated-development-team'
+      preLoaderRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/build-operate-transfer': {
+      id: '/technologies/engagement/build-operate-transfer'
+      path: '/build-operate-transfer'
+      fullPath: '/technologies/engagement/build-operate-transfer'
+      preLoaderRoute: typeof TechnologiesEngagementBuildOperateTransferRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
     }
     '/global-education/universities/$slug': {
       id: '/global-education/universities/$slug'
@@ -4874,6 +5013,36 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
   GlobalEducationRouteChildren,
 )
 
+interface TechnologiesEngagementRouteChildren {
+  TechnologiesEngagementBuildOperateTransferRoute: typeof TechnologiesEngagementBuildOperateTransferRoute
+  TechnologiesEngagementDedicatedDevelopmentTeamRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
+  TechnologiesEngagementFixedPriceProjectsRoute: typeof TechnologiesEngagementFixedPriceProjectsRoute
+  TechnologiesEngagementOffshoreDevelopmentCenterRoute: typeof TechnologiesEngagementOffshoreDevelopmentCenterRoute
+  TechnologiesEngagementStaffAugmentationRoute: typeof TechnologiesEngagementStaffAugmentationRoute
+  TechnologiesEngagementTimeAndMaterialsRoute: typeof TechnologiesEngagementTimeAndMaterialsRoute
+}
+
+const TechnologiesEngagementRouteChildren: TechnologiesEngagementRouteChildren =
+  {
+    TechnologiesEngagementBuildOperateTransferRoute:
+      TechnologiesEngagementBuildOperateTransferRoute,
+    TechnologiesEngagementDedicatedDevelopmentTeamRoute:
+      TechnologiesEngagementDedicatedDevelopmentTeamRoute,
+    TechnologiesEngagementFixedPriceProjectsRoute:
+      TechnologiesEngagementFixedPriceProjectsRoute,
+    TechnologiesEngagementOffshoreDevelopmentCenterRoute:
+      TechnologiesEngagementOffshoreDevelopmentCenterRoute,
+    TechnologiesEngagementStaffAugmentationRoute:
+      TechnologiesEngagementStaffAugmentationRoute,
+    TechnologiesEngagementTimeAndMaterialsRoute:
+      TechnologiesEngagementTimeAndMaterialsRoute,
+  }
+
+const TechnologiesEngagementRouteWithChildren =
+  TechnologiesEngagementRoute._addFileChildren(
+    TechnologiesEngagementRouteChildren,
+  )
+
 interface TechnologiesExpertiseRouteChildren {
   TechnologiesExpertiseAiAutomationRoute: typeof TechnologiesExpertiseAiAutomationRoute
   TechnologiesExpertiseAndroidRoute: typeof TechnologiesExpertiseAndroidRoute
@@ -5030,6 +5199,7 @@ interface TechnologiesRouteChildren {
   TechnologiesDevopsRoute: typeof TechnologiesDevopsRoute
   TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
   TechnologiesDigitalTransformationRoute: typeof TechnologiesDigitalTransformationRoute
+  TechnologiesEngagementRoute: typeof TechnologiesEngagementRouteWithChildren
   TechnologiesEnterpriseSoftwareRoute: typeof TechnologiesEnterpriseSoftwareRoute
   TechnologiesExpertiseRoute: typeof TechnologiesExpertiseRouteWithChildren
   TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRouteWithChildren
@@ -5065,6 +5235,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesDigitalMarketingRoute: TechnologiesDigitalMarketingRoute,
   TechnologiesDigitalTransformationRoute:
     TechnologiesDigitalTransformationRoute,
+  TechnologiesEngagementRoute: TechnologiesEngagementRouteWithChildren,
   TechnologiesEnterpriseSoftwareRoute: TechnologiesEnterpriseSoftwareRoute,
   TechnologiesExpertiseRoute: TechnologiesExpertiseRouteWithChildren,
   TechnologiesIndustriesRoute: TechnologiesIndustriesRouteWithChildren,
