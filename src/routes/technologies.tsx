@@ -29,6 +29,9 @@ const NAV = [
   { to: "/technologies/expertise", label: "Expertise" },
   { to: "/technologies/engagement", label: "Engagement" },
   { to: "/technologies/case-studies", label: "Cases" },
+  { to: "/technologies/insights", label: "Insights" },
+  { to: "/technologies/company", label: "Company" },
+  { to: "/technologies/careers", label: "Careers" },
   { to: "/technologies/contact", label: "Contact" },
 ] as const;
 

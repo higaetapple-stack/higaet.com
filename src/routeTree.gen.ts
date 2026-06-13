@@ -15,6 +15,7 @@ import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -52,6 +53,7 @@ import { Route as TechnologiesDedicatedTeamRouteImport } from './routes/technolo
 import { Route as TechnologiesDataEngineeringRouteImport } from './routes/technologies.data-engineering'
 import { Route as TechnologiesCustomSoftwareDevelopmentRouteImport } from './routes/technologies.custom-software-development'
 import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
+import { Route as TechnologiesCompanyRouteImport } from './routes/technologies.company'
 import { Route as TechnologiesCloudSolutionsRouteImport } from './routes/technologies.cloud-solutions'
 import { Route as TechnologiesCloudMigrationRouteImport } from './routes/technologies.cloud-migration'
 import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
@@ -151,6 +153,7 @@ import { Route as TechnologiesEngagementOffshoreDevelopmentCenterRouteImport } f
 import { Route as TechnologiesEngagementFixedPriceProjectsRouteImport } from './routes/technologies.engagement.fixed-price-projects'
 import { Route as TechnologiesEngagementDedicatedDevelopmentTeamRouteImport } from './routes/technologies.engagement.dedicated-development-team'
 import { Route as TechnologiesEngagementBuildOperateTransferRouteImport } from './routes/technologies.engagement.build-operate-transfer'
+import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologies.company.$slug'
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
@@ -266,6 +269,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
   id: '/global-education',
   path: '/global-education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -466,6 +474,11 @@ const TechnologiesCustomSoftwareDevelopmentRoute =
 const TechnologiesContactRoute = TechnologiesContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCompanyRoute = TechnologiesCompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
   getParentRoute: () => TechnologiesRoute,
 } as any)
 const TechnologiesCloudSolutionsRoute =
@@ -1035,6 +1048,11 @@ const TechnologiesEngagementBuildOperateTransferRoute =
     path: '/build-operate-transfer',
     getParentRoute: () => TechnologiesEngagementRoute,
   } as any)
+const TechnologiesCompanySlugRoute = TechnologiesCompanySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TechnologiesCompanyRoute,
+} as any)
 const TechnologiesCaseStudiesSlugRoute =
   TechnologiesCaseStudiesSlugRouteImport.update({
     id: '/$slug',
@@ -1558,6 +1576,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -1600,6 +1619,7 @@ export interface FileRoutesByFullPath {
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
+  '/technologies/company': typeof TechnologiesCompanyRouteWithChildren
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
@@ -1642,6 +1662,7 @@ export interface FileRoutesByFullPath {
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
+  '/technologies/company/$slug': typeof TechnologiesCompanySlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -1786,6 +1807,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -1825,6 +1847,7 @@ export interface FileRoutesByTo {
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
+  '/technologies/company': typeof TechnologiesCompanyRouteWithChildren
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
@@ -1863,6 +1886,7 @@ export interface FileRoutesByTo {
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
+  '/technologies/company/$slug': typeof TechnologiesCompanySlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -2006,6 +2030,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -2048,6 +2073,7 @@ export interface FileRoutesById {
   '/technologies/case-studies': typeof TechnologiesCaseStudiesRouteWithChildren
   '/technologies/cloud-migration': typeof TechnologiesCloudMigrationRoute
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
+  '/technologies/company': typeof TechnologiesCompanyRouteWithChildren
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
   '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
@@ -2090,6 +2116,7 @@ export interface FileRoutesById {
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
+  '/technologies/company/$slug': typeof TechnologiesCompanySlugRoute
   '/technologies/engagement/build-operate-transfer': typeof TechnologiesEngagementBuildOperateTransferRoute
   '/technologies/engagement/dedicated-development-team': typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
   '/technologies/engagement/fixed-price-projects': typeof TechnologiesEngagementFixedPriceProjectsRoute
@@ -2237,6 +2264,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/cookies'
     | '/global-education'
     | '/privacy'
     | '/sitemap.xml'
@@ -2279,6 +2307,7 @@ export interface FileRouteTypes {
     | '/technologies/case-studies'
     | '/technologies/cloud-migration'
     | '/technologies/cloud-solutions'
+    | '/technologies/company'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
     | '/technologies/data-engineering'
@@ -2321,6 +2350,7 @@ export interface FileRouteTypes {
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
+    | '/technologies/company/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2465,6 +2495,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/cookies'
     | '/privacy'
     | '/sitemap.xml'
     | '/success-stories'
@@ -2504,6 +2535,7 @@ export interface FileRouteTypes {
     | '/technologies/case-studies'
     | '/technologies/cloud-migration'
     | '/technologies/cloud-solutions'
+    | '/technologies/company'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
     | '/technologies/data-engineering'
@@ -2542,6 +2574,7 @@ export interface FileRouteTypes {
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
+    | '/technologies/company/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2684,6 +2717,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/cookies'
     | '/global-education'
     | '/privacy'
     | '/sitemap.xml'
@@ -2726,6 +2760,7 @@ export interface FileRouteTypes {
     | '/technologies/case-studies'
     | '/technologies/cloud-migration'
     | '/technologies/cloud-solutions'
+    | '/technologies/company'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
     | '/technologies/data-engineering'
@@ -2768,6 +2803,7 @@ export interface FileRouteTypes {
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
+    | '/technologies/company/$slug'
     | '/technologies/engagement/build-operate-transfer'
     | '/technologies/engagement/dedicated-development-team'
     | '/technologies/engagement/fixed-price-projects'
@@ -2915,6 +2951,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -2969,6 +3006,13 @@ declare module '@tanstack/react-router' {
       path: '/global-education'
       fullPath: '/global-education'
       preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -3228,6 +3272,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/technologies/contact'
       preLoaderRoute: typeof TechnologiesContactRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/company': {
+      id: '/technologies/company'
+      path: '/company'
+      fullPath: '/technologies/company'
+      preLoaderRoute: typeof TechnologiesCompanyRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/cloud-solutions': {
@@ -3922,6 +3973,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/technologies/engagement/build-operate-transfer'
       preLoaderRoute: typeof TechnologiesEngagementBuildOperateTransferRouteImport
       parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/company/$slug': {
+      id: '/technologies/company/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/company/$slug'
+      preLoaderRoute: typeof TechnologiesCompanySlugRouteImport
+      parentRoute: typeof TechnologiesCompanyRoute
     }
     '/technologies/case-studies/$slug': {
       id: '/technologies/case-studies/$slug'
@@ -5086,6 +5144,17 @@ const TechnologiesCaseStudiesRouteWithChildren =
     TechnologiesCaseStudiesRouteChildren,
   )
 
+interface TechnologiesCompanyRouteChildren {
+  TechnologiesCompanySlugRoute: typeof TechnologiesCompanySlugRoute
+}
+
+const TechnologiesCompanyRouteChildren: TechnologiesCompanyRouteChildren = {
+  TechnologiesCompanySlugRoute: TechnologiesCompanySlugRoute,
+}
+
+const TechnologiesCompanyRouteWithChildren =
+  TechnologiesCompanyRoute._addFileChildren(TechnologiesCompanyRouteChildren)
+
 interface TechnologiesEngagementRouteChildren {
   TechnologiesEngagementBuildOperateTransferRoute: typeof TechnologiesEngagementBuildOperateTransferRoute
   TechnologiesEngagementDedicatedDevelopmentTeamRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRoute
@@ -5276,6 +5345,7 @@ interface TechnologiesRouteChildren {
   TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRouteWithChildren
   TechnologiesCloudMigrationRoute: typeof TechnologiesCloudMigrationRoute
   TechnologiesCloudSolutionsRoute: typeof TechnologiesCloudSolutionsRoute
+  TechnologiesCompanyRoute: typeof TechnologiesCompanyRouteWithChildren
   TechnologiesContactRoute: typeof TechnologiesContactRoute
   TechnologiesCustomSoftwareDevelopmentRoute: typeof TechnologiesCustomSoftwareDevelopmentRoute
   TechnologiesDataEngineeringRoute: typeof TechnologiesDataEngineeringRoute
@@ -5311,6 +5381,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRouteWithChildren,
   TechnologiesCloudMigrationRoute: TechnologiesCloudMigrationRoute,
   TechnologiesCloudSolutionsRoute: TechnologiesCloudSolutionsRoute,
+  TechnologiesCompanyRoute: TechnologiesCompanyRouteWithChildren,
   TechnologiesContactRoute: TechnologiesContactRoute,
   TechnologiesCustomSoftwareDevelopmentRoute:
     TechnologiesCustomSoftwareDevelopmentRoute,
@@ -5353,6 +5424,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
