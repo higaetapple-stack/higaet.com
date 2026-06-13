@@ -15,7 +15,6 @@ import { CTASection } from "./CTASection";
 import { LeadForm } from "./LeadForm";
 import { IndustryCategoryNav } from "./IndustryCategoryNav";
 import { ALL_SERVICES } from "@/content/services.index";
-import { cn } from "@/lib/utils";
 
 export type IndustryDetailContent = {
   slug: string;
