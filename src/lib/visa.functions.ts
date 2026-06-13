@@ -69,10 +69,11 @@ export const visaCaseDetail = createServerFn({ method: "GET" })
       sb.from("visa_documents").select("*").eq("visa_case_id", data.id).order("uploaded_at", { ascending: false }),
       sb
         .from("visa_status_history")
-        .select("*, actor:changed_by(full_name)")
+        .select("*, actor:profiles!changed_by(full_name)")
         .eq("visa_case_id", data.id)
         .order("created_at", { ascending: false }),
     ]);
+
     return { case: vc, documents: docs.data ?? [], history: history.data ?? [] };
   });
 
