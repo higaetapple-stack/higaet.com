@@ -44,7 +44,7 @@ function UniversityDetail() {
     mutationFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        nav({ to: "/auth/login", search: { redirect: `/global-education/universities/${slug}` } as any });
+        nav({ to: "/auth/login" });
         throw new Error("Sign in required");
       }
       if (!q.data?.university.id) throw new Error("University missing");
