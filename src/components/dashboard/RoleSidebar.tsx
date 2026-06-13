@@ -26,6 +26,7 @@ type Item = {
     | "/dashboard/certificates"
     | "/dashboard/career"
     | "/dashboard/applications"
+    | "/dashboard/visa"
     | "/dashboard/faculty"
     | "/dashboard/faculty/submissions"
     | "/dashboard/counselor"
