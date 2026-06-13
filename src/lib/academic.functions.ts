@@ -185,7 +185,7 @@ export const listSubmissionsToGrade = createServerFn({ method: "GET" })
       )
       .order("submitted_at", { ascending: false })
       .limit(200);
-    if (data.status && data.status !== "all") q = q.eq("status", data.status);
+    if (data.status && data.status !== "all") q = q.eq("status", data.status as any);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
     return rows ?? [];
