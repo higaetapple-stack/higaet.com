@@ -46,7 +46,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/programs")({
+export const Route = createFileRoute("/_authenticated/dashboard/admin/programs/")({
   component: ProgramsPage,
 });
 
