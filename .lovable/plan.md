@@ -1,183 +1,114 @@
+# Sprint 2 — LMS + Dashboard Foundation
 
-# HIGAET — Phase 1 Build Plan
+Build the platform core that Sprints 2B–2D and all of Sprint 3+ depend on. Ship **Sprint 2A in this iteration**; lock the schema shape for the rest now so later sprints don't require migrations.
 
-Public-facing ecosystem for HIGAET and its three divisions, built on TanStack Start (the Lovable modern stack). Designed API-first so the production Node.js + MySQL backend on MilesWeb can replace the dev backend without frontend rewrites.
+## Scope of this turn (Sprint 2A only)
 
-## 1. Scope of this phase
+1. **Auth** — email/password + Google sign-in via Lovable broker. No anonymous signups. No auto-confirm. HIBP password check on.
+2. **Roles** — `app_role` enum + `user_roles` table + `has_role()` security-definer (mandatory per project standards — roles never live on `profiles`).
+3. **Profiles** — `profiles` table auto-populated on signup via trigger.
+4. **Dashboard shell** — `/dashboard` (student), `/dashboard/faculty`, `/dashboard/counselor`, `/dashboard/admin` under `_authenticated/` (managed gate). Sidebar varies by role; each role lands on its own page.
+5. **Sign-in/up UI** — `/auth` route with email + Google.
+6. **Reusable shells** — `DashboardLayout`, `RoleSidebar`, `DashboardHeader`. LMS content components (`LessonPlayer`, `AssignmentCard`, …) deferred to 2B/2C.
 
-In scope:
-- Main HIGAET site (Home, About, Careers, Blog, Contact)
-- HIGAET Academy (10 pages)
-- HIGAET Global Education Hub (10 pages)
-- HIGAET Technologies (10 pages)
-- Unified design system with per-division accent identity
-- SEO + AEO + GEO + AIO foundation across every route
-- GA4 + GTM + Meta Pixel + Search Console wiring
-- Blog CMS (content layer), Careers listing, Contact + lead-capture forms
-- Auth scaffolding (login/register UI + session plumbing, no role dashboards yet)
-- PWA installability (manifest + icons, no offline cache)
-- Sitemap + robots + JSON-LD on every shareable route
+Sprints 2B (LMS content), 2C (assignments/certificates), 2D (admin CRUD) follow in dedicated turns.
 
-Out of scope (later phases): dashboards, LMS, admissions workflow, payments, certificates, AI assistant, native apps.
+## Roles
 
-## 2. Information architecture
+Enum `app_role`: `student`, `faculty`, `mentor`, `counselor`, `placement_officer`, `enterprise_client`, `admin`, `super_admin`.
 
-```
-/                                  HIGAET main
-/about
-/careers
-/careers/$slug
-/blog
-/blog/$slug
-/contact
+Default role on signup = `student`. Admin/staff roles assigned manually via admin tools (Sprint 2D) or seeded for the first super-admin.
 
-/academy                           Division 1 (upGrad-style)
-/academy/online-courses
-/academy/offline-training
-/academy/certifications
-/academy/placements
-/academy/internships
-/academy/corporate-training
-/academy/success-stories
-/academy/faq
-/academy/contact
+## Database schema — full Sprint 2 surface (created now)
 
-/global-education                  Division 2 (MSM Unify-style)
-/global-education/study-abroad
-/global-education/universities
-/global-education/scholarships
-/global-education/countries
-/global-education/visa-guidance
-/global-education/student-services
-/global-education/admission-process
-/global-education/faq
-/global-education/contact
+Tables created in this migration (Sprint 2A uses 1–3; 4–8 are reserved with full schema + RLS so 2B/2C don't need destructive migrations later):
 
-/technologies                      Division 3 (Orient-style)
-/technologies/software-development
-/technologies/saas-products
-/technologies/ai-solutions
-/technologies/digital-marketing
-/technologies/product-development
-/technologies/case-studies
-/technologies/case-studies/$slug
-/technologies/industries
-/technologies/careers
-/technologies/contact
+1. **`profiles`** — id (FK auth.users), email, full_name, phone, avatar_url, headline, timestamps
+2. **`user_roles`** — user_id, role, granted_by, timestamps (unique on user_id+role)
+3. **`programs`** — id, slug, title, category, level, format, duration, fee_inr, description, status (`draft|published|archived`), timestamps. *Source of truth: replaces today's static `academy-programs.ts` for any data the LMS needs. Marketing pages can keep reading static data until 2D.*
+4. **`courses`** — id, program_id (FK), slug, title, description, order_no, timestamps
+5. **`lessons`** — id, course_id (FK), title, lesson_type (`video|reading|lab|quiz`), video_url, content_md, duration_min, order_no, timestamps
+6. **`enrollments`** — id, student_id (FK profiles), program_id (FK), status (`active|paused|completed|withdrawn`), enrolled_at, timestamps
+7. **`progress`** — id, student_id, lesson_id, completed, completed_at (unique on student+lesson)
+8. **`assignments`** — id, course_id, title, description, due_date, max_score, timestamps
+9. **`submissions`** — id, assignment_id, student_id, file_url, content, score, feedback, submitted_at, graded_at
+10. **`certificates`** — id, student_id, program_id, certificate_url, certificate_number, issued_at
 
-/auth/login                        Scaffolding only
-/auth/register
-/auth/forgot-password
+Future-sprint tables are NOT created now (job_postings, placements, community_*, etc.) — they need their own design round and shouldn't bloat the initial migration.
 
-/sitemap.xml                       Server route
-/robots.txt
-/manifest.webmanifest
+## RLS policy plan
+
+Every table: RLS ON, `GRANT` to `authenticated` + `service_role`, no `anon`.
+
+| Table | student | faculty/mentor | counselor | admin |
+|---|---|---|---|---|
+| profiles | self read/update | read all | read all | full |
+| user_roles | read own | read own | read own | full |
+| programs | read published | read published | read published | full |
+| courses | read if enrolled OR published-program | read assigned | read all | full |
+| lessons | read if enrolled in parent program | read assigned | read all | full |
+| enrollments | read/insert own | read assigned students | read all | full |
+| progress | full own | read assigned students | — | full |
+| assignments | read if enrolled | full on assigned course | — | full |
+| submissions | full own | read + grade assigned | — | full |
+| certificates | read own | read assigned | — | full |
+
+All admin gates use `has_role(auth.uid(), 'admin')` or `super_admin` to avoid recursive policies. Faculty assignment uses a `course_faculty` join table (created in 2B).
+
+## Route architecture
+
+```text
+src/routes/
+  auth.tsx                          (already exists — wire Google + email)
+  _authenticated/
+    route.tsx                       (integration-managed; do not author)
+    dashboard.tsx                   (layout: role-aware sidebar + <Outlet />)
+    dashboard.index.tsx             (student overview — default home)
+    dashboard.profile.tsx
+    dashboard.programs.tsx          (my enrollments — stub in 2A)
+    dashboard.courses.tsx           (stub in 2A)
+    dashboard.faculty.index.tsx
+    dashboard.counselor.index.tsx
+    dashboard.admin.index.tsx
 ```
 
-Each division has its own layout route that injects its accent identity, division-level nav, footer, and JSON-LD `Organization` / `EducationalOrganization` block.
+Role-based redirect on `/dashboard`: student → overview; faculty → `/dashboard/faculty`; counselor → `/dashboard/counselor`; admin → `/dashboard/admin`. Done in the dashboard layout `beforeLoad` (client-side, calls a `getMyRoles` server fn).
 
-## 3. Design system
+## Server functions (Sprint 2A)
 
-One HIGAET design system, four visual identities:
+In `src/lib/`:
+- `auth.functions.ts` — `getMyProfile`, `getMyRoles`, `updateMyProfile` (all `requireSupabaseAuth`)
+- `enrollments.functions.ts` — `getMyEnrollments` stub returning `[]` until 2B seeds data
 
-| Brand | Accent role | Reference language |
-|---|---|---|
-| HIGAET (parent) | Neutral + signature accent | Corporate, trustworthy |
-| Academy | Learning accent | upGrad — bold, conversion-led |
-| Global Education Hub | Global accent | MSM Unify — open, aspirational |
-| Technologies | Engineering accent | Orient — sharp, B2B |
+No admin/service-role server fns this turn — all reads are user-scoped.
 
-Shared: typography scale, spacing, radii, motion, components (button, card, nav, hero, form, FAQ, testimonial, stat, CTA section, footer), focus rings, dark mode.
+## Components (Sprint 2A)
 
-Per-brand: CSS variables for primary/accent/gradient/shadow, hero imagery direction, iconography weight. All values as semantic tokens in `src/styles.css` — no hardcoded colors in components.
+`src/components/dashboard/`:
+- `DashboardLayout.tsx` — header + role sidebar + outlet container
+- `RoleSidebar.tsx` — nav items computed from roles
+- `DashboardHeader.tsx` — logo, user menu, sign out (uses sign-out hygiene pattern)
+- `RoleBadge.tsx`
 
-Will generate visual design directions for the parent brand at build time and confirm before applying division accents.
+LMS content components (`LessonPlayer`, `ProgressBar`, `AssignmentCard`, `CertificateCard`) deferred to the sprint that needs them — building empty shells now leads to throwaway work.
 
-## 4. SEO / AEO / GEO / AIO
+## Decisions locked in
 
-Per-route via TanStack `head()` (no `react-helmet`):
-- Unique `title`, `description`, `og:title`, `og:description`, `og:url` on every leaf
-- Canonical link on leaves only (avoids the TanStack root-concat bug)
-- JSON-LD per route type: `Organization` + `WebSite` at root; `EducationalOrganization` on division roots; `Course` on course pages; `Article` on blog posts; `FAQPage` on FAQ routes; `BreadcrumbList` on deep routes; `JobPosting` on career listings; `Service` on tech service pages
-- Semantic HTML, single H1 per route, ordered H2/H3 outlines
-- AEO: dedicated FAQ blocks with question-answer schema; concise lead paragraphs; entity-named sections
-- GEO/AIO: knowledge-hub style content blocks, clear entity relationships (Academy ↔ Course ↔ Faculty, Global Ed ↔ University ↔ Country ↔ Scholarship), machine-readable structured data on every entity page
-- `public/robots.txt` + dynamic `src/routes/sitemap[.]xml.ts` driven by route list + CMS data
-- Core Web Vitals: route-level code splitting (free with TanStack), image lazy-loading + responsive `srcset`, font-display swap, LCP image preload per route
+- Roles in separate `user_roles` table (never on profiles).
+- `has_role()` security definer for all admin checks.
+- Sign-in: email/password + Google (broker). No GitHub/Facebook.
+- HIBP password check ON, auto-confirm OFF, anonymous signups OFF.
+- Programs become DB-backed; marketing pages keep static data until admin CRUD (2D) is live, then migrate.
+- All 10 tables created in one migration so 2B/2C only seed data + add policies for the join table `course_faculty`.
 
-## 5. Analytics & marketing
+## Out of scope (this turn)
 
-Centralized loader (env-driven IDs, can be flipped per environment):
-- GTM container in root `head()` with consent gate
-- GA4 via GTM (page_view auto, custom events: form_submit, lead_capture, cta_click, file_download, outbound_click, search, video_play)
-- Meta Pixel via GTM (PageView, Lead, Contact, CompleteRegistration, ViewContent)
-- Search Console verification meta tag (env-driven)
-- Microsoft Clarity, LinkedIn Insight Tag, Bing — slots ready, off until IDs are set
-- Consent: minimal cookie banner, GA/Pixel respect denied state
+LMS player UI · assignment grading UI · certificate generation · admin CRUD · course_faculty assignment table (2B) · job board / community / AI tutor (Sprint 3+) · marketing-page migration from static data.
 
-All IDs read from env (`VITE_GTM_ID`, `VITE_GA4_ID`, `VITE_META_PIXEL_ID`, `VITE_GSC_TOKEN`, `VITE_CLARITY_ID`, etc.). Empty = tag does not load.
+## Approval gates
 
-## 6. API-first foundation
+Two tools will request explicit approval as I execute:
+1. `supabase--configure_social_auth` (Google) + `supabase--configure_auth` (HIBP/signup settings)
+2. `supabase--migration` for the full 10-table schema + RLS + grants + signup trigger
 
-So the future Node/Express/MySQL backend can drop in cleanly:
-
-- All data access goes through a single `src/lib/api/` client (typed fetch wrapper, base URL from `VITE_API_BASE_URL`, JWT bearer interceptor, error normalizer)
-- Domain modules: `auth`, `blog`, `careers`, `leads`, `courses`, `universities`, `countries`, `scholarships`, `case-studies`, `services`, `industries`, `contact`
-- Each module exports typed functions: `listBlogPosts()`, `getBlogPost(slug)`, `submitLead(payload)`, etc.
-- During Phase 1 these call Lovable Cloud server functions that read from Postgres (so the site is fully functional immediately)
-- Swap point documented: replace base URL + drop in MySQL-backed Express endpoints with the same DTOs — no UI changes required
-- Shared DTO types in `src/types/` mirror the planned MySQL schema (users, roles, blog_posts, careers, leads, courses, universities, countries, scholarships, case_studies, services, industries, contacts, media)
-- Zod validation on every form payload, client + server
-
-Auth scaffolding: login / register / forgot-password screens, session context, protected-route helper, JWT storage strategy. Backend stub via Lovable Cloud auth; swappable for the production Node JWT issuer in Phase 2.
-
-## 7. CMS foundation
-
-Lightweight content model so Phase 1 isn't static:
-- Blog posts (title, slug, excerpt, body MDX, hero image, author, tags, published_at)
-- Career listings (role, location, type, description, requirements, slug)
-- Case studies (title, slug, client, industry, summary, body, hero, metrics)
-- Lead submissions (form_source, name, email, phone, message, division, utm_*)
-- Contact messages
-- Newsletter subscribers
-
-Stored in Lovable Cloud (Postgres) with RLS during Phase 1; export path to MySQL documented for migration.
-
-## 8. PWA (manifest-only)
-
-- `public/manifest.webmanifest` with HIGAET name/short_name/theme/background
-- Icon set (192, 512, maskable, apple-touch)
-- `theme-color` + `apple-touch-icon` in root `head()`
-- No service worker in Phase 1 (offline isn't requested)
-
-## 9. Quality bars
-
-- Strict TypeScript everywhere
-- No hardcoded colors in components — only design tokens
-- Reusable section components: `Hero`, `FeatureGrid`, `StatBand`, `LogoCloud`, `Testimonials`, `FAQ`, `CTASection`, `Pricing`, `Timeline`, `TeamGrid`, `ContactBlock`
-- Mobile-first responsive at every breakpoint
-- WCAG AA: focus states, contrast, semantic landmarks, skip-to-content
-- Lighthouse target: 90+ on Performance, Accessibility, Best Practices, SEO for every route
-- Form validation with Zod + accessible error messages
-- 404 and error boundaries on every route
-
-## 10. Build order
-
-1. Design system + parent brand visual direction (confirm with you)
-2. Root shell, root SEO/analytics, layout primitives, section components
-3. Main HIGAET site (Home, About, Careers, Contact)
-4. Blog CMS + blog routes
-5. HIGAET Academy (10 pages, accent identity)
-6. HIGAET Global Education Hub (10 pages, accent identity)
-7. HIGAET Technologies (10 pages, accent identity)
-8. Auth scaffolding
-9. Lead capture wiring + analytics events
-10. Sitemap, robots, manifest, JSON-LD audit, Lighthouse pass
-
-## 11. What I'll confirm before building
-
-- Brand colors / typography direction (I'll generate 2–3 design directions for the parent brand)
-- Whether to enable Lovable Cloud now for the CMS/lead backend (recommended) vs static JSON until your Node backend is ready
-- Whether to include the cookie consent banner now or defer to Phase 2
-
-Once you approve, I'll start with the design system and the main HIGAET site.
+Approve those and I'll wire the dashboard, server fns, sign-in UI, and role-based routing in the same turn.
