@@ -1824,6 +1824,144 @@ export type Database = {
           },
         ]
       }
+      tech_contract_documents: {
+        Row: {
+          contract_id: string
+          created_at: string
+          document_type: string | null
+          file_name: string | null
+          file_url: string
+          id: string
+          uploaded_by: string | null
+          visible_to_client: boolean
+        }
+        Insert: {
+          contract_id: string
+          created_at?: string
+          document_type?: string | null
+          file_name?: string | null
+          file_url: string
+          id?: string
+          uploaded_by?: string | null
+          visible_to_client?: boolean
+        }
+        Update: {
+          contract_id?: string
+          created_at?: string
+          document_type?: string | null
+          file_name?: string | null
+          file_url?: string
+          id?: string
+          uploaded_by?: string | null
+          visible_to_client?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_contract_documents_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "tech_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_contracts: {
+        Row: {
+          client_id: string
+          confidentiality: string | null
+          created_at: string
+          created_by: string | null
+          currency: string | null
+          deliverables: string | null
+          effective_date: string | null
+          end_date: string | null
+          id: string
+          parties: string | null
+          payment_terms: string | null
+          pdf_url: string | null
+          project_id: string | null
+          proposal_id: string | null
+          scope: string | null
+          sent_at: string | null
+          signed_at: string | null
+          status: Database["public"]["Enums"]["tech_contract_status"]
+          termination: string | null
+          title: string
+          total_amount: number | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          confidentiality?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          deliverables?: string | null
+          effective_date?: string | null
+          end_date?: string | null
+          id?: string
+          parties?: string | null
+          payment_terms?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          proposal_id?: string | null
+          scope?: string | null
+          sent_at?: string | null
+          signed_at?: string | null
+          status?: Database["public"]["Enums"]["tech_contract_status"]
+          termination?: string | null
+          title: string
+          total_amount?: number | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          confidentiality?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          deliverables?: string | null
+          effective_date?: string | null
+          end_date?: string | null
+          id?: string
+          parties?: string | null
+          payment_terms?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          proposal_id?: string | null
+          scope?: string | null
+          sent_at?: string | null
+          signed_at?: string | null
+          status?: Database["public"]["Enums"]["tech_contract_status"]
+          termination?: string | null
+          title?: string
+          total_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_contracts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_contracts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_contracts_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "tech_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tech_project_documents: {
         Row: {
           category: string | null
@@ -2033,6 +2171,134 @@ export type Database = {
             columns: ["project_manager"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_proposal_versions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          deliverables: string | null
+          executive_summary: string | null
+          id: string
+          pdf_url: string | null
+          pricing: string | null
+          proposal_id: string
+          scope_of_work: string | null
+          terms: string | null
+          timeline: string | null
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          deliverables?: string | null
+          executive_summary?: string | null
+          id?: string
+          pdf_url?: string | null
+          pricing?: string | null
+          proposal_id: string
+          scope_of_work?: string | null
+          terms?: string | null
+          timeline?: string | null
+          version: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          deliverables?: string | null
+          executive_summary?: string | null
+          id?: string
+          pdf_url?: string | null
+          pricing?: string | null
+          proposal_id?: string
+          scope_of_work?: string | null
+          terms?: string | null
+          timeline?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_proposal_versions_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "tech_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_proposals: {
+        Row: {
+          client_id: string
+          client_response_notes: string | null
+          created_at: string
+          created_by: string | null
+          currency: string | null
+          current_version: number
+          id: string
+          project_id: string | null
+          responded_at: string | null
+          sent_at: string | null
+          status: Database["public"]["Enums"]["tech_proposal_status"]
+          summary: string | null
+          title: string
+          total_amount: number | null
+          updated_at: string
+          valid_until: string | null
+          viewed_at: string | null
+        }
+        Insert: {
+          client_id: string
+          client_response_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          current_version?: number
+          id?: string
+          project_id?: string | null
+          responded_at?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["tech_proposal_status"]
+          summary?: string | null
+          title: string
+          total_amount?: number | null
+          updated_at?: string
+          valid_until?: string | null
+          viewed_at?: string | null
+        }
+        Update: {
+          client_id?: string
+          client_response_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          current_version?: number
+          id?: string
+          project_id?: string | null
+          responded_at?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["tech_proposal_status"]
+          summary?: string | null
+          title?: string
+          total_amount?: number | null
+          updated_at?: string
+          valid_until?: string | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_proposals_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_proposals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -2555,6 +2821,13 @@ export type Database = {
         | "active"
         | "completed"
         | "archived"
+      tech_contract_status:
+        | "draft"
+        | "sent"
+        | "signed"
+        | "active"
+        | "completed"
+        | "terminated"
       tech_milestone_status:
         | "not_started"
         | "in_progress"
@@ -2567,6 +2840,14 @@ export type Database = {
         | "on_hold"
         | "completed"
         | "cancelled"
+      tech_proposal_status:
+        | "draft"
+        | "sent"
+        | "viewed"
+        | "negotiation"
+        | "accepted"
+        | "rejected"
+        | "expired"
       visa_status:
         | "draft"
         | "documents_pending"
@@ -2765,6 +3046,14 @@ export const Constants = {
         "completed",
         "archived",
       ],
+      tech_contract_status: [
+        "draft",
+        "sent",
+        "signed",
+        "active",
+        "completed",
+        "terminated",
+      ],
       tech_milestone_status: [
         "not_started",
         "in_progress",
@@ -2778,6 +3067,15 @@ export const Constants = {
         "on_hold",
         "completed",
         "cancelled",
+      ],
+      tech_proposal_status: [
+        "draft",
+        "sent",
+        "viewed",
+        "negotiation",
+        "accepted",
+        "rejected",
+        "expired",
       ],
       visa_status: [
         "draft",

@@ -9,6 +9,8 @@ const TABS = [
   { to: "/dashboard/technologies", label: "Overview", exact: true },
   { to: "/dashboard/technologies/projects", label: "Projects" },
   { to: "/dashboard/technologies/clients", label: "Clients" },
+  { to: "/dashboard/technologies/proposals", label: "Proposals" },
+  { to: "/dashboard/technologies/contracts", label: "Contracts" },
 ] as const;
 
 function TechLayout() {
