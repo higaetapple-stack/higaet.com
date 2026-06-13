@@ -6,28 +6,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/admin")({
 });
 
 type Tab = {
-  to:
-    | "/dashboard/admin"
-    | "/dashboard/admin/programs"
-    | "/dashboard/admin/projects"
-    | "/dashboard/admin/enrollments"
-    | "/dashboard/admin/users"
-    | "/dashboard/admin/assignments"
-    | "/dashboard/admin/certificates"
-    | "/dashboard/admin/employers"
-    | "/dashboard/admin/jobs"
-    | "/dashboard/admin/applications"
-    | "/dashboard/admin/placements"
-    | "/dashboard/admin/stories"
-    | "/dashboard/admin/countries"
-    | "/dashboard/admin/universities"
-    | "/dashboard/admin/uniprograms"
-    | "/dashboard/admin/scholarships"
-    | "/dashboard/admin/sa-leads"
-    | "/dashboard/admin/sa-applications"
-    | "/dashboard/admin/tech-leads"
-    | "/dashboard/admin/analytics"
-    | "/dashboard/admin/settings";
+  to: string;
   label: string;
   exact?: boolean;
   group?: string;
@@ -35,6 +14,7 @@ type Tab = {
 
 const TABS: Tab[] = [
   { to: "/dashboard/admin", label: "Overview", exact: true },
+  { to: "/dashboard/admin/crm", label: "CRM", group: "Operations" },
   { to: "/dashboard/admin/programs", label: "Programs", group: "Academy" },
   { to: "/dashboard/admin/projects", label: "Projects", group: "Academy" },
   { to: "/dashboard/admin/enrollments", label: "Enrollments", group: "Academy" },
@@ -75,7 +55,7 @@ function AdminLayout() {
             return (
               <Link
                 key={t.to}
-                to={t.to}
+                to={t.to as any}
                 className={cn(
                   "px-3 py-2 text-sm rounded-t-md border-b-2 -mb-px transition-colors",
                   active

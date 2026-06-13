@@ -112,13 +112,16 @@ import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './rou
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
+import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
 import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
 import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
 import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
+import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
 import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
+import { Route as AuthenticatedDashboardAdminCrmTypeIdRouteImport } from './routes/_authenticated.dashboard.admin.crm.$type.$id'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -688,6 +691,12 @@ const AuthenticatedDashboardAdminEmployersRoute =
     path: '/employers',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminCrmRoute =
+  AuthenticatedDashboardAdminCrmRouteImport.update({
+    id: '/crm',
+    path: '/crm',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminCountriesRoute =
   AuthenticatedDashboardAdminCountriesRouteImport.update({
     id: '/countries',
@@ -724,11 +733,23 @@ const AuthenticatedDashboardAdminProgramsIndexRoute =
     path: '/programs/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminCrmIndexRoute =
+  AuthenticatedDashboardAdminCrmIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardAdminCrmRoute,
+  } as any)
 const AuthenticatedDashboardAdminProgramsIdRoute =
   AuthenticatedDashboardAdminProgramsIdRouteImport.update({
     id: '/programs/$id',
     path: '/programs/$id',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCrmTypeIdRoute =
+  AuthenticatedDashboardAdminCrmTypeIdRouteImport.update({
+    id: '/$type/$id',
+    path: '/$type/$id',
+    getParentRoute: () => AuthenticatedDashboardAdminCrmRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -806,6 +827,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
+  '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
@@ -840,7 +862,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/certificates/': typeof AuthenticatedDashboardCertificatesIndexRoute
   '/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -945,7 +969,9 @@ export interface FileRoutesByTo {
   '/dashboard/certificates': typeof AuthenticatedDashboardCertificatesIndexRoute
   '/dashboard/projects': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -1024,6 +1050,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/_authenticated/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
+  '/_authenticated/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
@@ -1058,7 +1085,9 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/certificates/': typeof AuthenticatedDashboardCertificatesIndexRoute
   '/_authenticated/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/_authenticated/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/_authenticated/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
+  '/_authenticated/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -1137,6 +1166,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/countries'
+    | '/dashboard/admin/crm'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
@@ -1171,7 +1201,9 @@ export interface FileRouteTypes {
     | '/dashboard/certificates/'
     | '/dashboard/projects/'
     | '/dashboard/admin/programs/$id'
+    | '/dashboard/admin/crm/'
     | '/dashboard/admin/programs/'
+    | '/dashboard/admin/crm/$type/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1276,7 +1308,9 @@ export interface FileRouteTypes {
     | '/dashboard/certificates'
     | '/dashboard/projects'
     | '/dashboard/admin/programs/$id'
+    | '/dashboard/admin/crm'
     | '/dashboard/admin/programs'
+    | '/dashboard/admin/crm/$type/$id'
   id:
     | '__root__'
     | '/'
@@ -1354,6 +1388,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/assignments'
     | '/_authenticated/dashboard/admin/certificates'
     | '/_authenticated/dashboard/admin/countries'
+    | '/_authenticated/dashboard/admin/crm'
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/jobs'
@@ -1388,7 +1423,9 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/certificates/'
     | '/_authenticated/dashboard/projects/'
     | '/_authenticated/dashboard/admin/programs/$id'
+    | '/_authenticated/dashboard/admin/crm/'
     | '/_authenticated/dashboard/admin/programs/'
+    | '/_authenticated/dashboard/admin/crm/$type/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -2135,6 +2172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminEmployersRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/crm': {
+      id: '/_authenticated/dashboard/admin/crm'
+      path: '/crm'
+      fullPath: '/dashboard/admin/crm'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/countries': {
       id: '/_authenticated/dashboard/admin/countries'
       path: '/countries'
@@ -2177,6 +2221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/crm/': {
+      id: '/_authenticated/dashboard/admin/crm/'
+      path: '/'
+      fullPath: '/dashboard/admin/crm/'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminCrmRoute
+    }
     '/_authenticated/dashboard/admin/programs/$id': {
       id: '/_authenticated/dashboard/admin/programs/$id'
       path: '/programs/$id'
@@ -2184,8 +2235,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIdRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/crm/$type/$id': {
+      id: '/_authenticated/dashboard/admin/crm/$type/$id'
+      path: '/$type/$id'
+      fullPath: '/dashboard/admin/crm/$type/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmTypeIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminCrmRoute
+    }
   }
 }
+
+interface AuthenticatedDashboardAdminCrmRouteChildren {
+  AuthenticatedDashboardAdminCrmIndexRoute: typeof AuthenticatedDashboardAdminCrmIndexRoute
+  AuthenticatedDashboardAdminCrmTypeIdRoute: typeof AuthenticatedDashboardAdminCrmTypeIdRoute
+}
+
+const AuthenticatedDashboardAdminCrmRouteChildren: AuthenticatedDashboardAdminCrmRouteChildren =
+  {
+    AuthenticatedDashboardAdminCrmIndexRoute:
+      AuthenticatedDashboardAdminCrmIndexRoute,
+    AuthenticatedDashboardAdminCrmTypeIdRoute:
+      AuthenticatedDashboardAdminCrmTypeIdRoute,
+  }
+
+const AuthenticatedDashboardAdminCrmRouteWithChildren =
+  AuthenticatedDashboardAdminCrmRoute._addFileChildren(
+    AuthenticatedDashboardAdminCrmRouteChildren,
+  )
 
 interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminAnalyticsRoute: typeof AuthenticatedDashboardAdminAnalyticsRoute
@@ -2193,6 +2269,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
   AuthenticatedDashboardAdminCountriesRoute: typeof AuthenticatedDashboardAdminCountriesRoute
+  AuthenticatedDashboardAdminCrmRoute: typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
@@ -2224,6 +2301,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminCertificatesRoute,
     AuthenticatedDashboardAdminCountriesRoute:
       AuthenticatedDashboardAdminCountriesRoute,
+    AuthenticatedDashboardAdminCrmRoute:
+      AuthenticatedDashboardAdminCrmRouteWithChildren,
     AuthenticatedDashboardAdminEmployersRoute:
       AuthenticatedDashboardAdminEmployersRoute,
     AuthenticatedDashboardAdminEnrollmentsRoute:
