@@ -34,10 +34,12 @@ function CountryDetail() {
     <>
       <PageHero
         brand="global"
-        eyebrow={<span><Link to="/global-education/countries" className="inline-flex items-center gap-1"><ArrowLeft className="size-3" /> All destinations</Link></span>}
+        eyebrow="Study destination"
         title={`${country.flag_emoji ?? ""} Study in ${country.name}`}
         subtitle={country.summary ?? ""}
-      />
+      >
+        <Link to="/global-education/countries" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-ink"><ArrowLeft className="size-3" /> All destinations</Link>
+      </PageHero>
       <Section>
         <div className="grid lg:grid-cols-3 gap-6">
           <Fact label="Avg tuition / year" value={`$${Number(country.avg_tuition_usd ?? 0).toLocaleString()}`} icon={<Wallet className="size-4" />} />
