@@ -45,6 +45,7 @@ const ITEMS: Item[] = [
   { to: "/dashboard/certificates", label: "Certificates", icon: Award, roles: ["student"] },
   { to: "/dashboard/career", label: "Career", icon: Briefcase, roles: ["student"] },
   { to: "/dashboard/applications", label: "Study abroad", icon: Plane, roles: ["student"] },
+  { to: "/dashboard/visa", label: "My visa", icon: Plane, roles: ["student"] },
   { to: "/dashboard/faculty", label: "Faculty workspace", icon: BookOpen, roles: ["faculty", "mentor"] },
   { to: "/dashboard/faculty/submissions", label: "Grading queue", icon: ClipboardList, roles: ["faculty", "mentor"] },
   { to: "/dashboard/counselor", label: "Counselling", icon: ClipboardList, roles: ["counselor", "placement_officer"] },
