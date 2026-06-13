@@ -201,7 +201,7 @@ export const applyToJob = createServerFn({ method: "POST" })
         student_id: context.userId,
         cover_letter: data.cover_letter || null,
         portfolio_url: data.portfolio_url || null,
-        resume_snapshot,
+        resume_snapshot: resume_snapshot as any,
         status: "submitted",
       },
       { onConflict: "job_id,student_id" },
