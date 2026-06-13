@@ -38,7 +38,7 @@ function LoginPage() {
       const { error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
       toast.success("Welcome back");
-      navigate({ to: "/" });
+      navigate({ to: "/dashboard" });
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Sign-in failed";
       toast.error(msg);
@@ -47,8 +47,25 @@ function LoginPage() {
     }
   };
 
-  // Google sign-in is wired in via Lovable Cloud in Phase 2 once social providers are configured.
-  // Keeping the button hidden in Phase 1 to avoid a stub experience.
+  const [googleLoading, setGoogleLoading] = useState(false);
+  async function signInWithGoogle() {
+    setGoogleLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + "/dashboard",
+      });
+      if (result.error) {
+        toast.error(result.error.message ?? "Google sign-in failed");
+        setGoogleLoading(false);
+        return;
+      }
+      if (result.redirected) return;
+      navigate({ to: "/dashboard" });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Google sign-in failed");
+      setGoogleLoading(false);
+    }
+  }
 
 
 
