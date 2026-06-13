@@ -16,31 +16,40 @@ export type Database = {
     Tables: {
       assignments: {
         Row: {
+          allowed_types: Database["public"]["Enums"]["submission_type"][]
           course_id: string
           created_at: string
           description: string | null
           due_date: string | null
           id: string
+          instructions: string | null
+          is_required: boolean
           max_score: number
           title: string
           updated_at: string
         }
         Insert: {
+          allowed_types?: Database["public"]["Enums"]["submission_type"][]
           course_id: string
           created_at?: string
           description?: string | null
           due_date?: string | null
           id?: string
+          instructions?: string | null
+          is_required?: boolean
           max_score?: number
           title: string
           updated_at?: string
         }
         Update: {
+          allowed_types?: Database["public"]["Enums"]["submission_type"][]
           course_id?: string
           created_at?: string
           description?: string | null
           due_date?: string | null
           id?: string
+          instructions?: string | null
+          is_required?: boolean
           max_score?: number
           title?: string
           updated_at?: string
@@ -97,9 +106,14 @@ export type Database = {
           created_at: string
           id: string
           issued_at: string
+          issued_by: string | null
           program_id: string
+          revoked: boolean
+          revoked_at: string | null
+          revoked_reason: string | null
           student_id: string
           updated_at: string
+          verification_hash: string | null
         }
         Insert: {
           certificate_number?: string | null
@@ -107,9 +121,14 @@ export type Database = {
           created_at?: string
           id?: string
           issued_at?: string
+          issued_by?: string | null
           program_id: string
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_reason?: string | null
           student_id: string
           updated_at?: string
+          verification_hash?: string | null
         }
         Update: {
           certificate_number?: string | null
@@ -117,11 +136,23 @@ export type Database = {
           created_at?: string
           id?: string
           issued_at?: string
+          issued_by?: string | null
           program_id?: string
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_reason?: string | null
           student_id?: string
           updated_at?: string
+          verification_hash?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "certificates_issued_by_fkey"
+            columns: ["issued_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "certificates_program_id_fkey"
             columns: ["program_id"]
@@ -438,17 +469,138 @@ export type Database = {
           },
         ]
       }
+      project_submissions: {
+        Row: {
+          created_at: string
+          demo_url: string | null
+          feedback: string | null
+          graded_at: string | null
+          graded_by: string | null
+          id: string
+          project_id: string
+          repo_url: string | null
+          score: number | null
+          status: Database["public"]["Enums"]["project_submission_status"]
+          student_id: string
+          submitted_at: string
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          demo_url?: string | null
+          feedback?: string | null
+          graded_at?: string | null
+          graded_by?: string | null
+          id?: string
+          project_id: string
+          repo_url?: string | null
+          score?: number | null
+          status?: Database["public"]["Enums"]["project_submission_status"]
+          student_id: string
+          submitted_at?: string
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          demo_url?: string | null
+          feedback?: string | null
+          graded_at?: string | null
+          graded_by?: string | null
+          id?: string
+          project_id?: string
+          repo_url?: string | null
+          score?: number | null
+          status?: Database["public"]["Enums"]["project_submission_status"]
+          student_id?: string
+          submitted_at?: string
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_submissions_graded_by_fkey"
+            columns: ["graded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_submissions_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          brief: string | null
+          created_at: string
+          due_at: string | null
+          guidelines: string | null
+          id: string
+          is_required: boolean
+          program_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          brief?: string | null
+          created_at?: string
+          due_at?: string | null
+          guidelines?: string | null
+          id?: string
+          is_required?: boolean
+          program_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          brief?: string | null
+          created_at?: string
+          due_at?: string | null
+          guidelines?: string | null
+          id?: string
+          is_required?: boolean
+          program_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       submissions: {
         Row: {
           assignment_id: string
           content: string | null
           created_at: string
+          external_url: string | null
           feedback: string | null
           file_url: string | null
           graded_at: string | null
+          graded_by: string | null
           id: string
           score: number | null
+          status: Database["public"]["Enums"]["submission_status"]
           student_id: string
+          submission_type: Database["public"]["Enums"]["submission_type"]
           submitted_at: string
           updated_at: string
         }
@@ -456,12 +608,16 @@ export type Database = {
           assignment_id: string
           content?: string | null
           created_at?: string
+          external_url?: string | null
           feedback?: string | null
           file_url?: string | null
           graded_at?: string | null
+          graded_by?: string | null
           id?: string
           score?: number | null
+          status?: Database["public"]["Enums"]["submission_status"]
           student_id: string
+          submission_type?: Database["public"]["Enums"]["submission_type"]
           submitted_at?: string
           updated_at?: string
         }
@@ -469,12 +625,16 @@ export type Database = {
           assignment_id?: string
           content?: string | null
           created_at?: string
+          external_url?: string | null
           feedback?: string | null
           file_url?: string | null
           graded_at?: string | null
+          graded_by?: string | null
           id?: string
           score?: number | null
+          status?: Database["public"]["Enums"]["submission_status"]
           student_id?: string
+          submission_type?: Database["public"]["Enums"]["submission_type"]
           submitted_at?: string
           updated_at?: string
         }
@@ -484,6 +644,13 @@ export type Database = {
             columns: ["assignment_id"]
             isOneToOne: false
             referencedRelation: "assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_graded_by_fkey"
+            columns: ["graded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
@@ -538,6 +705,21 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_program_eligible: {
+        Args: { _program: string; _student: string }
+        Returns: boolean
+      }
+      verify_certificate: {
+        Args: { _number: string }
+        Returns: {
+          certificate_number: string
+          issued_at: string
+          program_title: string
+          revoked: boolean
+          student_name: string
+          verification_hash: string
+        }[]
+      }
     }
     Enums: {
       app_role:
@@ -553,6 +735,20 @@ export type Database = {
       enrollment_status: "active" | "paused" | "completed" | "withdrawn"
       lesson_type: "video" | "reading" | "lab" | "quiz"
       program_status: "draft" | "published" | "archived"
+      project_submission_status:
+        | "draft"
+        | "submitted"
+        | "reviewed"
+        | "passed"
+        | "failed"
+        | "needs_revision"
+      submission_status:
+        | "pending"
+        | "reviewed"
+        | "passed"
+        | "failed"
+        | "needs_revision"
+      submission_type: "file" | "github" | "portfolio" | "text" | "mixed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -694,6 +890,22 @@ export const Constants = {
       enrollment_status: ["active", "paused", "completed", "withdrawn"],
       lesson_type: ["video", "reading", "lab", "quiz"],
       program_status: ["draft", "published", "archived"],
+      project_submission_status: [
+        "draft",
+        "submitted",
+        "reviewed",
+        "passed",
+        "failed",
+        "needs_revision",
+      ],
+      submission_status: [
+        "pending",
+        "reviewed",
+        "passed",
+        "failed",
+        "needs_revision",
+      ],
+      submission_type: ["file", "github", "portfolio", "text", "mixed"],
     },
   },
 } as const
