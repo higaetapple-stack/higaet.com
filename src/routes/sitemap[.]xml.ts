@@ -40,7 +40,9 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/global-education/contact", changefreq: "monthly", priority: "0.6" },
   // Technologies
   { path: "/technologies", changefreq: "weekly", priority: "0.9" },
-  { path: "/technologies/software-development", changefreq: "monthly", priority: "0.8" },
+  { path: "/technologies/custom-software-development", changefreq: "monthly", priority: "0.8" },
+  { path: "/technologies/cloud-solutions", changefreq: "monthly", priority: "0.8" },
+  { path: "/technologies/software-development", changefreq: "monthly", priority: "0.7" },
   { path: "/technologies/saas-products", changefreq: "monthly", priority: "0.7" },
   { path: "/technologies/ai-solutions", changefreq: "monthly", priority: "0.8" },
   { path: "/technologies/digital-marketing", changefreq: "monthly", priority: "0.7" },
