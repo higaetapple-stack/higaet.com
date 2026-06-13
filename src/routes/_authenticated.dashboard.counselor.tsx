@@ -5,13 +5,13 @@ export const Route = createFileRoute("/_authenticated/dashboard/counselor")({
   component: CounselorLayout,
 });
 
-const TABS = [
+const TABS: Array<{ to: string; label: string; exact?: boolean }> = [
   { to: "/dashboard/counselor", label: "Overview", exact: true },
   { to: "/dashboard/counselor/leads", label: "My leads" },
   { to: "/dashboard/counselor/applications", label: "My applications" },
   { to: "/dashboard/counselor/tasks", label: "Tasks" },
   { to: "/dashboard/counselor/follow-ups", label: "Follow-ups" },
-] as const;
+];
 
 function CounselorLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
