@@ -29,11 +29,14 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
 import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
 import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
 import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
 import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
+import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
 import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
+import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 
 const TermsRoute = TermsRouteImport.update({
@@ -136,6 +139,11 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
+  id: '/success-stories',
+  path: '/success-stories',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyPlacementsRoute = AcademyPlacementsRouteImport.update({
   id: '/placements',
   path: '/placements',
@@ -156,12 +164,22 @@ const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
   path: '/internships',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyFaqRoute = AcademyFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyCorporateTrainingRoute =
   AcademyCorporateTrainingRouteImport.update({
     id: '/corporate-training',
     path: '/corporate-training',
     getParentRoute: () => AcademyRoute,
   } as any)
+const AcademyContactRoute = AcademyContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
   id: '/certifications',
   path: '/certifications',
@@ -182,11 +200,14 @@ export interface FileRoutesByFullPath {
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -207,11 +228,14 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -236,11 +260,14 @@ export interface FileRoutesById {
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/faq': typeof AcademyFaqRoute
   '/academy/internships': typeof AcademyInternshipsRoute
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -266,11 +293,14 @@ export interface FileRouteTypes {
     | '/technologies'
     | '/terms'
     | '/academy/certifications'
+    | '/academy/contact'
     | '/academy/corporate-training'
+    | '/academy/faq'
     | '/academy/internships'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
+    | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -291,11 +321,14 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/academy/certifications'
+    | '/academy/contact'
     | '/academy/corporate-training'
+    | '/academy/faq'
     | '/academy/internships'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
+    | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -319,11 +352,14 @@ export interface FileRouteTypes {
     | '/technologies'
     | '/terms'
     | '/academy/certifications'
+    | '/academy/contact'
     | '/academy/corporate-training'
+    | '/academy/faq'
     | '/academy/internships'
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
+    | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -491,6 +527,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/academy/success-stories': {
+      id: '/academy/success-stories'
+      path: '/success-stories'
+      fullPath: '/academy/success-stories'
+      preLoaderRoute: typeof AcademySuccessStoriesRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/placements': {
       id: '/academy/placements'
       path: '/placements'
@@ -519,11 +562,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyInternshipsRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/faq': {
+      id: '/academy/faq'
+      path: '/faq'
+      fullPath: '/academy/faq'
+      preLoaderRoute: typeof AcademyFaqRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/corporate-training': {
       id: '/academy/corporate-training'
       path: '/corporate-training'
       fullPath: '/academy/corporate-training'
       preLoaderRoute: typeof AcademyCorporateTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/contact': {
+      id: '/academy/contact'
+      path: '/contact'
+      fullPath: '/academy/contact'
+      preLoaderRoute: typeof AcademyContactRouteImport
       parentRoute: typeof AcademyRoute
     }
     '/academy/certifications': {
@@ -538,21 +595,27 @@ declare module '@tanstack/react-router' {
 
 interface AcademyRouteChildren {
   AcademyCertificationsRoute: typeof AcademyCertificationsRoute
+  AcademyContactRoute: typeof AcademyContactRoute
   AcademyCorporateTrainingRoute: typeof AcademyCorporateTrainingRoute
+  AcademyFaqRoute: typeof AcademyFaqRoute
   AcademyInternshipsRoute: typeof AcademyInternshipsRoute
   AcademyOfflineTrainingRoute: typeof AcademyOfflineTrainingRoute
   AcademyOnlineCoursesRoute: typeof AcademyOnlineCoursesRoute
   AcademyPlacementsRoute: typeof AcademyPlacementsRoute
+  AcademySuccessStoriesRoute: typeof AcademySuccessStoriesRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
   AcademyCertificationsRoute: AcademyCertificationsRoute,
+  AcademyContactRoute: AcademyContactRoute,
   AcademyCorporateTrainingRoute: AcademyCorporateTrainingRoute,
+  AcademyFaqRoute: AcademyFaqRoute,
   AcademyInternshipsRoute: AcademyInternshipsRoute,
   AcademyOfflineTrainingRoute: AcademyOfflineTrainingRoute,
   AcademyOnlineCoursesRoute: AcademyOnlineCoursesRoute,
   AcademyPlacementsRoute: AcademyPlacementsRoute,
+  AcademySuccessStoriesRoute: AcademySuccessStoriesRoute,
   AcademyIndexRoute: AcademyIndexRoute,
 }
 
