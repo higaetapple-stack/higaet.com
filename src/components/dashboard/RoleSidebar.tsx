@@ -6,13 +6,26 @@ import {
   BookOpen,
   Users,
   ClipboardList,
+  ClipboardCheck,
+  Award,
+  Rocket,
   ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AppRole } from "@/lib/auth.functions";
 
 type Item = {
-  to: "/dashboard" | "/dashboard/profile" | "/dashboard/programs" | "/dashboard/faculty" | "/dashboard/counselor" | "/dashboard/admin";
+  to:
+    | "/dashboard"
+    | "/dashboard/profile"
+    | "/dashboard/programs"
+    | "/dashboard/assignments"
+    | "/dashboard/projects"
+    | "/dashboard/certificates"
+    | "/dashboard/faculty"
+    | "/dashboard/faculty/submissions"
+    | "/dashboard/counselor"
+    | "/dashboard/admin";
   label: string;
   icon: typeof LayoutDashboard;
   roles: "all" | AppRole[];
@@ -22,7 +35,11 @@ const ITEMS: Item[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, roles: "all" },
   { to: "/dashboard/profile", label: "My profile", icon: User, roles: "all" },
   { to: "/dashboard/programs", label: "My programs", icon: GraduationCap, roles: ["student"] },
+  { to: "/dashboard/assignments", label: "Assignments", icon: ClipboardCheck, roles: ["student"] },
+  { to: "/dashboard/projects", label: "Projects", icon: Rocket, roles: ["student"] },
+  { to: "/dashboard/certificates", label: "Certificates", icon: Award, roles: ["student"] },
   { to: "/dashboard/faculty", label: "Faculty workspace", icon: BookOpen, roles: ["faculty", "mentor"] },
+  { to: "/dashboard/faculty/submissions", label: "Grading queue", icon: ClipboardList, roles: ["faculty", "mentor"] },
   { to: "/dashboard/counselor", label: "Counselling", icon: ClipboardList, roles: ["counselor", "placement_officer"] },
   { to: "/dashboard/admin", label: "Admin", icon: ShieldCheck, roles: ["admin", "super_admin"] },
 ];
