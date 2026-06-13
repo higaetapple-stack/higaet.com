@@ -9,6 +9,7 @@ type Tab = {
   to:
     | "/dashboard/admin"
     | "/dashboard/admin/programs"
+    | "/dashboard/admin/enrollments"
     | "/dashboard/admin/users"
     | "/dashboard/admin/assignments"
     | "/dashboard/admin/certificates"
@@ -20,6 +21,7 @@ type Tab = {
 const TABS: Tab[] = [
   { to: "/dashboard/admin", label: "Overview", exact: true },
   { to: "/dashboard/admin/programs", label: "Programs" },
+  { to: "/dashboard/admin/enrollments", label: "Enrollments" },
   { to: "/dashboard/admin/users", label: "Users & Roles" },
   { to: "/dashboard/admin/assignments", label: "Assignments" },
   { to: "/dashboard/admin/certificates", label: "Certificates" },

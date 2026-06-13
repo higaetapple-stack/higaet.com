@@ -77,6 +77,7 @@ import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './rou
 import { Route as AuthenticatedDashboardCoursesCourseIdRouteImport } from './routes/_authenticated.dashboard.courses.$courseId'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
+import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
@@ -445,6 +446,12 @@ const AuthenticatedDashboardAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminEnrollmentsRoute =
+  AuthenticatedDashboardAdminEnrollmentsRouteImport.update({
+    id: '/enrollments',
+    path: '/enrollments',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminCertificatesRoute =
   AuthenticatedDashboardAdminCertificatesRouteImport.update({
     id: '/certificates',
@@ -534,6 +541,7 @@ export interface FileRoutesByFullPath {
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
@@ -602,6 +610,7 @@ export interface FileRoutesByTo {
   '/academy/programs': typeof AcademyProgramsIndexRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
@@ -677,6 +686,7 @@ export interface FileRoutesById {
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
@@ -752,6 +762,7 @@ export interface FileRouteTypes {
     | '/academy/programs/'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
+    | '/dashboard/admin/enrollments'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
     | '/dashboard/courses/$courseId'
@@ -820,6 +831,7 @@ export interface FileRouteTypes {
     | '/academy/programs'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
+    | '/dashboard/admin/enrollments'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
     | '/dashboard/courses/$courseId'
@@ -894,6 +906,7 @@ export interface FileRouteTypes {
     | '/academy/programs/'
     | '/_authenticated/dashboard/admin/assignments'
     | '/_authenticated/dashboard/admin/certificates'
+    | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/courses/$courseId'
@@ -1398,6 +1411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/enrollments': {
+      id: '/_authenticated/dashboard/admin/enrollments'
+      path: '/enrollments'
+      fullPath: '/dashboard/admin/enrollments'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminEnrollmentsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/certificates': {
       id: '/_authenticated/dashboard/admin/certificates'
       path: '/certificates'
@@ -1432,6 +1452,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
+  AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
@@ -1445,6 +1466,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminAssignmentsRoute,
     AuthenticatedDashboardAdminCertificatesRoute:
       AuthenticatedDashboardAdminCertificatesRoute,
+    AuthenticatedDashboardAdminEnrollmentsRoute:
+      AuthenticatedDashboardAdminEnrollmentsRoute,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
     AuthenticatedDashboardAdminUsersRoute:
