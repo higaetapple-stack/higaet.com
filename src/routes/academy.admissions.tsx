@@ -59,7 +59,7 @@ const INTENT_COPY: Record<"apply" | "counselling" | "brochure", { eyebrow: strin
 
 function AdmissionsPage() {
   const { intent, program } = Route.useSearch();
-  const copy = INTENT_COPY[intent];
+  const copy = INTENT_COPY[intent as "apply" | "counselling" | "brochure"];
   const Icon = copy.icon;
   const selectedProgram = PROGRAMS.find((p) => p.slug === program);
 

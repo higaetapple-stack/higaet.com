@@ -57,6 +57,7 @@ import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
 import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
+import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
@@ -314,6 +315,11 @@ const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
   path: '/certifications',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
+  id: '/admissions',
+  path: '/admissions',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
@@ -348,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
@@ -399,6 +406,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
@@ -454,6 +462,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
   '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
@@ -510,6 +519,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
     | '/academy/corporate-training'
@@ -561,6 +571,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
     | '/academy/corporate-training'
@@ -615,6 +626,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
     | '/academy/corporate-training'
@@ -1010,6 +1022,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyCertificationsRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/admissions': {
+      id: '/academy/admissions'
+      path: '/admissions'
+      fullPath: '/academy/admissions'
+      preLoaderRoute: typeof AcademyAdmissionsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/programs/': {
       id: '/academy/programs/'
       path: '/programs'
@@ -1042,6 +1061,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AcademyRouteChildren {
+  AcademyAdmissionsRoute: typeof AcademyAdmissionsRoute
   AcademyCertificationsRoute: typeof AcademyCertificationsRoute
   AcademyContactRoute: typeof AcademyContactRoute
   AcademyCorporateTrainingRoute: typeof AcademyCorporateTrainingRoute
@@ -1060,6 +1080,7 @@ interface AcademyRouteChildren {
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyAdmissionsRoute: AcademyAdmissionsRoute,
   AcademyCertificationsRoute: AcademyCertificationsRoute,
   AcademyContactRoute: AcademyContactRoute,
   AcademyCorporateTrainingRoute: AcademyCorporateTrainingRoute,
