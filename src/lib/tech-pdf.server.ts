@@ -126,3 +126,40 @@ export async function renderContractPdf(contract: any): Promise<Uint8Array> {
 
   return await doc.save();
 }
+
+export async function renderInvoicePdf(invoice: any): Promise<Uint8Array> {
+  const doc = await PDFDocument.create();
+  const regular = await doc.embedFont(StandardFonts.Helvetica);
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  const w = new Writer(doc, regular, bold);
+
+  w.heading("INVOICE", 22);
+  w.para(`Invoice #: ${invoice.invoice_number}`);
+  w.para(`Issue Date: ${invoice.issue_date ?? "—"}    Due: ${invoice.due_date ?? "—"}`);
+  w.para(`Status: ${invoice.status}`);
+  w.spacer();
+  w.heading("Bill To");
+  w.para(invoice.client?.company ?? "—");
+  if (invoice.client?.contact_person) w.para(invoice.client.contact_person);
+  if (invoice.client?.email) w.para(invoice.client.email);
+  w.spacer(12);
+
+  w.heading("Line Items");
+  for (const it of invoice.items ?? []) {
+    w.para(
+      `${it.description}    ${Number(it.quantity)} × ${invoice.currency ?? "USD"} ${Number(it.unit_price).toLocaleString()}    = ${invoice.currency ?? "USD"} ${Number(it.amount).toLocaleString()}`,
+    );
+  }
+  w.spacer();
+  w.para(`Subtotal: ${invoice.currency ?? "USD"} ${Number(invoice.subtotal).toLocaleString()}`);
+  if (Number(invoice.tax) > 0) w.para(`Tax: ${invoice.currency ?? "USD"} ${Number(invoice.tax).toLocaleString()}`);
+  if (Number(invoice.discount) > 0) w.para(`Discount: ${invoice.currency ?? "USD"} ${Number(invoice.discount).toLocaleString()}`);
+  w.heading(`Total: ${invoice.currency ?? "USD"} ${Number(invoice.total).toLocaleString()}`);
+  if (Number(invoice.amount_paid) > 0) {
+    w.para(`Amount Paid: ${invoice.currency ?? "USD"} ${Number(invoice.amount_paid).toLocaleString()}`);
+    w.para(`Balance Due: ${invoice.currency ?? "USD"} ${(Number(invoice.total) - Number(invoice.amount_paid)).toLocaleString()}`);
+  }
+  if (invoice.payment_instructions) { w.spacer(); w.heading("Payment Instructions"); w.para(invoice.payment_instructions); }
+  if (invoice.notes) { w.spacer(); w.heading("Notes"); w.para(invoice.notes); }
+  return await doc.save();
+}
