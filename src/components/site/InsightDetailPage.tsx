@@ -15,7 +15,7 @@ import {
 import { ALL_SERVICES } from "@/content/services.index";
 import { ALL_TECHNOLOGIES } from "@/content/technologies.index";
 import { ALL_INDUSTRIES } from "@/content/industries.index";
-import { CASE_STUDIES_BY_SLUG } from "@/content/case-studies";
+import { CASE_STUDIES } from "@/content/case-studies";
 
 export function buildInsightHead(i: InsightContent) {
   const breadcrumbs: Crumb[] = [
