@@ -24,11 +24,38 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as TechnologiesSoftwareDevelopmentRouteImport } from './routes/technologies.software-development'
+import { Route as TechnologiesSaasProductsRouteImport } from './routes/technologies.saas-products'
+import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/technologies.product-development'
+import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
+import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
+import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
+import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
+import { Route as TechnologiesCareersRouteImport } from './routes/technologies.careers'
+import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
+import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global-education.visa-guidance'
+import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
+import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
+import { Route as GlobalEducationStudentServicesRouteImport } from './routes/global-education.student-services'
+import { Route as GlobalEducationScholarshipsRouteImport } from './routes/global-education.scholarships'
+import { Route as GlobalEducationFaqRouteImport } from './routes/global-education.faq'
+import { Route as GlobalEducationCountriesRouteImport } from './routes/global-education.countries'
+import { Route as GlobalEducationContactRouteImport } from './routes/global-education.contact'
+import { Route as GlobalEducationAdmissionProcessRouteImport } from './routes/global-education.admission-process'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
+import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
+import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
+import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
+import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
+import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
+import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
+import { Route as AcademyContactRouteImport } from './routes/academy.contact'
+import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -105,6 +132,107 @@ const AcademyIndexRoute = AcademyIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AcademyRoute,
 } as any)
+const TechnologiesSoftwareDevelopmentRoute =
+  TechnologiesSoftwareDevelopmentRouteImport.update({
+    id: '/software-development',
+    path: '/software-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesSaasProductsRoute =
+  TechnologiesSaasProductsRouteImport.update({
+    id: '/saas-products',
+    path: '/saas-products',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesProductDevelopmentRoute =
+  TechnologiesProductDevelopmentRouteImport.update({
+    id: '/product-development',
+    path: '/product-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesDigitalMarketingRoute =
+  TechnologiesDigitalMarketingRouteImport.update({
+    id: '/digital-marketing',
+    path: '/digital-marketing',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesContactRoute = TechnologiesContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCaseStudiesRoute = TechnologiesCaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCareersRoute = TechnologiesCareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesAiSolutionsRoute = TechnologiesAiSolutionsRouteImport.update({
+  id: '/ai-solutions',
+  path: '/ai-solutions',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const GlobalEducationVisaGuidanceRoute =
+  GlobalEducationVisaGuidanceRouteImport.update({
+    id: '/visa-guidance',
+    path: '/visa-guidance',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationUniversitiesRoute =
+  GlobalEducationUniversitiesRouteImport.update({
+    id: '/universities',
+    path: '/universities',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationStudyAbroadRoute =
+  GlobalEducationStudyAbroadRouteImport.update({
+    id: '/study-abroad',
+    path: '/study-abroad',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationStudentServicesRoute =
+  GlobalEducationStudentServicesRouteImport.update({
+    id: '/student-services',
+    path: '/student-services',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationScholarshipsRoute =
+  GlobalEducationScholarshipsRouteImport.update({
+    id: '/scholarships',
+    path: '/scholarships',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationFaqRoute = GlobalEducationFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const GlobalEducationCountriesRoute =
+  GlobalEducationCountriesRouteImport.update({
+    id: '/countries',
+    path: '/countries',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationContactRoute = GlobalEducationContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const GlobalEducationAdmissionProcessRoute =
+  GlobalEducationAdmissionProcessRouteImport.update({
+    id: '/admission-process',
+    path: '/admission-process',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -130,6 +258,52 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
+  id: '/success-stories',
+  path: '/success-stories',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyPlacementsRoute = AcademyPlacementsRouteImport.update({
+  id: '/placements',
+  path: '/placements',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyOnlineCoursesRoute = AcademyOnlineCoursesRouteImport.update({
+  id: '/online-courses',
+  path: '/online-courses',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyOfflineTrainingRoute = AcademyOfflineTrainingRouteImport.update({
+  id: '/offline-training',
+  path: '/offline-training',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
+  id: '/internships',
+  path: '/internships',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyFaqRoute = AcademyFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCorporateTrainingRoute =
+  AcademyCorporateTrainingRouteImport.update({
+    id: '/corporate-training',
+    path: '/corporate-training',
+    getParentRoute: () => AcademyRoute,
+  } as any)
+const AcademyContactRoute = AcademyContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
+  id: '/certifications',
+  path: '/certifications',
+  getParentRoute: () => AcademyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -144,11 +318,38 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/contact': typeof AcademyContactRoute
+  '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/faq': typeof AcademyFaqRoute
+  '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/offline-training': typeof AcademyOfflineTrainingRoute
+  '/academy/online-courses': typeof AcademyOnlineCoursesRoute
+  '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
+  '/global-education/contact': typeof GlobalEducationContactRoute
+  '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/faq': typeof GlobalEducationFaqRoute
+  '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
+  '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
+  '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
+  '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/careers': typeof TechnologiesCareersRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/contact': typeof TechnologiesContactRoute
+  '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
+  '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
+  '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -163,11 +364,38 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/contact': typeof AcademyContactRoute
+  '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/faq': typeof AcademyFaqRoute
+  '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/offline-training': typeof AcademyOfflineTrainingRoute
+  '/academy/online-courses': typeof AcademyOnlineCoursesRoute
+  '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
+  '/global-education/contact': typeof GlobalEducationContactRoute
+  '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/faq': typeof GlobalEducationFaqRoute
+  '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
+  '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
+  '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
+  '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/careers': typeof TechnologiesCareersRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/contact': typeof TechnologiesContactRoute
+  '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
+  '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
+  '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
@@ -186,11 +414,38 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/contact': typeof AcademyContactRoute
+  '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/faq': typeof AcademyFaqRoute
+  '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/offline-training': typeof AcademyOfflineTrainingRoute
+  '/academy/online-courses': typeof AcademyOnlineCoursesRoute
+  '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
+  '/global-education/contact': typeof GlobalEducationContactRoute
+  '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/faq': typeof GlobalEducationFaqRoute
+  '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
+  '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
+  '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
+  '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/careers': typeof TechnologiesCareersRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/contact': typeof TechnologiesContactRoute
+  '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
+  '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
+  '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -210,11 +465,38 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/certifications'
+    | '/academy/contact'
+    | '/academy/corporate-training'
+    | '/academy/faq'
+    | '/academy/internships'
+    | '/academy/offline-training'
+    | '/academy/online-courses'
+    | '/academy/placements'
+    | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/admission-process'
+    | '/global-education/contact'
+    | '/global-education/countries'
+    | '/global-education/faq'
+    | '/global-education/scholarships'
+    | '/global-education/student-services'
+    | '/global-education/study-abroad'
+    | '/global-education/universities'
+    | '/global-education/visa-guidance'
+    | '/technologies/ai-solutions'
+    | '/technologies/careers'
+    | '/technologies/case-studies'
+    | '/technologies/contact'
+    | '/technologies/digital-marketing'
+    | '/technologies/industries'
+    | '/technologies/product-development'
+    | '/technologies/saas-products'
+    | '/technologies/software-development'
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
@@ -229,11 +511,38 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/academy/certifications'
+    | '/academy/contact'
+    | '/academy/corporate-training'
+    | '/academy/faq'
+    | '/academy/internships'
+    | '/academy/offline-training'
+    | '/academy/online-courses'
+    | '/academy/placements'
+    | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/admission-process'
+    | '/global-education/contact'
+    | '/global-education/countries'
+    | '/global-education/faq'
+    | '/global-education/scholarships'
+    | '/global-education/student-services'
+    | '/global-education/study-abroad'
+    | '/global-education/universities'
+    | '/global-education/visa-guidance'
+    | '/technologies/ai-solutions'
+    | '/technologies/careers'
+    | '/technologies/case-studies'
+    | '/technologies/contact'
+    | '/technologies/digital-marketing'
+    | '/technologies/industries'
+    | '/technologies/product-development'
+    | '/technologies/saas-products'
+    | '/technologies/software-development'
     | '/academy'
     | '/global-education'
     | '/technologies'
@@ -251,11 +560,38 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/certifications'
+    | '/academy/contact'
+    | '/academy/corporate-training'
+    | '/academy/faq'
+    | '/academy/internships'
+    | '/academy/offline-training'
+    | '/academy/online-courses'
+    | '/academy/placements'
+    | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/admission-process'
+    | '/global-education/contact'
+    | '/global-education/countries'
+    | '/global-education/faq'
+    | '/global-education/scholarships'
+    | '/global-education/student-services'
+    | '/global-education/study-abroad'
+    | '/global-education/universities'
+    | '/global-education/visa-guidance'
+    | '/technologies/ai-solutions'
+    | '/technologies/careers'
+    | '/technologies/case-studies'
+    | '/technologies/contact'
+    | '/technologies/digital-marketing'
+    | '/technologies/industries'
+    | '/technologies/product-development'
+    | '/technologies/saas-products'
+    | '/technologies/software-development'
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
@@ -383,6 +719,132 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/technologies/software-development': {
+      id: '/technologies/software-development'
+      path: '/software-development'
+      fullPath: '/technologies/software-development'
+      preLoaderRoute: typeof TechnologiesSoftwareDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/saas-products': {
+      id: '/technologies/saas-products'
+      path: '/saas-products'
+      fullPath: '/technologies/saas-products'
+      preLoaderRoute: typeof TechnologiesSaasProductsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/product-development': {
+      id: '/technologies/product-development'
+      path: '/product-development'
+      fullPath: '/technologies/product-development'
+      preLoaderRoute: typeof TechnologiesProductDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/industries': {
+      id: '/technologies/industries'
+      path: '/industries'
+      fullPath: '/technologies/industries'
+      preLoaderRoute: typeof TechnologiesIndustriesRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/digital-marketing': {
+      id: '/technologies/digital-marketing'
+      path: '/digital-marketing'
+      fullPath: '/technologies/digital-marketing'
+      preLoaderRoute: typeof TechnologiesDigitalMarketingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/contact': {
+      id: '/technologies/contact'
+      path: '/contact'
+      fullPath: '/technologies/contact'
+      preLoaderRoute: typeof TechnologiesContactRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/case-studies': {
+      id: '/technologies/case-studies'
+      path: '/case-studies'
+      fullPath: '/technologies/case-studies'
+      preLoaderRoute: typeof TechnologiesCaseStudiesRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/careers': {
+      id: '/technologies/careers'
+      path: '/careers'
+      fullPath: '/technologies/careers'
+      preLoaderRoute: typeof TechnologiesCareersRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/ai-solutions': {
+      id: '/technologies/ai-solutions'
+      path: '/ai-solutions'
+      fullPath: '/technologies/ai-solutions'
+      preLoaderRoute: typeof TechnologiesAiSolutionsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/global-education/visa-guidance': {
+      id: '/global-education/visa-guidance'
+      path: '/visa-guidance'
+      fullPath: '/global-education/visa-guidance'
+      preLoaderRoute: typeof GlobalEducationVisaGuidanceRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/universities': {
+      id: '/global-education/universities'
+      path: '/universities'
+      fullPath: '/global-education/universities'
+      preLoaderRoute: typeof GlobalEducationUniversitiesRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/study-abroad': {
+      id: '/global-education/study-abroad'
+      path: '/study-abroad'
+      fullPath: '/global-education/study-abroad'
+      preLoaderRoute: typeof GlobalEducationStudyAbroadRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/student-services': {
+      id: '/global-education/student-services'
+      path: '/student-services'
+      fullPath: '/global-education/student-services'
+      preLoaderRoute: typeof GlobalEducationStudentServicesRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/scholarships': {
+      id: '/global-education/scholarships'
+      path: '/scholarships'
+      fullPath: '/global-education/scholarships'
+      preLoaderRoute: typeof GlobalEducationScholarshipsRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/faq': {
+      id: '/global-education/faq'
+      path: '/faq'
+      fullPath: '/global-education/faq'
+      preLoaderRoute: typeof GlobalEducationFaqRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/countries': {
+      id: '/global-education/countries'
+      path: '/countries'
+      fullPath: '/global-education/countries'
+      preLoaderRoute: typeof GlobalEducationCountriesRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/contact': {
+      id: '/global-education/contact'
+      path: '/contact'
+      fullPath: '/global-education/contact'
+      preLoaderRoute: typeof GlobalEducationContactRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/admission-process': {
+      id: '/global-education/admission-process'
+      path: '/admission-process'
+      fullPath: '/global-education/admission-process'
+      preLoaderRoute: typeof GlobalEducationAdmissionProcessRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
     '/careers/$slug': {
       id: '/careers/$slug'
       path: '/$slug'
@@ -418,14 +880,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/academy/success-stories': {
+      id: '/academy/success-stories'
+      path: '/success-stories'
+      fullPath: '/academy/success-stories'
+      preLoaderRoute: typeof AcademySuccessStoriesRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/placements': {
+      id: '/academy/placements'
+      path: '/placements'
+      fullPath: '/academy/placements'
+      preLoaderRoute: typeof AcademyPlacementsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/online-courses': {
+      id: '/academy/online-courses'
+      path: '/online-courses'
+      fullPath: '/academy/online-courses'
+      preLoaderRoute: typeof AcademyOnlineCoursesRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/offline-training': {
+      id: '/academy/offline-training'
+      path: '/offline-training'
+      fullPath: '/academy/offline-training'
+      preLoaderRoute: typeof AcademyOfflineTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/internships': {
+      id: '/academy/internships'
+      path: '/internships'
+      fullPath: '/academy/internships'
+      preLoaderRoute: typeof AcademyInternshipsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/faq': {
+      id: '/academy/faq'
+      path: '/faq'
+      fullPath: '/academy/faq'
+      preLoaderRoute: typeof AcademyFaqRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/corporate-training': {
+      id: '/academy/corporate-training'
+      path: '/corporate-training'
+      fullPath: '/academy/corporate-training'
+      preLoaderRoute: typeof AcademyCorporateTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/contact': {
+      id: '/academy/contact'
+      path: '/contact'
+      fullPath: '/academy/contact'
+      preLoaderRoute: typeof AcademyContactRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/certifications': {
+      id: '/academy/certifications'
+      path: '/certifications'
+      fullPath: '/academy/certifications'
+      preLoaderRoute: typeof AcademyCertificationsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
   }
 }
 
 interface AcademyRouteChildren {
+  AcademyCertificationsRoute: typeof AcademyCertificationsRoute
+  AcademyContactRoute: typeof AcademyContactRoute
+  AcademyCorporateTrainingRoute: typeof AcademyCorporateTrainingRoute
+  AcademyFaqRoute: typeof AcademyFaqRoute
+  AcademyInternshipsRoute: typeof AcademyInternshipsRoute
+  AcademyOfflineTrainingRoute: typeof AcademyOfflineTrainingRoute
+  AcademyOnlineCoursesRoute: typeof AcademyOnlineCoursesRoute
+  AcademyPlacementsRoute: typeof AcademyPlacementsRoute
+  AcademySuccessStoriesRoute: typeof AcademySuccessStoriesRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyCertificationsRoute: AcademyCertificationsRoute,
+  AcademyContactRoute: AcademyContactRoute,
+  AcademyCorporateTrainingRoute: AcademyCorporateTrainingRoute,
+  AcademyFaqRoute: AcademyFaqRoute,
+  AcademyInternshipsRoute: AcademyInternshipsRoute,
+  AcademyOfflineTrainingRoute: AcademyOfflineTrainingRoute,
+  AcademyOnlineCoursesRoute: AcademyOnlineCoursesRoute,
+  AcademyPlacementsRoute: AcademyPlacementsRoute,
+  AcademySuccessStoriesRoute: AcademySuccessStoriesRoute,
   AcademyIndexRoute: AcademyIndexRoute,
 }
 
@@ -468,10 +1011,28 @@ const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
 interface GlobalEducationRouteChildren {
+  GlobalEducationAdmissionProcessRoute: typeof GlobalEducationAdmissionProcessRoute
+  GlobalEducationContactRoute: typeof GlobalEducationContactRoute
+  GlobalEducationCountriesRoute: typeof GlobalEducationCountriesRoute
+  GlobalEducationFaqRoute: typeof GlobalEducationFaqRoute
+  GlobalEducationScholarshipsRoute: typeof GlobalEducationScholarshipsRoute
+  GlobalEducationStudentServicesRoute: typeof GlobalEducationStudentServicesRoute
+  GlobalEducationStudyAbroadRoute: typeof GlobalEducationStudyAbroadRoute
+  GlobalEducationUniversitiesRoute: typeof GlobalEducationUniversitiesRoute
+  GlobalEducationVisaGuidanceRoute: typeof GlobalEducationVisaGuidanceRoute
   GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
 }
 
 const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
+  GlobalEducationAdmissionProcessRoute: GlobalEducationAdmissionProcessRoute,
+  GlobalEducationContactRoute: GlobalEducationContactRoute,
+  GlobalEducationCountriesRoute: GlobalEducationCountriesRoute,
+  GlobalEducationFaqRoute: GlobalEducationFaqRoute,
+  GlobalEducationScholarshipsRoute: GlobalEducationScholarshipsRoute,
+  GlobalEducationStudentServicesRoute: GlobalEducationStudentServicesRoute,
+  GlobalEducationStudyAbroadRoute: GlobalEducationStudyAbroadRoute,
+  GlobalEducationUniversitiesRoute: GlobalEducationUniversitiesRoute,
+  GlobalEducationVisaGuidanceRoute: GlobalEducationVisaGuidanceRoute,
   GlobalEducationIndexRoute: GlobalEducationIndexRoute,
 }
 
@@ -480,10 +1041,28 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
 )
 
 interface TechnologiesRouteChildren {
+  TechnologiesAiSolutionsRoute: typeof TechnologiesAiSolutionsRoute
+  TechnologiesCareersRoute: typeof TechnologiesCareersRoute
+  TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRoute
+  TechnologiesContactRoute: typeof TechnologiesContactRoute
+  TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
+  TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRoute
+  TechnologiesProductDevelopmentRoute: typeof TechnologiesProductDevelopmentRoute
+  TechnologiesSaasProductsRoute: typeof TechnologiesSaasProductsRoute
+  TechnologiesSoftwareDevelopmentRoute: typeof TechnologiesSoftwareDevelopmentRoute
   TechnologiesIndexRoute: typeof TechnologiesIndexRoute
 }
 
 const TechnologiesRouteChildren: TechnologiesRouteChildren = {
+  TechnologiesAiSolutionsRoute: TechnologiesAiSolutionsRoute,
+  TechnologiesCareersRoute: TechnologiesCareersRoute,
+  TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRoute,
+  TechnologiesContactRoute: TechnologiesContactRoute,
+  TechnologiesDigitalMarketingRoute: TechnologiesDigitalMarketingRoute,
+  TechnologiesIndustriesRoute: TechnologiesIndustriesRoute,
+  TechnologiesProductDevelopmentRoute: TechnologiesProductDevelopmentRoute,
+  TechnologiesSaasProductsRoute: TechnologiesSaasProductsRoute,
+  TechnologiesSoftwareDevelopmentRoute: TechnologiesSoftwareDevelopmentRoute,
   TechnologiesIndexRoute: TechnologiesIndexRoute,
 }
 
@@ -508,13 +1087,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
