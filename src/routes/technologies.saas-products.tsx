@@ -1,43 +1,121 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import {
+  BarChart3,
+  Boxes,
+  Building2,
+  CreditCard,
+  GitBranch,
+  GraduationCap,
+  Heart,
+  Landmark,
+  Layers,
+  LineChart,
+  Lock,
+  Plug,
+  Rocket,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Truck,
+  Users,
+  Workflow,
+  Zap,
+} from "lucide-react";
+import {
+  ServiceDetailPage,
+  buildServiceHead,
+  type ServiceDetailContent,
+} from "@/components/site/ServiceDetailPage";
+
+const CONTENT: ServiceDetailContent = {
+  slug: "saas-products",
+  path: "/technologies/saas-products",
+  brand: "tech",
+  eyebrow: "SaaS product development",
+  title: "From SaaS concept to scalable, multi-tenant product.",
+  subtitle:
+    "Discovery, design, engineering, billing, and growth instrumentation for new and scaling SaaS — without re-platforming six months in.",
+  metaTitle: "SaaS Product Development Services — HIGAET Technologies",
+  metaDescription:
+    "End-to-end SaaS product development by HIGAET Technologies. Multi-tenant architecture, billing, RBAC, analytics, and growth instrumentation from MVP to scale.",
+  heroHighlights: [
+    "MVP to multi-tenant scale in one continuous track",
+    "Billing, RBAC, and tenancy designed from day one",
+    "Growth analytics and retention loops built in",
+    "Co-build models with skin in the game",
+  ],
+  overviewTitle: "A product operating model, not just a codebase.",
+  overviewBody:
+    "We help founders, scale-ups, and enterprises ship SaaS that earns trust quickly and survives the move from MVP to operate. Engagements combine product strategy, design, and engineering with the platform plumbing — billing, RBAC, multi-tenancy, observability — that decides whether a SaaS can scale.",
+  benefits: [
+    { title: "Faster route to revenue", body: "Validate, ship MVP, and start onboarding paying customers without re-platforming later." },
+    { title: "Lower re-platform risk", body: "Multi-tenant, billing, and identity foundations designed for scale from week one." },
+    { title: "Higher activation and retention", body: "Onboarding, in-app guidance, and lifecycle messaging instrumented and tuned with real data." },
+    { title: "Healthier unit economics", body: "Usage metering, cost-aware architecture, and FinOps loops protect gross margin as you grow." },
+    { title: "Investor-ready product", body: "Architecture, security, and metrics packaged in a way technical due diligence respects." },
+    { title: "Optionality on talent", body: "We can hand the product to your team, co-operate, or stay on as the long-term engineering partner." },
+  ],
+  features: [
+    { icon: Rocket, title: "Discovery to MVP", body: "Workshops, prototypes, and a focused MVP scope that validates the wedge before scaling." },
+    { icon: Boxes, title: "Multi-tenant architecture", body: "Tenant isolation, data partitioning, and admin tooling matched to your customer segments." },
+    { icon: Users, title: "Identity & RBAC", body: "SSO, SCIM, fine-grained roles, and audit logs that pass enterprise procurement reviews." },
+    { icon: CreditCard, title: "Billing & monetization", body: "Subscriptions, usage metering, dunning, invoicing, and revenue analytics via Stripe and partners." },
+    { icon: Plug, title: "Integrations & API", body: "Public API, webhooks, and integrations with the tools your customers already use." },
+    { icon: Workflow, title: "Admin & internal tools", body: "Operator dashboards, impersonation, and support tools so your team can move quickly." },
+    { icon: BarChart3, title: "Product analytics", body: "Event schemas, funnels, retention, and experimentation tooling wired in from launch." },
+    { icon: Sparkles, title: "AI features", body: "Copilots, smart workflows, and content generation built around your customer data and policies." },
+    { icon: ShieldCheck, title: "Security & compliance", body: "SOC 2-aligned controls, secrets management, and data residency for regulated buyers." },
+  ],
+  process: [
+    { title: "Discover", body: "Customer interviews, problem framing, and a wedge MVP definition with success metrics.", deliverables: ["ICP", "Wedge", "KPIs"] },
+    { title: "Design", body: "Brand, design system, and user flows validated through clickable prototypes.", deliverables: ["Design system", "Prototype"] },
+    { title: "Build MVP", body: "Ship a focused MVP — tenancy, identity, and billing included — to first paying users.", deliverables: ["MVP release", "Onboarding flow"] },
+    { title: "Launch", body: "Public launch with analytics, monitoring, billing, and support workflows in place.", deliverables: ["Launch plan", "Analytics", "Runbooks"] },
+    { title: "Operate & scale", body: "Iterate on activation, retention, and reliability against the metrics that matter most.", deliverables: ["Quarterly reviews", "Roadmap"] },
+    { title: "Mature", body: "Enterprise readiness, integrations, and AI features that broaden the customer base.", deliverables: ["SOC 2 prep", "Integrations"] },
+  ],
+  techGroups: [
+    { title: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind", "Radix"] },
+    { title: "Backend", items: ["Node.js", "NestJS", "Express", "Python", "Go"] },
+    { title: "Data", items: ["PostgreSQL", "MySQL", "Redis", "ClickHouse", "Elasticsearch"] },
+    { title: "Billing & Auth", items: ["Stripe", "Paddle", "Auth0", "Clerk", "WorkOS"] },
+    { title: "Cloud", items: ["AWS", "Azure", "Google Cloud", "Cloudflare", "Vercel"] },
+    { title: "Analytics & Ops", items: ["PostHog", "Segment", "Datadog", "Sentry", "GitHub Actions"] },
+  ],
+  industries: [
+    { icon: GraduationCap, name: "Education", body: "Learning platforms, cohort tools, and assessment SaaS for academies and universities." },
+    { icon: Heart, name: "Healthcare", body: "Clinical workflow SaaS, telehealth platforms, and patient engagement products." },
+    { icon: Landmark, name: "Finance & FinTech", body: "Treasury, payments, lending, and back-office SaaS with compliance built in." },
+    { icon: ShoppingBag, name: "Retail & E-commerce", body: "Merchant tools, marketplace platforms, and post-purchase SaaS for retail brands." },
+    { icon: Truck, name: "Logistics", body: "TMS, WMS, and operations SaaS for freight, fleet, and last-mile businesses." },
+    { icon: Building2, name: "Enterprise & B2B", body: "Vertical SaaS, internal platforms, and partner products for established enterprises." },
+  ],
+  whyUs: [
+    { icon: Layers, title: "Product + engineering under one roof", body: "Strategy, design, and engineering aligned on the same outcome — not stitched across vendors." },
+    { icon: Zap, title: "Speed without lock-in", body: "We ship fast on standard, portable architectures — never a proprietary stack that traps you." },
+    { icon: LineChart, title: "Growth instrumentation", body: "Activation, retention, and revenue metrics wired in so go-to-market doesn't fly blind." },
+    { icon: Lock, title: "Enterprise readiness", body: "SOC 2-aligned controls, SSO, audit logs, and data residency for selling up-market." },
+    { icon: GitBranch, title: "Co-build optionality", body: "Engagements scale from build-and-hand-over to long-term co-build with shared upside." },
+    { icon: Users, title: "Founder-friendly delivery", body: "Weekly demos, transparent backlog, and direct access to the engineers building your product." },
+  ],
+  related: [
+    { name: "Custom software development", href: "/technologies/custom-software-development", body: "When a SaaS shape isn't right, we build the bespoke platform your business actually needs." },
+    { name: "AI solutions", href: "/technologies/ai-solutions", body: "Add AI copilots, smart workflows, and grounded knowledge inside your SaaS." },
+    { name: "Cloud solutions", href: "/technologies/cloud-solutions", body: "Cloud foundations, FinOps, and reliability engineering for your SaaS platform." },
+  ],
+  faqs: [
+    { q: "Do you build for early-stage founders or established companies?", a: "Both. We work with funded founders shipping V1, scale-ups breaking past first plateaus, and enterprises spinning out new SaaS lines of business." },
+    { q: "How long does a typical MVP take?", a: "Most MVPs ship in 12–20 weeks. The range depends on integrations, regulatory scope, and whether AI capabilities are in V1 or a fast-follow." },
+    { q: "Can you continue as the long-term engineering team?", a: "Yes. Many partners keep our squad in place as the product team or transition to an embedded augmentation model after launch." },
+    { q: "Do you take equity or revenue share?", a: "Selectively. For aligned products and stages, we offer co-build engagements that blend cash with equity or revenue share." },
+    { q: "How do you handle billing and tenancy decisions?", a: "We make tenancy, billing, and identity decisions explicit in the architecture decision records. Trade-offs around isolation, pricing model, and enterprise readiness are documented, not assumed." },
+    { q: "Can our internal team work alongside yours?", a: "Yes. We pair, document, and run shared planning ceremonies — your engineers should leave the engagement more capable than they started." },
+  ],
+  ctaTitle: "Ship a SaaS product the market actually adopts.",
+  ctaBody: "Tell us your wedge, your customer, and your goal. We'll come back with an MVP scope, architecture sketch, and launch plan.",
+};
 
 export const Route = createFileRoute("/technologies/saas-products")({
-  head: () => ({
-    meta: [
-      { title: "SaaS Product Development — HIGAET Technologies" },
-      { name: "description", content: "SaaS product strategy, design, engineering, launch, and growth support for partners and enterprises." },
-    ],
-    links: [{ rel: "canonical", href: "/technologies/saas-products" }],
-  }),
-  component: SaasProductsPage,
+  head: () => buildServiceHead(CONTENT),
+  component: () => <ServiceDetailPage content={CONTENT} />,
 });
-
-function SaasProductsPage() {
-  return (
-    <DivisionDetailPage
-      brand="tech"
-      eyebrow="SaaS products"
-      title="SaaS products built from problem clarity to launch."
-      subtitle="Strategy, product design, engineering, infrastructure, and iteration support for scalable software businesses."
-      overviewTitle="A product operating model, not just a codebase."
-      overviewBody="We help partners define SaaS propositions, validate workflows, ship usable product, and prepare for growth with reliable architecture."
-      points={[
-        { title: "Product strategy", body: "Clarify user segments, workflows, monetization, and launch priorities." },
-        { title: "MVP delivery", body: "Build focused releases that prove value quickly without compromising foundations." },
-        { title: "Platform architecture", body: "Design tenant, billing, admin, data, and integration patterns for growth." },
-        { title: "Iteration support", body: "Use analytics and feedback to improve product-market fit after launch." },
-      ]}
-      outcomes={[
-        "A practical roadmap from idea to launch-ready SaaS.",
-        "Reusable architecture for accounts, permissions, data, and billing.",
-        "A launch plan connected to user acquisition and retention.",
-        "Engineering support for continuous product improvement.",
-      ]}
-      ctaTitle="Turn a SaaS idea into a working product."
-      ctaBody="Share your product concept and we’ll map the fastest credible route to launch."
-      primaryLabel="Discuss SaaS build"
-      secondaryHref="/technologies/product-development"
-      secondaryLabel="Product development"
-    />
-  );
-}

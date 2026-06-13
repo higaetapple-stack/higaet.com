@@ -4,9 +4,11 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/technologies", label: "Overview", exact: true },
-  { to: "/technologies/software-development", label: "Software" },
-  { to: "/technologies/saas-products", label: "SaaS Products" },
+  { to: "/technologies/custom-software-development", label: "Custom Software" },
   { to: "/technologies/ai-solutions", label: "AI Solutions" },
+  { to: "/technologies/saas-products", label: "SaaS Products" },
+  { to: "/technologies/cloud-solutions", label: "Cloud" },
+  { to: "/technologies/software-development", label: "Software" },
   { to: "/technologies/digital-marketing", label: "Marketing" },
   { to: "/technologies/product-development", label: "Product" },
   { to: "/technologies/case-studies", label: "Case Studies" },

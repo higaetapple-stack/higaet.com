@@ -1,43 +1,121 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import {
+  BarChart3,
+  Brain,
+  Building2,
+  Cpu,
+  Database,
+  GraduationCap,
+  Heart,
+  Landmark,
+  Layers,
+  Lock,
+  Network,
+  Rocket,
+  Search,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Truck,
+  Users,
+  Workflow,
+  Zap,
+} from "lucide-react";
+import {
+  ServiceDetailPage,
+  buildServiceHead,
+  type ServiceDetailContent,
+} from "@/components/site/ServiceDetailPage";
+
+const CONTENT: ServiceDetailContent = {
+  slug: "ai-solutions",
+  path: "/technologies/ai-solutions",
+  brand: "tech",
+  eyebrow: "AI solutions",
+  title: "Applied AI that ships, evaluated end-to-end.",
+  subtitle:
+    "Retrieval systems, agents, automation, evaluations, and governed AI workflows engineered for real enterprise constraints — not demo theatre.",
+  metaTitle: "AI Solutions & Machine Learning Services — HIGAET Technologies",
+  metaDescription:
+    "Applied AI and machine learning by HIGAET Technologies — retrieval, agents, evaluations, and AI ops engineered for production reliability, safety, and ROI.",
+  heroHighlights: [
+    "Use-case discovery grounded in real workflows",
+    "RAG, agents, and AI ops engineered for production",
+    "Evaluations for accuracy, safety, cost, and drift",
+    "Governance and human-in-the-loop by default",
+  ],
+  overviewTitle: "AI delivery starts with the workflow, not the model.",
+  overviewBody:
+    "We identify where AI creates measurable leverage, then design the data, evaluation, guardrail, and integration layers needed for production use. The result is AI you can trust, measure, and scale — not a one-off prototype that stalls after launch.",
+  benefits: [
+    { title: "Faster time-to-value", body: "Working pilots in weeks, with evaluation criteria that prove value before scaling." },
+    { title: "Lower operating cost", body: "Right-sized models, caching, and routing keep cost per request predictable as usage grows." },
+    { title: "Higher quality outputs", body: "Retrieval, prompts, and evaluations co-designed so accuracy improves with every iteration." },
+    { title: "Reduced safety and reputation risk", body: "Guardrails, PII filters, and human-in-the-loop steps protect your brand and your users." },
+    { title: "Engineering visibility", body: "Tracing, evaluations, and dashboards turn AI from a black box into an observable system." },
+    { title: "Future-proof architecture", body: "Provider-agnostic abstractions mean you can switch models without rewriting the application." },
+  ],
+  features: [
+    { icon: Sparkles, title: "Generative AI products", body: "Copilots, summarization, drafting, and creative tools built around your data and workflows." },
+    { icon: Search, title: "Retrieval & knowledge", body: "RAG pipelines, vector and hybrid search, document workflows, and citation-grade answers." },
+    { icon: Workflow, title: "Agents & automation", body: "Multi-step task automation with tool use, escalation, and human-in-the-loop checkpoints." },
+    { icon: ShieldCheck, title: "Evaluations & governance", body: "Quality, safety, cost, and drift metrics so teams can trust outputs and improve over time." },
+    { icon: Brain, title: "Machine learning", body: "Classical and deep learning for forecasting, classification, recommendations, and risk." },
+    { icon: BarChart3, title: "AI analytics", body: "Decision intelligence layers on top of warehouses, with natural-language access for operators." },
+    { icon: Network, title: "Integration & data layer", body: "Connectors for SaaS, databases, document stores, and event streams that AI features depend on." },
+    { icon: Cpu, title: "Model serving & MLOps", body: "Inference infrastructure, versioning, A/B testing, and rollback for models you operate yourself." },
+    { icon: Lock, title: "Responsible AI", body: "Bias audits, transparency notes, and policy-aware behaviours aligned to your governance posture." },
+  ],
+  process: [
+    { title: "Discover", body: "Map workflows, score AI use cases by value and feasibility, and pick the first one to ship.", deliverables: ["Opportunity map", "Use-case scorecard"] },
+    { title: "Design", body: "Define evaluation criteria, data sources, guardrails, and integration shape before writing code.", deliverables: ["Eval set", "Architecture", "Risk plan"] },
+    { title: "Build", body: "Prototype, instrument, and iterate against evaluations until quality clears the launch bar.", deliverables: ["Working pilot", "Eval pipeline"] },
+    { title: "Launch", body: "Roll out behind feature flags, monitor cost and safety in production, and tune thresholds.", deliverables: ["Observability", "Runbooks"] },
+    { title: "Operate", body: "Continuous evaluations, drift detection, and prompt/model upgrades on a predictable cadence.", deliverables: ["Quality dashboard", "Drift alerts"] },
+    { title: "Iterate", body: "Expand from one workflow to many, with reusable retrieval, tools, and evaluation harnesses.", deliverables: ["Roadmap", "Reuse plan"] },
+  ],
+  techGroups: [
+    { title: "Models", items: ["OpenAI", "Anthropic", "Google Gemini", "Mistral", "Llama", "Open source"] },
+    { title: "Frameworks", items: ["LangChain", "LlamaIndex", "Vercel AI SDK", "Pydantic AI", "DSPy"] },
+    { title: "Vector & search", items: ["pgvector", "Pinecone", "Weaviate", "Elastic", "Typesense"] },
+    { title: "ML / Data", items: ["PyTorch", "scikit-learn", "Pandas", "Spark", "dbt"] },
+    { title: "Eval & ops", items: ["Ragas", "Promptfoo", "Langfuse", "Weights & Biases", "MLflow"] },
+    { title: "Infra", items: ["AWS Bedrock", "Azure OpenAI", "GCP Vertex", "Modal", "Replicate"] },
+  ],
+  industries: [
+    { icon: GraduationCap, name: "Education", body: "AI tutors, faculty tools, admissions automation, and grounded knowledge assistants." },
+    { icon: Heart, name: "Healthcare", body: "Decision support, intake automation, and document AI that respects clinical workflows." },
+    { icon: Landmark, name: "Finance & FinTech", body: "KYC automation, document understanding, fraud signals, and analyst copilots." },
+    { icon: ShoppingBag, name: "Retail & E-commerce", body: "Personalization, merchandising, conversational search, and post-sale support copilots." },
+    { icon: Truck, name: "Logistics", body: "Forecasting, route optimization, vision QA, and document automation for freight workflows." },
+    { icon: Building2, name: "Enterprise & SaaS", body: "Knowledge assistants, internal copilots, and AI features inside customer-facing products." },
+  ],
+  whyUs: [
+    { icon: Brain, title: "Practitioners, not theorists", body: "Our team has shipped AI in production for years — including before the LLM wave." },
+    { icon: ShieldCheck, title: "Evaluation-first", body: "We treat evaluations as part of the product. No launch without a measurable quality bar." },
+    { icon: Layers, title: "Full-stack engineering", body: "We own retrieval, application, infra, and SRE — AI doesn't sit isolated from the rest of the stack." },
+    { icon: Users, title: "Human-in-the-loop by default", body: "We design for clear escalation, override, and audit — not for replacing humans recklessly." },
+    { icon: Zap, title: "Cost-aware design", body: "Routing, caching, and right-sized models keep economics sustainable at scale." },
+    { icon: Lock, title: "Governance posture", body: "Policies, PII handling, and provider choices match your regulatory and enterprise constraints." },
+  ],
+  related: [
+    { name: "Custom software development", href: "/technologies/custom-software-development", body: "Wrap AI features in production software your team can operate and evolve." },
+    { name: "SaaS product development", href: "/technologies/saas-products", body: "Embed AI capabilities into scalable, multi-tenant SaaS products." },
+    { name: "Cloud solutions", href: "/technologies/cloud-solutions", body: "Inference infrastructure, secure data pipelines, and FinOps for AI workloads." },
+  ],
+  faqs: [
+    { q: "How do you decide where AI is worth the investment?", a: "We start by mapping workflows and scoring opportunities by value, feasibility, risk, and effort. Only the top-ranked cases move into prototype — everything else stays on a roadmap until conditions change." },
+    { q: "How do you handle hallucinations and accuracy?", a: "We ground responses in your data with retrieval, define evaluation sets that mirror real questions, and tune retrieval and prompts against those evaluations before any launch." },
+    { q: "Do you operate AI systems for us, or just build them?", a: "Both. We can hand over a system with full documentation, or operate it under an SRE engagement with quality dashboards, drift alerts, and prompt/model updates." },
+    { q: "Which AI providers do you work with?", a: "OpenAI, Anthropic, Google, Mistral, AWS Bedrock, Azure OpenAI, and open-source models on Modal, Replicate, or your own infrastructure. We design provider-agnostic abstractions so you can switch." },
+    { q: "How do you protect sensitive data in AI workflows?", a: "We default to least-privilege access, encrypt data in transit and at rest, route sensitive prompts through providers approved for your jurisdiction, and apply PII filters and redaction in the retrieval layer." },
+    { q: "Can you upskill our team?", a: "Yes. HIGAET Academy offers AI literacy and engineering programs, and our delivery engagements include pairing and documentation so your team can own the system over time." },
+  ],
+  ctaTitle: "Ship AI your team and your customers can trust.",
+  ctaBody: "Tell us the workflow you want to improve. We'll come back with a pilot scope, evaluation plan, and credible delivery timeline.",
+};
 
 export const Route = createFileRoute("/technologies/ai-solutions")({
-  head: () => ({
-    meta: [
-      { title: "AI Solutions — HIGAET Technologies" },
-      { name: "description", content: "Applied AI solutions including retrieval systems, workflow automation, agents, evaluations, and AI-enabled enterprise software." },
-    ],
-    links: [{ rel: "canonical", href: "/technologies/ai-solutions" }],
-  }),
-  component: AiSolutionsPage,
+  head: () => buildServiceHead(CONTENT),
+  component: () => <ServiceDetailPage content={CONTENT} />,
 });
-
-function AiSolutionsPage() {
-  return (
-    <DivisionDetailPage
-      brand="tech"
-      eyebrow="AI solutions"
-      title="Applied AI systems that work inside real operations."
-      subtitle="Retrieval, agents, automation, evaluations, and governed AI workflows built for enterprise constraints."
-      overviewTitle="AI delivery starts with the workflow, not the model."
-      overviewBody="We identify where AI can create measurable value, then design the data, evaluation, guardrail, and integration layer needed for production use."
-      points={[
-        { title: "Use-case discovery", body: "Prioritize opportunities by value, feasibility, risk, and implementation effort." },
-        { title: "RAG & knowledge systems", body: "Build retrieval pipelines, document workflows, and grounded response systems." },
-        { title: "Agents & automation", body: "Design task automation with human oversight, tool use, and escalation paths." },
-        { title: "Evaluation & governance", body: "Measure quality, safety, cost, and drift so teams can trust AI outputs." },
-      ]}
-      outcomes={[
-        "A prioritized AI roadmap for real business workflows.",
-        "Working AI prototypes that can graduate into production systems.",
-        "Evaluation criteria for accuracy, safety, and operational value.",
-        "Integration plans for existing tools, data, and teams.",
-      ]}
-      ctaTitle="Find the right AI use case for your business."
-      ctaBody="Talk to HIGAET Technologies about practical AI implementation and risk controls."
-      primaryLabel="Discuss AI project"
-      secondaryHref="/academy/corporate-training"
-      secondaryLabel="Team training"
-    />
-  );
-}
