@@ -65,7 +65,9 @@ function LessonPlayer() {
   const videoEmbed = lesson.video_url ? getEmbedUrl(lesson.video_url) : null;
   const isDirectVideo = !!lesson.video_url && !videoEmbed;
   const paragraphs: string[] = (lesson.content_md ?? "").split(/\n{2,}/).filter(Boolean);
-  const resources: { label: string; url: string }[] = Array.isArray(lesson.resources) ? lesson.resources : [];
+  const resources: { label: string; url: string }[] = Array.isArray(lesson.resources)
+    ? (lesson.resources as unknown as { label: string; url: string }[])
+    : [];
 
   return (
     <div className="max-w-4xl">
