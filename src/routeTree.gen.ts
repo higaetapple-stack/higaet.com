@@ -73,6 +73,7 @@ import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/gl
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
+import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
 import { Route as AuthenticatedDashboardProgramsRouteImport } from './routes/_authenticated.dashboard.programs'
 import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated.dashboard.profile'
 import { Route as AuthenticatedDashboardFacultyRouteImport } from './routes/_authenticated.dashboard.faculty'
@@ -465,6 +466,12 @@ const AcademyCampusesSlugRoute = AcademyCampusesSlugRouteImport.update({
   path: '/campuses/$slug',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AuthenticatedDashboardVisaRoute =
+  AuthenticatedDashboardVisaRouteImport.update({
+    id: '/visa',
+    path: '/visa',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardProgramsRoute =
   AuthenticatedDashboardProgramsRouteImport.update({
     id: '/programs',
@@ -871,6 +878,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRouteWithChildren
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
+  '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -986,6 +994,7 @@ export interface FileRoutesByTo {
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRouteWithChildren
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
+  '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -1109,6 +1118,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/faculty': typeof AuthenticatedDashboardFacultyRouteWithChildren
   '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/_authenticated/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
+  '/_authenticated/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -1233,6 +1243,7 @@ export interface FileRouteTypes {
     | '/dashboard/faculty'
     | '/dashboard/profile'
     | '/dashboard/programs'
+    | '/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
@@ -1348,6 +1359,7 @@ export interface FileRouteTypes {
     | '/dashboard/faculty'
     | '/dashboard/profile'
     | '/dashboard/programs'
+    | '/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
@@ -1470,6 +1482,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/faculty'
     | '/_authenticated/dashboard/profile'
     | '/_authenticated/dashboard/programs'
+    | '/_authenticated/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/global-education/countries/$slug'
@@ -2000,6 +2013,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/campuses/$slug'
       preLoaderRoute: typeof AcademyCampusesSlugRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/dashboard/visa': {
+      id: '/_authenticated/dashboard/visa'
+      path: '/visa'
+      fullPath: '/dashboard/visa'
+      preLoaderRoute: typeof AuthenticatedDashboardVisaRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
     '/_authenticated/dashboard/programs': {
       id: '/_authenticated/dashboard/programs'
@@ -2616,6 +2636,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardFacultyRoute: typeof AuthenticatedDashboardFacultyRouteWithChildren
   AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
   AuthenticatedDashboardProgramsRoute: typeof AuthenticatedDashboardProgramsRouteWithChildren
+  AuthenticatedDashboardVisaRoute: typeof AuthenticatedDashboardVisaRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
   AuthenticatedDashboardApplicationsIdRoute: typeof AuthenticatedDashboardApplicationsIdRoute
   AuthenticatedDashboardAssignmentsAssignmentIdRoute: typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
@@ -2642,6 +2663,7 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
     AuthenticatedDashboardProgramsRoute:
       AuthenticatedDashboardProgramsRouteWithChildren,
+    AuthenticatedDashboardVisaRoute: AuthenticatedDashboardVisaRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
     AuthenticatedDashboardApplicationsIdRoute:
       AuthenticatedDashboardApplicationsIdRoute,
