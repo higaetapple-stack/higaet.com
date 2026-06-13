@@ -11,6 +11,9 @@ const TABS = [
   { to: "/dashboard/technologies/clients", label: "Clients" },
   { to: "/dashboard/technologies/proposals", label: "Proposals" },
   { to: "/dashboard/technologies/contracts", label: "Contracts" },
+  { to: "/dashboard/technologies/finance", label: "Finance" },
+  { to: "/dashboard/technologies/support", label: "Support" },
+  { to: "/dashboard/technologies/requests", label: "Requests" },
 ] as const;
 
 function TechLayout() {
