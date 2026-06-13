@@ -55,6 +55,41 @@ export type Database = {
           },
         ]
       }
+      certificate_templates: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          program_id: string
+          template_html: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          program_id: string
+          template_html?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          program_id?: string
+          template_html?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificate_templates_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       certificates: {
         Row: {
           certificate_number: string | null
@@ -103,6 +138,35 @@ export type Database = {
           },
         ]
       }
+      course_faculty: {
+        Row: {
+          course_id: string
+          created_at: string
+          faculty_id: string
+          id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          faculty_id: string
+          id?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          faculty_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_faculty_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           created_at: string
@@ -111,6 +175,7 @@ export type Database = {
           order_no: number
           program_id: string
           slug: string
+          status: Database["public"]["Enums"]["course_status"]
           title: string
           updated_at: string
         }
@@ -121,6 +186,7 @@ export type Database = {
           order_no?: number
           program_id: string
           slug: string
+          status?: Database["public"]["Enums"]["course_status"]
           title: string
           updated_at?: string
         }
@@ -131,6 +197,7 @@ export type Database = {
           order_no?: number
           program_id?: string
           slug?: string
+          status?: Database["public"]["Enums"]["course_status"]
           title?: string
           updated_at?: string
         }
@@ -198,6 +265,8 @@ export type Database = {
           id: string
           lesson_type: Database["public"]["Enums"]["lesson_type"]
           order_no: number
+          preview: boolean
+          resources: Json
           title: string
           updated_at: string
           video_url: string | null
@@ -210,6 +279,8 @@ export type Database = {
           id?: string
           lesson_type?: Database["public"]["Enums"]["lesson_type"]
           order_no?: number
+          preview?: boolean
+          resources?: Json
           title: string
           updated_at?: string
           video_url?: string | null
@@ -222,6 +293,8 @@ export type Database = {
           id?: string
           lesson_type?: Database["public"]["Enums"]["lesson_type"]
           order_no?: number
+          preview?: boolean
+          resources?: Json
           title?: string
           updated_at?: string
           video_url?: string | null
@@ -275,12 +348,14 @@ export type Database = {
           created_at: string
           description: string | null
           duration: string | null
+          featured: boolean
           fee_inr: string | null
           format: string | null
           id: string
           level: string | null
           slug: string
           status: Database["public"]["Enums"]["program_status"]
+          thumbnail_url: string | null
           title: string
           updated_at: string
         }
@@ -289,12 +364,14 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration?: string | null
+          featured?: boolean
           fee_inr?: string | null
           format?: string | null
           id?: string
           level?: string | null
           slug: string
           status?: Database["public"]["Enums"]["program_status"]
+          thumbnail_url?: string | null
           title: string
           updated_at?: string
         }
@@ -303,12 +380,14 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration?: string | null
+          featured?: boolean
           fee_inr?: string | null
           format?: string | null
           id?: string
           level?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["program_status"]
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
         }
@@ -470,6 +549,7 @@ export type Database = {
         | "enterprise_client"
         | "admin"
         | "super_admin"
+      course_status: "draft" | "published" | "archived"
       enrollment_status: "active" | "paused" | "completed" | "withdrawn"
       lesson_type: "video" | "reading" | "lab" | "quiz"
       program_status: "draft" | "published" | "archived"
@@ -610,6 +690,7 @@ export const Constants = {
         "admin",
         "super_admin",
       ],
+      course_status: ["draft", "published", "archived"],
       enrollment_status: ["active", "paused", "completed", "withdrawn"],
       lesson_type: ["video", "reading", "lab", "quiz"],
       program_status: ["draft", "published", "archived"],
