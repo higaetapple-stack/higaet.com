@@ -126,6 +126,7 @@ import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
 import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
 import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
+import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
 import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
 import { Route as AuthenticatedDashboardAdminCrmTypeIdRouteImport } from './routes/_authenticated.dashboard.admin.crm.$type.$id'
 
@@ -781,6 +782,12 @@ const AuthenticatedDashboardAdminCrmIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminCrmRoute,
   } as any)
+const AuthenticatedDashboardAdminVisaIdRoute =
+  AuthenticatedDashboardAdminVisaIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDashboardAdminVisaRoute,
+  } as any)
 const AuthenticatedDashboardAdminProgramsIdRoute =
   AuthenticatedDashboardAdminProgramsIdRouteImport.update({
     id: '/programs/$id',
@@ -884,7 +891,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
-  '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRoute
+  '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
   '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -910,6 +917,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/counselor/': typeof AuthenticatedDashboardCounselorIndexRoute
   '/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
   '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
@@ -996,7 +1004,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
-  '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRoute
+  '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
   '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -1022,6 +1030,7 @@ export interface FileRoutesByTo {
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorIndexRoute
   '/dashboard/projects': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsIndexRoute
   '/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
@@ -1118,7 +1127,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
   '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
-  '/_authenticated/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRoute
+  '/_authenticated/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
   '/_authenticated/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/_authenticated/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/_authenticated/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -1144,6 +1153,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/counselor/': typeof AuthenticatedDashboardCounselorIndexRoute
   '/_authenticated/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/_authenticated/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/_authenticated/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/_authenticated/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
   '/_authenticated/dashboard/admin/crm/$type/$id': typeof AuthenticatedDashboardAdminCrmTypeIdRoute
@@ -1266,6 +1276,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor/'
     | '/dashboard/projects/'
     | '/dashboard/admin/programs/$id'
+    | '/dashboard/admin/visa/$id'
     | '/dashboard/admin/crm/'
     | '/dashboard/admin/programs/'
     | '/dashboard/admin/crm/$type/$id'
@@ -1378,6 +1389,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor'
     | '/dashboard/projects'
     | '/dashboard/admin/programs/$id'
+    | '/dashboard/admin/visa/$id'
     | '/dashboard/admin/crm'
     | '/dashboard/admin/programs'
     | '/dashboard/admin/crm/$type/$id'
@@ -1499,6 +1511,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/counselor/'
     | '/_authenticated/dashboard/projects/'
     | '/_authenticated/dashboard/admin/programs/$id'
+    | '/_authenticated/dashboard/admin/visa/$id'
     | '/_authenticated/dashboard/admin/crm/'
     | '/_authenticated/dashboard/admin/programs/'
     | '/_authenticated/dashboard/admin/crm/$type/$id'
@@ -2346,6 +2359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminCrmIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminCrmRoute
     }
+    '/_authenticated/dashboard/admin/visa/$id': {
+      id: '/_authenticated/dashboard/admin/visa/$id'
+      path: '/$id'
+      fullPath: '/dashboard/admin/visa/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminVisaIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminVisaRoute
+    }
     '/_authenticated/dashboard/admin/programs/$id': {
       id: '/_authenticated/dashboard/admin/programs/$id'
       path: '/programs/$id'
@@ -2381,6 +2401,21 @@ const AuthenticatedDashboardAdminCrmRouteWithChildren =
     AuthenticatedDashboardAdminCrmRouteChildren,
   )
 
+interface AuthenticatedDashboardAdminVisaRouteChildren {
+  AuthenticatedDashboardAdminVisaIdRoute: typeof AuthenticatedDashboardAdminVisaIdRoute
+}
+
+const AuthenticatedDashboardAdminVisaRouteChildren: AuthenticatedDashboardAdminVisaRouteChildren =
+  {
+    AuthenticatedDashboardAdminVisaIdRoute:
+      AuthenticatedDashboardAdminVisaIdRoute,
+  }
+
+const AuthenticatedDashboardAdminVisaRouteWithChildren =
+  AuthenticatedDashboardAdminVisaRoute._addFileChildren(
+    AuthenticatedDashboardAdminVisaRouteChildren,
+  )
+
 interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminAnalyticsRoute: typeof AuthenticatedDashboardAdminAnalyticsRoute
   AuthenticatedDashboardAdminApplicationsRoute: typeof AuthenticatedDashboardAdminApplicationsRoute
@@ -2402,7 +2437,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminUniprogramsRoute: typeof AuthenticatedDashboardAdminUniprogramsRoute
   AuthenticatedDashboardAdminUniversitiesRoute: typeof AuthenticatedDashboardAdminUniversitiesRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
-  AuthenticatedDashboardAdminVisaRoute: typeof AuthenticatedDashboardAdminVisaRoute
+  AuthenticatedDashboardAdminVisaRoute: typeof AuthenticatedDashboardAdminVisaRouteWithChildren
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
   AuthenticatedDashboardAdminProgramsIndexRoute: typeof AuthenticatedDashboardAdminProgramsIndexRoute
@@ -2449,7 +2484,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminUniversitiesRoute,
     AuthenticatedDashboardAdminUsersRoute:
       AuthenticatedDashboardAdminUsersRoute,
-    AuthenticatedDashboardAdminVisaRoute: AuthenticatedDashboardAdminVisaRoute,
+    AuthenticatedDashboardAdminVisaRoute:
+      AuthenticatedDashboardAdminVisaRouteWithChildren,
     AuthenticatedDashboardAdminIndexRoute:
       AuthenticatedDashboardAdminIndexRoute,
     AuthenticatedDashboardAdminProgramsIdRoute:

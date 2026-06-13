@@ -57,10 +57,11 @@ export const visaCaseDetail = createServerFn({ method: "GET" })
     const { data: vc, error } = await sb
       .from("visa_cases")
       .select(
-        "*, countries:country_id(name,slug,flag_emoji), counselor:assigned_counselor(full_name,email), student:student_id(full_name,email)",
+        "*, countries:country_id(name,slug,flag_emoji), counselor:profiles!assigned_counselor(full_name,email), student:profiles!student_id(full_name,email)",
       )
       .eq("id", data.id)
       .maybeSingle();
+
     if (error) throw new Error(error.message);
     if (!vc) throw new Error("Not found");
 
