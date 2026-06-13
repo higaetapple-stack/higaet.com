@@ -89,12 +89,7 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
   };
 
   return (
-    <CommandDialog
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Search HIGAET Academy"
-      description="Find programs, learning paths, campuses, and resources."
-    >
+    <CommandDialog open={open} onOpenChange={onOpenChange}>
       <CommandInput
         placeholder="Search programs, learning paths, campuses…"
         onValueChange={(v) => v && trackEvent("academy_search_query", { q: v })}
@@ -150,16 +145,18 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
           {CAMPUSES.map((c) => (
             <CommandItem
               key={c.slug}
-              value={`campus ${c.city} ${c.region ?? ""}`}
+              value={`campus ${c.city} ${c.name} ${c.degree}`}
               onSelect={() =>
-                go(c.city, () =>
+                go(c.name, () =>
                   navigate({ to: "/academy/campuses/$slug", params: { slug: c.slug } }),
                 )
               }
             >
               <MapPin className="size-4 text-academy" />
-              <span>{c.city}</span>
-              {c.region && <span className="ml-auto text-xs text-muted-foreground">{c.region}</span>}
+              <div className="flex min-w-0 flex-col">
+                <span className="truncate">{c.name}</span>
+                <span className="truncate text-xs text-muted-foreground">{c.city} · {c.degree}</span>
+              </div>
             </CommandItem>
           ))}
         </CommandGroup>
