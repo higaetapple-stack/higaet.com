@@ -247,10 +247,10 @@ export const updateVisaCase = createServerFn({ method: "POST" })
     const sb = context.supabase;
     const { id, status_note, ...patch } = data;
 
-    // Detect status change
-    let prevStatus: string | null = null;
+    // Detect prior state
+    let prevStatus: any = null;
     let interviewWasUnset = false;
-    if (status || patch.interview_date) {
+    if (patch.status !== undefined || patch.interview_date !== undefined) {
       const { data: prev } = await sb
         .from("visa_cases")
         .select("status, interview_date")
@@ -263,7 +263,6 @@ export const updateVisaCase = createServerFn({ method: "POST" })
     const cleaned: any = {};
     for (const [k, v] of Object.entries(patch)) if (v !== undefined) cleaned[k] = v;
 
-    // Auto-stamp submitted_at / decision_at
     if (patch.status === "submitted" && !cleaned.submitted_at) cleaned.submitted_at = new Date().toISOString();
     if ((patch.status === "approved" || patch.status === "rejected") && !cleaned.decision_at)
       cleaned.decision_at = new Date().toISOString();
@@ -271,7 +270,6 @@ export const updateVisaCase = createServerFn({ method: "POST" })
     const { error } = await sb.from("visa_cases").update(cleaned).eq("id", id);
     if (error) throw new Error(error.message);
 
-    // Status history + activity
     if (patch.status && patch.status !== prevStatus) {
       await sb.from("visa_status_history").insert({
         visa_case_id: id,
@@ -289,7 +287,6 @@ export const updateVisaCase = createServerFn({ method: "POST" })
       });
     }
 
-    // Auto follow-ups when interview newly scheduled
     if (patch.interview_date && interviewWasUnset) {
       const day = new Date(patch.interview_date + "T09:00:00Z");
       const mk = (offsetDays: number, label: string) => ({
@@ -316,10 +313,8 @@ export const updateVisaCase = createServerFn({ method: "POST" })
     }
 
     return { ok: true };
-
-    // unused guard reference, keep linter happy
-    function status() { return patch.status; }
   });
+
 
 export const verifyVisaDocument = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
