@@ -28,11 +28,19 @@ import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
+import { Route as TechnologiesWebDevelopmentRouteImport } from './routes/technologies.web-development'
+import { Route as TechnologiesUiUxDesignRouteImport } from './routes/technologies.ui-ux-design'
 import { Route as TechnologiesSoftwareDevelopmentRouteImport } from './routes/technologies.software-development'
 import { Route as TechnologiesSaasProductsRouteImport } from './routes/technologies.saas-products'
+import { Route as TechnologiesQaTestingRouteImport } from './routes/technologies.qa-testing'
 import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/technologies.product-development'
+import { Route as TechnologiesMobileDevelopmentRouteImport } from './routes/technologies.mobile-development'
 import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
+import { Route as TechnologiesDigitalTransformationRouteImport } from './routes/technologies.digital-transformation'
 import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
+import { Route as TechnologiesDevopsRouteImport } from './routes/technologies.devops'
+import { Route as TechnologiesDedicatedTeamRouteImport } from './routes/technologies.dedicated-team'
+import { Route as TechnologiesDataEngineeringRouteImport } from './routes/technologies.data-engineering'
 import { Route as TechnologiesCustomSoftwareDevelopmentRouteImport } from './routes/technologies.custom-software-development'
 import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
 import { Route as TechnologiesCloudSolutionsRouteImport } from './routes/technologies.cloud-solutions'
@@ -251,6 +259,17 @@ const VerifyCertificateIdRoute = VerifyCertificateIdRouteImport.update({
   path: '/verify-certificate/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TechnologiesWebDevelopmentRoute =
+  TechnologiesWebDevelopmentRouteImport.update({
+    id: '/web-development',
+    path: '/web-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesUiUxDesignRoute = TechnologiesUiUxDesignRouteImport.update({
+  id: '/ui-ux-design',
+  path: '/ui-ux-design',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesSoftwareDevelopmentRoute =
   TechnologiesSoftwareDevelopmentRouteImport.update({
     id: '/software-development',
@@ -263,10 +282,21 @@ const TechnologiesSaasProductsRoute =
     path: '/saas-products',
     getParentRoute: () => TechnologiesRoute,
   } as any)
+const TechnologiesQaTestingRoute = TechnologiesQaTestingRouteImport.update({
+  id: '/qa-testing',
+  path: '/qa-testing',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesProductDevelopmentRoute =
   TechnologiesProductDevelopmentRouteImport.update({
     id: '/product-development',
     path: '/product-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesMobileDevelopmentRoute =
+  TechnologiesMobileDevelopmentRouteImport.update({
+    id: '/mobile-development',
+    path: '/mobile-development',
     getParentRoute: () => TechnologiesRoute,
   } as any)
 const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
@@ -274,10 +304,33 @@ const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
   path: '/industries',
   getParentRoute: () => TechnologiesRoute,
 } as any)
+const TechnologiesDigitalTransformationRoute =
+  TechnologiesDigitalTransformationRouteImport.update({
+    id: '/digital-transformation',
+    path: '/digital-transformation',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
 const TechnologiesDigitalMarketingRoute =
   TechnologiesDigitalMarketingRouteImport.update({
     id: '/digital-marketing',
     path: '/digital-marketing',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesDevopsRoute = TechnologiesDevopsRouteImport.update({
+  id: '/devops',
+  path: '/devops',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesDedicatedTeamRoute =
+  TechnologiesDedicatedTeamRouteImport.update({
+    id: '/dedicated-team',
+    path: '/dedicated-team',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesDataEngineeringRoute =
+  TechnologiesDataEngineeringRouteImport.update({
+    id: '/data-engineering',
+    path: '/data-engineering',
     getParentRoute: () => TechnologiesRoute,
   } as any)
 const TechnologiesCustomSoftwareDevelopmentRoute =
@@ -1039,11 +1092,19 @@ export interface FileRoutesByFullPath {
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
+  '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
+  '/technologies/dedicated-team': typeof TechnologiesDedicatedTeamRoute
+  '/technologies/devops': typeof TechnologiesDevopsRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
   '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
+  '/technologies/qa-testing': typeof TechnologiesQaTestingRoute
   '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
   '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
+  '/technologies/ui-ux-design': typeof TechnologiesUiUxDesignRoute
+  '/technologies/web-development': typeof TechnologiesWebDevelopmentRoute
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
@@ -1183,11 +1244,19 @@ export interface FileRoutesByTo {
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
+  '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
+  '/technologies/dedicated-team': typeof TechnologiesDedicatedTeamRoute
+  '/technologies/devops': typeof TechnologiesDevopsRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
   '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
+  '/technologies/qa-testing': typeof TechnologiesQaTestingRoute
   '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
   '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
+  '/technologies/ui-ux-design': typeof TechnologiesUiUxDesignRoute
+  '/technologies/web-development': typeof TechnologiesWebDevelopmentRoute
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
@@ -1325,11 +1394,19 @@ export interface FileRoutesById {
   '/technologies/cloud-solutions': typeof TechnologiesCloudSolutionsRoute
   '/technologies/contact': typeof TechnologiesContactRoute
   '/technologies/custom-software-development': typeof TechnologiesCustomSoftwareDevelopmentRoute
+  '/technologies/data-engineering': typeof TechnologiesDataEngineeringRoute
+  '/technologies/dedicated-team': typeof TechnologiesDedicatedTeamRoute
+  '/technologies/devops': typeof TechnologiesDevopsRoute
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/industries': typeof TechnologiesIndustriesRoute
+  '/technologies/mobile-development': typeof TechnologiesMobileDevelopmentRoute
   '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
+  '/technologies/qa-testing': typeof TechnologiesQaTestingRoute
   '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
   '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
+  '/technologies/ui-ux-design': typeof TechnologiesUiUxDesignRoute
+  '/technologies/web-development': typeof TechnologiesWebDevelopmentRoute
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
@@ -1475,11 +1552,19 @@ export interface FileRouteTypes {
     | '/technologies/cloud-solutions'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
+    | '/technologies/data-engineering'
+    | '/technologies/dedicated-team'
+    | '/technologies/devops'
     | '/technologies/digital-marketing'
+    | '/technologies/digital-transformation'
     | '/technologies/industries'
+    | '/technologies/mobile-development'
     | '/technologies/product-development'
+    | '/technologies/qa-testing'
     | '/technologies/saas-products'
     | '/technologies/software-development'
+    | '/technologies/ui-ux-design'
+    | '/technologies/web-development'
     | '/verify-certificate/$id'
     | '/academy/'
     | '/global-education/'
@@ -1619,11 +1704,19 @@ export interface FileRouteTypes {
     | '/technologies/cloud-solutions'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
+    | '/technologies/data-engineering'
+    | '/technologies/dedicated-team'
+    | '/technologies/devops'
     | '/technologies/digital-marketing'
+    | '/technologies/digital-transformation'
     | '/technologies/industries'
+    | '/technologies/mobile-development'
     | '/technologies/product-development'
+    | '/technologies/qa-testing'
     | '/technologies/saas-products'
     | '/technologies/software-development'
+    | '/technologies/ui-ux-design'
+    | '/technologies/web-development'
     | '/verify-certificate/$id'
     | '/academy'
     | '/global-education'
@@ -1760,11 +1853,19 @@ export interface FileRouteTypes {
     | '/technologies/cloud-solutions'
     | '/technologies/contact'
     | '/technologies/custom-software-development'
+    | '/technologies/data-engineering'
+    | '/technologies/dedicated-team'
+    | '/technologies/devops'
     | '/technologies/digital-marketing'
+    | '/technologies/digital-transformation'
     | '/technologies/industries'
+    | '/technologies/mobile-development'
     | '/technologies/product-development'
+    | '/technologies/qa-testing'
     | '/technologies/saas-products'
     | '/technologies/software-development'
+    | '/technologies/ui-ux-design'
+    | '/technologies/web-development'
     | '/verify-certificate/$id'
     | '/academy/'
     | '/global-education/'
@@ -2016,6 +2117,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyCertificateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/technologies/web-development': {
+      id: '/technologies/web-development'
+      path: '/web-development'
+      fullPath: '/technologies/web-development'
+      preLoaderRoute: typeof TechnologiesWebDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/ui-ux-design': {
+      id: '/technologies/ui-ux-design'
+      path: '/ui-ux-design'
+      fullPath: '/technologies/ui-ux-design'
+      preLoaderRoute: typeof TechnologiesUiUxDesignRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
     '/technologies/software-development': {
       id: '/technologies/software-development'
       path: '/software-development'
@@ -2030,11 +2145,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesSaasProductsRouteImport
       parentRoute: typeof TechnologiesRoute
     }
+    '/technologies/qa-testing': {
+      id: '/technologies/qa-testing'
+      path: '/qa-testing'
+      fullPath: '/technologies/qa-testing'
+      preLoaderRoute: typeof TechnologiesQaTestingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
     '/technologies/product-development': {
       id: '/technologies/product-development'
       path: '/product-development'
       fullPath: '/technologies/product-development'
       preLoaderRoute: typeof TechnologiesProductDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/mobile-development': {
+      id: '/technologies/mobile-development'
+      path: '/mobile-development'
+      fullPath: '/technologies/mobile-development'
+      preLoaderRoute: typeof TechnologiesMobileDevelopmentRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/industries': {
@@ -2044,11 +2173,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesIndustriesRouteImport
       parentRoute: typeof TechnologiesRoute
     }
+    '/technologies/digital-transformation': {
+      id: '/technologies/digital-transformation'
+      path: '/digital-transformation'
+      fullPath: '/technologies/digital-transformation'
+      preLoaderRoute: typeof TechnologiesDigitalTransformationRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
     '/technologies/digital-marketing': {
       id: '/technologies/digital-marketing'
       path: '/digital-marketing'
       fullPath: '/technologies/digital-marketing'
       preLoaderRoute: typeof TechnologiesDigitalMarketingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/devops': {
+      id: '/technologies/devops'
+      path: '/devops'
+      fullPath: '/technologies/devops'
+      preLoaderRoute: typeof TechnologiesDevopsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/dedicated-team': {
+      id: '/technologies/dedicated-team'
+      path: '/dedicated-team'
+      fullPath: '/technologies/dedicated-team'
+      preLoaderRoute: typeof TechnologiesDedicatedTeamRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/data-engineering': {
+      id: '/technologies/data-engineering'
+      path: '/data-engineering'
+      fullPath: '/technologies/data-engineering'
+      preLoaderRoute: typeof TechnologiesDataEngineeringRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/custom-software-development': {
@@ -3466,11 +3623,19 @@ interface TechnologiesRouteChildren {
   TechnologiesCloudSolutionsRoute: typeof TechnologiesCloudSolutionsRoute
   TechnologiesContactRoute: typeof TechnologiesContactRoute
   TechnologiesCustomSoftwareDevelopmentRoute: typeof TechnologiesCustomSoftwareDevelopmentRoute
+  TechnologiesDataEngineeringRoute: typeof TechnologiesDataEngineeringRoute
+  TechnologiesDedicatedTeamRoute: typeof TechnologiesDedicatedTeamRoute
+  TechnologiesDevopsRoute: typeof TechnologiesDevopsRoute
   TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
+  TechnologiesDigitalTransformationRoute: typeof TechnologiesDigitalTransformationRoute
   TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRoute
+  TechnologiesMobileDevelopmentRoute: typeof TechnologiesMobileDevelopmentRoute
   TechnologiesProductDevelopmentRoute: typeof TechnologiesProductDevelopmentRoute
+  TechnologiesQaTestingRoute: typeof TechnologiesQaTestingRoute
   TechnologiesSaasProductsRoute: typeof TechnologiesSaasProductsRoute
   TechnologiesSoftwareDevelopmentRoute: typeof TechnologiesSoftwareDevelopmentRoute
+  TechnologiesUiUxDesignRoute: typeof TechnologiesUiUxDesignRoute
+  TechnologiesWebDevelopmentRoute: typeof TechnologiesWebDevelopmentRoute
   TechnologiesIndexRoute: typeof TechnologiesIndexRoute
 }
 
@@ -3482,11 +3647,20 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesContactRoute: TechnologiesContactRoute,
   TechnologiesCustomSoftwareDevelopmentRoute:
     TechnologiesCustomSoftwareDevelopmentRoute,
+  TechnologiesDataEngineeringRoute: TechnologiesDataEngineeringRoute,
+  TechnologiesDedicatedTeamRoute: TechnologiesDedicatedTeamRoute,
+  TechnologiesDevopsRoute: TechnologiesDevopsRoute,
   TechnologiesDigitalMarketingRoute: TechnologiesDigitalMarketingRoute,
+  TechnologiesDigitalTransformationRoute:
+    TechnologiesDigitalTransformationRoute,
   TechnologiesIndustriesRoute: TechnologiesIndustriesRoute,
+  TechnologiesMobileDevelopmentRoute: TechnologiesMobileDevelopmentRoute,
   TechnologiesProductDevelopmentRoute: TechnologiesProductDevelopmentRoute,
+  TechnologiesQaTestingRoute: TechnologiesQaTestingRoute,
   TechnologiesSaasProductsRoute: TechnologiesSaasProductsRoute,
   TechnologiesSoftwareDevelopmentRoute: TechnologiesSoftwareDevelopmentRoute,
+  TechnologiesUiUxDesignRoute: TechnologiesUiUxDesignRoute,
+  TechnologiesWebDevelopmentRoute: TechnologiesWebDevelopmentRoute,
   TechnologiesIndexRoute: TechnologiesIndexRoute,
 }
 
