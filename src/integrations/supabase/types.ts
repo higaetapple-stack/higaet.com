@@ -14,6 +14,106 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_documents: {
+        Row: {
+          content: string | null
+          created_at: string
+          embedding_status: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          language: string | null
+          metadata: Json
+          source_id: string | null
+          tags: string[]
+          title: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          embedding_status?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          language?: string | null
+          metadata?: Json
+          source_id?: string | null
+          tags?: string[]
+          title: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          embedding_status?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          language?: string | null
+          metadata?: Json
+          source_id?: string | null
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_documents_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_embeddings_queue: {
+        Row: {
+          attempts: number
+          created_at: string
+          document_id: string | null
+          id: string
+          last_error: string | null
+          processed_at: string | null
+          scheduled_for: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          document_id?: string | null
+          id?: string
+          last_error?: string | null
+          processed_at?: string | null
+          scheduled_for?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          document_id?: string | null
+          id?: string
+          last_error?: string | null
+          processed_at?: string | null
+          scheduled_for?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_embeddings_queue_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "ai_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       application_documents: {
         Row: {
           application_id: string
@@ -66,7 +166,10 @@ export type Database = {
       }
       applications: {
         Row: {
+          assigned_to_counselor: string | null
           created_at: string
+          crm_status: Database["public"]["Enums"]["crm_status"]
+          crm_substatus: string | null
           id: string
           intake: string | null
           notes: string | null
@@ -80,7 +183,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_to_counselor?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           id?: string
           intake?: string | null
           notes?: string | null
@@ -94,7 +200,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_to_counselor?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           id?: string
           intake?: string | null
           notes?: string | null
@@ -108,6 +217,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "applications_assigned_to_counselor_fkey"
+            columns: ["assigned_to_counselor"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "applications_program_id_fkey"
             columns: ["program_id"]
@@ -418,6 +534,192 @@ export type Database = {
           },
         ]
       }
+      crm_activity_log: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          description: string | null
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id: string
+          metadata: Json
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          description?: string | null
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id?: string
+          metadata?: Json
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          description?: string | null
+          entity_id?: string
+          entity_type?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_activity_log_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_follow_ups: {
+        Row: {
+          channel: string
+          created_at: string
+          created_by: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          notes: string | null
+          scheduled_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          notes?: string | null
+          scheduled_at: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          notes?: string | null
+          scheduled_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_follow_ups_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_notes: {
+        Row: {
+          author_id: string | null
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          note: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          note: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          note?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_notes_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_tasks: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_date: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employers: {
         Row: {
           created_at: string
@@ -523,6 +825,8 @@ export type Database = {
         Row: {
           applied_at: string
           cover_letter: string | null
+          crm_status: Database["public"]["Enums"]["crm_status"]
+          crm_substatus: string | null
           id: string
           job_id: string
           notes: string | null
@@ -535,6 +839,8 @@ export type Database = {
         Insert: {
           applied_at?: string
           cover_letter?: string | null
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           id?: string
           job_id: string
           notes?: string | null
@@ -547,6 +853,8 @@ export type Database = {
         Update: {
           applied_at?: string
           cover_letter?: string | null
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           id?: string
           job_id?: string
           notes?: string | null
@@ -663,6 +971,39 @@ export type Database = {
           },
         ]
       }
+      knowledge_sources: {
+        Row: {
+          active: boolean
+          config: Json
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          source_type: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          config?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          source_type: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          config?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          source_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lessons: {
         Row: {
           content_md: string | null
@@ -720,6 +1061,8 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string | null
+          crm_status: Database["public"]["Enums"]["crm_status"]
+          crm_substatus: string | null
           employer_id: string | null
           employment_type: string
           id: string
@@ -739,6 +1082,8 @@ export type Database = {
         Insert: {
           created_at?: string
           created_by?: string | null
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           employer_id?: string | null
           employment_type?: string
           id?: string
@@ -758,6 +1103,8 @@ export type Database = {
         Update: {
           created_at?: string
           created_by?: string | null
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           employer_id?: string | null
           employment_type?: string
           id?: string
@@ -1213,8 +1560,11 @@ export type Database = {
       study_abroad_leads: {
         Row: {
           assigned_to: string | null
+          assigned_to_counselor: string | null
           country_of_interest: string | null
           created_at: string
+          crm_status: Database["public"]["Enums"]["crm_status"]
+          crm_substatus: string | null
           email: string
           field_of_interest: string | null
           full_name: string
@@ -1229,8 +1579,11 @@ export type Database = {
         }
         Insert: {
           assigned_to?: string | null
+          assigned_to_counselor?: string | null
           country_of_interest?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           email: string
           field_of_interest?: string | null
           full_name: string
@@ -1245,8 +1598,11 @@ export type Database = {
         }
         Update: {
           assigned_to?: string | null
+          assigned_to_counselor?: string | null
           country_of_interest?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           email?: string
           field_of_interest?: string | null
           full_name?: string
@@ -1259,7 +1615,15 @@ export type Database = {
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "study_abroad_leads_assigned_to_counselor_fkey"
+            columns: ["assigned_to_counselor"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       submissions: {
         Row: {
@@ -1339,8 +1703,11 @@ export type Database = {
       }
       technologies_leads: {
         Row: {
+          assigned_to: string | null
           company: string | null
           created_at: string
+          crm_status: Database["public"]["Enums"]["crm_status"]
+          crm_substatus: string | null
           email: string
           full_name: string
           id: string
@@ -1351,8 +1718,11 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
           company?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           email: string
           full_name: string
           id?: string
@@ -1363,8 +1733,11 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
           company?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           email?: string
           full_name?: string
           id?: string
@@ -1374,7 +1747,15 @@ export type Database = {
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "technologies_leads_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       universities: {
         Row: {
@@ -1596,6 +1977,13 @@ export type Database = {
         | "withdrawn"
         | "hired"
       course_status: "draft" | "published" | "archived"
+      crm_status:
+        | "new"
+        | "contacted"
+        | "qualified"
+        | "in_progress"
+        | "converted"
+        | "closed"
       enrollment_status: "active" | "paused" | "completed" | "withdrawn"
       job_employment_type: "full_time" | "part_time" | "contract" | "internship"
       job_experience_level: "entry" | "mid" | "senior"
@@ -1764,6 +2152,14 @@ export const Constants = {
         "hired",
       ],
       course_status: ["draft", "published", "archived"],
+      crm_status: [
+        "new",
+        "contacted",
+        "qualified",
+        "in_progress",
+        "converted",
+        "closed",
+      ],
       enrollment_status: ["active", "paused", "completed", "withdrawn"],
       job_employment_type: ["full_time", "part_time", "contract", "internship"],
       job_experience_level: ["entry", "mid", "senior"],
