@@ -228,7 +228,7 @@ export const askCopilot = createServerFn({ method: "POST" })
     const { data: chunks } = await sb.rpc("match_ai_chunks", {
       query_embedding: vec as unknown as string,
       match_count: 10,
-      collection_ids: collectionIds.length > 0 ? collectionIds : null,
+      collection_ids: collectionIds.length > 0 ? collectionIds : undefined,
     });
 
     const contextText = (chunks ?? [])
