@@ -112,6 +112,35 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   ].map((slug) => ({ path: `/technologies/engagement/${slug}`, changefreq: "monthly" as const, priority: "0.7" })),
   { path: "/technologies/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/technologies/contact", changefreq: "monthly", priority: "0.6" },
+  // Insights / Knowledge Center
+  { path: "/technologies/insights", changefreq: "weekly", priority: "0.8" },
+  ...[
+    "engineering-production-rag-systems",
+    "cloud-cost-discipline-without-slowing-engineering",
+    "secure-software-delivery-in-regulated-environments",
+    "modernising-legacy-monoliths-without-a-rewrite",
+    "data-platforms-that-survive-reorgs",
+    "designing-enterprise-saas-for-multi-tenant-reality",
+  ].map((slug) => ({ path: `/technologies/insights/${slug}`, changefreq: "monthly" as const, priority: "0.7" })),
+  // Company
+  { path: "/technologies/company", changefreq: "monthly", priority: "0.7" },
+  ...[
+    "about",
+    "leadership",
+    "mission",
+    "vision",
+    "values",
+    "culture",
+    "why-higaet-technologies",
+    "development-methodology",
+    "quality-assurance",
+    "security",
+    "delivery-process",
+  ].map((slug) => ({ path: `/technologies/company/${slug}`, changefreq: "monthly" as const, priority: "0.6" })),
+  // Legal
+  { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+  { path: "/terms", changefreq: "yearly", priority: "0.3" },
+  { path: "/cookies", changefreq: "yearly", priority: "0.3" },
 ];
 
 // Blog posts and job listings are currently authored in code. When they move to
