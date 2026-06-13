@@ -116,7 +116,7 @@ function JobDetail() {
   );
 }
 
-function SignInPanel({ slug }: { slug: string }) {
+function SignInPanel(_: { slug: string }) {
   return (
     <div className="rounded-2xl bg-card ring-1 ring-border p-5">
       <p className="text-sm text-ink">Sign in to apply with your HIGAET resume.</p>
