@@ -392,7 +392,7 @@ function TechHome() {
             </ul>
           </div>
           <div className="rounded-2xl bg-card p-6 ring-1 ring-border md:p-8 [box-shadow:var(--shadow-card)]">
-            <LeadForm division="technologies" source="technologies_home" />
+            <LeadForm division="tech" source="technologies_home" />
           </div>
         </div>
       </Section>
