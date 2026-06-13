@@ -91,6 +91,7 @@ import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes
 import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
 import { Route as AuthenticatedDashboardFacultySubmissionsRouteImport } from './routes/_authenticated.dashboard.faculty.submissions'
 import { Route as AuthenticatedDashboardCoursesCourseIdRouteImport } from './routes/_authenticated.dashboard.courses.$courseId'
+import { Route as AuthenticatedDashboardCounselorVisaRouteImport } from './routes/_authenticated.dashboard.counselor.visa'
 import { Route as AuthenticatedDashboardCounselorTasksRouteImport } from './routes/_authenticated.dashboard.counselor.tasks'
 import { Route as AuthenticatedDashboardCounselorLeadsRouteImport } from './routes/_authenticated.dashboard.counselor.leads'
 import { Route as AuthenticatedDashboardCounselorFollowUpsRouteImport } from './routes/_authenticated.dashboard.counselor.follow-ups'
@@ -572,6 +573,12 @@ const AuthenticatedDashboardCoursesCourseIdRoute =
     path: '/courses/$courseId',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardCounselorVisaRoute =
+  AuthenticatedDashboardCounselorVisaRouteImport.update({
+    id: '/visa',
+    path: '/visa',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
 const AuthenticatedDashboardCounselorTasksRoute =
   AuthenticatedDashboardCounselorTasksRouteImport.update({
     id: '/tasks',
@@ -904,6 +911,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/counselor/follow-ups': typeof AuthenticatedDashboardCounselorFollowUpsRoute
   '/dashboard/counselor/leads': typeof AuthenticatedDashboardCounselorLeadsRoute
   '/dashboard/counselor/tasks': typeof AuthenticatedDashboardCounselorTasksRoute
+  '/dashboard/counselor/visa': typeof AuthenticatedDashboardCounselorVisaRoute
   '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
@@ -1017,6 +1025,7 @@ export interface FileRoutesByTo {
   '/dashboard/counselor/follow-ups': typeof AuthenticatedDashboardCounselorFollowUpsRoute
   '/dashboard/counselor/leads': typeof AuthenticatedDashboardCounselorLeadsRoute
   '/dashboard/counselor/tasks': typeof AuthenticatedDashboardCounselorTasksRoute
+  '/dashboard/counselor/visa': typeof AuthenticatedDashboardCounselorVisaRoute
   '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
@@ -1140,6 +1149,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/counselor/follow-ups': typeof AuthenticatedDashboardCounselorFollowUpsRoute
   '/_authenticated/dashboard/counselor/leads': typeof AuthenticatedDashboardCounselorLeadsRoute
   '/_authenticated/dashboard/counselor/tasks': typeof AuthenticatedDashboardCounselorTasksRoute
+  '/_authenticated/dashboard/counselor/visa': typeof AuthenticatedDashboardCounselorVisaRoute
   '/_authenticated/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/_authenticated/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/_authenticated/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
@@ -1263,6 +1273,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor/follow-ups'
     | '/dashboard/counselor/leads'
     | '/dashboard/counselor/tasks'
+    | '/dashboard/counselor/visa'
     | '/dashboard/courses/$courseId'
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
@@ -1376,6 +1387,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor/follow-ups'
     | '/dashboard/counselor/leads'
     | '/dashboard/counselor/tasks'
+    | '/dashboard/counselor/visa'
     | '/dashboard/courses/$courseId'
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
@@ -1498,6 +1510,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/counselor/follow-ups'
     | '/_authenticated/dashboard/counselor/leads'
     | '/_authenticated/dashboard/counselor/tasks'
+    | '/_authenticated/dashboard/counselor/visa'
     | '/_authenticated/dashboard/courses/$courseId'
     | '/_authenticated/dashboard/faculty/submissions'
     | '/_authenticated/dashboard/lessons/$lessonId'
@@ -2114,6 +2127,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardCoursesCourseIdRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/counselor/visa': {
+      id: '/_authenticated/dashboard/counselor/visa'
+      path: '/visa'
+      fullPath: '/dashboard/counselor/visa'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorVisaRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
     '/_authenticated/dashboard/counselor/tasks': {
       id: '/_authenticated/dashboard/counselor/tasks'
       path: '/tasks'
@@ -2534,6 +2554,7 @@ interface AuthenticatedDashboardCounselorRouteChildren {
   AuthenticatedDashboardCounselorFollowUpsRoute: typeof AuthenticatedDashboardCounselorFollowUpsRoute
   AuthenticatedDashboardCounselorLeadsRoute: typeof AuthenticatedDashboardCounselorLeadsRoute
   AuthenticatedDashboardCounselorTasksRoute: typeof AuthenticatedDashboardCounselorTasksRoute
+  AuthenticatedDashboardCounselorVisaRoute: typeof AuthenticatedDashboardCounselorVisaRoute
   AuthenticatedDashboardCounselorIndexRoute: typeof AuthenticatedDashboardCounselorIndexRoute
 }
 
@@ -2547,6 +2568,8 @@ const AuthenticatedDashboardCounselorRouteChildren: AuthenticatedDashboardCounse
       AuthenticatedDashboardCounselorLeadsRoute,
     AuthenticatedDashboardCounselorTasksRoute:
       AuthenticatedDashboardCounselorTasksRoute,
+    AuthenticatedDashboardCounselorVisaRoute:
+      AuthenticatedDashboardCounselorVisaRoute,
     AuthenticatedDashboardCounselorIndexRoute:
       AuthenticatedDashboardCounselorIndexRoute,
   }
