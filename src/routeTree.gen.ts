@@ -24,6 +24,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as TechnologiesSoftwareDevelopmentRouteImport } from './routes/technologies.software-development'
+import { Route as TechnologiesSaasProductsRouteImport } from './routes/technologies.saas-products'
+import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
 import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global-education.visa-guidance'
 import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
 import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
@@ -122,6 +125,23 @@ const AcademyIndexRoute = AcademyIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AcademyRoute,
+} as any)
+const TechnologiesSoftwareDevelopmentRoute =
+  TechnologiesSoftwareDevelopmentRouteImport.update({
+    id: '/software-development',
+    path: '/software-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesSaasProductsRoute =
+  TechnologiesSaasProductsRouteImport.update({
+    id: '/saas-products',
+    path: '/saas-products',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesAiSolutionsRoute = TechnologiesAiSolutionsRouteImport.update({
+  id: '/ai-solutions',
+  path: '/ai-solutions',
+  getParentRoute: () => TechnologiesRoute,
 } as any)
 const GlobalEducationVisaGuidanceRoute =
   GlobalEducationVisaGuidanceRouteImport.update({
@@ -283,6 +303,9 @@ export interface FileRoutesByFullPath {
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
+  '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -320,6 +343,9 @@ export interface FileRoutesByTo {
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
+  '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
@@ -361,6 +387,9 @@ export interface FileRoutesById {
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
+  '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
+  '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -403,6 +432,9 @@ export interface FileRouteTypes {
     | '/global-education/study-abroad'
     | '/global-education/universities'
     | '/global-education/visa-guidance'
+    | '/technologies/ai-solutions'
+    | '/technologies/saas-products'
+    | '/technologies/software-development'
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
@@ -440,6 +472,9 @@ export interface FileRouteTypes {
     | '/global-education/study-abroad'
     | '/global-education/universities'
     | '/global-education/visa-guidance'
+    | '/technologies/ai-solutions'
+    | '/technologies/saas-products'
+    | '/technologies/software-development'
     | '/academy'
     | '/global-education'
     | '/technologies'
@@ -480,6 +515,9 @@ export interface FileRouteTypes {
     | '/global-education/study-abroad'
     | '/global-education/universities'
     | '/global-education/visa-guidance'
+    | '/technologies/ai-solutions'
+    | '/technologies/saas-products'
+    | '/technologies/software-development'
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
@@ -606,6 +644,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/'
       preLoaderRoute: typeof AcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/technologies/software-development': {
+      id: '/technologies/software-development'
+      path: '/software-development'
+      fullPath: '/technologies/software-development'
+      preLoaderRoute: typeof TechnologiesSoftwareDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/saas-products': {
+      id: '/technologies/saas-products'
+      path: '/saas-products'
+      fullPath: '/technologies/saas-products'
+      preLoaderRoute: typeof TechnologiesSaasProductsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/ai-solutions': {
+      id: '/technologies/ai-solutions'
+      path: '/ai-solutions'
+      fullPath: '/technologies/ai-solutions'
+      preLoaderRoute: typeof TechnologiesAiSolutionsRouteImport
+      parentRoute: typeof TechnologiesRoute
     }
     '/global-education/visa-guidance': {
       id: '/global-education/visa-guidance'
@@ -866,10 +925,16 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
 )
 
 interface TechnologiesRouteChildren {
+  TechnologiesAiSolutionsRoute: typeof TechnologiesAiSolutionsRoute
+  TechnologiesSaasProductsRoute: typeof TechnologiesSaasProductsRoute
+  TechnologiesSoftwareDevelopmentRoute: typeof TechnologiesSoftwareDevelopmentRoute
   TechnologiesIndexRoute: typeof TechnologiesIndexRoute
 }
 
 const TechnologiesRouteChildren: TechnologiesRouteChildren = {
+  TechnologiesAiSolutionsRoute: TechnologiesAiSolutionsRoute,
+  TechnologiesSaasProductsRoute: TechnologiesSaasProductsRoute,
+  TechnologiesSoftwareDevelopmentRoute: TechnologiesSoftwareDevelopmentRoute,
   TechnologiesIndexRoute: TechnologiesIndexRoute,
 }
 
