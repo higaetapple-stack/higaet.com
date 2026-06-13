@@ -14,6 +14,7 @@ import { breadcrumbJsonLd, type Crumb } from "./Breadcrumbs";
 import { jsonLdScript } from "./JsonLd";
 import { CTASection } from "./CTASection";
 import { LeadForm } from "./LeadForm";
+import { ServiceCategoryNav } from "./ServiceCategoryNav";
 import type { LeadDivision } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 
@@ -273,6 +274,8 @@ export function ServiceDetailPage({ content: c }: { content: ServiceDetailConten
           </div>
         </div>
       </Section>
+
+      <ServiceCategoryNav currentSlug={c.slug} />
 
       <CTASection
         eyebrow="HIGAET Technologies"
