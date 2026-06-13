@@ -1,95 +1,86 @@
-# Sprint 2B — HIGAET Academy LMS Delivery Layer
+# Sprint 2C — Academic Operations
 
-Connect authored content (Sprint 2D) to students. Build enrollment, the lesson player, and progress tracking. Assignments/submissions/certificates issuance stay in Sprint 2C, but UI placeholders go in now.
+Completes the learning lifecycle: Enroll → Learn → Submit → Grade → Certify → Showcase.
 
-## Scope (in)
+## Scope
 
-- **Student "My Programs"** at `/dashboard/programs` (replaces stub)
-- **Program detail** at `/dashboard/programs/$slug` — curriculum, faculty, progress, certificate status
-- **Course detail** at `/dashboard/courses/$courseId` — lesson list + progress
-- **Lesson player** at `/dashboard/lessons/$lessonId` — video, markdown, resources, Mark Complete
-- **Progress engine** — server fn `markLessonComplete` + computed course/program percentage
-- **Dashboard home upgrade** — Continue Learning, Quick Stats, Recent Activity
-- **Admin enrollment** — `/dashboard/admin/enrollments` page; enroll a student in a program; list enrollments
-- **Faculty cards** on program/course pages (uses `course_faculty` + profiles)
-- **Sidebar**: add "My courses" under student items
+### Module 1 — Assignment Submission (Student)
+- `/dashboard/assignments` — list pending/submitted with due dates, status, grades.
+- `/dashboard/assignments/$id` — read instructions, submit text + file URL + external URL (GitHub/Portfolio), resubmit while status = pending/needs_revision, view feedback + score.
+- Submission types stored as `submission_type` enum: `file | github | portfolio | text | mixed`. Files uploaded to a new private `submissions` storage bucket; row stores object path.
 
-## Scope (out — deferred)
+### Module 2 — Faculty Grading Portal
+- `/dashboard/faculty/submissions` — filter by course/assignment/status; row actions: view, grade (0–100), feedback, mark passed/failed/needs_revision.
+- Server fn `gradeSubmission` writes `score`, `status`, `feedback`, `graded_by`, `graded_at`; gated to faculty assigned to the course (via `course_faculty`) or admin.
 
-- Self-serve student enrollment / payments → after pricing decision
-- Assignment submission & grading → 2C (UI placeholder only)
-- Certificate generation/issuance (PDF, signing) → 2C (eligibility flag only)
-- Discussions, AI tutor, notes, bookmarks → Sprint 3
-- Lesson reordering UX beyond what 2D already supports
+### Module 3 — Certificate Engine
+- Eligibility helper (`isProgramEligible(programId, studentId)`): 100% lessons complete in all program courses AND all `is_required` assignments in those courses have a `passed` submission.
+- Server fn `issueCertificate` (admin/faculty or auto on completion): generates `certificate_number` (HIGAET-YYYY-XXXXXX), `verification_hash` (sha256 of number+student+program+date), stores in `certificates`.
+- Auto-issue trigger: after `markLessonComplete` and after `gradeSubmission(passed)`, check eligibility and insert certificate if missing.
+- Public route `/verify-certificate/$id` (server route under `/api/public/` for data, page route for UI): shows student name, program, issue date, certificate number, verification status. No auth.
+- Student certificate page `/dashboard/certificates` — list + download (HTML→print view at `/dashboard/certificates/$id`).
 
-## Server functions (`src/lib/learn.functions.ts`)
+### Module 4 — Achievement Widgets
+- Extend dashboard summary: certificates earned, assignments completed, average score, projects completed.
 
-All `requireSupabaseAuth`; scoped to `context.userId` via RLS (no admin assert).
+### Module 5 — Capstone Projects
+- New tables `projects` (program-scoped: title, brief, guidelines, due_at) and `project_submissions` (student_id, project_id, repo_url, demo_url, summary, status, score, feedback, graded_by, graded_at).
+- Admin CRUD under `/dashboard/admin/projects`. Student view `/dashboard/projects` + detail.
 
-- `getMyPrograms()` → programs the student is enrolled in + computed progress
-- `getProgramDetail({ slug })` → program + courses + lessons (titles/order/preview) + faculty per course + my progress + certificate eligibility
-- `getCourseDetail({ id })` → course + lessons + my completed lesson ids + faculty
-- `getLesson({ id })` → lesson + sibling navigation (prev/next ids) + enrollment check + completed flag
-- `markLessonComplete({ lessonId })` → upsert into `progress`; idempotent
-- `getDashboardSummary()` → continue-learning card, counts (enrolled, completed lessons, certs earned, assignments pending), recent activity (last 5 progress rows)
+### Module 6 — Program Completion Status
+- Derived enum on enrollment cards: `not_started | in_progress | completed | certified` from progress + certificate row.
+- Show on `/dashboard/programs` and program detail.
 
-Admin enrollment (admin-gated):
+### Admin Enhancements
+- `/dashboard/admin/certificates` (already exists for templates) → add issuance + revocation tab.
+- `/dashboard/admin/analytics` — counts: enrollments, active students (progress in last 30d), submissions, completion rate, certificates issued.
 
-- `adminListEnrollments({ programId? })`
-- `adminEnrollStudent({ userId, programId })`
-- `adminUnenroll({ enrollmentId })`
+## Technical Plan
 
-Progress math is computed in JS from `progress` rows vs lesson counts — no schema change.
+### Migration (single)
+1. Enums: `submission_status` (`pending`, `reviewed`, `passed`, `failed`, `needs_revision`), `submission_type`, `project_status`.
+2. Alter `assignments`: add `is_required boolean default true`.
+3. Alter `submissions`: add `submission_type`, `file_path text`, `external_url text`, `text_response text`, `feedback text`, `graded_by uuid`, `graded_at timestamptz`; ensure `status` uses new enum.
+4. Alter `certificates`: add `certificate_number text unique`, `verification_hash text`, `issued_by uuid`, `issue_date date default current_date`, `revoked boolean default false`, `revoked_at timestamptz`.
+5. Create `projects` + `project_submissions` with GRANTs + RLS.
+6. RLS policies:
+   - submissions: student CRUD own (insert/update while not finalized); faculty assigned to course can SELECT + UPDATE grading fields; admin all.
+   - certificates: student SELECT own; public SELECT by `certificate_number` (anon allowed only via SECURITY DEFINER fn — keep table policy authenticated, expose `verify_certificate(_number text)` RPC `security definer`).
+   - projects: authenticated SELECT for enrolled students + faculty/admin; admin write.
+7. Storage: private bucket `submissions` via `storage_create_bucket`; RLS on `storage.objects` so student writes/reads own folder `{user_id}/...`, faculty reads any in their courses (simplest: faculty+admin read all).
 
-## Routes
+### Server Functions (`src/lib/academic.functions.ts`)
+- Student: `listMyAssignments`, `getAssignment`, `submitAssignment`, `listMyCertificates`, `getMyAchievementStats`, `listMyProjects`, `submitProject`.
+- Faculty: `listSubmissionsToGrade`, `gradeSubmission`, `listProjectsToReview`, `gradeProjectSubmission`.
+- Admin: `adminIssueCertificate`, `adminRevokeCertificate`, `adminListAnalytics`, `adminListProjects`, `adminCreateProject`, `adminUpdateProject`, `adminDeleteProject`.
+- Public RPC wrapper: `verifyCertificate({ number })` — calls `public.verify_certificate` (no auth middleware).
+- Helper: `checkAndIssueCertificate(programId, studentId)` invoked from `markLessonComplete` and `gradeSubmission`.
 
-```text
-src/routes/
-  _authenticated.dashboard.programs.tsx              (REPLACE stub: list "My Programs")
-  _authenticated.dashboard.programs.$slug.tsx        (NEW: program detail w/ tabs)
-  _authenticated.dashboard.courses.$courseId.tsx     (NEW: course detail)
-  _authenticated.dashboard.lessons.$lessonId.tsx     (NEW: lesson player)
-  _authenticated.dashboard.index.tsx                 (UPGRADE: continue-learning + stats)
-  _authenticated.dashboard.admin.enrollments.tsx     (NEW: admin enroll students)
-```
+### Routes
+- `_authenticated.dashboard.assignments.index.tsx`
+- `_authenticated.dashboard.assignments.$assignmentId.tsx`
+- `_authenticated.dashboard.faculty.submissions.tsx`
+- `_authenticated.dashboard.certificates.index.tsx`
+- `_authenticated.dashboard.certificates.$id.tsx` (printable)
+- `_authenticated.dashboard.projects.index.tsx` + `.$id.tsx`
+- `_authenticated.dashboard.admin.projects.tsx`
+- `_authenticated.dashboard.admin.analytics.tsx`
+- `_authenticated.dashboard.admin.certificates.tsx` — extend with issuance/revocation tab
+- Public: `verify-certificate.$id.tsx`
 
-Add "Enrollments" tab to the admin layout TABS list.
+### Out of scope (deferred)
+- PDF certificate generation (use printable HTML for now; PDF in Sprint 3 if needed).
+- Rubric builder UI (free-text feedback only).
+- Plagiarism / AI-detection.
+- Self-serve enrollment + payments.
 
-## Components (`src/components/lms/`)
+## Execution order
+1. Migration (approval gate) → types regen.
+2. Storage bucket + storage RLS.
+3. Server functions file.
+4. Student assignment UI + faculty grading UI.
+5. Certificate engine + public verification page.
+6. Projects (admin + student).
+7. Achievement widgets + admin analytics.
 
-- `ProgramCard.tsx` — thumbnail, title, % progress, Continue button
-- `CurriculumList.tsx` — courses → lessons accordion with completion ticks
-- `LessonPlayer.tsx` — `<video>` (or iframe for YT/Vimeo URLs) + markdown content
-- `FacultyCard.tsx` — avatar, full_name, headline
-- `ProgressBar.tsx` — thin academy-themed bar
-- `MarkCompleteButton.tsx` — calls mutation + invalidates queries
-- `LessonNav.tsx` — prev/next links
-
-Markdown rendering: use `react-markdown` (add via `bun add react-markdown`). No raw HTML.
-
-## Dashboard home
-
-Replace existing overview with three sections:
-
-- **Continue learning** — top program (highest recent progress) with deep-link to its next incomplete lesson
-- **Quick stats** — 4 KPI tiles
-- **Recent activity** — last 5 `progress` rows mapped to lesson/course titles
-
-Falls back to "Browse programs" CTA when not enrolled.
-
-## RLS sanity check (no migration required)
-
-Existing policies already cover this Sprint:
-- `enrollments` — student reads own; admin full
-- `lessons` / `assignments` / `courses` / `programs` — student reads via enrollment + published status
-- `progress` — student manages own (verify policy exists; if not, add in a tiny migration)
-
-Will run `\d public.progress` first; if write policy is missing, ship a one-statement migration that adds `INSERT/UPDATE` for `auth.uid() = student_id`.
-
-## Acceptance
-
-- Admin can enroll a test student in a program.
-- That student sees the program at `/dashboard/programs`, can drill into curriculum, open a lesson, click Mark Complete, and see progress % update.
-- Dashboard overview shows Continue Learning pointing at the next incomplete lesson.
-- Faculty cards appear on program and course pages.
-- Build green; no marketing pages touched.
+Proceed?

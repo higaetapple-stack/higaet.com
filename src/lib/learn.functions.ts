@@ -272,6 +272,50 @@ export const markLessonComplete = createServerFn({ method: "POST" })
         { onConflict: "student_id,lesson_id" },
       );
     if (error) throw new Error(error.message);
+
+    // Try auto-issuing a certificate when the program is now complete
+    try {
+      const { data: lesson } = await sb
+        .from("lessons")
+        .select("courses(program_id)")
+        .eq("id", data.lessonId)
+        .maybeSingle();
+      const programId = (lesson as any)?.courses?.program_id;
+      if (programId) {
+        const { data: eligible } = await sb.rpc("is_program_eligible", {
+          _student: context.userId,
+          _program: programId,
+        });
+        if (eligible) {
+          const { data: existing } = await sb
+            .from("certificates")
+            .select("id")
+            .eq("student_id", context.userId)
+            .eq("program_id", programId)
+            .maybeSingle();
+          if (!existing) {
+            const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+            const { createHash, randomBytes } = await import("crypto");
+            const year = new Date().getFullYear();
+            const number = `HIGAET-${year}-${randomBytes(4).toString("hex").toUpperCase().slice(0, 8)}`;
+            const issued_at = new Date().toISOString();
+            const hash = createHash("sha256")
+              .update(`${number}|${context.userId}|${programId}|${issued_at}`)
+              .digest("hex");
+            await supabaseAdmin.from("certificates").insert({
+              student_id: context.userId,
+              program_id: programId,
+              certificate_number: number,
+              verification_hash: hash,
+              issued_at,
+            });
+          }
+        }
+      }
+    } catch {
+      // Non-fatal: lesson completion still succeeded
+    }
+
     return { ok: true as const };
   });
 
@@ -317,12 +361,18 @@ export const getDashboardSummary = createServerFn({ method: "GET" })
       continueProgramSlug = (enrolled[0] as any).programs?.slug ?? null;
     }
 
+    const { count: pendingAssignments } = await sb
+      .from("submissions")
+      .select("id", { count: "exact", head: true })
+      .eq("student_id", context.userId)
+      .eq("status", "pending");
+
     return {
       stats: {
         programs_enrolled: enrolled.length,
         lessons_completed: completedCount ?? 0,
         certificates_earned: certsCount ?? 0,
-        assignments_pending: 0, // 2C
+        assignments_pending: pendingAssignments ?? 0,
       },
       recent_activity: (completedRows ?? []).map((r: any) => ({
         lesson_title: r.lessons?.title,
