@@ -117,8 +117,10 @@ export const upsertInvoice = createServerFn({ method: "POST" })
       if (error) throw new Error(error.message);
       invoiceId = row.id;
     }
+    if (!invoiceId) throw new Error("Invoice id missing");
+    const finalId = invoiceId;
     const itemRows = items.map((it, idx) => ({
-      invoice_id: invoiceId,
+      invoice_id: finalId,
       description: it.description,
       quantity: it.quantity,
       unit_price: it.unit_price,
