@@ -94,7 +94,7 @@ export function InsightDetailPage({ content: i }: { content: InsightContent }) {
   const relServices = i.relatedServiceSlugs.map((s) => ALL_SERVICES[s]).filter(Boolean);
   const relTech = i.relatedTechnologySlugs.map((s) => ALL_TECHNOLOGIES[s]).filter(Boolean);
   const relIndustries = i.relatedIndustrySlugs.map((s) => ALL_INDUSTRIES[s]).filter(Boolean);
-  const relCases = i.relatedCaseStudySlugs.map((s) => CASE_STUDIES_BY_SLUG[s]).filter(Boolean);
+  const relCases = i.relatedCaseStudySlugs.map((s) => CASE_STUDIES[s]).filter(Boolean);
   const relPosts = relatedInsights(i.slug, 3);
 
   return (
