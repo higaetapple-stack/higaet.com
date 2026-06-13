@@ -121,7 +121,7 @@ function SignInPanel({ slug }: { slug: string }) {
     <div className="rounded-2xl bg-card ring-1 ring-border p-5">
       <p className="text-sm text-ink">Sign in to apply with your HIGAET resume.</p>
       <Button asChild className="w-full mt-3 bg-academy text-academy-foreground hover:bg-academy/90">
-        <Link to="/auth/login" search={{ redirect: `/jobs/${slug}` } as any}>Sign in</Link>
+        <Link to="/auth/login">Sign in</Link>
       </Button>
       <p className="text-xs text-muted-foreground mt-2">
         New here? <Link to="/auth/register" className="text-academy">Create an account</Link>.
