@@ -1758,6 +1758,69 @@ export type Database = {
           },
         ]
       }
+      tech_client_requests: {
+        Row: {
+          assigned_to: string | null
+          client_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          priority: Database["public"]["Enums"]["tech_priority"]
+          project_id: string | null
+          resolved_at: string | null
+          status: Database["public"]["Enums"]["tech_request_status"]
+          title: string
+          type: Database["public"]["Enums"]["tech_request_type"]
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["tech_priority"]
+          project_id?: string | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["tech_request_status"]
+          title: string
+          type?: Database["public"]["Enums"]["tech_request_type"]
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["tech_priority"]
+          project_id?: string | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["tech_request_status"]
+          title?: string
+          type?: Database["public"]["Enums"]["tech_request_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_client_requests_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_client_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tech_clients: {
         Row: {
           company: string
@@ -1958,6 +2021,248 @@ export type Database = {
             columns: ["proposal_id"]
             isOneToOne: false
             referencedRelation: "tech_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_invoice_items: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string
+          id: string
+          invoice_id: string
+          position: number
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          description: string
+          id?: string
+          invoice_id: string
+          position?: number
+          quantity?: number
+          unit_price?: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string
+          id?: string
+          invoice_id?: string
+          position?: number
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "tech_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_invoices: {
+        Row: {
+          amount_paid: number
+          client_id: string
+          contract_id: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          discount: number
+          due_date: string | null
+          id: string
+          invoice_number: string
+          issue_date: string
+          notes: string | null
+          paid_at: string | null
+          payment_instructions: string | null
+          pdf_generated_at: string | null
+          pdf_url: string | null
+          project_id: string | null
+          sent_at: string | null
+          status: Database["public"]["Enums"]["tech_invoice_status"]
+          subtotal: number
+          tax: number
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          amount_paid?: number
+          client_id: string
+          contract_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          discount?: number
+          due_date?: string | null
+          id?: string
+          invoice_number: string
+          issue_date?: string
+          notes?: string | null
+          paid_at?: string | null
+          payment_instructions?: string | null
+          pdf_generated_at?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["tech_invoice_status"]
+          subtotal?: number
+          tax?: number
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          amount_paid?: number
+          client_id?: string
+          contract_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          discount?: number
+          due_date?: string | null
+          id?: string
+          invoice_number?: string
+          issue_date?: string
+          notes?: string | null
+          paid_at?: string | null
+          payment_instructions?: string | null
+          pdf_generated_at?: string | null
+          pdf_url?: string | null
+          project_id?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["tech_invoice_status"]
+          subtotal?: number
+          tax?: number
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_invoices_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "tech_contracts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_invoices_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_payment_allocations: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          invoice_id: string
+          payment_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          invoice_id: string
+          payment_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          payment_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_payment_allocations_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "tech_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_payment_allocations_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "tech_payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_payments: {
+        Row: {
+          amount: number
+          client_id: string
+          created_at: string
+          created_by: string | null
+          currency: string
+          id: string
+          method: Database["public"]["Enums"]["tech_payment_method"]
+          notes: string | null
+          paid_on: string
+          receipt_url: string | null
+          reference: string | null
+          status: Database["public"]["Enums"]["tech_payment_status"]
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          amount: number
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          method?: Database["public"]["Enums"]["tech_payment_method"]
+          notes?: string | null
+          paid_on?: string
+          receipt_url?: string | null
+          reference?: string | null
+          status?: Database["public"]["Enums"]["tech_payment_status"]
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          amount?: number
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          method?: Database["public"]["Enums"]["tech_payment_method"]
+          notes?: string | null
+          paid_on?: string
+          receipt_url?: string | null
+          reference?: string | null
+          status?: Database["public"]["Enums"]["tech_payment_status"]
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_payments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
             referencedColumns: ["id"]
           },
         ]
@@ -2299,6 +2604,218 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_request_attachments: {
+        Row: {
+          created_at: string
+          file_name: string
+          id: string
+          mime_type: string | null
+          request_id: string
+          storage_path: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          id?: string
+          mime_type?: string | null
+          request_id: string
+          storage_path: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          id?: string
+          mime_type?: string | null
+          request_id?: string
+          storage_path?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_request_attachments_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "tech_client_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_request_comments: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          internal: boolean
+          request_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          internal?: boolean
+          request_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          internal?: boolean
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_request_comments_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "tech_client_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_support_tickets: {
+        Row: {
+          assigned_to: string | null
+          client_id: string
+          closed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          priority: Database["public"]["Enums"]["tech_priority"]
+          project_id: string | null
+          resolved_at: string | null
+          status: Database["public"]["Enums"]["tech_ticket_status"]
+          subject: string
+          ticket_number: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          client_id: string
+          closed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["tech_priority"]
+          project_id?: string | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["tech_ticket_status"]
+          subject: string
+          ticket_number: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          client_id?: string
+          closed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["tech_priority"]
+          project_id?: string | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["tech_ticket_status"]
+          subject?: string
+          ticket_number?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_support_tickets_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "tech_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tech_support_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "tech_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_ticket_attachments: {
+        Row: {
+          created_at: string
+          file_name: string
+          id: string
+          mime_type: string | null
+          storage_path: string
+          ticket_id: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          id?: string
+          mime_type?: string | null
+          storage_path: string
+          ticket_id: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          id?: string
+          mime_type?: string | null
+          storage_path?: string
+          ticket_id?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_ticket_attachments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tech_support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tech_ticket_comments: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          internal: boolean
+          ticket_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          internal?: boolean
+          ticket_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          internal?: boolean
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tech_ticket_comments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tech_support_tickets"
             referencedColumns: ["id"]
           },
         ]
@@ -2828,12 +3345,28 @@ export type Database = {
         | "active"
         | "completed"
         | "terminated"
+      tech_invoice_status:
+        | "draft"
+        | "sent"
+        | "partially_paid"
+        | "paid"
+        | "overdue"
+        | "cancelled"
       tech_milestone_status:
         | "not_started"
         | "in_progress"
         | "blocked"
         | "done"
         | "cancelled"
+      tech_payment_method:
+        | "bank_transfer"
+        | "upi"
+        | "card"
+        | "cash"
+        | "cheque"
+        | "other"
+      tech_payment_status: "pending" | "received" | "failed" | "refunded"
+      tech_priority: "low" | "medium" | "high" | "critical"
       tech_project_status:
         | "planning"
         | "active"
@@ -2848,6 +3381,27 @@ export type Database = {
         | "accepted"
         | "rejected"
         | "expired"
+      tech_request_status:
+        | "new"
+        | "in_review"
+        | "approved"
+        | "rejected"
+        | "in_progress"
+        | "completed"
+      tech_request_type:
+        | "feature"
+        | "change"
+        | "enhancement"
+        | "consultation"
+        | "bug"
+        | "other"
+      tech_ticket_status:
+        | "open"
+        | "assigned"
+        | "in_progress"
+        | "waiting_client"
+        | "resolved"
+        | "closed"
       visa_status:
         | "draft"
         | "documents_pending"
@@ -3054,6 +3608,14 @@ export const Constants = {
         "completed",
         "terminated",
       ],
+      tech_invoice_status: [
+        "draft",
+        "sent",
+        "partially_paid",
+        "paid",
+        "overdue",
+        "cancelled",
+      ],
       tech_milestone_status: [
         "not_started",
         "in_progress",
@@ -3061,6 +3623,16 @@ export const Constants = {
         "done",
         "cancelled",
       ],
+      tech_payment_method: [
+        "bank_transfer",
+        "upi",
+        "card",
+        "cash",
+        "cheque",
+        "other",
+      ],
+      tech_payment_status: ["pending", "received", "failed", "refunded"],
+      tech_priority: ["low", "medium", "high", "critical"],
       tech_project_status: [
         "planning",
         "active",
@@ -3076,6 +3648,30 @@ export const Constants = {
         "accepted",
         "rejected",
         "expired",
+      ],
+      tech_request_status: [
+        "new",
+        "in_review",
+        "approved",
+        "rejected",
+        "in_progress",
+        "completed",
+      ],
+      tech_request_type: [
+        "feature",
+        "change",
+        "enhancement",
+        "consultation",
+        "bug",
+        "other",
+      ],
+      tech_ticket_status: [
+        "open",
+        "assigned",
+        "in_progress",
+        "waiting_client",
+        "resolved",
+        "closed",
       ],
       visa_status: [
         "draft",
