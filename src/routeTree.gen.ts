@@ -26,6 +26,9 @@ import { Route as GlobalEducationIndexRouteImport } from './routes/global-educat
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as TechnologiesSoftwareDevelopmentRouteImport } from './routes/technologies.software-development'
 import { Route as TechnologiesSaasProductsRouteImport } from './routes/technologies.saas-products'
+import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/technologies.product-development'
+import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
+import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
 import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
 import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global-education.visa-guidance'
 import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
@@ -138,6 +141,23 @@ const TechnologiesSaasProductsRoute =
     path: '/saas-products',
     getParentRoute: () => TechnologiesRoute,
   } as any)
+const TechnologiesProductDevelopmentRoute =
+  TechnologiesProductDevelopmentRouteImport.update({
+    id: '/product-development',
+    path: '/product-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesDigitalMarketingRoute =
+  TechnologiesDigitalMarketingRouteImport.update({
+    id: '/digital-marketing',
+    path: '/digital-marketing',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesCaseStudiesRoute = TechnologiesCaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesAiSolutionsRoute = TechnologiesAiSolutionsRouteImport.update({
   id: '/ai-solutions',
   path: '/ai-solutions',
@@ -304,6 +324,9 @@ export interface FileRoutesByFullPath {
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
   '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
   '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy/': typeof AcademyIndexRoute
@@ -344,6 +367,9 @@ export interface FileRoutesByTo {
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
   '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
   '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy': typeof AcademyIndexRoute
@@ -388,6 +414,9 @@ export interface FileRoutesById {
   '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
+  '/technologies/case-studies': typeof TechnologiesCaseStudiesRoute
+  '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
+  '/technologies/product-development': typeof TechnologiesProductDevelopmentRoute
   '/technologies/saas-products': typeof TechnologiesSaasProductsRoute
   '/technologies/software-development': typeof TechnologiesSoftwareDevelopmentRoute
   '/academy/': typeof AcademyIndexRoute
@@ -433,6 +462,9 @@ export interface FileRouteTypes {
     | '/global-education/universities'
     | '/global-education/visa-guidance'
     | '/technologies/ai-solutions'
+    | '/technologies/case-studies'
+    | '/technologies/digital-marketing'
+    | '/technologies/product-development'
     | '/technologies/saas-products'
     | '/technologies/software-development'
     | '/academy/'
@@ -473,6 +505,9 @@ export interface FileRouteTypes {
     | '/global-education/universities'
     | '/global-education/visa-guidance'
     | '/technologies/ai-solutions'
+    | '/technologies/case-studies'
+    | '/technologies/digital-marketing'
+    | '/technologies/product-development'
     | '/technologies/saas-products'
     | '/technologies/software-development'
     | '/academy'
@@ -516,6 +551,9 @@ export interface FileRouteTypes {
     | '/global-education/universities'
     | '/global-education/visa-guidance'
     | '/technologies/ai-solutions'
+    | '/technologies/case-studies'
+    | '/technologies/digital-marketing'
+    | '/technologies/product-development'
     | '/technologies/saas-products'
     | '/technologies/software-development'
     | '/academy/'
@@ -657,6 +695,27 @@ declare module '@tanstack/react-router' {
       path: '/saas-products'
       fullPath: '/technologies/saas-products'
       preLoaderRoute: typeof TechnologiesSaasProductsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/product-development': {
+      id: '/technologies/product-development'
+      path: '/product-development'
+      fullPath: '/technologies/product-development'
+      preLoaderRoute: typeof TechnologiesProductDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/digital-marketing': {
+      id: '/technologies/digital-marketing'
+      path: '/digital-marketing'
+      fullPath: '/technologies/digital-marketing'
+      preLoaderRoute: typeof TechnologiesDigitalMarketingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/case-studies': {
+      id: '/technologies/case-studies'
+      path: '/case-studies'
+      fullPath: '/technologies/case-studies'
+      preLoaderRoute: typeof TechnologiesCaseStudiesRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/ai-solutions': {
@@ -926,6 +985,9 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
 
 interface TechnologiesRouteChildren {
   TechnologiesAiSolutionsRoute: typeof TechnologiesAiSolutionsRoute
+  TechnologiesCaseStudiesRoute: typeof TechnologiesCaseStudiesRoute
+  TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
+  TechnologiesProductDevelopmentRoute: typeof TechnologiesProductDevelopmentRoute
   TechnologiesSaasProductsRoute: typeof TechnologiesSaasProductsRoute
   TechnologiesSoftwareDevelopmentRoute: typeof TechnologiesSoftwareDevelopmentRoute
   TechnologiesIndexRoute: typeof TechnologiesIndexRoute
@@ -933,6 +995,9 @@ interface TechnologiesRouteChildren {
 
 const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesAiSolutionsRoute: TechnologiesAiSolutionsRoute,
+  TechnologiesCaseStudiesRoute: TechnologiesCaseStudiesRoute,
+  TechnologiesDigitalMarketingRoute: TechnologiesDigitalMarketingRoute,
+  TechnologiesProductDevelopmentRoute: TechnologiesProductDevelopmentRoute,
   TechnologiesSaasProductsRoute: TechnologiesSaasProductsRoute,
   TechnologiesSoftwareDevelopmentRoute: TechnologiesSoftwareDevelopmentRoute,
   TechnologiesIndexRoute: TechnologiesIndexRoute,
