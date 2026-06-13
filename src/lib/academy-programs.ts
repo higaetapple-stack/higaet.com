@@ -31,6 +31,7 @@ export const CATEGORY_LABELS: Record<ProgramCategory, string> = {
   cloud: "Cloud & DevOps",
   cyber: "Cybersecurity",
   product: "Product & Design",
+  engineering: "Full-Stack Engineering",
 };
 
 export const PROGRAMS: Program[] = [
