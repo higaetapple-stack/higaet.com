@@ -90,6 +90,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
+import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
 import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
 import { Route as AuthenticatedDashboardTechnologiesFinanceRouteImport } from './routes/_authenticated.dashboard.technologies.finance'
 import { Route as AuthenticatedDashboardTechnologiesContractsRouteImport } from './routes/_authenticated.dashboard.technologies.contracts'
@@ -585,6 +586,12 @@ const AuthenticatedDashboardTechnologiesSupportRoute =
     path: '/support',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
+const AuthenticatedDashboardTechnologiesRequestsRoute =
+  AuthenticatedDashboardTechnologiesRequestsRouteImport.update({
+    id: '/requests',
+    path: '/requests',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesProposalsRoute =
   AuthenticatedDashboardTechnologiesProposalsRouteImport.update({
     id: '/proposals',
@@ -1049,6 +1056,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
+  '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -1177,6 +1185,7 @@ export interface FileRoutesByTo {
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
+  '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -1319,6 +1328,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
   '/_authenticated/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/_authenticated/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
+  '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -1461,6 +1471,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/contracts'
     | '/dashboard/technologies/finance'
     | '/dashboard/technologies/proposals'
+    | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -1589,6 +1600,7 @@ export interface FileRouteTypes {
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/technologies/finance'
+    | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -1730,6 +1742,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/contracts'
     | '/_authenticated/dashboard/technologies/finance'
     | '/_authenticated/dashboard/technologies/proposals'
+    | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -2344,6 +2357,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/dashboard/technologies/support'
       preLoaderRoute: typeof AuthenticatedDashboardTechnologiesSupportRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/requests': {
+      id: '/_authenticated/dashboard/technologies/requests'
+      path: '/requests'
+      fullPath: '/dashboard/technologies/requests'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesRequestsRouteImport
       parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
     }
     '/_authenticated/dashboard/technologies/proposals': {
@@ -3020,6 +3040,7 @@ interface AuthenticatedDashboardTechnologiesRouteChildren {
   AuthenticatedDashboardTechnologiesContractsRoute: typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
   AuthenticatedDashboardTechnologiesFinanceRoute: typeof AuthenticatedDashboardTechnologiesFinanceRoute
   AuthenticatedDashboardTechnologiesProposalsRoute: typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
+  AuthenticatedDashboardTechnologiesRequestsRoute: typeof AuthenticatedDashboardTechnologiesRequestsRoute
   AuthenticatedDashboardTechnologiesSupportRoute: typeof AuthenticatedDashboardTechnologiesSupportRoute
   AuthenticatedDashboardTechnologiesIndexRoute: typeof AuthenticatedDashboardTechnologiesIndexRoute
   AuthenticatedDashboardTechnologiesClientsIdRoute: typeof AuthenticatedDashboardTechnologiesClientsIdRoute
@@ -3038,6 +3059,8 @@ const AuthenticatedDashboardTechnologiesRouteChildren: AuthenticatedDashboardTec
       AuthenticatedDashboardTechnologiesFinanceRoute,
     AuthenticatedDashboardTechnologiesProposalsRoute:
       AuthenticatedDashboardTechnologiesProposalsRouteWithChildren,
+    AuthenticatedDashboardTechnologiesRequestsRoute:
+      AuthenticatedDashboardTechnologiesRequestsRoute,
     AuthenticatedDashboardTechnologiesSupportRoute:
       AuthenticatedDashboardTechnologiesSupportRoute,
     AuthenticatedDashboardTechnologiesIndexRoute:
