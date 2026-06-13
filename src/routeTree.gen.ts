@@ -112,6 +112,7 @@ import { Route as AuthenticatedDashboardCareerPortfolioRouteImport } from './rou
 import { Route as AuthenticatedDashboardCareerApplicationsRouteImport } from './routes/_authenticated.dashboard.career.applications'
 import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } from './routes/_authenticated.dashboard.assignments.$assignmentId'
 import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './routes/_authenticated.dashboard.applications.$id'
+import { Route as AuthenticatedDashboardAiTutorRouteImport } from './routes/_authenticated.dashboard.ai.tutor'
 import { Route as AuthenticatedDashboardAdminVisaRouteImport } from './routes/_authenticated.dashboard.admin.visa'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
@@ -719,6 +720,12 @@ const AuthenticatedDashboardApplicationsIdRoute =
     path: '/applications/$id',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardAiTutorRoute =
+  AuthenticatedDashboardAiTutorRouteImport.update({
+    id: '/ai/tutor',
+    path: '/ai/tutor',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardAdminVisaRoute =
   AuthenticatedDashboardAdminVisaRouteImport.update({
     id: '/visa',
@@ -1043,6 +1050,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
   '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -1175,6 +1183,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
   '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -1317,6 +1326,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/_authenticated/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
   '/_authenticated/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/_authenticated/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/_authenticated/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
@@ -1461,6 +1471,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/admin/visa'
+    | '/dashboard/ai/tutor'
     | '/dashboard/applications/$id'
     | '/dashboard/assignments/$assignmentId'
     | '/dashboard/career/applications'
@@ -1593,6 +1604,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/admin/visa'
+    | '/dashboard/ai/tutor'
     | '/dashboard/applications/$id'
     | '/dashboard/assignments/$assignmentId'
     | '/dashboard/career/applications'
@@ -1734,6 +1746,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/universities'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/admin/visa'
+    | '/_authenticated/dashboard/ai/tutor'
     | '/_authenticated/dashboard/applications/$id'
     | '/_authenticated/dashboard/assignments/$assignmentId'
     | '/_authenticated/dashboard/career/applications'
@@ -2526,6 +2539,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardApplicationsIdRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/ai/tutor': {
+      id: '/_authenticated/dashboard/ai/tutor'
+      path: '/ai/tutor'
+      fullPath: '/dashboard/ai/tutor'
+      preLoaderRoute: typeof AuthenticatedDashboardAiTutorRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/admin/visa': {
       id: '/_authenticated/dashboard/admin/visa'
       path: '/visa'
@@ -3112,6 +3132,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardTechnologiesRoute: typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   AuthenticatedDashboardVisaRoute: typeof AuthenticatedDashboardVisaRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardAiTutorRoute: typeof AuthenticatedDashboardAiTutorRoute
   AuthenticatedDashboardApplicationsIdRoute: typeof AuthenticatedDashboardApplicationsIdRoute
   AuthenticatedDashboardAssignmentsAssignmentIdRoute: typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   AuthenticatedDashboardCertificatesIdRoute: typeof AuthenticatedDashboardCertificatesIdRoute
@@ -3141,6 +3162,7 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
       AuthenticatedDashboardTechnologiesRouteWithChildren,
     AuthenticatedDashboardVisaRoute: AuthenticatedDashboardVisaRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardAiTutorRoute: AuthenticatedDashboardAiTutorRoute,
     AuthenticatedDashboardApplicationsIdRoute:
       AuthenticatedDashboardApplicationsIdRoute,
     AuthenticatedDashboardAssignmentsAssignmentIdRoute:
