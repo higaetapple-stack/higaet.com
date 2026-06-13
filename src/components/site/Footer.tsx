@@ -17,6 +17,7 @@ const COMPANY_LINKS = [
 const LEGAL_LINKS = [
   { to: "/privacy", label: "Privacy Policy" },
   { to: "/terms", label: "Terms of Service" },
+  { to: "/cookies", label: "Cookie Policy" },
 ] as const;
 
 export function Footer() {
