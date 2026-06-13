@@ -48,6 +48,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
+import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholarship'
 import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
 import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
 import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
@@ -56,6 +57,10 @@ import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
 import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
+import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
+import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
+import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
+import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -263,6 +268,11 @@ const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
   path: '/success-stories',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyScholarshipRoute = AcademyScholarshipRouteImport.update({
+  id: '/scholarship',
+  path: '/scholarship',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const AcademyPlacementsRoute = AcademyPlacementsRouteImport.update({
   id: '/placements',
   path: '/placements',
@@ -304,6 +314,26 @@ const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
   path: '/certifications',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
+  id: '/programs/',
+  path: '/programs/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCampusesIndexRoute = AcademyCampusesIndexRouteImport.update({
+  id: '/campuses/',
+  path: '/campuses/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
+  id: '/programs/$slug',
+  path: '/programs/$slug',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCampusesSlugRoute = AcademyCampusesSlugRouteImport.update({
+  id: '/campuses/$slug',
+  path: '/campuses/$slug',
+  getParentRoute: () => AcademyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -326,6 +356,7 @@ export interface FileRoutesByFullPath {
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -353,6 +384,10 @@ export interface FileRoutesByFullPath {
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
+  '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/academy/campuses/': typeof AcademyCampusesIndexRoute
+  '/academy/programs/': typeof AcademyProgramsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -372,6 +407,7 @@ export interface FileRoutesByTo {
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -399,6 +435,10 @@ export interface FileRoutesByTo {
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
+  '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
+  '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/academy/campuses': typeof AcademyCampusesIndexRoute
+  '/academy/programs': typeof AcademyProgramsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -422,6 +462,7 @@ export interface FileRoutesById {
   '/academy/offline-training': typeof AcademyOfflineTrainingRoute
   '/academy/online-courses': typeof AcademyOnlineCoursesRoute
   '/academy/placements': typeof AcademyPlacementsRoute
+  '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -449,6 +490,10 @@ export interface FileRoutesById {
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
+  '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/academy/campuses/': typeof AcademyCampusesIndexRoute
+  '/academy/programs/': typeof AcademyProgramsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -473,6 +518,7 @@ export interface FileRouteTypes {
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
+    | '/academy/scholarship'
     | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -500,6 +546,10 @@ export interface FileRouteTypes {
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
+    | '/academy/campuses/$slug'
+    | '/academy/programs/$slug'
+    | '/academy/campuses/'
+    | '/academy/programs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -519,6 +569,7 @@ export interface FileRouteTypes {
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
+    | '/academy/scholarship'
     | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -546,6 +597,10 @@ export interface FileRouteTypes {
     | '/academy'
     | '/global-education'
     | '/technologies'
+    | '/academy/campuses/$slug'
+    | '/academy/programs/$slug'
+    | '/academy/campuses'
+    | '/academy/programs'
   id:
     | '__root__'
     | '/'
@@ -568,6 +623,7 @@ export interface FileRouteTypes {
     | '/academy/offline-training'
     | '/academy/online-courses'
     | '/academy/placements'
+    | '/academy/scholarship'
     | '/academy/success-stories'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -595,6 +651,10 @@ export interface FileRouteTypes {
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
+    | '/academy/campuses/$slug'
+    | '/academy/programs/$slug'
+    | '/academy/campuses/'
+    | '/academy/programs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -887,6 +947,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademySuccessStoriesRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/scholarship': {
+      id: '/academy/scholarship'
+      path: '/scholarship'
+      fullPath: '/academy/scholarship'
+      preLoaderRoute: typeof AcademyScholarshipRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/academy/placements': {
       id: '/academy/placements'
       path: '/placements'
@@ -943,6 +1010,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyCertificationsRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/programs/': {
+      id: '/academy/programs/'
+      path: '/programs'
+      fullPath: '/academy/programs/'
+      preLoaderRoute: typeof AcademyProgramsIndexRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/campuses/': {
+      id: '/academy/campuses/'
+      path: '/campuses'
+      fullPath: '/academy/campuses/'
+      preLoaderRoute: typeof AcademyCampusesIndexRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/programs/$slug': {
+      id: '/academy/programs/$slug'
+      path: '/programs/$slug'
+      fullPath: '/academy/programs/$slug'
+      preLoaderRoute: typeof AcademyProgramsSlugRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/campuses/$slug': {
+      id: '/academy/campuses/$slug'
+      path: '/campuses/$slug'
+      fullPath: '/academy/campuses/$slug'
+      preLoaderRoute: typeof AcademyCampusesSlugRouteImport
+      parentRoute: typeof AcademyRoute
+    }
   }
 }
 
@@ -955,8 +1050,13 @@ interface AcademyRouteChildren {
   AcademyOfflineTrainingRoute: typeof AcademyOfflineTrainingRoute
   AcademyOnlineCoursesRoute: typeof AcademyOnlineCoursesRoute
   AcademyPlacementsRoute: typeof AcademyPlacementsRoute
+  AcademyScholarshipRoute: typeof AcademyScholarshipRoute
   AcademySuccessStoriesRoute: typeof AcademySuccessStoriesRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
+  AcademyCampusesSlugRoute: typeof AcademyCampusesSlugRoute
+  AcademyProgramsSlugRoute: typeof AcademyProgramsSlugRoute
+  AcademyCampusesIndexRoute: typeof AcademyCampusesIndexRoute
+  AcademyProgramsIndexRoute: typeof AcademyProgramsIndexRoute
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
@@ -968,8 +1068,13 @@ const AcademyRouteChildren: AcademyRouteChildren = {
   AcademyOfflineTrainingRoute: AcademyOfflineTrainingRoute,
   AcademyOnlineCoursesRoute: AcademyOnlineCoursesRoute,
   AcademyPlacementsRoute: AcademyPlacementsRoute,
+  AcademyScholarshipRoute: AcademyScholarshipRoute,
   AcademySuccessStoriesRoute: AcademySuccessStoriesRoute,
   AcademyIndexRoute: AcademyIndexRoute,
+  AcademyCampusesSlugRoute: AcademyCampusesSlugRoute,
+  AcademyProgramsSlugRoute: AcademyProgramsSlugRoute,
+  AcademyCampusesIndexRoute: AcademyCampusesIndexRoute,
+  AcademyProgramsIndexRoute: AcademyProgramsIndexRoute,
 }
 
 const AcademyRouteWithChildren =

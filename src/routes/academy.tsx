@@ -4,11 +4,10 @@ import { cn } from "@/lib/utils";
 
 const ACADEMY_NAV = [
   { to: "/academy", label: "Overview", exact: true },
-  { to: "/academy/online-courses", label: "Online Courses" },
-  { to: "/academy/offline-training", label: "Offline Training" },
-  { to: "/academy/certifications", label: "Certifications" },
+  { to: "/academy/programs", label: "Programs" },
+  { to: "/academy/campuses", label: "Campuses" },
+  { to: "/academy/scholarship", label: "Scholarship (HAT)" },
   { to: "/academy/placements", label: "Placements" },
-  { to: "/academy/internships", label: "Internships" },
   { to: "/academy/corporate-training", label: "Corporate" },
   { to: "/academy/success-stories", label: "Stories" },
   { to: "/academy/faq", label: "FAQ" },
