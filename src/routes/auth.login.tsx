@@ -82,6 +82,20 @@ function LoginPage() {
         </>
       }
     >
+      <button
+        type="button"
+        onClick={signInWithGoogle}
+        disabled={googleLoading}
+        className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border bg-surface text-ink text-sm font-medium px-4 py-2.5 rounded-md hover:bg-muted transition-colors disabled:opacity-60 mb-4"
+      >
+        {googleLoading ? <Loader2 className="size-4 animate-spin" /> : <GoogleMark />}
+        Continue with Google
+      </button>
+      <div className="flex items-center gap-3 my-4">
+        <div className="h-px flex-1 bg-border" />
+        <span className="text-xs uppercase tracking-wider text-muted-foreground">or</span>
+        <div className="h-px flex-1 bg-border" />
+      </div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Label htmlFor="email">Email</Label>
