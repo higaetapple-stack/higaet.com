@@ -41,6 +41,7 @@ import { Route as TechnologiesMobileDevelopmentRouteImport } from './routes/tech
 import { Route as TechnologiesLegacyModernizationRouteImport } from './routes/technologies.legacy-modernization'
 import { Route as TechnologiesItConsultingRouteImport } from './routes/technologies.it-consulting'
 import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
+import { Route as TechnologiesExpertiseRouteImport } from './routes/technologies.expertise'
 import { Route as TechnologiesEnterpriseSoftwareRouteImport } from './routes/technologies.enterprise-software'
 import { Route as TechnologiesDigitalTransformationRouteImport } from './routes/technologies.digital-transformation'
 import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
@@ -396,6 +397,11 @@ const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
   path: '/industries',
   getParentRoute: () => TechnologiesRoute,
 } as any)
+const TechnologiesExpertiseRoute = TechnologiesExpertiseRouteImport.update({
+  id: '/expertise',
+  path: '/expertise',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
 const TechnologiesEnterpriseSoftwareRoute =
   TechnologiesEnterpriseSoftwareRouteImport.update({
     id: '/enterprise-software',
@@ -742,230 +748,230 @@ const TechnologiesIndustriesBankingRoute =
   } as any)
 const TechnologiesExpertiseVuejsRoute =
   TechnologiesExpertiseVuejsRouteImport.update({
-    id: '/expertise/vuejs',
-    path: '/expertise/vuejs',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/vuejs',
+    path: '/vuejs',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseTypescriptRoute =
   TechnologiesExpertiseTypescriptRouteImport.update({
-    id: '/expertise/typescript',
-    path: '/expertise/typescript',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/typescript',
+    path: '/typescript',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseSpringBootRoute =
   TechnologiesExpertiseSpringBootRouteImport.update({
-    id: '/expertise/spring-boot',
-    path: '/expertise/spring-boot',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/spring-boot',
+    path: '/spring-boot',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseRedisRoute =
   TechnologiesExpertiseRedisRouteImport.update({
-    id: '/expertise/redis',
-    path: '/expertise/redis',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/redis',
+    path: '/redis',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseReactNativeRoute =
   TechnologiesExpertiseReactNativeRouteImport.update({
-    id: '/expertise/react-native',
-    path: '/expertise/react-native',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/react-native',
+    path: '/react-native',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseReactRoute =
   TechnologiesExpertiseReactRouteImport.update({
-    id: '/expertise/react',
-    path: '/expertise/react',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/react',
+    path: '/react',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertisePythonRoute =
   TechnologiesExpertisePythonRouteImport.update({
-    id: '/expertise/python',
-    path: '/expertise/python',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/python',
+    path: '/python',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertisePostgresqlRoute =
   TechnologiesExpertisePostgresqlRouteImport.update({
-    id: '/expertise/postgresql',
-    path: '/expertise/postgresql',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/postgresql',
+    path: '/postgresql',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertisePhpRoute =
   TechnologiesExpertisePhpRouteImport.update({
-    id: '/expertise/php',
-    path: '/expertise/php',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/php',
+    path: '/php',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseOpenaiRoute =
   TechnologiesExpertiseOpenaiRouteImport.update({
-    id: '/expertise/openai',
-    path: '/expertise/openai',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/openai',
+    path: '/openai',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseNodejsRoute =
   TechnologiesExpertiseNodejsRouteImport.update({
-    id: '/expertise/nodejs',
-    path: '/expertise/nodejs',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/nodejs',
+    path: '/nodejs',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseNlpRoute =
   TechnologiesExpertiseNlpRouteImport.update({
-    id: '/expertise/nlp',
-    path: '/expertise/nlp',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/nlp',
+    path: '/nlp',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseNextjsRoute =
   TechnologiesExpertiseNextjsRouteImport.update({
-    id: '/expertise/nextjs',
-    path: '/expertise/nextjs',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/nextjs',
+    path: '/nextjs',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseMysqlRoute =
   TechnologiesExpertiseMysqlRouteImport.update({
-    id: '/expertise/mysql',
-    path: '/expertise/mysql',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/mysql',
+    path: '/mysql',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseMongodbRoute =
   TechnologiesExpertiseMongodbRouteImport.update({
-    id: '/expertise/mongodb',
-    path: '/expertise/mongodb',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/mongodb',
+    path: '/mongodb',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseMachineLearningRoute =
   TechnologiesExpertiseMachineLearningRouteImport.update({
-    id: '/expertise/machine-learning',
-    path: '/expertise/machine-learning',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/machine-learning',
+    path: '/machine-learning',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseLaravelRoute =
   TechnologiesExpertiseLaravelRouteImport.update({
-    id: '/expertise/laravel',
-    path: '/expertise/laravel',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/laravel',
+    path: '/laravel',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseKubernetesRoute =
   TechnologiesExpertiseKubernetesRouteImport.update({
-    id: '/expertise/kubernetes',
-    path: '/expertise/kubernetes',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/kubernetes',
+    path: '/kubernetes',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseJavascriptRoute =
   TechnologiesExpertiseJavascriptRouteImport.update({
-    id: '/expertise/javascript',
-    path: '/expertise/javascript',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/javascript',
+    path: '/javascript',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseJavaRoute =
   TechnologiesExpertiseJavaRouteImport.update({
-    id: '/expertise/java',
-    path: '/expertise/java',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/java',
+    path: '/java',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseIosRoute =
   TechnologiesExpertiseIosRouteImport.update({
-    id: '/expertise/ios',
-    path: '/expertise/ios',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/ios',
+    path: '/ios',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseHtml5Route =
   TechnologiesExpertiseHtml5RouteImport.update({
-    id: '/expertise/html5',
-    path: '/expertise/html5',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/html5',
+    path: '/html5',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseGoRoute = TechnologiesExpertiseGoRouteImport.update({
-  id: '/expertise/go',
-  path: '/expertise/go',
-  getParentRoute: () => TechnologiesRoute,
+  id: '/go',
+  path: '/go',
+  getParentRoute: () => TechnologiesExpertiseRoute,
 } as any)
 const TechnologiesExpertiseGenerativeAiRoute =
   TechnologiesExpertiseGenerativeAiRouteImport.update({
-    id: '/expertise/generative-ai',
-    path: '/expertise/generative-ai',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/generative-ai',
+    path: '/generative-ai',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseGcpRoute =
   TechnologiesExpertiseGcpRouteImport.update({
-    id: '/expertise/gcp',
-    path: '/expertise/gcp',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/gcp',
+    path: '/gcp',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseFlutterRoute =
   TechnologiesExpertiseFlutterRouteImport.update({
-    id: '/expertise/flutter',
-    path: '/expertise/flutter',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/flutter',
+    path: '/flutter',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseExpressRoute =
   TechnologiesExpertiseExpressRouteImport.update({
-    id: '/expertise/express',
-    path: '/expertise/express',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/express',
+    path: '/express',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseDotnetRoute =
   TechnologiesExpertiseDotnetRouteImport.update({
-    id: '/expertise/dotnet',
-    path: '/expertise/dotnet',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/dotnet',
+    path: '/dotnet',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseDockerRoute =
   TechnologiesExpertiseDockerRouteImport.update({
-    id: '/expertise/docker',
-    path: '/expertise/docker',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/docker',
+    path: '/docker',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseDataEngineeringTechRoute =
   TechnologiesExpertiseDataEngineeringTechRouteImport.update({
-    id: '/expertise/data-engineering-tech',
-    path: '/expertise/data-engineering-tech',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/data-engineering-tech',
+    path: '/data-engineering-tech',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseCss3Route =
   TechnologiesExpertiseCss3RouteImport.update({
-    id: '/expertise/css3',
-    path: '/expertise/css3',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/css3',
+    path: '/css3',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseComputerVisionRoute =
   TechnologiesExpertiseComputerVisionRouteImport.update({
-    id: '/expertise/computer-vision',
-    path: '/expertise/computer-vision',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/computer-vision',
+    path: '/computer-vision',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseBusinessIntelligenceTechRoute =
   TechnologiesExpertiseBusinessIntelligenceTechRouteImport.update({
-    id: '/expertise/business-intelligence-tech',
-    path: '/expertise/business-intelligence-tech',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/business-intelligence-tech',
+    path: '/business-intelligence-tech',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseAzureRoute =
   TechnologiesExpertiseAzureRouteImport.update({
-    id: '/expertise/azure',
-    path: '/expertise/azure',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/azure',
+    path: '/azure',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseAwsRoute =
   TechnologiesExpertiseAwsRouteImport.update({
-    id: '/expertise/aws',
-    path: '/expertise/aws',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/aws',
+    path: '/aws',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseAngularRoute =
   TechnologiesExpertiseAngularRouteImport.update({
-    id: '/expertise/angular',
-    path: '/expertise/angular',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/angular',
+    path: '/angular',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseAndroidRoute =
   TechnologiesExpertiseAndroidRouteImport.update({
-    id: '/expertise/android',
-    path: '/expertise/android',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/android',
+    path: '/android',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const TechnologiesExpertiseAiAutomationRoute =
   TechnologiesExpertiseAiAutomationRouteImport.update({
-    id: '/expertise/ai-automation',
-    path: '/expertise/ai-automation',
-    getParentRoute: () => TechnologiesRoute,
+    id: '/ai-automation',
+    path: '/ai-automation',
+    getParentRoute: () => TechnologiesExpertiseRoute,
   } as any)
 const GlobalEducationUniversitiesSlugRoute =
   GlobalEducationUniversitiesSlugRouteImport.update({
@@ -1534,6 +1540,7 @@ export interface FileRoutesByFullPath {
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
+  '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
@@ -1748,6 +1755,7 @@ export interface FileRoutesByTo {
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
+  '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
@@ -1960,6 +1968,7 @@ export interface FileRoutesById {
   '/technologies/digital-marketing': typeof TechnologiesDigitalMarketingRoute
   '/technologies/digital-transformation': typeof TechnologiesDigitalTransformationRoute
   '/technologies/enterprise-software': typeof TechnologiesEnterpriseSoftwareRoute
+  '/technologies/expertise': typeof TechnologiesExpertiseRouteWithChildren
   '/technologies/industries': typeof TechnologiesIndustriesRouteWithChildren
   '/technologies/it-consulting': typeof TechnologiesItConsultingRoute
   '/technologies/legacy-modernization': typeof TechnologiesLegacyModernizationRoute
@@ -2180,6 +2189,7 @@ export interface FileRouteTypes {
     | '/technologies/digital-marketing'
     | '/technologies/digital-transformation'
     | '/technologies/enterprise-software'
+    | '/technologies/expertise'
     | '/technologies/industries'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
@@ -2394,6 +2404,7 @@ export interface FileRouteTypes {
     | '/technologies/digital-marketing'
     | '/technologies/digital-transformation'
     | '/technologies/enterprise-software'
+    | '/technologies/expertise'
     | '/technologies/industries'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
@@ -2605,6 +2616,7 @@ export interface FileRouteTypes {
     | '/technologies/digital-marketing'
     | '/technologies/digital-transformation'
     | '/technologies/enterprise-software'
+    | '/technologies/expertise'
     | '/technologies/industries'
     | '/technologies/it-consulting'
     | '/technologies/legacy-modernization'
@@ -3011,6 +3023,13 @@ declare module '@tanstack/react-router' {
       path: '/industries'
       fullPath: '/technologies/industries'
       preLoaderRoute: typeof TechnologiesIndustriesRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/expertise': {
+      id: '/technologies/expertise'
+      path: '/expertise'
+      fullPath: '/technologies/expertise'
+      preLoaderRoute: typeof TechnologiesExpertiseRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/enterprise-software': {
@@ -3449,269 +3468,269 @@ declare module '@tanstack/react-router' {
     }
     '/technologies/expertise/vuejs': {
       id: '/technologies/expertise/vuejs'
-      path: '/expertise/vuejs'
+      path: '/vuejs'
       fullPath: '/technologies/expertise/vuejs'
       preLoaderRoute: typeof TechnologiesExpertiseVuejsRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/typescript': {
       id: '/technologies/expertise/typescript'
-      path: '/expertise/typescript'
+      path: '/typescript'
       fullPath: '/technologies/expertise/typescript'
       preLoaderRoute: typeof TechnologiesExpertiseTypescriptRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/spring-boot': {
       id: '/technologies/expertise/spring-boot'
-      path: '/expertise/spring-boot'
+      path: '/spring-boot'
       fullPath: '/technologies/expertise/spring-boot'
       preLoaderRoute: typeof TechnologiesExpertiseSpringBootRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/redis': {
       id: '/technologies/expertise/redis'
-      path: '/expertise/redis'
+      path: '/redis'
       fullPath: '/technologies/expertise/redis'
       preLoaderRoute: typeof TechnologiesExpertiseRedisRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/react-native': {
       id: '/technologies/expertise/react-native'
-      path: '/expertise/react-native'
+      path: '/react-native'
       fullPath: '/technologies/expertise/react-native'
       preLoaderRoute: typeof TechnologiesExpertiseReactNativeRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/react': {
       id: '/technologies/expertise/react'
-      path: '/expertise/react'
+      path: '/react'
       fullPath: '/technologies/expertise/react'
       preLoaderRoute: typeof TechnologiesExpertiseReactRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/python': {
       id: '/technologies/expertise/python'
-      path: '/expertise/python'
+      path: '/python'
       fullPath: '/technologies/expertise/python'
       preLoaderRoute: typeof TechnologiesExpertisePythonRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/postgresql': {
       id: '/technologies/expertise/postgresql'
-      path: '/expertise/postgresql'
+      path: '/postgresql'
       fullPath: '/technologies/expertise/postgresql'
       preLoaderRoute: typeof TechnologiesExpertisePostgresqlRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/php': {
       id: '/technologies/expertise/php'
-      path: '/expertise/php'
+      path: '/php'
       fullPath: '/technologies/expertise/php'
       preLoaderRoute: typeof TechnologiesExpertisePhpRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/openai': {
       id: '/technologies/expertise/openai'
-      path: '/expertise/openai'
+      path: '/openai'
       fullPath: '/technologies/expertise/openai'
       preLoaderRoute: typeof TechnologiesExpertiseOpenaiRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/nodejs': {
       id: '/technologies/expertise/nodejs'
-      path: '/expertise/nodejs'
+      path: '/nodejs'
       fullPath: '/technologies/expertise/nodejs'
       preLoaderRoute: typeof TechnologiesExpertiseNodejsRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/nlp': {
       id: '/technologies/expertise/nlp'
-      path: '/expertise/nlp'
+      path: '/nlp'
       fullPath: '/technologies/expertise/nlp'
       preLoaderRoute: typeof TechnologiesExpertiseNlpRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/nextjs': {
       id: '/technologies/expertise/nextjs'
-      path: '/expertise/nextjs'
+      path: '/nextjs'
       fullPath: '/technologies/expertise/nextjs'
       preLoaderRoute: typeof TechnologiesExpertiseNextjsRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/mysql': {
       id: '/technologies/expertise/mysql'
-      path: '/expertise/mysql'
+      path: '/mysql'
       fullPath: '/technologies/expertise/mysql'
       preLoaderRoute: typeof TechnologiesExpertiseMysqlRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/mongodb': {
       id: '/technologies/expertise/mongodb'
-      path: '/expertise/mongodb'
+      path: '/mongodb'
       fullPath: '/technologies/expertise/mongodb'
       preLoaderRoute: typeof TechnologiesExpertiseMongodbRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/machine-learning': {
       id: '/technologies/expertise/machine-learning'
-      path: '/expertise/machine-learning'
+      path: '/machine-learning'
       fullPath: '/technologies/expertise/machine-learning'
       preLoaderRoute: typeof TechnologiesExpertiseMachineLearningRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/laravel': {
       id: '/technologies/expertise/laravel'
-      path: '/expertise/laravel'
+      path: '/laravel'
       fullPath: '/technologies/expertise/laravel'
       preLoaderRoute: typeof TechnologiesExpertiseLaravelRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/kubernetes': {
       id: '/technologies/expertise/kubernetes'
-      path: '/expertise/kubernetes'
+      path: '/kubernetes'
       fullPath: '/technologies/expertise/kubernetes'
       preLoaderRoute: typeof TechnologiesExpertiseKubernetesRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/javascript': {
       id: '/technologies/expertise/javascript'
-      path: '/expertise/javascript'
+      path: '/javascript'
       fullPath: '/technologies/expertise/javascript'
       preLoaderRoute: typeof TechnologiesExpertiseJavascriptRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/java': {
       id: '/technologies/expertise/java'
-      path: '/expertise/java'
+      path: '/java'
       fullPath: '/technologies/expertise/java'
       preLoaderRoute: typeof TechnologiesExpertiseJavaRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/ios': {
       id: '/technologies/expertise/ios'
-      path: '/expertise/ios'
+      path: '/ios'
       fullPath: '/technologies/expertise/ios'
       preLoaderRoute: typeof TechnologiesExpertiseIosRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/html5': {
       id: '/technologies/expertise/html5'
-      path: '/expertise/html5'
+      path: '/html5'
       fullPath: '/technologies/expertise/html5'
       preLoaderRoute: typeof TechnologiesExpertiseHtml5RouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/go': {
       id: '/technologies/expertise/go'
-      path: '/expertise/go'
+      path: '/go'
       fullPath: '/technologies/expertise/go'
       preLoaderRoute: typeof TechnologiesExpertiseGoRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/generative-ai': {
       id: '/technologies/expertise/generative-ai'
-      path: '/expertise/generative-ai'
+      path: '/generative-ai'
       fullPath: '/technologies/expertise/generative-ai'
       preLoaderRoute: typeof TechnologiesExpertiseGenerativeAiRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/gcp': {
       id: '/technologies/expertise/gcp'
-      path: '/expertise/gcp'
+      path: '/gcp'
       fullPath: '/technologies/expertise/gcp'
       preLoaderRoute: typeof TechnologiesExpertiseGcpRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/flutter': {
       id: '/technologies/expertise/flutter'
-      path: '/expertise/flutter'
+      path: '/flutter'
       fullPath: '/technologies/expertise/flutter'
       preLoaderRoute: typeof TechnologiesExpertiseFlutterRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/express': {
       id: '/technologies/expertise/express'
-      path: '/expertise/express'
+      path: '/express'
       fullPath: '/technologies/expertise/express'
       preLoaderRoute: typeof TechnologiesExpertiseExpressRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/dotnet': {
       id: '/technologies/expertise/dotnet'
-      path: '/expertise/dotnet'
+      path: '/dotnet'
       fullPath: '/technologies/expertise/dotnet'
       preLoaderRoute: typeof TechnologiesExpertiseDotnetRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/docker': {
       id: '/technologies/expertise/docker'
-      path: '/expertise/docker'
+      path: '/docker'
       fullPath: '/technologies/expertise/docker'
       preLoaderRoute: typeof TechnologiesExpertiseDockerRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/data-engineering-tech': {
       id: '/technologies/expertise/data-engineering-tech'
-      path: '/expertise/data-engineering-tech'
+      path: '/data-engineering-tech'
       fullPath: '/technologies/expertise/data-engineering-tech'
       preLoaderRoute: typeof TechnologiesExpertiseDataEngineeringTechRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/css3': {
       id: '/technologies/expertise/css3'
-      path: '/expertise/css3'
+      path: '/css3'
       fullPath: '/technologies/expertise/css3'
       preLoaderRoute: typeof TechnologiesExpertiseCss3RouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/computer-vision': {
       id: '/technologies/expertise/computer-vision'
-      path: '/expertise/computer-vision'
+      path: '/computer-vision'
       fullPath: '/technologies/expertise/computer-vision'
       preLoaderRoute: typeof TechnologiesExpertiseComputerVisionRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/business-intelligence-tech': {
       id: '/technologies/expertise/business-intelligence-tech'
-      path: '/expertise/business-intelligence-tech'
+      path: '/business-intelligence-tech'
       fullPath: '/technologies/expertise/business-intelligence-tech'
       preLoaderRoute: typeof TechnologiesExpertiseBusinessIntelligenceTechRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/azure': {
       id: '/technologies/expertise/azure'
-      path: '/expertise/azure'
+      path: '/azure'
       fullPath: '/technologies/expertise/azure'
       preLoaderRoute: typeof TechnologiesExpertiseAzureRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/aws': {
       id: '/technologies/expertise/aws'
-      path: '/expertise/aws'
+      path: '/aws'
       fullPath: '/technologies/expertise/aws'
       preLoaderRoute: typeof TechnologiesExpertiseAwsRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/angular': {
       id: '/technologies/expertise/angular'
-      path: '/expertise/angular'
+      path: '/angular'
       fullPath: '/technologies/expertise/angular'
       preLoaderRoute: typeof TechnologiesExpertiseAngularRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/android': {
       id: '/technologies/expertise/android'
-      path: '/expertise/android'
+      path: '/android'
       fullPath: '/technologies/expertise/android'
       preLoaderRoute: typeof TechnologiesExpertiseAndroidRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/technologies/expertise/ai-automation': {
       id: '/technologies/expertise/ai-automation'
-      path: '/expertise/ai-automation'
+      path: '/ai-automation'
       fullPath: '/technologies/expertise/ai-automation'
       preLoaderRoute: typeof TechnologiesExpertiseAiAutomationRouteImport
-      parentRoute: typeof TechnologiesRoute
+      parentRoute: typeof TechnologiesExpertiseRoute
     }
     '/global-education/universities/$slug': {
       id: '/global-education/universities/$slug'
@@ -4855,6 +4874,99 @@ const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
   GlobalEducationRouteChildren,
 )
 
+interface TechnologiesExpertiseRouteChildren {
+  TechnologiesExpertiseAiAutomationRoute: typeof TechnologiesExpertiseAiAutomationRoute
+  TechnologiesExpertiseAndroidRoute: typeof TechnologiesExpertiseAndroidRoute
+  TechnologiesExpertiseAngularRoute: typeof TechnologiesExpertiseAngularRoute
+  TechnologiesExpertiseAwsRoute: typeof TechnologiesExpertiseAwsRoute
+  TechnologiesExpertiseAzureRoute: typeof TechnologiesExpertiseAzureRoute
+  TechnologiesExpertiseBusinessIntelligenceTechRoute: typeof TechnologiesExpertiseBusinessIntelligenceTechRoute
+  TechnologiesExpertiseComputerVisionRoute: typeof TechnologiesExpertiseComputerVisionRoute
+  TechnologiesExpertiseCss3Route: typeof TechnologiesExpertiseCss3Route
+  TechnologiesExpertiseDataEngineeringTechRoute: typeof TechnologiesExpertiseDataEngineeringTechRoute
+  TechnologiesExpertiseDockerRoute: typeof TechnologiesExpertiseDockerRoute
+  TechnologiesExpertiseDotnetRoute: typeof TechnologiesExpertiseDotnetRoute
+  TechnologiesExpertiseExpressRoute: typeof TechnologiesExpertiseExpressRoute
+  TechnologiesExpertiseFlutterRoute: typeof TechnologiesExpertiseFlutterRoute
+  TechnologiesExpertiseGcpRoute: typeof TechnologiesExpertiseGcpRoute
+  TechnologiesExpertiseGenerativeAiRoute: typeof TechnologiesExpertiseGenerativeAiRoute
+  TechnologiesExpertiseGoRoute: typeof TechnologiesExpertiseGoRoute
+  TechnologiesExpertiseHtml5Route: typeof TechnologiesExpertiseHtml5Route
+  TechnologiesExpertiseIosRoute: typeof TechnologiesExpertiseIosRoute
+  TechnologiesExpertiseJavaRoute: typeof TechnologiesExpertiseJavaRoute
+  TechnologiesExpertiseJavascriptRoute: typeof TechnologiesExpertiseJavascriptRoute
+  TechnologiesExpertiseKubernetesRoute: typeof TechnologiesExpertiseKubernetesRoute
+  TechnologiesExpertiseLaravelRoute: typeof TechnologiesExpertiseLaravelRoute
+  TechnologiesExpertiseMachineLearningRoute: typeof TechnologiesExpertiseMachineLearningRoute
+  TechnologiesExpertiseMongodbRoute: typeof TechnologiesExpertiseMongodbRoute
+  TechnologiesExpertiseMysqlRoute: typeof TechnologiesExpertiseMysqlRoute
+  TechnologiesExpertiseNextjsRoute: typeof TechnologiesExpertiseNextjsRoute
+  TechnologiesExpertiseNlpRoute: typeof TechnologiesExpertiseNlpRoute
+  TechnologiesExpertiseNodejsRoute: typeof TechnologiesExpertiseNodejsRoute
+  TechnologiesExpertiseOpenaiRoute: typeof TechnologiesExpertiseOpenaiRoute
+  TechnologiesExpertisePhpRoute: typeof TechnologiesExpertisePhpRoute
+  TechnologiesExpertisePostgresqlRoute: typeof TechnologiesExpertisePostgresqlRoute
+  TechnologiesExpertisePythonRoute: typeof TechnologiesExpertisePythonRoute
+  TechnologiesExpertiseReactRoute: typeof TechnologiesExpertiseReactRoute
+  TechnologiesExpertiseReactNativeRoute: typeof TechnologiesExpertiseReactNativeRoute
+  TechnologiesExpertiseRedisRoute: typeof TechnologiesExpertiseRedisRoute
+  TechnologiesExpertiseSpringBootRoute: typeof TechnologiesExpertiseSpringBootRoute
+  TechnologiesExpertiseTypescriptRoute: typeof TechnologiesExpertiseTypescriptRoute
+  TechnologiesExpertiseVuejsRoute: typeof TechnologiesExpertiseVuejsRoute
+}
+
+const TechnologiesExpertiseRouteChildren: TechnologiesExpertiseRouteChildren = {
+  TechnologiesExpertiseAiAutomationRoute:
+    TechnologiesExpertiseAiAutomationRoute,
+  TechnologiesExpertiseAndroidRoute: TechnologiesExpertiseAndroidRoute,
+  TechnologiesExpertiseAngularRoute: TechnologiesExpertiseAngularRoute,
+  TechnologiesExpertiseAwsRoute: TechnologiesExpertiseAwsRoute,
+  TechnologiesExpertiseAzureRoute: TechnologiesExpertiseAzureRoute,
+  TechnologiesExpertiseBusinessIntelligenceTechRoute:
+    TechnologiesExpertiseBusinessIntelligenceTechRoute,
+  TechnologiesExpertiseComputerVisionRoute:
+    TechnologiesExpertiseComputerVisionRoute,
+  TechnologiesExpertiseCss3Route: TechnologiesExpertiseCss3Route,
+  TechnologiesExpertiseDataEngineeringTechRoute:
+    TechnologiesExpertiseDataEngineeringTechRoute,
+  TechnologiesExpertiseDockerRoute: TechnologiesExpertiseDockerRoute,
+  TechnologiesExpertiseDotnetRoute: TechnologiesExpertiseDotnetRoute,
+  TechnologiesExpertiseExpressRoute: TechnologiesExpertiseExpressRoute,
+  TechnologiesExpertiseFlutterRoute: TechnologiesExpertiseFlutterRoute,
+  TechnologiesExpertiseGcpRoute: TechnologiesExpertiseGcpRoute,
+  TechnologiesExpertiseGenerativeAiRoute:
+    TechnologiesExpertiseGenerativeAiRoute,
+  TechnologiesExpertiseGoRoute: TechnologiesExpertiseGoRoute,
+  TechnologiesExpertiseHtml5Route: TechnologiesExpertiseHtml5Route,
+  TechnologiesExpertiseIosRoute: TechnologiesExpertiseIosRoute,
+  TechnologiesExpertiseJavaRoute: TechnologiesExpertiseJavaRoute,
+  TechnologiesExpertiseJavascriptRoute: TechnologiesExpertiseJavascriptRoute,
+  TechnologiesExpertiseKubernetesRoute: TechnologiesExpertiseKubernetesRoute,
+  TechnologiesExpertiseLaravelRoute: TechnologiesExpertiseLaravelRoute,
+  TechnologiesExpertiseMachineLearningRoute:
+    TechnologiesExpertiseMachineLearningRoute,
+  TechnologiesExpertiseMongodbRoute: TechnologiesExpertiseMongodbRoute,
+  TechnologiesExpertiseMysqlRoute: TechnologiesExpertiseMysqlRoute,
+  TechnologiesExpertiseNextjsRoute: TechnologiesExpertiseNextjsRoute,
+  TechnologiesExpertiseNlpRoute: TechnologiesExpertiseNlpRoute,
+  TechnologiesExpertiseNodejsRoute: TechnologiesExpertiseNodejsRoute,
+  TechnologiesExpertiseOpenaiRoute: TechnologiesExpertiseOpenaiRoute,
+  TechnologiesExpertisePhpRoute: TechnologiesExpertisePhpRoute,
+  TechnologiesExpertisePostgresqlRoute: TechnologiesExpertisePostgresqlRoute,
+  TechnologiesExpertisePythonRoute: TechnologiesExpertisePythonRoute,
+  TechnologiesExpertiseReactRoute: TechnologiesExpertiseReactRoute,
+  TechnologiesExpertiseReactNativeRoute: TechnologiesExpertiseReactNativeRoute,
+  TechnologiesExpertiseRedisRoute: TechnologiesExpertiseRedisRoute,
+  TechnologiesExpertiseSpringBootRoute: TechnologiesExpertiseSpringBootRoute,
+  TechnologiesExpertiseTypescriptRoute: TechnologiesExpertiseTypescriptRoute,
+  TechnologiesExpertiseVuejsRoute: TechnologiesExpertiseVuejsRoute,
+}
+
+const TechnologiesExpertiseRouteWithChildren =
+  TechnologiesExpertiseRoute._addFileChildren(
+    TechnologiesExpertiseRouteChildren,
+  )
+
 interface TechnologiesIndustriesRouteChildren {
   TechnologiesIndustriesBankingRoute: typeof TechnologiesIndustriesBankingRoute
   TechnologiesIndustriesEcommerceRoute: typeof TechnologiesIndustriesEcommerceRoute
@@ -4919,6 +5031,7 @@ interface TechnologiesRouteChildren {
   TechnologiesDigitalMarketingRoute: typeof TechnologiesDigitalMarketingRoute
   TechnologiesDigitalTransformationRoute: typeof TechnologiesDigitalTransformationRoute
   TechnologiesEnterpriseSoftwareRoute: typeof TechnologiesEnterpriseSoftwareRoute
+  TechnologiesExpertiseRoute: typeof TechnologiesExpertiseRouteWithChildren
   TechnologiesIndustriesRoute: typeof TechnologiesIndustriesRouteWithChildren
   TechnologiesItConsultingRoute: typeof TechnologiesItConsultingRoute
   TechnologiesLegacyModernizationRoute: typeof TechnologiesLegacyModernizationRoute
@@ -4933,44 +5046,6 @@ interface TechnologiesRouteChildren {
   TechnologiesUiUxDesignRoute: typeof TechnologiesUiUxDesignRoute
   TechnologiesWebDevelopmentRoute: typeof TechnologiesWebDevelopmentRoute
   TechnologiesIndexRoute: typeof TechnologiesIndexRoute
-  TechnologiesExpertiseAiAutomationRoute: typeof TechnologiesExpertiseAiAutomationRoute
-  TechnologiesExpertiseAndroidRoute: typeof TechnologiesExpertiseAndroidRoute
-  TechnologiesExpertiseAngularRoute: typeof TechnologiesExpertiseAngularRoute
-  TechnologiesExpertiseAwsRoute: typeof TechnologiesExpertiseAwsRoute
-  TechnologiesExpertiseAzureRoute: typeof TechnologiesExpertiseAzureRoute
-  TechnologiesExpertiseBusinessIntelligenceTechRoute: typeof TechnologiesExpertiseBusinessIntelligenceTechRoute
-  TechnologiesExpertiseComputerVisionRoute: typeof TechnologiesExpertiseComputerVisionRoute
-  TechnologiesExpertiseCss3Route: typeof TechnologiesExpertiseCss3Route
-  TechnologiesExpertiseDataEngineeringTechRoute: typeof TechnologiesExpertiseDataEngineeringTechRoute
-  TechnologiesExpertiseDockerRoute: typeof TechnologiesExpertiseDockerRoute
-  TechnologiesExpertiseDotnetRoute: typeof TechnologiesExpertiseDotnetRoute
-  TechnologiesExpertiseExpressRoute: typeof TechnologiesExpertiseExpressRoute
-  TechnologiesExpertiseFlutterRoute: typeof TechnologiesExpertiseFlutterRoute
-  TechnologiesExpertiseGcpRoute: typeof TechnologiesExpertiseGcpRoute
-  TechnologiesExpertiseGenerativeAiRoute: typeof TechnologiesExpertiseGenerativeAiRoute
-  TechnologiesExpertiseGoRoute: typeof TechnologiesExpertiseGoRoute
-  TechnologiesExpertiseHtml5Route: typeof TechnologiesExpertiseHtml5Route
-  TechnologiesExpertiseIosRoute: typeof TechnologiesExpertiseIosRoute
-  TechnologiesExpertiseJavaRoute: typeof TechnologiesExpertiseJavaRoute
-  TechnologiesExpertiseJavascriptRoute: typeof TechnologiesExpertiseJavascriptRoute
-  TechnologiesExpertiseKubernetesRoute: typeof TechnologiesExpertiseKubernetesRoute
-  TechnologiesExpertiseLaravelRoute: typeof TechnologiesExpertiseLaravelRoute
-  TechnologiesExpertiseMachineLearningRoute: typeof TechnologiesExpertiseMachineLearningRoute
-  TechnologiesExpertiseMongodbRoute: typeof TechnologiesExpertiseMongodbRoute
-  TechnologiesExpertiseMysqlRoute: typeof TechnologiesExpertiseMysqlRoute
-  TechnologiesExpertiseNextjsRoute: typeof TechnologiesExpertiseNextjsRoute
-  TechnologiesExpertiseNlpRoute: typeof TechnologiesExpertiseNlpRoute
-  TechnologiesExpertiseNodejsRoute: typeof TechnologiesExpertiseNodejsRoute
-  TechnologiesExpertiseOpenaiRoute: typeof TechnologiesExpertiseOpenaiRoute
-  TechnologiesExpertisePhpRoute: typeof TechnologiesExpertisePhpRoute
-  TechnologiesExpertisePostgresqlRoute: typeof TechnologiesExpertisePostgresqlRoute
-  TechnologiesExpertisePythonRoute: typeof TechnologiesExpertisePythonRoute
-  TechnologiesExpertiseReactRoute: typeof TechnologiesExpertiseReactRoute
-  TechnologiesExpertiseReactNativeRoute: typeof TechnologiesExpertiseReactNativeRoute
-  TechnologiesExpertiseRedisRoute: typeof TechnologiesExpertiseRedisRoute
-  TechnologiesExpertiseSpringBootRoute: typeof TechnologiesExpertiseSpringBootRoute
-  TechnologiesExpertiseTypescriptRoute: typeof TechnologiesExpertiseTypescriptRoute
-  TechnologiesExpertiseVuejsRoute: typeof TechnologiesExpertiseVuejsRoute
 }
 
 const TechnologiesRouteChildren: TechnologiesRouteChildren = {
@@ -4991,6 +5066,7 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesDigitalTransformationRoute:
     TechnologiesDigitalTransformationRoute,
   TechnologiesEnterpriseSoftwareRoute: TechnologiesEnterpriseSoftwareRoute,
+  TechnologiesExpertiseRoute: TechnologiesExpertiseRouteWithChildren,
   TechnologiesIndustriesRoute: TechnologiesIndustriesRouteWithChildren,
   TechnologiesItConsultingRoute: TechnologiesItConsultingRoute,
   TechnologiesLegacyModernizationRoute: TechnologiesLegacyModernizationRoute,
@@ -5005,50 +5081,6 @@ const TechnologiesRouteChildren: TechnologiesRouteChildren = {
   TechnologiesUiUxDesignRoute: TechnologiesUiUxDesignRoute,
   TechnologiesWebDevelopmentRoute: TechnologiesWebDevelopmentRoute,
   TechnologiesIndexRoute: TechnologiesIndexRoute,
-  TechnologiesExpertiseAiAutomationRoute:
-    TechnologiesExpertiseAiAutomationRoute,
-  TechnologiesExpertiseAndroidRoute: TechnologiesExpertiseAndroidRoute,
-  TechnologiesExpertiseAngularRoute: TechnologiesExpertiseAngularRoute,
-  TechnologiesExpertiseAwsRoute: TechnologiesExpertiseAwsRoute,
-  TechnologiesExpertiseAzureRoute: TechnologiesExpertiseAzureRoute,
-  TechnologiesExpertiseBusinessIntelligenceTechRoute:
-    TechnologiesExpertiseBusinessIntelligenceTechRoute,
-  TechnologiesExpertiseComputerVisionRoute:
-    TechnologiesExpertiseComputerVisionRoute,
-  TechnologiesExpertiseCss3Route: TechnologiesExpertiseCss3Route,
-  TechnologiesExpertiseDataEngineeringTechRoute:
-    TechnologiesExpertiseDataEngineeringTechRoute,
-  TechnologiesExpertiseDockerRoute: TechnologiesExpertiseDockerRoute,
-  TechnologiesExpertiseDotnetRoute: TechnologiesExpertiseDotnetRoute,
-  TechnologiesExpertiseExpressRoute: TechnologiesExpertiseExpressRoute,
-  TechnologiesExpertiseFlutterRoute: TechnologiesExpertiseFlutterRoute,
-  TechnologiesExpertiseGcpRoute: TechnologiesExpertiseGcpRoute,
-  TechnologiesExpertiseGenerativeAiRoute:
-    TechnologiesExpertiseGenerativeAiRoute,
-  TechnologiesExpertiseGoRoute: TechnologiesExpertiseGoRoute,
-  TechnologiesExpertiseHtml5Route: TechnologiesExpertiseHtml5Route,
-  TechnologiesExpertiseIosRoute: TechnologiesExpertiseIosRoute,
-  TechnologiesExpertiseJavaRoute: TechnologiesExpertiseJavaRoute,
-  TechnologiesExpertiseJavascriptRoute: TechnologiesExpertiseJavascriptRoute,
-  TechnologiesExpertiseKubernetesRoute: TechnologiesExpertiseKubernetesRoute,
-  TechnologiesExpertiseLaravelRoute: TechnologiesExpertiseLaravelRoute,
-  TechnologiesExpertiseMachineLearningRoute:
-    TechnologiesExpertiseMachineLearningRoute,
-  TechnologiesExpertiseMongodbRoute: TechnologiesExpertiseMongodbRoute,
-  TechnologiesExpertiseMysqlRoute: TechnologiesExpertiseMysqlRoute,
-  TechnologiesExpertiseNextjsRoute: TechnologiesExpertiseNextjsRoute,
-  TechnologiesExpertiseNlpRoute: TechnologiesExpertiseNlpRoute,
-  TechnologiesExpertiseNodejsRoute: TechnologiesExpertiseNodejsRoute,
-  TechnologiesExpertiseOpenaiRoute: TechnologiesExpertiseOpenaiRoute,
-  TechnologiesExpertisePhpRoute: TechnologiesExpertisePhpRoute,
-  TechnologiesExpertisePostgresqlRoute: TechnologiesExpertisePostgresqlRoute,
-  TechnologiesExpertisePythonRoute: TechnologiesExpertisePythonRoute,
-  TechnologiesExpertiseReactRoute: TechnologiesExpertiseReactRoute,
-  TechnologiesExpertiseReactNativeRoute: TechnologiesExpertiseReactNativeRoute,
-  TechnologiesExpertiseRedisRoute: TechnologiesExpertiseRedisRoute,
-  TechnologiesExpertiseSpringBootRoute: TechnologiesExpertiseSpringBootRoute,
-  TechnologiesExpertiseTypescriptRoute: TechnologiesExpertiseTypescriptRoute,
-  TechnologiesExpertiseVuejsRoute: TechnologiesExpertiseVuejsRoute,
 }
 
 const TechnologiesRouteWithChildren = TechnologiesRoute._addFileChildren(
