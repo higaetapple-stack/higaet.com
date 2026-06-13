@@ -4,10 +4,10 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { LeadForm } from "@/components/site/LeadForm";
-import { getCampus } from "@/lib/academy-programs";
+import { getCampus, type Campus } from "@/lib/academy-programs";
 
 export const Route = createFileRoute("/academy/campuses/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { campus: Campus } => {
     const campus = getCampus(params.slug);
     if (!campus) throw notFound();
     return { campus };

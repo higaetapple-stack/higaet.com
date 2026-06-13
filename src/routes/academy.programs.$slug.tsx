@@ -69,7 +69,7 @@ function ProgramDetail() {
     <>
       <PageHero
         brand="academy"
-        eyebrow={`${CATEGORY_LABELS[program.category]} · ${program.level}`}
+        eyebrow={`${categoryLabel} · ${program.level}`}
         title={program.title}
         subtitle={program.tagline}
       >
