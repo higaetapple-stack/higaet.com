@@ -17,13 +17,35 @@ function ClientPortal() {
   const commFn = useServerFn(myProposalsAndContracts);
   const signFn = useServerFn(getTechDocSignedUrl);
   const respondFn = useServerFn(updateProposalStatus);
+  const finFn = useServerFn(myFinance);
+  const supFn = useServerFn(myRequestsAndTickets);
+  const receiptFn = useServerFn(submitClientReceipt);
+  const reqFn = useServerFn(submitClientRequest);
+  const tktFn = useServerFn(submitClientTicket);
   const qc = useQueryClient();
   const q = useQuery({ queryKey: ["my-client-workspace"], queryFn: () => fn() });
   const comm = useQuery({ queryKey: ["my-proposals-contracts"], queryFn: () => commFn() });
+  const fin = useQuery({ queryKey: ["my-finance"], queryFn: () => finFn() });
+  const sup = useQuery({ queryKey: ["my-requests-tickets"], queryFn: () => supFn() });
 
   const mRespond = useMutation({
     mutationFn: (v: { id: string; status: string }) => respondFn({ data: v as any }),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["my-proposals-contracts"] }); toast.success("Response recorded"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const mReceipt = useMutation({
+    mutationFn: (v: { amount: number; reference?: string | null }) => receiptFn({ data: v as any }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["my-finance"] }); toast.success("Receipt submitted"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const mRequest = useMutation({
+    mutationFn: (v: { title: string; description?: string | null; type: any }) => reqFn({ data: v as any }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["my-requests-tickets"] }); toast.success("Request submitted"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const mTicket = useMutation({
+    mutationFn: (v: { subject: string; description?: string | null; priority: any }) => tktFn({ data: v as any }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["my-requests-tickets"] }); toast.success("Ticket created"); },
     onError: (e: Error) => toast.error(e.message),
   });
 
