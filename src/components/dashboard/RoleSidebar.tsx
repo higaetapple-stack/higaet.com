@@ -31,6 +31,8 @@ type Item = {
     | "/dashboard/faculty"
     | "/dashboard/faculty/submissions"
     | "/dashboard/counselor"
+    | "/dashboard/technologies"
+    | "/dashboard/technologies/client"
     | "/dashboard/admin";
   label: string;
   icon: typeof LayoutDashboard;
