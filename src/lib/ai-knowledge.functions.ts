@@ -170,7 +170,7 @@ export const searchKnowledge = createServerFn({ method: "POST" })
     const { data: matches, error } = await context.supabase.rpc("match_ai_chunks", {
       query_embedding: vec as unknown as string,
       match_count: data.match_count,
-      collection_ids: data.collection_ids ?? null,
+      collection_ids: data.collection_ids ?? undefined,
     });
     if (error) throw new Error(error.message);
     return { matches: matches ?? [], latency_ms: Date.now() - t0 };
@@ -242,7 +242,7 @@ export const runAgent = createServerFn({ method: "POST" })
     const { data: chunks, error: rErr } = await context.supabase.rpc("match_ai_chunks", {
       query_embedding: vec as unknown as string,
       match_count: agent.max_chunks,
-      collection_ids: agent.collection_ids?.length ? agent.collection_ids : null,
+      collection_ids: agent.collection_ids?.length ? agent.collection_ids : undefined,
     });
     if (rErr) throw new Error(rErr.message);
 
