@@ -227,7 +227,7 @@ export const verifyPayment = createServerFn({ method: "POST" })
           .eq("invoice_id", a.invoice_id);
         const paid = (sums ?? []).reduce((s: number, r: any) => s + Number(r.amount), 0);
         const { data: inv } = await sb.from("tech_invoices").select("total").eq("id", a.invoice_id).maybeSingle();
-        let status = "partially_paid";
+        let status: "partially_paid" | "paid" = "partially_paid";
         if (inv && paid >= Number(inv.total)) status = "paid";
         await sb.from("tech_invoices").update({
           amount_paid: +paid.toFixed(2),
