@@ -74,9 +74,9 @@ import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authe
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
-import { Route as AuthenticatedDashboardAdminProgramsRouteImport } from './routes/_authenticated.dashboard.admin.programs'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
+import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
 import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
 
 const TermsRoute = TermsRouteImport.update({
@@ -424,12 +424,6 @@ const AuthenticatedDashboardAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
-const AuthenticatedDashboardAdminProgramsRoute =
-  AuthenticatedDashboardAdminProgramsRouteImport.update({
-    id: '/programs',
-    path: '/programs',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
 const AuthenticatedDashboardAdminCertificatesRoute =
   AuthenticatedDashboardAdminCertificatesRouteImport.update({
     id: '/certificates',
@@ -442,11 +436,17 @@ const AuthenticatedDashboardAdminAssignmentsRoute =
     path: '/assignments',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminProgramsIndexRoute =
+  AuthenticatedDashboardAdminProgramsIndexRouteImport.update({
+    id: '/programs/',
+    path: '/programs/',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminProgramsIdRoute =
   AuthenticatedDashboardAdminProgramsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDashboardAdminProgramsRoute,
+    id: '/programs/$id',
+    path: '/programs/$id',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -513,11 +513,11 @@ export interface FileRoutesByFullPath {
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
-  '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsRouteWithChildren
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -578,11 +578,11 @@ export interface FileRoutesByTo {
   '/academy/programs': typeof AcademyProgramsIndexRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
-  '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsRouteWithChildren
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -650,11 +650,11 @@ export interface FileRoutesById {
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
-  '/_authenticated/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsRouteWithChildren
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
+  '/_authenticated/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -722,11 +722,11 @@ export interface FileRouteTypes {
     | '/academy/programs/'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
-    | '/dashboard/admin/programs'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
     | '/dashboard/admin/'
     | '/dashboard/admin/programs/$id'
+    | '/dashboard/admin/programs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -787,11 +787,11 @@ export interface FileRouteTypes {
     | '/academy/programs'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
-    | '/dashboard/admin/programs'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/users'
     | '/dashboard/admin'
     | '/dashboard/admin/programs/$id'
+    | '/dashboard/admin/programs'
   id:
     | '__root__'
     | '/'
@@ -858,11 +858,11 @@ export interface FileRouteTypes {
     | '/academy/programs/'
     | '/_authenticated/dashboard/admin/assignments'
     | '/_authenticated/dashboard/admin/certificates'
-    | '/_authenticated/dashboard/admin/programs'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/admin/programs/$id'
+    | '/_authenticated/dashboard/admin/programs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1338,13 +1338,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
-    '/_authenticated/dashboard/admin/programs': {
-      id: '/_authenticated/dashboard/admin/programs'
-      path: '/programs'
-      fullPath: '/dashboard/admin/programs'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
     '/_authenticated/dashboard/admin/certificates': {
       id: '/_authenticated/dashboard/admin/certificates'
       path: '/certificates'
@@ -1359,38 +1352,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminAssignmentsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/programs/': {
+      id: '/_authenticated/dashboard/admin/programs/'
+      path: '/programs'
+      fullPath: '/dashboard/admin/programs/'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/programs/$id': {
       id: '/_authenticated/dashboard/admin/programs/$id'
-      path: '/$id'
+      path: '/programs/$id'
       fullPath: '/dashboard/admin/programs/$id'
       preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminProgramsRoute
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
   }
 }
 
-interface AuthenticatedDashboardAdminProgramsRouteChildren {
-  AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
-}
-
-const AuthenticatedDashboardAdminProgramsRouteChildren: AuthenticatedDashboardAdminProgramsRouteChildren =
-  {
-    AuthenticatedDashboardAdminProgramsIdRoute:
-      AuthenticatedDashboardAdminProgramsIdRoute,
-  }
-
-const AuthenticatedDashboardAdminProgramsRouteWithChildren =
-  AuthenticatedDashboardAdminProgramsRoute._addFileChildren(
-    AuthenticatedDashboardAdminProgramsRouteChildren,
-  )
-
 interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
-  AuthenticatedDashboardAdminProgramsRoute: typeof AuthenticatedDashboardAdminProgramsRouteWithChildren
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
+  AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
+  AuthenticatedDashboardAdminProgramsIndexRoute: typeof AuthenticatedDashboardAdminProgramsIndexRoute
 }
 
 const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRouteChildren =
@@ -1399,14 +1385,16 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminAssignmentsRoute,
     AuthenticatedDashboardAdminCertificatesRoute:
       AuthenticatedDashboardAdminCertificatesRoute,
-    AuthenticatedDashboardAdminProgramsRoute:
-      AuthenticatedDashboardAdminProgramsRouteWithChildren,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
     AuthenticatedDashboardAdminUsersRoute:
       AuthenticatedDashboardAdminUsersRoute,
     AuthenticatedDashboardAdminIndexRoute:
       AuthenticatedDashboardAdminIndexRoute,
+    AuthenticatedDashboardAdminProgramsIdRoute:
+      AuthenticatedDashboardAdminProgramsIdRoute,
+    AuthenticatedDashboardAdminProgramsIndexRoute:
+      AuthenticatedDashboardAdminProgramsIndexRoute,
   }
 
 const AuthenticatedDashboardAdminRouteWithChildren =
