@@ -19,25 +19,40 @@ type Tab = {
     | "/dashboard/admin/applications"
     | "/dashboard/admin/placements"
     | "/dashboard/admin/stories"
+    | "/dashboard/admin/countries"
+    | "/dashboard/admin/universities"
+    | "/dashboard/admin/uniprograms"
+    | "/dashboard/admin/scholarships"
+    | "/dashboard/admin/sa-leads"
+    | "/dashboard/admin/sa-applications"
+    | "/dashboard/admin/tech-leads"
     | "/dashboard/admin/analytics"
     | "/dashboard/admin/settings";
   label: string;
   exact?: boolean;
+  group?: string;
 };
 
 const TABS: Tab[] = [
   { to: "/dashboard/admin", label: "Overview", exact: true },
-  { to: "/dashboard/admin/programs", label: "Programs" },
-  { to: "/dashboard/admin/projects", label: "Projects" },
-  { to: "/dashboard/admin/enrollments", label: "Enrollments" },
+  { to: "/dashboard/admin/programs", label: "Programs", group: "Academy" },
+  { to: "/dashboard/admin/projects", label: "Projects", group: "Academy" },
+  { to: "/dashboard/admin/enrollments", label: "Enrollments", group: "Academy" },
+  { to: "/dashboard/admin/assignments", label: "Assignments", group: "Academy" },
+  { to: "/dashboard/admin/certificates", label: "Certificates", group: "Academy" },
+  { to: "/dashboard/admin/employers", label: "Employers", group: "Career" },
+  { to: "/dashboard/admin/jobs", label: "Jobs", group: "Career" },
+  { to: "/dashboard/admin/applications", label: "Job apps", group: "Career" },
+  { to: "/dashboard/admin/placements", label: "Placements", group: "Career" },
+  { to: "/dashboard/admin/stories", label: "Stories", group: "Career" },
+  { to: "/dashboard/admin/countries", label: "Countries", group: "Global" },
+  { to: "/dashboard/admin/universities", label: "Universities", group: "Global" },
+  { to: "/dashboard/admin/uniprograms", label: "Uni programs", group: "Global" },
+  { to: "/dashboard/admin/scholarships", label: "Scholarships", group: "Global" },
+  { to: "/dashboard/admin/sa-leads", label: "SA leads", group: "Global" },
+  { to: "/dashboard/admin/sa-applications", label: "SA apps", group: "Global" },
+  { to: "/dashboard/admin/tech-leads", label: "Tech leads", group: "Tech" },
   { to: "/dashboard/admin/users", label: "Users & Roles" },
-  { to: "/dashboard/admin/assignments", label: "Assignments" },
-  { to: "/dashboard/admin/certificates", label: "Certificates" },
-  { to: "/dashboard/admin/employers", label: "Employers" },
-  { to: "/dashboard/admin/jobs", label: "Jobs" },
-  { to: "/dashboard/admin/applications", label: "Applications" },
-  { to: "/dashboard/admin/placements", label: "Placements" },
-  { to: "/dashboard/admin/stories", label: "Stories" },
   { to: "/dashboard/admin/analytics", label: "Analytics" },
   { to: "/dashboard/admin/settings", label: "Settings" },
 ];

@@ -69,6 +69,8 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
+import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
+import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AuthenticatedDashboardProgramsRouteImport } from './routes/_authenticated.dashboard.programs'
@@ -81,6 +83,7 @@ import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './route
 import { Route as AuthenticatedDashboardCertificatesIndexRouteImport } from './routes/_authenticated.dashboard.certificates.index'
 import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/_authenticated.dashboard.career.index'
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
+import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
@@ -94,14 +97,22 @@ import { Route as AuthenticatedDashboardCareerProfileRouteImport } from './route
 import { Route as AuthenticatedDashboardCareerPortfolioRouteImport } from './routes/_authenticated.dashboard.career.portfolio'
 import { Route as AuthenticatedDashboardCareerApplicationsRouteImport } from './routes/_authenticated.dashboard.career.applications'
 import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } from './routes/_authenticated.dashboard.assignments.$assignmentId'
+import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './routes/_authenticated.dashboard.applications.$id'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
+import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
+import { Route as AuthenticatedDashboardAdminUniprogramsRouteImport } from './routes/_authenticated.dashboard.admin.uniprograms'
+import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './routes/_authenticated.dashboard.admin.tech-leads'
 import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
+import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
+import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
+import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
+import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
@@ -421,6 +432,18 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const GlobalEducationUniversitiesSlugRoute =
+  GlobalEducationUniversitiesSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => GlobalEducationUniversitiesRoute,
+  } as any)
+const GlobalEducationCountriesSlugRoute =
+  GlobalEducationCountriesSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => GlobalEducationCountriesRoute,
+  } as any)
 const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
   id: '/programs/$slug',
   path: '/programs/$slug',
@@ -489,6 +512,12 @@ const AuthenticatedDashboardAssignmentsIndexRoute =
   AuthenticatedDashboardAssignmentsIndexRouteImport.update({
     id: '/assignments/',
     path: '/assignments/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardApplicationsIndexRoute =
+  AuthenticatedDashboardApplicationsIndexRouteImport.update({
+    id: '/applications/',
+    path: '/applications/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 const AuthenticatedDashboardAdminIndexRoute =
@@ -569,10 +598,34 @@ const AuthenticatedDashboardAssignmentsAssignmentIdRoute =
     path: '/assignments/$assignmentId',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardApplicationsIdRoute =
+  AuthenticatedDashboardApplicationsIdRouteImport.update({
+    id: '/applications/$id',
+    path: '/applications/$id',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardAdminUsersRoute =
   AuthenticatedDashboardAdminUsersRouteImport.update({
     id: '/users',
     path: '/users',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminUniversitiesRoute =
+  AuthenticatedDashboardAdminUniversitiesRouteImport.update({
+    id: '/universities',
+    path: '/universities',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminUniprogramsRoute =
+  AuthenticatedDashboardAdminUniprogramsRouteImport.update({
+    id: '/uniprograms',
+    path: '/uniprograms',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminTechLeadsRoute =
+  AuthenticatedDashboardAdminTechLeadsRouteImport.update({
+    id: '/tech-leads',
+    path: '/tech-leads',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminStoriesRoute =
@@ -585,6 +638,24 @@ const AuthenticatedDashboardAdminSettingsRoute =
   AuthenticatedDashboardAdminSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminScholarshipsRoute =
+  AuthenticatedDashboardAdminScholarshipsRouteImport.update({
+    id: '/scholarships',
+    path: '/scholarships',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSaLeadsRoute =
+  AuthenticatedDashboardAdminSaLeadsRouteImport.update({
+    id: '/sa-leads',
+    path: '/sa-leads',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSaApplicationsRoute =
+  AuthenticatedDashboardAdminSaApplicationsRouteImport.update({
+    id: '/sa-applications',
+    path: '/sa-applications',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminProjectsRoute =
@@ -615,6 +686,12 @@ const AuthenticatedDashboardAdminEmployersRoute =
   AuthenticatedDashboardAdminEmployersRouteImport.update({
     id: '/employers',
     path: '/employers',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCountriesRoute =
+  AuthenticatedDashboardAdminCountriesRouteImport.update({
+    id: '/countries',
+    path: '/countries',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminCertificatesRoute =
@@ -688,12 +765,12 @@ export interface FileRoutesByFullPath {
   '/careers/$slug': typeof CareersSlugRoute
   '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
   '/global-education/contact': typeof GlobalEducationContactRoute
-  '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/countries': typeof GlobalEducationCountriesRouteWithChildren
   '/global-education/faq': typeof GlobalEducationFaqRoute
   '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
   '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
-  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRouteWithChildren
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -719,6 +796,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
+  '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -726,14 +805,22 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
+  '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
+  '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
+  '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
+  '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
   '/dashboard/career/portfolio': typeof AuthenticatedDashboardCareerPortfolioRoute
@@ -747,6 +834,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
+  '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
   '/dashboard/career/': typeof AuthenticatedDashboardCareerIndexRoute
   '/dashboard/certificates/': typeof AuthenticatedDashboardCertificatesIndexRoute
@@ -784,12 +872,12 @@ export interface FileRoutesByTo {
   '/careers/$slug': typeof CareersSlugRoute
   '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
   '/global-education/contact': typeof GlobalEducationContactRoute
-  '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/countries': typeof GlobalEducationCountriesRouteWithChildren
   '/global-education/faq': typeof GlobalEducationFaqRoute
   '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
   '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
-  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRouteWithChildren
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -813,6 +901,8 @@ export interface FileRoutesByTo {
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
+  '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
@@ -820,14 +910,22 @@ export interface FileRoutesByTo {
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
+  '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
+  '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
+  '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
+  '/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
   '/dashboard/career/portfolio': typeof AuthenticatedDashboardCareerPortfolioRoute
@@ -841,6 +939,7 @@ export interface FileRoutesByTo {
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
+  '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
   '/dashboard/career': typeof AuthenticatedDashboardCareerIndexRoute
   '/dashboard/certificates': typeof AuthenticatedDashboardCertificatesIndexRoute
@@ -884,12 +983,12 @@ export interface FileRoutesById {
   '/careers/$slug': typeof CareersSlugRoute
   '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
   '/global-education/contact': typeof GlobalEducationContactRoute
-  '/global-education/countries': typeof GlobalEducationCountriesRoute
+  '/global-education/countries': typeof GlobalEducationCountriesRouteWithChildren
   '/global-education/faq': typeof GlobalEducationFaqRoute
   '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
   '/global-education/student-services': typeof GlobalEducationStudentServicesRoute
   '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
-  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRouteWithChildren
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -915,6 +1014,8 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
+  '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -922,14 +1023,22 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
+  '/_authenticated/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/_authenticated/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  '/_authenticated/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
+  '/_authenticated/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/_authenticated/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
+  '/_authenticated/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
+  '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
+  '/_authenticated/dashboard/applications/$id': typeof AuthenticatedDashboardApplicationsIdRoute
   '/_authenticated/dashboard/assignments/$assignmentId': typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   '/_authenticated/dashboard/career/applications': typeof AuthenticatedDashboardCareerApplicationsRoute
   '/_authenticated/dashboard/career/portfolio': typeof AuthenticatedDashboardCareerPortfolioRoute
@@ -943,6 +1052,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
+  '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
   '/_authenticated/dashboard/career/': typeof AuthenticatedDashboardCareerIndexRoute
   '/_authenticated/dashboard/certificates/': typeof AuthenticatedDashboardCertificatesIndexRoute
@@ -1017,6 +1127,8 @@ export interface FileRouteTypes {
     | '/dashboard/programs'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/global-education/countries/$slug'
+    | '/global-education/universities/$slug'
     | '/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -1024,14 +1136,22 @@ export interface FileRouteTypes {
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
+    | '/dashboard/admin/countries'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/sa-applications'
+    | '/dashboard/admin/sa-leads'
+    | '/dashboard/admin/scholarships'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
+    | '/dashboard/admin/tech-leads'
+    | '/dashboard/admin/uniprograms'
+    | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
+    | '/dashboard/applications/$id'
     | '/dashboard/assignments/$assignmentId'
     | '/dashboard/career/applications'
     | '/dashboard/career/portfolio'
@@ -1045,6 +1165,7 @@ export interface FileRouteTypes {
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/admin/'
+    | '/dashboard/applications/'
     | '/dashboard/assignments/'
     | '/dashboard/career/'
     | '/dashboard/certificates/'
@@ -1111,6 +1232,8 @@ export interface FileRouteTypes {
     | '/dashboard/programs'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/global-education/countries/$slug'
+    | '/global-education/universities/$slug'
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
@@ -1118,14 +1241,22 @@ export interface FileRouteTypes {
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
+    | '/dashboard/admin/countries'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/sa-applications'
+    | '/dashboard/admin/sa-leads'
+    | '/dashboard/admin/scholarships'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
+    | '/dashboard/admin/tech-leads'
+    | '/dashboard/admin/uniprograms'
+    | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
+    | '/dashboard/applications/$id'
     | '/dashboard/assignments/$assignmentId'
     | '/dashboard/career/applications'
     | '/dashboard/career/portfolio'
@@ -1139,6 +1270,7 @@ export interface FileRouteTypes {
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/admin'
+    | '/dashboard/applications'
     | '/dashboard/assignments'
     | '/dashboard/career'
     | '/dashboard/certificates'
@@ -1212,6 +1344,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/programs'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/global-education/countries/$slug'
+    | '/global-education/universities/$slug'
     | '/_authenticated/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -1219,14 +1353,22 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/applications'
     | '/_authenticated/dashboard/admin/assignments'
     | '/_authenticated/dashboard/admin/certificates'
+    | '/_authenticated/dashboard/admin/countries'
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
+    | '/_authenticated/dashboard/admin/sa-applications'
+    | '/_authenticated/dashboard/admin/sa-leads'
+    | '/_authenticated/dashboard/admin/scholarships'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/stories'
+    | '/_authenticated/dashboard/admin/tech-leads'
+    | '/_authenticated/dashboard/admin/uniprograms'
+    | '/_authenticated/dashboard/admin/universities'
     | '/_authenticated/dashboard/admin/users'
+    | '/_authenticated/dashboard/applications/$id'
     | '/_authenticated/dashboard/assignments/$assignmentId'
     | '/_authenticated/dashboard/career/applications'
     | '/_authenticated/dashboard/career/portfolio'
@@ -1240,6 +1382,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/projects/$id'
     | '/_authenticated/dashboard/admin/'
+    | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
     | '/_authenticated/dashboard/career/'
     | '/_authenticated/dashboard/certificates/'
@@ -1691,6 +1834,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/global-education/universities/$slug': {
+      id: '/global-education/universities/$slug'
+      path: '/$slug'
+      fullPath: '/global-education/universities/$slug'
+      preLoaderRoute: typeof GlobalEducationUniversitiesSlugRouteImport
+      parentRoute: typeof GlobalEducationUniversitiesRoute
+    }
+    '/global-education/countries/$slug': {
+      id: '/global-education/countries/$slug'
+      path: '/$slug'
+      fullPath: '/global-education/countries/$slug'
+      preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
+      parentRoute: typeof GlobalEducationCountriesRoute
+    }
     '/academy/programs/$slug': {
       id: '/academy/programs/$slug'
       path: '/programs/$slug'
@@ -1773,6 +1930,13 @@ declare module '@tanstack/react-router' {
       path: '/assignments'
       fullPath: '/dashboard/assignments/'
       preLoaderRoute: typeof AuthenticatedDashboardAssignmentsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/applications/': {
+      id: '/_authenticated/dashboard/applications/'
+      path: '/applications'
+      fullPath: '/dashboard/applications/'
+      preLoaderRoute: typeof AuthenticatedDashboardApplicationsIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
     '/_authenticated/dashboard/admin/': {
@@ -1866,11 +2030,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAssignmentsAssignmentIdRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/applications/$id': {
+      id: '/_authenticated/dashboard/applications/$id'
+      path: '/applications/$id'
+      fullPath: '/dashboard/applications/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardApplicationsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/admin/users': {
       id: '/_authenticated/dashboard/admin/users'
       path: '/users'
       fullPath: '/dashboard/admin/users'
       preLoaderRoute: typeof AuthenticatedDashboardAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/universities': {
+      id: '/_authenticated/dashboard/admin/universities'
+      path: '/universities'
+      fullPath: '/dashboard/admin/universities'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUniversitiesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/uniprograms': {
+      id: '/_authenticated/dashboard/admin/uniprograms'
+      path: '/uniprograms'
+      fullPath: '/dashboard/admin/uniprograms'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUniprogramsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/tech-leads': {
+      id: '/_authenticated/dashboard/admin/tech-leads'
+      path: '/tech-leads'
+      fullPath: '/dashboard/admin/tech-leads'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminTechLeadsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/stories': {
@@ -1885,6 +2077,27 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/dashboard/admin/settings'
       preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/scholarships': {
+      id: '/_authenticated/dashboard/admin/scholarships'
+      path: '/scholarships'
+      fullPath: '/dashboard/admin/scholarships'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminScholarshipsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sa-leads': {
+      id: '/_authenticated/dashboard/admin/sa-leads'
+      path: '/sa-leads'
+      fullPath: '/dashboard/admin/sa-leads'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSaLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sa-applications': {
+      id: '/_authenticated/dashboard/admin/sa-applications'
+      path: '/sa-applications'
+      fullPath: '/dashboard/admin/sa-applications'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSaApplicationsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/projects': {
@@ -1920,6 +2133,13 @@ declare module '@tanstack/react-router' {
       path: '/employers'
       fullPath: '/dashboard/admin/employers'
       preLoaderRoute: typeof AuthenticatedDashboardAdminEmployersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/countries': {
+      id: '/_authenticated/dashboard/admin/countries'
+      path: '/countries'
+      fullPath: '/dashboard/admin/countries'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCountriesRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/certificates': {
@@ -1972,13 +2192,20 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminApplicationsRoute: typeof AuthenticatedDashboardAdminApplicationsRoute
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
+  AuthenticatedDashboardAdminCountriesRoute: typeof AuthenticatedDashboardAdminCountriesRoute
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
+  AuthenticatedDashboardAdminSaApplicationsRoute: typeof AuthenticatedDashboardAdminSaApplicationsRoute
+  AuthenticatedDashboardAdminSaLeadsRoute: typeof AuthenticatedDashboardAdminSaLeadsRoute
+  AuthenticatedDashboardAdminScholarshipsRoute: typeof AuthenticatedDashboardAdminScholarshipsRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminStoriesRoute: typeof AuthenticatedDashboardAdminStoriesRoute
+  AuthenticatedDashboardAdminTechLeadsRoute: typeof AuthenticatedDashboardAdminTechLeadsRoute
+  AuthenticatedDashboardAdminUniprogramsRoute: typeof AuthenticatedDashboardAdminUniprogramsRoute
+  AuthenticatedDashboardAdminUniversitiesRoute: typeof AuthenticatedDashboardAdminUniversitiesRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -1995,6 +2222,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminAssignmentsRoute,
     AuthenticatedDashboardAdminCertificatesRoute:
       AuthenticatedDashboardAdminCertificatesRoute,
+    AuthenticatedDashboardAdminCountriesRoute:
+      AuthenticatedDashboardAdminCountriesRoute,
     AuthenticatedDashboardAdminEmployersRoute:
       AuthenticatedDashboardAdminEmployersRoute,
     AuthenticatedDashboardAdminEnrollmentsRoute:
@@ -2004,10 +2233,22 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
       AuthenticatedDashboardAdminProjectsRoute,
+    AuthenticatedDashboardAdminSaApplicationsRoute:
+      AuthenticatedDashboardAdminSaApplicationsRoute,
+    AuthenticatedDashboardAdminSaLeadsRoute:
+      AuthenticatedDashboardAdminSaLeadsRoute,
+    AuthenticatedDashboardAdminScholarshipsRoute:
+      AuthenticatedDashboardAdminScholarshipsRoute,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
     AuthenticatedDashboardAdminStoriesRoute:
       AuthenticatedDashboardAdminStoriesRoute,
+    AuthenticatedDashboardAdminTechLeadsRoute:
+      AuthenticatedDashboardAdminTechLeadsRoute,
+    AuthenticatedDashboardAdminUniprogramsRoute:
+      AuthenticatedDashboardAdminUniprogramsRoute,
+    AuthenticatedDashboardAdminUniversitiesRoute:
+      AuthenticatedDashboardAdminUniversitiesRoute,
     AuthenticatedDashboardAdminUsersRoute:
       AuthenticatedDashboardAdminUsersRoute,
     AuthenticatedDashboardAdminIndexRoute:
@@ -2091,11 +2332,13 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
   AuthenticatedDashboardProgramsRoute: typeof AuthenticatedDashboardProgramsRouteWithChildren
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardApplicationsIdRoute: typeof AuthenticatedDashboardApplicationsIdRoute
   AuthenticatedDashboardAssignmentsAssignmentIdRoute: typeof AuthenticatedDashboardAssignmentsAssignmentIdRoute
   AuthenticatedDashboardCertificatesIdRoute: typeof AuthenticatedDashboardCertificatesIdRoute
   AuthenticatedDashboardCoursesCourseIdRoute: typeof AuthenticatedDashboardCoursesCourseIdRoute
   AuthenticatedDashboardLessonsLessonIdRoute: typeof AuthenticatedDashboardLessonsLessonIdRoute
   AuthenticatedDashboardProjectsIdRoute: typeof AuthenticatedDashboardProjectsIdRoute
+  AuthenticatedDashboardApplicationsIndexRoute: typeof AuthenticatedDashboardApplicationsIndexRoute
   AuthenticatedDashboardAssignmentsIndexRoute: typeof AuthenticatedDashboardAssignmentsIndexRoute
   AuthenticatedDashboardCertificatesIndexRoute: typeof AuthenticatedDashboardCertificatesIndexRoute
   AuthenticatedDashboardProjectsIndexRoute: typeof AuthenticatedDashboardProjectsIndexRoute
@@ -2114,6 +2357,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardProgramsRoute:
       AuthenticatedDashboardProgramsRouteWithChildren,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardApplicationsIdRoute:
+      AuthenticatedDashboardApplicationsIdRoute,
     AuthenticatedDashboardAssignmentsAssignmentIdRoute:
       AuthenticatedDashboardAssignmentsAssignmentIdRoute,
     AuthenticatedDashboardCertificatesIdRoute:
@@ -2124,6 +2369,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
       AuthenticatedDashboardLessonsLessonIdRoute,
     AuthenticatedDashboardProjectsIdRoute:
       AuthenticatedDashboardProjectsIdRoute,
+    AuthenticatedDashboardApplicationsIndexRoute:
+      AuthenticatedDashboardApplicationsIndexRoute,
     AuthenticatedDashboardAssignmentsIndexRoute:
       AuthenticatedDashboardAssignmentsIndexRoute,
     AuthenticatedDashboardCertificatesIndexRoute:
@@ -2227,15 +2474,43 @@ const CareersRouteChildren: CareersRouteChildren = {
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
+interface GlobalEducationCountriesRouteChildren {
+  GlobalEducationCountriesSlugRoute: typeof GlobalEducationCountriesSlugRoute
+}
+
+const GlobalEducationCountriesRouteChildren: GlobalEducationCountriesRouteChildren =
+  {
+    GlobalEducationCountriesSlugRoute: GlobalEducationCountriesSlugRoute,
+  }
+
+const GlobalEducationCountriesRouteWithChildren =
+  GlobalEducationCountriesRoute._addFileChildren(
+    GlobalEducationCountriesRouteChildren,
+  )
+
+interface GlobalEducationUniversitiesRouteChildren {
+  GlobalEducationUniversitiesSlugRoute: typeof GlobalEducationUniversitiesSlugRoute
+}
+
+const GlobalEducationUniversitiesRouteChildren: GlobalEducationUniversitiesRouteChildren =
+  {
+    GlobalEducationUniversitiesSlugRoute: GlobalEducationUniversitiesSlugRoute,
+  }
+
+const GlobalEducationUniversitiesRouteWithChildren =
+  GlobalEducationUniversitiesRoute._addFileChildren(
+    GlobalEducationUniversitiesRouteChildren,
+  )
+
 interface GlobalEducationRouteChildren {
   GlobalEducationAdmissionProcessRoute: typeof GlobalEducationAdmissionProcessRoute
   GlobalEducationContactRoute: typeof GlobalEducationContactRoute
-  GlobalEducationCountriesRoute: typeof GlobalEducationCountriesRoute
+  GlobalEducationCountriesRoute: typeof GlobalEducationCountriesRouteWithChildren
   GlobalEducationFaqRoute: typeof GlobalEducationFaqRoute
   GlobalEducationScholarshipsRoute: typeof GlobalEducationScholarshipsRoute
   GlobalEducationStudentServicesRoute: typeof GlobalEducationStudentServicesRoute
   GlobalEducationStudyAbroadRoute: typeof GlobalEducationStudyAbroadRoute
-  GlobalEducationUniversitiesRoute: typeof GlobalEducationUniversitiesRoute
+  GlobalEducationUniversitiesRoute: typeof GlobalEducationUniversitiesRouteWithChildren
   GlobalEducationVisaGuidanceRoute: typeof GlobalEducationVisaGuidanceRoute
   GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
 }
@@ -2243,12 +2518,13 @@ interface GlobalEducationRouteChildren {
 const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
   GlobalEducationAdmissionProcessRoute: GlobalEducationAdmissionProcessRoute,
   GlobalEducationContactRoute: GlobalEducationContactRoute,
-  GlobalEducationCountriesRoute: GlobalEducationCountriesRoute,
+  GlobalEducationCountriesRoute: GlobalEducationCountriesRouteWithChildren,
   GlobalEducationFaqRoute: GlobalEducationFaqRoute,
   GlobalEducationScholarshipsRoute: GlobalEducationScholarshipsRoute,
   GlobalEducationStudentServicesRoute: GlobalEducationStudentServicesRoute,
   GlobalEducationStudyAbroadRoute: GlobalEducationStudyAbroadRoute,
-  GlobalEducationUniversitiesRoute: GlobalEducationUniversitiesRoute,
+  GlobalEducationUniversitiesRoute:
+    GlobalEducationUniversitiesRouteWithChildren,
   GlobalEducationVisaGuidanceRoute: GlobalEducationVisaGuidanceRoute,
   GlobalEducationIndexRoute: GlobalEducationIndexRoute,
 }
