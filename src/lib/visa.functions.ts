@@ -138,10 +138,11 @@ export const listVisaCases = createServerFn({ method: "GET" })
     let q = context.supabase
       .from("visa_cases")
       .select(
-        "id, status, visa_type, interview_date, submitted_at, decision_at, created_at, student:student_id(full_name,email), countries:country_id(name,flag_emoji), counselor:assigned_counselor(full_name)",
+        "id, status, visa_type, interview_date, submitted_at, decision_at, created_at, student:profiles!student_id(full_name,email), countries:country_id(name,flag_emoji), counselor:profiles!assigned_counselor(full_name)",
       )
       .order("created_at", { ascending: false })
       .limit(300);
+
     if (data.status) q = q.eq("status", data.status);
     if (data.assigned_to_me) q = q.eq("assigned_counselor", context.userId);
     const { data: rows, error } = await q;
