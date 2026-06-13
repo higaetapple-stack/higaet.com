@@ -224,7 +224,7 @@ export const deleteCourse = createServerFn({ method: "POST" })
 // ─────────────────────────────────────────────────────────────────────────────
 // LESSONS
 // ─────────────────────────────────────────────────────────────────────────────
-const LESSON_TYPES = ["reading", "video", "quiz", "assignment", "live"] as const;
+const LESSON_TYPES = ["reading", "video", "quiz", "lab"] as const;
 const LessonInput = z.object({
   course_id: z.string().uuid(),
   title: z.string().trim().min(2).max(200),
