@@ -399,7 +399,7 @@ export const listCourseFaculty = createServerFn({ method: "GET" })
 export const assignFaculty = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { course_id: string; faculty_id: string }) =>
-    z.object({ course_id: z.string().uuid(), facult_id: z.string().uuid().optional(), faculty_id: z.string().uuid() }).parse(d),
+    z.object({ course_id: z.string().uuid(), faculty_id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
