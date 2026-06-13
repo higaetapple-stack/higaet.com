@@ -118,3 +118,28 @@ All tables: GRANTs, RLS, `updated_at` trigger where applicable. Service role ful
 7. Sidebar/Admin tabs wiring.
 
 Proceed?
+
+## Sprint 4: HIGAET Global Education Hub (4A + 4B) — COMPLETE
+
+**4A — Public Study Abroad Platform**
+- DB: countries, universities, university_programs, scholarships (seeded 8 countries + 20 universities).
+- Public DB-driven routes: /global-education/countries, /countries/$slug, /universities, /universities/$slug, /scholarships.
+- Lead form (existing `LeadForm`) now persists to `study_abroad_leads` (division=global) and `technologies_leads` (division=tech) via `submitLead`.
+
+**4B — Admissions CRM**
+- DB: study_abroad_leads, applications, application_documents.
+- Student portal: /dashboard/applications (list) and /$id (timeline + document uploads + edit panel).
+- Application lifecycle: lead → counseling → started → docs_submitted → submitted → offer.
+- Document types: passport, transcript, resume, sop, lor, english_test, financial, other (version-tracked, URL-based upload).
+
+**Admin CMS (under /dashboard/admin)**
+- Tabs grouped as Academy / Career / Global / Tech.
+- New CRUD: Countries, Universities, Uni programs, Scholarships.
+- New inboxes: SA leads, SA applications, Tech leads.
+
+**Technologies placeholder**: Existing /technologies/* routes already cover hero, services, ecosystem, contact. Tech contact form persists to `technologies_leads`.
+
+**Deferred**:
+- 4C Counselor workspace (assigned students, tasks, follow-ups).
+- 4D Visa case tracking (visa_cases, visa_documents, visa_status_history).
+- File-storage bucket for document uploads (currently URL-based).
