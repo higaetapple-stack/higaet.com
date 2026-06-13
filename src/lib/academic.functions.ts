@@ -379,22 +379,35 @@ export const adminAnalytics = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const sb = context.supabase;
     const since = new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString();
-    const [enr, certs, subs, recentProg] = await Promise.all([
+    const [
+      enr, certs, subs, recentProg,
+      students, lessonsDone, projSubs,
+      portfolios, employers, jobs, jobApps, placements,
+    ] = await Promise.all([
       sb.from("enrollments").select("id, status", { count: "exact" }),
-      sb.from("certificates").select("id", { count: "exact", head: true }),
+      sb.from("certificates").select("id", { count: "exact", head: true }).eq("revoked", false),
       sb.from("submissions").select("id, status", { count: "exact" }),
-      sb
-        .from("progress")
-        .select("student_id", { count: "exact" })
-        .eq("completed", true)
-        .gte("updated_at", since),
+      sb.from("progress").select("student_id", { count: "exact" }).eq("completed", true).gte("updated_at", since),
+      sb.from("user_roles").select("user_id", { count: "exact", head: true }).eq("role", "student"),
+      sb.from("progress").select("id", { count: "exact", head: true }).eq("completed", true),
+      sb.from("project_submissions").select("id", { count: "exact", head: true }),
+      sb.from("profiles").select("id", { count: "exact", head: true }).eq("portfolio_visibility", "public"),
+      sb.from("employers").select("id", { count: "exact", head: true }),
+      sb.from("job_postings").select("id, status", { count: "exact" }),
+      sb.from("job_applications").select("id", { count: "exact", head: true }),
+      sb.from("placements").select("id, verified", { count: "exact" }),
     ]);
     const enrRows = (enr.data ?? []) as any[];
     const subRows = (subs.data ?? []) as any[];
+    const jobRows = (jobs.data ?? []) as any[];
+    const placeRows = (placements.data ?? []) as any[];
     const active = new Set(((recentProg.data ?? []) as any[]).map((r) => r.student_id)).size;
     const completed = enrRows.filter((r) => r.status === "completed").length;
     const total = enrRows.length;
+    const jobsOpen = jobRows.filter((j) => j.status === "open").length;
+    const apps = jobApps.count ?? 0;
     return {
+      // Academy
       enrollments_total: total,
       enrollments_active: enrRows.filter((r) => r.status === "active").length,
       enrollments_completed: completed,
@@ -404,8 +417,23 @@ export const adminAnalytics = createServerFn({ method: "GET" })
       submissions_pending: subRows.filter((s) => s.status === "pending").length,
       certificates_issued: certs.count ?? 0,
       completion_rate: total ? Math.round((completed / total) * 100) : 0,
+      // Engagement
+      students_total: students.count ?? 0,
+      lessons_completed_total: lessonsDone.count ?? 0,
+      project_submissions_total: projSubs.count ?? 0,
+      // Career
+      public_portfolios: portfolios.count ?? 0,
+      employers_total: employers.count ?? 0,
+      jobs_total: jobs.count ?? 0,
+      jobs_open: jobsOpen,
+      applications_total: apps,
+      applications_per_job: jobsOpen ? Math.round((apps / jobsOpen) * 10) / 10 : 0,
+      // Placements
+      placements_total: placements.count ?? 0,
+      placements_verified: placeRows.filter((p) => p.verified).length,
     };
   });
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PROJECTS (capstone)
