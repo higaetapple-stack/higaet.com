@@ -90,6 +90,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
+import { Route as AuthenticatedDashboardTechnologiesFinanceRouteImport } from './routes/_authenticated.dashboard.technologies.finance'
 import { Route as AuthenticatedDashboardTechnologiesContractsRouteImport } from './routes/_authenticated.dashboard.technologies.contracts'
 import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
@@ -583,6 +584,12 @@ const AuthenticatedDashboardTechnologiesProposalsRoute =
     path: '/proposals',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
+const AuthenticatedDashboardTechnologiesFinanceRoute =
+  AuthenticatedDashboardTechnologiesFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesContractsRoute =
   AuthenticatedDashboardTechnologiesContractsRouteImport.update({
     id: '/contracts',
@@ -1033,6 +1040,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
+  '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -1160,6 +1168,7 @@ export interface FileRoutesByTo {
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
+  '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1299,6 +1308,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/_authenticated/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
+  '/_authenticated/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/_authenticated/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -1439,6 +1449,7 @@ export interface FileRouteTypes {
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/technologies/contracts'
+    | '/dashboard/technologies/finance'
     | '/dashboard/technologies/proposals'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -1566,6 +1577,7 @@ export interface FileRouteTypes {
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
+    | '/dashboard/technologies/finance'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -1704,6 +1716,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/projects/$id'
     | '/_authenticated/dashboard/technologies/contracts'
+    | '/_authenticated/dashboard/technologies/finance'
     | '/_authenticated/dashboard/technologies/proposals'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -2318,6 +2331,13 @@ declare module '@tanstack/react-router' {
       path: '/proposals'
       fullPath: '/dashboard/technologies/proposals'
       preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProposalsRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/finance': {
+      id: '/_authenticated/dashboard/technologies/finance'
+      path: '/finance'
+      fullPath: '/dashboard/technologies/finance'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesFinanceRouteImport
       parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
     }
     '/_authenticated/dashboard/technologies/contracts': {
@@ -2978,6 +2998,7 @@ const AuthenticatedDashboardTechnologiesProposalsRouteWithChildren =
 interface AuthenticatedDashboardTechnologiesRouteChildren {
   AuthenticatedDashboardTechnologiesClientRouteRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
   AuthenticatedDashboardTechnologiesContractsRoute: typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
+  AuthenticatedDashboardTechnologiesFinanceRoute: typeof AuthenticatedDashboardTechnologiesFinanceRoute
   AuthenticatedDashboardTechnologiesProposalsRoute: typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   AuthenticatedDashboardTechnologiesIndexRoute: typeof AuthenticatedDashboardTechnologiesIndexRoute
   AuthenticatedDashboardTechnologiesClientsIdRoute: typeof AuthenticatedDashboardTechnologiesClientsIdRoute
@@ -2992,6 +3013,8 @@ const AuthenticatedDashboardTechnologiesRouteChildren: AuthenticatedDashboardTec
       AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren,
     AuthenticatedDashboardTechnologiesContractsRoute:
       AuthenticatedDashboardTechnologiesContractsRouteWithChildren,
+    AuthenticatedDashboardTechnologiesFinanceRoute:
+      AuthenticatedDashboardTechnologiesFinanceRoute,
     AuthenticatedDashboardTechnologiesProposalsRoute:
       AuthenticatedDashboardTechnologiesProposalsRouteWithChildren,
     AuthenticatedDashboardTechnologiesIndexRoute:
