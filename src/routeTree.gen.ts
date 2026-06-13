@@ -29,6 +29,12 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
+import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
+import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
+import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
+import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
+import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -130,6 +136,37 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const AcademyPlacementsRoute = AcademyPlacementsRouteImport.update({
+  id: '/placements',
+  path: '/placements',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyOnlineCoursesRoute = AcademyOnlineCoursesRouteImport.update({
+  id: '/online-courses',
+  path: '/online-courses',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyOfflineTrainingRoute = AcademyOfflineTrainingRouteImport.update({
+  id: '/offline-training',
+  path: '/offline-training',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
+  id: '/internships',
+  path: '/internships',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCorporateTrainingRoute =
+  AcademyCorporateTrainingRouteImport.update({
+    id: '/corporate-training',
+    path: '/corporate-training',
+    getParentRoute: () => AcademyRoute,
+  } as any)
+const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
+  id: '/certifications',
+  path: '/certifications',
+  getParentRoute: () => AcademyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -144,6 +181,12 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/offline-training': typeof AcademyOfflineTrainingRoute
+  '/academy/online-courses': typeof AcademyOnlineCoursesRoute
+  '/academy/placements': typeof AcademyPlacementsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -163,6 +206,12 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/offline-training': typeof AcademyOfflineTrainingRoute
+  '/academy/online-courses': typeof AcademyOnlineCoursesRoute
+  '/academy/placements': typeof AcademyPlacementsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -186,6 +235,12 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/academy/certifications': typeof AcademyCertificationsRoute
+  '/academy/corporate-training': typeof AcademyCorporateTrainingRoute
+  '/academy/internships': typeof AcademyInternshipsRoute
+  '/academy/offline-training': typeof AcademyOfflineTrainingRoute
+  '/academy/online-courses': typeof AcademyOnlineCoursesRoute
+  '/academy/placements': typeof AcademyPlacementsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -210,6 +265,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/certifications'
+    | '/academy/corporate-training'
+    | '/academy/internships'
+    | '/academy/offline-training'
+    | '/academy/online-courses'
+    | '/academy/placements'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -229,6 +290,12 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/academy/certifications'
+    | '/academy/corporate-training'
+    | '/academy/internships'
+    | '/academy/offline-training'
+    | '/academy/online-courses'
+    | '/academy/placements'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -251,6 +318,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/technologies'
     | '/terms'
+    | '/academy/certifications'
+    | '/academy/corporate-training'
+    | '/academy/internships'
+    | '/academy/offline-training'
+    | '/academy/online-courses'
+    | '/academy/placements'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -418,14 +491,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/academy/placements': {
+      id: '/academy/placements'
+      path: '/placements'
+      fullPath: '/academy/placements'
+      preLoaderRoute: typeof AcademyPlacementsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/online-courses': {
+      id: '/academy/online-courses'
+      path: '/online-courses'
+      fullPath: '/academy/online-courses'
+      preLoaderRoute: typeof AcademyOnlineCoursesRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/offline-training': {
+      id: '/academy/offline-training'
+      path: '/offline-training'
+      fullPath: '/academy/offline-training'
+      preLoaderRoute: typeof AcademyOfflineTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/internships': {
+      id: '/academy/internships'
+      path: '/internships'
+      fullPath: '/academy/internships'
+      preLoaderRoute: typeof AcademyInternshipsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/corporate-training': {
+      id: '/academy/corporate-training'
+      path: '/corporate-training'
+      fullPath: '/academy/corporate-training'
+      preLoaderRoute: typeof AcademyCorporateTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/certifications': {
+      id: '/academy/certifications'
+      path: '/certifications'
+      fullPath: '/academy/certifications'
+      preLoaderRoute: typeof AcademyCertificationsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
   }
 }
 
 interface AcademyRouteChildren {
+  AcademyCertificationsRoute: typeof AcademyCertificationsRoute
+  AcademyCorporateTrainingRoute: typeof AcademyCorporateTrainingRoute
+  AcademyInternshipsRoute: typeof AcademyInternshipsRoute
+  AcademyOfflineTrainingRoute: typeof AcademyOfflineTrainingRoute
+  AcademyOnlineCoursesRoute: typeof AcademyOnlineCoursesRoute
+  AcademyPlacementsRoute: typeof AcademyPlacementsRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyCertificationsRoute: AcademyCertificationsRoute,
+  AcademyCorporateTrainingRoute: AcademyCorporateTrainingRoute,
+  AcademyInternshipsRoute: AcademyInternshipsRoute,
+  AcademyOfflineTrainingRoute: AcademyOfflineTrainingRoute,
+  AcademyOnlineCoursesRoute: AcademyOnlineCoursesRoute,
+  AcademyPlacementsRoute: AcademyPlacementsRoute,
   AcademyIndexRoute: AcademyIndexRoute,
 }
 
@@ -508,3 +635,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
