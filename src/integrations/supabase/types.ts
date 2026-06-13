@@ -540,6 +540,95 @@ export type Database = {
           },
         ]
       }
+      placements: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          employer_id: string | null
+          employment_type: string
+          id: string
+          job_posting_id: string | null
+          job_title: string
+          joining_date: string | null
+          notes: string | null
+          offer_date: string | null
+          program_id: string | null
+          salary_currency: string
+          salary_package: number | null
+          status: string
+          student_id: string
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          employer_id?: string | null
+          employment_type?: string
+          id?: string
+          job_posting_id?: string | null
+          job_title: string
+          joining_date?: string | null
+          notes?: string | null
+          offer_date?: string | null
+          program_id?: string | null
+          salary_currency?: string
+          salary_package?: number | null
+          status?: string
+          student_id: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          employer_id?: string | null
+          employment_type?: string
+          id?: string
+          job_posting_id?: string | null
+          job_title?: string
+          joining_date?: string | null
+          notes?: string | null
+          offer_date?: string | null
+          program_id?: string | null
+          salary_currency?: string
+          salary_package?: number | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "placements_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "placements_job_posting_id_fkey"
+            columns: ["job_posting_id"]
+            isOneToOne: false
+            referencedRelation: "job_postings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "placements_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "placements_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -549,6 +638,7 @@ export type Database = {
           education: Json
           email: string | null
           experience: Json
+          featured_success_story: boolean
           full_name: string | null
           github_url: string | null
           headline: string | null
@@ -564,6 +654,8 @@ export type Database = {
           show_projects: boolean
           show_resume: boolean
           skills: string[]
+          success_story_priority: number
+          success_story_summary: string | null
           updated_at: string
           website_url: string | null
         }
@@ -575,6 +667,7 @@ export type Database = {
           education?: Json
           email?: string | null
           experience?: Json
+          featured_success_story?: boolean
           full_name?: string | null
           github_url?: string | null
           headline?: string | null
@@ -590,6 +683,8 @@ export type Database = {
           show_projects?: boolean
           show_resume?: boolean
           skills?: string[]
+          success_story_priority?: number
+          success_story_summary?: string | null
           updated_at?: string
           website_url?: string | null
         }
@@ -601,6 +696,7 @@ export type Database = {
           education?: Json
           email?: string | null
           experience?: Json
+          featured_success_story?: boolean
           full_name?: string | null
           github_url?: string | null
           headline?: string | null
@@ -616,6 +712,8 @@ export type Database = {
           show_projects?: boolean
           show_resume?: boolean
           skills?: string[]
+          success_story_priority?: number
+          success_story_summary?: string | null
           updated_at?: string
           website_url?: string | null
         }
