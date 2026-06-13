@@ -24,6 +24,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
+import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
+import { Route as GlobalEducationScholarshipsRouteImport } from './routes/global-education.scholarships'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
@@ -114,6 +117,24 @@ const AcademyIndexRoute = AcademyIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AcademyRoute,
 } as any)
+const GlobalEducationUniversitiesRoute =
+  GlobalEducationUniversitiesRouteImport.update({
+    id: '/universities',
+    path: '/universities',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationStudyAbroadRoute =
+  GlobalEducationStudyAbroadRouteImport.update({
+    id: '/study-abroad',
+    path: '/study-abroad',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationScholarshipsRoute =
+  GlobalEducationScholarshipsRouteImport.update({
+    id: '/scholarships',
+    path: '/scholarships',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -213,6 +234,9 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
+  '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -241,6 +265,9 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
+  '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
@@ -273,6 +300,9 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/global-education/scholarships': typeof GlobalEducationScholarshipsRoute
+  '/global-education/study-abroad': typeof GlobalEducationStudyAbroadRoute
+  '/global-education/universities': typeof GlobalEducationUniversitiesRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -306,6 +336,9 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/scholarships'
+    | '/global-education/study-abroad'
+    | '/global-education/universities'
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
@@ -334,6 +367,9 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/scholarships'
+    | '/global-education/study-abroad'
+    | '/global-education/universities'
     | '/academy'
     | '/global-education'
     | '/technologies'
@@ -365,6 +401,9 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/global-education/scholarships'
+    | '/global-education/study-abroad'
+    | '/global-education/universities'
     | '/academy/'
     | '/global-education/'
     | '/technologies/'
@@ -491,6 +530,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/'
       preLoaderRoute: typeof AcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/global-education/universities': {
+      id: '/global-education/universities'
+      path: '/universities'
+      fullPath: '/global-education/universities'
+      preLoaderRoute: typeof GlobalEducationUniversitiesRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/study-abroad': {
+      id: '/global-education/study-abroad'
+      path: '/study-abroad'
+      fullPath: '/global-education/study-abroad'
+      preLoaderRoute: typeof GlobalEducationStudyAbroadRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/scholarships': {
+      id: '/global-education/scholarships'
+      path: '/scholarships'
+      fullPath: '/global-education/scholarships'
+      preLoaderRoute: typeof GlobalEducationScholarshipsRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
     '/careers/$slug': {
       id: '/careers/$slug'
@@ -658,10 +718,16 @@ const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
 interface GlobalEducationRouteChildren {
+  GlobalEducationScholarshipsRoute: typeof GlobalEducationScholarshipsRoute
+  GlobalEducationStudyAbroadRoute: typeof GlobalEducationStudyAbroadRoute
+  GlobalEducationUniversitiesRoute: typeof GlobalEducationUniversitiesRoute
   GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
 }
 
 const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
+  GlobalEducationScholarshipsRoute: GlobalEducationScholarshipsRoute,
+  GlobalEducationStudyAbroadRoute: GlobalEducationStudyAbroadRoute,
+  GlobalEducationUniversitiesRoute: GlobalEducationUniversitiesRoute,
   GlobalEducationIndexRoute: GlobalEducationIndexRoute,
 }
 
