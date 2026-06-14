@@ -66,3 +66,11 @@ export {
 } from "./academy";
 
 export type { AcademyFilter } from "./academy";
+
+// URL resolver (ADR-0003) — single source of truth for Academy route URLs.
+export {
+  academyHomeUrl,
+  academyCategoryUrl,
+  academyCourseUrl,
+  academyLearningPathUrl,
+} from "./academy-urls";
