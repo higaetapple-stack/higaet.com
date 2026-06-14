@@ -1,121 +1,112 @@
-# HIGAET Academy — Phase 1
+# HIGAET — Active Development Plan
 
-Build Phase 1 of HIGAET Academy inside the existing TanStack Start codebase, reusing the established design system, component library, SEO framework, analytics, and routing patterns. No separate project, no duplicate infrastructure.
+> Scope: **v1.4 — HIGAET Academy Production Release**
+> See `.lovable/roadmap.md` for the full multi-version product roadmap.
+> Last updated: 2026-06-14
 
-## Scope (this phase only)
+---
 
-1. Activate the Academy brand identity within the shared design system
-2. Academy route shell + layout under `/academy`
-3. Academy Homepage (`/academy`)
-4. Academy Navigation (sticky sub-header bound to `data-brand="academy"`)
-5. Academy Mega Menu (categories, learning paths, top courses, CTAs)
-6. Academy Search (client-side, course/category index — API-ready)
+## Status
 
-Out of scope: Course Detail, Learning Paths, Offline Training, Placements, Faculty, FAQ, Contact (Phases 2–5).
+| Field              | Value                                                |
+| ------------------ | ---------------------------------------------------- |
+| Current Version    | v1.3                                                 |
+| Current Phase      | Pre-v1.4 — Academy production hardening              |
+| Active Development | HIGAET Academy completion                            |
+| Next Version       | v1.4 — HIGAET Academy Production Release             |
+| Future Versions    | v1.5 Hub · v1.6 Shared Platform · v1.7 AI · v2.0 Unified |
 
-## Architecture
+### Frozen Modules
 
-- **Route group**: All Academy pages live under `src/routes/academy.*.tsx`. Phase 1 creates the layout file `academy.tsx` (renders `<Outlet />` inside an Academy-branded `SiteShell`) and `academy.index.tsx` (the homepage).
-- **Brand scoping**: Wrap the Academy subtree in a container with `data-brand="academy"`. All Academy-specific accent utilities resolve through the existing `--academy` / `--academy-soft` tokens (already defined in `src/styles.css`). No hardcoded colors in components.
-- **Reused components** (no duplication): `Container`, `Section`, `PageHero`, `FeatureGrid`, `StatBand`, `CTASection`, `TrustedBy`, `TestimonialCarousel`, `FAQ`, `Breadcrumbs`, `JsonLd`, `LeadForm`, `CookieConsent`, `Footer`, `SiteShell`, analytics + cookie consent.
-- **Academy-only components** (new, only where behavior genuinely differs):
-  - `AcademyHeader.tsx` — sub-header with Academy nav + mega menu trigger + search trigger (sits below the shared HIGAET ecosystem `Header`, scoped to `/academy/*`)
-  - `AcademyMegaMenu.tsx` — accessible mega panel: Categories · Popular Courses · Learning Paths · Resources · CTA
-  - `AcademySearch.tsx` — command-palette-style overlay (⌘K / `/`), debounced filter over the in-memory index, keyboard nav, ARIA combobox
-  - `CourseCard.tsx` — preview card used by mega menu, homepage rails, and future course listings
-  - `CategoryTile.tsx` — category entry with icon, blurb, course count
-  - `LearningPathCard.tsx` — path preview (duration, level, outcomes)
+- HIGAET Technologies v1.0 (public site)
+- CRM / Finance / Support
+- Auth flow
+- LMS core tables
+- Shared `Header` / `Footer` / `JsonLd` / `LeadForm` (extension only)
 
-## Content registries (API-ready)
+### Completed Versions
 
-All Phase 1 content lives in typed registries under `src/content/academy/` so they can be swapped for the future Node.js + Express + MySQL backend without touching components.
+- v1.0 — HIGAET Technologies (frozen baseline)
+- v1.1 — CRM / Finance / Support
+- v1.2 — LMS core + Career
+- v1.3 — Academy + Hub scaffolding
 
-- `src/content/academy/categories.ts` — 16 categories: AI, Generative AI, Machine Learning, Data Science, Python, Full-Stack, React, Node.js, Cloud, DevOps, Cybersecurity, UI/UX, Business Analytics, Software Testing, Digital Marketing, Career Development
-- `src/content/academy/courses.ts` — ~24 original course entries (title, slug, category, level, duration, summary, outcomes[], skills[], prerequisites[], careerOutcomes[], faqs[]) — Phase 1 surfaces them on the homepage and in search; detail pages arrive in Phase 2
-- `src/content/academy/learning-paths.ts` — ~6 learning paths (e.g., GenAI Engineer, Full-Stack Developer, Data Scientist) with sequenced course slugs
-- `src/content/academy/search-index.ts` — flattened search records derived from the registries (course + category + path titles, summaries, tags)
-- `src/content/academy/testimonials.ts` — clearly labeled placeholder testimonials (TODO marker on names + photos)
+---
 
-All content is original, written for HIGAET Academy's positioning; no copying of upGrad or competitor copy.
+## v1.4 Objective
 
-## Homepage sections (`/academy`)
+Complete and production-freeze **HIGAET Academy**. No Hub work during this version.
 
-1. Brand-scoped hero — "Future-ready learning for AI, software, and technology careers" + dual CTA (Browse Courses, Talk to a Counsellor) + integrated search input
-2. Trust band — placeholder partner/recruiter logos (TODO-marked)
-3. Top categories grid (16 tiles → category landing, Phase 2)
-4. Featured Learning Paths (3-card carousel)
-5. Popular Courses rail (6 cards)
-6. Why HIGAET Academy — 4-feature grid (mentorship, projects, placements, certification)
-7. Outcomes stat band — placeholder metrics (TODO-marked)
-8. Student stories — `TestimonialCarousel` (placeholder)
-9. FAQ — 6 Academy-specific questions (Course schema-aware)
-10. Lead capture CTA — reuses `LeadForm` (source: `academy_home`)
+---
 
-## Navigation & Mega Menu
+## v1.4 Workstreams
 
-- Shared HIGAET `Header` stays as the ecosystem-wide top bar (Home / Academy / Global Education Hub / Technologies / About / Contact)
-- `AcademyHeader` mounts inside `academy.tsx` layout, below the shared header, with: Courses ▾ (mega menu), Learning Paths, Certifications, Placements, Corporate Training, Search, "Apply Now" CTA
-- Mega menu opens on hover (desktop) / click (touch), closes on Esc / outside click, traps focus, returns focus to trigger
-- Mobile: collapses into an accordion drawer
+### A. Academy Content Registries
+Create `src/content/academy/`:
+- `categories.ts`
+- `courses.ts`
+- `learning-paths.ts`
+- `search-index.ts`
+- `testimonials.ts`
+- `index.ts` (barrel)
 
-## Search
+### B. Academy Header & Navigation
+- `src/components/academy/AcademyHeader.tsx`
+- Mega-menu wiring
+- Breadcrumbs on all Academy routes
+- Footer links
 
-- Trigger: search icon, `/`, or ⌘K / Ctrl+K
-- Overlay with input + grouped results (Courses · Categories · Learning Paths)
-- Client-side fuzzy match over `search-index.ts` (no extra deps — small custom scorer over title/tags/summary)
-- Keyboard nav (↑↓ Enter Esc), ARIA `combobox` + `listbox`, screen-reader live region for result count
-- Results route to placeholder anchors on `/academy` for Phase 1; deep routes land in Phase 2 (links typed so the future routes are a non-breaking addition)
+### C. Search Integration
+- Wire `search-index.ts` into Academy search UI
+- Empty/zero-result states
+- Keyboard accessibility
 
-## SEO / AEO / GEO / AIO
+### D. SEO Validation
+- Unique title (<60 chars) + meta description (<160 chars) per route
+- OG/Twitter cards per route (leaf-level og:image)
+- Canonical tags
+- JSON-LD: `Organization`, `Course`, `BreadcrumbList`, `FAQPage` where applicable
+- Sitemap entry coverage
 
-- `/academy` `head()`: unique title, description, canonical, og:title, og:description, og:image (use existing brand asset if available; otherwise omit per leaf-only rule), twitter card
-- JSON-LD via `JsonLd`: `EducationalOrganization` (HIGAET Academy), `WebSite` with `SearchAction` pointing at the Academy search, `BreadcrumbList`, `FAQPage` for the homepage FAQ, `ItemList` for Featured Learning Paths and Popular Courses
-- Sitemap: extend `src/routes/sitemap[.]xml.ts` with `/academy` (priority 0.9)
-- Original content only; semantic headings (single `<h1>`); accessible color contrast verified against `--academy` token
+### E. Accessibility Validation
+- WCAG 2.1 AA
+- Color contrast, focus rings, semantic landmarks, alt text, ARIA on interactive widgets
 
-## Analytics
+### F. Performance Validation
+- Lighthouse ≥90 (Performance, Accessibility, Best Practices, SEO)
+- Image lazy loading, route-level code splitting verified
 
-- Reuse existing `src/lib/analytics.ts` (GA4 / GTM / Meta Pixel / Clarity), gated by cookie consent
-- Track Phase 1 events: `academy_home_view`, `academy_search_open`, `academy_search_query`, `academy_search_result_click`, `academy_mega_menu_open`, `academy_lead_submit`
+### G. QA Checklist Closure
+- Complete every item in `.lovable/qa-checklist-3a1.md`
+- Add any newly identified items before sign-off
 
-## Accessibility & Performance
+### H. Freeze
+- Add Academy to Frozen Modules in `.lovable/roadmap.md` and this file
+- Tag release v1.4
 
-- Semantic landmarks, single `<main>`, focus management on mega menu and search overlay
-- All interactive elements keyboard reachable; visible focus rings using `--ring`
-- Code-split: search overlay and mega menu lazy-load on first interaction
-- No oversized hero images; text-led design consistent with Technologies
+---
 
-## Files to add / edit
+## v1.4 Exit Criteria
 
-### New
-- `src/routes/academy.tsx` (layout, `data-brand="academy"`, `<Outlet />`)
-- `src/routes/academy.index.tsx` (homepage)
-- `src/components/site/AcademyHeader.tsx`
-- `src/components/site/AcademyMegaMenu.tsx`
-- `src/components/site/AcademySearch.tsx`
-- `src/components/site/CourseCard.tsx`
-- `src/components/site/CategoryTile.tsx`
-- `src/components/site/LearningPathCard.tsx`
-- `src/content/academy/categories.ts`
-- `src/content/academy/courses.ts`
-- `src/content/academy/learning-paths.ts`
-- `src/content/academy/search-index.ts`
-- `src/content/academy/testimonials.ts`
-- `src/content/academy/index.ts` (barrel)
+- ✅ All Academy routes 200 + correct head metadata
+- ✅ Lighthouse ≥90 across all four categories
+- ✅ `qa-checklist-3a1.md` 100% checked
+- ✅ Accessibility audit clean
+- ✅ Academy added to freeze policy
+- ✅ `roadmap.md` Version History updated
 
-### Edited
-- `src/components/site/Header.tsx` — add "Academy" link to ecosystem nav (no behavior change for Technologies)
-- `src/routes/sitemap[.]xml.ts` — append `/academy`
-- `src/styles.css` — only if a missing Academy utility surfaces; otherwise unchanged (`--academy` already defined)
+---
 
-## Acceptance criteria
+## Out of Scope for v1.4
 
-- `/academy` renders with the Academy accent applied via `data-brand`; Technologies pages visually unchanged
-- Mega menu and search work via mouse, keyboard, and touch; both pass focus-trap and Esc-close checks
-- All content originates from the registries; no string literals duplicated across components
-- Lighthouse: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95 on `/academy`
-- JSON-LD validates (Organization, WebSite+SearchAction, BreadcrumbList, FAQPage, ItemList)
-- Sitemap includes `/academy`
-- All placeholder assets (logos, photos, testimonials) carry visible `TODO` markers in source comments and registry fields
+- Global Education Hub (v1.5)
+- `--hub` / `--technologies` design tokens beyond what Academy needs
+- `leads` table / Hub lead capture (v1.5)
+- Backend integration work (v1.6)
+- New AI features (v1.7)
 
-Stop after Phase 1 and report counts (categories, courses, paths, new routes, new components) before moving on.
+---
+
+## Next Action
+
+Awaiting approval to begin Workstream **A** (Academy Content Registries). Implementation is **not** yet started — this document and `roadmap.md` constitute the planning deliverable for this turn.
