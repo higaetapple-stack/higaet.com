@@ -62,21 +62,83 @@ function withSecurityHeaders(response: Response): Response {
   });
 }
 
+/**
+ * Structured request log line — JSON so log aggregators can parse it.
+ * Always carries a correlation ID (echoed back via `x-correlation-id` header)
+ * so a single request can be traced across edge proxy, SSR, and client logs.
+ */
+function logRequest(entry: {
+  correlationId: string;
+  method: string;
+  url: string;
+  status: number;
+  durationMs: number;
+  ip?: string | null;
+  ua?: string | null;
+  error?: string;
+}) {
+  // single-line JSON keeps it greppable and aggregator-friendly
+  console.log(JSON.stringify({ level: "info", type: "request", ...entry }));
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const correlationId =
+      request.headers.get("x-correlation-id") ?? crypto.randomUUID();
+    const startedAt = Date.now();
+    const url = new URL(request.url);
+    const ip =
+      request.headers.get("cf-connecting-ip") ??
+      request.headers.get("x-forwarded-for");
+    const ua = request.headers.get("user-agent");
+
+    let response: Response;
+    let errorMessage: string | undefined;
+
     try {
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return withSecurityHeaders(await normalizeCatastrophicSsrResponse(response));
+      const raw = await handler.fetch(request, env, ctx);
+      response = withSecurityHeaders(await normalizeCatastrophicSsrResponse(raw));
     } catch (error) {
-      console.error(error);
-      return withSecurityHeaders(
+      errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(
+        JSON.stringify({
+          level: "error",
+          type: "request_failure",
+          correlationId,
+          url: url.pathname + url.search,
+          error: errorMessage,
+        }),
+      );
+      response = withSecurityHeaders(
         new Response(renderErrorPage(), {
           status: 500,
           headers: { "content-type": "text/html; charset=utf-8" },
         }),
       );
     }
+
+    // Attach correlation ID to every response so the frontend can surface it
+    const headers = new Headers(response.headers);
+    if (!headers.has("x-correlation-id")) headers.set("x-correlation-id", correlationId);
+    const finalResponse = new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+
+    logRequest({
+      correlationId,
+      method: request.method,
+      url: url.pathname + url.search,
+      status: finalResponse.status,
+      durationMs: Date.now() - startedAt,
+      ip,
+      ua,
+      error: errorMessage,
+    });
+
+    return finalResponse;
   },
 };
 
