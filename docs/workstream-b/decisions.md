@@ -71,3 +71,42 @@ and Campuses remain inline (out-of-scope domains).
   inline → registry swap for that block.
 - B.3 (mega menu) scoped to Programs branch.
 - B.6 (breadcrumbs) blocks on URL resolver landing first.
+
+---
+
+## Substep log
+
+### B.2 · Step 1 — AcademyMegaMenu — **Intentional no-op**
+
+`AcademyMegaMenu.tsx` is NOT modified during v1.4.
+
+Rationale (approved):
+
+- `PROGRAMS` (Programs panel) is curriculum-domain data — out of scope
+  per D-B-2 (Registry v1.1).
+- `CAMPUSES` (Campuses panel) is out of scope per D-B-2.
+- `RESOURCES` is marketing nav — not modeled by Registry v1.0.
+- Top-row routes use typed TanStack `<Link to="…">` literals; replacing
+  with resolver strings would reduce type safety with zero behavior win.
+
+Forcing a migration here would either change the UI, reduce type safety,
+or introduce an unnecessary abstraction — all violations of v1.4
+release principles. Current inline structures remain authoritative
+until Registry v1.1 expands to cover them.
+
+### B.2 · Step 2 — AcademySearch — **Migrated (additive)**
+
+- New provider-backed groups in the command palette: `Academy · Pillars`,
+  `Academy · Courses`, `Academy · Learning Paths` — sourced from
+  `getAcademySearchIndex()`.
+- URLs derived via the Academy URL resolver (`academyCategoryUrl`,
+  `academyCourseUrl`, `academyLearningPathUrl`) so live routes stay
+  correct independent of generator output (ADR-0003).
+- `PROGRAMS` and `CAMPUSES` groups preserved verbatim (out of scope).
+- Keyboard shortcuts (`/`, `⌘K`), analytics events
+  (`academy_search_open`, `academy_search_query`,
+  `academy_search_result_click`), accessibility, and dialog UI
+  unchanged.
+- Added `SearchRecord`, `BreadcrumbEntry`, `SitemapEntry` type re-exports
+  from `@/content/providers` (additive — allowed under freeze).
+
