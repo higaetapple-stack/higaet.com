@@ -41,6 +41,7 @@ import type {
   CategoryEntry,
   CourseEntry,
   LearningPathEntry,
+  ProviderFilter,
   ProviderOptions,
   ProviderResult,
   SearchRecord,
@@ -53,11 +54,11 @@ import type {
  * ============================================================== */
 
 /**
- * Academy-only filter knobs. Composed with the shared
- * `ProviderFilter` fields (`status`, `visibility`, `includeDraft`,
- * `categoryId`, `courseId`) via `ProviderOptions`.
+ * Academy-only filter knobs. Extends the shared `ProviderFilter`
+ * so callers can combine status / visibility / category filters
+ * with Academy-specific `level` and `mode` filters in one object.
  */
-export interface AcademyFilter {
+export interface AcademyFilter extends ProviderFilter {
   /** Restrict by skill level. */
   level?: "beginner" | "intermediate" | "advanced";
   /** Restrict by delivery mode. */
