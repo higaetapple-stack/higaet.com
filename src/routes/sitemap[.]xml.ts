@@ -170,13 +170,16 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         // Academy pillar URLs — registry-backed, resolved through the
         // route-aware URL resolver so live routes are the source of truth.
-        const academyCategoryEntries: SitemapEntry[] = getAcademyCategories({
+        const academyCategories = await getAcademyCategories({
           filter: { visibility: "public" },
-        }).map((c) => ({
-          path: academyCategoryUrl(c.slug),
-          changefreq: "weekly" as const,
-          priority: "0.8",
-        }));
+        });
+        const academyCategoryEntries: SitemapEntry[] = academyCategories.map(
+          (c) => ({
+            path: academyCategoryUrl(c.slug),
+            changefreq: "weekly" as const,
+            priority: "0.8",
+          }),
+        );
 
         const entries: SitemapEntry[] = [
           ...STATIC_ENTRIES,
