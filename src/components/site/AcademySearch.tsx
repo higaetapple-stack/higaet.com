@@ -1,6 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Search, GraduationCap, MapPin, Compass, Sparkles, ArrowRight } from "lucide-react";
+import {
+  Search,
+  GraduationCap,
+  MapPin,
+  Compass,
+  Sparkles,
+  ArrowRight,
+  BookOpen,
+  Route as RouteIcon,
+  LayoutGrid,
+} from "lucide-react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -11,6 +21,13 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { PROGRAMS, CAMPUSES, CATEGORY_LABELS, type ProgramCategory } from "@/lib/academy-programs";
+import {
+  getAcademySearchIndex,
+  academyCategoryUrl,
+  academyCourseUrl,
+  academyLearningPathUrl,
+  type SearchRecord,
+} from "@/content/providers";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +42,37 @@ const QUICK_LINKS = [
   { label: "FAQ", to: "/academy/faq", icon: ArrowRight },
   { label: "Contact", to: "/academy/contact", icon: ArrowRight },
 ] as const;
+
+/**
+ * Resolve a search record to its live route URL via the Academy URL
+ * resolver (ADR-0003). The generator's `record.url` field encodes the
+ * canonical slug shape; the resolver maps it onto current live routes.
+ */
+function resolveRecordUrl(r: SearchRecord): string {
+  const slug = r.url.split("/").pop() ?? "";
+  switch (r.kind) {
+    case "category":
+      return academyCategoryUrl(slug);
+    case "course":
+      return academyCourseUrl(slug);
+    case "learning-path":
+      return academyLearningPathUrl(slug);
+    default:
+      return r.url;
+  }
+}
+
+const RECORD_KIND_LABEL: Record<SearchRecord["kind"], string> = {
+  category: "Academy · Pillars",
+  course: "Academy · Courses",
+  "learning-path": "Academy · Learning Paths",
+};
+
+const RECORD_KIND_ICON: Record<SearchRecord["kind"], typeof LayoutGrid> = {
+  category: LayoutGrid,
+  course: BookOpen,
+  "learning-path": RouteIcon,
+};
 
 export function AcademySearchTrigger({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
@@ -82,11 +130,29 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
     return grouped;
   }, []);
 
+  // Provider-backed Academy registry records (categories, courses, paths).
+  // Replaces the previously-missing registry source; PROGRAMS and CAMPUSES
+  // groups below remain inline per Workstream B decisions D-B-2 / D-B-4.
+  const registryByKind = useMemo(() => {
+    const grouped = new Map<SearchRecord["kind"], SearchRecord[]>();
+    for (const r of getAcademySearchIndex()) {
+      const list = grouped.get(r.kind) ?? [];
+      list.push(r);
+      grouped.set(r.kind, list);
+    }
+    return grouped;
+  }, []);
+
   const go = (label: string, fn: () => void) => {
     trackEvent("academy_search_result_click", { label });
     fn();
     onOpenChange(false);
   };
+
+  // TanStack `navigate({ to })` is typed against the route tree; dynamic
+  // resolver URLs are runtime-valid but not statically in the union.
+  const goToUrl = (label: string, url: string) =>
+    go(label, () => navigate({ to: url } as Parameters<typeof navigate>[0]));
 
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
@@ -112,6 +178,31 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
             );
           })}
         </CommandGroup>
+
+        <CommandSeparator />
+
+        {(["category", "course", "learning-path"] as const).map((kind) => {
+          const list = registryByKind.get(kind);
+          if (!list || list.length === 0) return null;
+          const Icon = RECORD_KIND_ICON[kind];
+          return (
+            <CommandGroup key={kind} heading={RECORD_KIND_LABEL[kind]}>
+              {list.map((r) => (
+                <CommandItem
+                  key={r.id}
+                  value={`${r.title} ${r.description} ${(r.keywords ?? []).join(" ")}`}
+                  onSelect={() => goToUrl(r.title, resolveRecordUrl(r))}
+                >
+                  <Icon className="size-4 text-academy" />
+                  <div className="flex min-w-0 flex-col">
+                    <span className="truncate">{r.title}</span>
+                    <span className="truncate text-xs text-muted-foreground">{r.description}</span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          );
+        })}
 
         <CommandSeparator />
 
