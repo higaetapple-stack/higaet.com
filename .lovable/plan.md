@@ -1,169 +1,101 @@
-# HIGAET — Active Development Plan
+# Workstream B — Academy Consumer Migration (v1)
 
-> Scope: **v1.4 — HIGAET Academy Production Release**
-> Active workstream: **A — Academy Content Registries (Plan v3)**
-> See `.lovable/roadmap.md` for the full multi-version product roadmap.
-> See `.lovable/adr/0001-registry-architecture.md` for the architectural decision backing this workstream.
-> Last updated: 2026-06-14
+**Objective.** Migrate every Academy consumer (routes, mega menu, search, breadcrumbs, metadata, JSON-LD) from inline literals to the frozen `@/content/providers` layer.
+
+**Non-objective.** No new features. No layout changes. No new copy. The visual surface must be byte-for-byte equivalent before and after each step.
+
+```text
+Old:  UI  →  inline literals
+New:  UI  →  @/content/providers  →  Academy Registry v1.0 (frozen)
+```
 
 ---
 
-## Status
+## Guardrails (apply to every step)
 
-| Field              | Value                                                |
-| ------------------ | ---------------------------------------------------- |
-| Current Version    | v1.3                                                 |
-| Current Phase      | Pre-v1.4 — Academy production hardening              |
-| Active Workstream  | A — Academy Content Registries                       |
-| Next Workstream    | B — Academy Header & Navigation                      |
-| Future Versions    | v1.5 Hub · v1.6 Shared Platform · v1.7 AI · v2.0 Unified |
-
-### Frozen Modules
-
-- HIGAET Technologies v1.0 (public site)
-- CRM / Finance / Support
-- Auth flow
-- LMS core tables
-- Shared `Header` / `Footer` / `JsonLd` / `LeadForm` (extension only)
+1. Imports from Academy data come ONLY from `@/content/providers`. ESLint already blocks direct registry imports.
+2. No changes to `src/content/_registry/`, `src/content/providers/`, or `src/content/academy/` — those are frozen (see `src/content/ADR-FREEZE.md`).
+3. No visual regressions: each step is verified against the live preview before approval.
+4. Each step is additive and independently revertible.
+5. If provider data doesn't yet cover a UI need, STOP and propose a registry change under version governance — never re-introduce inline data.
 
 ---
 
-## v1.4 Workstreams
+## B.1 — Route & Consumer Audit (deliverable only)
 
-| ID | Workstream                       | Status   |
-| -- | -------------------------------- | -------- |
-| A  | Academy Content Registries       | 🚧 Active |
-| B  | Academy Header & Navigation      | ⏳ Pending |
-| C  | Academy Search                   | ⏳ Pending |
-| D  | SEO & JSON-LD                    | ⏳ Pending |
-| E  | Accessibility                    | ⏳ Pending |
-| F  | Performance                      | ⏳ Pending |
-| G  | QA & Validation                  | ⏳ Pending |
-| H  | Freeze Academy                   | ⏳ Pending |
+Produce a migration matrix listing every Academy file that contains:
 
----
+- Inline category / course / learning-path / testimonial arrays.
+- Hardcoded breadcrumb trails.
+- Static `head()` titles/descriptions for Academy routes.
+- Hand-maintained search entries for Academy content.
+- Duplicated mega-menu navigation arrays.
 
-## Workstream A — Academy Content Registries (Plan v3)
+Output: a markdown file at `docs/workstream-b/audit.md` with columns `file · symbol · kind · target provider call · risk`. No code changes.
 
-Establishes the **canonical HIGAET Registry System** plus the first consumer (Academy). All future divisions (Hub, Blog, Careers, AI, LMS) reuse the same system.
+## B.2 — Homepage Migration (`/academy`)
 
-### Architecture (per ADR-0001)
+Replace inline literals on the Academy landing page with `getAcademyCategories`, `getAcademyLearningPaths`, `getAcademyTestimonials`. Layout, ordering, and copy unchanged.
 
-```
-Components
-    ↓
-Providers (src/content/providers/)
-    ↓
-Cache (reserved — future)
-    ↓
-Registry (src/content/<division>/) — today
-    ↓
-API (v1.6+)
-    ↓
-Database
-```
+## B.3 — Mega Menu Migration
 
-Components, routes, loaders, `head()`, JSON-LD builders import **only** from `@/content/providers`. An ESLint `no-restricted-imports` rule blocks direct registry imports outside the provider layer.
+Academy mega menu consumes `getAcademyCategories({ filter: { visibility: "public" } })`. Sort by the registry's `order` field. Icons resolved at render time from the category's `icon` string.
 
-### Folder structure
+## B.4 — Search Migration
 
-```
-src/content/
-  _registry/
-    types.ts
-    contracts.ts
-    validate.ts
-    version.ts
-    index.ts
-    tests/
-      schema.test.ts
-      duplicates.test.ts
-      relationships.test.ts
-      seo-metadata.test.ts
-      enums.test.ts
-      resolver.test.ts
-      generators.test.ts
-  providers/
-    academy.ts
-    index.ts
-  academy/
-    version.ts
-    categories.ts
-    courses.ts
-    learning-paths.ts
-    testimonials.ts
-    generated/
-      search-index.ts
-      sitemap.ts
-      breadcrumbs.ts
-    index.ts          # internal — imported only by providers/academy.ts
-```
+Academy search (command palette / search input) consumes `getAcademySearchIndex()`. Remove any hand-maintained Academy search list.
 
-### Sub-phases
+## B.5 — Route Metadata + JSON-LD
 
-**A.1 — Registry Architecture (system foundation)**
-1. `_registry/types.ts` (BaseEntry, Status, Visibility, AuditMeta, SeoMeta)
-2. `_registry/contracts.ts` (CategoryContract, CourseContract, PathContract, TestimonialContract)
-3. `_registry/validate.ts` (dev-time integrity checks)
-4. `_registry/version.ts` (`REGISTRY_SYSTEM_VERSION = "1.0"`) + `_registry/index.ts`
-5. `_registry/tests/*` (7 parameterizable test files)
-6. ESLint `no-restricted-imports` rule
-7. `providers/academy.ts` stubs (function signatures, empty arrays)
-8. `providers/index.ts` barrel
+For every Academy route, derive `title`, `description`, `canonical`, OG/Twitter tags, and JSON-LD (`CollectionPage`, `Course`, `BreadcrumbList`, `Review`) from provider data:
 
-**A.2 — Registry Population (first consumer)**
-9. `academy/version.ts` (`ACADEMY_REGISTRY_VERSION = "1.0"`) + `categories.ts`
-10. `academy/courses.ts`
-11. `academy/learning-paths.ts` ‖ `academy/testimonials.ts`
-12. `academy/generated/*`
-13. `academy/index.ts` (internal barrel)
-14. Wire providers to real registries; all tests green
+- Course detail: `resolveCourseBySlug` → `metadata` + JSON-LD `Course`.
+- Category detail: `resolveCategoryById` (via slug lookup) → `metadata` + `CollectionPage`.
+- Learning path detail: `resolvePathByIdOrSlug` → `metadata` + composed `Course` references.
 
-### Provider API surface (Academy)
+## B.6 — Breadcrumb Migration
 
-```
-getAcademyCategories(opts?)        → CategoryEntry[]
-getAcademyCourses(opts?)           → CourseEntry[]
-getAcademyLearningPaths(opts?)     → LearningPathEntry[]
-getAcademyTestimonials(opts?)      → TestimonialEntry[]
-getAcademySearchIndex()            → SearchRecord[]
-getAcademySitemap()                → SitemapEntry[]
-getAcademyBreadcrumbs(path)        → BreadcrumbEntry[]
-resolveCourseBySlug(slug)          → CourseEntry | null
-resolveCategoryById(id)            → CategoryEntry | null
-resolvePathByIdOrSlug(key)         → LearningPathEntry | null
-```
+Replace every hardcoded breadcrumb tree with `getAcademyBreadcrumbs(currentPath)`. Render the returned `BreadcrumbEntry[]` in the existing breadcrumb component.
 
-Uniform `opts`: `{ status?, visibility?, categoryId?, limit?, includeDraft? }`.
+## B.7 — QA
 
-### Acceptance criteria
+- Visual parity check against the frozen baseline (spot-check every Academy route on mobile + desktop).
+- `rg` sweep for any remaining inline Academy data outside `src/content/academy/`.
+- TypeScript clean, ESLint clean, registry tests green, build succeeds.
+- Manual click-through of every migrated route.
 
-- [ ] `src/content/_registry/` and `src/content/providers/` exist per ADR-0001
-- [ ] All entries carry `id`, `slug`, `status`, `visibility`, `metadata`, `audit`
-- [ ] Cross-refs use `id`, not `slug`
-- [ ] `validateAcademyRegistry()` runs on import in dev and passes
-- [ ] `_registry/tests/*` runs under `bunx vitest run` and passes
-- [ ] ESLint blocks `@/content/academy/*` imports outside `providers/`
-- [ ] `REGISTRY_SYSTEM_VERSION = "1.0"`, `ACADEMY_REGISTRY_VERSION = "1.0"`
-- [ ] `generated/*` files carry a "do not edit" header
-- [ ] Zero modifications to files outside `src/content/` (additive proof)
-- [ ] All copy original (project core memory rule)
+## B.8 — Consumer Freeze
+
+Add `src/content/ADR-FREEZE-consumers.md` documenting the consumer baseline:
+
+- Frozen consumer files and the provider calls they depend on.
+- Rule: future Academy UI work consumes providers; it does not reintroduce inline data.
 
 ---
 
-## Out of Scope for v1.4
+## Acceptance Criteria
 
-- Global Education Hub (v1.5)
-- `leads` table / Hub lead capture (v1.5)
-- Backend integration (v1.6 — provider layer reserves the seam)
-- New AI features (v1.7)
+- Zero inline Academy data outside `src/content/academy/`.
+- All Academy pages consume providers.
+- Mega menu, search, breadcrumbs, metadata, and JSON-LD all sourced from providers.
+- No visual regressions.
+- TypeScript / ESLint / tests / build all clean.
 
 ---
 
-## Next Action
+## Risks & Mitigations
 
-Documentation updates complete. Next implementation step:
+| Risk | Mitigation |
+| --- | --- |
+| Provider data missing a field a current page renders | Surface as an audit-matrix gap in B.1; resolve through version governance, not inline data. |
+| Slug / URL drift between inline data and registry | B.1 audit explicitly compares slugs; B.6 covers redirect plan if any diverge. |
+| Component prop shape doesn't match registry shape | Use small adapter functions at the consumer boundary; never mutate registry types. |
+| Hidden visual regressions | Per-step preview QA before moving to the next step. |
 
-**Workstream A.1 — Step 1: Create `src/content/_registry/types.ts`.**
+---
 
-Awaiting your go-ahead.
+## Sequencing
+
+B.1 (audit) is a prerequisite for every other step. B.2–B.6 are independent and can be approved/merged individually. B.7 runs after all migration steps. B.8 closes the workstream.
+
+**No code changes in this plan.** Awaiting approval of v1 before starting B.1.
