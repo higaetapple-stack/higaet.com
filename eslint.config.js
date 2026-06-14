@@ -30,6 +30,24 @@ export default tseslint.config(
                 "TanStack Start does not use the Next.js `server-only` package. Rename the module to `*.server.ts` or mark it with `@tanstack/react-start/server-only`.",
             },
           ],
+          patterns: [
+            {
+              // HIGAET Registry Architecture (ADR-0001) — block direct
+              // imports from any division registry. Providers are the
+              // only allowed consumers (granted an override below).
+              group: [
+                "@/content/academy/*",
+                "@/content/hub/*",
+                "@/content/technologies/*",
+                "@/content/blog/*",
+                "@/content/careers/*",
+                "@/content/ai/*",
+                "@/content/lms/*",
+              ],
+              message:
+                "HIGAET Registry Architecture (ADR-0001): division registries are private. Import the corresponding getter from `@/content/providers` instead (e.g. `getAcademyCourses`). Only files inside `src/content/providers/` may consume `src/content/<division>/*` directly.",
+            },
+          ],
         },
       ],
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
