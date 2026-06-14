@@ -42,12 +42,22 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
  * CSP omitted to avoid breaking Lovable preview / inline scripts;
  * add via hosting layer (MilesWeb / Cloudflare) when ready.
  */
+// Lovable previews embed the app inside an iframe on a different origin
+// (id-preview--*.lovable.app). X-Frame-Options: SAMEORIGIN and a restrictive
+// frame-ancestors CSP both break that embed ("refused to connect"). We keep
+// the framing headers OFF in dev/preview and only enforce them in production.
+const IS_PROD = process.env.NODE_ENV === "production";
+
 const SECURITY_HEADERS: Record<string, string> = {
   "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "SAMEORIGIN",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+  ...(IS_PROD
+    ? {
+        "X-Frame-Options": "SAMEORIGIN",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+      }
+    : {}),
 };
 
 function withSecurityHeaders(response: Response): Response {
