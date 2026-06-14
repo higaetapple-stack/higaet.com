@@ -217,7 +217,7 @@ function AcademyHome() {
           Wherever you're starting from, there's a path forward.
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          {LEARNING_PATHS.map((p) => (
+          {LEARNER_AUDIENCES.map((p) => (
             <Link
               key={p.slug}
               to="/academy/learning-paths"
@@ -305,13 +305,15 @@ function AcademyHome() {
           Graduates building careers in AI.
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
-            <figure key={t.name} className="rounded-xl bg-surface/5 ring-1 ring-surface/10 p-6">
+          {testimonials.map((t) => (
+            <figure key={t.id} className="rounded-xl bg-surface/5 ring-1 ring-surface/10 p-6">
               <Quote className="size-5 text-academy" />
               <blockquote className="text-surface/90 text-sm leading-relaxed mt-4">{t.quote}</blockquote>
               <figcaption className="mt-5 pt-5 border-t border-surface/10">
                 <div className="text-sm font-medium text-surface">{t.name}</div>
-                <div className="text-xs text-surface/60 mt-0.5">{t.role}</div>
+                <div className="text-xs text-surface/60 mt-0.5">
+                  {[t.role, t.company].filter(Boolean).join(", ")}
+                </div>
               </figcaption>
             </figure>
           ))}
