@@ -62,13 +62,13 @@ function resolveRecordUrl(r: SearchRecord): string {
   }
 }
 
-const RECORD_KIND_LABEL: Record<SearchRecord["kind"], string> = {
+const RECORD_KIND_LABEL: Partial<Record<SearchRecord["kind"], string>> = {
   category: "Academy · Pillars",
   course: "Academy · Courses",
   "learning-path": "Academy · Learning Paths",
 };
 
-const RECORD_KIND_ICON: Record<SearchRecord["kind"], typeof LayoutGrid> = {
+const RECORD_KIND_ICON: Partial<Record<SearchRecord["kind"], typeof LayoutGrid>> = {
   category: LayoutGrid,
   course: BookOpen,
   "learning-path": RouteIcon,
@@ -133,9 +133,12 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
   // Provider-backed Academy registry records (categories, courses, paths).
   // Replaces the previously-missing registry source; PROGRAMS and CAMPUSES
   // groups below remain inline per Workstream B decisions D-B-2 / D-B-4.
+  // getAcademySearchIndex returns `T | Promise<T>`; the static-registry
+  // impl is synchronous, so we assert the sync branch here.
   const registryByKind = useMemo(() => {
+    const records = getAcademySearchIndex() as readonly SearchRecord[];
     const grouped = new Map<SearchRecord["kind"], SearchRecord[]>();
-    for (const r of getAcademySearchIndex()) {
+    for (const r of records) {
       const list = grouped.get(r.kind) ?? [];
       list.push(r);
       grouped.set(r.kind, list);
@@ -183,10 +186,11 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
 
         {(["category", "course", "learning-path"] as const).map((kind) => {
           const list = registryByKind.get(kind);
-          if (!list || list.length === 0) return null;
+          const heading = RECORD_KIND_LABEL[kind];
           const Icon = RECORD_KIND_ICON[kind];
+          if (!list || list.length === 0 || !heading || !Icon) return null;
           return (
-            <CommandGroup key={kind} heading={RECORD_KIND_LABEL[kind]}>
+            <CommandGroup key={kind} heading={heading}>
               {list.map((r) => (
                 <CommandItem
                   key={r.id}
