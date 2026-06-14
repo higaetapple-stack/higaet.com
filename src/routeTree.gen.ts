@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TechnologiesRouteImport } from './routes/technologies'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
+import { Route as StatusRouteImport } from './routes/status'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
@@ -157,6 +158,7 @@ import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologi
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
+import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
@@ -254,6 +256,11 @@ const TechnologiesRoute = TechnologiesRouteImport.update({
 const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
   id: '/success-stories',
   path: '/success-stories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -1071,6 +1078,11 @@ const GlobalEducationCountriesSlugRoute =
     path: '/$slug',
     getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
+const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
+  id: '/api/public/health',
+  path: '/api/public/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
   id: '/programs/$slug',
   path: '/programs/$slug',
@@ -1580,6 +1592,7 @@ export interface FileRoutesByFullPath {
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
@@ -1659,6 +1672,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -1810,6 +1824,7 @@ export interface FileRoutesByTo {
   '/cookies': typeof CookiesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
   '/terms': typeof TermsRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
@@ -1883,6 +1898,7 @@ export interface FileRoutesByTo {
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2034,6 +2050,7 @@ export interface FileRoutesById {
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
@@ -2113,6 +2130,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2268,6 +2286,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/privacy'
     | '/sitemap.xml'
+    | '/status'
     | '/success-stories'
     | '/technologies'
     | '/terms'
@@ -2347,6 +2366,7 @@ export interface FileRouteTypes {
     | '/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/api/public/health'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2498,6 +2518,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/privacy'
     | '/sitemap.xml'
+    | '/status'
     | '/success-stories'
     | '/terms'
     | '/academy/admissions'
@@ -2571,6 +2592,7 @@ export interface FileRouteTypes {
     | '/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/api/public/health'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2721,6 +2743,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/privacy'
     | '/sitemap.xml'
+    | '/status'
     | '/success-stories'
     | '/technologies'
     | '/terms'
@@ -2800,6 +2823,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/api/public/health'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2955,6 +2979,7 @@ export interface RootRouteChildren {
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StatusRoute: typeof StatusRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
   TechnologiesRoute: typeof TechnologiesRouteWithChildren
   TermsRoute: typeof TermsRoute
@@ -2962,6 +2987,7 @@ export interface RootRouteChildren {
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   JobsIndexRoute: typeof JobsIndexRoute
+  ApiPublicHealthRoute: typeof ApiPublicHealthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -2985,6 +3011,13 @@ declare module '@tanstack/react-router' {
       path: '/success-stories'
       fullPath: '/success-stories'
       preLoaderRoute: typeof SuccessStoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -4001,6 +4034,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/countries/$slug'
       preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
       parentRoute: typeof GlobalEducationCountriesRoute
+    }
+    '/api/public/health': {
+      id: '/api/public/health'
+      path: '/api/public/health'
+      fullPath: '/api/public/health'
+      preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/academy/programs/$slug': {
       id: '/academy/programs/$slug'
@@ -5428,6 +5468,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StatusRoute: StatusRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,
   TechnologiesRoute: TechnologiesRouteWithChildren,
   TermsRoute: TermsRoute,
@@ -5435,17 +5476,8 @@ const rootRouteChildren: RootRouteChildren = {
   PortfolioSlugRoute: PortfolioSlugRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   JobsIndexRoute: JobsIndexRoute,
+  ApiPublicHealthRoute: ApiPublicHealthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
