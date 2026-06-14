@@ -38,6 +38,48 @@ A frozen module accepts only:
 
 ---
 
+## Architecture Governance
+
+### Architecture-first rule
+
+Any change affecting **shared infrastructure** requires an ADR (see `.lovable/adr/`) before implementation:
+
+- Design system / brand tokens
+- Content providers and registry contracts
+- Routing architecture
+- SEO framework
+- Analytics framework
+- Authentication
+- Backend boundary
+- AI platform interfaces
+
+### Implementation-only rule
+
+Feature work **inside a division** (new courses, articles, services, testimonials, universities, programs, etc.) does **not** require an ADR. Routine content updates flow through the normal workstream cycle.
+
+### Standard development workflow (every workstream)
+
+```
+Plan → Architecture Review → Implementation
+   → Registry Tests → TypeScript → Build
+   → Accessibility → SEO → QA Checklist → Freeze
+```
+
+### Registry version governance
+
+| Change                          | Registry version bump  |
+| ------------------------------- | ---------------------- |
+| Add optional field              | None                   |
+| Add new registry entry (row)    | None                   |
+| Add new registry file           | Minor (1.0 → 1.1)      |
+| Remove field                    | Major (1.x → 2.0)      |
+| Rename field                    | Major (1.x → 2.0)      |
+| Change field type               | Major (1.x → 2.0)      |
+
+Each registry exports its own `*_REGISTRY_VERSION`; the shared system exports `REGISTRY_SYSTEM_VERSION`.
+
+---
+
 ## Version Roadmap
 
 | Version | Theme                          | Status         |
@@ -53,18 +95,7 @@ A frozen module accepts only:
 
 ## HIGAET Technologies v1.0 — Frozen Baseline
 
-**Status:** ✅ Frozen (production baseline)
-
-Scope retained under freeze policy only. No new public features.
-
-Allowed changes:
-
-- Bug fixes
-- Security updates
-- Performance improvements
-- Accessibility improvements
-- Business content updates
-- Backend integration
+**Status:** ✅ Frozen (production baseline). Freeze-policy changes only.
 
 ---
 
@@ -76,76 +107,55 @@ Allowed changes:
 
 ### Scope
 
-- Complete Academy content registries (`src/content/academy/`: categories, courses, learning-paths, search-index, testimonials, index)
+- Complete Academy content registries (via the canonical HIGAET Registry System — see ADR-0001)
 - Complete `AcademyHeader` component
 - Complete Academy navigation (mega-menu, breadcrumbs, footer wiring)
-- Complete Academy search integration (search-index + UI)
+- Complete Academy search integration
 - Complete QA checklist (`.lovable/qa-checklist-3a1.md`)
 - Complete SEO validation (titles, meta, OG/Twitter, JSON-LD, sitemap)
 - Complete accessibility validation (WCAG 2.1 AA)
-- Complete Lighthouse validation (≥90 across Performance, Accessibility, Best Practices, SEO)
+- Complete Lighthouse validation (≥90 across all four categories)
 - Freeze Academy
-
-### Exit Criteria
-
-- All Academy routes return 200, render correct head metadata, pass Lighthouse ≥90
-- QA checklist 100% checked
-- Academy added to Freeze Policy
 
 ### Out of Scope
 
-- **Do not begin Global Education Hub development during v1.4.**
+- **Global Education Hub work is deferred to v1.5.**
 
 ---
 
 ## v1.5 — Global Education Hub Phase 1
 
-**Theme:** Global Education Hub Phase 1
-**Objective:** Launch the first production-ready version of the Global Education Hub.
 **Status:** 📋 Planned
 
 ### Scope
 
-- Brand identity (`--hub` design tokens, typography, imagery system)
-- Content registries (`src/content/hub/`)
-- Countries
-- Universities
-- Scholarships
-- Visa guidance
-- Lead capture (`leads` table + RLS + admin views + public form)
-- Search (search-index + UI)
-- SEO (titles, meta, OG/Twitter, sitemap)
-- JSON-LD (Organization, EducationalOrganization, Course, FAQPage, BreadcrumbList)
-- QA (`.lovable/qa-checklist-5.md`)
-
-### Exit Criteria
-
-- All Hub routes production-ready, validated, and indexed
-- Lead capture functional end-to-end with RLS verified
-- Freeze Hub after release
+- `--hub` brand tokens
+- Hub content registries (countries, universities, scholarships, visa, testimonials) — consumes the canonical Registry System
+- Hub UI components (header, mega-menu, cards, tiles)
+- `leads` table + RLS + admin views + public lead form
+- Search, SEO, JSON-LD, sitemap
+- QA + freeze
 
 ---
 
 ## v1.6 — Shared Platform Enhancements
 
-**Theme:** Shared Platform Enhancements
 **Status:** 📋 Planned
 
 ### Scope
 
-- Backend integration across divisions
-- CMS improvements (content authoring workflows)
-- Shared APIs (server functions consolidation)
-- Workflow automation (lead routing, notifications)
+- Backend integration (Node.js + Express + MySQL) behind the provider layer
+- CMS improvements
+- Shared APIs
+- Workflow automation
 - Lead management (CRM unification)
-- Monitoring (logs, alerts, uptime)
-- Performance improvements (caching, bundle, edge)
+- Monitoring
+- Performance improvements
 
 ---
 
 ## v1.7 — AI Platform Expansion
 
-**Theme:** AI Platform Expansion
 **Status:** 📋 Planned
 
 ### Scope
@@ -161,18 +171,9 @@ Allowed changes:
 
 ## v2.0 — Unified HIGAET Ecosystem
 
-**Theme:** Unified HIGAET Ecosystem
 **Status:** 🎯 Target
 
-### Goal
-
-Integrate Technologies, Academy, and Global Education Hub into one production ecosystem with shared:
-
-- Authentication
-- Backend services
-- Analytics
-- AI
-- Administration
+Integrate Technologies, Academy, and Global Education Hub into one production ecosystem with shared authentication, backend services, analytics, AI, and administration.
 
 ---
 
@@ -195,6 +196,6 @@ Integrate Technologies, Academy, and Global Education Hub into one production ec
 ## Governance
 
 - This roadmap is the **single source of truth** for HIGAET release planning.
-- Review before every major development cycle.
+- Architectural decisions are recorded in `.lovable/adr/` (immutable after acceptance).
+- Review this roadmap before every major development cycle.
 - Update `Current Version`, `Current Phase`, `Active Development`, and `Version History` at every release boundary.
-- Scope changes within an active version require updating this document **before** implementation.
