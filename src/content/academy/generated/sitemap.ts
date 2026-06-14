@@ -32,10 +32,9 @@ import { ACADEMY_LEARNING_PATHS } from "@/content/academy/learning-paths";
 
 /**
  * Public base URL for HIGAET Academy sitemap entries.
- * The project domain — kept in sync with the `<sitemap-robots>` directive.
+ * Canonical production domain — single source of truth (Workstream B.2 · Step 7).
  */
-export const ACADEMY_SITEMAP_BASE_URL =
-  "https://higaet-ecosystem-core.lovable.app" as const;
+export const ACADEMY_SITEMAP_BASE_URL = "https://higaet.com" as const;
 
 function isPublicPublished(entry: {
   status: string;

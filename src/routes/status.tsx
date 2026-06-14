@@ -163,8 +163,8 @@ export const Route = createFileRoute("/status")({
       { name: "description", content: "Live health checks for HIGAET production and preview endpoints." },
       { name: "robots", content: "noindex" },
       { property: "og:title", content: "System status — HIGAET" },
-      { property: "og:url", content: "https://higaet-ecosystem-core.lovable.app/status" },
+      { property: "og:url", content: "https://higaet.com/status" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet-ecosystem-core.lovable.app/status" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/status" }],
   }),
 });

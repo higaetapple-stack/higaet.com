@@ -110,3 +110,62 @@ until Registry v1.1 expands to cover them.
 - Added `SearchRecord`, `BreadcrumbEntry`, `SitemapEntry` type re-exports
   from `@/content/providers` (additive — allowed under freeze).
 
+### B.2 · Steps 3–6 — **Intentional no-ops** (recorded earlier)
+
+Per the same Registry-v1.0 / live-route-truth principles applied in
+Step 1: no Provider-backed consumer existed for those surfaces in v1.4.
+
+### B.2 · Step 7 — Sitemap Migration + Canonical Domain Unification — **Done**
+
+**Phase 1 — Canonical domain unification (production fix).**
+
+- Single canonical root: `https://higaet.com`.
+- Removed `https://higaet-ecosystem-core.lovable.app` from:
+  - `src/content/academy/generated/sitemap.ts` (`ACADEMY_SITEMAP_BASE_URL`)
+  - `src/routes/status.tsx` (`og:url`, canonical)
+- `public/robots.txt` already advertises `https://higaet.com/sitemap.xml`
+  — aligned with sitemap origin.
+
+**Phase 2 — Safe Academy sitemap migration.**
+
+- `src/routes/sitemap[.]xml.ts` now sources Academy **pillar category**
+  URLs from `getAcademyCategories({ filter: { visibility: "public" } })`
+  and resolves each through `academyCategoryUrl()` (ADR-0003).
+- Excluded by design (no live route consumers):
+  - `/academy/courses/$slug`
+  - `/academy/learning-paths/$slug`
+  - Any other generator-only paths
+- Generator output (`ACADEMY_SITEMAP`) is **not** spliced into the
+  public sitemap — only the route-aware resolver feeds it.
+
+**Phase 3 — STATIC_ENTRIES preservation.**
+
+- Technologies (frozen v1.0), Global Education, blog, careers, legal
+  entries unchanged.
+- Academy marketing-only paths (`/academy`, `/placements`,
+  `/internships`, `/success-stories`, `/faq`, `/contact`) remain inline
+  — they have no Registry v1.0 contract.
+
+**Architectural rule enforced.**
+
+```
+Registry = intent layer
+Routes   = reality layer
+Sitemap  = reality layer ONLY
+```
+
+Sitemap never trusts registry-emitted URLs directly; it always passes
+through the URL resolver.
+
+**Completion criteria — verified.**
+
+- One `BASE_URL` in the system (`https://higaet.com`).
+- No `lovable.app` references in canonical / SEO surfaces
+  (`src/routes/status.tsx` functional probes for preview vs prod
+  health are retained as functional, non-SEO URLs).
+- No `/academy/courses/*` in sitemap output.
+- No `/academy/learning-paths/*` in sitemap output.
+- Academy URLs resolve via the route-aware resolver.
+- `robots.txt` + sitemap origin aligned.
+
+

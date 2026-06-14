@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import {
+  academyCategoryUrl,
+  getAcademyCategories,
+} from "@/content/providers";
 
-const BASE_URL = import.meta.env.VITE_SITE_URL ?? "https://higaet.com";
+/**
+ * Canonical production domain (Workstream B.2 · Step 7).
+ * Single source of truth — must match `ACADEMY_SITEMAP_BASE_URL` and robots.txt.
+ */
+const BASE_URL = "https://higaet.com";
 
 interface SitemapEntry {
   path: string;
@@ -15,14 +23,12 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
-  // Academy
+  // Academy — pillar category entries are sourced dynamically (Step 7)
+  // from getAcademyCategories() via the URL resolver (ADR-0003).
+  // Marketing-only sub-pages (no registry contract) stay inline:
   { path: "/academy", changefreq: "weekly", priority: "0.9" },
-  { path: "/academy/online-courses", changefreq: "weekly", priority: "0.8" },
-  { path: "/academy/offline-training", changefreq: "monthly", priority: "0.7" },
-  { path: "/academy/certifications", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/placements", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/internships", changefreq: "monthly", priority: "0.7" },
-  { path: "/academy/corporate-training", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/success-stories", changefreq: "monthly", priority: "0.6" },
   { path: "/academy/faq", changefreq: "monthly", priority: "0.5" },
   { path: "/academy/contact", changefreq: "monthly", priority: "0.6" },
@@ -162,8 +168,19 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
+        // Academy pillar URLs — registry-backed, resolved through the
+        // route-aware URL resolver so live routes are the source of truth.
+        const academyCategoryEntries: SitemapEntry[] = getAcademyCategories({
+          filter: { visibility: "public" },
+        }).map((c) => ({
+          path: academyCategoryUrl(c.slug),
+          changefreq: "weekly" as const,
+          priority: "0.8",
+        }));
+
         const entries: SitemapEntry[] = [
           ...STATIC_ENTRIES,
+          ...academyCategoryEntries,
           ...BLOG_SLUGS.map((slug) => ({ path: `/blog/${slug}`, changefreq: "monthly" as const, priority: "0.6" })),
           ...JOB_SLUGS.map((slug) => ({ path: `/careers/${slug}`, changefreq: "weekly" as const, priority: "0.5" })),
         ];
