@@ -54,5 +54,14 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    // HIGAET Registry Architecture (ADR-0001) — provider override.
+    // The provider layer is the single approved consumer of division
+    // registries. Disable the cross-division import restriction here.
+    files: ["src/content/providers/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
   eslintPluginPrettier,
 );
