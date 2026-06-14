@@ -6,18 +6,20 @@ This directory is the permanent architectural history of the HIGAET ecosystem. E
 
 ## Index
 
-| #    | Title                            | Status      | Date       |
-| ---- | -------------------------------- | ----------- | ---------- |
-| 0001 | [Registry Architecture](./0001-registry-architecture.md) | Accepted    | 2026-06-14 |
-| 0002 | Provider Layer                   | _reserved_  | —          |
-| 0003 | Content Versioning               | _reserved_  | —          |
-| 0004 | Shared Design System             | _reserved_  | —          |
-| 0005 | Backend Boundary                 | _reserved_  | —          |
-| 0006 | Authentication Strategy          | _reserved_  | —          |
-| 0007 | SEO Architecture                 | _reserved_  | —          |
-| 0008 | Analytics Architecture           | _reserved_  | —          |
-| 0009 | Deployment Strategy              | _reserved_  | —          |
-| 0010 | AI Platform Architecture         | _reserved_  | —          |
+| #    | Title                                                                  | Status     | Date       |
+| ---- | ---------------------------------------------------------------------- | ---------- | ---------- |
+| 0001 | [Registry Architecture](./0001-registry-architecture.md)               | Accepted   | 2026-06-14 |
+| 0002 | Provider Layer (covered inside ADR-0001 §Provider boundary)            | Accepted   | 2026-06-14 |
+| 0003 | [URL Resolution Strategy](./0003-url-resolution-strategy.md)           | Accepted   | 2026-06-14 |
+| 0004 | [Workstream Freeze Policy](./0004-workstream-freeze-policy.md)         | Accepted   | 2026-06-14 |
+| 0005 | Content Versioning                                                     | _reserved_ | —          |
+| 0006 | Shared Design System                                                   | _reserved_ | —          |
+| 0007 | Backend Boundary                                                       | _reserved_ | —          |
+| 0008 | Authentication Strategy                                                | _reserved_ | —          |
+| 0009 | SEO Architecture                                                       | _reserved_ | —          |
+| 0010 | Analytics Architecture                                                 | _reserved_ | —          |
+| 0011 | Deployment Strategy                                                    | _reserved_ | —          |
+| 0012 | AI Platform Architecture                                               | _reserved_ | —          |
 
 > Reserved slots are placeholders; create the file when the decision is taken. Numbers are assigned in order and never reused.
 
