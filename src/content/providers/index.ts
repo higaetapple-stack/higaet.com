@@ -69,7 +69,15 @@ export type { AcademyFilter } from "./academy";
 
 // Re-exported registry types consumers need at the boundary.
 // Additive export (allowed under freeze).
-export type { SearchRecord, BreadcrumbEntry, SitemapEntry } from "../_registry";
+export type {
+  SearchRecord,
+  BreadcrumbEntry,
+  SitemapEntry,
+  TestimonialEntry,
+  CategoryEntry,
+  CourseEntry,
+  LearningPathEntry,
+} from "../_registry";
 
 // URL resolver (ADR-0003) — single source of truth for Academy route URLs.
 export {
