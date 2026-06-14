@@ -1,38 +1,23 @@
 /**
- * HIGAET Content Providers — Academy
+ * HIGAET Content Providers — Academy (WIRED)
  * ---------------------------------------------------------------
  * Single, anti-corruption surface between Academy consumers and
- * the underlying data source. Today the source is a static
- * registry (`src/content/academy/*`, populated in A.2). In v1.6
- * it becomes a Node.js + Express + MySQL API. In later versions a
- * cache layer is inserted between this module and its source.
- * **Consumers never change.**
+ * the underlying data source. The source is currently the static
+ * Academy registry (`@/content/academy`). In v1.6 it becomes a
+ * REST API. Consumers never change.
  *
  * Layer:        src/content/providers/academy.ts
- * Step:         Workstream A.1 — Step 7
+ * Workstream:   A.2 — Step 8 (Provider Wiring)
  * Decision:     ADR-0001 (Registry Architecture)
  *
- * PROVIDER PRINCIPLES
- *   1. Functions only — no exported constants or mutable collections.
- *   2. Async-first — every public function returns `ProviderResult<T>`.
- *   3. Stateless — no caches, globals, or singletons in v1.4.
- *   4. Read-only — no create / update / delete in v1.4.
- *   5. Thin — orchestration only. Validation lives in the SDK.
- *      Data lives in registries. Presentation lives in components.
- *
- * ERROR CONTRACT (uniform across all HIGAET providers)
- *   - Collection getters return `[]` when no records match.
- *   - Single-item resolvers return `null` when nothing matches.
- *   - Providers `throw` ONLY for exceptional infrastructure failures
- *     (network errors, malformed API responses, contract violations
- *     detected at load time). They do NOT throw for ordinary
- *     "not found" cases.
- *
- * EVOLUTION
- *   v1.4  Provider → Static Registry
- *   v1.6  Provider → REST API
- *   v1.8  Provider → Cache → REST API
- *   v2.0  Provider → Cache → Gateway → Microservices
+ * WIRING RULES (enforced by review)
+ *   1. Imports ONLY from the Academy internal barrel `@/content/academy`.
+ *      Never from individual registry files. The barrel is the single
+ *      integration point and runs the validation gate at import time.
+ *   2. Provider API signatures are UNCHANGED from A.1 Step 7.
+ *   3. All business filtering happens here, not in consumers.
+ *   4. Stateless, read-only, no caches, no mutation.
+ *   5. Resolvers return `null` on a normal miss; never throw.
  * ---------------------------------------------------------------
  */
 
@@ -40,6 +25,7 @@ import type {
   BreadcrumbEntry,
   CategoryEntry,
   CourseEntry,
+  EntityStatus,
   LearningPathEntry,
   ProviderFilter,
   ProviderOptions,
@@ -48,6 +34,16 @@ import type {
   SitemapEntry,
   TestimonialEntry,
 } from "../_registry";
+
+import {
+  ACADEMY_BREADCRUMBS,
+  ACADEMY_CATEGORIES,
+  ACADEMY_COURSES,
+  ACADEMY_LEARNING_PATHS,
+  ACADEMY_SEARCH_INDEX,
+  ACADEMY_SITEMAP,
+  ACADEMY_TESTIMONIALS,
+} from "@/content/academy";
 
 /* ================================================================
  * SECTION 1 — Division-specific filter extensions
@@ -66,16 +62,71 @@ export interface AcademyFilter extends ProviderFilter {
 }
 
 /** Convenience alias for Academy collection-getter options. */
-export type AcademyCourseOptions = ProviderOptions<
-  CourseEntry,
-  AcademyFilter
->;
+export type AcademyCourseOptions = ProviderOptions<CourseEntry, AcademyFilter>;
 
 /* ================================================================
- * SECTION 2 — Collection getters
+ * SECTION 2 — Internal helpers (module-private)
  * ----------------------------------------------------------------
- * Stubs return `[]` per the error contract. A.2 wires these to
- * the real registries.
+ * Pure functions over a single entry. Centralizing the filter and
+ * pagination logic keeps every getter consistent and prevents
+ * subtle drift in semantics across collections.
+ * ============================================================== */
+
+const DEFAULT_VISIBILITY = "public" as const;
+
+function asStatusList(
+  v: EntityStatus | readonly EntityStatus[] | undefined,
+): readonly EntityStatus[] | undefined {
+  if (v === undefined) return undefined;
+  return Array.isArray(v) ? (v as readonly EntityStatus[]) : [v as EntityStatus];
+}
+
+function asIdList(
+  v: string | readonly string[] | undefined,
+): readonly string[] | undefined {
+  if (v === undefined) return undefined;
+  return Array.isArray(v) ? (v as readonly string[]) : [v as string];
+}
+
+/**
+ * Apply the shared filter knobs (status / visibility / includeDraft)
+ * to a single base entry. Defaults match the documented contract:
+ *
+ *   - visibility defaults to `"public"`.
+ *   - `draft` entries are hidden unless `includeDraft` is true OR
+ *     `draft` is explicitly in `status`.
+ *   - When `status` is provided, it is the authoritative whitelist
+ *     (and overrides the implicit draft filter).
+ */
+function matchesBaseFilter(
+  entry: { status: EntityStatus; visibility: string },
+  filter: ProviderFilter | undefined,
+): boolean {
+  const visibility = filter?.visibility ?? DEFAULT_VISIBILITY;
+  if (visibility !== "any" && entry.visibility !== visibility) return false;
+
+  const statusList = asStatusList(filter?.status);
+  if (statusList) {
+    if (!statusList.includes(entry.status)) return false;
+  } else if (!filter?.includeDraft && entry.status === "draft") {
+    return false;
+  }
+  return true;
+}
+
+function applyLimit<T>(
+  rows: readonly T[],
+  options: { limit?: number; pagination?: { limit?: number } } | undefined,
+): readonly T[] {
+  const limit = options?.limit ?? options?.pagination?.limit;
+  if (typeof limit === "number" && limit >= 0 && limit < rows.length) {
+    return rows.slice(0, limit);
+  }
+  return rows;
+}
+
+/* ================================================================
+ * SECTION 3 — Collection getters
  * ============================================================== */
 
 /**
@@ -83,9 +134,11 @@ export type AcademyCourseOptions = ProviderOptions<
  * Empty array when nothing matches.
  */
 export function getAcademyCategories(
-  _options?: ProviderOptions<CategoryEntry>,
+  options?: ProviderOptions<CategoryEntry>,
 ): ProviderResult<readonly CategoryEntry[]> {
-  return [];
+  const filter = options?.filter;
+  const rows = ACADEMY_CATEGORIES.filter((c) => matchesBaseFilter(c, filter));
+  return applyLimit(rows, options);
 }
 
 /**
@@ -93,9 +146,18 @@ export function getAcademyCategories(
  * Empty array when nothing matches.
  */
 export function getAcademyCourses(
-  _options?: AcademyCourseOptions,
+  options?: AcademyCourseOptions,
 ): ProviderResult<readonly CourseEntry[]> {
-  return [];
+  const filter = options?.filter;
+  const categoryIds = asIdList(filter?.categoryId);
+  const rows = ACADEMY_COURSES.filter((c) => {
+    if (!matchesBaseFilter(c, filter)) return false;
+    if (categoryIds && !categoryIds.includes(c.categoryId)) return false;
+    if (filter?.level && c.level !== filter.level) return false;
+    if (filter?.mode && c.mode !== filter.mode) return false;
+    return true;
+  });
+  return applyLimit(rows, options);
 }
 
 /**
@@ -103,9 +165,18 @@ export function getAcademyCourses(
  * Empty array when nothing matches.
  */
 export function getAcademyLearningPaths(
-  _options?: ProviderOptions<LearningPathEntry>,
+  options?: ProviderOptions<LearningPathEntry>,
 ): ProviderResult<readonly LearningPathEntry[]> {
-  return [];
+  const filter = options?.filter;
+  const courseIds = asIdList(filter?.courseId);
+  const rows = ACADEMY_LEARNING_PATHS.filter((p) => {
+    if (!matchesBaseFilter(p, filter)) return false;
+    if (courseIds && !p.courseIds.some((id) => courseIds.includes(id))) {
+      return false;
+    }
+    return true;
+  });
+  return applyLimit(rows, options);
 }
 
 /**
@@ -113,66 +184,133 @@ export function getAcademyLearningPaths(
  * Empty array when nothing matches.
  */
 export function getAcademyTestimonials(
-  _options?: ProviderOptions<TestimonialEntry>,
+  options?: ProviderOptions<TestimonialEntry>,
 ): ProviderResult<readonly TestimonialEntry[]> {
-  return [];
+  const filter = options?.filter;
+  const rows = ACADEMY_TESTIMONIALS.filter((t) => matchesBaseFilter(t, filter));
+  return applyLimit(rows, options);
 }
 
 /* ================================================================
- * SECTION 3 — Derived-artifact getters
+ * SECTION 4 — Derived-artifact getters
+ * ----------------------------------------------------------------
+ * Pass-throughs over the generated read models. The generators
+ * already apply the `published + public` filter; the provider's
+ * job is to expose them, not to recompute them.
  * ============================================================== */
 
 /**
- * Return the Academy search index. Consumers (search UI, command
- * palette, federated search) should treat the result as opaque
- * and rely only on `SearchRecord` fields.
+ * Return the Academy search index. Consumers should treat the
+ * result as opaque and rely only on `SearchRecord` fields.
  */
-export function getAcademySearchIndex(): ProviderResult<readonly SearchRecord[]> {
-  return [];
+export function getAcademySearchIndex(): ProviderResult<
+  readonly SearchRecord[]
+> {
+  return ACADEMY_SEARCH_INDEX;
 }
 
 /**
- * Return the Academy sitemap rows. Consumed by the sitemap.xml
- * route or generator. Only `published` + `public` entries should
- * be included by the underlying generator.
+ * Return the Academy sitemap rows. Only `published` + `public`
+ * entries are included by the generator.
  */
 export function getAcademySitemap(): ProviderResult<readonly SitemapEntry[]> {
-  return [];
+  return ACADEMY_SITEMAP;
 }
 
 /**
  * Return the breadcrumb trail for an internal Academy URL.
- * Empty array when the path is not under `/academy`.
+ *
+ * Resolution strategy (slug-based, deterministic):
+ *   - `/academy/courses/{slug}`         → matching course trail
+ *   - `/academy/categories/{slug}`      → matching category trail
+ *   - `/academy/learning-paths/{slug}`  → matching learning path trail
+ *   - `/academy` (or `/academy/`)       → root trail `[{ label: "Academy" }]`
+ *   - anything else                     → `[]`
+ *
+ * Returning `[]` for an unknown path keeps consumers safe: they
+ * can render the result unconditionally without a null check.
  */
 export function getAcademyBreadcrumbs(
-  _path: string,
+  path: string,
 ): ProviderResult<readonly BreadcrumbEntry[]> {
+  if (typeof path !== "string" || !path.startsWith("/academy")) return [];
+
+  const normalized = path.replace(/\/+$/, "");
+  if (normalized === "/academy") {
+    return [{ label: "Academy" }];
+  }
+
+  const courseSlug = matchPrefix(normalized, "/academy/courses/");
+  if (courseSlug) {
+    const course = ACADEMY_COURSES.find((c) => c.slug === courseSlug);
+    if (course) {
+      const t = ACADEMY_BREADCRUMBS.find(
+        (b) => b.kind === "course" && b.id === course.id,
+      );
+      if (t) return t.trail;
+    }
+    return [];
+  }
+
+  const categorySlug = matchPrefix(normalized, "/academy/categories/");
+  if (categorySlug) {
+    const category = ACADEMY_CATEGORIES.find((c) => c.slug === categorySlug);
+    if (category) {
+      const t = ACADEMY_BREADCRUMBS.find(
+        (b) => b.kind === "category" && b.id === category.id,
+      );
+      if (t) return t.trail;
+    }
+    return [];
+  }
+
+  const pathSlug = matchPrefix(normalized, "/academy/learning-paths/");
+  if (pathSlug) {
+    const lp = ACADEMY_LEARNING_PATHS.find((p) => p.slug === pathSlug);
+    if (lp) {
+      const t = ACADEMY_BREADCRUMBS.find(
+        (b) => b.kind === "learning-path" && b.id === lp.id,
+      );
+      if (t) return t.trail;
+    }
+    return [];
+  }
+
   return [];
 }
 
+function matchPrefix(path: string, prefix: string): string | null {
+  if (!path.startsWith(prefix)) return null;
+  const rest = path.slice(prefix.length);
+  if (!rest || rest.includes("/")) return null;
+  return rest;
+}
+
 /* ================================================================
- * SECTION 4 — Single-item resolvers
+ * SECTION 5 — Single-item resolvers
  * ----------------------------------------------------------------
- * Stubs return `null` per the error contract. A.2 wires these to
- * the real registries.
+ * Resolvers return the entity when found, `null` when absent.
+ * They never throw for a normal lookup miss.
  * ============================================================== */
 
 /**
  * Resolve a course by slug. Returns `null` when no course matches.
  */
 export function resolveCourseBySlug(
-  _slug: string,
+  slug: string,
 ): ProviderResult<CourseEntry | null> {
-  return null;
+  if (!slug) return null;
+  return ACADEMY_COURSES.find((c) => c.slug === slug) ?? null;
 }
 
 /**
  * Resolve a category by id. Returns `null` when no category matches.
  */
 export function resolveCategoryById(
-  _id: string,
+  id: string,
 ): ProviderResult<CategoryEntry | null> {
-  return null;
+  if (!id) return null;
+  return ACADEMY_CATEGORIES.find((c) => c.id === id) ?? null;
 }
 
 /**
@@ -181,7 +319,10 @@ export function resolveCategoryById(
  * key is available without an extra lookup.
  */
 export function resolvePathByIdOrSlug(
-  _key: string,
+  key: string,
 ): ProviderResult<LearningPathEntry | null> {
-  return null;
+  if (!key) return null;
+  return (
+    ACADEMY_LEARNING_PATHS.find((p) => p.id === key || p.slug === key) ?? null
+  );
 }
