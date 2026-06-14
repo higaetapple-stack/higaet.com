@@ -20,6 +20,7 @@ import { StatBand } from "@/components/site/StatBand";
 import { CTASection } from "@/components/site/CTASection";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { PROGRAMS } from "@/lib/academy-programs";
+import { getAcademyTestimonials, type TestimonialEntry } from "@/content/providers";
 
 const FLAGSHIP_SLUGS = [
   "gen-ai-engineering",
@@ -37,7 +38,11 @@ const FLAGSHIP_ICONS: Record<string, typeof Sparkles> = {
   "full-stack-ai-development": Code2,
 };
 
-const LEARNING_PATHS = [
+// D-B-3: This block describes learner audiences (school students,
+// professionals, etc.), NOT the role-based Learning Paths owned by the
+// Academy registry. Kept inline and renamed to avoid confusion with
+// `getAcademyLearningPaths`. Section heading unchanged for visual parity.
+const LEARNER_AUDIENCES = [
   { slug: "school-students", label: "School Students", body: "AI literacy and project-based learning from grade 9 upward." },
   { slug: "college-students", label: "College Students", body: "Career tracks that complement engineering and science degrees." },
   { slug: "working-professionals", label: "Working Professionals", body: "Switch into AI roles or level up your current craft." },
@@ -67,23 +72,9 @@ const FACULTY = [
   { name: "Sneha Reddy", role: "Program Director — Automation", note: "Automation lead at a global services firm." },
 ];
 
-const TESTIMONIALS = [
-  {
-    quote: "HIGAET's Gen AI track was the first program I'd seen that actually treated production as part of the curriculum. I shipped a real RAG system as my capstone and that's what landed my offer.",
-    name: "Aditi S.",
-    role: "AI Engineer, fintech",
-  },
-  {
-    quote: "I switched from QA to AI Automation Engineering. Within six months I was leading internal workflow projects for my company.",
-    name: "Rohit M.",
-    role: "Automation Architect, BPO",
-  },
-  {
-    quote: "The faculty are working practitioners. The feedback on my project work was the kind you get from a senior engineer at a real company.",
-    name: "Pooja K.",
-    role: "Full-Stack AI Developer, SaaS",
-  },
-];
+// Testimonials sourced via the Provider Layer
+// (`getAcademyTestimonials`) at render time. Visual layout unchanged —
+// the same three quotes render in the same grid.
 
 const ADMISSIONS_STEPS = [
   { n: "01", title: "Apply", body: "5-minute form. Tell us your background and goal." },
