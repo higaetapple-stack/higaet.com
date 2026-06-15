@@ -4,6 +4,7 @@ import {
   academyCategoryUrl,
   getAcademyCategories,
 } from "@/content/providers";
+import { PROGRAMS, CAMPUSES } from "@/lib/academy-programs";
 
 /**
  * Canonical production domain (Workstream B.2 · Step 7).
@@ -27,6 +28,15 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   // from getAcademyCategories() via the URL resolver (ADR-0003).
   // Marketing-only sub-pages (no registry contract) stay inline:
   { path: "/academy", changefreq: "weekly", priority: "0.9" },
+  { path: "/academy/programs", changefreq: "weekly", priority: "0.9" },
+  { path: "/academy/online-courses", changefreq: "weekly", priority: "0.8" },
+  { path: "/academy/certifications", changefreq: "weekly", priority: "0.8" },
+  { path: "/academy/learning-paths", changefreq: "weekly", priority: "0.8" },
+  { path: "/academy/campuses", changefreq: "monthly", priority: "0.8" },
+  { path: "/academy/corporate-training", changefreq: "monthly", priority: "0.7" },
+  { path: "/academy/offline-training", changefreq: "monthly", priority: "0.7" },
+  { path: "/academy/admissions", changefreq: "monthly", priority: "0.7" },
+  { path: "/academy/scholarship", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/placements", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/internships", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/success-stories", changefreq: "monthly", priority: "0.6" },
@@ -181,9 +191,23 @@ export const Route = createFileRoute("/sitemap.xml")({
           }),
         );
 
+        // Academy programs & campuses — single source of truth (academy-programs.ts).
+        const programEntries: SitemapEntry[] = PROGRAMS.map((p) => ({
+          path: `/academy/programs/${p.slug}`,
+          changefreq: "monthly" as const,
+          priority: "0.7",
+        }));
+        const campusEntries: SitemapEntry[] = CAMPUSES.map((c) => ({
+          path: `/academy/campuses/${c.slug}`,
+          changefreq: "monthly" as const,
+          priority: "0.7",
+        }));
+
         const entries: SitemapEntry[] = [
           ...STATIC_ENTRIES,
           ...academyCategoryEntries,
+          ...programEntries,
+          ...campusEntries,
           ...BLOG_SLUGS.map((slug) => ({ path: `/blog/${slug}`, changefreq: "monthly" as const, priority: "0.6" })),
           ...JOB_SLUGS.map((slug) => ({ path: `/careers/${slug}`, changefreq: "weekly" as const, priority: "0.5" })),
         ];
