@@ -29,6 +29,11 @@ import type { SearchRecord } from "@/content/_registry/types";
 import { ACADEMY_CATEGORIES } from "@/content/academy/categories";
 import { ACADEMY_COURSES } from "@/content/academy/courses";
 import { ACADEMY_LEARNING_PATHS } from "@/content/academy/learning-paths";
+import {
+  academyCategoryUrl,
+  academyCourseUrl,
+  academyLearningPathUrl,
+} from "@/content/providers/academy-urls";
 
 const DIVISION = "academy" as const;
 
@@ -46,7 +51,7 @@ const categoryRecords: SearchRecord[] = ACADEMY_CATEGORIES.filter(
   kind: "category",
   title: c.name,
   description: c.tagline ?? c.metadata.description,
-  url: `/academy/categories/${c.slug}`,
+  url: academyCategoryUrl(c),
   keywords: c.metadata.keywords,
   division: DIVISION,
 }));
@@ -58,7 +63,7 @@ const courseRecords: SearchRecord[] = ACADEMY_COURSES.filter(
   kind: "course",
   title: c.title,
   description: c.summary,
-  url: `/academy/courses/${c.slug}`,
+  url: academyCourseUrl(c),
   keywords: c.metadata.keywords,
   division: DIVISION,
 }));
@@ -70,7 +75,7 @@ const learningPathRecords: SearchRecord[] = ACADEMY_LEARNING_PATHS.filter(
   kind: "learning-path",
   title: p.title,
   description: p.summary,
-  url: `/academy/learning-paths/${p.slug}`,
+  url: academyLearningPathUrl(p),
   keywords: p.metadata.keywords,
   division: DIVISION,
 }));
