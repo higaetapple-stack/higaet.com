@@ -334,7 +334,8 @@ export const deleteContractDocument = createServerFn({ method: "POST" })
 export const getTechDocSignedUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => z.object({ path: z.string().min(1).max(500) }).parse(i))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: signed, error } = await supabaseAdmin.storage
       .from("tech-documents").createSignedUrl(data.path, 60 * 10);
