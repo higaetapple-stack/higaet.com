@@ -39,7 +39,7 @@ export const Route = createFileRoute("/academy/online-courses")({
       ],
     };
   },
-  loader: async () => {
+  loader: async (): Promise<{ trail: readonly { label: string; url?: string }[] }> => {
     const trail = await getAcademyBreadcrumbs("/academy/online-courses");
     return { trail };
   },
