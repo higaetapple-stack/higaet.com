@@ -161,6 +161,7 @@ import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/globa
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
+import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
@@ -1098,6 +1099,11 @@ const ApiPublicResolveHybridRoute = ApiPublicResolveHybridRouteImport.update({
   path: '/api/public/resolve-hybrid',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicMemoryGraphRoute = ApiPublicMemoryGraphRouteImport.update({
+  id: '/api/public/memory-graph',
+  path: '/api/public/memory-graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
@@ -1705,6 +1711,7 @@ export interface FileRoutesByFullPath {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -1936,6 +1943,7 @@ export interface FileRoutesByTo {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -2173,6 +2181,7 @@ export interface FileRoutesById {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -2414,6 +2423,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/health'
+    | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
@@ -2645,6 +2655,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/health'
+    | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
@@ -2881,6 +2892,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/health'
+    | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
@@ -3050,6 +3062,7 @@ export interface RootRouteChildren {
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
@@ -4119,6 +4132,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/resolve-hybrid'
       fullPath: '/api/public/resolve-hybrid'
       preLoaderRoute: typeof ApiPublicResolveHybridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/memory-graph': {
+      id: '/api/public/memory-graph'
+      path: '/api/public/memory-graph'
+      fullPath: '/api/public/memory-graph'
+      preLoaderRoute: typeof ApiPublicMemoryGraphRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/health': {
@@ -5579,6 +5599,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,

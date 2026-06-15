@@ -15,6 +15,7 @@
 
 import { explainQuery, type AIResponse } from "@/lib/ai-mode/reasoner";
 import type { FusionMode } from "@/lib/fusion/hybrid-resolver";
+import { ingestMemoryAsync } from "@/lib/memory-graph/ingest";
 import {
   getSession,
   updateSession,
@@ -106,6 +107,13 @@ export async function runConversation(
     timestamp: Date.now(),
   };
   const updated = updateSession(sessionId, turn);
+
+  // B.16 — async, non-blocking ingestion. Never affects the response.
+  ingestMemoryAsync({
+    query,
+    intent: ai.intentSummary,
+    route: ai.primary?.path ?? null,
+  });
 
   return {
     ...ai,
