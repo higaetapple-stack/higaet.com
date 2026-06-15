@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TechnologiesRouteImport } from './routes/technologies'
+import { Route as SystemDashboardRouteImport } from './routes/system-dashboard'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -160,6 +161,7 @@ import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/gl
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workflow'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
+import { Route as ApiPublicSystemHealthRouteImport } from './routes/api/public/system-health'
 import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
 import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
 import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
@@ -266,6 +268,11 @@ const TermsRoute = TermsRouteImport.update({
 const TechnologiesRoute = TechnologiesRouteImport.update({
   id: '/technologies',
   path: '/technologies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemDashboardRoute = SystemDashboardRouteImport.update({
+  id: '/system-dashboard',
+  path: '/system-dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
@@ -1103,6 +1110,11 @@ const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
   path: '/api/public/vector-search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSystemHealthRoute = ApiPublicSystemHealthRouteImport.update({
+  id: '/api/public/system-health',
+  path: '/api/public/system-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicStrategyRoute = ApiPublicStrategyRouteImport.update({
   id: '/api/public/strategy',
   path: '/api/public/strategy',
@@ -1684,6 +1696,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
+  '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
@@ -1775,6 +1788,7 @@ export interface FileRoutesByFullPath {
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
+  '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -1931,6 +1945,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
+  '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
@@ -2016,6 +2031,7 @@ export interface FileRoutesByTo {
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
+  '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2172,6 +2188,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
+  '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
@@ -2263,6 +2280,7 @@ export interface FileRoutesById {
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
+  '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2423,6 +2441,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
+    | '/system-dashboard'
     | '/technologies'
     | '/terms'
     | '/dashboard'
@@ -2514,6 +2533,7 @@ export interface FileRouteTypes {
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
     | '/api/public/strategy'
+    | '/api/public/system-health'
     | '/api/public/vector-search'
     | '/api/public/workflow'
     | '/global-education/countries/$slug'
@@ -2670,6 +2690,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
+    | '/system-dashboard'
     | '/terms'
     | '/academy/admissions'
     | '/academy/certifications'
@@ -2755,6 +2776,7 @@ export interface FileRouteTypes {
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
     | '/api/public/strategy'
+    | '/api/public/system-health'
     | '/api/public/vector-search'
     | '/api/public/workflow'
     | '/global-education/countries/$slug'
@@ -2910,6 +2932,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
+    | '/system-dashboard'
     | '/technologies'
     | '/terms'
     | '/_authenticated/dashboard'
@@ -3001,6 +3024,7 @@ export interface FileRouteTypes {
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
     | '/api/public/strategy'
+    | '/api/public/system-health'
     | '/api/public/vector-search'
     | '/api/public/workflow'
     | '/global-education/countries/$slug'
@@ -3161,6 +3185,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StatusRoute: typeof StatusRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
+  SystemDashboardRoute: typeof SystemDashboardRoute
   TechnologiesRoute: typeof TechnologiesRouteWithChildren
   TermsRoute: typeof TermsRoute
   JobsSlugRoute: typeof JobsSlugRoute
@@ -3180,6 +3205,7 @@ export interface RootRouteChildren {
   ApiPublicSelfOptimizeRoute: typeof ApiPublicSelfOptimizeRoute
   ApiPublicSharedMemoryRoute: typeof ApiPublicSharedMemoryRoute
   ApiPublicStrategyRoute: typeof ApiPublicStrategyRoute
+  ApiPublicSystemHealthRoute: typeof ApiPublicSystemHealthRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
   ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
@@ -3199,6 +3225,13 @@ declare module '@tanstack/react-router' {
       path: '/technologies'
       fullPath: '/technologies'
       preLoaderRoute: typeof TechnologiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system-dashboard': {
+      id: '/system-dashboard'
+      path: '/system-dashboard'
+      fullPath: '/system-dashboard'
+      preLoaderRoute: typeof SystemDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/success-stories': {
@@ -4242,6 +4275,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/vector-search'
       fullPath: '/api/public/vector-search'
       preLoaderRoute: typeof ApiPublicVectorSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/system-health': {
+      id: '/api/public/system-health'
+      path: '/api/public/system-health'
+      fullPath: '/api/public/system-health'
+      preLoaderRoute: typeof ApiPublicSystemHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/strategy': {
@@ -5770,6 +5810,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StatusRoute: StatusRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,
+  SystemDashboardRoute: SystemDashboardRoute,
   TechnologiesRoute: TechnologiesRouteWithChildren,
   TermsRoute: TermsRoute,
   JobsSlugRoute: JobsSlugRoute,
@@ -5789,6 +5830,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicSelfOptimizeRoute: ApiPublicSelfOptimizeRoute,
   ApiPublicSharedMemoryRoute: ApiPublicSharedMemoryRoute,
   ApiPublicStrategyRoute: ApiPublicStrategyRoute,
+  ApiPublicSystemHealthRoute: ApiPublicSystemHealthRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
   ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
