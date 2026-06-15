@@ -11,10 +11,10 @@ import {
 } from "@/lib/seo/academy-metadata";
 
 export const Route = createFileRoute("/academy/learning-paths")({
-  head: () => {
+  head: async () => {
     const path = "/academy/learning-paths";
-    const paths = getAcademyLearningPaths();
-    const trail = getAcademyBreadcrumbs(path);
+    const paths = await getAcademyLearningPaths();
+    const trail = await getAcademyBreadcrumbs(path);
     return {
       ...buildAcademyHeadMeta({
         title: "Learning Paths — HIGAET Academy",

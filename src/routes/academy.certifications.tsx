@@ -13,8 +13,8 @@ import {
 } from "@/lib/seo/academy-metadata";
 
 export const Route = createFileRoute("/academy/certifications")({
-  head: () => {
-    const category = resolveCategoryById("academy_category_certifications");
+  head: async () => {
+    const category = await resolveCategoryById("academy_category_certifications");
     const path = category ? academyCategoryUrl(category) : "/academy/certifications";
     if (!category) {
       return buildAcademyHeadMeta({
@@ -24,8 +24,8 @@ export const Route = createFileRoute("/academy/certifications")({
         path,
       });
     }
-    const courses = getAcademyCourses({ filter: { categoryId: category.id } });
-    const trail = getAcademyBreadcrumbs(path);
+    const courses = await getAcademyCourses({ filter: { categoryId: category.id } });
+    const trail = await getAcademyBreadcrumbs(path);
     return {
       ...buildAcademyHeadMeta({
         title: category.metadata.title,
