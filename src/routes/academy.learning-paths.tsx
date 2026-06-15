@@ -3,6 +3,7 @@ import { ArrowRight, GraduationCap, Users2, Briefcase, Rocket, Building2 } from 
 import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
+import { Breadcrumbs, type Crumb } from "@/components/site/Breadcrumbs";
 import { getAcademyLearningPaths, getAcademyBreadcrumbs } from "@/content/providers";
 import {
   buildAcademyHeadMeta,
