@@ -65,7 +65,7 @@ function BlogIndex() {
                 <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
                   <span className="font-semibold uppercase tracking-widest text-ink/60">{p.tag}</span>
                   <span>·</span>
-                  <time dateTime={p.date}>{new Date(p.date).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</time>
+                  <time dateTime={p.date}>{new Date(p.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
                 </div>
                 <h2 className="font-display text-2xl md:text-3xl font-medium text-ink mb-3 text-balance">
                   {p.title}
