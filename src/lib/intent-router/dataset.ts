@@ -196,21 +196,24 @@ const PROGRAM_INTENTS: IntentNode[] = PROGRAMS.map((p) => {
 
 /* ---------- Derived: campus detail pages ---------- */
 
-const CAMPUS_INTENTS: IntentNode[] = CAMPUSES.map((c) => ({
-  path: `/academy/campuses/${c.slug}`,
-  title: `${c.city} Campus`,
-  description: `HIGAET campus in ${c.city}, ${c.country}.`,
-  keywords: [
-    c.city.toLowerCase(),
-    `${c.city.toLowerCase()} campus`,
-    `${c.city.toLowerCase()} centre`,
-    `${c.city.toLowerCase()} center`,
-    c.country.toLowerCase(),
-  ],
-  synonyms: [`study in ${c.city.toLowerCase()}`],
-  intent: "navigate" as const,
-  weight: 0.85,
-}));
+const CAMPUS_INTENTS: IntentNode[] = CAMPUSES.map((c) => {
+  const cityLower = c.city.toLowerCase();
+  return {
+    path: `/academy/campuses/${c.slug}`,
+    title: c.name,
+    description: `${c.name} — ${c.degree}.`,
+    keywords: [
+      cityLower,
+      `${cityLower} campus`,
+      `${cityLower} centre`,
+      `${cityLower} center`,
+      c.name.toLowerCase(),
+    ],
+    synonyms: [`study in ${cityLower}`, c.partnerType.toLowerCase()],
+    intent: "navigate" as const,
+    weight: 0.85,
+  };
+});
 
 export const INTENT_DATASET: readonly IntentNode[] = [
   ...STATIC_INTENTS,
