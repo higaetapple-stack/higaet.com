@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { Breadcrumbs, type Crumb } from "@/components/site/Breadcrumbs";
 import {
   getAcademyBreadcrumbs,
   getAcademyCourses,
@@ -38,10 +39,34 @@ export const Route = createFileRoute("/academy/online-courses")({
       ],
     };
   },
+  loader: async (): Promise<{ trail: readonly { label: string; url?: string }[] }> => {
+    const trail = await getAcademyBreadcrumbs("/academy/online-courses");
+    return { trail };
+  },
   component: OnlineCoursesPage,
 });
 
 function OnlineCoursesPage() {
+  const { trail } = Route.useLoaderData() as { trail: readonly { label: string; url?: string }[] };
+  const crumbs: Crumb[] = trail.map((c, i) => ({
+    label: c.label,
+    href: i === trail.length - 1 ? undefined : c.url,
+  }));
+  return (
+    <>
+      {crumbs.length > 0 && (
+        <div className="px-6 pt-8">
+          <div className="max-w-7xl mx-auto">
+            <Breadcrumbs items={crumbs} />
+          </div>
+        </div>
+      )}
+      <DivisionDetailPageInner />
+    </>
+  );
+}
+
+function DivisionDetailPageInner() {
   return (
     <DivisionDetailPage
       brand="academy"

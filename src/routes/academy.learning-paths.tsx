@@ -3,6 +3,7 @@ import { ArrowRight, GraduationCap, Users2, Briefcase, Rocket, Building2 } from 
 import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
+import { Breadcrumbs, type Crumb } from "@/components/site/Breadcrumbs";
 import { getAcademyLearningPaths, getAcademyBreadcrumbs } from "@/content/providers";
 import {
   buildAcademyHeadMeta,
@@ -27,6 +28,10 @@ export const Route = createFileRoute("/academy/learning-paths")({
         ...(trail.length ? [buildBreadcrumbJsonLd(trail)] : []),
       ],
     };
+  },
+  loader: async () => {
+    const trail = await getAcademyBreadcrumbs("/academy/learning-paths");
+    return { trail };
   },
   component: LearningPaths,
 });
@@ -97,14 +102,27 @@ const PATHS: Path[] = [
 ];
 
 function LearningPaths() {
+  const { trail } = Route.useLoaderData() as { trail: readonly { label: string; url?: string }[] };
+  const crumbs: Crumb[] = trail.map((c, i) => ({
+    label: c.label,
+    href: i === trail.length - 1 ? undefined : c.url,
+  }));
   return (
     <>
+      {crumbs.length > 0 && (
+        <div className="px-6 pt-8">
+          <div className="max-w-7xl mx-auto">
+            <Breadcrumbs items={crumbs} />
+          </div>
+        </div>
+      )}
       <PageHero
         brand="academy"
         eyebrow="Academy · Learning paths"
         title="Pick the path that fits where you are today."
         subtitle="Five structured paths from school to enterprise. Each one maps to specific HIGAET programs, outcomes, and placement support."
       />
+
 
       <Section className="!pt-0">
         <div className="space-y-6">
