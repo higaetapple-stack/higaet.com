@@ -226,7 +226,7 @@ export function getAcademySitemap(): ProviderResult<readonly SitemapEntry[]> {
 /**
  * Static Academy marketing surface (B.6 expansion).
  * Each entry is the deterministic trail for a non-registry marketing route.
- * `href: undefined` on the last node = current page (not a link).
+ * `url` omitted on the last node = current page (not a link).
  */
 const STATIC_ACADEMY_BREADCRUMBS: Readonly<Record<string, readonly BreadcrumbEntry[]>> = {
   "/academy/programs": [
