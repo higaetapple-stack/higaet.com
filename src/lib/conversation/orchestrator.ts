@@ -108,6 +108,13 @@ export async function runConversation(
   };
   const updated = updateSession(sessionId, turn);
 
+  // B.16 — async, non-blocking ingestion. Never affects the response.
+  ingestMemoryAsync({
+    query,
+    intent: ai.intentSummary,
+    route: ai.primary?.path ?? null,
+  });
+
   return {
     ...ai,
     sessionId,
