@@ -142,7 +142,10 @@ export const listJobs = createServerFn({ method: "GET" })
     if (data.employment_type) q = q.eq("employment_type", data.employment_type);
     if (data.remote_type) q = q.eq("remote_type", data.remote_type);
     if (data.experience_level) q = q.eq("experience_level", data.experience_level);
-    if (data.q) q = q.or(`title.ilike.%${data.q}%,description.ilike.%${data.q}%`);
+    if (data.q) {
+      const safe = data.q.replace(/[,.()%*\\]/g, " ").trim();
+      if (safe) q = q.or(`title.ilike.%${safe}%,description.ilike.%${safe}%`);
+    }
     const { data: rows, error } = await q.limit(100);
     if (error) throw new Error(error.message);
     return rows ?? [];

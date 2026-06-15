@@ -77,7 +77,10 @@ export const adminSearchStudents = createServerFn({ method: "GET" })
   .handler(async ({ context, data }) => {
     await assertAdmin(context);
     let q = context.supabase.from("profiles").select("id, full_name, email").limit(20);
-    if (data.q) q = q.or(`full_name.ilike.%${data.q}%,email.ilike.%${data.q}%`);
+    if (data.q) {
+      const safe = data.q.replace(/[,.()%*\\]/g, " ").trim();
+      if (safe) q = q.or(`full_name.ilike.%${safe}%,email.ilike.%${safe}%`);
+    }
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
     return rows ?? [];
