@@ -230,59 +230,59 @@ export function getAcademySitemap(): ProviderResult<readonly SitemapEntry[]> {
  */
 const STATIC_ACADEMY_BREADCRUMBS: Readonly<Record<string, readonly BreadcrumbEntry[]>> = {
   "/academy/programs": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Programs" },
   ],
   "/academy/online-courses": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Online Courses" },
   ],
   "/academy/certifications": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Certifications" },
   ],
   "/academy/learning-paths": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Learning Paths" },
   ],
   "/academy/campuses": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Campuses" },
   ],
   "/academy/corporate-training": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Corporate Training" },
   ],
   "/academy/offline-training": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Offline Training" },
   ],
   "/academy/admissions": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Admissions" },
   ],
   "/academy/scholarship": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Scholarship" },
   ],
   "/academy/placements": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Placements" },
   ],
   "/academy/internships": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Internships" },
   ],
   "/academy/success-stories": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Success Stories" },
   ],
   "/academy/faq": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "FAQ" },
   ],
   "/academy/contact": [
-    { label: "Academy", href: "/academy" },
+    { label: "Academy", url: "/academy" },
     { label: "Contact" },
   ],
 };
@@ -355,8 +355,8 @@ export function getAcademyBreadcrumbs(
     const program = PROGRAMS.find((p) => p.slug === programSlug);
     if (program) {
       return [
-        { label: "Academy", href: "/academy" },
-        { label: "Programs", href: "/academy/programs" },
+        { label: "Academy", url: "/academy" },
+        { label: "Programs", url: "/academy/programs" },
         { label: program.title },
       ];
     }
