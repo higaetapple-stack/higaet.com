@@ -162,6 +162,7 @@ import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/v
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
@@ -1102,6 +1103,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicChatRoute = ApiPublicChatRouteImport.update({
+  id: '/api/public/chat',
+  path: '/api/public/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicAiModeRoute = ApiPublicAiModeRouteImport.update({
   id: '/api/public/ai-mode',
   path: '/api/public/ai-mode',
@@ -1697,6 +1703,7 @@ export interface FileRoutesByFullPath {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
+  '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
@@ -1927,6 +1934,7 @@ export interface FileRoutesByTo {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
+  '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
@@ -2163,6 +2171,7 @@ export interface FileRoutesById {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
+  '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
@@ -2403,6 +2412,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
+    | '/api/public/chat'
     | '/api/public/health'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
@@ -2633,6 +2643,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
+    | '/api/public/chat'
     | '/api/public/health'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
@@ -2868,6 +2879,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
+    | '/api/public/chat'
     | '/api/public/health'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
@@ -3036,6 +3048,7 @@ export interface RootRouteChildren {
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   JobsIndexRoute: typeof JobsIndexRoute
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
+  ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
@@ -4113,6 +4126,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/health'
       fullPath: '/api/public/health'
       preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/chat': {
+      id: '/api/public/chat'
+      path: '/api/public/chat'
+      fullPath: '/api/public/chat'
+      preLoaderRoute: typeof ApiPublicChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/ai-mode': {
@@ -5557,6 +5577,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   JobsIndexRoute: JobsIndexRoute,
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
+  ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
