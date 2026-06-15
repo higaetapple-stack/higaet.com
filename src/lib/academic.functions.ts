@@ -12,6 +12,15 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
   if (!data) throw new Error("Forbidden");
 }
 
+async function assertFacultyOrAdmin(ctx: { supabase: any; userId: string }) {
+  const { data, error } = await ctx.supabase.rpc("has_any_role", {
+    _user_id: ctx.userId,
+    _roles: ["admin", "super_admin", "faculty"],
+  });
+  if (error) throw new Error(error.message);
+  if (!data) throw new Error("Forbidden");
+}
+
 const SUBMISSION_STATUSES = ["pending", "reviewed", "passed", "failed", "needs_revision"] as const;
 const SUBMISSION_TYPES = ["file", "github", "portfolio", "text", "mixed"] as const;
 const PROJECT_STATUSES = ["draft", "submitted", "reviewed", "passed", "failed", "needs_revision"] as const;
@@ -202,6 +211,7 @@ export const gradeSubmission = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: z.infer<typeof GradeInput>) => GradeInput.parse(d))
   .handler(async ({ data, context }) => {
+    await assertFacultyOrAdmin(context);
     const sb = context.supabase;
     const { data: sub, error: gErr } = await sb
       .from("submissions")
@@ -601,6 +611,7 @@ export const gradeProjectSubmission = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
+    await assertFacultyOrAdmin(context);
     const sb = context.supabase;
     const { error } = await sb
       .from("project_submissions")
