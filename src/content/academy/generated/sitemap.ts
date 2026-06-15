@@ -29,6 +29,11 @@ import type { SitemapEntry } from "@/content/_registry/types";
 import { ACADEMY_CATEGORIES } from "@/content/academy/categories";
 import { ACADEMY_COURSES } from "@/content/academy/courses";
 import { ACADEMY_LEARNING_PATHS } from "@/content/academy/learning-paths";
+import {
+  academyCategoryUrl,
+  academyCourseUrl,
+  academyLearningPathUrl,
+} from "@/content/providers/academy-urls";
 
 /**
  * Public base URL for HIGAET Academy sitemap entries.
@@ -50,7 +55,7 @@ function url(path: string): string {
 const categoryEntries: SitemapEntry[] = ACADEMY_CATEGORIES.filter(
   isPublicPublished,
 ).map((c) => ({
-  loc: url(`/academy/categories/${c.slug}`),
+  loc: url(academyCategoryUrl(c)),
   lastmod: c.audit.updatedAt,
   changefreq: "monthly",
   priority: 0.7,
@@ -59,7 +64,7 @@ const categoryEntries: SitemapEntry[] = ACADEMY_CATEGORIES.filter(
 const courseEntries: SitemapEntry[] = ACADEMY_COURSES.filter(
   isPublicPublished,
 ).map((c) => ({
-  loc: url(`/academy/courses/${c.slug}`),
+  loc: url(academyCourseUrl(c)),
   lastmod: c.audit.updatedAt,
   changefreq: "weekly",
   priority: 0.8,
@@ -68,7 +73,7 @@ const courseEntries: SitemapEntry[] = ACADEMY_COURSES.filter(
 const learningPathEntries: SitemapEntry[] = ACADEMY_LEARNING_PATHS.filter(
   isPublicPublished,
 ).map((p) => ({
-  loc: url(`/academy/learning-paths/${p.slug}`),
+  loc: url(academyLearningPathUrl(p)),
   lastmod: p.audit.updatedAt,
   changefreq: "monthly",
   priority: 0.8,

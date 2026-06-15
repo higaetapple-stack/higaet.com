@@ -32,6 +32,7 @@ import type { BreadcrumbEntry } from "@/content/_registry/types";
 import { ACADEMY_CATEGORIES } from "@/content/academy/categories";
 import { ACADEMY_COURSES } from "@/content/academy/courses";
 import { ACADEMY_LEARNING_PATHS } from "@/content/academy/learning-paths";
+import { academyCategoryUrl } from "@/content/providers/academy-urls";
 
 /**
  * A breadcrumb trail keyed by the originating registry entry id.
@@ -101,7 +102,7 @@ const courseTrails: BreadcrumbTrail[] = ACADEMY_COURSES.filter(
         ACADEMY_ROOT,
         {
           label: category.name,
-          url: `/academy/categories/${category.slug}`,
+          url: academyCategoryUrl(category),
         },
         { label: course.title },
       ],
