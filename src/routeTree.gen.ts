@@ -158,6 +158,7 @@ import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologi
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
+import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
@@ -1078,6 +1079,11 @@ const GlobalEducationCountriesSlugRoute =
     path: '/$slug',
     getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
+const ApiPublicResolveIntentRoute = ApiPublicResolveIntentRouteImport.update({
+  id: '/api/public/resolve-intent',
+  path: '/api/public/resolve-intent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
@@ -1673,6 +1679,7 @@ export interface FileRoutesByFullPath {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -1899,6 +1906,7 @@ export interface FileRoutesByTo {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2131,6 +2139,7 @@ export interface FileRoutesById {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2367,6 +2376,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/health'
+    | '/api/public/resolve-intent'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2593,6 +2603,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/health'
+    | '/api/public/resolve-intent'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2824,6 +2835,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/health'
+    | '/api/public/resolve-intent'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2988,6 +3000,7 @@ export interface RootRouteChildren {
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   JobsIndexRoute: typeof JobsIndexRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -4034,6 +4047,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/countries/$slug'
       preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
       parentRoute: typeof GlobalEducationCountriesRoute
+    }
+    '/api/public/resolve-intent': {
+      id: '/api/public/resolve-intent'
+      path: '/api/public/resolve-intent'
+      fullPath: '/api/public/resolve-intent'
+      preLoaderRoute: typeof ApiPublicResolveIntentRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/health': {
       id: '/api/public/health'
@@ -5477,6 +5497,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   JobsIndexRoute: JobsIndexRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
