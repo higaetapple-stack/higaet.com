@@ -160,6 +160,7 @@ import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/gl
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workflow'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
+import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
 import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
 import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
@@ -1102,6 +1103,11 @@ const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
   path: '/api/public/vector-search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicStrategyRoute = ApiPublicStrategyRouteImport.update({
+  id: '/api/public/strategy',
+  path: '/api/public/strategy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSharedMemoryRoute = ApiPublicSharedMemoryRouteImport.update({
   id: '/api/public/shared-memory',
   path: '/api/public/shared-memory',
@@ -1768,6 +1774,7 @@ export interface FileRoutesByFullPath {
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
+  '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2008,6 +2015,7 @@ export interface FileRoutesByTo {
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
+  '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2254,6 +2262,7 @@ export interface FileRoutesById {
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
+  '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2504,6 +2513,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
+    | '/api/public/strategy'
     | '/api/public/vector-search'
     | '/api/public/workflow'
     | '/global-education/countries/$slug'
@@ -2744,6 +2754,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
+    | '/api/public/strategy'
     | '/api/public/vector-search'
     | '/api/public/workflow'
     | '/global-education/countries/$slug'
@@ -2989,6 +3000,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
+    | '/api/public/strategy'
     | '/api/public/vector-search'
     | '/api/public/workflow'
     | '/global-education/countries/$slug'
@@ -3167,6 +3179,7 @@ export interface RootRouteChildren {
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicSelfOptimizeRoute: typeof ApiPublicSelfOptimizeRoute
   ApiPublicSharedMemoryRoute: typeof ApiPublicSharedMemoryRoute
+  ApiPublicStrategyRoute: typeof ApiPublicStrategyRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
   ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
@@ -4229,6 +4242,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/vector-search'
       fullPath: '/api/public/vector-search'
       preLoaderRoute: typeof ApiPublicVectorSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/strategy': {
+      id: '/api/public/strategy'
+      path: '/api/public/strategy'
+      fullPath: '/api/public/strategy'
+      preLoaderRoute: typeof ApiPublicStrategyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/shared-memory': {
@@ -5768,6 +5788,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicSelfOptimizeRoute: ApiPublicSelfOptimizeRoute,
   ApiPublicSharedMemoryRoute: ApiPublicSharedMemoryRoute,
+  ApiPublicStrategyRoute: ApiPublicStrategyRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
   ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
