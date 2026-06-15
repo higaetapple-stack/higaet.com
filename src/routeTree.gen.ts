@@ -23,6 +23,7 @@ import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConstitutionAmendmentsRouteImport } from './routes/constitution-amendments'
 import { Route as ConstitutionRouteImport } from './routes/constitution'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -203,6 +204,7 @@ import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as ApiPublicKernelDecisionRouteImport } from './routes/api/public/kernel.decision'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
+import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
 import { Route as ApiPublicAgentRunRouteImport } from './routes/api/public/agent.run'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
@@ -338,6 +340,11 @@ const CookiesRoute = CookiesRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConstitutionAmendmentsRoute = ConstitutionAmendmentsRouteImport.update({
+  id: '/constitution-amendments',
+  path: '/constitution-amendments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConstitutionRoute = ConstitutionRouteImport.update({
@@ -1347,6 +1354,12 @@ const ApiPublicConstitutionStatusRoute =
     path: '/api/public/constitution/status',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicConstitutionAmendmentsRoute =
+  ApiPublicConstitutionAmendmentsRouteImport.update({
+    id: '/api/public/constitution/amendments',
+    path: '/api/public/constitution/amendments',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicAgentRunRoute = ApiPublicAgentRunRouteImport.update({
   id: '/api/public/agent/run',
   path: '/api/public/agent/run',
@@ -1751,6 +1764,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/constitution': typeof ConstitutionRoute
+  '/constitution-amendments': typeof ConstitutionAmendmentsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
@@ -1977,6 +1991,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -2011,6 +2026,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/constitution': typeof ConstitutionRoute
+  '/constitution-amendments': typeof ConstitutionAmendmentsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/governance': typeof GovernanceRoute
@@ -2226,6 +2242,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
@@ -2263,6 +2280,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/constitution': typeof ConstitutionRoute
+  '/constitution-amendments': typeof ConstitutionAmendmentsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
@@ -2489,6 +2507,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -2526,6 +2545,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/constitution'
+    | '/constitution-amendments'
     | '/contact'
     | '/cookies'
     | '/global-education'
@@ -2752,6 +2772,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/constitution/amendments'
     | '/api/public/constitution/status'
     | '/api/public/kernel/decision'
     | '/dashboard/admin/'
@@ -2786,6 +2807,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/constitution'
+    | '/constitution-amendments'
     | '/contact'
     | '/cookies'
     | '/governance'
@@ -3001,6 +3023,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/constitution/amendments'
     | '/api/public/constitution/status'
     | '/api/public/kernel/decision'
     | '/dashboard/admin'
@@ -3037,6 +3060,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/constitution'
+    | '/constitution-amendments'
     | '/contact'
     | '/cookies'
     | '/global-education'
@@ -3263,6 +3287,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/constitution/amendments'
     | '/api/public/constitution/status'
     | '/api/public/kernel/decision'
     | '/_authenticated/dashboard/admin/'
@@ -3300,6 +3325,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRouteWithChildren
   ConstitutionRoute: typeof ConstitutionRoute
+  ConstitutionAmendmentsRoute: typeof ConstitutionAmendmentsRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
@@ -3338,6 +3364,7 @@ export interface RootRouteChildren {
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
   ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
+  ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicKernelDecisionRoute: typeof ApiPublicKernelDecisionRoute
 }
@@ -3440,6 +3467,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/constitution-amendments': {
+      id: '/constitution-amendments'
+      path: '/constitution-amendments'
+      fullPath: '/constitution-amendments'
+      preLoaderRoute: typeof ConstitutionAmendmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/constitution': {
@@ -4700,6 +4734,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/constitution/status'
       fullPath: '/api/public/constitution/status'
       preLoaderRoute: typeof ApiPublicConstitutionStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/constitution/amendments': {
+      id: '/api/public/constitution/amendments'
+      path: '/api/public/constitution/amendments'
+      fullPath: '/api/public/constitution/amendments'
+      preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/agent/run': {
@@ -6005,6 +6046,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRouteWithChildren,
   ConstitutionRoute: ConstitutionRoute,
+  ConstitutionAmendmentsRoute: ConstitutionAmendmentsRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
@@ -6043,6 +6085,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
   ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
+  ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicKernelDecisionRoute: ApiPublicKernelDecisionRoute,
 }
