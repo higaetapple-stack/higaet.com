@@ -163,6 +163,7 @@ import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
 import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
@@ -1110,6 +1111,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicGoalsRoute = ApiPublicGoalsRouteImport.update({
+  id: '/api/public/goals',
+  path: '/api/public/goals',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicDecisionsRoute = ApiPublicDecisionsRouteImport.update({
   id: '/api/public/decisions',
   path: '/api/public/decisions',
@@ -1717,6 +1723,7 @@ export interface FileRoutesByFullPath {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
+  '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
@@ -1950,6 +1957,7 @@ export interface FileRoutesByTo {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
+  '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
@@ -2189,6 +2197,7 @@ export interface FileRoutesById {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
+  '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
@@ -2432,6 +2441,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
+    | '/api/public/goals'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
@@ -2665,6 +2675,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
+    | '/api/public/goals'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
@@ -2903,6 +2914,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
+    | '/api/public/goals'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
@@ -3074,6 +3086,7 @@ export interface RootRouteChildren {
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
+  ApiPublicGoalsRoute: typeof ApiPublicGoalsRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
@@ -4159,6 +4172,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/health'
       fullPath: '/api/public/health'
       preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/goals': {
+      id: '/api/public/goals'
+      path: '/api/public/goals'
+      fullPath: '/api/public/goals'
+      preLoaderRoute: typeof ApiPublicGoalsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/decisions': {
@@ -5619,6 +5639,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
+  ApiPublicGoalsRoute: ApiPublicGoalsRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
