@@ -39,10 +39,34 @@ export const Route = createFileRoute("/academy/online-courses")({
       ],
     };
   },
+  loader: async () => {
+    const trail = await getAcademyBreadcrumbs("/academy/online-courses");
+    return { trail };
+  },
   component: OnlineCoursesPage,
 });
 
 function OnlineCoursesPage() {
+  const { trail } = Route.useLoaderData();
+  const crumbs: Crumb[] = trail.map((c, i, arr) => ({
+    label: c.label,
+    href: i === arr.length - 1 ? undefined : c.url,
+  }));
+  return (
+    <>
+      {crumbs.length > 0 && (
+        <div className="px-6 pt-8">
+          <div className="max-w-7xl mx-auto">
+            <Breadcrumbs items={crumbs} />
+          </div>
+        </div>
+      )}
+      <DivisionDetailPageInner />
+    </>
+  );
+}
+
+function DivisionDetailPageInner() {
   return (
     <DivisionDetailPage
       brand="academy"
