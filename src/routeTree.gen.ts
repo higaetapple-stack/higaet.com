@@ -15,6 +15,7 @@ import { Route as SystemDashboardRouteImport } from './routes/system-dashboard'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as CookiesRouteImport } from './routes/cookies'
@@ -167,6 +168,7 @@ import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/s
 import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
+import { Route as ApiPublicReplayRouteImport } from './routes/api/public/replay'
 import { Route as ApiPublicMultiAgentRouteImport } from './routes/api/public/multi-agent'
 import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
@@ -288,6 +290,11 @@ const StatusRoute = StatusRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReplayRoute = ReplayRouteImport.update({
+  id: '/replay',
+  path: '/replay',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -1140,6 +1147,11 @@ const ApiPublicResolveHybridRoute = ApiPublicResolveHybridRouteImport.update({
   path: '/api/public/resolve-hybrid',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicReplayRoute = ApiPublicReplayRouteImport.update({
+  id: '/api/public/replay',
+  path: '/api/public/replay',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMultiAgentRoute = ApiPublicMultiAgentRouteImport.update({
   id: '/api/public/multi-agent',
   path: '/api/public/multi-agent',
@@ -1693,6 +1705,7 @@ export interface FileRoutesByFullPath {
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/replay': typeof ReplayRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -1783,6 +1796,7 @@ export interface FileRoutesByFullPath {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
+  '/api/public/replay': typeof ApiPublicReplayRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
@@ -1942,6 +1956,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/privacy': typeof PrivacyRoute
+  '/replay': typeof ReplayRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -2026,6 +2041,7 @@ export interface FileRoutesByTo {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
+  '/api/public/replay': typeof ApiPublicReplayRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
@@ -2185,6 +2201,7 @@ export interface FileRoutesById {
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/replay': typeof ReplayRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -2275,6 +2292,7 @@ export interface FileRoutesById {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
+  '/api/public/replay': typeof ApiPublicReplayRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
@@ -2438,6 +2456,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/global-education'
     | '/privacy'
+    | '/replay'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -2528,6 +2547,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/multi-agent'
+    | '/api/public/replay'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
@@ -2687,6 +2707,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/privacy'
+    | '/replay'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -2771,6 +2792,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/multi-agent'
+    | '/api/public/replay'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
@@ -2929,6 +2951,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/global-education'
     | '/privacy'
+    | '/replay'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -3019,6 +3042,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/multi-agent'
+    | '/api/public/replay'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
@@ -3182,6 +3206,7 @@ export interface RootRouteChildren {
   CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  ReplayRoute: typeof ReplayRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StatusRoute: typeof StatusRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
@@ -3200,6 +3225,7 @@ export interface RootRouteChildren {
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
   ApiPublicMultiAgentRoute: typeof ApiPublicMultiAgentRoute
+  ApiPublicReplayRoute: typeof ApiPublicReplayRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicSelfOptimizeRoute: typeof ApiPublicSelfOptimizeRoute
@@ -3253,6 +3279,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/replay': {
+      id: '/replay'
+      path: '/replay'
+      fullPath: '/replay'
+      preLoaderRoute: typeof ReplayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -4317,6 +4350,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/resolve-hybrid'
       fullPath: '/api/public/resolve-hybrid'
       preLoaderRoute: typeof ApiPublicResolveHybridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/replay': {
+      id: '/api/public/replay'
+      path: '/api/public/replay'
+      fullPath: '/api/public/replay'
+      preLoaderRoute: typeof ApiPublicReplayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/multi-agent': {
@@ -5807,6 +5847,7 @@ const rootRouteChildren: RootRouteChildren = {
   CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  ReplayRoute: ReplayRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StatusRoute: StatusRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,
@@ -5825,6 +5866,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
   ApiPublicMultiAgentRoute: ApiPublicMultiAgentRoute,
+  ApiPublicReplayRoute: ApiPublicReplayRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicSelfOptimizeRoute: ApiPublicSelfOptimizeRoute,
