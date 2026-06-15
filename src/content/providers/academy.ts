@@ -45,6 +45,12 @@ import {
   ACADEMY_TESTIMONIALS,
 } from "@/content/academy";
 
+// Marketing surface (B.6 / B.8) — PROGRAMS is the single source of truth
+// for program slugs + titles, already shared with the sitemap generator.
+// Importing it here keeps the breadcrumb provider in lockstep without
+// introducing a second naming registry.
+import { PROGRAMS } from "@/lib/academy-programs";
+
 /* ================================================================
  * SECTION 1 — Division-specific filter extensions
  * ============================================================== */
@@ -218,12 +224,78 @@ export function getAcademySitemap(): ProviderResult<readonly SitemapEntry[]> {
 }
 
 /**
+ * Static Academy marketing surface (B.6 expansion).
+ * Each entry is the deterministic trail for a non-registry marketing route.
+ * `href: undefined` on the last node = current page (not a link).
+ */
+const STATIC_ACADEMY_BREADCRUMBS: Readonly<Record<string, readonly BreadcrumbEntry[]>> = {
+  "/academy/programs": [
+    { label: "Academy", href: "/academy" },
+    { label: "Programs" },
+  ],
+  "/academy/online-courses": [
+    { label: "Academy", href: "/academy" },
+    { label: "Online Courses" },
+  ],
+  "/academy/certifications": [
+    { label: "Academy", href: "/academy" },
+    { label: "Certifications" },
+  ],
+  "/academy/learning-paths": [
+    { label: "Academy", href: "/academy" },
+    { label: "Learning Paths" },
+  ],
+  "/academy/campuses": [
+    { label: "Academy", href: "/academy" },
+    { label: "Campuses" },
+  ],
+  "/academy/corporate-training": [
+    { label: "Academy", href: "/academy" },
+    { label: "Corporate Training" },
+  ],
+  "/academy/offline-training": [
+    { label: "Academy", href: "/academy" },
+    { label: "Offline Training" },
+  ],
+  "/academy/admissions": [
+    { label: "Academy", href: "/academy" },
+    { label: "Admissions" },
+  ],
+  "/academy/scholarship": [
+    { label: "Academy", href: "/academy" },
+    { label: "Scholarship" },
+  ],
+  "/academy/placements": [
+    { label: "Academy", href: "/academy" },
+    { label: "Placements" },
+  ],
+  "/academy/internships": [
+    { label: "Academy", href: "/academy" },
+    { label: "Internships" },
+  ],
+  "/academy/success-stories": [
+    { label: "Academy", href: "/academy" },
+    { label: "Success Stories" },
+  ],
+  "/academy/faq": [
+    { label: "Academy", href: "/academy" },
+    { label: "FAQ" },
+  ],
+  "/academy/contact": [
+    { label: "Academy", href: "/academy" },
+    { label: "Contact" },
+  ],
+};
+
+/**
  * Return the breadcrumb trail for an internal Academy URL.
  *
  * Resolution strategy (slug-based, deterministic):
  *   - `/academy/courses/{slug}`         → matching course trail
  *   - `/academy/categories/{slug}`      → matching category trail
  *   - `/academy/learning-paths/{slug}`  → matching learning path trail
+ *   - `/academy/programs/{slug}`        → Programs → {program title}
+ *   - `/academy/<marketing-page>`       → static marketing trail
  *   - `/academy` (or `/academy/`)       → root trail `[{ label: "Academy" }]`
  *   - anything else                     → `[]`
  *
@@ -275,6 +347,25 @@ export function getAcademyBreadcrumbs(
     }
     return [];
   }
+
+  // B.6 — Program detail pages. Title sourced from PROGRAMS (single
+  // source of truth, same registry the sitemap generator uses).
+  const programSlug = matchPrefix(normalized, "/academy/programs/");
+  if (programSlug) {
+    const program = PROGRAMS.find((p) => p.slug === programSlug);
+    if (program) {
+      return [
+        { label: "Academy", href: "/academy" },
+        { label: "Programs", href: "/academy/programs" },
+        { label: program.title },
+      ];
+    }
+    return [];
+  }
+
+  // Static marketing surface
+  const staticTrail = STATIC_ACADEMY_BREADCRUMBS[normalized];
+  if (staticTrail) return staticTrail;
 
   return [];
 }
