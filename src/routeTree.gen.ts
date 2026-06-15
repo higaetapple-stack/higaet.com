@@ -161,6 +161,7 @@ import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/globa
 import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workflow'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
+import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicMultiAgentRouteImport } from './routes/api/public/multi-agent'
@@ -1106,6 +1107,11 @@ const ApiPublicSharedMemoryRoute = ApiPublicSharedMemoryRouteImport.update({
   path: '/api/public/shared-memory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSelfOptimizeRoute = ApiPublicSelfOptimizeRouteImport.update({
+  id: '/api/public/self-optimize',
+  path: '/api/public/self-optimize',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicResolveIntentRoute = ApiPublicResolveIntentRouteImport.update({
   id: '/api/public/resolve-intent',
   path: '/api/public/resolve-intent',
@@ -1760,6 +1766,7 @@ export interface FileRoutesByFullPath {
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
+  '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
@@ -1999,6 +2006,7 @@ export interface FileRoutesByTo {
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
+  '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
@@ -2244,6 +2252,7 @@ export interface FileRoutesById {
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
+  '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/api/public/workflow': typeof ApiPublicWorkflowRoute
@@ -2493,6 +2502,7 @@ export interface FileRouteTypes {
     | '/api/public/multi-agent'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
+    | '/api/public/self-optimize'
     | '/api/public/shared-memory'
     | '/api/public/vector-search'
     | '/api/public/workflow'
@@ -2732,6 +2742,7 @@ export interface FileRouteTypes {
     | '/api/public/multi-agent'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
+    | '/api/public/self-optimize'
     | '/api/public/shared-memory'
     | '/api/public/vector-search'
     | '/api/public/workflow'
@@ -2976,6 +2987,7 @@ export interface FileRouteTypes {
     | '/api/public/multi-agent'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
+    | '/api/public/self-optimize'
     | '/api/public/shared-memory'
     | '/api/public/vector-search'
     | '/api/public/workflow'
@@ -3153,6 +3165,7 @@ export interface RootRouteChildren {
   ApiPublicMultiAgentRoute: typeof ApiPublicMultiAgentRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
+  ApiPublicSelfOptimizeRoute: typeof ApiPublicSelfOptimizeRoute
   ApiPublicSharedMemoryRoute: typeof ApiPublicSharedMemoryRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
@@ -4223,6 +4236,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/shared-memory'
       fullPath: '/api/public/shared-memory'
       preLoaderRoute: typeof ApiPublicSharedMemoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/self-optimize': {
+      id: '/api/public/self-optimize'
+      path: '/api/public/self-optimize'
+      fullPath: '/api/public/self-optimize'
+      preLoaderRoute: typeof ApiPublicSelfOptimizeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/resolve-intent': {
@@ -5746,6 +5766,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicMultiAgentRoute: ApiPublicMultiAgentRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
+  ApiPublicSelfOptimizeRoute: ApiPublicSelfOptimizeRoute,
   ApiPublicSharedMemoryRoute: ApiPublicSharedMemoryRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
