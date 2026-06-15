@@ -162,6 +162,7 @@ import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workf
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
+import { Route as ApiPublicMultiAgentRouteImport } from './routes/api/public/multi-agent'
 import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
@@ -1109,6 +1110,11 @@ const ApiPublicResolveHybridRoute = ApiPublicResolveHybridRouteImport.update({
   path: '/api/public/resolve-hybrid',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicMultiAgentRoute = ApiPublicMultiAgentRouteImport.update({
+  id: '/api/public/multi-agent',
+  path: '/api/public/multi-agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMemoryGraphRoute = ApiPublicMemoryGraphRouteImport.update({
   id: '/api/public/memory-graph',
   path: '/api/public/memory-graph',
@@ -1745,6 +1751,7 @@ export interface FileRoutesByFullPath {
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
+  '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -1982,6 +1989,7 @@ export interface FileRoutesByTo {
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
+  '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -2225,6 +2233,7 @@ export interface FileRoutesById {
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
+  '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -2472,6 +2481,7 @@ export interface FileRouteTypes {
     | '/api/public/goals'
     | '/api/public/health'
     | '/api/public/memory-graph'
+    | '/api/public/multi-agent'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
@@ -2709,6 +2719,7 @@ export interface FileRouteTypes {
     | '/api/public/goals'
     | '/api/public/health'
     | '/api/public/memory-graph'
+    | '/api/public/multi-agent'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
@@ -2951,6 +2962,7 @@ export interface FileRouteTypes {
     | '/api/public/goals'
     | '/api/public/health'
     | '/api/public/memory-graph'
+    | '/api/public/multi-agent'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
@@ -3126,6 +3138,7 @@ export interface RootRouteChildren {
   ApiPublicGoalsRoute: typeof ApiPublicGoalsRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
+  ApiPublicMultiAgentRoute: typeof ApiPublicMultiAgentRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
@@ -4204,6 +4217,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/resolve-hybrid'
       fullPath: '/api/public/resolve-hybrid'
       preLoaderRoute: typeof ApiPublicResolveHybridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/multi-agent': {
+      id: '/api/public/multi-agent'
+      path: '/api/public/multi-agent'
+      fullPath: '/api/public/multi-agent'
+      preLoaderRoute: typeof ApiPublicMultiAgentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/memory-graph': {
@@ -5703,6 +5723,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicGoalsRoute: ApiPublicGoalsRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
+  ApiPublicMultiAgentRoute: ApiPublicMultiAgentRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
