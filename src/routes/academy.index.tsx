@@ -21,6 +21,10 @@ import { CTASection } from "@/components/site/CTASection";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { PROGRAMS } from "@/lib/academy-programs";
 import { getAcademyTestimonials, type TestimonialEntry } from "@/content/providers";
+import {
+  buildAcademyHeadMeta,
+  buildEducationalOrgJsonLd,
+} from "@/lib/seo/academy-metadata";
 
 const FLAGSHIP_SLUGS = [
   "gen-ai-engineering",
@@ -95,29 +99,21 @@ const FAQS = [
 ];
 
 export const Route = createFileRoute("/academy/")({
-  head: () => ({
-    meta: [
-      { title: "HIGAET Academy — AI engineering programs with placement support" },
-      { name: "description", content: "Industry-aligned Gen AI, AI Agents, Automation, and Full-Stack programs with live cohorts, capstones, and dedicated placement support." },
-      { property: "og:title", content: "HIGAET Academy" },
-      { property: "og:description", content: "Become an AI Engineer. Build real AI products. Get industry mentorship and global placement support." },
-      { property: "og:url", content: "/academy" },
-    ],
-    links: [{ rel: "canonical", href: "/academy" }],
-    scripts: [
-      { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "EducationalOrganization",
-          name: "HIGAET Academy",
-          url: "/academy",
-          parentOrganization: { "@type": "Organization", name: "HIGAET" },
-        }),
-      },
-    ],
-  }),
+  head: () => {
+    const meta = buildAcademyHeadMeta({
+      title: "HIGAET Academy — AI engineering programs with placement support",
+      description:
+        "Industry-aligned Gen AI, AI Agents, Automation, and Full-Stack programs with live cohorts, capstones, and dedicated placement support.",
+      path: "/academy",
+    });
+    return {
+      ...meta,
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
+        buildEducationalOrgJsonLd("/academy"),
+      ],
+    };
+  },
   component: AcademyHome,
 });
 

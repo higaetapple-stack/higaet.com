@@ -1,14 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import {
+  getAcademyBreadcrumbs,
+  getAcademyCourses,
+  resolveCategoryById,
+  academyCategoryUrl,
+} from "@/content/providers";
+import {
+  buildAcademyHeadMeta,
+  buildBreadcrumbJsonLd,
+  buildCollectionJsonLd,
+} from "@/lib/seo/academy-metadata";
 
 export const Route = createFileRoute("/academy/certifications")({
-  head: () => ({
-    meta: [
-      { title: "AI Certifications — HIGAET Academy" },
-      { name: "description", content: "HIGAET Academy certifications for Generative AI, applied engineering, and job-ready software development skills." },
-    ],
-    links: [{ rel: "canonical", href: "/academy/certifications" }],
-  }),
+  head: async () => {
+    const category = await resolveCategoryById("academy_category_certifications");
+    const path = category ? academyCategoryUrl(category) : "/academy/certifications";
+    if (!category) {
+      return buildAcademyHeadMeta({
+        title: "AI Certifications — HIGAET Academy",
+        description:
+          "HIGAET Academy certifications for Generative AI, applied engineering, and job-ready software development skills.",
+        path,
+      });
+    }
+    const courses = await getAcademyCourses({ filter: { categoryId: category.id } });
+    const trail = await getAcademyBreadcrumbs(path);
+    return {
+      ...buildAcademyHeadMeta({
+        title: category.metadata.title,
+        description: category.metadata.description,
+        path,
+      }),
+      scripts: [
+        buildCollectionJsonLd(category, courses, path),
+        ...(trail.length ? [buildBreadcrumbJsonLd(trail)] : []),
+      ],
+    };
+  },
   component: CertificationsPage,
 });
 

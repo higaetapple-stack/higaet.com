@@ -1,14 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { getAcademyTestimonials, getAcademyBreadcrumbs } from "@/content/providers";
+import {
+  buildAcademyHeadMeta,
+  buildBreadcrumbJsonLd,
+  buildReviewsJsonLd,
+} from "@/lib/seo/academy-metadata";
 
 export const Route = createFileRoute("/academy/success-stories")({
-  head: () => ({
-    meta: [
-      { title: "Learner Success Stories — HIGAET Academy" },
-      { name: "description", content: "Stories from HIGAET Academy learners building careers in AI engineering, software, and applied technology roles." },
-    ],
-    links: [{ rel: "canonical", href: "/academy/success-stories" }],
-  }),
+  head: async () => {
+    const path = "/academy/success-stories";
+    const testimonials = await getAcademyTestimonials();
+    const trail = await getAcademyBreadcrumbs(path);
+    return {
+      ...buildAcademyHeadMeta({
+        title: "Learner Success Stories — HIGAET Academy",
+        description:
+          "Stories from HIGAET Academy learners building careers in AI engineering, software, and applied technology roles.",
+        path,
+      }),
+      scripts: [
+        buildReviewsJsonLd(testimonials),
+        ...(trail.length ? [buildBreadcrumbJsonLd(trail)] : []),
+      ],
+    };
+  },
   component: SuccessStoriesPage,
 });
 
