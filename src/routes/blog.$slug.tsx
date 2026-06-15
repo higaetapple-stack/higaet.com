@@ -121,7 +121,7 @@ function PostPage() {
               <span className="font-semibold uppercase tracking-widest text-ink/60">{post.tag}</span>
               <span>·</span>
               <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}
+                {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
               </time>
             </div>
             <h1 className="font-display text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-balance mb-6 text-ink">
