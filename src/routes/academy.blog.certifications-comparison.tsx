@@ -164,7 +164,7 @@ function CertificationsComparisonPage() {
       <PageHero
         eyebrow="Academy · Resource guide"
         title="Best AI Engineering Certifications in 2026"
-        description="A practitioner's comparison of HIGAET, Google, Microsoft, AWS, and Coursera AI credentials — how they differ, who they're for, and how to choose."
+        subtitle="A practitioner's comparison of HIGAET, Google, Microsoft, AWS, and Coursera AI credentials — how they differ, who they're for, and how to choose."
       />
 
       <Section>

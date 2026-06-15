@@ -187,6 +187,7 @@ import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
+import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
 import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
 import { Route as AuthenticatedDashboardTechnologiesRouteImport } from './routes/_authenticated.dashboard.technologies'
 import { Route as AuthenticatedDashboardProgramsRouteImport } from './routes/_authenticated.dashboard.programs'
@@ -1254,6 +1255,12 @@ const AcademyCampusesSlugRoute = AcademyCampusesSlugRouteImport.update({
   path: '/campuses/$slug',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AcademyBlogCertificationsComparisonRoute =
+  AcademyBlogCertificationsComparisonRouteImport.update({
+    id: '/blog/certifications-comparison',
+    path: '/blog/certifications-comparison',
+    getParentRoute: () => AcademyRoute,
+  } as any)
 const AuthenticatedDashboardVisaRoute =
   AuthenticatedDashboardVisaRouteImport.update({
     id: '/visa',
@@ -1867,6 +1874,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
+  '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
@@ -2124,6 +2132,7 @@ export interface FileRoutesByTo {
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
+  '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
@@ -2387,6 +2396,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/_authenticated/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   '/_authenticated/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
+  '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
@@ -2654,6 +2664,7 @@ export interface FileRouteTypes {
     | '/dashboard/programs'
     | '/dashboard/technologies'
     | '/dashboard/visa'
+    | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
@@ -2911,6 +2922,7 @@ export interface FileRouteTypes {
     | '/dashboard/profile'
     | '/dashboard/programs'
     | '/dashboard/visa'
+    | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
@@ -3173,6 +3185,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/programs'
     | '/_authenticated/dashboard/technologies'
     | '/_authenticated/dashboard/visa'
+    | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
@@ -4644,6 +4657,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyCampusesSlugRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/academy/blog/certifications-comparison': {
+      id: '/academy/blog/certifications-comparison'
+      path: '/blog/certifications-comparison'
+      fullPath: '/academy/blog/certifications-comparison'
+      preLoaderRoute: typeof AcademyBlogCertificationsComparisonRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/_authenticated/dashboard/visa': {
       id: '/_authenticated/dashboard/visa'
       path: '/visa'
@@ -5670,6 +5690,7 @@ interface AcademyRouteChildren {
   AcademyScholarshipRoute: typeof AcademyScholarshipRoute
   AcademySuccessStoriesRoute: typeof AcademySuccessStoriesRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
+  AcademyBlogCertificationsComparisonRoute: typeof AcademyBlogCertificationsComparisonRoute
   AcademyCampusesSlugRoute: typeof AcademyCampusesSlugRoute
   AcademyProgramsSlugRoute: typeof AcademyProgramsSlugRoute
   AcademyCampusesIndexRoute: typeof AcademyCampusesIndexRoute
@@ -5690,6 +5711,8 @@ const AcademyRouteChildren: AcademyRouteChildren = {
   AcademyScholarshipRoute: AcademyScholarshipRoute,
   AcademySuccessStoriesRoute: AcademySuccessStoriesRoute,
   AcademyIndexRoute: AcademyIndexRoute,
+  AcademyBlogCertificationsComparisonRoute:
+    AcademyBlogCertificationsComparisonRoute,
   AcademyCampusesSlugRoute: AcademyCampusesSlugRoute,
   AcademyProgramsSlugRoute: AcademyProgramsSlugRoute,
   AcademyCampusesIndexRoute: AcademyCampusesIndexRoute,
