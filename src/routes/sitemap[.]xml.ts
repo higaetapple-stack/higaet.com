@@ -21,9 +21,11 @@ interface SitemapEntry {
 const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.7" },
+  { path: "/auth", changefreq: "monthly", priority: "0.3" },
   { path: "/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
+  { path: "/success-stories", changefreq: "monthly", priority: "0.6" },
   // Academy — pillar category entries are sourced dynamically (Step 7)
   // from getAcademyCategories() via the URL resolver (ADR-0003).
   // Marketing-only sub-pages (no registry contract) stay inline:
@@ -40,6 +42,7 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/academy/placements", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/internships", changefreq: "monthly", priority: "0.7" },
   { path: "/academy/success-stories", changefreq: "monthly", priority: "0.6" },
+  { path: "/academy/blog/certifications-comparison", changefreq: "monthly", priority: "0.6" },
   { path: "/academy/faq", changefreq: "monthly", priority: "0.5" },
   { path: "/academy/contact", changefreq: "monthly", priority: "0.6" },
   // Global Education
