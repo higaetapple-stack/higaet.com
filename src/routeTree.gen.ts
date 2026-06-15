@@ -19,6 +19,7 @@ import { Route as SimulateRouteImport } from './routes/simulate'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as KernelRouteImport } from './routes/kernel'
+import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -175,6 +176,7 @@ import { Route as ApiPublicReplayRouteImport } from './routes/api/public/replay'
 import { Route as ApiPublicMultiAgentRouteImport } from './routes/api/public/multi-agent'
 import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicGovernanceRouteImport } from './routes/api/public/governance'
 import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
 import { Route as ApiPublicExecutionPlanRouteImport } from './routes/api/public/execution-plan'
 import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
@@ -314,6 +316,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const KernelRoute = KernelRouteImport.update({
   id: '/kernel',
   path: '/kernel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovernanceRoute = GovernanceRouteImport.update({
+  id: '/governance',
+  path: '/governance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
@@ -1186,6 +1193,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicGovernanceRoute = ApiPublicGovernanceRouteImport.update({
+  id: '/api/public/governance',
+  path: '/api/public/governance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicGoalsRoute = ApiPublicGoalsRouteImport.update({
   id: '/api/public/goals',
   path: '/api/public/goals',
@@ -1728,6 +1740,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
+  '/governance': typeof GovernanceRoute
   '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -1819,6 +1832,7 @@ export interface FileRoutesByFullPath {
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/execution-plan': typeof ApiPublicExecutionPlanRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
+  '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
@@ -1983,6 +1997,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/governance': typeof GovernanceRoute
   '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -2068,6 +2083,7 @@ export interface FileRoutesByTo {
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/execution-plan': typeof ApiPublicExecutionPlanRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
+  '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
@@ -2232,6 +2248,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
+  '/governance': typeof GovernanceRoute
   '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -2323,6 +2340,7 @@ export interface FileRoutesById {
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/execution-plan': typeof ApiPublicExecutionPlanRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
+  '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
@@ -2491,6 +2509,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/global-education'
+    | '/governance'
     | '/kernel'
     | '/privacy'
     | '/replay'
@@ -2582,6 +2601,7 @@ export interface FileRouteTypes {
     | '/api/public/decisions'
     | '/api/public/execution-plan'
     | '/api/public/goals'
+    | '/api/public/governance'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/multi-agent'
@@ -2746,6 +2766,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/governance'
     | '/kernel'
     | '/privacy'
     | '/replay'
@@ -2831,6 +2852,7 @@ export interface FileRouteTypes {
     | '/api/public/decisions'
     | '/api/public/execution-plan'
     | '/api/public/goals'
+    | '/api/public/governance'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/multi-agent'
@@ -2994,6 +3016,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/global-education'
+    | '/governance'
     | '/kernel'
     | '/privacy'
     | '/replay'
@@ -3085,6 +3108,7 @@ export interface FileRouteTypes {
     | '/api/public/decisions'
     | '/api/public/execution-plan'
     | '/api/public/goals'
+    | '/api/public/governance'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/multi-agent'
@@ -3253,6 +3277,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
+  GovernanceRoute: typeof GovernanceRoute
   KernelRoute: typeof KernelRoute
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
@@ -3272,6 +3297,7 @@ export interface RootRouteChildren {
   ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
   ApiPublicExecutionPlanRoute: typeof ApiPublicExecutionPlanRoute
   ApiPublicGoalsRoute: typeof ApiPublicGoalsRoute
+  ApiPublicGovernanceRoute: typeof ApiPublicGovernanceRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
   ApiPublicMultiAgentRoute: typeof ApiPublicMultiAgentRoute
@@ -3359,6 +3385,13 @@ declare module '@tanstack/react-router' {
       path: '/kernel'
       fullPath: '/kernel'
       preLoaderRoute: typeof KernelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/governance': {
+      id: '/governance'
+      path: '/governance'
+      fullPath: '/governance'
+      preLoaderRoute: typeof GovernanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/global-education': {
@@ -4451,6 +4484,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/health'
       fullPath: '/api/public/health'
       preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/governance': {
+      id: '/api/public/governance'
+      path: '/api/public/governance'
+      fullPath: '/api/public/governance'
+      preLoaderRoute: typeof ApiPublicGovernanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/goals': {
@@ -5926,6 +5966,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
+  GovernanceRoute: GovernanceRoute,
   KernelRoute: KernelRoute,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,
@@ -5945,6 +5986,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
   ApiPublicExecutionPlanRoute: ApiPublicExecutionPlanRoute,
   ApiPublicGoalsRoute: ApiPublicGoalsRoute,
+  ApiPublicGovernanceRoute: ApiPublicGovernanceRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
   ApiPublicMultiAgentRoute: ApiPublicMultiAgentRoute,
