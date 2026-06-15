@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { Breadcrumbs, type Crumb } from "@/components/site/Breadcrumbs";
 import {
   getAcademyBreadcrumbs,
   getAcademyCourses,
