@@ -163,6 +163,7 @@ import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
@@ -1109,6 +1110,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDecisionsRoute = ApiPublicDecisionsRouteImport.update({
+  id: '/api/public/decisions',
+  path: '/api/public/decisions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicChatRoute = ApiPublicChatRouteImport.update({
   id: '/api/public/chat',
   path: '/api/public/chat',
@@ -1710,6 +1716,7 @@ export interface FileRoutesByFullPath {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
+  '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
@@ -1942,6 +1949,7 @@ export interface FileRoutesByTo {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
+  '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
@@ -2180,6 +2188,7 @@ export interface FileRoutesById {
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
+  '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
@@ -2422,6 +2431,7 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
     | '/api/public/chat'
+    | '/api/public/decisions'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
@@ -2654,6 +2664,7 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
     | '/api/public/chat'
+    | '/api/public/decisions'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
@@ -2891,6 +2902,7 @@ export interface FileRouteTypes {
     | '/academy/programs/$slug'
     | '/api/public/ai-mode'
     | '/api/public/chat'
+    | '/api/public/decisions'
     | '/api/public/health'
     | '/api/public/memory-graph'
     | '/api/public/resolve-hybrid'
@@ -3061,6 +3073,7 @@ export interface RootRouteChildren {
   JobsIndexRoute: typeof JobsIndexRoute
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
+  ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
@@ -4146,6 +4159,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/health'
       fullPath: '/api/public/health'
       preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/decisions': {
+      id: '/api/public/decisions'
+      path: '/api/public/decisions'
+      fullPath: '/api/public/decisions'
+      preLoaderRoute: typeof ApiPublicDecisionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/chat': {
@@ -5598,6 +5618,7 @@ const rootRouteChildren: RootRouteChildren = {
   JobsIndexRoute: JobsIndexRoute,
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
+  ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
