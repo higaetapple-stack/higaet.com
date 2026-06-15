@@ -15,6 +15,7 @@ import { Route as SystemDashboardRouteImport } from './routes/system-dashboard'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SimulateRouteImport } from './routes/simulate'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
@@ -164,6 +165,7 @@ import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workf
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicSystemHealthRouteImport } from './routes/api/public/system-health'
 import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
+import { Route as ApiPublicSimulateRouteImport } from './routes/api/public/simulate'
 import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
 import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
@@ -290,6 +292,11 @@ const StatusRoute = StatusRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulateRoute = SimulateRouteImport.update({
+  id: '/simulate',
+  path: '/simulate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReplayRoute = ReplayRouteImport.update({
@@ -1127,6 +1134,11 @@ const ApiPublicStrategyRoute = ApiPublicStrategyRouteImport.update({
   path: '/api/public/strategy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSimulateRoute = ApiPublicSimulateRouteImport.update({
+  id: '/api/public/simulate',
+  path: '/api/public/simulate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSharedMemoryRoute = ApiPublicSharedMemoryRouteImport.update({
   id: '/api/public/shared-memory',
   path: '/api/public/shared-memory',
@@ -1706,6 +1718,7 @@ export interface FileRoutesByFullPath {
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
+  '/simulate': typeof SimulateRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -1801,6 +1814,7 @@ export interface FileRoutesByFullPath {
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
+  '/api/public/simulate': typeof ApiPublicSimulateRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -1957,6 +1971,7 @@ export interface FileRoutesByTo {
   '/cookies': typeof CookiesRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
+  '/simulate': typeof SimulateRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -2046,6 +2061,7 @@ export interface FileRoutesByTo {
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
+  '/api/public/simulate': typeof ApiPublicSimulateRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -2202,6 +2218,7 @@ export interface FileRoutesById {
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
+  '/simulate': typeof SimulateRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -2297,6 +2314,7 @@ export interface FileRoutesById {
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
+  '/api/public/simulate': typeof ApiPublicSimulateRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
@@ -2457,6 +2475,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/privacy'
     | '/replay'
+    | '/simulate'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -2552,6 +2571,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
+    | '/api/public/simulate'
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
@@ -2708,6 +2728,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/privacy'
     | '/replay'
+    | '/simulate'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -2797,6 +2818,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
+    | '/api/public/simulate'
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
@@ -2952,6 +2974,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/privacy'
     | '/replay'
+    | '/simulate'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -3047,6 +3070,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
+    | '/api/public/simulate'
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
@@ -3207,6 +3231,7 @@ export interface RootRouteChildren {
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
+  SimulateRoute: typeof SimulateRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StatusRoute: typeof StatusRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
@@ -3230,6 +3255,7 @@ export interface RootRouteChildren {
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicSelfOptimizeRoute: typeof ApiPublicSelfOptimizeRoute
   ApiPublicSharedMemoryRoute: typeof ApiPublicSharedMemoryRoute
+  ApiPublicSimulateRoute: typeof ApiPublicSimulateRoute
   ApiPublicStrategyRoute: typeof ApiPublicStrategyRoute
   ApiPublicSystemHealthRoute: typeof ApiPublicSystemHealthRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
@@ -3279,6 +3305,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulate': {
+      id: '/simulate'
+      path: '/simulate'
+      fullPath: '/simulate'
+      preLoaderRoute: typeof SimulateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/replay': {
@@ -4322,6 +4355,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/strategy'
       fullPath: '/api/public/strategy'
       preLoaderRoute: typeof ApiPublicStrategyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/simulate': {
+      id: '/api/public/simulate'
+      path: '/api/public/simulate'
+      fullPath: '/api/public/simulate'
+      preLoaderRoute: typeof ApiPublicSimulateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/shared-memory': {
@@ -5848,6 +5888,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,
+  SimulateRoute: SimulateRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StatusRoute: StatusRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,
@@ -5871,6 +5912,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicSelfOptimizeRoute: ApiPublicSelfOptimizeRoute,
   ApiPublicSharedMemoryRoute: ApiPublicSharedMemoryRoute,
+  ApiPublicSimulateRoute: ApiPublicSimulateRoute,
   ApiPublicStrategyRoute: ApiPublicStrategyRoute,
   ApiPublicSystemHealthRoute: ApiPublicSystemHealthRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
