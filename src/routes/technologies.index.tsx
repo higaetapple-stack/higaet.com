@@ -77,13 +77,13 @@ const INDUSTRIES: Industry[] = [
 export const Route = createFileRoute("/technologies/")({
   head: () => ({
     meta: [
-      { title: "HIGAET Technologies — Enterprise AI & Custom Software Development" },
+      { title: "HIGAET Technologies — Enterprise AI & Software" },
       {
         name: "description",
         content:
           "HIGAET Technologies delivers custom software, applied AI, SaaS products, and cloud engineering for enterprises. Senior teams, measurable outcomes, global delivery.",
       },
-      { property: "og:title", content: "HIGAET Technologies — Enterprise AI & Custom Software" },
+      { property: "og:title", content: "HIGAET Technologies — Enterprise AI & Software" },
       {
         property: "og:description",
         content:
