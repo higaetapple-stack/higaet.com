@@ -162,6 +162,7 @@ import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/v
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
@@ -1101,6 +1102,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAiModeRoute = ApiPublicAiModeRouteImport.update({
+  id: '/api/public/ai-mode',
+  path: '/api/public/ai-mode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
   id: '/programs/$slug',
   path: '/programs/$slug',
@@ -1690,6 +1696,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
@@ -1919,6 +1926,7 @@ export interface FileRoutesByTo {
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
@@ -2154,6 +2162,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
@@ -2393,6 +2402,7 @@ export interface FileRouteTypes {
     | '/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/api/public/ai-mode'
     | '/api/public/health'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
@@ -2622,6 +2632,7 @@ export interface FileRouteTypes {
     | '/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/api/public/ai-mode'
     | '/api/public/health'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
@@ -2856,6 +2867,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/visa'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/api/public/ai-mode'
     | '/api/public/health'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
@@ -3023,6 +3035,7 @@ export interface RootRouteChildren {
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   JobsIndexRoute: typeof JobsIndexRoute
+  ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
@@ -4100,6 +4113,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/health'
       fullPath: '/api/public/health'
       preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai-mode': {
+      id: '/api/public/ai-mode'
+      path: '/api/public/ai-mode'
+      fullPath: '/api/public/ai-mode'
+      preLoaderRoute: typeof ApiPublicAiModeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/academy/programs/$slug': {
@@ -5536,6 +5556,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortfolioSlugRoute: PortfolioSlugRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   JobsIndexRoute: JobsIndexRoute,
+  ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
