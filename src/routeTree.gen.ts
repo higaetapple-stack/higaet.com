@@ -158,6 +158,7 @@ import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologi
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
+import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workflow'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
@@ -1087,6 +1088,11 @@ const GlobalEducationCountriesSlugRoute =
     path: '/$slug',
     getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
+const ApiPublicWorkflowRoute = ApiPublicWorkflowRouteImport.update({
+  id: '/api/public/workflow',
+  path: '/api/public/workflow',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
   id: '/api/public/vector-search',
   path: '/api/public/vector-search',
@@ -1736,6 +1742,7 @@ export interface FileRoutesByFullPath {
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
+  '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -1971,6 +1978,7 @@ export interface FileRoutesByTo {
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
+  '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2212,6 +2220,7 @@ export interface FileRoutesById {
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
+  '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2457,6 +2466,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
+    | '/api/public/workflow'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2692,6 +2702,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
+    | '/api/public/workflow'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2932,6 +2943,7 @@ export interface FileRouteTypes {
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
+    | '/api/public/workflow'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3105,6 +3117,7 @@ export interface RootRouteChildren {
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
+  ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -4151,6 +4164,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/countries/$slug'
       preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
       parentRoute: typeof GlobalEducationCountriesRoute
+    }
+    '/api/public/workflow': {
+      id: '/api/public/workflow'
+      path: '/api/public/workflow'
+      fullPath: '/api/public/workflow'
+      preLoaderRoute: typeof ApiPublicWorkflowRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/vector-search': {
       id: '/api/public/vector-search'
@@ -5666,6 +5686,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
+  ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
