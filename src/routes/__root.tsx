@@ -14,6 +14,7 @@ import { ORG_JSONLD, SITE, WEBSITE_JSONLD } from "@/lib/site";
 import { ANALYTICS_IDS, getConsent, loadTags } from "@/lib/analytics";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
+import { DevErrorOverlay } from "@/components/DevErrorOverlay";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -156,6 +157,7 @@ function RootComponent() {
       <Outlet />
       <CookieConsent />
       <Toaster />
+      <DevErrorOverlay />
     </QueryClientProvider>
   );
 }
