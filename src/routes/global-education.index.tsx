@@ -22,6 +22,7 @@ export const Route = createFileRoute("/global-education/")({
       { property: "og:title", content: "HIGAET Global Education Hub — Study Abroad & Visas" },
       { property: "og:description", content: "Study abroad, simplified — from shortlisting to visa." },
       { property: "og:url", content: "/global-education" },
+      { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
     ],
     links: [{ rel: "canonical", href: "/global-education" }],
     scripts: [

@@ -91,6 +91,7 @@ export const Route = createFileRoute("/technologies/")({
       },
       { property: "og:url", content: "/technologies" },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
     ],
     links: [{ rel: "canonical", href: "/technologies" }],
     scripts: [

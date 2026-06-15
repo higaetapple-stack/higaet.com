@@ -22,6 +22,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: `${SITE.name} — ${SITE.tagline}` },
       { property: "og:description", content: SITE.description },
       { property: "og:url", content: "/" },
+      { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),

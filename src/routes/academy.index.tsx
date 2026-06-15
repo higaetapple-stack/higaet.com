@@ -107,7 +107,11 @@ export const Route = createFileRoute("/academy/")({
       path: "/academy",
     });
     return {
-      ...meta,
+      meta: [
+        ...meta.meta,
+        { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
+      ],
+      links: meta.links,
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
         buildEducationalOrgJsonLd("/academy"),
