@@ -15,6 +15,7 @@
 
 import { explainQuery, type AIResponse } from "@/lib/ai-mode/reasoner";
 import type { FusionMode } from "@/lib/fusion/hybrid-resolver";
+import { ingestMemoryAsync } from "@/lib/memory-graph/ingest";
 import {
   getSession,
   updateSession,
