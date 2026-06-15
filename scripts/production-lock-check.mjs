@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 /**
- * Production Lock System (B.10) — CI gate.
+ * Production Lock System (B.10) — CI gate / dry-run.
  *
- * Validates the 4 graphs (Routes · Breadcrumbs · Sitemap · Intelligence)
- * before build. Exits non-zero on any violation so the build pipeline
- * aborts. Verification-only — no file mutations.
+ * Derives the live sitemap path list by:
+ *   1. parsing static entries from src/routes/sitemap[.]xml.ts (regex —
+ *      cheap, no SSR/route import side-effects), and
+ *   2. expanding dynamic Academy entries from @/lib/academy-programs
+ *      (PROGRAMS, CAMPUSES — single source of truth).
  *
- * Run via:  bun scripts/production-lock-check.mjs
- *           node --import tsx scripts/production-lock-check.mjs
+ * Then runs validateGraph() and prints the report.
+ * Verification-only. Exits non-zero on violation.
  */
 
+import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
@@ -18,40 +21,35 @@ async function load(rel) {
   return import(url);
 }
 
+function extractStaticPaths(filePath) {
+  const src = readFileSync(filePath, "utf8");
+  const out = [];
+  const re = /\{\s*path:\s*["']([^"']+)["']/g;
+  let m;
+  while ((m = re.exec(src)) !== null) out.push(m[1]);
+  return out;
+}
+
 async function main() {
   const { validateGraph, formatReport } = await load(
     "src/lib/production-lock/validate-graph.ts",
   );
-  const sitemapMod = await load("src/content/academy/generated/sitemap.ts");
+  const { PROGRAMS, CAMPUSES } = await load("src/lib/academy-programs.ts");
 
-  // Pull whichever export the generator publishes (defensive — name
-  // changes shouldn't silently bypass the lock).
-  const sitemapPaths =
-    sitemapMod.ACADEMY_SITEMAP_PATHS ??
-    sitemapMod.SITEMAP_PATHS ??
-    (Array.isArray(sitemapMod.default) ? sitemapMod.default : null) ??
-    extractPaths(sitemapMod);
+  const staticPaths = extractStaticPaths("src/routes/sitemap[.]xml.ts");
+  const programPaths = PROGRAMS.map((p) => `/academy/programs/${p.slug}`);
+  const campusPaths = CAMPUSES.map((c) => `/academy/campuses/${c.slug}`);
 
-  if (!Array.isArray(sitemapPaths)) {
-    console.error(
-      "❌ Production Lock: could not derive sitemap path list from generator export.",
-    );
-    process.exit(1);
-  }
+  const sitemapPaths = [...staticPaths, ...programPaths, ...campusPaths];
+
+  console.log(
+    `→ Sitemap surface scanned: ${sitemapPaths.length} paths ` +
+      `(${staticPaths.length} static + ${programPaths.length} programs + ${campusPaths.length} campuses)`,
+  );
 
   const report = validateGraph(sitemapPaths);
   console.log(formatReport(report));
   if (!report.ok) process.exit(1);
-}
-
-function extractPaths(mod) {
-  for (const v of Object.values(mod)) {
-    if (Array.isArray(v) && v.every((x) => typeof x === "string")) return v;
-    if (Array.isArray(v) && v.every((x) => x && typeof x.path === "string")) {
-      return v.map((x) => x.path);
-    }
-  }
-  return null;
 }
 
 main().catch((err) => {
