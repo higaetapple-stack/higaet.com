@@ -17,11 +17,12 @@ const FAQS = [
 export const Route = createFileRoute("/global-education/")({
   head: () => ({
     meta: [
-      { title: "HIGAET Global Education Hub — Study abroad, simplified" },
+      { title: "HIGAET Global Education Hub — Study Abroad & Visas" },
       { name: "description", content: "University partnerships, scholarships, and visa guidance for students applying to global institutions. End-to-end counselling from HIGAET." },
-      { property: "og:title", content: "HIGAET Global Education Hub" },
+      { property: "og:title", content: "HIGAET Global Education Hub — Study Abroad & Visas" },
       { property: "og:description", content: "Study abroad, simplified — from shortlisting to visa." },
       { property: "og:url", content: "/global-education" },
+      { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
     ],
     links: [{ rel: "canonical", href: "/global-education" }],
     scripts: [

@@ -101,13 +101,17 @@ const FAQS = [
 export const Route = createFileRoute("/academy/")({
   head: () => {
     const meta = buildAcademyHeadMeta({
-      title: "HIGAET Academy — AI engineering programs with placement support",
+      title: "HIGAET Academy — AI Engineering & Placements",
       description:
         "Industry-aligned Gen AI, AI Agents, Automation, and Full-Stack programs with live cohorts, capstones, and dedicated placement support.",
       path: "/academy",
     });
     return {
-      ...meta,
+      meta: [
+        ...meta.meta,
+        { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
+      ],
+      links: meta.links,
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
         buildEducationalOrgJsonLd("/academy"),
