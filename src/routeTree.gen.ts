@@ -18,6 +18,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimulateRouteImport } from './routes/simulate'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as KernelRouteImport } from './routes/kernel'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -197,6 +198,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as ApiPublicKernelDecisionRouteImport } from './routes/api/public/kernel.decision'
 import { Route as ApiPublicAgentRunRouteImport } from './routes/api/public/agent.run'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
@@ -307,6 +309,11 @@ const ReplayRoute = ReplayRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KernelRoute = KernelRouteImport.update({
+  id: '/kernel',
+  path: '/kernel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
@@ -1310,6 +1317,11 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const ApiPublicKernelDecisionRoute = ApiPublicKernelDecisionRouteImport.update({
+  id: '/api/public/kernel/decision',
+  path: '/api/public/kernel/decision',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicAgentRunRoute = ApiPublicAgentRunRouteImport.update({
   id: '/api/public/agent/run',
   path: '/api/public/agent/run',
@@ -1716,6 +1728,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
+  '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
   '/simulate': typeof SimulateRoute
@@ -1936,6 +1949,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -1969,6 +1983,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
   '/simulate': typeof SimulateRoute
@@ -2179,6 +2194,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2216,6 +2232,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
+  '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
   '/simulate': typeof SimulateRoute
@@ -2436,6 +2453,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2473,6 +2491,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/global-education'
+    | '/kernel'
     | '/privacy'
     | '/replay'
     | '/simulate'
@@ -2693,6 +2712,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/kernel/decision'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -2726,6 +2746,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/kernel'
     | '/privacy'
     | '/replay'
     | '/simulate'
@@ -2936,6 +2957,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/kernel/decision'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -2972,6 +2994,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/global-education'
+    | '/kernel'
     | '/privacy'
     | '/replay'
     | '/simulate'
@@ -3192,6 +3215,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/kernel/decision'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -3229,6 +3253,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
+  KernelRoute: typeof KernelRoute
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
   SimulateRoute: typeof SimulateRoute
@@ -3261,6 +3286,7 @@ export interface RootRouteChildren {
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
   ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
+  ApiPublicKernelDecisionRoute: typeof ApiPublicKernelDecisionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -3326,6 +3352,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kernel': {
+      id: '/kernel'
+      path: '/kernel'
+      fullPath: '/kernel'
+      preLoaderRoute: typeof KernelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/global-education': {
@@ -4580,6 +4613,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/api/public/kernel/decision': {
+      id: '/api/public/kernel/decision'
+      path: '/api/public/kernel/decision'
+      fullPath: '/api/public/kernel/decision'
+      preLoaderRoute: typeof ApiPublicKernelDecisionRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/agent/run': {
       id: '/api/public/agent/run'
@@ -5886,6 +5926,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
+  KernelRoute: KernelRoute,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,
   SimulateRoute: SimulateRoute,
@@ -5918,6 +5959,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
   ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
+  ApiPublicKernelDecisionRoute: ApiPublicKernelDecisionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
