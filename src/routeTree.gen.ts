@@ -187,6 +187,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as ApiPublicAgentRunRouteImport } from './routes/api/public/agent.run'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
 import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
@@ -1249,6 +1250,11 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const ApiPublicAgentRunRoute = ApiPublicAgentRunRouteImport.update({
+  id: '/api/public/agent/run',
+  path: '/api/public/agent/run',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardTechnologiesSupportRoute =
   AuthenticatedDashboardTechnologiesSupportRouteImport.update({
     id: '/support',
@@ -1859,6 +1865,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/agent/run': typeof ApiPublicAgentRunRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2091,6 +2098,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/agent/run': typeof ApiPublicAgentRunRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2337,6 +2345,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/agent/run': typeof ApiPublicAgentRunRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2583,6 +2592,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/proposals'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
+    | '/api/public/agent/run'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -2815,6 +2825,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/finance'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
+    | '/api/public/agent/run'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -3060,6 +3071,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/proposals'
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
+    | '/api/public/agent/run'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -3118,6 +3130,7 @@ export interface RootRouteChildren {
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
+  ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -4367,6 +4380,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/api/public/agent/run': {
+      id: '/api/public/agent/run'
+      path: '/api/public/agent/run'
+      fullPath: '/api/public/agent/run'
+      preLoaderRoute: typeof ApiPublicAgentRunRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/technologies/support': {
       id: '/_authenticated/dashboard/technologies/support'
@@ -5687,6 +5707,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
+  ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
