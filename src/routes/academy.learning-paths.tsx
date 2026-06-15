@@ -29,6 +29,10 @@ export const Route = createFileRoute("/academy/learning-paths")({
       ],
     };
   },
+  loader: async () => {
+    const trail = await getAcademyBreadcrumbs("/academy/learning-paths");
+    return { trail };
+  },
   component: LearningPaths,
 });
 
