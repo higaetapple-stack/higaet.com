@@ -17,25 +17,48 @@ export function DevErrorOverlay() {
   useEffect(() => {
     if (!import.meta.env.DEV) return;
 
-    const push = (e: CapturedError) =>
+    // Intentional system-level errors thrown by B.10–B.45 layers — not bugs.
+    const IGNORED_NAMES = new Set([
+      "AgentBlockedError",
+      "B10ValidationError",
+      "WorkflowGateError",
+      "StrategyRejectedError",
+    ]);
+    const seen = new Map<string, number>();
+    const DEDUPE_MS = 2000;
+
+    const push = (e: CapturedError, name?: string) => {
+      if (name && IGNORED_NAMES.has(name)) return;
+      const key = `${e.source}:${e.message}`;
+      const now = Date.now();
+      const last = seen.get(key);
+      if (last && now - last < DEDUPE_MS) return;
+      seen.set(key, now);
       setErrors((prev) => [e, ...prev].slice(0, 10));
+    };
 
     const onError = (ev: ErrorEvent) => {
-      push({
-        message: ev.message || String(ev.error),
-        stack: ev.error?.stack,
-        source: "error",
-        at: Date.now(),
-      });
+      push(
+        {
+          message: ev.message || String(ev.error),
+          stack: ev.error?.stack,
+          source: "error",
+          at: Date.now(),
+        },
+        ev.error?.name,
+      );
     };
     const onRejection = (ev: PromiseRejectionEvent) => {
       const reason = ev.reason;
-      push({
-        message: reason?.message ?? String(reason),
-        stack: reason?.stack,
-        source: "unhandledrejection",
-        at: Date.now(),
-      });
+      push(
+        {
+          message: reason?.message ?? String(reason),
+          stack: reason?.stack,
+          source: "unhandledrejection",
+          at: Date.now(),
+        },
+        reason?.name,
+      );
     };
 
     window.addEventListener("error", onError);
