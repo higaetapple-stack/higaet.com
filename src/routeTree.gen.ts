@@ -23,6 +23,7 @@ import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConstitutionRouteImport } from './routes/constitution'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -201,6 +202,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as ApiPublicKernelDecisionRouteImport } from './routes/api/public/kernel.decision'
+import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicAgentRunRouteImport } from './routes/api/public/agent.run'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
@@ -336,6 +338,11 @@ const CookiesRoute = CookiesRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConstitutionRoute = ConstitutionRouteImport.update({
+  id: '/constitution',
+  path: '/constitution',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersRoute = CareersRouteImport.update({
@@ -1334,6 +1341,12 @@ const ApiPublicKernelDecisionRoute = ApiPublicKernelDecisionRouteImport.update({
   path: '/api/public/kernel/decision',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicConstitutionStatusRoute =
+  ApiPublicConstitutionStatusRouteImport.update({
+    id: '/api/public/constitution/status',
+    path: '/api/public/constitution/status',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicAgentRunRoute = ApiPublicAgentRunRouteImport.update({
   id: '/api/public/agent/run',
   path: '/api/public/agent/run',
@@ -1737,6 +1750,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
+  '/constitution': typeof ConstitutionRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
@@ -1963,6 +1977,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -1995,6 +2010,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
+  '/constitution': typeof ConstitutionRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/governance': typeof GovernanceRoute
@@ -2210,6 +2226,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2245,6 +2262,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
+  '/constitution': typeof ConstitutionRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
@@ -2471,6 +2489,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/agent/run': typeof ApiPublicAgentRunRoute
+  '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2506,6 +2525,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/careers'
+    | '/constitution'
     | '/contact'
     | '/cookies'
     | '/global-education'
@@ -2732,6 +2752,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/constitution/status'
     | '/api/public/kernel/decision'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -2764,6 +2785,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/careers'
+    | '/constitution'
     | '/contact'
     | '/cookies'
     | '/governance'
@@ -2979,6 +3001,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/constitution/status'
     | '/api/public/kernel/decision'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -3013,6 +3036,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/careers'
+    | '/constitution'
     | '/contact'
     | '/cookies'
     | '/global-education'
@@ -3239,6 +3263,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
     | '/api/public/agent/run'
+    | '/api/public/constitution/status'
     | '/api/public/kernel/decision'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -3274,6 +3299,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRouteWithChildren
+  ConstitutionRoute: typeof ConstitutionRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
@@ -3312,6 +3338,7 @@ export interface RootRouteChildren {
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
   ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
   ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
+  ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicKernelDecisionRoute: typeof ApiPublicKernelDecisionRoute
 }
 
@@ -3413,6 +3440,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/constitution': {
+      id: '/constitution'
+      path: '/constitution'
+      fullPath: '/constitution'
+      preLoaderRoute: typeof ConstitutionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers': {
@@ -4659,6 +4693,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/kernel/decision'
       fullPath: '/api/public/kernel/decision'
       preLoaderRoute: typeof ApiPublicKernelDecisionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/constitution/status': {
+      id: '/api/public/constitution/status'
+      path: '/api/public/constitution/status'
+      fullPath: '/api/public/constitution/status'
+      preLoaderRoute: typeof ApiPublicConstitutionStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/agent/run': {
@@ -5963,6 +6004,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRouteWithChildren,
+  ConstitutionRoute: ConstitutionRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
@@ -6001,6 +6043,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
   ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
   ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
+  ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicKernelDecisionRoute: ApiPublicKernelDecisionRoute,
 }
 export const routeTree = rootRouteImport
