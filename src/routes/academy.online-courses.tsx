@@ -47,10 +47,10 @@ export const Route = createFileRoute("/academy/online-courses")({
 });
 
 function OnlineCoursesPage() {
-  const { trail } = Route.useLoaderData();
-  const crumbs: Crumb[] = trail.map((c, i, arr) => ({
+  const { trail } = Route.useLoaderData() as { trail: readonly { label: string; url?: string }[] };
+  const crumbs: Crumb[] = trail.map((c, i) => ({
     label: c.label,
-    href: i === arr.length - 1 ? undefined : c.url,
+    href: i === trail.length - 1 ? undefined : c.url,
   }));
   return (
     <>
