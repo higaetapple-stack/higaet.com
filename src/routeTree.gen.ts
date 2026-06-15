@@ -160,6 +160,7 @@ import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/gl
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
+import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
@@ -1090,6 +1091,11 @@ const ApiPublicResolveIntentRoute = ApiPublicResolveIntentRouteImport.update({
   path: '/api/public/resolve-intent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicResolveHybridRoute = ApiPublicResolveHybridRouteImport.update({
+  id: '/api/public/resolve-hybrid',
+  path: '/api/public/resolve-hybrid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
@@ -1685,6 +1691,7 @@ export interface FileRoutesByFullPath {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -1913,6 +1920,7 @@ export interface FileRoutesByTo {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2147,6 +2155,7 @@ export interface FileRoutesById {
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
@@ -2385,6 +2394,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/health'
+    | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
     | '/global-education/countries/$slug'
@@ -2613,6 +2623,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/health'
+    | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
     | '/global-education/countries/$slug'
@@ -2846,6 +2857,7 @@ export interface FileRouteTypes {
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
     | '/api/public/health'
+    | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/vector-search'
     | '/global-education/countries/$slug'
@@ -3012,6 +3024,7 @@ export interface RootRouteChildren {
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   JobsIndexRoute: typeof JobsIndexRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
 }
@@ -4073,6 +4086,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/resolve-intent'
       fullPath: '/api/public/resolve-intent'
       preLoaderRoute: typeof ApiPublicResolveIntentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/resolve-hybrid': {
+      id: '/api/public/resolve-hybrid'
+      path: '/api/public/resolve-hybrid'
+      fullPath: '/api/public/resolve-hybrid'
+      preLoaderRoute: typeof ApiPublicResolveHybridRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/health': {
@@ -5517,6 +5537,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   JobsIndexRoute: JobsIndexRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
 }
