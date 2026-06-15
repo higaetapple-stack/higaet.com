@@ -3,18 +3,31 @@ import { ArrowRight, GraduationCap, Users2, Briefcase, Rocket, Building2 } from 
 import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
+import { getAcademyLearningPaths, getAcademyBreadcrumbs } from "@/content/providers";
+import {
+  buildAcademyHeadMeta,
+  buildBreadcrumbJsonLd,
+  buildLearningPathsItemListJsonLd,
+} from "@/lib/seo/academy-metadata";
 
 export const Route = createFileRoute("/academy/learning-paths")({
-  head: () => ({
-    meta: [
-      { title: "Learning Paths — HIGAET Academy" },
-      { name: "description", content: "Choose a learning path based on where you are today — school student, college student, working professional, entrepreneur, or corporate team." },
-      { property: "og:title", content: "Learning Paths — HIGAET Academy" },
-      { property: "og:description", content: "Structured AI learning paths for every stage of your career." },
-      { property: "og:url", content: "/academy/learning-paths" },
-    ],
-    links: [{ rel: "canonical", href: "/academy/learning-paths" }],
-  }),
+  head: () => {
+    const path = "/academy/learning-paths";
+    const paths = getAcademyLearningPaths();
+    const trail = getAcademyBreadcrumbs(path);
+    return {
+      ...buildAcademyHeadMeta({
+        title: "Learning Paths — HIGAET Academy",
+        description:
+          "Choose a learning path based on where you are today — school student, college student, working professional, entrepreneur, or corporate team.",
+        path,
+      }),
+      scripts: [
+        buildLearningPathsItemListJsonLd(paths, path),
+        ...(trail.length ? [buildBreadcrumbJsonLd(trail)] : []),
+      ],
+    };
+  },
   component: LearningPaths,
 });
 
