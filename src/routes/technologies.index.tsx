@@ -147,15 +147,59 @@ function TechHome() {
           <div>
             <Eyebrow brand="tech">About</Eyebrow>
             <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
-              The engineering arm of HIGAET.
+              The technology and innovation division of HIGAET.
             </h2>
           </div>
           <p className="text-lg leading-relaxed text-muted-foreground text-pretty max-w-[60ch]">
-            HIGAET Technologies builds production software and applied AI for enterprises,
-            scaling teams, and emerging products. We combine the engineering discipline of a
-            services firm with the product instincts of a venture studio — backed by a global
-            institute and its talent pipeline.
+            HIGAET Technologies is dedicated to delivering intelligent digital solutions for businesses,
+            educational institutions, startups, and enterprises. We specialize in software development,
+            artificial intelligence solutions, enterprise applications, cloud technologies, automation,
+            digital transformation, IT consulting, and custom technology services that help organizations
+            innovate, optimize operations, and achieve sustainable growth.
           </p>
+        </div>
+      </Section>
+
+      {/* Vision & Mission */}
+      <Section className="bg-muted/40">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div>
+            <Eyebrow brand="tech">Vision</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
+              A globally recognized AI-driven education and technology ecosystem.
+            </h2>
+            <p className="mt-5 text-muted-foreground leading-relaxed max-w-[44ch]">
+              To empower individuals and organizations through innovation, intelligent learning, and digital transformation.
+            </p>
+          </div>
+          <div>
+            <Eyebrow brand="tech">Mission</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
+              Connecting education, technology, and careers.
+            </h2>
+            <ul className="mt-5 space-y-3 text-muted-foreground leading-relaxed max-w-[48ch]">
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Deliver high-quality, industry-relevant education enhanced by artificial intelligence.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Simplify access to global education opportunities through innovative digital solutions.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Develop advanced technology products and AI-powered solutions that address real-world challenges.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Connect education, technology, and career development within a unified digital ecosystem.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Foster lifelong learning, innovation, collaboration, and professional growth worldwide.</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </Section>
 
