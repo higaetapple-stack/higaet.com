@@ -32,6 +32,7 @@ const STATIC_ACADEMY: RouteGraphNode[] = [
   "/academy/placements",
   "/academy/internships",
   "/academy/success-stories",
+  "/academy/blog/certifications-comparison",
   "/academy/faq",
   "/academy/contact",
 ].map((path) => ({

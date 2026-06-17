@@ -81,13 +81,13 @@ export const Route = createFileRoute("/technologies/")({
       {
         name: "description",
         content:
-          "HIGAET Technologies delivers custom software, applied AI, SaaS products, and cloud engineering for enterprises. Senior teams, measurable outcomes, global delivery.",
+          "HIGAET Technologies delivers intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Specializing in software development, AI solutions, cloud technologies, automation, and digital transformation.",
       },
       { property: "og:title", content: "HIGAET Technologies — Enterprise AI & Software" },
       {
         property: "og:description",
         content:
-          "Enterprise software, applied AI, and SaaS engineering from HIGAET. Senior teams, modern stack, measurable outcomes.",
+          "Intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Software development, AI, cloud, automation, and digital transformation.",
       },
       { property: "og:url", content: "/technologies" },
       { property: "og:type", content: "website" },
@@ -125,8 +125,8 @@ function TechHome() {
       <ServiceHero
         brand="tech"
         eyebrow="HIGAET Technologies"
-        title="Enterprise AI engineering and custom software, built to ship."
-        subtitle="From applied AI and SaaS products to enterprise software and cloud platforms — HIGAET Technologies delivers senior teams, modern engineering, and measurable outcomes."
+        title="Intelligent digital solutions that drive growth."
+        subtitle="The technology and innovation division of HIGAET, delivering software development, AI solutions, enterprise applications, cloud technologies, automation, and digital transformation for businesses, institutions, startups, and enterprises worldwide."
         primaryHref="/technologies/contact"
         primaryLabel="Start a project"
         secondaryHref="/technologies/case-studies"
@@ -147,15 +147,59 @@ function TechHome() {
           <div>
             <Eyebrow brand="tech">About</Eyebrow>
             <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
-              The engineering arm of HIGAET.
+              The technology and innovation division of HIGAET.
             </h2>
           </div>
           <p className="text-lg leading-relaxed text-muted-foreground text-pretty max-w-[60ch]">
-            HIGAET Technologies builds production software and applied AI for enterprises,
-            scaling teams, and emerging products. We combine the engineering discipline of a
-            services firm with the product instincts of a venture studio — backed by a global
-            institute and its talent pipeline.
+            HIGAET Technologies is dedicated to delivering intelligent digital solutions for businesses,
+            educational institutions, startups, and enterprises. We specialize in software development,
+            artificial intelligence solutions, enterprise applications, cloud technologies, automation,
+            digital transformation, IT consulting, and custom technology services that help organizations
+            innovate, optimize operations, and achieve sustainable growth.
           </p>
+        </div>
+      </Section>
+
+      {/* Vision & Mission */}
+      <Section className="bg-muted/40">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div>
+            <Eyebrow brand="tech">Vision</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
+              A globally recognized AI-driven education and technology ecosystem.
+            </h2>
+            <p className="mt-5 text-muted-foreground leading-relaxed max-w-[44ch]">
+              To empower individuals and organizations through innovation, intelligent learning, and digital transformation.
+            </p>
+          </div>
+          <div>
+            <Eyebrow brand="tech">Mission</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
+              Connecting education, technology, and careers.
+            </h2>
+            <ul className="mt-5 space-y-3 text-muted-foreground leading-relaxed max-w-[48ch]">
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Deliver high-quality, industry-relevant education enhanced by artificial intelligence.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Simplify access to global education opportunities through innovative digital solutions.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Develop advanced technology products and AI-powered solutions that address real-world challenges.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Connect education, technology, and career development within a unified digital ecosystem.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-tech mt-1">●</span>
+                <span>Foster lifelong learning, innovation, collaboration, and professional growth worldwide.</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </Section>
 
@@ -235,17 +279,28 @@ function TechHome() {
       {/* Technology stack */}
       <Section id="stack" className="bg-muted/40">
         <Eyebrow brand="tech">Technology stack</Eyebrow>
-        <h2 className="font-display text-3xl md:text-4xl font-medium tracking-tight mt-4 mb-12 max-w-[34ch] text-balance">
-          A modern, opinionated toolbox — chosen for longevity.
+        <h2 className="font-display text-3xl md:text-4xl font-medium tracking-tight mt-4 mb-4 max-w-[40ch] text-balance">
+          A modern, carefully selected technology stack built for scale.
         </h2>
+        <p className="text-muted-foreground leading-relaxed max-w-[60ch] mb-12">
+          We choose the right technologies for each project to deliver reliable, future-ready digital solutions. Our stack is built for scalability, performance, security, and long-term maintainability.
+        </p>
         <TechStackGrid
           groups={[
-            { title: "Frontend", items: ["React", "Next.js", "Angular", "Vue", "TypeScript", "Tailwind"] },
-            { title: "Backend", items: ["Node.js", "Express", "Python", "Java", ".NET", "Go", "PHP"] },
-            { title: "Mobile", items: ["React Native", "Flutter", "Swift / iOS", "Kotlin / Android"] },
-            { title: "Data & AI", items: ["PostgreSQL", "MySQL", "MongoDB", "OpenAI", "Anthropic", "PyTorch"] },
-            { title: "Cloud", items: ["AWS", "Azure", "Google Cloud", "Cloudflare", "Vercel"] },
-            { title: "DevOps", items: ["Docker", "Kubernetes", "Terraform", "GitHub Actions", "Jenkins"] },
+            { title: "Frontend Engineering", items: ["React", "Next.js", "Angular", "Vue.js", "TypeScript", "Tailwind CSS", "HTML5", "CSS3", "JavaScript (ES6+)"] },
+            { title: "Backend Engineering", items: ["Node.js", "Express.js", "Python", "Java", ".NET", "Go", "PHP"] },
+            { title: "Mobile Development", items: ["React Native", "Flutter", "Swift (iOS)", "Kotlin (Android)"] },
+            { title: "AI & Machine Learning", items: ["OpenAI", "Anthropic", "PyTorch", "TensorFlow", "Hugging Face", "LangChain", "Pinecone", "Weaviate", "ChromaDB", "RAG Systems", "AI Agents", "Computer Vision", "NLP"] },
+            { title: "Data Engineering & Databases", items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "ETL Pipelines", "Data Warehousing", "Analytics", "Business Intelligence"] },
+            { title: "Cloud & Infrastructure", items: ["AWS", "Microsoft Azure", "Google Cloud", "Cloudflare", "Vercel", "Serverless Computing", "Object Storage", "CDN", "Load Balancing", "Managed Databases", "Virtual Machines"] },
+            { title: "DevOps & Platform Engineering", items: ["Docker", "Kubernetes", "GitHub Actions", "GitLab CI/CD", "Jenkins", "Terraform", "Infrastructure as Code", "Monitoring & Logging"] },
+            { title: "API Development & Integration", items: ["REST APIs", "GraphQL", "gRPC", "WebSockets", "OAuth 2.0", "JWT Authentication", "Third-party Integrations", "Payment Gateway Integration"] },
+            { title: "Cybersecurity", items: ["Secure Coding", "Identity & Access Management", "Multi-factor Authentication", "Encryption", "OWASP Best Practices", "Vulnerability Assessment", "Security Audits", "Compliance Support"] },
+            { title: "Enterprise Solutions", items: ["ERP Systems", "CRM Systems", "HRMS", "Learning Management Systems", "Student Information Systems", "Workflow Automation", "Document Management"] },
+            { title: "Quality Engineering & Testing", items: ["Unit Testing", "Integration Testing", "End-to-End Testing", "Performance Testing", "Security Testing", "Test Automation", "Manual QA", "Jest", "Cypress", "Playwright", "Selenium"] },
+            { title: "UI / UX Design", items: ["User Research", "Wireframing", "Prototyping", "Design Systems", "Accessibility", "Responsive Design", "Figma", "Adobe XD"] },
+            { title: "Analytics & Observability", items: ["Google Analytics", "OpenTelemetry", "Grafana", "Prometheus", "ELK Stack", "Sentry", "Application Performance Monitoring (APM)"] },
+            { title: "Emerging Technologies", items: ["Generative AI", "AI Agents", "Internet of Things (IoT)", "Blockchain", "Augmented Reality (AR)", "Virtual Reality (VR)", "Edge Computing", "Low-Code/No-Code Automation"] },
           ]}
         />
       </Section>
