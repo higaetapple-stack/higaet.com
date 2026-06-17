@@ -81,13 +81,13 @@ export const Route = createFileRoute("/technologies/")({
       {
         name: "description",
         content:
-          "HIGAET Technologies delivers custom software, applied AI, SaaS products, and cloud engineering for enterprises. Senior teams, measurable outcomes, global delivery.",
+          "HIGAET Technologies delivers intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Specializing in software development, AI solutions, cloud technologies, automation, and digital transformation.",
       },
       { property: "og:title", content: "HIGAET Technologies — Enterprise AI & Software" },
       {
         property: "og:description",
         content:
-          "Enterprise software, applied AI, and SaaS engineering from HIGAET. Senior teams, modern stack, measurable outcomes.",
+          "Intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Software development, AI, cloud, automation, and digital transformation.",
       },
       { property: "og:url", content: "/technologies" },
       { property: "og:type", content: "website" },
