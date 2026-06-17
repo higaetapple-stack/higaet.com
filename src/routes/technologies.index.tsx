@@ -279,17 +279,28 @@ function TechHome() {
       {/* Technology stack */}
       <Section id="stack" className="bg-muted/40">
         <Eyebrow brand="tech">Technology stack</Eyebrow>
-        <h2 className="font-display text-3xl md:text-4xl font-medium tracking-tight mt-4 mb-12 max-w-[34ch] text-balance">
-          A modern, opinionated toolbox — chosen for longevity.
+        <h2 className="font-display text-3xl md:text-4xl font-medium tracking-tight mt-4 mb-4 max-w-[40ch] text-balance">
+          A modern, carefully selected technology stack built for scale.
         </h2>
+        <p className="text-muted-foreground leading-relaxed max-w-[60ch] mb-12">
+          We choose the right technologies for each project to deliver reliable, future-ready digital solutions. Our stack is built for scalability, performance, security, and long-term maintainability.
+        </p>
         <TechStackGrid
           groups={[
-            { title: "Frontend", items: ["React", "Next.js", "Angular", "Vue", "TypeScript", "Tailwind"] },
-            { title: "Backend", items: ["Node.js", "Express", "Python", "Java", ".NET", "Go", "PHP"] },
-            { title: "Mobile", items: ["React Native", "Flutter", "Swift / iOS", "Kotlin / Android"] },
-            { title: "Data & AI", items: ["PostgreSQL", "MySQL", "MongoDB", "OpenAI", "Anthropic", "PyTorch"] },
-            { title: "Cloud", items: ["AWS", "Azure", "Google Cloud", "Cloudflare", "Vercel"] },
-            { title: "DevOps", items: ["Docker", "Kubernetes", "Terraform", "GitHub Actions", "Jenkins"] },
+            { title: "Frontend Engineering", items: ["React", "Next.js", "Angular", "Vue.js", "TypeScript", "Tailwind CSS", "HTML5", "CSS3", "JavaScript (ES6+)"] },
+            { title: "Backend Engineering", items: ["Node.js", "Express.js", "Python", "Java", ".NET", "Go", "PHP"] },
+            { title: "Mobile Development", items: ["React Native", "Flutter", "Swift (iOS)", "Kotlin (Android)"] },
+            { title: "AI & Machine Learning", items: ["OpenAI", "Anthropic", "PyTorch", "TensorFlow", "Hugging Face", "LangChain", "Pinecone", "Weaviate", "ChromaDB", "RAG Systems", "AI Agents", "Computer Vision", "NLP"] },
+            { title: "Data Engineering & Databases", items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "ETL Pipelines", "Data Warehousing", "Analytics", "Business Intelligence"] },
+            { title: "Cloud & Infrastructure", items: ["AWS", "Microsoft Azure", "Google Cloud", "Cloudflare", "Vercel", "Serverless Computing", "Object Storage", "CDN", "Load Balancing", "Managed Databases", "Virtual Machines"] },
+            { title: "DevOps & Platform Engineering", items: ["Docker", "Kubernetes", "GitHub Actions", "GitLab CI/CD", "Jenkins", "Terraform", "Infrastructure as Code", "Monitoring & Logging"] },
+            { title: "API Development & Integration", items: ["REST APIs", "GraphQL", "gRPC", "WebSockets", "OAuth 2.0", "JWT Authentication", "Third-party Integrations", "Payment Gateway Integration"] },
+            { title: "Cybersecurity", items: ["Secure Coding", "Identity & Access Management", "Multi-factor Authentication", "Encryption", "OWASP Best Practices", "Vulnerability Assessment", "Security Audits", "Compliance Support"] },
+            { title: "Enterprise Solutions", items: ["ERP Systems", "CRM Systems", "HRMS", "Learning Management Systems", "Student Information Systems", "Workflow Automation", "Document Management"] },
+            { title: "Quality Engineering & Testing", items: ["Unit Testing", "Integration Testing", "End-to-End Testing", "Performance Testing", "Security Testing", "Test Automation", "Manual QA", "Jest", "Cypress", "Playwright", "Selenium"] },
+            { title: "UI / UX Design", items: ["User Research", "Wireframing", "Prototyping", "Design Systems", "Accessibility", "Responsive Design", "Figma", "Adobe XD"] },
+            { title: "Analytics & Observability", items: ["Google Analytics", "OpenTelemetry", "Grafana", "Prometheus", "ELK Stack", "Sentry", "Application Performance Monitoring (APM)"] },
+            { title: "Emerging Technologies", items: ["Generative AI", "AI Agents", "Internet of Things (IoT)", "Blockchain", "Augmented Reality (AR)", "Virtual Reality (VR)", "Edge Computing", "Low-Code/No-Code Automation"] },
           ]}
         />
       </Section>
