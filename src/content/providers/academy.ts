@@ -277,6 +277,11 @@ const STATIC_ACADEMY_BREADCRUMBS: Readonly<Record<string, readonly BreadcrumbEnt
     { label: "Academy", url: "/academy" },
     { label: "Success Stories" },
   ],
+  "/academy/blog/certifications-comparison": [
+    { label: "Academy", url: "/academy" },
+    { label: "Blog", url: "/blog" },
+    { label: "Certifications Comparison" },
+  ],
   "/academy/faq": [
     { label: "Academy", url: "/academy" },
     { label: "FAQ" },
