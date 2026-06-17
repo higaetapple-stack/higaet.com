@@ -125,8 +125,8 @@ function TechHome() {
       <ServiceHero
         brand="tech"
         eyebrow="HIGAET Technologies"
-        title="Enterprise AI engineering and custom software, built to ship."
-        subtitle="From applied AI and SaaS products to enterprise software and cloud platforms — HIGAET Technologies delivers senior teams, modern engineering, and measurable outcomes."
+        title="Intelligent digital solutions that drive growth."
+        subtitle="The technology and innovation division of HIGAET, delivering software development, AI solutions, enterprise applications, cloud technologies, automation, and digital transformation for businesses, institutions, startups, and enterprises worldwide."
         primaryHref="/technologies/contact"
         primaryLabel="Start a project"
         secondaryHref="/technologies/case-studies"
