@@ -1,0 +1,121 @@
+# HIGAET
+
+> Helen Institute of Gen AI Engineering & Technology — a global institute spanning AI education, international university pathways, and enterprise software engineering.
+
+HIGAET bridges foundational research and industrial application across three integrated divisions: HIGAET Academy (AI engineering education and placements), HIGAET Global Education Hub (study abroad, visa, and scholarship services), and HIGAET Technologies (enterprise AI solutions and software engineering).
+
+## Pages
+
+- [/](/): HIGAET homepage — overview of the three divisions and institutional mission.
+- [/about](/about): About HIGAET, its mission, vision, and leadership.
+- [/contact](/contact): General contact and inquiry form.
+- [/careers](/careers): Open roles across all HIGAET divisions.
+- [/blog](/blog): Editorial content on AI, education, and technology.
+- [/success-stories](/success-stories): Student and client success stories.
+- [/privacy](/privacy): Privacy policy.
+- [/terms](/terms): Terms of service.
+- [/cookies](/cookies): Cookie policy and preferences.
+- [/constitution](/constitution): HIGAET organizational constitution.
+- [/governance](/governance): Governance framework and policies.
+- [/status](/status): System status and uptime.
+
+## Academy
+
+- [/academy](/academy): HIGAET Academy homepage — AI engineering programs, placements, and admissions.
+- [/academy/programs](/academy/programs): Full catalog of Academy programs.
+- [/academy/online-courses](/academy/online-courses): Live online AI engineering cohorts.
+- [/academy/offline-training](/academy/offline-training): On-campus and in-person training programs.
+- [/academy/corporate-training](/academy/corporate-training): Custom upskilling for enterprise teams.
+- [/academy/placements](/academy/placements): Placement ecosystem and hiring partners.
+- [/academy/internships](/academy/internships): Internship opportunities and partner companies.
+- [/academy/learning-paths](/academy/learning-paths): Curated paths for school students, college students, working professionals, entrepreneurs, and corporate teams.
+- [/academy/certifications](/academy/certifications): Industry-recognized AI engineering certifications.
+- [/academy/admissions](/academy/admissions): Application process, counselling, and enrolment.
+- [/academy/scholarship](/academy/scholarship): HAT scholarship and financing options.
+- [/academy/faq](/academy/faq): Frequently asked questions about programs and admissions.
+- [/academy/contact](/academy/contact): Academy-specific inquiries and advisor booking.
+- [/academy/success-stories](/academy/success-stories): Graduate outcomes and career transitions.
+- [/academy/blog/certifications-comparison](/academy/blog/certifications-comparison): Comparison guide for AI engineering certifications in 2026.
+- [/academy/campuses](/academy/campuses): Academy campus locations.
+
+## Global Education Hub
+
+- [/global-education](/global-education): Global Education Hub homepage — study abroad and visa services.
+- [/global-education/study-abroad](/global-education/study-abroad): International education pathways and partner universities.
+- [/global-education/visa-guidance](/global-education/visa-guidance): Visa application support and documentation.
+- [/global-education/scholarships](/global-education/scholarships): Scholarship guidance and funding options.
+- [/global-education/student-services](/global-education/student-services): Pre-departure and post-arrival student services.
+- [/global-education/admission-process](/global-education/admission-process): Step-by-step admission process for global programs.
+- [/global-education/countries](/global-education/countries): Destination countries and university partnerships.
+- [/global-education/universities](/global-education/universities): Partner university directory.
+- [/global-education/faq](/global-education/faq): FAQ on visas, admissions, and scholarships.
+- [/global-education/contact](/global-education/contact): Contact the Global Education Hub team.
+
+## Technologies
+
+- [/technologies](/technologies): HIGAET Technologies homepage — enterprise AI and software solutions.
+- [/technologies/software-development](/technologies/software-development): Custom software engineering services.
+- [/technologies/ai-solutions](/technologies/ai-solutions): Applied AI, machine learning, and generative AI solutions.
+- [/technologies/cloud-solutions](/technologies/cloud-solutions): Cloud architecture, migration, and managed services.
+- [/technologies/web-development](/technologies/web-development): Full-stack web application development.
+- [/technologies/mobile-development](/technologies/mobile-development): iOS, Android, and cross-platform mobile apps.
+- [/technologies/enterprise-software](/technologies/enterprise-software): Large-scale enterprise application development.
+- [/technologies/saas-products](/technologies/saas-products): SaaS product design, build, and scaling.
+- [/technologies/digital-transformation](/technologies/digital-transformation): Business process digitization and modernization.
+- [/technologies/data-engineering](/technologies/data-engineering): Data pipelines, warehousing, and analytics infrastructure.
+- [/technologies/business-intelligence](/technologies/business-intelligence): BI dashboards, reporting, and decision support.
+- [/technologies/devops](/technologies/devops): CI/CD, infrastructure as code, and platform engineering.
+- [/technologies/qa-testing](/technologies/qa-testing): Quality assurance and automated testing.
+- [/technologies/ui-ux-design](/technologies/ui-ux-design): Product design, user research, and design systems.
+- [/technologies/it-consulting](/technologies/it-consulting): Strategic technology consulting.
+- [/technologies/product-development](/technologies/product-development): End-to-end product lifecycle management.
+- [/technologies/staff-augmentation](/technologies/staff-augmentation): On-demand engineering talent augmentation.
+- [/technologies/dedicated-team](/technologies/dedicated-team): Long-term dedicated development teams.
+- [/technologies/case-studies](/technologies/case-studies): Client project case studies and outcomes.
+- [/technologies/insights](/technologies/insights): Technology blog, whitepapers, and industry insights.
+- [/technologies/careers](/technologies/careers): Engineering and consulting careers at HIGAET Technologies.
+- [/technologies/company](/technologies/company): About HIGAET Technologies, leadership, and culture.
+- [/technologies/contact](/technologies/contact): Business inquiries and project consultations.
+
+## Engagement Models
+
+- [/technologies/engagement](/technologies/engagement): Overview of engagement and delivery models.
+- [/technologies/engagement/fixed-price-projects](/technologies/engagement/fixed-price-projects): Fixed-scope, fixed-budget project delivery.
+- [/technologies/engagement/time-and-materials](/technologies/engagement/time-and-materials): Flexible time-and-materials billing.
+- [/technologies/engagement/dedicated-development-team](/technologies/engagement/dedicated-development-team): Dedicated offshore/nearshore teams.
+- [/technologies/engagement/staff-augmentation](/technologies/engagement/staff-augmentation): Embedded engineers for existing teams.
+- [/technologies/engagement/build-operate-transfer](/technologies/engagement/build-operate-transfer): BOT model for offshore centers.
+- [/technologies/engagement/offshore-development-center](/technologies/engagement/offshore-development-center): Full offshore center setup and operation.
+
+## Industries
+
+- [/technologies/industries](/technologies/industries): Industries served by HIGAET Technologies.
+- [/technologies/industries/fintech](/technologies/industries/fintech): Financial technology solutions.
+- [/technologies/industries/healthcare](/technologies/industries/healthcare): Healthcare and life sciences technology.
+- [/technologies/industries/education](/technologies/industries/education): EdTech and learning platform development.
+- [/technologies/industries/ecommerce](/technologies/industries/ecommerce): E-commerce and retail technology.
+- [/technologies/industries/banking](/technologies/industries/banking): Banking and financial services.
+- [/technologies/industries/enterprise](/technologies/industries/enterprise): Large enterprise digital transformation.
+- [/technologies/industries/government](/technologies/industries/government): Public sector and government technology.
+- [/technologies/industries/logistics](/technologies/industries/logistics): Supply chain and logistics technology.
+- [/technologies/industries/manufacturing](/technologies/industries/manufacturing): Manufacturing and Industry 4.0 solutions.
+- [/technologies/industries/real-estate](/technologies/industries/real-estate): Real estate and proptech solutions.
+- [/technologies/industries/retail](/technologies/industries/retail): Retail technology and omnichannel solutions.
+- [/technologies/industries/hospitality](/technologies/industries/hospitality): Hospitality and travel technology.
+- [/technologies/industries/startups](/technologies/industries/startups): Startup product development and scaling.
+- [/technologies/industries/sme](/technologies/industries/sme): Small and medium enterprise technology solutions.
+
+## Expertise
+
+- [/technologies/expertise](/technologies/expertise): Technology capabilities and skill areas.
+- [/technologies/expertise/generative-ai](/technologies/expertise/generative-ai): Generative AI and LLM applications.
+- [/technologies/expertise/machine-learning](/technologies/expertise/machine-learning): Machine learning model development and deployment.
+- [/technologies/expertise/ai-automation](/technologies/expertise/ai-automation): AI-powered workflow automation.
+- [/technologies/expertise/computer-vision](/technologies/expertise/computer-vision): Computer vision and image processing.
+- [/technologies/expertise/nlp](/technologies/expertise/nlp): Natural language processing solutions.
+- [/technologies/expertise/data-engineering-tech](/technologies/expertise/data-engineering-tech): Data engineering and analytics infrastructure.
+- [/technologies/expertise/business-intelligence-tech](/technologies/expertise/business-intelligence-tech): Business intelligence and data visualization.
+
+## Optional
+
+- [/verify-certificate/$id](/verify-certificate): Public certificate verification tool for HIGAET Academy graduates.
