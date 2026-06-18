@@ -71,8 +71,9 @@ function BlogIndex() {
                   {p.title}
                 </h2>
                 <p className="text-muted-foreground leading-relaxed max-w-[68ch]">{p.excerpt}</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink group-hover:translate-x-1 transition-transform">
-                  Read more <ArrowRight className="size-4" />
+                <span className="sr-only">Read more about {p.title}</span>
+                <span aria-hidden className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink group-hover:translate-x-1 transition-transform">
+                  Read article <ArrowRight className="size-4" />
                 </span>
               </Link>
             </li>
