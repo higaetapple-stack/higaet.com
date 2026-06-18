@@ -6,7 +6,7 @@
 export const SITE = {
   name: "HIGAET",
   longName: "Helen Institute of Gen AI Engineering & Technology",
-  tagline: "Advancing human capability through Generative Intelligence.",
+  tagline: "Advancing human capability with Gen AI",
   description:
     "HIGAET is a global institute spanning AI education, international university pathways, and enterprise software engineering.",
   url: import.meta.env.VITE_SITE_URL ?? "https://higaet.com",
