@@ -124,7 +124,7 @@ export const adminListSystemErrors = createServerFn({ method: "GET" })
     if (data.level) q = q.eq("level", data.level);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return (rows ?? []) as Array<Record<string, unknown>>;
+    return (rows ?? []) as SystemErrorRow[];
   });
 
 // ---------- Admin: recent metrics ----------
@@ -148,7 +148,7 @@ export const adminListSystemMetrics = createServerFn({ method: "GET" })
     if (data.kind) q = q.eq("kind", data.kind);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return (rows ?? []) as Array<Record<string, unknown>>;
+    return (rows ?? []) as SystemErrorRow[];
   });
 
 // ---------- Admin: summary ----------
@@ -164,5 +164,5 @@ export const adminObservabilitySummary = createServerFn({ method: "GET" })
       { _window: `${data.hours} hours` },
     );
     if (error) throw new Error(error.message);
-    return (summary ?? {}) as Record<string, unknown>;
+    return (summary ?? {}) as ObservabilitySummary;
   });
