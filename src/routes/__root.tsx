@@ -16,6 +16,7 @@ import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
 import { DevErrorOverlay } from "@/components/DevErrorOverlay";
 import { supabase } from "@/integrations/supabase/client";
+import { ObservabilityErrorBoundary } from "@/components/observability/ErrorBoundary";
 
 function NotFoundComponent() {
   return (
@@ -155,7 +156,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ObservabilityErrorBoundary boundary="root">
+        <Outlet />
+      </ObservabilityErrorBoundary>
       <CookieConsent />
       <Toaster />
       <DevErrorOverlay />

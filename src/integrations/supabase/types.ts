@@ -2497,6 +2497,99 @@ export type Database = {
           },
         ]
       }
+      system_errors: {
+        Row: {
+          context: Json
+          environment: string | null
+          fingerprint: string | null
+          id: string
+          level: string
+          message: string
+          name: string | null
+          occurred_at: string
+          release: string | null
+          route: string | null
+          source: string
+          stack: string | null
+          trace_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+          user_role: string | null
+        }
+        Insert: {
+          context?: Json
+          environment?: string | null
+          fingerprint?: string | null
+          id?: string
+          level?: string
+          message: string
+          name?: string | null
+          occurred_at?: string
+          release?: string | null
+          route?: string | null
+          source: string
+          stack?: string | null
+          trace_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Update: {
+          context?: Json
+          environment?: string | null
+          fingerprint?: string | null
+          id?: string
+          level?: string
+          message?: string
+          name?: string | null
+          occurred_at?: string
+          release?: string | null
+          route?: string | null
+          source?: string
+          stack?: string | null
+          trace_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Relationships: []
+      }
+      system_metrics: {
+        Row: {
+          context: Json
+          duration_ms: number
+          id: string
+          kind: string
+          name: string
+          recorded_at: string
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          context?: Json
+          duration_ms: number
+          id?: string
+          kind: string
+          name: string
+          recorded_at?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          context?: Json
+          duration_ms?: number
+          id?: string
+          kind?: string
+          name?: string
+          recorded_at?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       tech_client_requests: {
         Row: {
           assigned_to: string | null
@@ -4098,6 +4191,7 @@ export type Database = {
       }
       notifications_mark_all_read: { Args: never; Returns: number }
       notifications_unread_count: { Args: never; Returns: number }
+      observability_summary: { Args: { _window?: string }; Returns: Json }
       verify_certificate: {
         Args: { _number: string }
         Returns: {
