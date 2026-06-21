@@ -13,6 +13,25 @@ import type {
   EventRsvpRow,
 } from "./community/types";
 
+// Attach author profiles to rows that have author_id, in one round trip.
+async function attachAuthors(
+  supabase: any,
+  rows: Array<{ author_id: string; author?: { full_name: string | null; avatar_url: string | null } | null }>,
+) {
+  if (rows.length === 0) return;
+  const ids = Array.from(new Set(rows.map((r) => r.author_id).filter(Boolean)));
+  if (ids.length === 0) return;
+  const { data } = await supabase
+    .from("profiles")
+    .select("id, full_name, avatar_url")
+    .in("id", ids);
+  const map = new Map<string, { full_name: string | null; avatar_url: string | null }>();
+  for (const p of (data ?? []) as Array<{ id: string; full_name: string | null; avatar_url: string | null }>) {
+    map.set(p.id, { full_name: p.full_name, avatar_url: p.avatar_url });
+  }
+  for (const r of rows) r.author = map.get(r.author_id) ?? null;
+}
+
 // ============================================================
 // Communities
 // ============================================================
