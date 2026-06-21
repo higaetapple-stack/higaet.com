@@ -683,6 +683,92 @@ export type Database = {
           },
         ]
       }
+      communities: {
+        Row: {
+          cover_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          icon_url: string | null
+          id: string
+          member_count: number
+          membership_type: Database["public"]["Enums"]["community_membership_type"]
+          name: string
+          slug: string
+          thread_count: number
+          updated_at: string
+          visibility: Database["public"]["Enums"]["community_visibility"]
+        }
+        Insert: {
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          member_count?: number
+          membership_type?: Database["public"]["Enums"]["community_membership_type"]
+          name: string
+          slug: string
+          thread_count?: number
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["community_visibility"]
+        }
+        Update: {
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          member_count?: number
+          membership_type?: Database["public"]["Enums"]["community_membership_type"]
+          name?: string
+          slug?: string
+          thread_count?: number
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["community_visibility"]
+        }
+        Relationships: []
+      }
+      community_members: {
+        Row: {
+          community_id: string
+          joined_at: string
+          notify_events: boolean
+          notify_reactions: boolean
+          notify_replies: boolean
+          role: Database["public"]["Enums"]["community_member_role"]
+          user_id: string
+        }
+        Insert: {
+          community_id: string
+          joined_at?: string
+          notify_events?: boolean
+          notify_reactions?: boolean
+          notify_replies?: boolean
+          role?: Database["public"]["Enums"]["community_member_role"]
+          user_id: string
+        }
+        Update: {
+          community_id?: string
+          joined_at?: string
+          notify_events?: boolean
+          notify_reactions?: boolean
+          notify_replies?: boolean
+          role?: Database["public"]["Enums"]["community_member_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_members_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       counselor_assignments: {
         Row: {
           active: boolean
@@ -1204,6 +1290,100 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_rsvps: {
+        Row: {
+          created_at: string
+          event_id: string
+          status: Database["public"]["Enums"]["event_rsvp_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          status?: Database["public"]["Enums"]["event_rsvp_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          status?: Database["public"]["Enums"]["event_rsvp_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rsvps_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          capacity: number | null
+          community_id: string | null
+          cover_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          ends_at: string
+          id: string
+          location: string | null
+          rsvp_count: number
+          starts_at: string
+          status: Database["public"]["Enums"]["event_status"]
+          title: string
+          updated_at: string
+          virtual_url: string | null
+        }
+        Insert: {
+          capacity?: number | null
+          community_id?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at: string
+          id?: string
+          location?: string | null
+          rsvp_count?: number
+          starts_at: string
+          status?: Database["public"]["Enums"]["event_status"]
+          title: string
+          updated_at?: string
+          virtual_url?: string | null
+        }
+        Update: {
+          capacity?: number | null
+          community_id?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string
+          id?: string
+          location?: string | null
+          rsvp_count?: number
+          starts_at?: string
+          status?: Database["public"]["Enums"]["event_status"]
+          title?: string
+          updated_at?: string
+          virtual_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
             referencedColumns: ["id"]
           },
         ]
@@ -2139,6 +2319,33 @@ export type Database = {
           },
         ]
       }
+      reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          target_id: string
+          target_type: Database["public"]["Enums"]["reaction_target"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          target_id: string
+          target_type: Database["public"]["Enums"]["reaction_target"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          target_id?: string
+          target_type?: Database["public"]["Enums"]["reaction_target"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       refunds: {
         Row: {
           amount_minor: number
@@ -2185,6 +2392,44 @@ export type Database = {
             columns: ["payment_id"]
             isOneToOne: false
             referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      replies: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          reaction_count: number
+          thread_id: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          reaction_count?: number
+          thread_id: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          reaction_count?: number
+          thread_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "replies_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "threads"
             referencedColumns: ["id"]
           },
         ]
@@ -3708,6 +3953,69 @@ export type Database = {
           },
         ]
       }
+      threads: {
+        Row: {
+          author_id: string
+          body: string
+          community_id: string
+          created_at: string
+          id: string
+          last_reply_at: string | null
+          lesson_id: string | null
+          locked: boolean
+          pinned: boolean
+          reaction_count: number
+          reply_count: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          community_id: string
+          created_at?: string
+          id?: string
+          last_reply_at?: string | null
+          lesson_id?: string | null
+          locked?: boolean
+          pinned?: boolean
+          reaction_count?: number
+          reply_count?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          community_id?: string
+          created_at?: string
+          id?: string
+          last_reply_at?: string | null
+          lesson_id?: string | null
+          locked?: boolean
+          pinned?: boolean
+          reaction_count?: number
+          reply_count?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "threads_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "threads_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       universities: {
         Row: {
           acceptance_rate: number | null
@@ -4170,6 +4478,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_community_member: {
+        Args: { _community_id: string; _user_id?: string }
+        Returns: boolean
+      }
       is_program_eligible: {
         Args: { _program: string; _student: string }
         Returns: boolean
@@ -4233,6 +4545,9 @@ export type Database = {
         | "rejected"
         | "withdrawn"
         | "hired"
+      community_member_role: "member" | "moderator" | "owner"
+      community_membership_type: "open" | "approval_required"
+      community_visibility: "public" | "private"
       course_status: "draft" | "published" | "archived"
       crm_status:
         | "new"
@@ -4243,6 +4558,8 @@ export type Database = {
         | "closed"
       domain_event_status: "pending" | "processing" | "processed" | "failed"
       enrollment_status: "active" | "paused" | "completed" | "withdrawn"
+      event_rsvp_status: "going" | "maybe" | "declined"
+      event_status: "draft" | "scheduled" | "live" | "completed" | "cancelled"
       job_employment_type: "full_time" | "part_time" | "contract" | "internship"
       job_experience_level: "entry" | "mid" | "senior"
       job_remote_type: "onsite" | "hybrid" | "remote"
@@ -4283,6 +4600,7 @@ export type Database = {
         | "passed"
         | "failed"
         | "needs_revision"
+      reaction_target: "thread" | "reply"
       refund_status: "pending" | "processed" | "failed"
       submission_status:
         | "pending"
@@ -4519,6 +4837,9 @@ export const Constants = {
         "withdrawn",
         "hired",
       ],
+      community_member_role: ["member", "moderator", "owner"],
+      community_membership_type: ["open", "approval_required"],
+      community_visibility: ["public", "private"],
       course_status: ["draft", "published", "archived"],
       crm_status: [
         "new",
@@ -4530,6 +4851,8 @@ export const Constants = {
       ],
       domain_event_status: ["pending", "processing", "processed", "failed"],
       enrollment_status: ["active", "paused", "completed", "withdrawn"],
+      event_rsvp_status: ["going", "maybe", "declined"],
+      event_status: ["draft", "scheduled", "live", "completed", "cancelled"],
       job_employment_type: ["full_time", "part_time", "contract", "internship"],
       job_experience_level: ["entry", "mid", "senior"],
       job_remote_type: ["onsite", "hybrid", "remote"],
@@ -4574,6 +4897,7 @@ export const Constants = {
         "failed",
         "needs_revision",
       ],
+      reaction_target: ["thread", "reply"],
       refund_status: ["pending", "processed", "failed"],
       submission_status: [
         "pending",

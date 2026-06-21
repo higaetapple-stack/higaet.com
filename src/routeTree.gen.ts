@@ -100,6 +100,7 @@ import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
@@ -195,6 +196,8 @@ import { Route as AuthenticatedDashboardFacultyRouteImport } from './routes/_aut
 import { Route as AuthenticatedDashboardCounselorRouteImport } from './routes/_authenticated.dashboard.counselor'
 import { Route as AuthenticatedDashboardCareerRouteImport } from './routes/_authenticated.dashboard.career'
 import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated.dashboard.admin'
+import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
+import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
 import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
 import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
 import { Route as AuthenticatedDashboardCounselorIndexRouteImport } from './routes/_authenticated.dashboard.counselor.index'
@@ -258,6 +261,8 @@ import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './ro
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
 import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
 import { Route as AuthenticatedDashboardAdminAiRouteImport } from './routes/_authenticated.dashboard.admin.ai'
+import { Route as AuthenticatedCommunityEventsIdRouteImport } from './routes/_authenticated.community.events.$id'
+import { Route as AuthenticatedCommunitySlugThreadIdRouteImport } from './routes/_authenticated.community.$slug.$threadId'
 import { Route as AuthenticatedDashboardTechnologiesClientRouteRouteImport } from './routes/_authenticated.dashboard.technologies.client/route'
 import { Route as AuthenticatedDashboardTechnologiesProposalsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.proposals.index'
 import { Route as AuthenticatedDashboardTechnologiesProjectsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.projects.index'
@@ -756,6 +761,11 @@ const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedCommunityRoute = AuthenticatedCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
@@ -1307,6 +1317,18 @@ const AuthenticatedDashboardAdminRoute =
     path: '/admin',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedCommunityEventsRoute =
+  AuthenticatedCommunityEventsRouteImport.update({
+    id: '/events',
+    path: '/events',
+    getParentRoute: () => AuthenticatedCommunityRoute,
+  } as any)
+const AuthenticatedCommunitySlugRoute =
+  AuthenticatedCommunitySlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => AuthenticatedCommunityRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesIndexRoute =
   AuthenticatedDashboardTechnologiesIndexRouteImport.update({
     id: '/',
@@ -1685,6 +1707,18 @@ const AuthenticatedDashboardAdminAiRoute =
     path: '/ai',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedCommunityEventsIdRoute =
+  AuthenticatedCommunityEventsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedCommunityEventsRoute,
+  } as any)
+const AuthenticatedCommunitySlugThreadIdRoute =
+  AuthenticatedCommunitySlugThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedCommunitySlugRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesClientRouteRoute =
   AuthenticatedDashboardTechnologiesClientRouteRouteImport.update({
     id: '/client',
@@ -1812,6 +1846,7 @@ export interface FileRoutesByFullPath {
   '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
@@ -1879,6 +1914,8 @@ export interface FileRoutesByFullPath {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
+  '/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
   '/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
   '/dashboard/career': typeof AuthenticatedDashboardCareerRouteWithChildren
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorRouteWithChildren
@@ -1975,6 +2012,8 @@ export interface FileRoutesByFullPath {
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
+  '/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
+  '/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
   '/dashboard/admin/ai': typeof AuthenticatedDashboardAdminAiRouteWithChildren
   '/dashboard/admin/analytics': typeof AuthenticatedDashboardAdminAnalyticsRoute
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
@@ -2076,6 +2115,7 @@ export interface FileRoutesByTo {
   '/success-stories': typeof SuccessStoriesRoute
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
+  '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2142,6 +2182,8 @@ export interface FileRoutesByTo {
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
+  '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
+  '/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRouteWithChildren
   '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRouteWithChildren
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
@@ -2233,6 +2275,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
+  '/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
+  '/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
   '/dashboard/admin/ai': typeof AuthenticatedDashboardAdminAiRouteWithChildren
   '/dashboard/admin/analytics': typeof AuthenticatedDashboardAdminAnalyticsRoute
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
@@ -2336,6 +2380,7 @@ export interface FileRoutesById {
   '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
@@ -2403,6 +2448,8 @@ export interface FileRoutesById {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/_authenticated/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
+  '/_authenticated/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
   '/_authenticated/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
   '/_authenticated/dashboard/career': typeof AuthenticatedDashboardCareerRouteWithChildren
   '/_authenticated/dashboard/counselor': typeof AuthenticatedDashboardCounselorRouteWithChildren
@@ -2499,6 +2546,8 @@ export interface FileRoutesById {
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/_authenticated/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
+  '/_authenticated/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
+  '/_authenticated/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
   '/_authenticated/dashboard/admin/ai': typeof AuthenticatedDashboardAdminAiRouteWithChildren
   '/_authenticated/dashboard/admin/analytics': typeof AuthenticatedDashboardAdminAnalyticsRoute
   '/_authenticated/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
@@ -2605,6 +2654,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/technologies'
     | '/terms'
+    | '/community'
     | '/dashboard'
     | '/academy/admissions'
     | '/academy/certifications'
@@ -2672,6 +2722,8 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/community/$slug'
+    | '/community/events'
     | '/dashboard/admin'
     | '/dashboard/career'
     | '/dashboard/counselor'
@@ -2768,6 +2820,8 @@ export interface FileRouteTypes {
     | '/academy/campuses/'
     | '/academy/programs/'
     | '/dashboard/technologies/client'
+    | '/community/$slug/$threadId'
+    | '/community/events/$id'
     | '/dashboard/admin/ai'
     | '/dashboard/admin/analytics'
     | '/dashboard/admin/applications'
@@ -2869,6 +2923,7 @@ export interface FileRouteTypes {
     | '/success-stories'
     | '/system-dashboard'
     | '/terms'
+    | '/community'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -2935,6 +2990,8 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/jobs'
     | '/technologies'
+    | '/community/$slug'
+    | '/community/events'
     | '/dashboard/faculty'
     | '/dashboard/notifications'
     | '/dashboard/profile'
@@ -3026,6 +3083,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
+    | '/community/$slug/$threadId'
+    | '/community/events/$id'
     | '/dashboard/admin/ai'
     | '/dashboard/admin/analytics'
     | '/dashboard/admin/applications'
@@ -3128,6 +3187,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/technologies'
     | '/terms'
+    | '/_authenticated/community'
     | '/_authenticated/dashboard'
     | '/academy/admissions'
     | '/academy/certifications'
@@ -3195,6 +3255,8 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/_authenticated/community/$slug'
+    | '/_authenticated/community/events'
     | '/_authenticated/dashboard/admin'
     | '/_authenticated/dashboard/career'
     | '/_authenticated/dashboard/counselor'
@@ -3291,6 +3353,8 @@ export interface FileRouteTypes {
     | '/academy/campuses/'
     | '/academy/programs/'
     | '/_authenticated/dashboard/technologies/client'
+    | '/_authenticated/community/$slug/$threadId'
+    | '/_authenticated/community/events/$id'
     | '/_authenticated/dashboard/admin/ai'
     | '/_authenticated/dashboard/admin/analytics'
     | '/_authenticated/dashboard/admin/applications'
@@ -4061,6 +4125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/community': {
+      id: '/_authenticated/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof AuthenticatedCommunityRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/academy/programs/': {
       id: '/academy/programs/'
       path: '/programs'
@@ -4726,6 +4797,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/community/events': {
+      id: '/_authenticated/community/events'
+      path: '/events'
+      fullPath: '/community/events'
+      preLoaderRoute: typeof AuthenticatedCommunityEventsRouteImport
+      parentRoute: typeof AuthenticatedCommunityRoute
+    }
+    '/_authenticated/community/$slug': {
+      id: '/_authenticated/community/$slug'
+      path: '/$slug'
+      fullPath: '/community/$slug'
+      preLoaderRoute: typeof AuthenticatedCommunitySlugRouteImport
+      parentRoute: typeof AuthenticatedCommunityRoute
+    }
     '/_authenticated/dashboard/technologies/': {
       id: '/_authenticated/dashboard/technologies/'
       path: '/'
@@ -5167,6 +5252,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminAiRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/community/events/$id': {
+      id: '/_authenticated/community/events/$id'
+      path: '/$id'
+      fullPath: '/community/events/$id'
+      preLoaderRoute: typeof AuthenticatedCommunityEventsIdRouteImport
+      parentRoute: typeof AuthenticatedCommunityEventsRoute
+    }
+    '/_authenticated/community/$slug/$threadId': {
+      id: '/_authenticated/community/$slug/$threadId'
+      path: '/$threadId'
+      fullPath: '/community/$slug/$threadId'
+      preLoaderRoute: typeof AuthenticatedCommunitySlugThreadIdRouteImport
+      parentRoute: typeof AuthenticatedCommunitySlugRoute
+    }
     '/_authenticated/dashboard/technologies/client': {
       id: '/_authenticated/dashboard/technologies/client'
       path: '/client'
@@ -5288,6 +5387,53 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedCommunitySlugRouteChildren {
+  AuthenticatedCommunitySlugThreadIdRoute: typeof AuthenticatedCommunitySlugThreadIdRoute
+}
+
+const AuthenticatedCommunitySlugRouteChildren: AuthenticatedCommunitySlugRouteChildren =
+  {
+    AuthenticatedCommunitySlugThreadIdRoute:
+      AuthenticatedCommunitySlugThreadIdRoute,
+  }
+
+const AuthenticatedCommunitySlugRouteWithChildren =
+  AuthenticatedCommunitySlugRoute._addFileChildren(
+    AuthenticatedCommunitySlugRouteChildren,
+  )
+
+interface AuthenticatedCommunityEventsRouteChildren {
+  AuthenticatedCommunityEventsIdRoute: typeof AuthenticatedCommunityEventsIdRoute
+}
+
+const AuthenticatedCommunityEventsRouteChildren: AuthenticatedCommunityEventsRouteChildren =
+  {
+    AuthenticatedCommunityEventsIdRoute: AuthenticatedCommunityEventsIdRoute,
+  }
+
+const AuthenticatedCommunityEventsRouteWithChildren =
+  AuthenticatedCommunityEventsRoute._addFileChildren(
+    AuthenticatedCommunityEventsRouteChildren,
+  )
+
+interface AuthenticatedCommunityRouteChildren {
+  AuthenticatedCommunitySlugRoute: typeof AuthenticatedCommunitySlugRouteWithChildren
+  AuthenticatedCommunityEventsRoute: typeof AuthenticatedCommunityEventsRouteWithChildren
+}
+
+const AuthenticatedCommunityRouteChildren: AuthenticatedCommunityRouteChildren =
+  {
+    AuthenticatedCommunitySlugRoute:
+      AuthenticatedCommunitySlugRouteWithChildren,
+    AuthenticatedCommunityEventsRoute:
+      AuthenticatedCommunityEventsRouteWithChildren,
+  }
+
+const AuthenticatedCommunityRouteWithChildren =
+  AuthenticatedCommunityRoute._addFileChildren(
+    AuthenticatedCommunityRouteChildren,
+  )
 
 interface AuthenticatedDashboardAdminAiRouteChildren {
   AuthenticatedDashboardAdminAiCopilotRoute: typeof AuthenticatedDashboardAdminAiCopilotRoute
@@ -5714,10 +5860,12 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
