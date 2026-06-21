@@ -148,7 +148,7 @@ export const adminListSystemMetrics = createServerFn({ method: "GET" })
     if (data.kind) q = q.eq("kind", data.kind);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return (rows ?? []) as SystemErrorRow[];
+    return (rows ?? []) as SystemMetricRow[];
   });
 
 // ---------- Admin: summary ----------
