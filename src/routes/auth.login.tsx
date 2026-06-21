@@ -30,6 +30,8 @@ export const Route = createFileRoute("/auth/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const form = useForm<Values>({ resolver: zodResolver(Schema), defaultValues: { email: "", password: "" } });
 
   const onSubmit = async (values: Values) => {
@@ -40,34 +42,31 @@ function LoginPage() {
       toast.success("Welcome back");
       navigate({ to: "/dashboard" });
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Sign-in failed";
-      toast.error(msg);
+      toast.error(e instanceof Error ? e.message : "Sign-in failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const [googleLoading, setGoogleLoading] = useState(false);
-  async function signInWithGoogle() {
-    setGoogleLoading(true);
+  async function signInWithProvider(provider: "google" | "apple") {
+    const setBusy = provider === "google" ? setGoogleLoading : setAppleLoading;
+    setBusy(true);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
+      const result = await lovable.auth.signInWithOAuth(provider, {
         redirect_uri: window.location.origin + "/dashboard",
       });
       if (result.error) {
-        toast.error(result.error.message ?? "Google sign-in failed");
-        setGoogleLoading(false);
+        toast.error(result.error.message ?? `${provider} sign-in failed`);
+        setBusy(false);
         return;
       }
       if (result.redirected) return;
       navigate({ to: "/dashboard" });
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Google sign-in failed");
-      setGoogleLoading(false);
+      toast.error(e instanceof Error ? e.message : `${provider} sign-in failed`);
+      setBusy(false);
     }
   }
-
-
 
   return (
     <AuthCard
@@ -82,15 +81,26 @@ function LoginPage() {
         </>
       }
     >
-      <button
-        type="button"
-        onClick={signInWithGoogle}
-        disabled={googleLoading}
-        className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border bg-surface text-ink text-sm font-medium px-4 py-2.5 rounded-md hover:bg-muted transition-colors disabled:opacity-60 mb-4"
-      >
-        {googleLoading ? <Loader2 className="size-4 animate-spin" /> : <GoogleMark />}
-        Continue with Google
-      </button>
+      <div className="space-y-2 mb-4">
+        <button
+          type="button"
+          onClick={() => signInWithProvider("google")}
+          disabled={googleLoading || appleLoading}
+          className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border bg-surface text-ink text-sm font-medium px-4 py-2.5 rounded-md hover:bg-muted transition-colors disabled:opacity-60"
+        >
+          {googleLoading ? <Loader2 className="size-4 animate-spin" /> : <GoogleMark />}
+          Continue with Google
+        </button>
+        <button
+          type="button"
+          onClick={() => signInWithProvider("apple")}
+          disabled={googleLoading || appleLoading}
+          className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border bg-ink text-surface text-sm font-medium px-4 py-2.5 rounded-md hover:bg-ink/90 transition-colors disabled:opacity-60"
+        >
+          {appleLoading ? <Loader2 className="size-4 animate-spin" /> : <AppleMark />}
+          Continue with Apple
+        </button>
+      </div>
       <div className="flex items-center gap-3 my-4">
         <div className="h-px flex-1 bg-border" />
         <span className="text-xs uppercase tracking-wider text-muted-foreground">or</span>
@@ -119,7 +129,6 @@ function LoginPage() {
           {loading && <Loader2 className="size-4 animate-spin" />}
           Sign in
         </button>
-
         <div className="text-right">
           <Link to="/auth/forgot-password" className="text-xs text-muted-foreground hover:text-ink">
             Forgot password?
@@ -137,6 +146,14 @@ function GoogleMark() {
       <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3 0 5.8 1.1 7.9 3l5.7-5.7A20 20 0 0 0 6.3 14.7z"/>
       <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3A12 12 0 0 1 12.7 28L6.1 33A20 20 0 0 0 24 44z"/>
       <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.5l6.3 5.3C41.1 35.6 44 30.3 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+    </svg>
+  );
+}
+
+function AppleMark() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
     </svg>
   );
 }

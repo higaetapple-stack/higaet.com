@@ -187,6 +187,7 @@ import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campus
 import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
 import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
 import { Route as AuthenticatedDashboardTechnologiesRouteImport } from './routes/_authenticated.dashboard.technologies'
+import { Route as AuthenticatedDashboardSecurityRouteImport } from './routes/_authenticated.dashboard.security'
 import { Route as AuthenticatedDashboardProgramsRouteImport } from './routes/_authenticated.dashboard.programs'
 import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated.dashboard.profile'
 import { Route as AuthenticatedDashboardNotificationsRouteImport } from './routes/_authenticated.dashboard.notifications'
@@ -246,6 +247,7 @@ import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './route
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
+import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
 import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
@@ -1256,6 +1258,12 @@ const AuthenticatedDashboardTechnologiesRoute =
     path: '/technologies',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardSecurityRoute =
+  AuthenticatedDashboardSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardProgramsRoute =
   AuthenticatedDashboardProgramsRouteImport.update({
     id: '/programs',
@@ -1610,6 +1618,12 @@ const AuthenticatedDashboardAdminJobsRoute =
     path: '/jobs',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminIdentityProvidersRoute =
+  AuthenticatedDashboardAdminIdentityProvidersRouteImport.update({
+    id: '/identity-providers',
+    path: '/identity-providers',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminEnrollmentsRoute =
   AuthenticatedDashboardAdminEnrollmentsRouteImport.update({
     id: '/enrollments',
@@ -1865,6 +1879,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRouteWithChildren
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
+  '/dashboard/security': typeof AuthenticatedDashboardSecurityRoute
   '/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
@@ -1962,6 +1977,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -2122,6 +2138,7 @@ export interface FileRoutesByTo {
   '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRouteWithChildren
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
+  '/dashboard/security': typeof AuthenticatedDashboardSecurityRoute
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
@@ -2216,6 +2233,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -2383,6 +2401,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRouteWithChildren
   '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/_authenticated/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
+  '/_authenticated/dashboard/security': typeof AuthenticatedDashboardSecurityRoute
   '/_authenticated/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   '/_authenticated/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
@@ -2480,6 +2499,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  '/_authenticated/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -2649,6 +2669,7 @@ export interface FileRouteTypes {
     | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/programs'
+    | '/dashboard/security'
     | '/dashboard/technologies'
     | '/dashboard/visa'
     | '/academy/blog/certifications-comparison'
@@ -2746,6 +2767,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/crm'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
+    | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/placements'
@@ -2906,6 +2928,7 @@ export interface FileRouteTypes {
     | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/programs'
+    | '/dashboard/security'
     | '/dashboard/visa'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
@@ -3000,6 +3023,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/countries'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
+    | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/placements'
@@ -3166,6 +3190,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/notifications'
     | '/_authenticated/dashboard/profile'
     | '/_authenticated/dashboard/programs'
+    | '/_authenticated/dashboard/security'
     | '/_authenticated/dashboard/technologies'
     | '/_authenticated/dashboard/visa'
     | '/academy/blog/certifications-comparison'
@@ -3263,6 +3288,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/crm'
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
+    | '/_authenticated/dashboard/admin/identity-providers'
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/notifications'
     | '/_authenticated/dashboard/admin/placements'
@@ -4631,6 +4657,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardTechnologiesRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/security': {
+      id: '/_authenticated/dashboard/security'
+      path: '/security'
+      fullPath: '/dashboard/security'
+      preLoaderRoute: typeof AuthenticatedDashboardSecurityRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/programs': {
       id: '/_authenticated/dashboard/programs'
       path: '/programs'
@@ -5044,6 +5077,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminJobsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/identity-providers': {
+      id: '/_authenticated/dashboard/admin/identity-providers'
+      path: '/identity-providers'
+      fullPath: '/dashboard/admin/identity-providers'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/enrollments': {
       id: '/_authenticated/dashboard/admin/enrollments'
       path: '/enrollments'
@@ -5287,6 +5327,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminCrmRoute: typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  AuthenticatedDashboardAdminIdentityProvidersRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminNotificationsRoute: typeof AuthenticatedDashboardAdminNotificationsRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -5326,6 +5367,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminEmployersRoute,
     AuthenticatedDashboardAdminEnrollmentsRoute:
       AuthenticatedDashboardAdminEnrollmentsRoute,
+    AuthenticatedDashboardAdminIdentityProvidersRoute:
+      AuthenticatedDashboardAdminIdentityProvidersRoute,
     AuthenticatedDashboardAdminJobsRoute: AuthenticatedDashboardAdminJobsRoute,
     AuthenticatedDashboardAdminNotificationsRoute:
       AuthenticatedDashboardAdminNotificationsRoute,
@@ -5578,6 +5621,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardNotificationsRoute: typeof AuthenticatedDashboardNotificationsRouteWithChildren
   AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
   AuthenticatedDashboardProgramsRoute: typeof AuthenticatedDashboardProgramsRouteWithChildren
+  AuthenticatedDashboardSecurityRoute: typeof AuthenticatedDashboardSecurityRoute
   AuthenticatedDashboardTechnologiesRoute: typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   AuthenticatedDashboardVisaRoute: typeof AuthenticatedDashboardVisaRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
@@ -5611,6 +5655,7 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
     AuthenticatedDashboardProgramsRoute:
       AuthenticatedDashboardProgramsRouteWithChildren,
+    AuthenticatedDashboardSecurityRoute: AuthenticatedDashboardSecurityRoute,
     AuthenticatedDashboardTechnologiesRoute:
       AuthenticatedDashboardTechnologiesRouteWithChildren,
     AuthenticatedDashboardVisaRoute: AuthenticatedDashboardVisaRoute,

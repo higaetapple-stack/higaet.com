@@ -1208,6 +1208,42 @@ export type Database = {
           },
         ]
       }
+      identity_providers: {
+        Row: {
+          created_at: string
+          display_name: string
+          enabled: boolean
+          id: string
+          metadata: Json
+          metadata_url: string | null
+          protocol: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          enabled?: boolean
+          id?: string
+          metadata?: Json
+          metadata_url?: string | null
+          protocol?: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          enabled?: boolean
+          id?: string
+          metadata?: Json
+          metadata_url?: string | null
+          protocol?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           applied_at: string
@@ -2251,6 +2287,68 @@ export type Database = {
             columns: ["university_id"]
             isOneToOne: false
             referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      security_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json
+          severity: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json
+          severity?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json
+          severity?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      sso_domains: {
+        Row: {
+          created_at: string
+          domain: string
+          id: string
+          provider_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          id?: string
+          provider_id: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          id?: string
+          provider_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sso_domains_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "identity_providers"
             referencedColumns: ["id"]
           },
         ]
@@ -3655,6 +3753,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_mfa_recovery_codes: {
+        Row: {
+          code_hash: string
+          created_at: string
+          id: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          code_hash: string
+          created_at?: string
+          id?: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          code_hash?: string
+          created_at?: string
+          id?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
