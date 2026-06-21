@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { runConversation } from "@/lib/conversation/orchestrator";
 import { resetSession } from "@/lib/conversation/types";
 import type { FusionMode } from "@/lib/fusion/hybrid-resolver";
+import { LIMITS, rateLimit } from "@/lib/server/rate-limit";
 
 const MAX_QUERY_LEN = 500;
 const MAX_K = 10;
