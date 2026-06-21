@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { applyAmendment } from "@/lib/constitution/executor";
 import { getConstitution, getHistory, rollback } from "@/lib/constitution/store";
 import type { ConstitutionAmendment } from "@/lib/constitution/amendments";
+import { withTrace, errorEnvelope } from "@/lib/observability/sentry-server";
 
 async function requireAdmin(request: Request): Promise<Response | null> {
   const authHeader = request.headers.get("authorization") ?? "";
