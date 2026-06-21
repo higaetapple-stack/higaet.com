@@ -87,7 +87,7 @@ function CertificateView() {
           </div>
 
           <p className="mt-8 text-xs text-muted-foreground inline-flex items-center gap-1.5">
-            <ShieldCheck className="size-3.5" /> Verify at /verify-certificate/{c.certificate_number}
+            <ShieldCheck className="size-3.5" /> Verify at /verify/{c.verification_token ?? c.certificate_number}
           </p>
         </div>
       </div>
