@@ -225,9 +225,9 @@ export const emitDomainEvent = createServerFn({ method: "POST" })
       "emit_domain_event",
       {
         _event_type: data.eventType,
-        _aggregate_type: data.aggregateType ?? null,
-        _aggregate_id: data.aggregateId ?? null,
-        _payload: data.payload,
+        _aggregate_type: data.aggregateType ?? undefined,
+        _aggregate_id: data.aggregateId ?? undefined,
+        _payload: data.payload as never,
       },
     );
     if (error) throw new Error(error.message);
