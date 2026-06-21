@@ -177,11 +177,13 @@ export const listReplies = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     const { data: rows, error } = await context.supabase
       .from("replies")
-      .select("*, author:profiles!replies_author_id_fkey(full_name, avatar_url)")
+      .select("*")
       .eq("thread_id", data.threadId)
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
-    return (rows ?? []) as ReplyRow[];
+    const replies = (rows ?? []) as ReplyRow[];
+    await attachAuthors(context.supabase, replies);
+    return replies;
   });
 
 export const createReply = createServerFn({ method: "POST" })
