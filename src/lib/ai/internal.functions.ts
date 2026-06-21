@@ -36,7 +36,7 @@ export const runAgent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { goal?: string; mode?: "sandbox" | "strict" }) => ({
     goal: typeof input?.goal === "string" ? input.goal : "untitled",
-    mode: input?.mode === "strict" ? "strict" : "sandbox",
+    mode: (input?.mode === "strict" ? "strict" : "sandbox") as "sandbox" | "strict",
   }))
   .handler(async ({ data }) =>
     withTrace("agent.run", "ai", async ({ traceId }) => {
