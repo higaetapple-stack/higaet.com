@@ -75,7 +75,7 @@ function AdminTemplatesPage() {
     NotificationTemplateRow[]
   >({
     queryKey: ["notifications", "templates"],
-    queryFn: () => fetchAll(),
+    queryFn: async () => (await fetchAll()) as NotificationTemplateRow[],
   });
 
   const [draft, setDraft] = useState<DraftTemplate>(EMPTY);

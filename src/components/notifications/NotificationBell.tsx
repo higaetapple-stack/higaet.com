@@ -24,7 +24,8 @@ export function NotificationBell() {
 
   const { data: items = [] } = useQuery<NotificationRow[]>({
     queryKey: ["notifications", "recent"],
-    queryFn: () => fetchList({ data: { limit: 20 } }),
+    queryFn: async () =>
+      (await fetchList({ data: { limit: 20 } })) as NotificationRow[],
     staleTime: 30_000,
   });
 

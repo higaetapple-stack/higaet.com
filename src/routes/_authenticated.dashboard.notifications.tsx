@@ -30,7 +30,8 @@ function NotificationsPage() {
 
   const { data: items = [], isLoading } = useQuery<NotificationRow[]>({
     queryKey: ["notifications", "all"],
-    queryFn: () => list({ data: { limit: 100 } }),
+    queryFn: async () =>
+      (await list({ data: { limit: 100 } })) as NotificationRow[],
   });
 
   const invalidate = () =>
