@@ -205,6 +205,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as ApiPublicKernelDecisionRouteImport } from './routes/api/public/kernel.decision'
+import { Route as ApiPublicDevSeedUsersRouteImport } from './routes/api/public/dev.seed-users'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
 import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
@@ -1362,6 +1363,11 @@ const ApiPublicKernelDecisionRoute = ApiPublicKernelDecisionRouteImport.update({
   path: '/api/public/kernel/decision',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDevSeedUsersRoute = ApiPublicDevSeedUsersRouteImport.update({
+  id: '/api/public/dev/seed-users',
+  path: '/api/public/dev/seed-users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicConstitutionStatusRoute =
   ApiPublicConstitutionStatusRouteImport.update({
     id: '/api/public/constitution/status',
@@ -2016,6 +2022,7 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
+  '/api/public/dev/seed-users': typeof ApiPublicDevSeedUsersRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2270,6 +2277,7 @@ export interface FileRoutesByTo {
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
+  '/api/public/dev/seed-users': typeof ApiPublicDevSeedUsersRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2538,6 +2546,7 @@ export interface FileRoutesById {
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
+  '/api/public/dev/seed-users': typeof ApiPublicDevSeedUsersRoute
   '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2806,6 +2815,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
+    | '/api/public/dev/seed-users'
     | '/api/public/kernel/decision'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -3060,6 +3070,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
+    | '/api/public/dev/seed-users'
     | '/api/public/kernel/decision'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -3327,6 +3338,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
+    | '/api/public/dev/seed-users'
     | '/api/public/kernel/decision'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -3406,6 +3418,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
+  ApiPublicDevSeedUsersRoute: typeof ApiPublicDevSeedUsersRoute
   ApiPublicKernelDecisionRoute: typeof ApiPublicKernelDecisionRoute
 }
 
@@ -4783,6 +4796,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicKernelDecisionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/dev/seed-users': {
+      id: '/api/public/dev/seed-users'
+      path: '/api/public/dev/seed-users'
+      fullPath: '/api/public/dev/seed-users'
+      preLoaderRoute: typeof ApiPublicDevSeedUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/constitution/status': {
       id: '/api/public/constitution/status'
       path: '/api/public/constitution/status'
@@ -6153,6 +6173,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
+  ApiPublicDevSeedUsersRoute: ApiPublicDevSeedUsersRoute,
   ApiPublicKernelDecisionRoute: ApiPublicKernelDecisionRoute,
 }
 export const routeTree = rootRouteImport
