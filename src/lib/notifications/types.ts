@@ -1,5 +1,13 @@
 // Shared notification types (client-safe — no server imports).
 
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [k: string]: JsonValue }
+  | JsonValue[];
+
 export type NotificationChannel = "in_app" | "email" | "push";
 export type NotificationPriority = "low" | "normal" | "high" | "critical";
 export type NotificationStatus =
@@ -20,7 +28,7 @@ export interface NotificationRow {
   body: string;
   action_url: string | null;
   priority: NotificationPriority;
-  data: Record<string, unknown>;
+  data: JsonValue;
   read_at: string | null;
   archived_at: string | null;
   created_at: string;
