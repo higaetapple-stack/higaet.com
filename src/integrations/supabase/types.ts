@@ -539,6 +539,36 @@ export type Database = {
           },
         ]
       }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          resource_id: string | null
+          resource_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Relationships: []
+      }
       certificate_templates: {
         Row: {
           created_at: string
@@ -1374,6 +1404,63 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          amount_minor: number
+          created_at: string
+          currency: string
+          error: Json | null
+          id: string
+          notes: Json
+          provider: Database["public"]["Enums"]["payment_provider"]
+          provider_order_id: string | null
+          provider_payment_id: string | null
+          purpose: Database["public"]["Enums"]["payment_purpose"]
+          receipt: string | null
+          ref_id: string | null
+          ref_table: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_minor: number
+          created_at?: string
+          currency?: string
+          error?: Json | null
+          id?: string
+          notes?: Json
+          provider: Database["public"]["Enums"]["payment_provider"]
+          provider_order_id?: string | null
+          provider_payment_id?: string | null
+          purpose?: Database["public"]["Enums"]["payment_purpose"]
+          receipt?: string | null
+          ref_id?: string | null
+          ref_table?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_minor?: number
+          created_at?: string
+          currency?: string
+          error?: Json | null
+          id?: string
+          notes?: Json
+          provider?: Database["public"]["Enums"]["payment_provider"]
+          provider_order_id?: string | null
+          provider_payment_id?: string | null
+          purpose?: Database["public"]["Enums"]["payment_purpose"]
+          receipt?: string | null
+          ref_id?: string | null
+          ref_table?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       placements: {
         Row: {
           created_at: string
@@ -1768,6 +1855,56 @@ export type Database = {
             columns: ["program_id"]
             isOneToOne: false
             referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      refunds: {
+        Row: {
+          amount_minor: number
+          created_at: string
+          currency: string
+          id: string
+          notes: Json
+          payment_id: string
+          provider: Database["public"]["Enums"]["payment_provider"]
+          provider_refund_id: string | null
+          reason: string | null
+          status: Database["public"]["Enums"]["refund_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount_minor: number
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: Json
+          payment_id: string
+          provider: Database["public"]["Enums"]["payment_provider"]
+          provider_refund_id?: string | null
+          reason?: string | null
+          status?: Database["public"]["Enums"]["refund_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount_minor?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: Json
+          payment_id?: string
+          provider?: Database["public"]["Enums"]["payment_provider"]
+          provider_refund_id?: string | null
+          reason?: string | null
+          status?: Database["public"]["Enums"]["refund_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "refunds_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
             referencedColumns: ["id"]
           },
         ]
@@ -3503,6 +3640,45 @@ export type Database = {
           },
         ]
       }
+      webhook_events: {
+        Row: {
+          error: string | null
+          event_id: string
+          event_type: string
+          id: string
+          payload: Json
+          processed: boolean
+          processed_at: string | null
+          provider: Database["public"]["Enums"]["payment_provider"]
+          received_at: string
+          signature: string | null
+        }
+        Insert: {
+          error?: string | null
+          event_id: string
+          event_type: string
+          id?: string
+          payload: Json
+          processed?: boolean
+          processed_at?: string | null
+          provider: Database["public"]["Enums"]["payment_provider"]
+          received_at?: string
+          signature?: string | null
+        }
+        Update: {
+          error?: string | null
+          event_id?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed?: boolean
+          processed_at?: string | null
+          provider?: Database["public"]["Enums"]["payment_provider"]
+          received_at?: string
+          signature?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -3589,6 +3765,23 @@ export type Database = {
       job_remote_type: "onsite" | "hybrid" | "remote"
       job_status: "draft" | "open" | "closed" | "archived"
       lesson_type: "video" | "reading" | "lab" | "quiz"
+      payment_provider: "razorpay" | "stripe"
+      payment_purpose:
+        | "course_enrollment"
+        | "program_enrollment"
+        | "consultation"
+        | "invoice"
+        | "proposal"
+        | "subscription"
+        | "other"
+      payment_status:
+        | "created"
+        | "authorized"
+        | "captured"
+        | "failed"
+        | "refunded"
+        | "partially_refunded"
+        | "cancelled"
       portfolio_visibility: "private" | "unlisted" | "public"
       program_status: "draft" | "published" | "archived"
       project_submission_status:
@@ -3598,6 +3791,7 @@ export type Database = {
         | "passed"
         | "failed"
         | "needs_revision"
+      refund_status: "pending" | "processed" | "failed"
       submission_status:
         | "pending"
         | "reviewed"
@@ -3848,6 +4042,25 @@ export const Constants = {
       job_remote_type: ["onsite", "hybrid", "remote"],
       job_status: ["draft", "open", "closed", "archived"],
       lesson_type: ["video", "reading", "lab", "quiz"],
+      payment_provider: ["razorpay", "stripe"],
+      payment_purpose: [
+        "course_enrollment",
+        "program_enrollment",
+        "consultation",
+        "invoice",
+        "proposal",
+        "subscription",
+        "other",
+      ],
+      payment_status: [
+        "created",
+        "authorized",
+        "captured",
+        "failed",
+        "refunded",
+        "partially_refunded",
+        "cancelled",
+      ],
       portfolio_visibility: ["private", "unlisted", "public"],
       program_status: ["draft", "published", "archived"],
       project_submission_status: [
@@ -3858,6 +4071,7 @@ export const Constants = {
         "failed",
         "needs_revision",
       ],
+      refund_status: ["pending", "processed", "failed"],
       submission_status: [
         "pending",
         "reviewed",
