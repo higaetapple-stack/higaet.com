@@ -15,6 +15,7 @@
  */
 
 import { createFileRoute } from "@tanstack/react-router";
+import { LIMITS, rateLimit } from "@/lib/server/rate-limit";
 
 const MAX_QUERY_LEN = 200;
 const DEFAULT_K = 5;
@@ -24,6 +25,8 @@ export const Route = createFileRoute("/api/public/vector-search")({
   server: {
     handlers: {
       GET: async ({ request }) => {
+        const limited = rateLimit(request, LIMITS.vectorSearch);
+        if (limited) return limited;
         const url = new URL(request.url);
         const q = (url.searchParams.get("q") ?? "").slice(0, MAX_QUERY_LEN);
         const kRaw = Number(url.searchParams.get("k") ?? DEFAULT_K);
