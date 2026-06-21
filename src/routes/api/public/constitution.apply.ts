@@ -41,33 +41,41 @@ export const Route = createFileRoute("/api/public/constitution/apply")({
         const denied = await requireAdmin(request);
         if (denied) return denied;
 
-        const body = (await request.json().catch(() => ({}))) as {
-          amendment?: ConstitutionAmendment;
-          rollbackTo?: number;
-        };
+        try {
+          return await withTrace("constitution.apply", "governance", async ({ traceId }) => {
+            const body = (await request.json().catch(() => ({}))) as {
+              amendment?: ConstitutionAmendment;
+              rollbackTo?: number;
+            };
 
-        if (typeof body.rollbackTo === "number") {
-          const v = rollback(body.rollbackTo);
-          if (!v) return new Response("Version not found", { status: 404 });
-          return Response.json({ status: "rolled_back", version: v });
+            if (typeof body.rollbackTo === "number") {
+              const v = rollback(body.rollbackTo);
+              if (!v) return new Response("Version not found", { status: 404 });
+              return Response.json({ status: "rolled_back", version: v, traceId });
+            }
+
+            if (!body.amendment) {
+              return new Response("Missing amendment", { status: 400 });
+            }
+
+            const result = applyAmendment(body.amendment);
+            const status = result.status === "applied" ? 200 : 400;
+            return Response.json(
+              result.status === "applied"
+                ? {
+                    status: "applied",
+                    newVersion: result.version.version,
+                    appliedAmendments: result.version.appliedAmendments,
+                    traceId,
+                  }
+                : { status: "rejected", reason: result.reason, traceId },
+              { status, headers: { "x-trace-id": traceId } },
+            );
+          });
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : "unknown";
+          return errorEnvelope({ code: "constitution_apply_failed", message: msg, status: 500 });
         }
-
-        if (!body.amendment) {
-          return new Response("Missing amendment", { status: 400 });
-        }
-
-        const result = applyAmendment(body.amendment);
-        const status = result.status === "applied" ? 200 : 400;
-        return Response.json(
-          result.status === "applied"
-            ? {
-                status: "applied",
-                newVersion: result.version.version,
-                appliedAmendments: result.version.appliedAmendments,
-              }
-            : { status: "rejected", reason: result.reason },
-          { status },
-        );
       },
     },
   },
