@@ -308,13 +308,27 @@ function IssuedTab({ programs }: { programs: any[] }) {
                 <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{c.certificate_number}</td>
                 <td className="px-4 py-3 text-muted-foreground">{new Date(c.issued_at).toLocaleDateString()}</td>
                 <td className="px-4 py-3 text-right">
-                  {c.revoked ? (
-                    <Badge variant="destructive">Revoked</Badge>
-                  ) : (
-                    <Button variant="ghost" size="sm" className="text-destructive" onClick={() => confirm("Revoke this certificate?") && revokeMut.mutate(c.id)}>
-                      <ShieldOff className="size-3.5" /> Revoke
+                  <div className="inline-flex items-center gap-1">
+                    <Button variant="ghost" size="sm" title="Download PDF"
+                      onClick={() => downloadMut.mutate(c.id)} disabled={downloadMut.isPending}>
+                      <Download className="size-3.5" />
                     </Button>
-                  )}
+                    <Button variant="ghost" size="sm" title="Regenerate PDF"
+                      onClick={() => regenMut.mutate(c.id)} disabled={regenMut.isPending}>
+                      <RefreshCw className="size-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="sm" title="Copy verification URL"
+                      onClick={() => copyVerifyUrl(c.verification_token)}>
+                      <Link2 className="size-3.5" />
+                    </Button>
+                    {c.revoked ? (
+                      <Badge variant="destructive">Revoked</Badge>
+                    ) : (
+                      <Button variant="ghost" size="sm" className="text-destructive" onClick={() => confirm("Revoke this certificate?") && revokeMut.mutate(c.id)}>
+                        <ShieldOff className="size-3.5" /> Revoke
+                      </Button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
