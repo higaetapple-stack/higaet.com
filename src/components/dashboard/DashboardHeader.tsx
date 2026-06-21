@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 export function DashboardHeader({ fullName, email }: { fullName?: string | null; email?: string | null }) {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export function DashboardHeader({ fullName, email }: { fullName?: string | null;
         HIGAET
       </Link>
       <div className="flex items-center gap-3">
+        <NotificationBell />
         <span className="text-sm text-muted-foreground hidden md:inline">{display}</span>
         <button
           onClick={handleSignOut}

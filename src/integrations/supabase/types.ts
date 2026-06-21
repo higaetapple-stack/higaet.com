@@ -1065,6 +1065,48 @@ export type Database = {
           },
         ]
       }
+      domain_events: {
+        Row: {
+          actor_id: string | null
+          aggregate_id: string | null
+          aggregate_type: string | null
+          created_at: string
+          error: string | null
+          event_type: string
+          id: string
+          payload: Json
+          processed_at: string | null
+          status: Database["public"]["Enums"]["domain_event_status"]
+          updated_at: string
+        }
+        Insert: {
+          actor_id?: string | null
+          aggregate_id?: string | null
+          aggregate_type?: string | null
+          created_at?: string
+          error?: string | null
+          event_type: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          status?: Database["public"]["Enums"]["domain_event_status"]
+          updated_at?: string
+        }
+        Update: {
+          actor_id?: string | null
+          aggregate_id?: string | null
+          aggregate_type?: string | null
+          created_at?: string
+          error?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          status?: Database["public"]["Enums"]["domain_event_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employers: {
         Row: {
           created_at: string
@@ -1409,6 +1451,199 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_delivery_logs: {
+        Row: {
+          attempts: number
+          channel: Database["public"]["Enums"]["notification_channel"]
+          created_at: string
+          delivered_at: string | null
+          error: string | null
+          id: string
+          notification_id: string | null
+          provider: string | null
+          provider_message_id: string | null
+          status: Database["public"]["Enums"]["notification_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          attempts?: number
+          channel: Database["public"]["Enums"]["notification_channel"]
+          created_at?: string
+          delivered_at?: string | null
+          error?: string | null
+          id?: string
+          notification_id?: string | null
+          provider?: string | null
+          provider_message_id?: string | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          attempts?: number
+          channel?: Database["public"]["Enums"]["notification_channel"]
+          created_at?: string
+          delivered_at?: string | null
+          error?: string | null
+          id?: string
+          notification_id?: string | null
+          provider?: string | null
+          provider_message_id?: string | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_delivery_logs_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_preferences: {
+        Row: {
+          category: string
+          created_at: string
+          email: boolean
+          id: string
+          in_app: boolean
+          push: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          email?: boolean
+          id?: string
+          in_app?: boolean
+          push?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          email?: boolean
+          id?: string
+          in_app?: boolean
+          push?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_templates: {
+        Row: {
+          action_url: string | null
+          body_template: string
+          category: string
+          channel: Database["public"]["Enums"]["notification_channel"]
+          created_at: string
+          enabled: boolean
+          id: string
+          key: string
+          locale: string
+          metadata: Json
+          subject: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          action_url?: string | null
+          body_template: string
+          category?: string
+          channel: Database["public"]["Enums"]["notification_channel"]
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          key: string
+          locale?: string
+          metadata?: Json
+          subject?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          action_url?: string | null
+          body_template?: string
+          category?: string
+          channel?: Database["public"]["Enums"]["notification_channel"]
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          key?: string
+          locale?: string
+          metadata?: Json
+          subject?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_url: string | null
+          archived_at: string | null
+          body: string
+          category: string
+          created_at: string
+          data: Json
+          event_id: string | null
+          event_type: string
+          id: string
+          priority: Database["public"]["Enums"]["notification_priority"]
+          read_at: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          archived_at?: string | null
+          body: string
+          category?: string
+          created_at?: string
+          data?: Json
+          event_id?: string | null
+          event_type: string
+          id?: string
+          priority?: Database["public"]["Enums"]["notification_priority"]
+          read_at?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          archived_at?: string | null
+          body?: string
+          category?: string
+          created_at?: string
+          data?: Json
+          event_id?: string | null
+          event_type?: string
+          id?: string
+          priority?: Database["public"]["Enums"]["notification_priority"]
+          read_at?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "domain_events"
             referencedColumns: ["id"]
           },
         ]
@@ -3693,6 +3928,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      emit_domain_event: {
+        Args: {
+          _aggregate_id?: string
+          _aggregate_type?: string
+          _event_type: string
+          _payload?: Json
+        }
+        Returns: string
+      }
       generate_portfolio_slug: {
         Args: { _full_name: string; _id: string }
         Returns: string
@@ -3730,6 +3974,8 @@ export type Database = {
           similarity: number
         }[]
       }
+      notifications_mark_all_read: { Args: never; Returns: number }
+      notifications_unread_count: { Args: never; Returns: number }
       verify_certificate: {
         Args: { _number: string }
         Returns: {
@@ -3779,12 +4025,22 @@ export type Database = {
         | "in_progress"
         | "converted"
         | "closed"
+      domain_event_status: "pending" | "processing" | "processed" | "failed"
       enrollment_status: "active" | "paused" | "completed" | "withdrawn"
       job_employment_type: "full_time" | "part_time" | "contract" | "internship"
       job_experience_level: "entry" | "mid" | "senior"
       job_remote_type: "onsite" | "hybrid" | "remote"
       job_status: "draft" | "open" | "closed" | "archived"
       lesson_type: "video" | "reading" | "lab" | "quiz"
+      notification_channel: "in_app" | "email" | "push"
+      notification_priority: "low" | "normal" | "high" | "critical"
+      notification_status:
+        | "pending"
+        | "queued"
+        | "sent"
+        | "delivered"
+        | "failed"
+        | "read"
       payment_provider: "razorpay" | "stripe"
       payment_purpose:
         | "course_enrollment"
@@ -4056,12 +4312,23 @@ export const Constants = {
         "converted",
         "closed",
       ],
+      domain_event_status: ["pending", "processing", "processed", "failed"],
       enrollment_status: ["active", "paused", "completed", "withdrawn"],
       job_employment_type: ["full_time", "part_time", "contract", "internship"],
       job_experience_level: ["entry", "mid", "senior"],
       job_remote_type: ["onsite", "hybrid", "remote"],
       job_status: ["draft", "open", "closed", "archived"],
       lesson_type: ["video", "reading", "lab", "quiz"],
+      notification_channel: ["in_app", "email", "push"],
+      notification_priority: ["low", "normal", "high", "critical"],
+      notification_status: [
+        "pending",
+        "queued",
+        "sent",
+        "delivered",
+        "failed",
+        "read",
+      ],
       payment_provider: ["razorpay", "stripe"],
       payment_purpose: [
         "course_enrollment",
