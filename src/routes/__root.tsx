@@ -141,6 +141,7 @@ function RootComponent() {
 
   useEffect(() => {
     if (getConsent() === "granted") loadTags();
+    import("@/lib/observability/sentry.client").then((m) => m.initSentryClient());
   }, []);
 
   useEffect(() => {
