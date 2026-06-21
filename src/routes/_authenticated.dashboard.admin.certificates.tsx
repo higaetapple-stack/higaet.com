@@ -172,6 +172,8 @@ function IssuedTab({ programs }: { programs: any[] }) {
   const issue = useServerFn(adminIssueCertificate);
   const revoke = useServerFn(adminRevokeCertificate);
   const listUsers = useServerFn(listUsersWithRoles);
+  const regen = useServerFn(adminRegenerateCertificatePdf);
+  const download = useServerFn(getCertificateDownloadUrl);
   const qc = useQueryClient();
 
   const q = useQuery({ queryKey: ["admin-certificates"], queryFn: () => list() });
@@ -201,6 +203,30 @@ function IssuedTab({ programs }: { programs: any[] }) {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  const regenMut = useMutation({
+    mutationFn: (id: string) => regen({ data: { id } }),
+    onSuccess: () => {
+      toast.success("PDF regenerated");
+      qc.invalidateQueries({ queryKey: ["admin-certificates"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const downloadMut = useMutation({
+    mutationFn: (id: string) => download({ data: { id } }),
+    onSuccess: (r) => window.open(r.url, "_blank", "noopener"),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const copyVerifyUrl = (token: string | null) => {
+    if (!token) { toast.error("No verification token"); return; }
+    const url = `${window.location.origin}/verify/${token}`;
+    navigator.clipboard.writeText(url).then(
+      () => toast.success("Verification URL copied"),
+      () => toast.error("Could not copy"),
+    );
+  };
 
   return (
     <div>
