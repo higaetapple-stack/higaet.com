@@ -14,6 +14,7 @@ import {
   Plane,
   Building2,
   Lock,
+  MessagesSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AppRole } from "@/lib/auth.functions";
