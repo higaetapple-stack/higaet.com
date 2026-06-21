@@ -33,7 +33,7 @@ function PreferencesPage() {
 
   const { data: prefs = [] } = useQuery<NotificationPreferenceRow[]>({
     queryKey: ["notifications", "preferences"],
-    queryFn: () => fetchPrefs(),
+    queryFn: async () => (await fetchPrefs()) as NotificationPreferenceRow[],
   });
 
   const upsertMut = useMutation({
