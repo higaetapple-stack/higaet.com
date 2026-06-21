@@ -57,7 +57,7 @@ export interface NotificationTemplateRow {
   action_url: string | null;
   category: string;
   enabled: boolean;
-  metadata: Record<string, unknown>;
+  metadata: JsonValue;
   created_at: string;
   updated_at: string;
 }
