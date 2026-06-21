@@ -20,9 +20,21 @@ const POSTS: Record<string, Post> = {
     date: "2026-05-21",
     tag: "Academy",
     body: [
-      "Three years into the post-ChatGPT shift, most computer-science programs still treat applied AI as an elective rather than a discipline. Employers do not.",
-      "At HIGAET, we redesigned the curriculum around the things AI engineers actually do at work: evaluating models, building retrieval pipelines, shipping safe agents, and operating those systems in production.",
-      "The piece below outlines our framework — how learning outcomes are derived from real role profiles, why every cohort builds an enterprise capstone, and what we measure to know it is working.",
+      "Three years into the post-ChatGPT shift, most computer-science programs still treat applied AI as an elective rather than a discipline. Employers do not. Job postings for AI engineers, ML platform engineers, and applied research engineers have grown faster than any other technical role since 2023, and the gap between what graduates can do on day one and what teams need them to do by week two has become the single largest hiring bottleneck in the industry.",
+      "## The shape of the gap",
+      "Traditional CS curricula optimize for foundations: algorithms, operating systems, compilers, a semester of machine-learning theory built around scikit-learn and a final project on MNIST. That foundation still matters. It is no longer sufficient. An AI engineer in 2026 spends more time writing evaluation harnesses than training models, more time stitching tools and retrieval into an agent loop than tuning hyperparameters, and more time defending a system against prompt injection, hallucination, and cost blow-ups than optimizing F1 by two points on a held-out set.",
+      "Universities know this. The problem is structural. Curriculum committees move on multi-year cycles; frontier capabilities move on multi-week cycles. A syllabus that locks in a specific model family, framework, or evaluation harness in September is already partially obsolete by the time the cohort sits its January exams.",
+      "## What the work actually looks like",
+      "When we audited the day-to-day work of 200+ AI engineers across enterprise, scale-up, and frontier-lab teams, five activities accounted for the vast majority of billable hours: writing and maintaining evaluation suites, designing retrieval and context-assembly pipelines, building and instrumenting agent and tool-use loops, hardening systems against adversarial and edge-case inputs, and operating those systems under real cost, latency, and compliance constraints.",
+      "Almost none of this appears in a standard ML syllabus. Most of it is invisible in research papers. All of it is what separates a deployable engineer from a confident prototyper.",
+      "## How HIGAET teaches it",
+      "We redesigned the HIGAET Academy curriculum around those five activities, then worked backward into the foundations each one demands. Every module starts from a role profile — what does an AI engineer on a regulated-industry team need to be able to do by their first sprint? — and the learning outcomes are derived from there.",
+      "Three structural commitments make this work in practice. First, every cohort ships an enterprise capstone built against a real brief from a HIGAET Technologies client or partner. Second, evaluation is continuous and behavioral: learners are graded on the eval suites they write and the failure modes they catch, not just on the models they fine-tune. Third, the curriculum is versioned monthly. When a new model class, retrieval pattern, or safety technique materially changes the work, the relevant module is rewritten — not deferred to next year's intake.",
+      "## What we measure",
+      "We track three outcomes that map to employer expectations rather than academic convention: time-to-first-shipped-feature in a learner's first role, the percentage of graduates whose first production system survives a third-party safety and cost review without rework, and the rate at which hiring partners return for a second cohort. Those three numbers, watched over time, tell us whether the program is closing the gap or simply restating it.",
+      "## The bigger picture",
+      "AI engineering education is not a faster version of CS education. It is a different discipline with its own craft, its own failure modes, and its own definition of mastery. Universities that recognize this — and that build the operational muscle to teach against a moving frontier — will produce the engineers the next decade of the industry depends on. The rest will keep graduating students who are well prepared for a world that no longer exists.",
+      "That is the gap HIGAET was built to close, and the work we will keep publishing about here.",
     ],
   },
   "study-abroad-checklist-fall-2026": {
@@ -131,11 +143,17 @@ function PostPage() {
           </header>
 
           <div className="prose-content mt-12 max-w-3xl space-y-6 text-foreground/90 leading-relaxed">
-            {post.body.map((p: string, i: number) => (
-              <p key={i} className="text-base md:text-lg text-muted-foreground">
-                {p}
-              </p>
-            ))}
+            {post.body.map((p: string, i: number) =>
+              p.startsWith("## ") ? (
+                <h2 key={i} className="font-display text-2xl md:text-3xl font-medium text-ink mt-12 mb-2 tracking-tight">
+                  {p.slice(3)}
+                </h2>
+              ) : (
+                <p key={i} className="text-base md:text-lg text-muted-foreground">
+                  {p}
+                </p>
+              )
+            )}
           </div>
         </Section>
       </article>
