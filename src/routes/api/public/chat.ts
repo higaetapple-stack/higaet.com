@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { runConversation } from "@/lib/conversation/orchestrator";
 import { resetSession } from "@/lib/conversation/types";
 import type { FusionMode } from "@/lib/fusion/hybrid-resolver";
+import { LIMITS, rateLimit } from "@/lib/server/rate-limit";
 
 const MAX_QUERY_LEN = 500;
 const MAX_K = 10;
@@ -76,6 +77,8 @@ export const Route = createFileRoute("/api/public/chat")({
   server: {
     handlers: {
       GET: async ({ request }) => {
+        const limited = rateLimit(request, LIMITS.chat);
+        if (limited) return limited;
         const url = new URL(request.url);
         const parsed = parseShared(
           url.searchParams.get("sessionId") ?? "",
@@ -88,6 +91,8 @@ export const Route = createFileRoute("/api/public/chat")({
         return handle(parsed);
       },
       POST: async ({ request }) => {
+        const limited = rateLimit(request, LIMITS.chat);
+        if (limited) return limited;
         let body: Record<string, unknown> = {};
         try {
           body = (await request.json()) as Record<string, unknown>;
