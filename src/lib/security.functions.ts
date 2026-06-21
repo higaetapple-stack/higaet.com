@@ -6,6 +6,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
+import type { JsonValue } from "./notifications/types";
 
 // -------- Types --------
 export interface SecurityEventRow {
@@ -15,7 +16,7 @@ export interface SecurityEventRow {
   severity: string;
   ip_address: string | null;
   user_agent: string | null;
-  metadata: Record<string, unknown>;
+  metadata: JsonValue;
   created_at: string;
 }
 
@@ -31,7 +32,7 @@ export interface IdentityProviderRow {
   display_name: string;
   protocol: string;
   enabled: boolean;
-  metadata: Record<string, unknown>;
+  metadata: JsonValue;
   metadata_url: string | null;
   created_at: string;
   updated_at: string;
@@ -48,8 +49,8 @@ function getUa(): string | null {
   return getRequestHeader("user-agent") ?? null;
 }
 
-async function assertAdmin(supabase: ReturnType<typeof Object>, userId: string) {
-  // @ts-expect-error supabase typed loosely here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function assertAdmin(supabase: any, userId: string) {
   const { data } = await supabase.rpc("has_any_role", {
     _user_id: userId,
     _roles: ["admin", "super_admin"],
@@ -214,17 +215,23 @@ export const listIdentityProviders = createServerFn({ method: "GET" })
       .select("*, sso_domains(domain)")
       .order("created_at");
     if (error) throw new Error(error.message);
-    return (data ?? []).map((p) => ({
+    type Row = {
+      id: string; slug: string; display_name: string; protocol: string;
+      enabled: boolean; metadata: JsonValue | null; metadata_url: string | null;
+      created_at: string; updated_at: string;
+      sso_domains: { domain: string }[] | null;
+    };
+    return ((data ?? []) as unknown as Row[]).map((p) => ({
       id: p.id,
       slug: p.slug,
       display_name: p.display_name,
       protocol: p.protocol,
       enabled: p.enabled,
-      metadata: (p.metadata ?? {}) as Record<string, unknown>,
+      metadata: (p.metadata ?? {}) as JsonValue,
       metadata_url: p.metadata_url,
       created_at: p.created_at,
       updated_at: p.updated_at,
-      domains: (p.sso_domains ?? []).map((d: { domain: string }) => d.domain),
+      domains: (p.sso_domains ?? []).map((d) => d.domain),
     }));
   });
 

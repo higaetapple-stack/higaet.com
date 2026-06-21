@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Activity } from "lucide-react";
-import { listMySecurityEvents } from "@/lib/security.functions";
+import { listMySecurityEvents, type SecurityEventRow } from "@/lib/security.functions";
 
 const SEVERITY_COLOR: Record<string, string> = {
   info: "text-muted-foreground",
@@ -11,9 +11,9 @@ const SEVERITY_COLOR: Record<string, string> = {
 
 export function SecurityActivity() {
   const fn = useServerFn(listMySecurityEvents);
-  const { data: events } = useSuspenseQuery({
+  const { data: events } = useSuspenseQuery<SecurityEventRow[]>({
     queryKey: ["security-events"],
-    queryFn: () => fn({ data: { limit: 50 } }),
+    queryFn: () => fn({ data: { limit: 50 } }) as Promise<SecurityEventRow[]>,
   });
 
   return (

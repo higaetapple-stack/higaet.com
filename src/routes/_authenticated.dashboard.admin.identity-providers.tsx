@@ -40,7 +40,10 @@ function ProvidersList() {
   const list = useServerFn(listIdentityProviders);
   const upsert = useServerFn(upsertIdentityProvider);
   const del = useServerFn(deleteIdentityProvider);
-  const { data, refetch } = useSuspenseQuery({ queryKey: ["identity-providers"], queryFn: () => list() });
+  const { data, refetch } = useSuspenseQuery<IdentityProviderRow[]>({
+    queryKey: ["identity-providers"],
+    queryFn: () => list() as Promise<IdentityProviderRow[]>,
+  });
   const [editing, setEditing] = useState<IdentityProviderRow | null>(null);
   const [creating, setCreating] = useState(false);
 
