@@ -29,13 +29,30 @@ export const ingestClientError = createServerFn({ method: "POST" })
       url: data.url ?? null,
       route: data.route ?? null,
       userId: context.userId,
-      context: data.context,
+      context: data.context as Record<string, unknown> | undefined,
     });
     return { id };
   });
 
+async function assertAdmin(ctx: {
+  supabase: { rpc: (name: "has_role", args: { _user_id: string; _role: "admin" | "super_admin" }) => Promise<{ data: boolean | null; error: { message: string } | null }> };
+  userId: string;
+}) {
+  const { data: isAdmin, error } = await ctx.supabase.rpc("has_role", {
+    _user_id: ctx.userId,
+    _role: "admin",
+  });
+  if (error) throw new Error(error.message);
+  if (isAdmin) return;
+  const { data: isSuper } = await ctx.supabase.rpc("has_role", {
+    _user_id: ctx.userId,
+    _role: "super_admin",
+  });
+  if (!isSuper) throw new Error("Forbidden");
+}
+
 // ---------- Admin: list recent errors ----------
-const listInput = z.object({
+const listErrorsInput = z.object({
   limit: z.number().int().min(1).max(200).default(50),
   source: z
     .enum(["client", "server_fn", "api_route", "background", "realtime", "auth"])
@@ -43,30 +60,9 @@ const listInput = z.object({
   level: z.enum(["warning", "error", "fatal"]).optional(),
 });
 
-async function assertAdmin(ctx: {
-  supabase: ReturnType<
-    typeof import("@supabase/supabase-js").createClient
-  > extends infer C
-    ? C
-    : never;
-  userId: string;
-}) {
-  const { data, error } = await ctx.supabase.rpc("has_role", {
-    _user_id: ctx.userId,
-    _role: "admin" as never,
-  });
-  if (error) throw new Error(error.message);
-  if (data) return;
-  const { data: superAdmin } = await ctx.supabase.rpc("has_role", {
-    _user_id: ctx.userId,
-    _role: "super_admin" as never,
-  });
-  if (!superAdmin) throw new Error("Forbidden");
-}
-
 export const adminListSystemErrors = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => listInput.parse(d ?? {}))
+  .inputValidator((d) => listErrorsInput.parse(d ?? {}))
   .handler(async ({ data, context }) => {
     await assertAdmin(context as never);
     let q = context.supabase
@@ -78,7 +74,7 @@ export const adminListSystemErrors = createServerFn({ method: "GET" })
     if (data.level) q = q.eq("level", data.level);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return rows ?? [];
+    return (rows ?? []) as Array<Record<string, unknown>>;
   });
 
 // ---------- Admin: recent metrics ----------
@@ -102,7 +98,7 @@ export const adminListSystemMetrics = createServerFn({ method: "GET" })
     if (data.kind) q = q.eq("kind", data.kind);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return rows ?? [];
+    return (rows ?? []) as Array<Record<string, unknown>>;
   });
 
 // ---------- Admin: summary ----------
@@ -115,8 +111,8 @@ export const adminObservabilitySummary = createServerFn({ method: "GET" })
     await assertAdmin(context as never);
     const { data: summary, error } = await context.supabase.rpc(
       "observability_summary",
-      { _window: `${data.hours} hours` as never },
+      { _window: `${data.hours} hours` },
     );
     if (error) throw new Error(error.message);
-    return summary as Record<string, unknown>;
+    return (summary ?? {}) as Record<string, unknown>;
   });
