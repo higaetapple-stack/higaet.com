@@ -1,7 +1,19 @@
-import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
+import { getMyRoles } from "@/lib/auth.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin")({
+  beforeLoad: async () => {
+    try {
+      const roles = await getMyRoles();
+      if (!roles.includes("admin") && !roles.includes("super_admin")) {
+        throw redirect({ to: "/dashboard" });
+      }
+    } catch (e: any) {
+      if (e?.isRedirect) throw e;
+      throw redirect({ to: "/dashboard" });
+    }
+  },
   component: AdminLayout,
 });
 
