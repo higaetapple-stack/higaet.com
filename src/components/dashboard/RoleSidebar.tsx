@@ -36,7 +36,8 @@ type Item = {
     | "/dashboard/counselor"
     | "/dashboard/technologies"
     | "/dashboard/technologies/client"
-    | "/dashboard/admin";
+    | "/dashboard/admin"
+    | "/community";
   label: string;
   icon: typeof LayoutDashboard;
   roles: "all" | AppRole[];
