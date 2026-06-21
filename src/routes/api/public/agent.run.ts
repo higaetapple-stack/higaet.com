@@ -1,11 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { stepAgent } from "@/lib/agent/controller";
 import type { AgentSession, AgentStep } from "@/lib/agent/types";
+import { LIMITS, rateLimit } from "@/lib/server/rate-limit";
 
 export const Route = createFileRoute("/api/public/agent/run")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const limited = rateLimit(request, LIMITS.agentRun);
+        if (limited) return limited;
         let body: any = {};
         try {
           body = await request.json();
