@@ -143,11 +143,17 @@ function PostPage() {
           </header>
 
           <div className="prose-content mt-12 max-w-3xl space-y-6 text-foreground/90 leading-relaxed">
-            {post.body.map((p: string, i: number) => (
-              <p key={i} className="text-base md:text-lg text-muted-foreground">
-                {p}
-              </p>
-            ))}
+            {post.body.map((p: string, i: number) =>
+              p.startsWith("## ") ? (
+                <h2 key={i} className="font-display text-2xl md:text-3xl font-medium text-ink mt-12 mb-2 tracking-tight">
+                  {p.slice(3)}
+                </h2>
+              ) : (
+                <p key={i} className="text-base md:text-lg text-muted-foreground">
+                  {p}
+                </p>
+              )
+            )}
           </div>
         </Section>
       </article>
