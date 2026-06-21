@@ -11,6 +11,7 @@ import {
   upsertCertificateTemplate,
 } from "@/lib/admin.functions";
 import { adminIssueCertificate, adminListCertificates, adminRevokeCertificate } from "@/lib/academic.functions";
+import { adminRegenerateCertificatePdf, getCertificateDownloadUrl } from "@/lib/certificates.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Pencil, Trash2, BadgeCheck, ShieldOff } from "lucide-react";
+import { Plus, Pencil, Trash2, BadgeCheck, ShieldOff, Download, RefreshCw, Link2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/certificates")({
   component: CertificatesPage,
@@ -171,6 +172,8 @@ function IssuedTab({ programs }: { programs: any[] }) {
   const issue = useServerFn(adminIssueCertificate);
   const revoke = useServerFn(adminRevokeCertificate);
   const listUsers = useServerFn(listUsersWithRoles);
+  const regen = useServerFn(adminRegenerateCertificatePdf);
+  const download = useServerFn(getCertificateDownloadUrl);
   const qc = useQueryClient();
 
   const q = useQuery({ queryKey: ["admin-certificates"], queryFn: () => list() });
@@ -200,6 +203,30 @@ function IssuedTab({ programs }: { programs: any[] }) {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  const regenMut = useMutation({
+    mutationFn: (id: string) => regen({ data: { id } }),
+    onSuccess: () => {
+      toast.success("PDF regenerated");
+      qc.invalidateQueries({ queryKey: ["admin-certificates"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const downloadMut = useMutation({
+    mutationFn: (id: string) => download({ data: { id } }),
+    onSuccess: (r) => window.open(r.url, "_blank", "noopener"),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const copyVerifyUrl = (token: string | null) => {
+    if (!token) { toast.error("No verification token"); return; }
+    const url = `${window.location.origin}/verify/${token}`;
+    navigator.clipboard.writeText(url).then(
+      () => toast.success("Verification URL copied"),
+      () => toast.error("Could not copy"),
+    );
+  };
 
   return (
     <div>
@@ -281,13 +308,27 @@ function IssuedTab({ programs }: { programs: any[] }) {
                 <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{c.certificate_number}</td>
                 <td className="px-4 py-3 text-muted-foreground">{new Date(c.issued_at).toLocaleDateString()}</td>
                 <td className="px-4 py-3 text-right">
-                  {c.revoked ? (
-                    <Badge variant="destructive">Revoked</Badge>
-                  ) : (
-                    <Button variant="ghost" size="sm" className="text-destructive" onClick={() => confirm("Revoke this certificate?") && revokeMut.mutate(c.id)}>
-                      <ShieldOff className="size-3.5" /> Revoke
+                  <div className="inline-flex items-center gap-1">
+                    <Button variant="ghost" size="sm" title="Download PDF"
+                      onClick={() => downloadMut.mutate(c.id)} disabled={downloadMut.isPending}>
+                      <Download className="size-3.5" />
                     </Button>
-                  )}
+                    <Button variant="ghost" size="sm" title="Regenerate PDF"
+                      onClick={() => regenMut.mutate(c.id)} disabled={regenMut.isPending}>
+                      <RefreshCw className="size-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="sm" title="Copy verification URL"
+                      onClick={() => copyVerifyUrl(c.verification_token)}>
+                      <Link2 className="size-3.5" />
+                    </Button>
+                    {c.revoked ? (
+                      <Badge variant="destructive">Revoked</Badge>
+                    ) : (
+                      <Button variant="ghost" size="sm" className="text-destructive" onClick={() => confirm("Revoke this certificate?") && revokeMut.mutate(c.id)}>
+                        <ShieldOff className="size-3.5" /> Revoke
+                      </Button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

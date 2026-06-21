@@ -74,6 +74,15 @@ async function tryIssueCertificate(
     .select("id")
     .single();
   if (error) throw new Error(error.message);
+
+  // Best-effort PDF/QR generation; never block issuance on it
+  try {
+    const mod = await import("@/lib/certificates.functions");
+    await mod.generateCertificateArtifactsServer(row.id, issuerId);
+  } catch (e) {
+    console.error("certificate artifact generation failed", e);
+  }
+
   return { issued: true as const, id: row.id, number };
 }
 
@@ -336,15 +345,25 @@ export const adminIssueCertificate = createServerFn({ method: "POST" })
       const hash = createHash("sha256")
         .update(`${number}|${data.student_id}|${data.program_id}|${issued_at}`)
         .digest("hex");
-      const { error } = await supabaseAdmin.from("certificates").insert({
-        student_id: data.student_id,
-        program_id: data.program_id,
-        certificate_number: number,
-        verification_hash: hash,
-        issued_by: context.userId,
-        issued_at,
-      });
+      const { data: row, error } = await supabaseAdmin
+        .from("certificates")
+        .insert({
+          student_id: data.student_id,
+          program_id: data.program_id,
+          certificate_number: number,
+          verification_hash: hash,
+          issued_by: context.userId,
+          issued_at,
+        })
+        .select("id")
+        .single();
       if (error) throw new Error(error.message);
+      try {
+        const mod = await import("@/lib/certificates.functions");
+        await mod.generateCertificateArtifactsServer(row.id, context.userId);
+      } catch (e) {
+        console.error("certificate artifact generation failed", e);
+      }
       return { ok: true as const, number };
     }
     const res = await tryIssueCertificate(supabaseAdmin, data.student_id, data.program_id, context.userId);
