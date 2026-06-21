@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "enrollments self insert" ON public.enrollments;
