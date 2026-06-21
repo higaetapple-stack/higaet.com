@@ -166,22 +166,18 @@ import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologi
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
-import { Route as ApiPublicWorkflowRouteImport } from './routes/api/public/workflow'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicSystemHealthRouteImport } from './routes/api/public/system-health'
 import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
-import { Route as ApiPublicSimulateRouteImport } from './routes/api/public/simulate'
 import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
 import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
 import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
 import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
 import { Route as ApiPublicReplayRouteImport } from './routes/api/public/replay'
-import { Route as ApiPublicMultiAgentRouteImport } from './routes/api/public/multi-agent'
 import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicGovernanceRouteImport } from './routes/api/public/governance'
 import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
-import { Route as ApiPublicExecutionPlanRouteImport } from './routes/api/public/execution-plan'
 import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
@@ -204,11 +200,9 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
-import { Route as ApiPublicKernelDecisionRouteImport } from './routes/api/public/kernel.decision'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
 import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
-import { Route as ApiPublicAgentRunRouteImport } from './routes/api/public/agent.run'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
 import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
@@ -1150,11 +1144,6 @@ const GlobalEducationCountriesSlugRoute =
     path: '/$slug',
     getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
-const ApiPublicWorkflowRoute = ApiPublicWorkflowRouteImport.update({
-  id: '/api/public/workflow',
-  path: '/api/public/workflow',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
   id: '/api/public/vector-search',
   path: '/api/public/vector-search',
@@ -1168,11 +1157,6 @@ const ApiPublicSystemHealthRoute = ApiPublicSystemHealthRouteImport.update({
 const ApiPublicStrategyRoute = ApiPublicStrategyRouteImport.update({
   id: '/api/public/strategy',
   path: '/api/public/strategy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSimulateRoute = ApiPublicSimulateRouteImport.update({
-  id: '/api/public/simulate',
-  path: '/api/public/simulate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicSharedMemoryRoute = ApiPublicSharedMemoryRouteImport.update({
@@ -1200,11 +1184,6 @@ const ApiPublicReplayRoute = ApiPublicReplayRouteImport.update({
   path: '/api/public/replay',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicMultiAgentRoute = ApiPublicMultiAgentRouteImport.update({
-  id: '/api/public/multi-agent',
-  path: '/api/public/multi-agent',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicMemoryGraphRoute = ApiPublicMemoryGraphRouteImport.update({
   id: '/api/public/memory-graph',
   path: '/api/public/memory-graph',
@@ -1223,11 +1202,6 @@ const ApiPublicGovernanceRoute = ApiPublicGovernanceRouteImport.update({
 const ApiPublicGoalsRoute = ApiPublicGoalsRouteImport.update({
   id: '/api/public/goals',
   path: '/api/public/goals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicExecutionPlanRoute = ApiPublicExecutionPlanRouteImport.update({
-  id: '/api/public/execution-plan',
-  path: '/api/public/execution-plan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicDecisionsRoute = ApiPublicDecisionsRouteImport.update({
@@ -1357,11 +1331,6 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
-const ApiPublicKernelDecisionRoute = ApiPublicKernelDecisionRouteImport.update({
-  id: '/api/public/kernel/decision',
-  path: '/api/public/kernel/decision',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicConstitutionStatusRoute =
   ApiPublicConstitutionStatusRouteImport.update({
     id: '/api/public/constitution/status',
@@ -1380,11 +1349,6 @@ const ApiPublicConstitutionAmendmentsRoute =
     path: '/api/public/constitution/amendments',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicAgentRunRoute = ApiPublicAgentRunRouteImport.update({
-  id: '/api/public/agent/run',
-  path: '/api/public/agent/run',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedDashboardTechnologiesSupportRoute =
   AuthenticatedDashboardTechnologiesSupportRouteImport.update({
     id: '/support',
@@ -1880,22 +1844,18 @@ export interface FileRoutesByFullPath {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
-  '/api/public/execution-plan': typeof ApiPublicExecutionPlanRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
-  '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/replay': typeof ApiPublicReplayRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
-  '/api/public/simulate': typeof ApiPublicSimulateRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
-  '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2012,11 +1972,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
-  '/api/public/agent/run': typeof ApiPublicAgentRunRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
-  '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2138,22 +2096,18 @@ export interface FileRoutesByTo {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
-  '/api/public/execution-plan': typeof ApiPublicExecutionPlanRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
-  '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/replay': typeof ApiPublicReplayRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
-  '/api/public/simulate': typeof ApiPublicSimulateRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
-  '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2266,11 +2220,9 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
-  '/api/public/agent/run': typeof ApiPublicAgentRunRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
-  '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2402,22 +2354,18 @@ export interface FileRoutesById {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
-  '/api/public/execution-plan': typeof ApiPublicExecutionPlanRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
-  '/api/public/multi-agent': typeof ApiPublicMultiAgentRoute
   '/api/public/replay': typeof ApiPublicReplayRoute
   '/api/public/resolve-hybrid': typeof ApiPublicResolveHybridRoute
   '/api/public/resolve-intent': typeof ApiPublicResolveIntentRoute
   '/api/public/self-optimize': typeof ApiPublicSelfOptimizeRoute
   '/api/public/shared-memory': typeof ApiPublicSharedMemoryRoute
-  '/api/public/simulate': typeof ApiPublicSimulateRoute
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
-  '/api/public/workflow': typeof ApiPublicWorkflowRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2534,11 +2482,9 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
-  '/api/public/agent/run': typeof ApiPublicAgentRunRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
-  '/api/public/kernel/decision': typeof ApiPublicKernelDecisionRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2670,22 +2616,18 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
-    | '/api/public/execution-plan'
     | '/api/public/goals'
     | '/api/public/governance'
     | '/api/public/health'
     | '/api/public/memory-graph'
-    | '/api/public/multi-agent'
     | '/api/public/replay'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
-    | '/api/public/simulate'
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
-    | '/api/public/workflow'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2802,11 +2744,9 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/proposals'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
-    | '/api/public/agent/run'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
-    | '/api/public/kernel/decision'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -2928,22 +2868,18 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
-    | '/api/public/execution-plan'
     | '/api/public/goals'
     | '/api/public/governance'
     | '/api/public/health'
     | '/api/public/memory-graph'
-    | '/api/public/multi-agent'
     | '/api/public/replay'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
-    | '/api/public/simulate'
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
-    | '/api/public/workflow'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3056,11 +2992,9 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/finance'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
-    | '/api/public/agent/run'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
-    | '/api/public/kernel/decision'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -3191,22 +3125,18 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
-    | '/api/public/execution-plan'
     | '/api/public/goals'
     | '/api/public/governance'
     | '/api/public/health'
     | '/api/public/memory-graph'
-    | '/api/public/multi-agent'
     | '/api/public/replay'
     | '/api/public/resolve-hybrid'
     | '/api/public/resolve-intent'
     | '/api/public/self-optimize'
     | '/api/public/shared-memory'
-    | '/api/public/simulate'
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
-    | '/api/public/workflow'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3323,11 +3253,9 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/proposals'
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
-    | '/api/public/agent/run'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
-    | '/api/public/kernel/decision'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -3386,27 +3314,21 @@ export interface RootRouteChildren {
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
-  ApiPublicExecutionPlanRoute: typeof ApiPublicExecutionPlanRoute
   ApiPublicGoalsRoute: typeof ApiPublicGoalsRoute
   ApiPublicGovernanceRoute: typeof ApiPublicGovernanceRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
-  ApiPublicMultiAgentRoute: typeof ApiPublicMultiAgentRoute
   ApiPublicReplayRoute: typeof ApiPublicReplayRoute
   ApiPublicResolveHybridRoute: typeof ApiPublicResolveHybridRoute
   ApiPublicResolveIntentRoute: typeof ApiPublicResolveIntentRoute
   ApiPublicSelfOptimizeRoute: typeof ApiPublicSelfOptimizeRoute
   ApiPublicSharedMemoryRoute: typeof ApiPublicSharedMemoryRoute
-  ApiPublicSimulateRoute: typeof ApiPublicSimulateRoute
   ApiPublicStrategyRoute: typeof ApiPublicStrategyRoute
   ApiPublicSystemHealthRoute: typeof ApiPublicSystemHealthRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
-  ApiPublicWorkflowRoute: typeof ApiPublicWorkflowRoute
-  ApiPublicAgentRunRoute: typeof ApiPublicAgentRunRoute
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
-  ApiPublicKernelDecisionRoute: typeof ApiPublicKernelDecisionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -4510,13 +4432,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
       parentRoute: typeof GlobalEducationCountriesRoute
     }
-    '/api/public/workflow': {
-      id: '/api/public/workflow'
-      path: '/api/public/workflow'
-      fullPath: '/api/public/workflow'
-      preLoaderRoute: typeof ApiPublicWorkflowRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/vector-search': {
       id: '/api/public/vector-search'
       path: '/api/public/vector-search'
@@ -4536,13 +4451,6 @@ declare module '@tanstack/react-router' {
       path: '/api/public/strategy'
       fullPath: '/api/public/strategy'
       preLoaderRoute: typeof ApiPublicStrategyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/simulate': {
-      id: '/api/public/simulate'
-      path: '/api/public/simulate'
-      fullPath: '/api/public/simulate'
-      preLoaderRoute: typeof ApiPublicSimulateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/shared-memory': {
@@ -4580,13 +4488,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicReplayRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/multi-agent': {
-      id: '/api/public/multi-agent'
-      path: '/api/public/multi-agent'
-      fullPath: '/api/public/multi-agent'
-      preLoaderRoute: typeof ApiPublicMultiAgentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/memory-graph': {
       id: '/api/public/memory-graph'
       path: '/api/public/memory-graph'
@@ -4613,13 +4514,6 @@ declare module '@tanstack/react-router' {
       path: '/api/public/goals'
       fullPath: '/api/public/goals'
       preLoaderRoute: typeof ApiPublicGoalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/execution-plan': {
-      id: '/api/public/execution-plan'
-      path: '/api/public/execution-plan'
-      fullPath: '/api/public/execution-plan'
-      preLoaderRoute: typeof ApiPublicExecutionPlanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/decisions': {
@@ -4776,13 +4670,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
-    '/api/public/kernel/decision': {
-      id: '/api/public/kernel/decision'
-      path: '/api/public/kernel/decision'
-      fullPath: '/api/public/kernel/decision'
-      preLoaderRoute: typeof ApiPublicKernelDecisionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/constitution/status': {
       id: '/api/public/constitution/status'
       path: '/api/public/constitution/status'
@@ -4802,13 +4689,6 @@ declare module '@tanstack/react-router' {
       path: '/api/public/constitution/amendments'
       fullPath: '/api/public/constitution/amendments'
       preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/agent/run': {
-      id: '/api/public/agent/run'
-      path: '/api/public/agent/run'
-      fullPath: '/api/public/agent/run'
-      preLoaderRoute: typeof ApiPublicAgentRunRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/technologies/support': {
@@ -6133,27 +6013,21 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
-  ApiPublicExecutionPlanRoute: ApiPublicExecutionPlanRoute,
   ApiPublicGoalsRoute: ApiPublicGoalsRoute,
   ApiPublicGovernanceRoute: ApiPublicGovernanceRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
-  ApiPublicMultiAgentRoute: ApiPublicMultiAgentRoute,
   ApiPublicReplayRoute: ApiPublicReplayRoute,
   ApiPublicResolveHybridRoute: ApiPublicResolveHybridRoute,
   ApiPublicResolveIntentRoute: ApiPublicResolveIntentRoute,
   ApiPublicSelfOptimizeRoute: ApiPublicSelfOptimizeRoute,
   ApiPublicSharedMemoryRoute: ApiPublicSharedMemoryRoute,
-  ApiPublicSimulateRoute: ApiPublicSimulateRoute,
   ApiPublicStrategyRoute: ApiPublicStrategyRoute,
   ApiPublicSystemHealthRoute: ApiPublicSystemHealthRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
-  ApiPublicWorkflowRoute: ApiPublicWorkflowRoute,
-  ApiPublicAgentRunRoute: ApiPublicAgentRunRoute,
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
-  ApiPublicKernelDecisionRoute: ApiPublicKernelDecisionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
