@@ -14,6 +14,7 @@ import { runConversation } from "@/lib/conversation/orchestrator";
 import { resetSession } from "@/lib/conversation/types";
 import type { FusionMode } from "@/lib/fusion/hybrid-resolver";
 import { LIMITS, rateLimit } from "@/lib/server/rate-limit";
+import { withTrace, withTimeout, errorEnvelope } from "@/lib/observability/sentry-server";
 
 const MAX_QUERY_LEN = 500;
 const MAX_K = 10;
@@ -62,14 +63,18 @@ async function handle(input: ChatInput): Promise<Response> {
     return badRequest("Missing required `q` query parameter.");
   }
   try {
-    const result = await runConversation(input.sessionId, input.q, {
-      mode: input.mode,
-      limit: input.limit,
+    return await withTrace("chat", "ai", async ({ traceId }) => {
+      const result = await withTimeout(
+        15_000,
+        () => runConversation(input.sessionId, input.q, { mode: input.mode, limit: input.limit }),
+        "chat.run",
+      );
+      return Response.json({ ...result, traceId }, { headers: { "x-trace-id": traceId } });
     });
-    return Response.json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    return Response.json({ error: "chat_failed", message }, { status: 500 });
+    const status = message.startsWith("timeout:") ? 504 : 500;
+    return errorEnvelope({ code: status === 504 ? "timeout" : "chat_failed", message, status });
   }
 }
 
