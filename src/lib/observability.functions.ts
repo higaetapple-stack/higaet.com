@@ -3,6 +3,56 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import type { JsonValue } from "./notifications/types";
+
+export interface SystemErrorRow {
+  id: string;
+  occurred_at: string;
+  source: string;
+  level: string;
+  message: string;
+  name: string | null;
+  stack: string | null;
+  release: string | null;
+  environment: string | null;
+  url: string | null;
+  user_id: string | null;
+  user_role: string | null;
+  route: string | null;
+  trace_id: string | null;
+  fingerprint: string | null;
+  context: JsonValue;
+  user_agent: string | null;
+}
+
+export interface SystemMetricRow {
+  id: string;
+  recorded_at: string;
+  kind: string;
+  name: string;
+  duration_ms: number;
+  status: string | null;
+  user_id: string | null;
+  context: JsonValue;
+}
+
+export interface ObservabilitySummary {
+  window_hours: number;
+  errors_total: number;
+  errors_by_source: Record<string, number>;
+  errors_by_level: Record<string, number>;
+  top_fingerprints: Array<{
+    fingerprint: string;
+    occurrences: number;
+    last_seen: string;
+    sample_message: string;
+  }>;
+  security_events_total: number;
+  notifications_failed: number;
+  notifications_delivered: number;
+  perf_p95_route_ms: number | null;
+  perf_p95_server_fn_ms: number | null;
+}
 
 // ---------- Client error ingestion ----------
 const ingestInput = z.object({
