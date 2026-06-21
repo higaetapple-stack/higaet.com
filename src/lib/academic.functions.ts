@@ -74,6 +74,15 @@ async function tryIssueCertificate(
     .select("id")
     .single();
   if (error) throw new Error(error.message);
+
+  // Best-effort PDF/QR generation; never block issuance on it
+  try {
+    const mod = await import("@/lib/certificates.functions");
+    await mod.generateCertificateArtifactsServer(row.id, issuerId);
+  } catch (e) {
+    console.error("certificate artifact generation failed", e);
+  }
+
   return { issued: true as const, id: row.id, number };
 }
 
