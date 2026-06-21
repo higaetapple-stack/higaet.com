@@ -97,7 +97,7 @@ export const listThreads = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     let q = context.supabase
       .from("threads")
-      .select("*, author:profiles!threads_author_id_fkey(full_name, avatar_url)")
+      .select("*")
       .order("pinned", { ascending: false })
       .order("last_reply_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })
@@ -106,7 +106,9 @@ export const listThreads = createServerFn({ method: "GET" })
     if (data.lessonId) q = q.eq("lesson_id", data.lessonId);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return (rows ?? []) as ThreadRow[];
+    const threads = (rows ?? []) as ThreadRow[];
+    await attachAuthors(context.supabase, threads);
+    return threads;
   });
 
 export const getThread = createServerFn({ method: "GET" })
@@ -115,12 +117,14 @@ export const getThread = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     const { data: row, error } = await context.supabase
       .from("threads")
-      .select("*, author:profiles!threads_author_id_fkey(full_name, avatar_url)")
+      .select("*")
       .eq("id", data.id)
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!row) throw new Error("Thread not found");
-    return row as ThreadRow;
+    const t = row as ThreadRow;
+    await attachAuthors(context.supabase, [t]);
+    return t;
   });
 
 export const createThread = createServerFn({ method: "POST" })
