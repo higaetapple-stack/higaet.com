@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { getMyCertificate } from "@/lib/academic.functions";
+import { getCertificateDownloadUrl } from "@/lib/certificates.functions";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Printer, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Download, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard/certificates/$id")({
   component: CertificateView,
@@ -12,7 +14,16 @@ export const Route = createFileRoute("/_authenticated/dashboard/certificates/$id
 function CertificateView() {
   const { id } = Route.useParams();
   const get = useServerFn(getMyCertificate);
+  const getUrl = useServerFn(getCertificateDownloadUrl);
   const q = useQuery({ queryKey: ["certificate", id], queryFn: () => get({ data: { id } }) });
+
+  const downloadMut = useMutation({
+    mutationFn: async () => getUrl({ data: { id } }),
+    onSuccess: (r) => {
+      window.open(r.url, "_blank", "noopener");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   if (q.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
   if (q.error || !q.data) return <p className="text-sm text-muted-foreground">Not found.</p>;
@@ -24,9 +35,19 @@ function CertificateView() {
         <Link to="/dashboard/certificates" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-ink">
           <ArrowLeft className="size-3.5" /> All certificates
         </Link>
-        <Button size="sm" variant="outline" onClick={() => window.print()}>
-          <Printer className="size-4" /> Print / Save PDF
-        </Button>
+        <div className="flex items-center gap-2">
+          {c.verification_token && (
+            <Button asChild size="sm" variant="outline">
+              <a href={`/verify/${c.verification_token}`} target="_blank" rel="noopener">
+                <ShieldCheck className="size-4" /> Verify
+              </a>
+            </Button>
+          )}
+          <Button size="sm" onClick={() => downloadMut.mutate()} disabled={downloadMut.isPending}
+            className="bg-academy text-academy-foreground hover:bg-academy/90">
+            <Download className="size-4" /> {downloadMut.isPending ? "Preparing…" : "Download PDF"}
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-2xl bg-gradient-to-br from-academy/5 to-transparent ring-1 ring-academy/30 p-12 print:ring-0 print:bg-white">

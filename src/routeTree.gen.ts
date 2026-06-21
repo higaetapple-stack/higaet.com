@@ -37,6 +37,7 @@ import { Route as TechnologiesIndexRouteImport } from './routes/technologies.ind
 import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
 import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
 import { Route as TechnologiesWebDevelopmentRouteImport } from './routes/technologies.web-development'
 import { Route as TechnologiesUiUxDesignRouteImport } from './routes/technologies.ui-ux-design'
@@ -407,6 +408,11 @@ const AcademyIndexRoute = AcademyIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AcademyRoute,
+} as any)
+const VerifyTokenRoute = VerifyTokenRouteImport.update({
+  id: '/verify/$token',
+  path: '/verify/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const VerifyCertificateIdRoute = VerifyCertificateIdRouteImport.update({
   id: '/verify-certificate/$id',
@@ -1826,6 +1832,7 @@ export interface FileRoutesByFullPath {
   '/technologies/ui-ux-design': typeof TechnologiesUiUxDesignRoute
   '/technologies/web-development': typeof TechnologiesWebDevelopmentRoute
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
+  '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
@@ -2082,6 +2089,7 @@ export interface FileRoutesByTo {
   '/technologies/ui-ux-design': typeof TechnologiesUiUxDesignRoute
   '/technologies/web-development': typeof TechnologiesWebDevelopmentRoute
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
+  '/verify/$token': typeof VerifyTokenRoute
   '/academy': typeof AcademyIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
@@ -2336,6 +2344,7 @@ export interface FileRoutesById {
   '/technologies/ui-ux-design': typeof TechnologiesUiUxDesignRoute
   '/technologies/web-development': typeof TechnologiesWebDevelopmentRoute
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
+  '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
@@ -2598,6 +2607,7 @@ export interface FileRouteTypes {
     | '/technologies/ui-ux-design'
     | '/technologies/web-development'
     | '/verify-certificate/$id'
+    | '/verify/$token'
     | '/academy/'
     | '/global-education/'
     | '/jobs/'
@@ -2854,6 +2864,7 @@ export interface FileRouteTypes {
     | '/technologies/ui-ux-design'
     | '/technologies/web-development'
     | '/verify-certificate/$id'
+    | '/verify/$token'
     | '/academy'
     | '/global-education'
     | '/jobs'
@@ -3107,6 +3118,7 @@ export interface FileRouteTypes {
     | '/technologies/ui-ux-design'
     | '/technologies/web-development'
     | '/verify-certificate/$id'
+    | '/verify/$token'
     | '/academy/'
     | '/global-education/'
     | '/jobs/'
@@ -3310,6 +3322,7 @@ export interface RootRouteChildren {
   JobsSlugRoute: typeof JobsSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
+  VerifyTokenRoute: typeof VerifyTokenRoute
   JobsIndexRoute: typeof JobsIndexRoute
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
@@ -3528,6 +3541,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/'
       preLoaderRoute: typeof AcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/verify/$token': {
+      id: '/verify/$token'
+      path: '/verify/$token'
+      fullPath: '/verify/$token'
+      preLoaderRoute: typeof VerifyTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/verify-certificate/$id': {
       id: '/verify-certificate/$id'
@@ -6009,6 +6029,7 @@ const rootRouteChildren: RootRouteChildren = {
   JobsSlugRoute: JobsSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
+  VerifyTokenRoute: VerifyTokenRoute,
   JobsIndexRoute: JobsIndexRoute,
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
