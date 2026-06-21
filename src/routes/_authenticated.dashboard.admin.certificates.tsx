@@ -11,6 +11,7 @@ import {
   upsertCertificateTemplate,
 } from "@/lib/admin.functions";
 import { adminIssueCertificate, adminListCertificates, adminRevokeCertificate } from "@/lib/academic.functions";
+import { adminRegenerateCertificatePdf, getCertificateDownloadUrl } from "@/lib/certificates.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Pencil, Trash2, BadgeCheck, ShieldOff } from "lucide-react";
+import { Plus, Pencil, Trash2, BadgeCheck, ShieldOff, Download, RefreshCw, Link2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/certificates")({
   component: CertificatesPage,
