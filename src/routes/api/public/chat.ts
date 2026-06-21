@@ -77,6 +77,8 @@ export const Route = createFileRoute("/api/public/chat")({
   server: {
     handlers: {
       GET: async ({ request }) => {
+        const limited = rateLimit(request, LIMITS.chat);
+        if (limited) return limited;
         const url = new URL(request.url);
         const parsed = parseShared(
           url.searchParams.get("sessionId") ?? "",
@@ -89,6 +91,8 @@ export const Route = createFileRoute("/api/public/chat")({
         return handle(parsed);
       },
       POST: async ({ request }) => {
+        const limited = rateLimit(request, LIMITS.chat);
+        if (limited) return limited;
         let body: Record<string, unknown> = {};
         try {
           body = (await request.json()) as Record<string, unknown>;
