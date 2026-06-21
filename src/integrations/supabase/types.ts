@@ -612,13 +612,16 @@ export type Database = {
           id: string
           issued_at: string
           issued_by: string | null
+          issued_pdf_path: string | null
           program_id: string
+          qr_code_url: string | null
           revoked: boolean
           revoked_at: string | null
           revoked_reason: string | null
           student_id: string
           updated_at: string
           verification_hash: string | null
+          verification_token: string
         }
         Insert: {
           certificate_number?: string | null
@@ -627,13 +630,16 @@ export type Database = {
           id?: string
           issued_at?: string
           issued_by?: string | null
+          issued_pdf_path?: string | null
           program_id: string
+          qr_code_url?: string | null
           revoked?: boolean
           revoked_at?: string | null
           revoked_reason?: string | null
           student_id: string
           updated_at?: string
           verification_hash?: string | null
+          verification_token?: string
         }
         Update: {
           certificate_number?: string | null
@@ -642,13 +648,16 @@ export type Database = {
           id?: string
           issued_at?: string
           issued_by?: string | null
+          issued_pdf_path?: string | null
           program_id?: string
+          qr_code_url?: string | null
           revoked?: boolean
           revoked_at?: string | null
           revoked_reason?: string | null
           student_id?: string
           updated_at?: string
           verification_hash?: string | null
+          verification_token?: string
         }
         Relationships: [
           {
@@ -3723,6 +3732,17 @@ export type Database = {
       }
       verify_certificate: {
         Args: { _number: string }
+        Returns: {
+          certificate_number: string
+          issued_at: string
+          program_title: string
+          revoked: boolean
+          student_name: string
+          verification_hash: string
+        }[]
+      }
+      verify_certificate_by_token: {
+        Args: { _token: string }
         Returns: {
           certificate_number: string
           issued_at: string
