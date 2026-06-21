@@ -47,6 +47,7 @@ const ITEMS: Item[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, roles: "all" },
   { to: "/dashboard/profile", label: "My profile", icon: User, roles: "all" },
   { to: "/dashboard/security", label: "Security", icon: Lock, roles: "all" },
+  { to: "/community", label: "Community", icon: MessagesSquare, roles: "all" },
   { to: "/dashboard/programs", label: "My programs", icon: GraduationCap, roles: ["student"] },
   { to: "/dashboard/assignments", label: "Assignments", icon: ClipboardCheck, roles: ["student"] },
   { to: "/dashboard/projects", label: "Projects", icon: Rocket, roles: ["student"] },
