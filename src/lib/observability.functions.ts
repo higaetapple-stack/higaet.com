@@ -164,5 +164,5 @@ export const adminObservabilitySummary = createServerFn({ method: "GET" })
       { _window: `${data.hours} hours` },
     );
     if (error) throw new Error(error.message);
-    return (summary ?? {}) as ObservabilitySummary;
+    return (summary ?? {}) as unknown as ObservabilitySummary;
   });

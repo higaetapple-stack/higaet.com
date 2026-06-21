@@ -245,6 +245,7 @@ import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes
 import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
+import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
 import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
@@ -1606,6 +1607,12 @@ const AuthenticatedDashboardAdminPlacementsRoute =
     path: '/placements',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminObservabilityRoute =
+  AuthenticatedDashboardAdminObservabilityRouteImport.update({
+    id: '/observability',
+    path: '/observability',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminNotificationsRoute =
   AuthenticatedDashboardAdminNotificationsRouteImport.update({
     id: '/notifications',
@@ -1980,6 +1987,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
+  '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
@@ -2236,6 +2244,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
+  '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
@@ -2502,6 +2511,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
+  '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/_authenticated/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
@@ -2770,6 +2780,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/notifications'
+    | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/sa-applications'
@@ -3026,6 +3037,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/notifications'
+    | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/sa-applications'
@@ -3291,6 +3303,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/identity-providers'
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/notifications'
+    | '/_authenticated/dashboard/admin/observability'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
     | '/_authenticated/dashboard/admin/sa-applications'
@@ -5063,6 +5076,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminPlacementsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/observability': {
+      id: '/_authenticated/dashboard/admin/observability'
+      path: '/observability'
+      fullPath: '/dashboard/admin/observability'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminObservabilityRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/notifications': {
       id: '/_authenticated/dashboard/admin/notifications'
       path: '/notifications'
@@ -5330,6 +5350,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminIdentityProvidersRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminNotificationsRoute: typeof AuthenticatedDashboardAdminNotificationsRoute
+  AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
   AuthenticatedDashboardAdminSaApplicationsRoute: typeof AuthenticatedDashboardAdminSaApplicationsRoute
@@ -5372,6 +5393,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
     AuthenticatedDashboardAdminJobsRoute: AuthenticatedDashboardAdminJobsRoute,
     AuthenticatedDashboardAdminNotificationsRoute:
       AuthenticatedDashboardAdminNotificationsRoute,
+    AuthenticatedDashboardAdminObservabilityRoute:
+      AuthenticatedDashboardAdminObservabilityRoute,
     AuthenticatedDashboardAdminPlacementsRoute:
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
