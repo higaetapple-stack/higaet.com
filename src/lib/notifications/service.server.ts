@@ -129,7 +129,7 @@ export async function dispatchNotification(
         body,
         action_url: actionUrl,
         priority,
-        data: opts.data ?? {},
+        data: (opts.data ?? {}) as never,
       })
       .select("id")
       .single();
