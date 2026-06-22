@@ -34,7 +34,7 @@ export const updateMyEducationProfile = createServerFn({ method: "POST" })
     const sb = context.supabase;
     const payload: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(data)) payload[k] = v === "" ? null : v;
-    const { error } = await sb.from("profiles").update(payload).eq("id", context.userId);
+    const { error } = await sb.from("profiles").update(payload as never).eq("id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
