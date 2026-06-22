@@ -200,6 +200,8 @@ export const listReplies = createServerFn({ method: "GET" })
       .from("replies")
       .select("*")
       .eq("thread_id", data.threadId)
+      .is("deleted_at", null)
+      .eq("is_hidden", false)
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
     const replies = (rows ?? []) as ReplyRow[];
