@@ -24,7 +24,8 @@ export interface AiMessageRow {
   role: AiMessageRole;
   content: string;
   token_count: number | null;
-  metadata: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  metadata: Record<string, any>;
   created_at: string;
 }
 

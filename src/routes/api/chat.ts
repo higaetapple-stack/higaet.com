@@ -84,11 +84,11 @@ export const Route = createFileRoute("/api/chat")({
         if (contextType === "lesson" && contextId) {
           const { data: lesson } = await supabase
             .from("lessons")
-            .select("title, content, description, course_id")
+            .select("title, content_md")
             .eq("id", contextId)
             .maybeSingle();
           if (lesson) {
-            contextBlock += `LESSON CONTEXT — ${lesson.title}\n${(lesson.content ?? lesson.description ?? "").slice(0, 4000)}\n\n`;
+            contextBlock += `LESSON CONTEXT — ${lesson.title}\n${(lesson.content_md ?? "").slice(0, 4000)}\n\n`;
           }
           const { data: threads } = await supabase
             .from("threads")
