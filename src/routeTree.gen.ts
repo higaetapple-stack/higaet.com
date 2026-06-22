@@ -19,6 +19,8 @@ import { Route as SimulateRouteImport } from './routes/simulate'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as KernelRouteImport } from './routes/kernel'
 import { Route as HigaetTechnologiesRouteImport } from './routes/higaet-technologies'
 import { Route as HigaetGlobalEducationHubRouteImport } from './routes/higaet-global-education-hub'
@@ -26,6 +28,8 @@ import { Route as HigaetAiPlatformRouteImport } from './routes/higaet-ai-platfor
 import { Route as HigaetAcademyRouteImport } from './routes/higaet-academy'
 import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
+import { Route as FounderRouteImport } from './routes/founder'
+import { Route as FacultyRouteImport } from './routes/faculty'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -36,6 +40,7 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AiRouteImport } from './routes/ai'
+import { Route as AdvisorsRouteImport } from './routes/advisors'
 import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AboutHigaetRouteImport } from './routes/about-higaet'
 import { Route as AboutRouteImport } from './routes/about'
@@ -374,6 +379,16 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeadershipRoute = LeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KernelRoute = KernelRouteImport.update({
   id: '/kernel',
   path: '/kernel',
@@ -408,6 +423,16 @@ const GovernanceRoute = GovernanceRouteImport.update({
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
   id: '/global-education',
   path: '/global-education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FounderRoute = FounderRouteImport.update({
+  id: '/founder',
+  path: '/founder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FacultyRoute = FacultyRouteImport.update({
+  id: '/faculty',
+  path: '/faculty',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsRoute = DocsRouteImport.update({
@@ -458,6 +483,11 @@ const AuthRoute = AuthRouteImport.update({
 const AiRoute = AiRouteImport.update({
   id: '/ai',
   path: '/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvisorsRoute = AdvisorsRouteImport.update({
+  id: '/advisors',
+  path: '/advisors',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcademyRoute = AcademyRouteImport.update({
@@ -2103,6 +2133,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/about-higaet': typeof AboutHigaetRoute
   '/academy': typeof AcademyRouteWithChildren
+  '/advisors': typeof AdvisorsRoute
   '/ai': typeof AiRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
@@ -2113,6 +2144,8 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/docs': typeof DocsRouteWithChildren
+  '/faculty': typeof FacultyRoute
+  '/founder': typeof FounderRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
   '/higaet-academy': typeof HigaetAcademyRoute
@@ -2120,6 +2153,8 @@ export interface FileRoutesByFullPath {
   '/higaet-global-education-hub': typeof HigaetGlobalEducationHubRoute
   '/higaet-technologies': typeof HigaetTechnologiesRoute
   '/kernel': typeof KernelRoute
+  '/leadership': typeof LeadershipRoute
+  '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -2417,6 +2452,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-higaet': typeof AboutHigaetRoute
+  '/advisors': typeof AdvisorsRoute
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
@@ -2425,12 +2461,16 @@ export interface FileRoutesByTo {
   '/constitution-versions': typeof ConstitutionVersionsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/faculty': typeof FacultyRoute
+  '/founder': typeof FounderRoute
   '/governance': typeof GovernanceRoute
   '/higaet-academy': typeof HigaetAcademyRoute
   '/higaet-ai-platform': typeof HigaetAiPlatformRoute
   '/higaet-global-education-hub': typeof HigaetGlobalEducationHubRoute
   '/higaet-technologies': typeof HigaetTechnologiesRoute
   '/kernel': typeof KernelRoute
+  '/leadership': typeof LeadershipRoute
+  '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -2719,6 +2759,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/about-higaet': typeof AboutHigaetRoute
   '/academy': typeof AcademyRouteWithChildren
+  '/advisors': typeof AdvisorsRoute
   '/ai': typeof AiRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
@@ -2729,6 +2770,8 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/docs': typeof DocsRouteWithChildren
+  '/faculty': typeof FacultyRoute
+  '/founder': typeof FounderRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
   '/higaet-academy': typeof HigaetAcademyRoute
@@ -2736,6 +2779,8 @@ export interface FileRoutesById {
   '/higaet-global-education-hub': typeof HigaetGlobalEducationHubRoute
   '/higaet-technologies': typeof HigaetTechnologiesRoute
   '/kernel': typeof KernelRoute
+  '/leadership': typeof LeadershipRoute
+  '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -3036,6 +3081,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/about-higaet'
     | '/academy'
+    | '/advisors'
     | '/ai'
     | '/auth'
     | '/blog'
@@ -3046,6 +3092,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/docs'
+    | '/faculty'
+    | '/founder'
     | '/global-education'
     | '/governance'
     | '/higaet-academy'
@@ -3053,6 +3101,8 @@ export interface FileRouteTypes {
     | '/higaet-global-education-hub'
     | '/higaet-technologies'
     | '/kernel'
+    | '/leadership'
+    | '/partners'
     | '/privacy'
     | '/replay'
     | '/robots.txt'
@@ -3350,6 +3400,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-higaet'
+    | '/advisors'
     | '/auth'
     | '/blog'
     | '/careers'
@@ -3358,12 +3409,16 @@ export interface FileRouteTypes {
     | '/constitution-versions'
     | '/contact'
     | '/cookies'
+    | '/faculty'
+    | '/founder'
     | '/governance'
     | '/higaet-academy'
     | '/higaet-ai-platform'
     | '/higaet-global-education-hub'
     | '/higaet-technologies'
     | '/kernel'
+    | '/leadership'
+    | '/partners'
     | '/privacy'
     | '/replay'
     | '/robots.txt'
@@ -3651,6 +3706,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/about-higaet'
     | '/academy'
+    | '/advisors'
     | '/ai'
     | '/auth'
     | '/blog'
@@ -3661,6 +3717,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/docs'
+    | '/faculty'
+    | '/founder'
     | '/global-education'
     | '/governance'
     | '/higaet-academy'
@@ -3668,6 +3726,8 @@ export interface FileRouteTypes {
     | '/higaet-global-education-hub'
     | '/higaet-technologies'
     | '/kernel'
+    | '/leadership'
+    | '/partners'
     | '/privacy'
     | '/replay'
     | '/robots.txt'
@@ -3968,6 +4028,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AboutHigaetRoute: typeof AboutHigaetRoute
   AcademyRoute: typeof AcademyRouteWithChildren
+  AdvisorsRoute: typeof AdvisorsRoute
   AiRoute: typeof AiRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
@@ -3978,6 +4039,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   DocsRoute: typeof DocsRouteWithChildren
+  FacultyRoute: typeof FacultyRoute
+  FounderRoute: typeof FounderRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   GovernanceRoute: typeof GovernanceRoute
   HigaetAcademyRoute: typeof HigaetAcademyRoute
@@ -3985,6 +4048,8 @@ export interface RootRouteChildren {
   HigaetGlobalEducationHubRoute: typeof HigaetGlobalEducationHubRoute
   HigaetTechnologiesRoute: typeof HigaetTechnologiesRoute
   KernelRoute: typeof KernelRoute
+  LeadershipRoute: typeof LeadershipRoute
+  PartnersRoute: typeof PartnersRoute
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -4100,6 +4165,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leadership': {
+      id: '/leadership'
+      path: '/leadership'
+      fullPath: '/leadership'
+      preLoaderRoute: typeof LeadershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kernel': {
       id: '/kernel'
       path: '/kernel'
@@ -4147,6 +4226,20 @@ declare module '@tanstack/react-router' {
       path: '/global-education'
       fullPath: '/global-education'
       preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founder': {
+      id: '/founder'
+      path: '/founder'
+      fullPath: '/founder'
+      preLoaderRoute: typeof FounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faculty': {
+      id: '/faculty'
+      path: '/faculty'
+      fullPath: '/faculty'
+      preLoaderRoute: typeof FacultyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs': {
@@ -4217,6 +4310,13 @@ declare module '@tanstack/react-router' {
       path: '/ai'
       fullPath: '/ai'
       preLoaderRoute: typeof AiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advisors': {
+      id: '/advisors'
+      path: '/advisors'
+      fullPath: '/advisors'
+      preLoaderRoute: typeof AdvisorsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/academy': {
@@ -7260,6 +7360,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AboutHigaetRoute: AboutHigaetRoute,
   AcademyRoute: AcademyRouteWithChildren,
+  AdvisorsRoute: AdvisorsRoute,
   AiRoute: AiRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
@@ -7270,6 +7371,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   DocsRoute: DocsRouteWithChildren,
+  FacultyRoute: FacultyRoute,
+  FounderRoute: FounderRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   GovernanceRoute: GovernanceRoute,
   HigaetAcademyRoute: HigaetAcademyRoute,
@@ -7277,6 +7380,8 @@ const rootRouteChildren: RootRouteChildren = {
   HigaetGlobalEducationHubRoute: HigaetGlobalEducationHubRoute,
   HigaetTechnologiesRoute: HigaetTechnologiesRoute,
   KernelRoute: KernelRoute,
+  LeadershipRoute: LeadershipRoute,
+  PartnersRoute: PartnersRoute,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
