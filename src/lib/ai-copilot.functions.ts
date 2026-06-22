@@ -11,7 +11,38 @@ const ALLOWED_ROLES = [
   "technology_consultant",
 ] as const;
 
-const COLLECTION_SLUGS = ["academy", "global-education", "career", "crm", "technologies"];
+// Server-side allow-list. Collections are derived from caller role + requested mode/entity.
+// Client-supplied collection slugs are IGNORED (logged as scope violation).
+const ALL_COLLECTIONS = ["academy", "global-education", "career", "crm", "technologies"] as const;
+
+const ROLE_COLLECTIONS: Record<string, readonly string[]> = {
+  super_admin: ALL_COLLECTIONS,
+  admin: ALL_COLLECTIONS,
+  counselor: ["global-education", "crm", "academy"],
+  placement_officer: ["career", "crm", "academy"],
+  faculty: ["academy"],
+  technology_consultant: ["technologies", "crm"],
+};
+
+const MODE_COLLECTIONS: Partial<Record<string, readonly string[]>> = {
+  student_summary: ["academy", "career"],
+  application_summary: ["global-education"],
+  visa_summary: ["global-education"],
+  lead_summary: ["crm"],
+  project_summary: ["technologies"],
+  draft_placement_feedback: ["career"],
+  draft_project_update: ["technologies"],
+};
+
+function resolveAllowedCollections(userRoles: string[], mode: string): string[] {
+  const roleAllowed = new Set<string>();
+  for (const r of userRoles) {
+    for (const s of ROLE_COLLECTIONS[r] ?? []) roleAllowed.add(s);
+  }
+  const modeScope = MODE_COLLECTIONS[mode];
+  if (!modeScope) return Array.from(roleAllowed);
+  return modeScope.filter((s) => roleAllowed.has(s));
+}
 
 const COPILOT_SYSTEM = `You are the HIGAET Copilot — an internal AI assistant for staff (admins, counselors, placement officers, faculty, technology consultants).
 - Produce concise, decision-ready summaries and drafts based ONLY on the structured records and knowledge context provided.
