@@ -273,6 +273,7 @@ import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_
 import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
 import { Route as AuthenticatedDashboardAdminUniprogramsRouteImport } from './routes/_authenticated.dashboard.admin.uniprograms'
 import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './routes/_authenticated.dashboard.admin.tech-leads'
+import { Route as AuthenticatedDashboardAdminSystemRouteImport } from './routes/_authenticated.dashboard.admin.system'
 import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
 import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
@@ -1795,6 +1796,12 @@ const AuthenticatedDashboardAdminTechLeadsRoute =
     path: '/tech-leads',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminSystemRoute =
+  AuthenticatedDashboardAdminSystemRouteImport.update({
+    id: '/system',
+    path: '/system',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminStoriesRoute =
   AuthenticatedDashboardAdminStoriesRouteImport.update({
     id: '/stories',
@@ -2300,6 +2307,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
   '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
   '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
@@ -2595,6 +2603,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
   '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
   '/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
@@ -2904,6 +2913,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
+  '/_authenticated/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
   '/_authenticated/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
   '/_authenticated/dashboard/admin/uniprograms': typeof AuthenticatedDashboardAdminUniprogramsRoute
   '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
@@ -3215,6 +3225,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/scholarships'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
+    | '/dashboard/admin/system'
     | '/dashboard/admin/tech-leads'
     | '/dashboard/admin/uniprograms'
     | '/dashboard/admin/universities'
@@ -3510,6 +3521,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/scholarships'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
+    | '/dashboard/admin/system'
     | '/dashboard/admin/tech-leads'
     | '/dashboard/admin/uniprograms'
     | '/dashboard/admin/universities'
@@ -3818,6 +3830,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/scholarships'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/stories'
+    | '/_authenticated/dashboard/admin/system'
     | '/_authenticated/dashboard/admin/tech-leads'
     | '/_authenticated/dashboard/admin/uniprograms'
     | '/_authenticated/dashboard/admin/universities'
@@ -5799,6 +5812,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminTechLeadsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/system': {
+      id: '/_authenticated/dashboard/admin/system'
+      path: '/system'
+      fullPath: '/dashboard/admin/system'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSystemRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/stories': {
       id: '/_authenticated/dashboard/admin/stories'
       path: '/stories'
@@ -6248,6 +6268,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminScholarshipsRoute: typeof AuthenticatedDashboardAdminScholarshipsRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminStoriesRoute: typeof AuthenticatedDashboardAdminStoriesRoute
+  AuthenticatedDashboardAdminSystemRoute: typeof AuthenticatedDashboardAdminSystemRoute
   AuthenticatedDashboardAdminTechLeadsRoute: typeof AuthenticatedDashboardAdminTechLeadsRoute
   AuthenticatedDashboardAdminUniprogramsRoute: typeof AuthenticatedDashboardAdminUniprogramsRoute
   AuthenticatedDashboardAdminUniversitiesRoute: typeof AuthenticatedDashboardAdminUniversitiesRoute
@@ -6302,6 +6323,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminSettingsRoute,
     AuthenticatedDashboardAdminStoriesRoute:
       AuthenticatedDashboardAdminStoriesRoute,
+    AuthenticatedDashboardAdminSystemRoute:
+      AuthenticatedDashboardAdminSystemRoute,
     AuthenticatedDashboardAdminTechLeadsRoute:
       AuthenticatedDashboardAdminTechLeadsRoute,
     AuthenticatedDashboardAdminUniprogramsRoute:
