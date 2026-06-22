@@ -221,6 +221,7 @@ export type Database = {
           context_type: Database["public"]["Enums"]["ai_context_type"]
           created_at: string
           id: string
+          secondary_contexts: Json
           title: string
           updated_at: string
           user_id: string
@@ -230,6 +231,7 @@ export type Database = {
           context_type?: Database["public"]["Enums"]["ai_context_type"]
           created_at?: string
           id?: string
+          secondary_contexts?: Json
           title?: string
           updated_at?: string
           user_id: string
@@ -239,6 +241,7 @@ export type Database = {
           context_type?: Database["public"]["Enums"]["ai_context_type"]
           created_at?: string
           id?: string
+          secondary_contexts?: Json
           title?: string
           updated_at?: string
           user_id?: string

@@ -8,11 +8,17 @@ import { z } from "zod";
 export type AiContextType = "lesson" | "community" | "general";
 export type AiMessageRole = "user" | "assistant" | "system";
 
+export interface AiSecondaryContext {
+  type: AiContextType;
+  id: string;
+}
+
 export interface AiConversationRow {
   id: string;
   user_id: string;
   context_type: AiContextType;
   context_id: string | null;
+  secondary_contexts: AiSecondaryContext[];
   title: string;
   created_at: string;
   updated_at: string;
@@ -30,6 +36,10 @@ export interface AiMessageRow {
 }
 
 const contextSchema = z.enum(["lesson", "community", "general"]);
+const secondaryContextsSchema = z
+  .array(z.object({ type: contextSchema, id: z.string().uuid() }))
+  .max(8)
+  .default([]);
 
 export const createConversation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -37,6 +47,7 @@ export const createConversation = createServerFn({ method: "POST" })
     z.object({
       contextType: contextSchema.default("general"),
       contextId: z.string().uuid().optional().nullable(),
+      secondaryContexts: secondaryContextsSchema.optional(),
       title: z.string().min(1).max(200).optional(),
     }).parse(d ?? {}),
   )
@@ -47,12 +58,31 @@ export const createConversation = createServerFn({ method: "POST" })
         user_id: context.userId,
         context_type: data.contextType,
         context_id: data.contextId ?? null,
+        secondary_contexts: data.secondaryContexts ?? [],
         title: data.title ?? "New conversation",
       })
       .select("*")
       .single();
     if (error) throw new Error(error.message);
-    return row as AiConversationRow;
+    return row as unknown as AiConversationRow;
+  });
+
+// Replace the secondary_contexts array on an existing conversation (owner-only via RLS).
+export const setSecondaryContexts = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z.object({
+      id: z.string().uuid(),
+      secondaryContexts: secondaryContextsSchema,
+    }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("ai_conversations")
+      .update({ secondary_contexts: data.secondaryContexts })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const listConversations = createServerFn({ method: "GET" })
@@ -73,7 +103,7 @@ export const listConversations = createServerFn({ method: "GET" })
     if (data.contextType) q = q.eq("context_type", data.contextType);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return (rows ?? []) as AiConversationRow[];
+    return (rows ?? []) as unknown as AiConversationRow[];
   });
 
 export const getConversation = createServerFn({ method: "GET" })
@@ -96,7 +126,7 @@ export const getConversation = createServerFn({ method: "GET" })
     if (mErr) throw new Error(mErr.message);
 
     return {
-      conversation: conv as AiConversationRow,
+      conversation: conv as unknown as AiConversationRow,
       messages: (msgs ?? []) as AiMessageRow[],
     };
   });
@@ -141,7 +171,7 @@ export const getOrCreateLessonConversation = createServerFn({ method: "POST" })
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (existing) return existing as AiConversationRow;
+    if (existing) return existing as unknown as AiConversationRow;
 
     const { data: row, error } = await context.supabase
       .from("ai_conversations")
@@ -154,5 +184,5 @@ export const getOrCreateLessonConversation = createServerFn({ method: "POST" })
       .select("*")
       .single();
     if (error) throw new Error(error.message);
-    return row as AiConversationRow;
+    return row as unknown as AiConversationRow;
   });
