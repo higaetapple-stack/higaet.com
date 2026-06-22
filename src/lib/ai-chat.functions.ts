@@ -103,7 +103,7 @@ export const listConversations = createServerFn({ method: "GET" })
     if (data.contextType) q = q.eq("context_type", data.contextType);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
-    return (rows ?? []) as AiConversationRow[];
+    return (rows ?? []) as unknown as AiConversationRow[];
   });
 
 export const getConversation = createServerFn({ method: "GET" })
@@ -126,7 +126,7 @@ export const getConversation = createServerFn({ method: "GET" })
     if (mErr) throw new Error(mErr.message);
 
     return {
-      conversation: conv as AiConversationRow,
+      conversation: conv as unknown as AiConversationRow,
       messages: (msgs ?? []) as AiMessageRow[],
     };
   });
@@ -171,7 +171,7 @@ export const getOrCreateLessonConversation = createServerFn({ method: "POST" })
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (existing) return existing as AiConversationRow;
+    if (existing) return existing as unknown as AiConversationRow;
 
     const { data: row, error } = await context.supabase
       .from("ai_conversations")
@@ -184,5 +184,5 @@ export const getOrCreateLessonConversation = createServerFn({ method: "POST" })
       .select("*")
       .single();
     if (error) throw new Error(error.message);
-    return row as AiConversationRow;
+    return row as unknown as AiConversationRow;
   });
