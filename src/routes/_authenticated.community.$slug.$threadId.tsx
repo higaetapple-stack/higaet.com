@@ -143,6 +143,17 @@ function ThreadView() {
           reactions={threadReactions}
           onToggle={(emoji) => reactMut.mutate({ targetType: "thread", targetId: thread.id, emoji })}
         />
+        <div className="pt-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => discussWithAiMut.mutate(thread.title)}
+            disabled={discussWithAiMut.isPending}
+          >
+            <Sparkles className="size-3.5 mr-1" />
+            {discussWithAiMut.isPending ? "Opening…" : "Discuss with AI"}
+          </Button>
+        </div>
         {isAdmin && (
           <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
             <Button size="sm" variant="outline" onClick={async () => { await pinFn({ data: { id: thread.id, pinned: !thread.pinned } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
