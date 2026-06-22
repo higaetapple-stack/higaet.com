@@ -29,6 +29,7 @@ export const Route = createFileRoute("/docs/$category/$slug")({
       headline: article.title,
       name: article.title,
       description: article.description,
+      ...(article.summary ? { abstract: article.summary } : {}),
       url,
       dateModified: article.updated,
       inLanguage: "en",
@@ -38,6 +39,9 @@ export const Route = createFileRoute("/docs/$category/$slug")({
         url: `${BASE}/docs/${category.slug}`,
       },
       publisher: { "@id": "https://higaet-core-engine.lovable.app/#organization" },
+      ...(article.mentions && article.mentions.length
+        ? { mentions: article.mentions.map((u) => ({ "@id": u, url: u })) }
+        : {}),
     };
 
     const faq = article.faqs?.length
