@@ -438,3 +438,102 @@ export const createEvent = createServerFn({ method: "POST" })
     });
     return row as EventRow;
   });
+
+// ============================================================
+// Phase 2B — Moderation & thread lifecycle controls (admin-only)
+// ============================================================
+async function assertAdmin(supabase: any, userId: string) {
+  const { data, error } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
+  if (error) throw new Error(error.message);
+  if (!data) throw new Error("Forbidden: admin role required");
+}
+
+export const checkIsAdmin = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (error) throw new Error(error.message);
+    return { isAdmin: !!data };
+  });
+
+const threadIdInput = z.object({ id: z.string().uuid() });
+
+export const setThreadHidden = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ id: z.string().uuid(), hidden: z.boolean() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { error } = await context.supabase
+      .from("threads")
+      .update({ is_hidden: data.hidden })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    await context.supabase.rpc("emit_domain_event", {
+      _event_type: data.hidden ? "thread.hidden" : "thread.unhidden",
+      _aggregate_type: "thread",
+      _aggregate_id: data.id,
+      _payload: { moderator_id: context.userId },
+    });
+    return { ok: true };
+  });
+
+export const setThreadLocked = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ id: z.string().uuid(), locked: z.boolean() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { error } = await context.supabase
+      .from("threads")
+      .update({ locked: data.locked })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const setThreadPinned = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ id: z.string().uuid(), pinned: z.boolean() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { error } = await context.supabase
+      .from("threads")
+      .update({ pinned: data.pinned })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const softDeleteThread = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => threadIdInput.parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { error } = await context.supabase
+      .from("threads")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    await context.supabase.rpc("emit_domain_event", {
+      _event_type: "thread.deleted",
+      _aggregate_type: "thread",
+      _aggregate_id: data.id,
+      _payload: { moderator_id: context.userId },
+    });
+    return { ok: true };
+  });
+
+export const softDeleteReply = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { error } = await context.supabase
+      .from("replies")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
