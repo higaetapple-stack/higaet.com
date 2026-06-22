@@ -6,6 +6,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createClient } from "@supabase/supabase-js";
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
+import { embedTexts, toVectorLiteral } from "@/lib/ai-embeddings.server";
 import type { Database } from "@/integrations/supabase/types";
 
 const TUTOR_SYSTEM = `You are HIGAET's AI Tutor — an adaptive learning assistant for students of the Helen Institute of Gen AI Engineering & Technology.
@@ -155,6 +156,63 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
+        // ===== Phase 7.2: scoped RAG retrieval =====
+        // Tutor → search lessons in current course. Assistant → search threads in current community.
+        try {
+          const lastUserText = [...body.messages].reverse().find((m) => m.role === "user")
+            ?.parts.map((p) => (p.type === "text" ? p.text : "")).join("").trim() ?? "";
+          if (lastUserText) {
+            let entityType: "lesson" | "thread" | null = null;
+            let entityIds: string[] = [];
+
+            if (contextType === "lesson" && contextId) {
+              const { data: lesson } = await supabase
+                .from("lessons").select("course_id").eq("id", contextId).maybeSingle();
+              if (lesson?.course_id) {
+                const { data: siblings } = await supabase
+                  .from("lessons").select("id").eq("course_id", lesson.course_id).limit(50);
+                entityIds = (siblings ?? []).map((l) => l.id);
+              } else {
+                entityIds = [contextId];
+              }
+              entityType = "lesson";
+            } else if (contextType === "community" && contextId) {
+              const { data: thread } = await supabase
+                .from("threads").select("community_id").eq("id", contextId).maybeSingle();
+              if (thread?.community_id) {
+                const { data: siblings } = await supabase
+                  .from("threads").select("id")
+                  .eq("community_id", thread.community_id)
+                  .is("deleted_at", null).eq("is_hidden", false)
+                  .order("last_reply_at", { ascending: false, nullsFirst: false })
+                  .limit(100);
+                entityIds = (siblings ?? []).map((t) => t.id);
+                entityType = "thread";
+              }
+            }
+
+            if (entityType && entityIds.length > 0) {
+              const [queryVec] = await embedTexts(lovableKey, [lastUserText.slice(0, 4000)]);
+              const { data: matches, error: mErr } = await supabase.rpc("match_ai_chunks", {
+                query_embedding: toVectorLiteral(queryVec) as unknown as string,
+                p_entity_type: entityType,
+                p_entity_ids: entityIds,
+                match_count: entityType === "lesson" ? 4 : 6,
+              });
+              if (mErr) {
+                console.warn("[ai/chat] match_ai_chunks failed", mErr.message);
+              } else if (matches && matches.length > 0) {
+                contextBlock += `RETRIEVED CONTEXT (semantic matches from ${entityType}s):\n`;
+                for (const m of matches as Array<{ title: string | null; chunk_text: string; similarity: number }>) {
+                  contextBlock += `- [${m.title ?? "untitled"} · ${(m.similarity ?? 0).toFixed(2)}] ${(m.chunk_text ?? "").slice(0, 600)}\n`;
+                }
+                contextBlock += "\n";
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("[ai/chat] RAG retrieval skipped", e instanceof Error ? e.message : e);
+        }
 
         const system =
           (contextType === "lesson" ? TUTOR_SYSTEM : ASSISTANT_SYSTEM) +
