@@ -597,6 +597,8 @@ export type Database = {
           error: string | null
           event_type: string
           id: number
+          leased_until: string | null
+          max_attempts: number
           next_attempt_at: string | null
           payload: Json
           response_body: string | null
@@ -611,6 +613,8 @@ export type Database = {
           error?: string | null
           event_type: string
           id?: number
+          leased_until?: string | null
+          max_attempts?: number
           next_attempt_at?: string | null
           payload: Json
           response_body?: string | null
@@ -625,6 +629,8 @@ export type Database = {
           error?: string | null
           event_type?: string
           id?: number
+          leased_until?: string | null
+          max_attempts?: number
           next_attempt_at?: string | null
           payload?: Json
           response_body?: string | null
@@ -4812,6 +4818,10 @@ export type Database = {
         }
         Returns: string
       }
+      enqueue_webhook_event: {
+        Args: { _event_type: string; _payload: Json }
+        Returns: number
+      }
       generate_portfolio_slug: {
         Args: { _full_name: string; _id: string }
         Returns: string
@@ -4837,6 +4847,31 @@ export type Database = {
       is_program_eligible: {
         Args: { _program: string; _student: string }
         Returns: boolean
+      }
+      lease_webhook_deliveries: {
+        Args: { _lease_seconds: number; _limit: number }
+        Returns: {
+          attempt: number
+          created_at: string
+          delivered_at: string | null
+          error: string | null
+          event_type: string
+          id: number
+          leased_until: string | null
+          max_attempts: number
+          next_attempt_at: string | null
+          payload: Json
+          response_body: string | null
+          response_status: number | null
+          status: string
+          subscription_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "api_webhook_deliveries"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       match_ai_chunks:
         | {
