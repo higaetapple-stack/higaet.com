@@ -4534,6 +4534,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ai_delete_document: {
+        Args: { p_entity_id: string; p_entity_type: string }
+        Returns: undefined
+      }
+      ai_upsert_document_and_enqueue: {
+        Args: {
+          p_collection_slug: string
+          p_content: string
+          p_entity_id: string
+          p_entity_type: string
+          p_title: string
+        }
+        Returns: undefined
+      }
       emit_domain_event: {
         Args: {
           _aggregate_id?: string
@@ -4569,21 +4583,39 @@ export type Database = {
         Args: { _program: string; _student: string }
         Returns: boolean
       }
-      match_ai_chunks: {
-        Args: {
-          collection_ids?: string[]
-          match_count?: number
-          query_embedding: string
-        }
-        Returns: {
-          chunk_text: string
-          collection_id: string
-          document_id: string
-          id: string
-          metadata: Json
-          similarity: number
-        }[]
-      }
+      match_ai_chunks:
+        | {
+            Args: {
+              collection_ids?: string[]
+              match_count?: number
+              query_embedding: string
+            }
+            Returns: {
+              chunk_text: string
+              collection_id: string
+              document_id: string
+              id: string
+              metadata: Json
+              similarity: number
+            }[]
+          }
+        | {
+            Args: {
+              match_count?: number
+              p_entity_ids: string[]
+              p_entity_type: string
+              query_embedding: string
+            }
+            Returns: {
+              chunk_id: string
+              chunk_text: string
+              document_id: string
+              entity_id: string
+              entity_type: string
+              similarity: number
+              title: string
+            }[]
+          }
       notifications_mark_all_read: { Args: never; Returns: number }
       notifications_unread_count: { Args: never; Returns: number }
       observability_summary: { Args: { _window?: string }; Returns: Json }
