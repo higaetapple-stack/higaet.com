@@ -8,12 +8,18 @@ import {
   createReply,
   toggleReaction,
   listReactions,
+  checkIsAdmin,
+  setThreadHidden,
+  setThreadLocked,
+  setThreadPinned,
+  softDeleteThread,
+  softDeleteReply,
 } from "@/lib/community.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Lock, Pin } from "lucide-react";
+import { ArrowLeft, Lock, Pin, EyeOff, Trash2 } from "lucide-react";
 import type { ThreadRow, ReplyRow, ReactionRow } from "@/lib/community/types";
 
 export const Route = createFileRoute("/_authenticated/community/$slug/$threadId")({
