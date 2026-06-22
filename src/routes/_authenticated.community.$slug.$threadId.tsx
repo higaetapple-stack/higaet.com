@@ -38,11 +38,23 @@ function ThreadView() {
   const reply = useServerFn(createReply);
   const react = useServerFn(toggleReaction);
   const reactionsFn = useServerFn(listReactions);
+  const isAdminFn = useServerFn(checkIsAdmin);
+  const hideFn = useServerFn(setThreadHidden);
+  const lockFn = useServerFn(setThreadLocked);
+  const pinFn = useServerFn(setThreadPinned);
+  const deleteThreadFn = useServerFn(softDeleteThread);
+  const deleteReplyFn = useServerFn(softDeleteReply);
 
   const { data: thread } = useQuery<ThreadRow>({
     queryKey: ["thread", threadId],
     queryFn: () => get({ data: { id: threadId } }) as Promise<ThreadRow>,
   });
+  const { data: adminCheck } = useQuery({
+    queryKey: ["is-admin"],
+    queryFn: () => isAdminFn(),
+    staleTime: 60_000,
+  });
+  const isAdmin = !!adminCheck?.isAdmin;
   const { data: replies = [] } = useQuery<ReplyRow[]>({
     queryKey: ["replies", threadId],
     queryFn: () => list({ data: { threadId } }) as Promise<ReplyRow[]>,
