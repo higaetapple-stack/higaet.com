@@ -43,6 +43,13 @@ export const Route = createFileRoute("/api/public/cron/embeddings")({
         let failed = 0;
 
         for (const row of queueRows) {
+          if (!row.document_id) {
+            await supabaseAdmin.from("ai_embeddings_queue")
+              .update({ status: "dead", last_error: "missing document_id" })
+              .eq("id", row.id);
+            continue;
+          }
+          const documentId = row.document_id;
           try {
             // Mark in-flight
             await supabaseAdmin
@@ -53,7 +60,7 @@ export const Route = createFileRoute("/api/public/cron/embeddings")({
             const { data: doc, error: dErr } = await supabaseAdmin
               .from("ai_documents")
               .select("id, content, collection_id")
-              .eq("id", row.document_id)
+              .eq("id", documentId)
               .maybeSingle();
             if (dErr) throw new Error(dErr.message);
             if (!doc || !doc.content) {
