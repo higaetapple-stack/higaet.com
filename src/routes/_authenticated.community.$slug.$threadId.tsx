@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, useEffect } from "react";
@@ -15,11 +15,12 @@ import {
   softDeleteThread,
   softDeleteReply,
 } from "@/lib/community.functions";
+import { createConversation } from "@/lib/ai-chat.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Lock, Pin, EyeOff, Trash2 } from "lucide-react";
+import { ArrowLeft, Lock, Pin, EyeOff, Trash2, Sparkles } from "lucide-react";
 import type { ThreadRow, ReplyRow, ReactionRow } from "@/lib/community/types";
 
 export const Route = createFileRoute("/_authenticated/community/$slug/$threadId")({
@@ -33,6 +34,13 @@ const EMOJIS = ["👍", "❤️", "🎉", "🤔", "👏"];
 function ThreadView() {
   const { slug, threadId } = Route.useParams();
   const qc = useQueryClient();
+  const navigate = useNavigate();
+  const createAiConv = useServerFn(createConversation);
+  const discussWithAiMut = useMutation({
+    mutationFn: (title: string) =>
+      createAiConv({ data: { contextType: "community", contextId: threadId, title: `Discuss: ${title}` } }),
+    onSuccess: (conv) => navigate({ to: "/ai/chat", search: { conversationId: conv.id } }),
+  });
   const get = useServerFn(getThread);
   const list = useServerFn(listReplies);
   const reply = useServerFn(createReply);
@@ -135,6 +143,17 @@ function ThreadView() {
           reactions={threadReactions}
           onToggle={(emoji) => reactMut.mutate({ targetType: "thread", targetId: thread.id, emoji })}
         />
+        <div className="pt-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => discussWithAiMut.mutate(thread.title)}
+            disabled={discussWithAiMut.isPending}
+          >
+            <Sparkles className="size-3.5 mr-1" />
+            {discussWithAiMut.isPending ? "Opening…" : "Discuss with AI"}
+          </Button>
+        </div>
         {isAdmin && (
           <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
             <Button size="sm" variant="outline" onClick={async () => { await pinFn({ data: { id: thread.id, pinned: !thread.pinned } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>

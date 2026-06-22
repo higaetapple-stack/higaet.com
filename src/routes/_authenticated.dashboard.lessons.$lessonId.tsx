@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, CheckCircle2, Download, PlayCircle } from "lucide-react";
+import { AiTutor } from "@/components/ai/AiTutor";
 
 export const Route = createFileRoute("/_authenticated/dashboard/lessons/$lessonId")({
   component: LessonPlayer,
@@ -183,6 +184,11 @@ function LessonPlayer() {
           )}
         </Button>
       </div>
+
+      <section className="mt-8">
+        <h2 className="font-display text-lg text-ink mb-3">Ask the AI Tutor</h2>
+        <AiTutor lessonId={lesson.id} />
+      </section>
     </div>
   );
 }

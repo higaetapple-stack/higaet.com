@@ -31,6 +31,7 @@ import { Route as ConstitutionRouteImport } from './routes/constitution'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AiRouteImport } from './routes/ai'
 import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -39,6 +40,7 @@ import { Route as TechnologiesIndexRouteImport } from './routes/technologies.ind
 import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
 import { Route as DocsIndexRouteImport } from './routes/docs.index'
+import { Route as AiIndexRouteImport } from './routes/ai.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
 import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
@@ -94,6 +96,10 @@ import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AiPromptsRouteImport } from './routes/ai.prompts'
+import { Route as AiHistoryRouteImport } from './routes/ai.history'
+import { Route as AiCollectionsRouteImport } from './routes/ai.collections'
+import { Route as AiChatRouteImport } from './routes/ai.chat'
 import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
 import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholarship'
 import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
@@ -196,6 +202,7 @@ import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
 import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
+import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$slug'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
@@ -298,6 +305,7 @@ import { Route as AuthenticatedDashboardTechnologiesClientsIdRouteImport } from 
 import { Route as AuthenticatedDashboardTechnologiesClientIdRouteImport } from './routes/_authenticated.dashboard.technologies.client/$id'
 import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
 import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
+import { Route as AuthenticatedDashboardAdminAiUsageRouteImport } from './routes/_authenticated.dashboard.admin.ai.usage'
 import { Route as AuthenticatedDashboardAdminAiCopilotRouteImport } from './routes/_authenticated.dashboard.admin.ai.copilot'
 import { Route as AuthenticatedDashboardAdminCrmTypeIdRouteImport } from './routes/_authenticated.dashboard.admin.crm.$type.$id'
 
@@ -411,6 +419,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcademyRoute = AcademyRouteImport.update({
   id: '/academy',
   path: '/academy',
@@ -449,6 +462,11 @@ const DocsIndexRoute = DocsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DocsRoute,
+} as any)
+const AiIndexRoute = AiIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AiRoute,
 } as any)
 const AcademyIndexRoute = AcademyIndexRouteImport.update({
   id: '/',
@@ -751,6 +769,26 @@ const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AiPromptsRoute = AiPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => AiRoute,
+} as any)
+const AiHistoryRoute = AiHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AiRoute,
+} as any)
+const AiCollectionsRoute = AiCollectionsRouteImport.update({
+  id: '/collections',
+  path: '/collections',
+  getParentRoute: () => AiRoute,
+} as any)
+const AiChatRoute = AiChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AiRoute,
 } as any)
 const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
   id: '/success-stories',
@@ -1326,6 +1364,11 @@ const ApiPublicAiModeRoute = ApiPublicAiModeRouteImport.update({
   id: '/api/public/ai-mode',
   path: '/api/public/ai-mode',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AiCollectionsSlugRoute = AiCollectionsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => AiCollectionsRoute,
 } as any)
 const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
   id: '/programs/$slug',
@@ -1936,6 +1979,12 @@ const AuthenticatedDashboardAdminProgramsIdRoute =
     path: '/programs/$id',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminAiUsageRoute =
+  AuthenticatedDashboardAdminAiUsageRouteImport.update({
+    id: '/usage',
+    path: '/usage',
+    getParentRoute: () => AuthenticatedDashboardAdminAiRoute,
+  } as any)
 const AuthenticatedDashboardAdminAiCopilotRoute =
   AuthenticatedDashboardAdminAiCopilotRouteImport.update({
     id: '/copilot',
@@ -1953,6 +2002,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
+  '/ai': typeof AiRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
@@ -1990,6 +2040,10 @@ export interface FileRoutesByFullPath {
   '/academy/placements': typeof AcademyPlacementsRoute
   '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
+  '/ai/chat': typeof AiChatRoute
+  '/ai/collections': typeof AiCollectionsRouteWithChildren
+  '/ai/history': typeof AiHistoryRoute
+  '/ai/prompts': typeof AiPromptsRoute
   '/api/chat': typeof ApiChatRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -2045,6 +2099,7 @@ export interface FileRoutesByFullPath {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
+  '/ai/': typeof AiIndexRoute
   '/docs/': typeof DocsIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
@@ -2065,6 +2120,7 @@ export interface FileRoutesByFullPath {
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/ai/collections/$slug': typeof AiCollectionsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
@@ -2224,6 +2280,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/technologies/': typeof AuthenticatedDashboardTechnologiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
+  '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/technologies/client/$id': typeof AuthenticatedDashboardTechnologiesClientIdRoute
@@ -2276,6 +2333,10 @@ export interface FileRoutesByTo {
   '/academy/placements': typeof AcademyPlacementsRoute
   '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
+  '/ai/chat': typeof AiChatRoute
+  '/ai/collections': typeof AiCollectionsRouteWithChildren
+  '/ai/history': typeof AiHistoryRoute
+  '/ai/prompts': typeof AiPromptsRoute
   '/api/chat': typeof ApiChatRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -2331,6 +2392,7 @@ export interface FileRoutesByTo {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/academy': typeof AcademyIndexRoute
+  '/ai': typeof AiIndexRoute
   '/docs': typeof DocsIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
@@ -2347,6 +2409,7 @@ export interface FileRoutesByTo {
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/ai/collections/$slug': typeof AiCollectionsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
@@ -2502,6 +2565,7 @@ export interface FileRoutesByTo {
   '/dashboard/projects': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
+  '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/technologies/client/$id': typeof AuthenticatedDashboardTechnologiesClientIdRoute
@@ -2525,6 +2589,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
+  '/ai': typeof AiRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
@@ -2562,6 +2627,10 @@ export interface FileRoutesById {
   '/academy/placements': typeof AcademyPlacementsRoute
   '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
+  '/ai/chat': typeof AiChatRoute
+  '/ai/collections': typeof AiCollectionsRouteWithChildren
+  '/ai/history': typeof AiHistoryRoute
+  '/ai/prompts': typeof AiPromptsRoute
   '/api/chat': typeof ApiChatRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -2617,6 +2686,7 @@ export interface FileRoutesById {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
+  '/ai/': typeof AiIndexRoute
   '/docs/': typeof DocsIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
@@ -2637,6 +2707,7 @@ export interface FileRoutesById {
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
+  '/ai/collections/$slug': typeof AiCollectionsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
@@ -2796,6 +2867,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/_authenticated/dashboard/technologies/': typeof AuthenticatedDashboardTechnologiesIndexRoute
   '/_authenticated/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
+  '/_authenticated/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/_authenticated/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/_authenticated/dashboard/technologies/client/$id': typeof AuthenticatedDashboardTechnologiesClientIdRoute
@@ -2819,6 +2891,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/academy'
+    | '/ai'
     | '/auth'
     | '/blog'
     | '/careers'
@@ -2856,6 +2929,10 @@ export interface FileRouteTypes {
     | '/academy/placements'
     | '/academy/scholarship'
     | '/academy/success-stories'
+    | '/ai/chat'
+    | '/ai/collections'
+    | '/ai/history'
+    | '/ai/prompts'
     | '/api/chat'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -2911,6 +2988,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/verify/$token'
     | '/academy/'
+    | '/ai/'
     | '/docs/'
     | '/global-education/'
     | '/jobs/'
@@ -2931,6 +3009,7 @@ export interface FileRouteTypes {
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/ai/collections/$slug'
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
@@ -3090,6 +3169,7 @@ export interface FileRouteTypes {
     | '/dashboard/projects/'
     | '/dashboard/technologies/'
     | '/dashboard/admin/ai/copilot'
+    | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
     | '/dashboard/admin/visa/$id'
     | '/dashboard/technologies/client/$id'
@@ -3142,6 +3222,10 @@ export interface FileRouteTypes {
     | '/academy/placements'
     | '/academy/scholarship'
     | '/academy/success-stories'
+    | '/ai/chat'
+    | '/ai/collections'
+    | '/ai/history'
+    | '/ai/prompts'
     | '/api/chat'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -3197,6 +3281,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/verify/$token'
     | '/academy'
+    | '/ai'
     | '/docs'
     | '/global-education'
     | '/jobs'
@@ -3213,6 +3298,7 @@ export interface FileRouteTypes {
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/ai/collections/$slug'
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
@@ -3368,6 +3454,7 @@ export interface FileRouteTypes {
     | '/dashboard/projects'
     | '/dashboard/technologies'
     | '/dashboard/admin/ai/copilot'
+    | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
     | '/dashboard/admin/visa/$id'
     | '/dashboard/technologies/client/$id'
@@ -3390,6 +3477,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/academy'
+    | '/ai'
     | '/auth'
     | '/blog'
     | '/careers'
@@ -3427,6 +3515,10 @@ export interface FileRouteTypes {
     | '/academy/placements'
     | '/academy/scholarship'
     | '/academy/success-stories'
+    | '/ai/chat'
+    | '/ai/collections'
+    | '/ai/history'
+    | '/ai/prompts'
     | '/api/chat'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -3482,6 +3574,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/verify/$token'
     | '/academy/'
+    | '/ai/'
     | '/docs/'
     | '/global-education/'
     | '/jobs/'
@@ -3502,6 +3595,7 @@ export interface FileRouteTypes {
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
+    | '/ai/collections/$slug'
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
@@ -3661,6 +3755,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/projects/'
     | '/_authenticated/dashboard/technologies/'
     | '/_authenticated/dashboard/admin/ai/copilot'
+    | '/_authenticated/dashboard/admin/ai/usage'
     | '/_authenticated/dashboard/admin/programs/$id'
     | '/_authenticated/dashboard/admin/visa/$id'
     | '/_authenticated/dashboard/technologies/client/$id'
@@ -3684,6 +3779,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   AcademyRoute: typeof AcademyRouteWithChildren
+  AiRoute: typeof AiRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRouteWithChildren
@@ -3895,6 +3991,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/academy': {
       id: '/academy'
       path: '/academy'
@@ -3950,6 +4053,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/docs/'
       preLoaderRoute: typeof DocsIndexRouteImport
       parentRoute: typeof DocsRoute
+    }
+    '/ai/': {
+      id: '/ai/'
+      path: '/'
+      fullPath: '/ai/'
+      preLoaderRoute: typeof AiIndexRouteImport
+      parentRoute: typeof AiRoute
     }
     '/academy/': {
       id: '/academy/'
@@ -4335,6 +4445,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/ai/prompts': {
+      id: '/ai/prompts'
+      path: '/prompts'
+      fullPath: '/ai/prompts'
+      preLoaderRoute: typeof AiPromptsRouteImport
+      parentRoute: typeof AiRoute
+    }
+    '/ai/history': {
+      id: '/ai/history'
+      path: '/history'
+      fullPath: '/ai/history'
+      preLoaderRoute: typeof AiHistoryRouteImport
+      parentRoute: typeof AiRoute
+    }
+    '/ai/collections': {
+      id: '/ai/collections'
+      path: '/collections'
+      fullPath: '/ai/collections'
+      preLoaderRoute: typeof AiCollectionsRouteImport
+      parentRoute: typeof AiRoute
+    }
+    '/ai/chat': {
+      id: '/ai/chat'
+      path: '/chat'
+      fullPath: '/ai/chat'
+      preLoaderRoute: typeof AiChatRouteImport
+      parentRoute: typeof AiRoute
     }
     '/academy/success-stories': {
       id: '/academy/success-stories'
@@ -5050,6 +5188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAiModeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai/collections/$slug': {
+      id: '/ai/collections/$slug'
+      path: '/$slug'
+      fullPath: '/ai/collections/$slug'
+      preLoaderRoute: typeof AiCollectionsSlugRouteImport
+      parentRoute: typeof AiCollectionsRoute
+    }
     '/academy/programs/$slug': {
       id: '/academy/programs/$slug'
       path: '/programs/$slug'
@@ -5764,6 +5909,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIdRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/ai/usage': {
+      id: '/_authenticated/dashboard/admin/ai/usage'
+      path: '/usage'
+      fullPath: '/dashboard/admin/ai/usage'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAiUsageRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminAiRoute
+    }
     '/_authenticated/dashboard/admin/ai/copilot': {
       id: '/_authenticated/dashboard/admin/ai/copilot'
       path: '/copilot'
@@ -5847,12 +5999,15 @@ const AuthenticatedCommunityRouteWithChildren =
 
 interface AuthenticatedDashboardAdminAiRouteChildren {
   AuthenticatedDashboardAdminAiCopilotRoute: typeof AuthenticatedDashboardAdminAiCopilotRoute
+  AuthenticatedDashboardAdminAiUsageRoute: typeof AuthenticatedDashboardAdminAiUsageRoute
 }
 
 const AuthenticatedDashboardAdminAiRouteChildren: AuthenticatedDashboardAdminAiRouteChildren =
   {
     AuthenticatedDashboardAdminAiCopilotRoute:
       AuthenticatedDashboardAdminAiCopilotRoute,
+    AuthenticatedDashboardAdminAiUsageRoute:
+      AuthenticatedDashboardAdminAiUsageRoute,
   }
 
 const AuthenticatedDashboardAdminAiRouteWithChildren =
@@ -6338,6 +6493,36 @@ const AcademyRouteChildren: AcademyRouteChildren = {
 const AcademyRouteWithChildren =
   AcademyRoute._addFileChildren(AcademyRouteChildren)
 
+interface AiCollectionsRouteChildren {
+  AiCollectionsSlugRoute: typeof AiCollectionsSlugRoute
+}
+
+const AiCollectionsRouteChildren: AiCollectionsRouteChildren = {
+  AiCollectionsSlugRoute: AiCollectionsSlugRoute,
+}
+
+const AiCollectionsRouteWithChildren = AiCollectionsRoute._addFileChildren(
+  AiCollectionsRouteChildren,
+)
+
+interface AiRouteChildren {
+  AiChatRoute: typeof AiChatRoute
+  AiCollectionsRoute: typeof AiCollectionsRouteWithChildren
+  AiHistoryRoute: typeof AiHistoryRoute
+  AiPromptsRoute: typeof AiPromptsRoute
+  AiIndexRoute: typeof AiIndexRoute
+}
+
+const AiRouteChildren: AiRouteChildren = {
+  AiChatRoute: AiChatRoute,
+  AiCollectionsRoute: AiCollectionsRouteWithChildren,
+  AiHistoryRoute: AiHistoryRoute,
+  AiPromptsRoute: AiPromptsRoute,
+  AiIndexRoute: AiIndexRoute,
+}
+
+const AiRouteWithChildren = AiRoute._addFileChildren(AiRouteChildren)
+
 interface AuthRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -6738,6 +6923,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   AcademyRoute: AcademyRouteWithChildren,
+  AiRoute: AiRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRouteWithChildren,

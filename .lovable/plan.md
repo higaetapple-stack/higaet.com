@@ -1,101 +1,60 @@
-# Workstream B — Academy Consumer Migration (v1)
+# Phase 10B — AI Hub Surface
 
-**Objective.** Migrate every Academy consumer (routes, mega menu, search, breadcrumbs, metadata, JSON-LD) from inline literals to the frozen `@/content/providers` layer.
+Wires the existing AI stack (`ai_conversations`, `ai_messages`, AI Tutor, RAG retrieval, embeddings, RAG observability, notifications, security, host-aware routing) into a user-facing product on `ai.higaet.com`. No new AI engines — surfaces only.
 
-**Non-objective.** No new features. No layout changes. No new copy. The visual surface must be byte-for-byte equivalent before and after each step.
+## 1. Host config — `ai.higaet.com`
+- `src/lib/tenant-shell.ts`: extend the `ai` shell's `allowedPrefixes` to `['/ai', '/auth', '/dashboard']`, set `defaultPath: '/ai'`, brand "HIGAET AI".
+- `HostGate` already redirects mismatched paths; no changes needed.
+- Update `robots[.]txt.ts` + `sitemap[.]xml.ts` to advertise `/ai`, `/ai/chat`, `/ai/history`, `/ai/collections`, `/ai/prompts` on the `ai` host only.
 
-```text
-Old:  UI  →  inline literals
-New:  UI  →  @/content/providers  →  Academy Registry v1.0 (frozen)
-```
+## 2. Public AI Hub
+New routes (file-based, dot-separated):
+- `src/routes/ai.tsx` — landing layout, `<Outlet />` + hero/nav (Chat, History, Collections, Prompts).
+- `src/routes/ai.index.tsx` — hub landing: pitch, quick-launch tiles to chat/prompts/collections, recent conversations preview.
+- `src/routes/ai.chat.tsx` — chat surface. Reuses existing chat endpoint + `ai_conversations` / `ai_messages` persistence. Reads `?conversationId=` and `?prompt=` query params for prompt-library/community launches.
+- `src/routes/ai.history.tsx` — list user's conversations with **search** (title/last message ILIKE), **archive** (toggle `archived_at`), **delete** (RLS-scoped).
 
----
+Server functions (`src/lib/ai-hub.functions.ts`, `requireSupabaseAuth`):
+- `listConversations({ q, includeArchived })`
+- `archiveConversation({ id })` / `unarchiveConversation({ id })`
+- `deleteConversation({ id })`
+- `createConversation({ contextType, contextId, title? })` — used by Community/Prompt-launch
 
-## Guardrails (apply to every step)
+Migration: add `archived_at timestamptz` to `ai_conversations` if missing; add `context_type` / `context_id` text columns if missing (idempotent `add column if not exists`). No new tables.
 
-1. Imports from Academy data come ONLY from `@/content/providers`. ESLint already blocks direct registry imports.
-2. No changes to `src/content/_registry/`, `src/content/providers/`, or `src/content/academy/` — those are frozen (see `src/content/ADR-FREEZE.md`).
-3. No visual regressions: each step is verified against the live preview before approval.
-4. Each step is additive and independently revertible.
-5. If provider data doesn't yet cover a UI need, STOP and propose a registry change under version governance — never re-introduce inline data.
+## 3. Knowledge Collections
+- `src/routes/ai.collections.tsx` — grid of the 4 collections (Academy / Global Ed / Technology / Community), each with: document count, chunk count, last indexed, retrieval health (hits/misses ratio over 7d).
+- `src/routes/ai.collections.$slug.tsx` — collection detail: top documents, recent retrieval activity, embedding queue depth.
 
----
+Server fn `getCollections()` / `getCollection(slug)` aggregates from `ai_collections`, `ai_documents`, `ai_chunks`, `ai_embeddings_queue`, and the RAG observability tables already in use. Public read (publishable client) since this is marketing-grade info — no PII.
 
-## B.1 — Route & Consumer Audit (deliverable only)
+## 4. Prompt Library
+- `src/routes/ai.prompts.tsx` — static catalog (7 starter prompts) defined in `src/content/ai-prompts.ts`. Each card has a "Launch in Chat" button → `navigate({ to: '/ai/chat', search: { prompt: id } })`.
+- `ai.chat.tsx` reads `search.prompt`, looks up the seed prompt text, and pre-fills the composer (or auto-sends if `autosend=1`).
 
-Produce a migration matrix listing every Academy file that contains:
+## 5. AI Usage Dashboard
+- `src/routes/_authenticated.dashboard.admin.ai.tsx` (admin-gated via `has_role` check inside server fn).
+- Server fn `getAiUsageMetrics({ range })` aggregates from `ai_conversations`, `ai_messages`, `ai_conversation_logs`, RAG observability tables: conversations/day, messages/day, retrieval hits/misses, avg response time, failed generations, top prompts, most-queried lessons/communities.
+- Render as cards + simple `recharts` line/bar charts (lib already in project).
+- Add nav entry in `_authenticated.dashboard.admin.tsx`.
 
-- Inline category / course / learning-path / testimonial arrays.
-- Hardcoded breadcrumb trails.
-- Static `head()` titles/descriptions for Academy routes.
-- Hand-maintained search entries for Academy content.
-- Duplicated mega-menu navigation arrays.
+## 6. Community AI Integration
+- In `src/components/community/LessonDiscussion.tsx` thread view (and the thread route `community.$slug.$threadId.tsx`): add "Discuss with AI" button.
+- Handler: `createConversation({ contextType: 'community', contextId: threadId, title: thread.title })` → `navigate({ to: '/ai/chat', search: { conversationId } })`.
 
-Output: a markdown file at `docs/workstream-b/audit.md` with columns `file · symbol · kind · target provider call · risk`. No code changes.
+## 7. Academy AI Integration
+- Audit lesson route(s) (`learn.*` / lesson detail). Where `<AiTutor lessonId={...} />` is missing, embed it in the sidebar/below-content slot.
 
-## B.2 — Homepage Migration (`/academy`)
+## Explicitly deferred
+Agent framework, multi-agent orchestration, autonomous workflows, fine-tuning, marketplace, AI billing/credits, advanced memory graphs.
 
-Replace inline literals on the Academy landing page with `getAcademyCategories`, `getAcademyLearningPaths`, `getAcademyTestimonials`. Layout, ordering, and copy unchanged.
+## Technical notes
+- All new server fns use `createServerFn` in `*.functions.ts` (client-safe path), `requireSupabaseAuth` for user-scoped reads/writes, server publishable client for public collection stats.
+- Admin fn verifies `has_role(userId, 'admin')` before returning metrics.
+- All routes follow flat dot-separated naming; do not edit `routeTree.gen.ts` (regenerated by plugin).
+- Reuse existing `/api/public/chat` for streaming; no new chat backend.
+- Migration is additive only (`add column if not exists`) — no destructive changes.
 
-## B.3 — Mega Menu Migration
-
-Academy mega menu consumes `getAcademyCategories({ filter: { visibility: "public" } })`. Sort by the registry's `order` field. Icons resolved at render time from the category's `icon` string.
-
-## B.4 — Search Migration
-
-Academy search (command palette / search input) consumes `getAcademySearchIndex()`. Remove any hand-maintained Academy search list.
-
-## B.5 — Route Metadata + JSON-LD
-
-For every Academy route, derive `title`, `description`, `canonical`, OG/Twitter tags, and JSON-LD (`CollectionPage`, `Course`, `BreadcrumbList`, `Review`) from provider data:
-
-- Course detail: `resolveCourseBySlug` → `metadata` + JSON-LD `Course`.
-- Category detail: `resolveCategoryById` (via slug lookup) → `metadata` + `CollectionPage`.
-- Learning path detail: `resolvePathByIdOrSlug` → `metadata` + composed `Course` references.
-
-## B.6 — Breadcrumb Migration
-
-Replace every hardcoded breadcrumb tree with `getAcademyBreadcrumbs(currentPath)`. Render the returned `BreadcrumbEntry[]` in the existing breadcrumb component.
-
-## B.7 — QA
-
-- Visual parity check against the frozen baseline (spot-check every Academy route on mobile + desktop).
-- `rg` sweep for any remaining inline Academy data outside `src/content/academy/`.
-- TypeScript clean, ESLint clean, registry tests green, build succeeds.
-- Manual click-through of every migrated route.
-
-## B.8 — Consumer Freeze
-
-Add `src/content/ADR-FREEZE-consumers.md` documenting the consumer baseline:
-
-- Frozen consumer files and the provider calls they depend on.
-- Rule: future Academy UI work consumes providers; it does not reintroduce inline data.
-
----
-
-## Acceptance Criteria
-
-- Zero inline Academy data outside `src/content/academy/`.
-- All Academy pages consume providers.
-- Mega menu, search, breadcrumbs, metadata, and JSON-LD all sourced from providers.
-- No visual regressions.
-- TypeScript / ESLint / tests / build all clean.
-
----
-
-## Risks & Mitigations
-
-| Risk | Mitigation |
-| --- | --- |
-| Provider data missing a field a current page renders | Surface as an audit-matrix gap in B.1; resolve through version governance, not inline data. |
-| Slug / URL drift between inline data and registry | B.1 audit explicitly compares slugs; B.6 covers redirect plan if any diverge. |
-| Component prop shape doesn't match registry shape | Use small adapter functions at the consumer boundary; never mutate registry types. |
-| Hidden visual regressions | Per-step preview QA before moving to the next step. |
-
----
-
-## Sequencing
-
-B.1 (audit) is a prerequisite for every other step. B.2–B.6 are independent and can be approved/merged individually. B.7 runs after all migration steps. B.8 closes the workstream.
-
-**No code changes in this plan.** Awaiting approval of v1 before starting B.1.
+## Files
+**New**: `src/lib/ai-hub.functions.ts`, `src/content/ai-prompts.ts`, `src/routes/ai.tsx`, `src/routes/ai.index.tsx`, `src/routes/ai.chat.tsx`, `src/routes/ai.history.tsx`, `src/routes/ai.collections.tsx`, `src/routes/ai.collections.$slug.tsx`, `src/routes/ai.prompts.tsx`, `src/routes/_authenticated.dashboard.admin.ai.tsx`, one migration.
+**Edited**: `src/lib/tenant-shell.ts`, `src/routes/robots[.]txt.ts`, `src/routes/sitemap[.]xml.ts`, `src/routes/_authenticated.dashboard.admin.tsx`, community thread route/component, lesson route(s).
