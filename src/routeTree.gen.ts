@@ -118,6 +118,7 @@ import { Route as AuthenticatedCommunityRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
+import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated.education.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
 import { Route as AuthenticatedAssistantIndexRouteImport } from './routes/_authenticated.assistant.index'
 import { Route as TechnologiesInsightsSlugRouteImport } from './routes/technologies.insights.$slug'
@@ -882,6 +883,12 @@ const AcademyCampusesIndexRoute = AcademyCampusesIndexRouteImport.update({
   path: '/campuses/',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AuthenticatedEducationIndexRoute =
+  AuthenticatedEducationIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedEducationRoute,
+  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/',
@@ -2034,7 +2041,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
-  '/education': typeof AuthenticatedEducationRoute
+  '/education': typeof AuthenticatedEducationRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2213,6 +2220,7 @@ export interface FileRoutesByFullPath {
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/assistant/': typeof AuthenticatedAssistantIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/education/': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
@@ -2328,7 +2336,6 @@ export interface FileRoutesByTo {
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
   '/community': typeof AuthenticatedCommunityRouteWithChildren
-  '/education': typeof AuthenticatedEducationRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2503,6 +2510,7 @@ export interface FileRoutesByTo {
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/assistant': typeof AuthenticatedAssistantIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/education': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
   '/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
@@ -2623,7 +2631,7 @@ export interface FileRoutesById {
   '/_authenticated/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
-  '/_authenticated/education': typeof AuthenticatedEducationRoute
+  '/_authenticated/education': typeof AuthenticatedEducationRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2802,6 +2810,7 @@ export interface FileRoutesById {
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/_authenticated/assistant/': typeof AuthenticatedAssistantIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/education/': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/_authenticated/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
@@ -3105,6 +3114,7 @@ export interface FileRouteTypes {
     | '/technologies/insights/$slug'
     | '/assistant/'
     | '/dashboard/'
+    | '/education/'
     | '/academy/campuses/'
     | '/academy/programs/'
     | '/dashboard/technologies/client'
@@ -3220,7 +3230,6 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/terms'
     | '/community'
-    | '/education'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3395,6 +3404,7 @@ export interface FileRouteTypes {
     | '/technologies/insights/$slug'
     | '/assistant'
     | '/dashboard'
+    | '/education'
     | '/academy/campuses'
     | '/academy/programs'
     | '/community/$slug/$threadId'
@@ -3693,6 +3703,7 @@ export interface FileRouteTypes {
     | '/technologies/insights/$slug'
     | '/_authenticated/assistant/'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/education/'
     | '/academy/campuses/'
     | '/academy/programs/'
     | '/_authenticated/dashboard/technologies/client'
@@ -4611,6 +4622,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/campuses/'
       preLoaderRoute: typeof AcademyCampusesIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/education/': {
+      id: '/_authenticated/education/'
+      path: '/'
+      fullPath: '/education/'
+      preLoaderRoute: typeof AuthenticatedEducationIndexRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
     }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
@@ -6450,18 +6468,32 @@ const AuthenticatedDashboardRouteWithChildren =
     AuthenticatedDashboardRouteChildren,
   )
 
+interface AuthenticatedEducationRouteChildren {
+  AuthenticatedEducationIndexRoute: typeof AuthenticatedEducationIndexRoute
+}
+
+const AuthenticatedEducationRouteChildren: AuthenticatedEducationRouteChildren =
+  {
+    AuthenticatedEducationIndexRoute: AuthenticatedEducationIndexRoute,
+  }
+
+const AuthenticatedEducationRouteWithChildren =
+  AuthenticatedEducationRoute._addFileChildren(
+    AuthenticatedEducationRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRouteWithChildren
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
-  AuthenticatedEducationRoute: typeof AuthenticatedEducationRoute
+  AuthenticatedEducationRoute: typeof AuthenticatedEducationRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAssistantRoute: AuthenticatedAssistantRouteWithChildren,
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
-  AuthenticatedEducationRoute: AuthenticatedEducationRoute,
+  AuthenticatedEducationRoute: AuthenticatedEducationRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
