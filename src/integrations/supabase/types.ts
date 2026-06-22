@@ -745,6 +745,53 @@ export type Database = {
           },
         ]
       }
+      application_status_history: {
+        Row: {
+          application_id: string
+          changed_by: string | null
+          created_at: string
+          from_status:
+            | Database["public"]["Enums"]["application_workflow_status"]
+            | null
+          id: string
+          metadata: Json
+          reason: string | null
+          to_status: Database["public"]["Enums"]["application_workflow_status"]
+        }
+        Insert: {
+          application_id: string
+          changed_by?: string | null
+          created_at?: string
+          from_status?:
+            | Database["public"]["Enums"]["application_workflow_status"]
+            | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          to_status: Database["public"]["Enums"]["application_workflow_status"]
+        }
+        Update: {
+          application_id?: string
+          changed_by?: string | null
+          created_at?: string
+          from_status?:
+            | Database["public"]["Enums"]["application_workflow_status"]
+            | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          to_status?: Database["public"]["Enums"]["application_workflow_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_status_history_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       applications: {
         Row: {
           assigned_to_counselor: string | null
@@ -762,6 +809,7 @@ export type Database = {
           submitted_at: string | null
           university_id: string | null
           updated_at: string
+          workflow_status: Database["public"]["Enums"]["application_workflow_status"]
         }
         Insert: {
           assigned_to_counselor?: string | null
@@ -779,6 +827,7 @@ export type Database = {
           submitted_at?: string | null
           university_id?: string | null
           updated_at?: string
+          workflow_status?: Database["public"]["Enums"]["application_workflow_status"]
         }
         Update: {
           assigned_to_counselor?: string | null
@@ -796,6 +845,7 @@ export type Database = {
           submitted_at?: string | null
           university_id?: string | null
           updated_at?: string
+          workflow_status?: Database["public"]["Enums"]["application_workflow_status"]
         }
         Relationships: [
           {
@@ -4952,6 +5002,15 @@ export type Database = {
         | "rejected"
         | "withdrawn"
         | "hired"
+      application_workflow_status:
+        | "lead"
+        | "qualified"
+        | "documents_pending"
+        | "application_submitted"
+        | "offer_received"
+        | "visa_processing"
+        | "completed"
+        | "closed_lost"
       community_member_role: "member" | "moderator" | "owner"
       community_membership_type: "open" | "approval_required"
       community_visibility: "public" | "private"
@@ -5245,6 +5304,16 @@ export const Constants = {
         "rejected",
         "withdrawn",
         "hired",
+      ],
+      application_workflow_status: [
+        "lead",
+        "qualified",
+        "documents_pending",
+        "application_submitted",
+        "offer_received",
+        "visa_processing",
+        "completed",
+        "closed_lost",
       ],
       community_member_role: ["member", "moderator", "owner"],
       community_membership_type: ["open", "approval_required"],
