@@ -21,7 +21,7 @@ export type DocCategory = {
 };
 
 const TODAY = "2026-06-22";
-const BASE = "https://higaet-core-engine.lovable.app";
+const BASE = "https://higaet.com";
 
 const ACADEMY_MENTIONS = [
   `${BASE}/higaet-academy`,

@@ -1,7 +1,7 @@
 import QRCode from "qrcode";
 
 export const VERIFY_BASE_URL =
-  process.env.APP_VERIFY_BASE_URL ?? "https://higaet-core-engine.lovable.app";
+  process.env.APP_VERIFY_BASE_URL ?? "https://higaet.com";
 
 export function buildVerifyUrl(token: string): string {
   return `${VERIFY_BASE_URL.replace(/\/$/, "")}/verify/${token}`;
