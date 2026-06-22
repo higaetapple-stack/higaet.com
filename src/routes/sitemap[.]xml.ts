@@ -68,6 +68,12 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/global-education", changefreq: "weekly", priority: "0.9" },
   { path: "/global-education/study-abroad", changefreq: "weekly", priority: "0.8" },
   { path: "/global-education/universities", changefreq: "weekly", priority: "0.7" },
+  { path: "/global-education/knowledge-base/universities", changefreq: "weekly", priority: "0.8" },
+  ...UNIVERSITIES_KB.map<SitemapEntry>((u) => ({
+    path: `/global-education/knowledge-base/universities/${u.slug}`,
+    changefreq: "monthly" as const,
+    priority: "0.7",
+  })),
   { path: "/global-education/scholarships", changefreq: "monthly", priority: "0.7" },
   { path: "/global-education/countries", changefreq: "monthly", priority: "0.7" },
   { path: "/global-education/visa-guidance", changefreq: "monthly", priority: "0.7" },
