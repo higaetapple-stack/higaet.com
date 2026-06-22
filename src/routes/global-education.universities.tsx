@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
+import { Input } from "@/components/ui/input";
 import { listUniversitiesPublic, listCountriesPublic } from "@/lib/study-abroad.functions";
 import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
 import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
