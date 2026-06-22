@@ -248,12 +248,14 @@ import { Route as AuthenticatedDashboardNotificationsPreferencesRouteImport } fr
 import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
 import { Route as AuthenticatedDashboardFacultySubmissionsRouteImport } from './routes/_authenticated.dashboard.faculty.submissions'
 import { Route as AuthenticatedDashboardCoursesCourseIdRouteImport } from './routes/_authenticated.dashboard.courses.$courseId'
+import { Route as AuthenticatedDashboardCounselorWorkloadRouteImport } from './routes/_authenticated.dashboard.counselor.workload'
 import { Route as AuthenticatedDashboardCounselorVisaRouteImport } from './routes/_authenticated.dashboard.counselor.visa'
 import { Route as AuthenticatedDashboardCounselorTasksRouteImport } from './routes/_authenticated.dashboard.counselor.tasks'
 import { Route as AuthenticatedDashboardCounselorPipelineRouteImport } from './routes/_authenticated.dashboard.counselor.pipeline'
 import { Route as AuthenticatedDashboardCounselorLeadsRouteImport } from './routes/_authenticated.dashboard.counselor.leads'
 import { Route as AuthenticatedDashboardCounselorFollowUpsRouteImport } from './routes/_authenticated.dashboard.counselor.follow-ups'
 import { Route as AuthenticatedDashboardCounselorApplicationsRouteImport } from './routes/_authenticated.dashboard.counselor.applications'
+import { Route as AuthenticatedDashboardCounselorAnalyticsRouteImport } from './routes/_authenticated.dashboard.counselor.analytics'
 import { Route as AuthenticatedDashboardCertificatesIdRouteImport } from './routes/_authenticated.dashboard.certificates.$id'
 import { Route as AuthenticatedDashboardCareerSavedRouteImport } from './routes/_authenticated.dashboard.career.saved'
 import { Route as AuthenticatedDashboardCareerResumeRouteImport } from './routes/_authenticated.dashboard.career.resume'
@@ -309,6 +311,7 @@ import { Route as AuthenticatedDashboardTechnologiesProjectsIdRouteImport } from
 import { Route as AuthenticatedDashboardTechnologiesContractsIdRouteImport } from './routes/_authenticated.dashboard.technologies.contracts.$id'
 import { Route as AuthenticatedDashboardTechnologiesClientsIdRouteImport } from './routes/_authenticated.dashboard.technologies.clients.$id'
 import { Route as AuthenticatedDashboardTechnologiesClientIdRouteImport } from './routes/_authenticated.dashboard.technologies.client/$id'
+import { Route as AuthenticatedDashboardCounselorTimelineIdRouteImport } from './routes/_authenticated.dashboard.counselor.timeline.$id'
 import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
 import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
 import { Route as AuthenticatedDashboardAdminAiUsageRouteImport } from './routes/_authenticated.dashboard.admin.ai.usage'
@@ -1642,6 +1645,12 @@ const AuthenticatedDashboardCoursesCourseIdRoute =
     path: '/courses/$courseId',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardCounselorWorkloadRoute =
+  AuthenticatedDashboardCounselorWorkloadRouteImport.update({
+    id: '/workload',
+    path: '/workload',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
 const AuthenticatedDashboardCounselorVisaRoute =
   AuthenticatedDashboardCounselorVisaRouteImport.update({
     id: '/visa',
@@ -1676,6 +1685,12 @@ const AuthenticatedDashboardCounselorApplicationsRoute =
   AuthenticatedDashboardCounselorApplicationsRouteImport.update({
     id: '/applications',
     path: '/applications',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorAnalyticsRoute =
+  AuthenticatedDashboardCounselorAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
     getParentRoute: () => AuthenticatedDashboardCounselorRoute,
   } as any)
 const AuthenticatedDashboardCertificatesIdRoute =
@@ -2008,6 +2023,12 @@ const AuthenticatedDashboardTechnologiesClientIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedDashboardTechnologiesClientRouteRoute,
   } as any)
+const AuthenticatedDashboardCounselorTimelineIdRoute =
+  AuthenticatedDashboardCounselorTimelineIdRouteImport.update({
+    id: '/timeline/$id',
+    path: '/timeline/$id',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
 const AuthenticatedDashboardAdminVisaIdRoute =
   AuthenticatedDashboardAdminVisaIdRouteImport.update({
     id: '/$id',
@@ -2296,12 +2317,14 @@ export interface FileRoutesByFullPath {
   '/dashboard/career/resume': typeof AuthenticatedDashboardCareerResumeRoute
   '/dashboard/career/saved': typeof AuthenticatedDashboardCareerSavedRoute
   '/dashboard/certificates/$id': typeof AuthenticatedDashboardCertificatesIdRoute
+  '/dashboard/counselor/analytics': typeof AuthenticatedDashboardCounselorAnalyticsRoute
   '/dashboard/counselor/applications': typeof AuthenticatedDashboardCounselorApplicationsRoute
   '/dashboard/counselor/follow-ups': typeof AuthenticatedDashboardCounselorFollowUpsRoute
   '/dashboard/counselor/leads': typeof AuthenticatedDashboardCounselorLeadsRoute
   '/dashboard/counselor/pipeline': typeof AuthenticatedDashboardCounselorPipelineRoute
   '/dashboard/counselor/tasks': typeof AuthenticatedDashboardCounselorTasksRoute
   '/dashboard/counselor/visa': typeof AuthenticatedDashboardCounselorVisaRoute
+  '/dashboard/counselor/workload': typeof AuthenticatedDashboardCounselorWorkloadRoute
   '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
@@ -2330,6 +2353,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
+  '/dashboard/counselor/timeline/$id': typeof AuthenticatedDashboardCounselorTimelineIdRoute
   '/dashboard/technologies/client/$id': typeof AuthenticatedDashboardTechnologiesClientIdRoute
   '/dashboard/technologies/clients/$id': typeof AuthenticatedDashboardTechnologiesClientsIdRoute
   '/dashboard/technologies/contracts/$id': typeof AuthenticatedDashboardTechnologiesContractsIdRoute
@@ -2588,12 +2612,14 @@ export interface FileRoutesByTo {
   '/dashboard/career/resume': typeof AuthenticatedDashboardCareerResumeRoute
   '/dashboard/career/saved': typeof AuthenticatedDashboardCareerSavedRoute
   '/dashboard/certificates/$id': typeof AuthenticatedDashboardCertificatesIdRoute
+  '/dashboard/counselor/analytics': typeof AuthenticatedDashboardCounselorAnalyticsRoute
   '/dashboard/counselor/applications': typeof AuthenticatedDashboardCounselorApplicationsRoute
   '/dashboard/counselor/follow-ups': typeof AuthenticatedDashboardCounselorFollowUpsRoute
   '/dashboard/counselor/leads': typeof AuthenticatedDashboardCounselorLeadsRoute
   '/dashboard/counselor/pipeline': typeof AuthenticatedDashboardCounselorPipelineRoute
   '/dashboard/counselor/tasks': typeof AuthenticatedDashboardCounselorTasksRoute
   '/dashboard/counselor/visa': typeof AuthenticatedDashboardCounselorVisaRoute
+  '/dashboard/counselor/workload': typeof AuthenticatedDashboardCounselorWorkloadRoute
   '/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
@@ -2620,6 +2646,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
+  '/dashboard/counselor/timeline/$id': typeof AuthenticatedDashboardCounselorTimelineIdRoute
   '/dashboard/technologies/client/$id': typeof AuthenticatedDashboardTechnologiesClientIdRoute
   '/dashboard/technologies/clients/$id': typeof AuthenticatedDashboardTechnologiesClientsIdRoute
   '/dashboard/technologies/contracts/$id': typeof AuthenticatedDashboardTechnologiesContractsIdRoute
@@ -2894,12 +2921,14 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/career/resume': typeof AuthenticatedDashboardCareerResumeRoute
   '/_authenticated/dashboard/career/saved': typeof AuthenticatedDashboardCareerSavedRoute
   '/_authenticated/dashboard/certificates/$id': typeof AuthenticatedDashboardCertificatesIdRoute
+  '/_authenticated/dashboard/counselor/analytics': typeof AuthenticatedDashboardCounselorAnalyticsRoute
   '/_authenticated/dashboard/counselor/applications': typeof AuthenticatedDashboardCounselorApplicationsRoute
   '/_authenticated/dashboard/counselor/follow-ups': typeof AuthenticatedDashboardCounselorFollowUpsRoute
   '/_authenticated/dashboard/counselor/leads': typeof AuthenticatedDashboardCounselorLeadsRoute
   '/_authenticated/dashboard/counselor/pipeline': typeof AuthenticatedDashboardCounselorPipelineRoute
   '/_authenticated/dashboard/counselor/tasks': typeof AuthenticatedDashboardCounselorTasksRoute
   '/_authenticated/dashboard/counselor/visa': typeof AuthenticatedDashboardCounselorVisaRoute
+  '/_authenticated/dashboard/counselor/workload': typeof AuthenticatedDashboardCounselorWorkloadRoute
   '/_authenticated/dashboard/courses/$courseId': typeof AuthenticatedDashboardCoursesCourseIdRoute
   '/_authenticated/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/_authenticated/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
@@ -2928,6 +2957,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/_authenticated/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
+  '/_authenticated/dashboard/counselor/timeline/$id': typeof AuthenticatedDashboardCounselorTimelineIdRoute
   '/_authenticated/dashboard/technologies/client/$id': typeof AuthenticatedDashboardTechnologiesClientIdRoute
   '/_authenticated/dashboard/technologies/clients/$id': typeof AuthenticatedDashboardTechnologiesClientsIdRoute
   '/_authenticated/dashboard/technologies/contracts/$id': typeof AuthenticatedDashboardTechnologiesContractsIdRoute
@@ -3202,12 +3232,14 @@ export interface FileRouteTypes {
     | '/dashboard/career/resume'
     | '/dashboard/career/saved'
     | '/dashboard/certificates/$id'
+    | '/dashboard/counselor/analytics'
     | '/dashboard/counselor/applications'
     | '/dashboard/counselor/follow-ups'
     | '/dashboard/counselor/leads'
     | '/dashboard/counselor/pipeline'
     | '/dashboard/counselor/tasks'
     | '/dashboard/counselor/visa'
+    | '/dashboard/counselor/workload'
     | '/dashboard/courses/$courseId'
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
@@ -3236,6 +3268,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
     | '/dashboard/admin/visa/$id'
+    | '/dashboard/counselor/timeline/$id'
     | '/dashboard/technologies/client/$id'
     | '/dashboard/technologies/clients/$id'
     | '/dashboard/technologies/contracts/$id'
@@ -3494,12 +3527,14 @@ export interface FileRouteTypes {
     | '/dashboard/career/resume'
     | '/dashboard/career/saved'
     | '/dashboard/certificates/$id'
+    | '/dashboard/counselor/analytics'
     | '/dashboard/counselor/applications'
     | '/dashboard/counselor/follow-ups'
     | '/dashboard/counselor/leads'
     | '/dashboard/counselor/pipeline'
     | '/dashboard/counselor/tasks'
     | '/dashboard/counselor/visa'
+    | '/dashboard/counselor/workload'
     | '/dashboard/courses/$courseId'
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
@@ -3526,6 +3561,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
     | '/dashboard/admin/visa/$id'
+    | '/dashboard/counselor/timeline/$id'
     | '/dashboard/technologies/client/$id'
     | '/dashboard/technologies/clients/$id'
     | '/dashboard/technologies/contracts/$id'
@@ -3799,12 +3835,14 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/career/resume'
     | '/_authenticated/dashboard/career/saved'
     | '/_authenticated/dashboard/certificates/$id'
+    | '/_authenticated/dashboard/counselor/analytics'
     | '/_authenticated/dashboard/counselor/applications'
     | '/_authenticated/dashboard/counselor/follow-ups'
     | '/_authenticated/dashboard/counselor/leads'
     | '/_authenticated/dashboard/counselor/pipeline'
     | '/_authenticated/dashboard/counselor/tasks'
     | '/_authenticated/dashboard/counselor/visa'
+    | '/_authenticated/dashboard/counselor/workload'
     | '/_authenticated/dashboard/courses/$courseId'
     | '/_authenticated/dashboard/faculty/submissions'
     | '/_authenticated/dashboard/lessons/$lessonId'
@@ -3833,6 +3871,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/ai/usage'
     | '/_authenticated/dashboard/admin/programs/$id'
     | '/_authenticated/dashboard/admin/visa/$id'
+    | '/_authenticated/dashboard/counselor/timeline/$id'
     | '/_authenticated/dashboard/technologies/client/$id'
     | '/_authenticated/dashboard/technologies/clients/$id'
     | '/_authenticated/dashboard/technologies/contracts/$id'
@@ -5585,6 +5624,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardCoursesCourseIdRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/counselor/workload': {
+      id: '/_authenticated/dashboard/counselor/workload'
+      path: '/workload'
+      fullPath: '/dashboard/counselor/workload'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorWorkloadRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
     '/_authenticated/dashboard/counselor/visa': {
       id: '/_authenticated/dashboard/counselor/visa'
       path: '/visa'
@@ -5625,6 +5671,13 @@ declare module '@tanstack/react-router' {
       path: '/applications'
       fullPath: '/dashboard/counselor/applications'
       preLoaderRoute: typeof AuthenticatedDashboardCounselorApplicationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
+    '/_authenticated/dashboard/counselor/analytics': {
+      id: '/_authenticated/dashboard/counselor/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/counselor/analytics'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorAnalyticsRouteImport
       parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
     '/_authenticated/dashboard/certificates/$id': {
@@ -6012,6 +6065,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientIdRouteImport
       parentRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRoute
     }
+    '/_authenticated/dashboard/counselor/timeline/$id': {
+      id: '/_authenticated/dashboard/counselor/timeline/$id'
+      path: '/timeline/$id'
+      fullPath: '/dashboard/counselor/timeline/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorTimelineIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
     '/_authenticated/dashboard/admin/visa/$id': {
       id: '/_authenticated/dashboard/admin/visa/$id'
       path: '/$id'
@@ -6298,17 +6358,22 @@ const AuthenticatedDashboardCareerRouteWithChildren =
   )
 
 interface AuthenticatedDashboardCounselorRouteChildren {
+  AuthenticatedDashboardCounselorAnalyticsRoute: typeof AuthenticatedDashboardCounselorAnalyticsRoute
   AuthenticatedDashboardCounselorApplicationsRoute: typeof AuthenticatedDashboardCounselorApplicationsRoute
   AuthenticatedDashboardCounselorFollowUpsRoute: typeof AuthenticatedDashboardCounselorFollowUpsRoute
   AuthenticatedDashboardCounselorLeadsRoute: typeof AuthenticatedDashboardCounselorLeadsRoute
   AuthenticatedDashboardCounselorPipelineRoute: typeof AuthenticatedDashboardCounselorPipelineRoute
   AuthenticatedDashboardCounselorTasksRoute: typeof AuthenticatedDashboardCounselorTasksRoute
   AuthenticatedDashboardCounselorVisaRoute: typeof AuthenticatedDashboardCounselorVisaRoute
+  AuthenticatedDashboardCounselorWorkloadRoute: typeof AuthenticatedDashboardCounselorWorkloadRoute
   AuthenticatedDashboardCounselorIndexRoute: typeof AuthenticatedDashboardCounselorIndexRoute
+  AuthenticatedDashboardCounselorTimelineIdRoute: typeof AuthenticatedDashboardCounselorTimelineIdRoute
 }
 
 const AuthenticatedDashboardCounselorRouteChildren: AuthenticatedDashboardCounselorRouteChildren =
   {
+    AuthenticatedDashboardCounselorAnalyticsRoute:
+      AuthenticatedDashboardCounselorAnalyticsRoute,
     AuthenticatedDashboardCounselorApplicationsRoute:
       AuthenticatedDashboardCounselorApplicationsRoute,
     AuthenticatedDashboardCounselorFollowUpsRoute:
@@ -6321,8 +6386,12 @@ const AuthenticatedDashboardCounselorRouteChildren: AuthenticatedDashboardCounse
       AuthenticatedDashboardCounselorTasksRoute,
     AuthenticatedDashboardCounselorVisaRoute:
       AuthenticatedDashboardCounselorVisaRoute,
+    AuthenticatedDashboardCounselorWorkloadRoute:
+      AuthenticatedDashboardCounselorWorkloadRoute,
     AuthenticatedDashboardCounselorIndexRoute:
       AuthenticatedDashboardCounselorIndexRoute,
+    AuthenticatedDashboardCounselorTimelineIdRoute:
+      AuthenticatedDashboardCounselorTimelineIdRoute,
   }
 
 const AuthenticatedDashboardCounselorRouteWithChildren =
