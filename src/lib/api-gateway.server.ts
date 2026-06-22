@@ -7,6 +7,14 @@ export type GatewayContext = {
   apiKeyId: string;
   scopes: string[];
   requestId: string;
+  tier: "free" | "partner" | "internal";
+};
+
+// Hourly request quotas per tier. Internal = unlimited (0 sentinel).
+export const TIER_LIMITS: Record<string, number> = {
+  free: 100,
+  partner: 1000,
+  internal: 0,
 };
 
 const json = (status: number, body: unknown, extra: Record<string, string> = {}) =>
@@ -46,7 +54,7 @@ export async function verifyApiKey(request: Request, requiredScope?: string) {
 
   const { data: key, error } = await supabaseAdmin
     .from("api_keys")
-    .select("id, status, expires_at")
+    .select("id, status, expires_at, tier")
     .eq("key_hash", hash)
     .maybeSingle();
 
@@ -58,6 +66,40 @@ export async function verifyApiKey(request: Request, requiredScope?: string) {
   }
   if (key.expires_at && new Date(key.expires_at).getTime() < Date.now()) {
     return { error: json(401, { error: "key_expired", request_id: requestId }), requestId };
+  }
+
+  const tier = ((key as any).tier ?? "free") as "free" | "partner" | "internal";
+
+  // Rate limit check (DB-backed sliding hour window).
+  const limit = TIER_LIMITS[tier] ?? TIER_LIMITS.free;
+  const { data: rl } = await supabaseAdmin.rpc("check_api_rate_limit", {
+    _api_key_id: key.id,
+    _limit: limit,
+    _window_seconds: 3600,
+  });
+  const decision = Array.isArray(rl) ? rl[0] : rl;
+  if (decision && decision.allowed === false) {
+    const resetAt = new Date(decision.reset_at).getTime();
+    const retryAfter = Math.max(1, Math.ceil((resetAt - Date.now()) / 1000));
+    // best-effort observability event
+    void supabaseAdmin.from("domain_events").insert({
+      event_type: "api.rate_limited",
+      payload: { api_key_id: key.id, tier, limit, request_id: requestId },
+    });
+    return {
+      error: json(
+        429,
+        { error: "rate_limited", retry_after: retryAfter, request_id: requestId },
+        {
+          "retry-after": String(retryAfter),
+          "x-ratelimit-limit": String(limit),
+          "x-ratelimit-remaining": "0",
+          "x-ratelimit-reset": String(Math.floor(resetAt / 1000)),
+          "x-request-id": requestId,
+        },
+      ),
+      requestId,
+    };
   }
 
   const { data: scopeRows } = await supabaseAdmin
@@ -82,7 +124,7 @@ export async function verifyApiKey(request: Request, requiredScope?: string) {
     .eq("id", key.id);
 
   return {
-    ctx: { apiKeyId: key.id, scopes, requestId } satisfies GatewayContext,
+    ctx: { apiKeyId: key.id, scopes, requestId, tier } satisfies GatewayContext,
     requestId,
   };
 }
