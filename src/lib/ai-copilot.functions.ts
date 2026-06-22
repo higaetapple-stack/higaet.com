@@ -11,7 +11,38 @@ const ALLOWED_ROLES = [
   "technology_consultant",
 ] as const;
 
-const COLLECTION_SLUGS = ["academy", "global-education", "career", "crm", "technologies"];
+// Server-side allow-list. Collections are derived from caller role + requested mode/entity.
+// Client-supplied collection slugs are IGNORED (logged as scope violation).
+const ALL_COLLECTIONS = ["academy", "global-education", "career", "crm", "technologies"] as const;
+
+const ROLE_COLLECTIONS: Record<string, readonly string[]> = {
+  super_admin: ALL_COLLECTIONS,
+  admin: ALL_COLLECTIONS,
+  counselor: ["global-education", "crm", "academy"],
+  placement_officer: ["career", "crm", "academy"],
+  faculty: ["academy"],
+  technology_consultant: ["technologies", "crm"],
+};
+
+const MODE_COLLECTIONS: Partial<Record<string, readonly string[]>> = {
+  student_summary: ["academy", "career"],
+  application_summary: ["global-education"],
+  visa_summary: ["global-education"],
+  lead_summary: ["crm"],
+  project_summary: ["technologies"],
+  draft_placement_feedback: ["career"],
+  draft_project_update: ["technologies"],
+};
+
+function resolveAllowedCollections(userRoles: string[], mode: string): string[] {
+  const roleAllowed = new Set<string>();
+  for (const r of userRoles) {
+    for (const s of ROLE_COLLECTIONS[r] ?? []) roleAllowed.add(s);
+  }
+  const modeScope = MODE_COLLECTIONS[mode];
+  if (!modeScope) return Array.from(roleAllowed);
+  return modeScope.filter((s) => roleAllowed.has(s));
+}
 
 const COPILOT_SYSTEM = `You are the HIGAET Copilot — an internal AI assistant for staff (admins, counselors, placement officers, faculty, technology consultants).
 - Produce concise, decision-ready summaries and drafts based ONLY on the structured records and knowledge context provided.
@@ -180,10 +211,34 @@ export const askCopilot = createServerFn({ method: "POST" })
     const allowed = userRoles.some((r: string) => (ALLOWED_ROLES as readonly string[]).includes(r));
     if (!allowed) throw new Error("Forbidden: Copilot requires staff role");
 
-    // Resolve collections
-    const slugs = data.collections && data.collections.length > 0 ? data.collections : COLLECTION_SLUGS;
-    const { data: colls } = await sb.from("ai_collections").select("id, slug").in("slug", slugs);
+    // Resolve collections — server-derived from role + mode. Client `collections` input is ignored.
+    const allowedSlugs = resolveAllowedCollections(userRoles, data.mode);
+    if (data.collections && data.collections.length > 0) {
+      const rejected = data.collections.filter((s) => !allowedSlugs.includes(s));
+      if (rejected.length > 0) {
+        await sb.from("domain_events").insert({
+          event_type: "rag.scope_violation",
+          aggregate_type: "ai_copilot",
+          aggregate_id: context.userId,
+          actor_id: context.userId,
+          payload: { requested: data.collections, allowed: allowedSlugs, rejected, mode: data.mode },
+        });
+      }
+    }
+    const { data: colls } = await sb
+      .from("ai_collections")
+      .select("id, slug")
+      .in("slug", allowedSlugs.length > 0 ? allowedSlugs : ["__none__"]);
     const collectionIds = (colls ?? []).map((c: any) => c.id);
+    if (collectionIds.length === 0) {
+      await sb.from("domain_events").insert({
+        event_type: "rag.collection_rejected",
+        aggregate_type: "ai_copilot",
+        aggregate_id: context.userId,
+        actor_id: context.userId,
+        payload: { reason: "no_allowed_collections_for_role_and_mode", roles: userRoles, mode: data.mode },
+      });
+    }
 
     // Fetch structured entity context (RLS-scoped)
     let entityRecord: any = null;
