@@ -160,8 +160,23 @@ function ThreadView() {
         <ul className="space-y-3">
           {replies.map((r) => (
             <li key={r.id} className="border border-border rounded-lg p-4 bg-surface">
-              <div className="text-xs text-muted-foreground mb-1">
-                {r.author?.full_name ?? "Member"} · {new Date(r.created_at).toLocaleString()}
+              <div className="flex items-center justify-between mb-1">
+                <div className="text-xs text-muted-foreground">
+                  {r.author?.full_name ?? "Member"} · {new Date(r.created_at).toLocaleString()}
+                </div>
+                {isAdmin && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={async () => {
+                      if (!confirm("Delete this reply?")) return;
+                      await deleteReplyFn({ data: { id: r.id } });
+                      qc.invalidateQueries({ queryKey: ["replies", threadId] });
+                    }}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                )}
               </div>
               <p className="text-sm text-ink whitespace-pre-wrap">{r.body}</p>
               <ReactionBar
