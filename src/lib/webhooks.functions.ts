@@ -77,7 +77,7 @@ export const updateWebhookSubscription = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const patch: Record<string, unknown> = {};
+    const patch: { status?: string; event_types?: string[] } = {};
     if (data.status) patch.status = data.status;
     if (data.event_types) patch.event_types = data.event_types.filter((e) => ALLOWED_EVENTS.includes(e as any) || e === "*");
     const { error } = await supabaseAdmin
