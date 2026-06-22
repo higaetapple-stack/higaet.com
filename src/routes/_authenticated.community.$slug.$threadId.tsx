@@ -34,6 +34,13 @@ const EMOJIS = ["👍", "❤️", "🎉", "🤔", "👏"];
 function ThreadView() {
   const { slug, threadId } = Route.useParams();
   const qc = useQueryClient();
+  const navigate = useNavigate();
+  const createAiConv = useServerFn(createConversation);
+  const discussWithAiMut = useMutation({
+    mutationFn: (title: string) =>
+      createAiConv({ data: { contextType: "community", contextId: threadId, title: `Discuss: ${title}` } }),
+    onSuccess: (conv) => navigate({ to: "/ai/chat", search: { conversationId: conv.id } }),
+  });
   const get = useServerFn(getThread);
   const list = useServerFn(listReplies);
   const reply = useServerFn(createReply);
