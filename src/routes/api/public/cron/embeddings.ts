@@ -63,7 +63,7 @@ export const Route = createFileRoute("/api/public/cron/embeddings")({
               continue;
             }
 
-            const chunks = chunkText(doc.content);
+            const chunks = chunkText(doc.content ?? "");
             if (chunks.length === 0) {
               await supabaseAdmin.from("ai_embeddings_queue")
                 .update({ status: "completed", processed_at: new Date().toISOString() })

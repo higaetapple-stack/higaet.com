@@ -210,6 +210,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
 import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
@@ -1403,6 +1404,11 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const ApiPublicCronEmbeddingsRoute = ApiPublicCronEmbeddingsRouteImport.update({
+  id: '/api/public/cron/embeddings',
+  path: '/api/public/cron/embeddings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicConstitutionStatusRoute =
   ApiPublicConstitutionStatusRouteImport.update({
     id: '/api/public/constitution/status',
@@ -2099,6 +2105,7 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
+  '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2362,6 +2369,7 @@ export interface FileRoutesByTo {
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
+  '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2640,6 +2648,7 @@ export interface FileRoutesById {
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
+  '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2918,6 +2927,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
+    | '/api/public/cron/embeddings'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -3181,6 +3191,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
+    | '/api/public/cron/embeddings'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -3458,6 +3469,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
+    | '/api/public/cron/embeddings'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -3533,6 +3545,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
+  ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -4943,6 +4956,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/api/public/cron/embeddings': {
+      id: '/api/public/cron/embeddings'
+      path: '/api/public/cron/embeddings'
+      fullPath: '/api/public/cron/embeddings'
+      preLoaderRoute: typeof ApiPublicCronEmbeddingsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/constitution/status': {
       id: '/api/public/constitution/status'
@@ -6443,6 +6463,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
+  ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
