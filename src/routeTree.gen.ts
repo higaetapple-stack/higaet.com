@@ -251,6 +251,7 @@ import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './rout
 import { Route as AuthenticatedDashboardAiTutorRouteImport } from './routes/_authenticated.dashboard.ai.tutor'
 import { Route as AuthenticatedDashboardAiGlobalRouteImport } from './routes/_authenticated.dashboard.ai.global'
 import { Route as AuthenticatedDashboardAiCareerRouteImport } from './routes/_authenticated.dashboard.ai.career'
+import { Route as AuthenticatedDashboardAdminWebhooksRouteImport } from './routes/_authenticated.dashboard.admin.webhooks'
 import { Route as AuthenticatedDashboardAdminVisaRouteImport } from './routes/_authenticated.dashboard.admin.visa'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
@@ -1653,6 +1654,12 @@ const AuthenticatedDashboardAiCareerRoute =
     path: '/ai/career',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardAdminWebhooksRoute =
+  AuthenticatedDashboardAdminWebhooksRouteImport.update({
+    id: '/webhooks',
+    path: '/webhooks',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminVisaRoute =
   AuthenticatedDashboardAdminVisaRouteImport.update({
     id: '/visa',
@@ -2168,6 +2175,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/dashboard/admin/webhooks': typeof AuthenticatedDashboardAdminWebhooksRoute
   '/dashboard/ai/career': typeof AuthenticatedDashboardAiCareerRoute
   '/dashboard/ai/global': typeof AuthenticatedDashboardAiGlobalRoute
   '/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
@@ -2446,6 +2454,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/dashboard/admin/webhooks': typeof AuthenticatedDashboardAdminWebhooksRoute
   '/dashboard/ai/career': typeof AuthenticatedDashboardAiCareerRoute
   '/dashboard/ai/global': typeof AuthenticatedDashboardAiGlobalRoute
   '/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
@@ -2736,6 +2745,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/_authenticated/dashboard/admin/webhooks': typeof AuthenticatedDashboardAdminWebhooksRoute
   '/_authenticated/dashboard/ai/career': typeof AuthenticatedDashboardAiCareerRoute
   '/_authenticated/dashboard/ai/global': typeof AuthenticatedDashboardAiGlobalRoute
   '/_authenticated/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
@@ -3028,6 +3038,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/admin/visa'
+    | '/dashboard/admin/webhooks'
     | '/dashboard/ai/career'
     | '/dashboard/ai/global'
     | '/dashboard/ai/tutor'
@@ -3306,6 +3317,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/admin/visa'
+    | '/dashboard/admin/webhooks'
     | '/dashboard/ai/career'
     | '/dashboard/ai/global'
     | '/dashboard/ai/tutor'
@@ -3595,6 +3607,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/universities'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/admin/visa'
+    | '/_authenticated/dashboard/admin/webhooks'
     | '/_authenticated/dashboard/ai/career'
     | '/_authenticated/dashboard/ai/global'
     | '/_authenticated/dashboard/ai/tutor'
@@ -5409,6 +5422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAiCareerRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/admin/webhooks': {
+      id: '/_authenticated/dashboard/admin/webhooks'
+      path: '/webhooks'
+      fullPath: '/dashboard/admin/webhooks'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminWebhooksRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/visa': {
       id: '/_authenticated/dashboard/admin/visa'
       path: '/visa'
@@ -5881,6 +5901,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminUniversitiesRoute: typeof AuthenticatedDashboardAdminUniversitiesRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminVisaRoute: typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  AuthenticatedDashboardAdminWebhooksRoute: typeof AuthenticatedDashboardAdminWebhooksRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
   AuthenticatedDashboardAdminProgramsIndexRoute: typeof AuthenticatedDashboardAdminProgramsIndexRoute
@@ -5939,6 +5960,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminUsersRoute,
     AuthenticatedDashboardAdminVisaRoute:
       AuthenticatedDashboardAdminVisaRouteWithChildren,
+    AuthenticatedDashboardAdminWebhooksRoute:
+      AuthenticatedDashboardAdminWebhooksRoute,
     AuthenticatedDashboardAdminIndexRoute:
       AuthenticatedDashboardAdminIndexRoute,
     AuthenticatedDashboardAdminProgramsIdRoute:
