@@ -68,15 +68,20 @@ export const Route = createFileRoute("/api/chat")({
         const contextType = body.data?.contextType ?? "general";
         const contextId = body.data?.contextId ?? null;
 
-        // Verify conversation belongs to user (also gates persistence)
+        // Verify conversation belongs to user (also gates persistence) and load secondary contexts
         let convOwned = false;
+        let secondaryContexts: Array<{ type: "lesson" | "community" | "general"; id: string }> = [];
         if (conversationId) {
           const { data: conv } = await supabase
             .from("ai_conversations")
-            .select("id, user_id")
+            .select("id, user_id, secondary_contexts")
             .eq("id", conversationId)
             .maybeSingle();
           convOwned = !!conv && conv.user_id === userId;
+          if (convOwned && Array.isArray(conv?.secondary_contexts)) {
+            secondaryContexts = (conv!.secondary_contexts as unknown as typeof secondaryContexts)
+              .filter((s) => s && typeof s.id === "string" && (s.type === "lesson" || s.type === "community"));
+          }
         }
 
         // Build context block
@@ -126,6 +131,30 @@ export const Route = createFileRoute("/api/chat")({
             contextBlock += `REPLIES:\n${replies.map((r, i) => `${i + 1}. ${(r.body ?? "").slice(0, 400)}`).join("\n")}\n\n`;
           }
         }
+
+        // Secondary contexts — passive cross-domain grounding (lesson summary + recent thread)
+        for (const sc of secondaryContexts.slice(0, 4)) {
+          if (sc.type === "lesson") {
+            const { data: lesson } = await supabase
+              .from("lessons")
+              .select("title, content_md")
+              .eq("id", sc.id)
+              .maybeSingle();
+            if (lesson) {
+              contextBlock += `SECONDARY LESSON — ${lesson.title}\n${(lesson.content_md ?? "").slice(0, 1500)}\n\n`;
+            }
+          } else if (sc.type === "community") {
+            const { data: thread } = await supabase
+              .from("threads")
+              .select("title, body")
+              .eq("id", sc.id)
+              .maybeSingle();
+            if (thread) {
+              contextBlock += `SECONDARY DISCUSSION — ${thread.title}\n${(thread.body ?? "").slice(0, 800)}\n\n`;
+            }
+          }
+        }
+
 
         const system =
           (contextType === "lesson" ? TUTOR_SYSTEM : ASSISTANT_SYSTEM) +
