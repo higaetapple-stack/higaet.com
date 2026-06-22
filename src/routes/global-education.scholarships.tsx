@@ -6,6 +6,9 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { listScholarshipsPublic } from "@/lib/study-abroad.functions";
 
+import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
+import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
+
 export const Route = createFileRoute("/global-education/scholarships")({
   head: () => ({
     meta: [
@@ -14,6 +17,7 @@ export const Route = createFileRoute("/global-education/scholarships")({
       { property: "og:url", content: "/global-education/scholarships" },
     ],
     links: [{ rel: "canonical", href: "/global-education/scholarships" }],
+    scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["scholarships"]),
   }),
   component: ScholarshipsPage,
 });

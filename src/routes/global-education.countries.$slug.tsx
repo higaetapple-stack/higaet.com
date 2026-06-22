@@ -6,16 +6,34 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { getCountryPublic } from "@/lib/study-abroad.functions";
+import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
 
 export const Route = createFileRoute("/global-education/countries/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `Study in ${params.slug.replace(/-/g, " ")} — HIGAET` },
-      { name: "description", content: `Universities, tuition, scholarships, and visa info for studying in ${params.slug}.` },
-      { property: "og:url", content: `/global-education/countries/${params.slug}` },
-    ],
-    links: [{ rel: "canonical", href: `/global-education/countries/${params.slug}` }],
-  }),
+  head: ({ params }) => {
+    const human = params.slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const path = `/global-education/countries/${params.slug}`;
+    return {
+      meta: [
+        { title: `Study in ${human} — HIGAET` },
+        { name: "description", content: `Universities, tuition, scholarships, and visa info for studying in ${human}.` },
+        { property: "og:url", content: path },
+      ],
+      links: [{ rel: "canonical", href: path }],
+      scripts: buildServiceJsonLdScripts({
+        path,
+        name: `${human} Admissions`,
+        description: `End-to-end admissions support for students applying to universities in ${human}, including shortlisting, applications, scholarships, and visa guidance.`,
+        serviceType: `${human} Admissions`,
+        areaServed: human,
+        breadcrumbs: [
+          { name: "Home", url: "/" },
+          { name: "Global Education Hub", url: "/global-education" },
+          { name: "Destinations", url: "/global-education/countries" },
+          { name: human, url: path },
+        ],
+      }),
+    };
+  },
   component: CountryDetail,
   notFoundComponent: () => <div className="p-10">Country not found.</div>,
   errorComponent: ({ error }) => <div className="p-10">Error: {error.message}</div>,

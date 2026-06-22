@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
+import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
 
 export const Route = createFileRoute("/global-education/study-abroad")({
   head: () => ({
@@ -8,6 +10,7 @@ export const Route = createFileRoute("/global-education/study-abroad")({
       { name: "description", content: "Study abroad counselling for students planning international admissions, university shortlists, applications, and visa pathways." },
     ],
     links: [{ rel: "canonical", href: "/global-education/study-abroad" }],
+    scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["study-abroad"]),
   }),
   component: StudyAbroadPage,
 });

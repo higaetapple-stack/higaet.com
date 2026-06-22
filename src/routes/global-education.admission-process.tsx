@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
+import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
 
 export const Route = createFileRoute("/global-education/admission-process")({
   head: () => ({
@@ -8,6 +10,7 @@ export const Route = createFileRoute("/global-education/admission-process")({
       { name: "description", content: "Understand the HIGAET Global Education Hub admissions process from profile review and shortlisting to applications, offers, and visa support." },
     ],
     links: [{ rel: "canonical", href: "/global-education/admission-process" }],
+    scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["admission-process"]),
   }),
   component: AdmissionProcessPage,
 });

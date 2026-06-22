@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
+import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
 
 export const Route = createFileRoute("/global-education/student-services")({
   head: () => ({
@@ -8,6 +10,7 @@ export const Route = createFileRoute("/global-education/student-services")({
       { name: "description", content: "Student support services for accommodation, pre-departure orientation, travel planning, and arrival readiness." },
     ],
     links: [{ rel: "canonical", href: "/global-education/student-services" }],
+    scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["student-services"]),
   }),
   component: StudentServicesPage,
 });

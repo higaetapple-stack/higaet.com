@@ -7,6 +7,8 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { Input } from "@/components/ui/input";
 import { listUniversitiesPublic, listCountriesPublic } from "@/lib/study-abroad.functions";
+import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
+import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
 
 export const Route = createFileRoute("/global-education/universities")({
   head: () => ({
@@ -16,6 +18,7 @@ export const Route = createFileRoute("/global-education/universities")({
       { property: "og:url", content: "/global-education/universities" },
     ],
     links: [{ rel: "canonical", href: "/global-education/universities" }],
+    scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["universities"]),
   }),
   component: UniversitiesPage,
 });
