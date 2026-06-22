@@ -112,6 +112,7 @@ import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.c
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
+import { Route as AuthenticatedEducationRouteImport } from './routes/_authenticated.education'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
 import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
@@ -850,6 +851,11 @@ const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
   id: '/admissions',
   path: '/admissions',
   getParentRoute: () => AcademyRoute,
+} as any)
+const AuthenticatedEducationRoute = AuthenticatedEducationRouteImport.update({
+  id: '/education',
+  path: '/education',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -2028,6 +2034,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/education': typeof AuthenticatedEducationRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2321,6 +2328,7 @@ export interface FileRoutesByTo {
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
   '/community': typeof AuthenticatedCommunityRouteWithChildren
+  '/education': typeof AuthenticatedEducationRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2615,6 +2623,7 @@ export interface FileRoutesById {
   '/_authenticated/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/education': typeof AuthenticatedEducationRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2917,6 +2926,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/community'
     | '/dashboard'
+    | '/education'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3210,6 +3220,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/terms'
     | '/community'
+    | '/education'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3503,6 +3514,7 @@ export interface FileRouteTypes {
     | '/_authenticated/assistant'
     | '/_authenticated/community'
     | '/_authenticated/dashboard'
+    | '/_authenticated/education'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -4557,6 +4569,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/admissions'
       preLoaderRoute: typeof AcademyAdmissionsRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/education': {
+      id: '/_authenticated/education'
+      path: '/education'
+      fullPath: '/education'
+      preLoaderRoute: typeof AuthenticatedEducationRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -6435,12 +6454,14 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRouteWithChildren
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedEducationRoute: typeof AuthenticatedEducationRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAssistantRoute: AuthenticatedAssistantRouteWithChildren,
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedEducationRoute: AuthenticatedEducationRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
