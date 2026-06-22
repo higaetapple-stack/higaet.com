@@ -379,12 +379,19 @@ export const setApplicationWorkflowStatus = createServerFn({ method: "POST" })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     if (data.reason) {
-      await (supabaseAdmin as any)
+      const { data: latest } = await (supabaseAdmin as any)
         .from("application_status_history")
-        .update({ reason: data.reason })
+        .select("id")
         .eq("application_id", data.id)
         .order("created_at", { ascending: false })
-        .limit(1);
+        .limit(1)
+        .maybeSingle();
+      if (latest?.id) {
+        await (supabaseAdmin as any)
+          .from("application_status_history")
+          .update({ reason: data.reason })
+          .eq("id", latest.id);
+      }
     }
     return { ok: true };
   });
