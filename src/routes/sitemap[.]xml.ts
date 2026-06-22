@@ -5,6 +5,7 @@ import {
   getAcademyCategories,
 } from "@/content/providers";
 import { PROGRAMS, CAMPUSES } from "@/lib/academy-programs";
+import { DOC_CATEGORIES } from "@/content/docs";
 import { getCurrentHost, resolveTenantShell } from "@/lib/tenant-shell";
 
 /**
@@ -33,6 +34,11 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/faculty", changefreq: "monthly", priority: "0.7" },
   { path: "/advisors", changefreq: "monthly", priority: "0.6" },
   { path: "/partners", changefreq: "monthly", priority: "0.6" },
+  { path: "/docs", changefreq: "weekly", priority: "0.8" },
+  ...DOC_CATEGORIES.map<SitemapEntry>((c) => ({ path: `/docs/${c.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
+  ...DOC_CATEGORIES.flatMap<SitemapEntry>((c) =>
+    c.articles.map((a) => ({ path: `/docs/${c.slug}/${a.slug}`, changefreq: "monthly" as const, priority: "0.6" })),
+  ),
   { path: "/auth", changefreq: "monthly", priority: "0.3" },
   { path: "/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
