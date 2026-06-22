@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, useEffect } from "react";
@@ -15,11 +15,12 @@ import {
   softDeleteThread,
   softDeleteReply,
 } from "@/lib/community.functions";
+import { createConversation } from "@/lib/ai-chat.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Lock, Pin, EyeOff, Trash2 } from "lucide-react";
+import { ArrowLeft, Lock, Pin, EyeOff, Trash2, Sparkles } from "lucide-react";
 import type { ThreadRow, ReplyRow, ReactionRow } from "@/lib/community/types";
 
 export const Route = createFileRoute("/_authenticated/community/$slug/$threadId")({
