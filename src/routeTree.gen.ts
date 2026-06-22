@@ -251,6 +251,7 @@ import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './route
 import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
 import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
 import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
+import { Route as AuthenticatedDashboardAdminRagRouteImport } from './routes/_authenticated.dashboard.admin.rag'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
@@ -1649,6 +1650,12 @@ const AuthenticatedDashboardAdminSaApplicationsRoute =
     path: '/sa-applications',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminRagRoute =
+  AuthenticatedDashboardAdminRagRouteImport.update({
+    id: '/rag',
+    path: '/rag',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminProjectsRoute =
   AuthenticatedDashboardAdminProjectsRouteImport.update({
     id: '/projects',
@@ -2065,6 +2072,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/rag': typeof AuthenticatedDashboardAdminRagRoute
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
@@ -2331,6 +2339,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/rag': typeof AuthenticatedDashboardAdminRagRoute
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
@@ -2608,6 +2617,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/_authenticated/dashboard/admin/rag': typeof AuthenticatedDashboardAdminRagRoute
   '/_authenticated/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/_authenticated/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/_authenticated/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
@@ -2887,6 +2897,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/rag'
     | '/dashboard/admin/sa-applications'
     | '/dashboard/admin/sa-leads'
     | '/dashboard/admin/scholarships'
@@ -3153,6 +3164,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/rag'
     | '/dashboard/admin/sa-applications'
     | '/dashboard/admin/sa-leads'
     | '/dashboard/admin/scholarships'
@@ -3429,6 +3441,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/observability'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
+    | '/_authenticated/dashboard/admin/rag'
     | '/_authenticated/dashboard/admin/sa-applications'
     | '/_authenticated/dashboard/admin/sa-leads'
     | '/_authenticated/dashboard/admin/scholarships'
@@ -5244,6 +5257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminSaApplicationsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/rag': {
+      id: '/_authenticated/dashboard/admin/rag'
+      path: '/rag'
+      fullPath: '/dashboard/admin/rag'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminRagRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/projects': {
       id: '/_authenticated/dashboard/admin/projects'
       path: '/projects'
@@ -5613,6 +5633,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
+  AuthenticatedDashboardAdminRagRoute: typeof AuthenticatedDashboardAdminRagRoute
   AuthenticatedDashboardAdminSaApplicationsRoute: typeof AuthenticatedDashboardAdminSaApplicationsRoute
   AuthenticatedDashboardAdminSaLeadsRoute: typeof AuthenticatedDashboardAdminSaLeadsRoute
   AuthenticatedDashboardAdminScholarshipsRoute: typeof AuthenticatedDashboardAdminScholarshipsRoute
@@ -5659,6 +5680,7 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
       AuthenticatedDashboardAdminProjectsRoute,
+    AuthenticatedDashboardAdminRagRoute: AuthenticatedDashboardAdminRagRoute,
     AuthenticatedDashboardAdminSaApplicationsRoute:
       AuthenticatedDashboardAdminSaApplicationsRoute,
     AuthenticatedDashboardAdminSaLeadsRoute:
