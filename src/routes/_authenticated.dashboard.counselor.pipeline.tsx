@@ -43,7 +43,7 @@ function PipelineBoard() {
   });
 
   const statuses = q.data?.statuses ?? [];
-  const groups = q.data?.groups ?? {};
+  const groups: Record<string, any[]> = (q.data?.groups ?? {}) as any;
 
   return (
     <div>
