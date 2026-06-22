@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, CheckCircle2, Download, PlayCircle } from "lucide-react";
+import { AiTutor } from "@/components/ai/AiTutor";
 
 export const Route = createFileRoute("/_authenticated/dashboard/lessons/$lessonId")({
   component: LessonPlayer,
