@@ -534,6 +534,7 @@ export type Database = {
           partner_name: string | null
           rate_limit_per_minute: number
           status: string
+          tier: string
           updated_at: string
         }
         Insert: {
@@ -549,6 +550,7 @@ export type Database = {
           partner_name?: string | null
           rate_limit_per_minute?: number
           status?: string
+          tier?: string
           updated_at?: string
         }
         Update: {
@@ -564,9 +566,39 @@ export type Database = {
           partner_name?: string | null
           rate_limit_per_minute?: number
           status?: string
+          tier?: string
           updated_at?: string
         }
         Relationships: []
+      }
+      api_rate_limits: {
+        Row: {
+          api_key_id: string
+          request_count: number
+          updated_at: string
+          window_start: string
+        }
+        Insert: {
+          api_key_id: string
+          request_count?: number
+          updated_at?: string
+          window_start: string
+        }
+        Update: {
+          api_key_id?: string
+          request_count?: number
+          updated_at?: string
+          window_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_rate_limits_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       api_scopes: {
         Row: {
@@ -4859,6 +4891,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      check_api_rate_limit: {
+        Args: { _api_key_id: string; _limit: number; _window_seconds?: number }
+        Returns: {
+          allowed: boolean
+          remaining: number
+          reset_at: string
+        }[]
+      }
+      cleanup_api_rate_limits: { Args: never; Returns: undefined }
       emit_domain_event: {
         Args: {
           _aggregate_id?: string
