@@ -219,6 +219,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
 import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
@@ -1461,6 +1462,12 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const ApiPublicCronWebhookDispatchRoute =
+  ApiPublicCronWebhookDispatchRouteImport.update({
+    id: '/api/public/cron/webhook-dispatch',
+    path: '/api/public/cron/webhook-dispatch',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronEmbeddingsRoute = ApiPublicCronEmbeddingsRouteImport.update({
   id: '/api/public/cron/embeddings',
   path: '/api/public/cron/embeddings',
@@ -2192,6 +2199,7 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
+  '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2467,6 +2475,7 @@ export interface FileRoutesByTo {
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
+  '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2758,6 +2767,7 @@ export interface FileRoutesById {
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
+  '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -3049,6 +3059,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
+    | '/api/public/cron/webhook-dispatch'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -3324,6 +3335,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
+    | '/api/public/cron/webhook-dispatch'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -3614,6 +3626,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
+    | '/api/public/cron/webhook-dispatch'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -3696,6 +3709,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
+  ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
@@ -5170,6 +5184,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/api/public/cron/webhook-dispatch': {
+      id: '/api/public/cron/webhook-dispatch'
+      path: '/api/public/cron/webhook-dispatch'
+      fullPath: '/api/public/cron/webhook-dispatch'
+      preLoaderRoute: typeof ApiPublicCronWebhookDispatchRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/cron/embeddings': {
       id: '/api/public/cron/embeddings'
@@ -6724,6 +6745,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
+  ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport
