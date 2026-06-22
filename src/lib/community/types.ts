@@ -34,6 +34,8 @@ export interface ThreadRow {
   last_reply_at: string | null;
   created_at: string;
   updated_at: string;
+  deleted_at?: string | null;
+  is_hidden?: boolean;
   author?: { full_name: string | null; avatar_url: string | null } | null;
 }
 
@@ -45,6 +47,8 @@ export interface ReplyRow {
   reaction_count: number;
   created_at: string;
   updated_at: string;
+  deleted_at?: string | null;
+  is_hidden?: boolean;
   author?: { full_name: string | null; avatar_url: string | null } | null;
 }
 

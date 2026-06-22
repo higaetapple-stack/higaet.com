@@ -8,12 +8,18 @@ import {
   createReply,
   toggleReaction,
   listReactions,
+  checkIsAdmin,
+  setThreadHidden,
+  setThreadLocked,
+  setThreadPinned,
+  softDeleteThread,
+  softDeleteReply,
 } from "@/lib/community.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Lock, Pin } from "lucide-react";
+import { ArrowLeft, Lock, Pin, EyeOff, Trash2 } from "lucide-react";
 import type { ThreadRow, ReplyRow, ReactionRow } from "@/lib/community/types";
 
 export const Route = createFileRoute("/_authenticated/community/$slug/$threadId")({
@@ -32,11 +38,23 @@ function ThreadView() {
   const reply = useServerFn(createReply);
   const react = useServerFn(toggleReaction);
   const reactionsFn = useServerFn(listReactions);
+  const isAdminFn = useServerFn(checkIsAdmin);
+  const hideFn = useServerFn(setThreadHidden);
+  const lockFn = useServerFn(setThreadLocked);
+  const pinFn = useServerFn(setThreadPinned);
+  const deleteThreadFn = useServerFn(softDeleteThread);
+  const deleteReplyFn = useServerFn(softDeleteReply);
 
   const { data: thread } = useQuery<ThreadRow>({
     queryKey: ["thread", threadId],
     queryFn: () => get({ data: { id: threadId } }) as Promise<ThreadRow>,
   });
+  const { data: adminCheck } = useQuery({
+    queryKey: ["is-admin"],
+    queryFn: () => isAdminFn(),
+    staleTime: 60_000,
+  });
+  const isAdmin = !!adminCheck?.isAdmin;
   const { data: replies = [] } = useQuery<ReplyRow[]>({
     queryKey: ["replies", threadId],
     queryFn: () => list({ data: { threadId } }) as Promise<ReplyRow[]>,
@@ -117,6 +135,22 @@ function ThreadView() {
           reactions={threadReactions}
           onToggle={(emoji) => reactMut.mutate({ targetType: "thread", targetId: thread.id, emoji })}
         />
+        {isAdmin && (
+          <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
+            <Button size="sm" variant="outline" onClick={async () => { await pinFn({ data: { id: thread.id, pinned: !thread.pinned } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <Pin className="size-3.5 mr-1" /> {thread.pinned ? "Unpin" : "Pin"}
+            </Button>
+            <Button size="sm" variant="outline" onClick={async () => { await lockFn({ data: { id: thread.id, locked: !thread.locked } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <Lock className="size-3.5 mr-1" /> {thread.locked ? "Unlock" : "Lock"}
+            </Button>
+            <Button size="sm" variant="outline" onClick={async () => { await hideFn({ data: { id: thread.id, hidden: !thread.is_hidden } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <EyeOff className="size-3.5 mr-1" /> {thread.is_hidden ? "Unhide" : "Hide"}
+            </Button>
+            <Button size="sm" variant="destructive" onClick={async () => { if (!confirm("Delete this thread?")) return; await deleteThreadFn({ data: { id: thread.id } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <Trash2 className="size-3.5 mr-1" /> Delete
+            </Button>
+          </div>
+        )}
       </article>
 
       <section className="space-y-3">
@@ -126,8 +160,23 @@ function ThreadView() {
         <ul className="space-y-3">
           {replies.map((r) => (
             <li key={r.id} className="border border-border rounded-lg p-4 bg-surface">
-              <div className="text-xs text-muted-foreground mb-1">
-                {r.author?.full_name ?? "Member"} · {new Date(r.created_at).toLocaleString()}
+              <div className="flex items-center justify-between mb-1">
+                <div className="text-xs text-muted-foreground">
+                  {r.author?.full_name ?? "Member"} · {new Date(r.created_at).toLocaleString()}
+                </div>
+                {isAdmin && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={async () => {
+                      if (!confirm("Delete this reply?")) return;
+                      await deleteReplyFn({ data: { id: r.id } });
+                      qc.invalidateQueries({ queryKey: ["replies", threadId] });
+                    }}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                )}
               </div>
               <p className="text-sm text-ink whitespace-pre-wrap">{r.body}</p>
               <ReactionBar
