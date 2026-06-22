@@ -17,6 +17,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { DevErrorOverlay } from "@/components/DevErrorOverlay";
 import { supabase } from "@/integrations/supabase/client";
 import { ObservabilityErrorBoundary } from "@/components/observability/ErrorBoundary";
+import { HostGate } from "@/components/site/HostGate";
 
 function NotFoundComponent() {
   return (
@@ -157,6 +158,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ObservabilityErrorBoundary boundary="root">
+        <HostGate />
         <Outlet />
       </ObservabilityErrorBoundary>
       <CookieConsent />

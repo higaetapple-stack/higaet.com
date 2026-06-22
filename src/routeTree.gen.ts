@@ -16,6 +16,7 @@ import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimulateRouteImport } from './routes/simulate'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as KernelRouteImport } from './routes/kernel'
@@ -333,6 +334,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SimulateRoute = SimulateRouteImport.update({
   id: '/simulate',
   path: '/simulate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReplayRoute = ReplayRouteImport.update({
@@ -1961,6 +1967,7 @@ export interface FileRoutesByFullPath {
   '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
@@ -2249,6 +2256,7 @@ export interface FileRoutesByTo {
   '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
@@ -2531,6 +2539,7 @@ export interface FileRoutesById {
   '/kernel': typeof KernelRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
@@ -2824,6 +2833,7 @@ export interface FileRouteTypes {
     | '/kernel'
     | '/privacy'
     | '/replay'
+    | '/robots.txt'
     | '/simulate'
     | '/sitemap.xml'
     | '/status'
@@ -3112,6 +3122,7 @@ export interface FileRouteTypes {
     | '/kernel'
     | '/privacy'
     | '/replay'
+    | '/robots.txt'
     | '/simulate'
     | '/sitemap.xml'
     | '/status'
@@ -3393,6 +3404,7 @@ export interface FileRouteTypes {
     | '/kernel'
     | '/privacy'
     | '/replay'
+    | '/robots.txt'
     | '/simulate'
     | '/sitemap.xml'
     | '/status'
@@ -3686,6 +3698,7 @@ export interface RootRouteChildren {
   KernelRoute: typeof KernelRoute
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SimulateRoute: typeof SimulateRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StatusRoute: typeof StatusRoute
@@ -3775,6 +3788,13 @@ declare module '@tanstack/react-router' {
       path: '/simulate'
       fullPath: '/simulate'
       preLoaderRoute: typeof SimulateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/replay': {
@@ -6732,6 +6752,7 @@ const rootRouteChildren: RootRouteChildren = {
   KernelRoute: KernelRoute,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SimulateRoute: SimulateRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StatusRoute: StatusRoute,
@@ -6774,13 +6795,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

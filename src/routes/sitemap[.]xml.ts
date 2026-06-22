@@ -5,12 +5,14 @@ import {
   getAcademyCategories,
 } from "@/content/providers";
 import { PROGRAMS, CAMPUSES } from "@/lib/academy-programs";
+import { getCurrentHost, resolveTenantShell } from "@/lib/tenant-shell";
 
 /**
- * Canonical production domain (Workstream B.2 · Step 7).
- * Single source of truth — must match `ACADEMY_SITEMAP_BASE_URL` and robots.txt.
+ * Default base URL when no Host header is present (build-time / scripts).
+ * At request time the sitemap is host-aware (Phase 10A · item 3): each
+ * tenant shell only advertises the paths it actually serves.
  */
-const BASE_URL = "https://higaet.com";
+const DEFAULT_BASE_URL = "https://higaet.com";
 
 interface SitemapEntry {
   path: string;
@@ -180,7 +182,11 @@ const JOB_SLUGS = [
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
+        const host = getCurrentHost(request.headers.get("host"));
+        const shell = resolveTenantShell(host);
+        const baseUrl = host ? `https://${host}` : DEFAULT_BASE_URL;
+
         // Academy pillar URLs — registry-backed, resolved through the
         // route-aware URL resolver so live routes are the source of truth.
         const academyCategories = await getAcademyCategories({
@@ -206,7 +212,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           priority: "0.7",
         }));
 
-        const entries: SitemapEntry[] = [
+        const allEntries: SitemapEntry[] = [
           ...STATIC_ENTRIES,
           ...academyCategoryEntries,
           ...programEntries,
@@ -215,11 +221,22 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...JOB_SLUGS.map((slug) => ({ path: `/careers/${slug}`, changefreq: "weekly" as const, priority: "0.5" })),
         ];
 
+        // Per-host filtering (Phase 10A · item 3). Corporate / preview / apex
+        // see everything; subdomain shells only advertise their own prefixes.
+        const entries =
+          shell.id === "corporate"
+            ? allEntries
+            : allEntries.filter((e) =>
+                shell.allowedPrefixes.some(
+                  (p) => p !== "/" && (e.path === p || e.path.startsWith(p + "/")),
+                ),
+              );
+
         const urls = entries
           .map((e) =>
             [
               `  <url>`,
-              `    <loc>${BASE_URL}${e.path}</loc>`,
+              `    <loc>${baseUrl}${e.path}</loc>`,
               e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
               e.priority ? `    <priority>${e.priority}</priority>` : null,
               `  </url>`,
