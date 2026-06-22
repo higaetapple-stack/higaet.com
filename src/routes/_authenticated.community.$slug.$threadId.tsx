@@ -135,6 +135,22 @@ function ThreadView() {
           reactions={threadReactions}
           onToggle={(emoji) => reactMut.mutate({ targetType: "thread", targetId: thread.id, emoji })}
         />
+        {isAdmin && (
+          <div className="flex flex-wrap gap-2 pt-3 border-t border-border mt-3">
+            <Button size="sm" variant="outline" onClick={async () => { await pinFn({ data: { id: thread.id, pinned: !thread.pinned } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <Pin className="size-3.5 mr-1" /> {thread.pinned ? "Unpin" : "Pin"}
+            </Button>
+            <Button size="sm" variant="outline" onClick={async () => { await lockFn({ data: { id: thread.id, locked: !thread.locked } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <Lock className="size-3.5 mr-1" /> {thread.locked ? "Unlock" : "Lock"}
+            </Button>
+            <Button size="sm" variant="outline" onClick={async () => { await hideFn({ data: { id: thread.id, hidden: !thread.is_hidden } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <EyeOff className="size-3.5 mr-1" /> {thread.is_hidden ? "Unhide" : "Hide"}
+            </Button>
+            <Button size="sm" variant="destructive" onClick={async () => { if (!confirm("Delete this thread?")) return; await deleteThreadFn({ data: { id: thread.id } }); qc.invalidateQueries({ queryKey: ["thread", threadId] }); }}>
+              <Trash2 className="size-3.5 mr-1" /> Delete
+            </Button>
+          </div>
+        )}
       </article>
 
       <section className="space-y-3">
