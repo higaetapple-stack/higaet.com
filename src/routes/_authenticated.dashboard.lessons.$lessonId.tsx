@@ -184,6 +184,11 @@ function LessonPlayer() {
           )}
         </Button>
       </div>
+
+      <section className="mt-8">
+        <h2 className="font-display text-lg text-ink mb-3">Ask the AI Tutor</h2>
+        <AiTutor lessonId={lesson.id} />
+      </section>
     </div>
   );
 }
