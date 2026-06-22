@@ -219,6 +219,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
 import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
@@ -250,6 +251,7 @@ import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './rout
 import { Route as AuthenticatedDashboardAiTutorRouteImport } from './routes/_authenticated.dashboard.ai.tutor'
 import { Route as AuthenticatedDashboardAiGlobalRouteImport } from './routes/_authenticated.dashboard.ai.global'
 import { Route as AuthenticatedDashboardAiCareerRouteImport } from './routes/_authenticated.dashboard.ai.career'
+import { Route as AuthenticatedDashboardAdminWebhooksRouteImport } from './routes/_authenticated.dashboard.admin.webhooks'
 import { Route as AuthenticatedDashboardAdminVisaRouteImport } from './routes/_authenticated.dashboard.admin.visa'
 import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
 import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
@@ -1461,6 +1463,12 @@ const AuthenticatedDashboardAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const ApiPublicCronWebhookDispatchRoute =
+  ApiPublicCronWebhookDispatchRouteImport.update({
+    id: '/api/public/cron/webhook-dispatch',
+    path: '/api/public/cron/webhook-dispatch',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronEmbeddingsRoute = ApiPublicCronEmbeddingsRouteImport.update({
   id: '/api/public/cron/embeddings',
   path: '/api/public/cron/embeddings',
@@ -1645,6 +1653,12 @@ const AuthenticatedDashboardAiCareerRoute =
     id: '/ai/career',
     path: '/ai/career',
     getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAdminWebhooksRoute =
+  AuthenticatedDashboardAdminWebhooksRouteImport.update({
+    id: '/webhooks',
+    path: '/webhooks',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminVisaRoute =
   AuthenticatedDashboardAdminVisaRouteImport.update({
@@ -2161,6 +2175,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/dashboard/admin/webhooks': typeof AuthenticatedDashboardAdminWebhooksRoute
   '/dashboard/ai/career': typeof AuthenticatedDashboardAiCareerRoute
   '/dashboard/ai/global': typeof AuthenticatedDashboardAiGlobalRoute
   '/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
@@ -2192,6 +2207,7 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
+  '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2438,6 +2454,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/dashboard/admin/webhooks': typeof AuthenticatedDashboardAdminWebhooksRoute
   '/dashboard/ai/career': typeof AuthenticatedDashboardAiCareerRoute
   '/dashboard/ai/global': typeof AuthenticatedDashboardAiGlobalRoute
   '/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
@@ -2467,6 +2484,7 @@ export interface FileRoutesByTo {
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
+  '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2727,6 +2745,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/universities': typeof AuthenticatedDashboardAdminUniversitiesRoute
   '/_authenticated/dashboard/admin/users': typeof AuthenticatedDashboardAdminUsersRoute
   '/_authenticated/dashboard/admin/visa': typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  '/_authenticated/dashboard/admin/webhooks': typeof AuthenticatedDashboardAdminWebhooksRoute
   '/_authenticated/dashboard/ai/career': typeof AuthenticatedDashboardAiCareerRoute
   '/_authenticated/dashboard/ai/global': typeof AuthenticatedDashboardAiGlobalRoute
   '/_authenticated/dashboard/ai/tutor': typeof AuthenticatedDashboardAiTutorRoute
@@ -2758,6 +2777,7 @@ export interface FileRoutesById {
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
+  '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -3018,6 +3038,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/admin/visa'
+    | '/dashboard/admin/webhooks'
     | '/dashboard/ai/career'
     | '/dashboard/ai/global'
     | '/dashboard/ai/tutor'
@@ -3049,6 +3070,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
+    | '/api/public/cron/webhook-dispatch'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -3295,6 +3317,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/universities'
     | '/dashboard/admin/users'
     | '/dashboard/admin/visa'
+    | '/dashboard/admin/webhooks'
     | '/dashboard/ai/career'
     | '/dashboard/ai/global'
     | '/dashboard/ai/tutor'
@@ -3324,6 +3347,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
+    | '/api/public/cron/webhook-dispatch'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -3583,6 +3607,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/universities'
     | '/_authenticated/dashboard/admin/users'
     | '/_authenticated/dashboard/admin/visa'
+    | '/_authenticated/dashboard/admin/webhooks'
     | '/_authenticated/dashboard/ai/career'
     | '/_authenticated/dashboard/ai/global'
     | '/_authenticated/dashboard/ai/tutor'
@@ -3614,6 +3639,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
+    | '/api/public/cron/webhook-dispatch'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -3696,6 +3722,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
+  ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
@@ -5171,6 +5198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/api/public/cron/webhook-dispatch': {
+      id: '/api/public/cron/webhook-dispatch'
+      path: '/api/public/cron/webhook-dispatch'
+      fullPath: '/api/public/cron/webhook-dispatch'
+      preLoaderRoute: typeof ApiPublicCronWebhookDispatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/embeddings': {
       id: '/api/public/cron/embeddings'
       path: '/api/public/cron/embeddings'
@@ -5387,6 +5421,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/ai/career'
       preLoaderRoute: typeof AuthenticatedDashboardAiCareerRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/admin/webhooks': {
+      id: '/_authenticated/dashboard/admin/webhooks'
+      path: '/webhooks'
+      fullPath: '/dashboard/admin/webhooks'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminWebhooksRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/visa': {
       id: '/_authenticated/dashboard/admin/visa'
@@ -5860,6 +5901,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminUniversitiesRoute: typeof AuthenticatedDashboardAdminUniversitiesRoute
   AuthenticatedDashboardAdminUsersRoute: typeof AuthenticatedDashboardAdminUsersRoute
   AuthenticatedDashboardAdminVisaRoute: typeof AuthenticatedDashboardAdminVisaRouteWithChildren
+  AuthenticatedDashboardAdminWebhooksRoute: typeof AuthenticatedDashboardAdminWebhooksRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
   AuthenticatedDashboardAdminProgramsIndexRoute: typeof AuthenticatedDashboardAdminProgramsIndexRoute
@@ -5918,6 +5960,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminUsersRoute,
     AuthenticatedDashboardAdminVisaRoute:
       AuthenticatedDashboardAdminVisaRouteWithChildren,
+    AuthenticatedDashboardAdminWebhooksRoute:
+      AuthenticatedDashboardAdminWebhooksRoute,
     AuthenticatedDashboardAdminIndexRoute:
       AuthenticatedDashboardAdminIndexRoute,
     AuthenticatedDashboardAdminProgramsIdRoute:
@@ -6724,6 +6768,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
+  ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport
