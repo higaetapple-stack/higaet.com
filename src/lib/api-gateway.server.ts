@@ -7,6 +7,14 @@ export type GatewayContext = {
   apiKeyId: string;
   scopes: string[];
   requestId: string;
+  tier: "free" | "partner" | "internal";
+};
+
+// Hourly request quotas per tier. Internal = unlimited (0 sentinel).
+export const TIER_LIMITS: Record<string, number> = {
+  free: 100,
+  partner: 1000,
+  internal: 0,
 };
 
 const json = (status: number, body: unknown, extra: Record<string, string> = {}) =>
