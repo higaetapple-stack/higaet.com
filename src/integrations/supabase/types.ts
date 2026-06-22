@@ -434,6 +434,261 @@ export type Database = {
           },
         ]
       }
+      api_key_scopes: {
+        Row: {
+          api_key_id: string
+          granted_at: string
+          scope_id: string
+        }
+        Insert: {
+          api_key_id: string
+          granted_at?: string
+          scope_id: string
+        }
+        Update: {
+          api_key_id?: string
+          granted_at?: string
+          scope_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_scopes_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_key_scopes_scope_id_fkey"
+            columns: ["scope_id"]
+            isOneToOne: false
+            referencedRelation: "api_scopes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_key_usage: {
+        Row: {
+          api_key_id: string | null
+          bytes_out: number | null
+          created_at: string
+          endpoint: string
+          error: string | null
+          id: number
+          ip: unknown
+          latency_ms: number | null
+          method: string
+          request_id: string | null
+          status_code: number
+          user_agent: string | null
+        }
+        Insert: {
+          api_key_id?: string | null
+          bytes_out?: number | null
+          created_at?: string
+          endpoint: string
+          error?: string | null
+          id?: number
+          ip?: unknown
+          latency_ms?: number | null
+          method: string
+          request_id?: string | null
+          status_code: number
+          user_agent?: string | null
+        }
+        Update: {
+          api_key_id?: string | null
+          bytes_out?: number | null
+          created_at?: string
+          endpoint?: string
+          error?: string | null
+          id?: number
+          ip?: unknown
+          latency_ms?: number | null
+          method?: string
+          request_id?: string | null
+          status_code?: number
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_usage_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_keys: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string
+          owner_user_id: string | null
+          partner_name: string | null
+          rate_limit_per_minute: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name: string
+          owner_user_id?: string | null
+          partner_name?: string | null
+          rate_limit_per_minute?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string
+          owner_user_id?: string | null
+          partner_name?: string | null
+          rate_limit_per_minute?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      api_scopes: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          scope: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          scope: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          scope?: string
+        }
+        Relationships: []
+      }
+      api_webhook_deliveries: {
+        Row: {
+          attempt: number
+          created_at: string
+          delivered_at: string | null
+          error: string | null
+          event_type: string
+          id: number
+          next_attempt_at: string | null
+          payload: Json
+          response_body: string | null
+          response_status: number | null
+          status: string
+          subscription_id: string
+        }
+        Insert: {
+          attempt?: number
+          created_at?: string
+          delivered_at?: string | null
+          error?: string | null
+          event_type: string
+          id?: number
+          next_attempt_at?: string | null
+          payload: Json
+          response_body?: string | null
+          response_status?: number | null
+          status?: string
+          subscription_id: string
+        }
+        Update: {
+          attempt?: number
+          created_at?: string
+          delivered_at?: string | null
+          error?: string | null
+          event_type?: string
+          id?: number
+          next_attempt_at?: string | null
+          payload?: Json
+          response_body?: string | null
+          response_status?: number | null
+          status?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_webhook_deliveries_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "api_webhook_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_webhook_subscriptions: {
+        Row: {
+          api_key_id: string
+          created_at: string
+          event_types: string[]
+          id: string
+          last_failure_at: string | null
+          last_success_at: string | null
+          signing_secret: string
+          status: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          api_key_id: string
+          created_at?: string
+          event_types?: string[]
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          signing_secret: string
+          status?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          api_key_id?: string
+          created_at?: string
+          event_types?: string[]
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          signing_secret?: string
+          status?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_webhook_subscriptions_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       application_documents: {
         Row: {
           application_id: string
