@@ -47,6 +47,7 @@ const TABS: Tab[] = [
   { to: "/dashboard/admin/tech-leads", label: "Tech leads", group: "Tech" },
   { to: "/dashboard/admin/users", label: "Users & Roles" },
   { to: "/dashboard/admin/observability", label: "Observability" },
+  { to: "/dashboard/admin/rag", label: "RAG pipeline" },
   { to: "/dashboard/admin/analytics", label: "Analytics" },
   { to: "/dashboard/admin/settings", label: "Settings" },
 ];
