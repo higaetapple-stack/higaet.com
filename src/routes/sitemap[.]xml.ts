@@ -6,6 +6,7 @@ import {
 } from "@/content/providers";
 import { PROGRAMS, CAMPUSES } from "@/lib/academy-programs";
 import { DOC_CATEGORIES } from "@/content/docs";
+import { UNIVERSITIES_KB } from "@/content/universities-kb";
 import { getCurrentHost, resolveTenantShell } from "@/lib/tenant-shell";
 
 /**
