@@ -19,7 +19,7 @@ export const Route = createFileRoute("/api/v1/jobs")({
         const { data, error } = await supabaseAdmin
           .from("job_postings")
           .select("id, slug, title, location, employment_type, experience_level, status, created_at")
-          .eq("status", "published")
+          .eq("status", "open")
           .order("created_at", { ascending: false })
           .limit(100);
 

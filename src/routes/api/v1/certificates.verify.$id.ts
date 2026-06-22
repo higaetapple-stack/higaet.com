@@ -16,11 +16,14 @@ export const Route = createFileRoute("/api/v1/certificates/verify/$id")({
         const { ctx } = v as any;
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data, error } = await supabaseAdmin
+        const isUuid = /^[0-9a-f-]{36}$/i.test(params.id);
+        const q = supabaseAdmin
           .from("certificates")
-          .select("id, certificate_number, issued_at, status, recipient_name, course_title, program_title")
-          .or(`id.eq.${params.id},certificate_number.eq.${params.id}`)
-          .maybeSingle();
+          .select("id, certificate_number, issued_at, revoked, program_id, student_id, verification_token")
+          .limit(1);
+        const { data, error } = isUuid
+          ? await q.eq("id", params.id).maybeSingle()
+          : await q.eq("certificate_number", params.id).maybeSingle();
 
         if (error) {
           await logApiUsage({ apiKeyId: ctx.apiKeyId, requestId: ctx.requestId, request, endpoint, status: 500, startedAt, error: error.message });
@@ -30,7 +33,17 @@ export const Route = createFileRoute("/api/v1/certificates/verify/$id")({
           await logApiUsage({ apiKeyId: ctx.apiKeyId, requestId: ctx.requestId, request, endpoint, status: 404, startedAt });
           return gatewayJson(404, { error: "not_found" }, ctx.requestId);
         }
-        const body = { data: { ...data, verified: data.status === "issued" }, request_id: ctx.requestId };
+        const body = {
+          data: {
+            id: data.id,
+            certificate_number: data.certificate_number,
+            issued_at: data.issued_at,
+            program_id: data.program_id,
+            verified: !data.revoked,
+            status: data.revoked ? "revoked" : "issued",
+          },
+          request_id: ctx.requestId,
+        };
         const res = gatewayJson(200, body, ctx.requestId);
         await logApiUsage({ apiKeyId: ctx.apiKeyId, requestId: ctx.requestId, request, endpoint, status: 200, startedAt, bytesOut: JSON.stringify(body).length });
         return res;
