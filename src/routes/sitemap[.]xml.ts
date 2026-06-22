@@ -23,6 +23,11 @@ interface SitemapEntry {
 const STATIC_ENTRIES: SitemapEntry[] = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.7" },
+  { path: "/about-higaet", changefreq: "monthly", priority: "0.8" },
+  { path: "/higaet-academy", changefreq: "monthly", priority: "0.8" },
+  { path: "/higaet-global-education-hub", changefreq: "monthly", priority: "0.8" },
+  { path: "/higaet-technologies", changefreq: "monthly", priority: "0.8" },
+  { path: "/higaet-ai-platform", changefreq: "monthly", priority: "0.8" },
   { path: "/auth", changefreq: "monthly", priority: "0.3" },
   { path: "/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
