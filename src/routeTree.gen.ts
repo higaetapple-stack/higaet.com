@@ -236,6 +236,7 @@ import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authe
 import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
 import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
 import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
+import { Route as GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport } from './routes/global-education.knowledge-base.universities.index'
 import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
 import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
 import { Route as AuthenticatedDashboardCounselorIndexRouteImport } from './routes/_authenticated.dashboard.counselor.index'
@@ -1576,6 +1577,12 @@ const AuthenticatedAssistantConversationIdRoute =
     path: '/$conversationId',
     getParentRoute: () => AuthenticatedAssistantRoute,
   } as any)
+const GlobalEducationKnowledgeBaseUniversitiesIndexRoute =
+  GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport.update({
+    id: '/knowledge-base/universities/',
+    path: '/knowledge-base/universities/',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesIndexRoute =
   AuthenticatedDashboardTechnologiesIndexRouteImport.update({
     id: '/',
@@ -2442,6 +2449,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/counselor/': typeof AuthenticatedDashboardCounselorIndexRoute
   '/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/technologies/': typeof AuthenticatedDashboardTechnologiesIndexRoute
+  '/global-education/knowledge-base/universities/': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -2748,6 +2756,7 @@ export interface FileRoutesByTo {
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorIndexRoute
   '/dashboard/projects': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesIndexRoute
+  '/global-education/knowledge-base/universities': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -3072,6 +3081,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/counselor/': typeof AuthenticatedDashboardCounselorIndexRoute
   '/_authenticated/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/_authenticated/dashboard/technologies/': typeof AuthenticatedDashboardTechnologiesIndexRoute
+  '/global-education/knowledge-base/universities/': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/_authenticated/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/_authenticated/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -3396,6 +3406,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor/'
     | '/dashboard/projects/'
     | '/dashboard/technologies/'
+    | '/global-education/knowledge-base/universities/'
     | '/dashboard/admin/ai/copilot'
     | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
@@ -3702,6 +3713,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor'
     | '/dashboard/projects'
     | '/dashboard/technologies'
+    | '/global-education/knowledge-base/universities'
     | '/dashboard/admin/ai/copilot'
     | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
@@ -4025,6 +4037,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/counselor/'
     | '/_authenticated/dashboard/projects/'
     | '/_authenticated/dashboard/technologies/'
+    | '/global-education/knowledge-base/universities/'
     | '/_authenticated/dashboard/admin/ai/copilot'
     | '/_authenticated/dashboard/admin/ai/usage'
     | '/_authenticated/dashboard/admin/programs/$id'
@@ -5708,6 +5721,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAssistantConversationIdRouteImport
       parentRoute: typeof AuthenticatedAssistantRoute
     }
+    '/global-education/knowledge-base/universities/': {
+      id: '/global-education/knowledge-base/universities/'
+      path: '/knowledge-base/universities'
+      fullPath: '/global-education/knowledge-base/universities/'
+      preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
     '/_authenticated/dashboard/technologies/': {
       id: '/_authenticated/dashboard/technologies/'
       path: '/'
@@ -7101,6 +7121,7 @@ interface GlobalEducationRouteChildren {
   GlobalEducationUniversitiesRoute: typeof GlobalEducationUniversitiesRouteWithChildren
   GlobalEducationVisaGuidanceRoute: typeof GlobalEducationVisaGuidanceRoute
   GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
+  GlobalEducationKnowledgeBaseUniversitiesIndexRoute: typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
 }
 
 const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
@@ -7115,6 +7136,8 @@ const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
     GlobalEducationUniversitiesRouteWithChildren,
   GlobalEducationVisaGuidanceRoute: GlobalEducationVisaGuidanceRoute,
   GlobalEducationIndexRoute: GlobalEducationIndexRoute,
+  GlobalEducationKnowledgeBaseUniversitiesIndexRoute:
+    GlobalEducationKnowledgeBaseUniversitiesIndexRoute,
 }
 
 const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
