@@ -21,6 +21,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as KernelRouteImport } from './routes/kernel'
 import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConstitutionVersionsRouteImport } from './routes/constitution-versions'
@@ -36,6 +37,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
 import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
+import { Route as DocsIndexRouteImport } from './routes/docs.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
 import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
@@ -82,6 +84,9 @@ import { Route as GlobalEducationFaqRouteImport } from './routes/global-educatio
 import { Route as GlobalEducationCountriesRouteImport } from './routes/global-education.countries'
 import { Route as GlobalEducationContactRouteImport } from './routes/global-education.contact'
 import { Route as GlobalEducationAdmissionProcessRouteImport } from './routes/global-education.admission-process'
+import { Route as DocsWebhooksRouteImport } from './routes/docs.webhooks'
+import { Route as DocsAuthenticationRouteImport } from './routes/docs.authentication'
+import { Route as DocsApiReferenceRouteImport } from './routes/docs.api-reference'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
@@ -171,6 +176,10 @@ import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologi
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
+import { Route as ApiV1UniversitiesRouteImport } from './routes/api/v1/universities'
+import { Route as ApiV1ProgramsRouteImport } from './routes/api/v1/programs'
+import { Route as ApiV1JobsRouteImport } from './routes/api/v1/jobs'
+import { Route as ApiV1CoursesRouteImport } from './routes/api/v1/courses'
 import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
 import { Route as ApiPublicSystemHealthRouteImport } from './routes/api/public/system-health'
 import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
@@ -265,6 +274,7 @@ import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './rout
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
+import { Route as AuthenticatedDashboardAdminApiRouteImport } from './routes/_authenticated.dashboard.admin.api'
 import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
 import { Route as AuthenticatedDashboardAdminAiRouteImport } from './routes/_authenticated.dashboard.admin.ai'
 import { Route as AuthenticatedCommunityEventsIdRouteImport } from './routes/_authenticated.community.events.$id'
@@ -277,6 +287,7 @@ import { Route as AuthenticatedDashboardTechnologiesClientsIndexRouteImport } fr
 import { Route as AuthenticatedDashboardTechnologiesClientIndexRouteImport } from './routes/_authenticated.dashboard.technologies.client/index'
 import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
 import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
+import { Route as ApiV1CertificatesVerifyIdRouteImport } from './routes/api/v1/certificates.verify.$id'
 import { Route as AuthenticatedDashboardTechnologiesProposalsIdRouteImport } from './routes/_authenticated.dashboard.technologies.proposals.$id'
 import { Route as AuthenticatedDashboardTechnologiesProjectsIdRouteImport } from './routes/_authenticated.dashboard.technologies.projects.$id'
 import { Route as AuthenticatedDashboardTechnologiesContractsIdRouteImport } from './routes/_authenticated.dashboard.technologies.contracts.$id'
@@ -345,6 +356,11 @@ const GovernanceRoute = GovernanceRouteImport.update({
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
   id: '/global-education',
   path: '/global-education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookiesRoute = CookiesRouteImport.update({
@@ -420,6 +436,11 @@ const GlobalEducationIndexRoute = GlobalEducationIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => GlobalEducationRoute,
+} as any)
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DocsRoute,
 } as any)
 const AcademyIndexRoute = AcademyIndexRouteImport.update({
   id: '/',
@@ -678,6 +699,21 @@ const GlobalEducationAdmissionProcessRoute =
     path: '/admission-process',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
+const DocsWebhooksRoute = DocsWebhooksRouteImport.update({
+  id: '/webhooks',
+  path: '/webhooks',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsAuthenticationRoute = DocsAuthenticationRouteImport.update({
+  id: '/authentication',
+  path: '/authentication',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsApiReferenceRoute = DocsApiReferenceRouteImport.update({
+  id: '/api-reference',
+  path: '/api-reference',
+  getParentRoute: () => DocsRoute,
+} as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -1188,6 +1224,26 @@ const GlobalEducationCountriesSlugRoute =
     path: '/$slug',
     getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
+const ApiV1UniversitiesRoute = ApiV1UniversitiesRouteImport.update({
+  id: '/api/v1/universities',
+  path: '/api/v1/universities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1ProgramsRoute = ApiV1ProgramsRouteImport.update({
+  id: '/api/v1/programs',
+  path: '/api/v1/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1JobsRoute = ApiV1JobsRouteImport.update({
+  id: '/api/v1/jobs',
+  path: '/api/v1/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1CoursesRoute = ApiV1CoursesRouteImport.update({
+  id: '/api/v1/courses',
+  path: '/api/v1/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
   id: '/api/public/vector-search',
   path: '/api/public/vector-search',
@@ -1734,6 +1790,12 @@ const AuthenticatedDashboardAdminApplicationsRoute =
     path: '/applications',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminApiRoute =
+  AuthenticatedDashboardAdminApiRouteImport.update({
+    id: '/api',
+    path: '/api',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminAnalyticsRoute =
   AuthenticatedDashboardAdminAnalyticsRouteImport.update({
     id: '/analytics',
@@ -1806,6 +1868,12 @@ const AuthenticatedDashboardAdminCrmIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminCrmRoute,
   } as any)
+const ApiV1CertificatesVerifyIdRoute =
+  ApiV1CertificatesVerifyIdRouteImport.update({
+    id: '/api/v1/certificates/verify/$id',
+    path: '/api/v1/certificates/verify/$id',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedDashboardTechnologiesProposalsIdRoute =
   AuthenticatedDashboardTechnologiesProposalsIdRouteImport.update({
     id: '/$id',
@@ -1873,6 +1941,7 @@ export interface FileRoutesByFullPath {
   '/constitution-versions': typeof ConstitutionVersionsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/docs': typeof DocsRouteWithChildren
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
   '/kernel': typeof KernelRoute
@@ -1906,6 +1975,9 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/docs/api-reference': typeof DocsApiReferenceRoute
+  '/docs/authentication': typeof DocsAuthenticationRoute
+  '/docs/webhooks': typeof DocsWebhooksRoute
   '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
   '/global-education/contact': typeof GlobalEducationContactRoute
   '/global-education/countries': typeof GlobalEducationCountriesRouteWithChildren
@@ -1952,6 +2024,7 @@ export interface FileRoutesByFullPath {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
+  '/docs/': typeof DocsIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -1986,6 +2059,10 @@ export interface FileRoutesByFullPath {
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
+  '/api/v1/courses': typeof ApiV1CoursesRoute
+  '/api/v1/jobs': typeof ApiV1JobsRoute
+  '/api/v1/programs': typeof ApiV1ProgramsRoute
+  '/api/v1/universities': typeof ApiV1UniversitiesRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2059,6 +2136,7 @@ export interface FileRoutesByFullPath {
   '/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
   '/dashboard/admin/ai': typeof AuthenticatedDashboardAdminAiRouteWithChildren
   '/dashboard/admin/analytics': typeof AuthenticatedDashboardAdminAnalyticsRoute
+  '/dashboard/admin/api': typeof AuthenticatedDashboardAdminApiRoute
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
@@ -2130,6 +2208,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/contracts/$id': typeof AuthenticatedDashboardTechnologiesContractsIdRoute
   '/dashboard/technologies/projects/$id': typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
   '/dashboard/technologies/proposals/$id': typeof AuthenticatedDashboardTechnologiesProposalsIdRoute
+  '/api/v1/certificates/verify/$id': typeof ApiV1CertificatesVerifyIdRoute
   '/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
   '/dashboard/technologies/client/': typeof AuthenticatedDashboardTechnologiesClientIndexRoute
@@ -2179,6 +2258,9 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/docs/api-reference': typeof DocsApiReferenceRoute
+  '/docs/authentication': typeof DocsAuthenticationRoute
+  '/docs/webhooks': typeof DocsWebhooksRoute
   '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
   '/global-education/contact': typeof GlobalEducationContactRoute
   '/global-education/countries': typeof GlobalEducationCountriesRouteWithChildren
@@ -2225,6 +2307,7 @@ export interface FileRoutesByTo {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/academy': typeof AcademyIndexRoute
+  '/docs': typeof DocsIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
@@ -2255,6 +2338,10 @@ export interface FileRoutesByTo {
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
+  '/api/v1/courses': typeof ApiV1CoursesRoute
+  '/api/v1/jobs': typeof ApiV1JobsRoute
+  '/api/v1/programs': typeof ApiV1ProgramsRoute
+  '/api/v1/universities': typeof ApiV1UniversitiesRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2327,6 +2414,7 @@ export interface FileRoutesByTo {
   '/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
   '/dashboard/admin/ai': typeof AuthenticatedDashboardAdminAiRouteWithChildren
   '/dashboard/admin/analytics': typeof AuthenticatedDashboardAdminAnalyticsRoute
+  '/dashboard/admin/api': typeof AuthenticatedDashboardAdminApiRoute
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
@@ -2395,6 +2483,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/contracts/$id': typeof AuthenticatedDashboardTechnologiesContractsIdRoute
   '/dashboard/technologies/projects/$id': typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
   '/dashboard/technologies/proposals/$id': typeof AuthenticatedDashboardTechnologiesProposalsIdRoute
+  '/api/v1/certificates/verify/$id': typeof ApiV1CertificatesVerifyIdRoute
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/dashboard/admin/programs': typeof AuthenticatedDashboardAdminProgramsIndexRoute
   '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientIndexRoute
@@ -2418,6 +2507,7 @@ export interface FileRoutesById {
   '/constitution-versions': typeof ConstitutionVersionsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/docs': typeof DocsRouteWithChildren
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
   '/kernel': typeof KernelRoute
@@ -2451,6 +2541,9 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/docs/api-reference': typeof DocsApiReferenceRoute
+  '/docs/authentication': typeof DocsAuthenticationRoute
+  '/docs/webhooks': typeof DocsWebhooksRoute
   '/global-education/admission-process': typeof GlobalEducationAdmissionProcessRoute
   '/global-education/contact': typeof GlobalEducationContactRoute
   '/global-education/countries': typeof GlobalEducationCountriesRouteWithChildren
@@ -2497,6 +2590,7 @@ export interface FileRoutesById {
   '/verify-certificate/$id': typeof VerifyCertificateIdRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
+  '/docs/': typeof DocsIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
@@ -2531,6 +2625,10 @@ export interface FileRoutesById {
   '/api/public/strategy': typeof ApiPublicStrategyRoute
   '/api/public/system-health': typeof ApiPublicSystemHealthRoute
   '/api/public/vector-search': typeof ApiPublicVectorSearchRoute
+  '/api/v1/courses': typeof ApiV1CoursesRoute
+  '/api/v1/jobs': typeof ApiV1JobsRoute
+  '/api/v1/programs': typeof ApiV1ProgramsRoute
+  '/api/v1/universities': typeof ApiV1UniversitiesRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2604,6 +2702,7 @@ export interface FileRoutesById {
   '/_authenticated/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
   '/_authenticated/dashboard/admin/ai': typeof AuthenticatedDashboardAdminAiRouteWithChildren
   '/_authenticated/dashboard/admin/analytics': typeof AuthenticatedDashboardAdminAnalyticsRoute
+  '/_authenticated/dashboard/admin/api': typeof AuthenticatedDashboardAdminApiRoute
   '/_authenticated/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
@@ -2675,6 +2774,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/contracts/$id': typeof AuthenticatedDashboardTechnologiesContractsIdRoute
   '/_authenticated/dashboard/technologies/projects/$id': typeof AuthenticatedDashboardTechnologiesProjectsIdRoute
   '/_authenticated/dashboard/technologies/proposals/$id': typeof AuthenticatedDashboardTechnologiesProposalsIdRoute
+  '/api/v1/certificates/verify/$id': typeof ApiV1CertificatesVerifyIdRoute
   '/_authenticated/dashboard/admin/crm/': typeof AuthenticatedDashboardAdminCrmIndexRoute
   '/_authenticated/dashboard/admin/programs/': typeof AuthenticatedDashboardAdminProgramsIndexRoute
   '/_authenticated/dashboard/technologies/client/': typeof AuthenticatedDashboardTechnologiesClientIndexRoute
@@ -2698,6 +2798,7 @@ export interface FileRouteTypes {
     | '/constitution-versions'
     | '/contact'
     | '/cookies'
+    | '/docs'
     | '/global-education'
     | '/governance'
     | '/kernel'
@@ -2731,6 +2832,9 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/docs/api-reference'
+    | '/docs/authentication'
+    | '/docs/webhooks'
     | '/global-education/admission-process'
     | '/global-education/contact'
     | '/global-education/countries'
@@ -2777,6 +2881,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/verify/$token'
     | '/academy/'
+    | '/docs/'
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
@@ -2811,6 +2916,10 @@ export interface FileRouteTypes {
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
+    | '/api/v1/courses'
+    | '/api/v1/jobs'
+    | '/api/v1/programs'
+    | '/api/v1/universities'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -2884,6 +2993,7 @@ export interface FileRouteTypes {
     | '/community/events/$id'
     | '/dashboard/admin/ai'
     | '/dashboard/admin/analytics'
+    | '/dashboard/admin/api'
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
@@ -2955,6 +3065,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/contracts/$id'
     | '/dashboard/technologies/projects/$id'
     | '/dashboard/technologies/proposals/$id'
+    | '/api/v1/certificates/verify/$id'
     | '/dashboard/admin/crm/'
     | '/dashboard/admin/programs/'
     | '/dashboard/technologies/client/'
@@ -3004,6 +3115,9 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/docs/api-reference'
+    | '/docs/authentication'
+    | '/docs/webhooks'
     | '/global-education/admission-process'
     | '/global-education/contact'
     | '/global-education/countries'
@@ -3050,6 +3164,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/verify/$token'
     | '/academy'
+    | '/docs'
     | '/global-education'
     | '/jobs'
     | '/technologies'
@@ -3080,6 +3195,10 @@ export interface FileRouteTypes {
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
+    | '/api/v1/courses'
+    | '/api/v1/jobs'
+    | '/api/v1/programs'
+    | '/api/v1/universities'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3152,6 +3271,7 @@ export interface FileRouteTypes {
     | '/community/events/$id'
     | '/dashboard/admin/ai'
     | '/dashboard/admin/analytics'
+    | '/dashboard/admin/api'
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
@@ -3220,6 +3340,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/contracts/$id'
     | '/dashboard/technologies/projects/$id'
     | '/dashboard/technologies/proposals/$id'
+    | '/api/v1/certificates/verify/$id'
     | '/dashboard/admin/crm'
     | '/dashboard/admin/programs'
     | '/dashboard/technologies/client'
@@ -3242,6 +3363,7 @@ export interface FileRouteTypes {
     | '/constitution-versions'
     | '/contact'
     | '/cookies'
+    | '/docs'
     | '/global-education'
     | '/governance'
     | '/kernel'
@@ -3275,6 +3397,9 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/docs/api-reference'
+    | '/docs/authentication'
+    | '/docs/webhooks'
     | '/global-education/admission-process'
     | '/global-education/contact'
     | '/global-education/countries'
@@ -3321,6 +3446,7 @@ export interface FileRouteTypes {
     | '/verify-certificate/$id'
     | '/verify/$token'
     | '/academy/'
+    | '/docs/'
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
@@ -3355,6 +3481,10 @@ export interface FileRouteTypes {
     | '/api/public/strategy'
     | '/api/public/system-health'
     | '/api/public/vector-search'
+    | '/api/v1/courses'
+    | '/api/v1/jobs'
+    | '/api/v1/programs'
+    | '/api/v1/universities'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3428,6 +3558,7 @@ export interface FileRouteTypes {
     | '/_authenticated/community/events/$id'
     | '/_authenticated/dashboard/admin/ai'
     | '/_authenticated/dashboard/admin/analytics'
+    | '/_authenticated/dashboard/admin/api'
     | '/_authenticated/dashboard/admin/applications'
     | '/_authenticated/dashboard/admin/assignments'
     | '/_authenticated/dashboard/admin/certificates'
@@ -3499,6 +3630,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/contracts/$id'
     | '/_authenticated/dashboard/technologies/projects/$id'
     | '/_authenticated/dashboard/technologies/proposals/$id'
+    | '/api/v1/certificates/verify/$id'
     | '/_authenticated/dashboard/admin/crm/'
     | '/_authenticated/dashboard/admin/programs/'
     | '/_authenticated/dashboard/technologies/client/'
@@ -3522,6 +3654,7 @@ export interface RootRouteChildren {
   ConstitutionVersionsRoute: typeof ConstitutionVersionsRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
+  DocsRoute: typeof DocsRouteWithChildren
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   GovernanceRoute: typeof GovernanceRoute
   KernelRoute: typeof KernelRoute
@@ -3555,10 +3688,15 @@ export interface RootRouteChildren {
   ApiPublicStrategyRoute: typeof ApiPublicStrategyRoute
   ApiPublicSystemHealthRoute: typeof ApiPublicSystemHealthRoute
   ApiPublicVectorSearchRoute: typeof ApiPublicVectorSearchRoute
+  ApiV1CoursesRoute: typeof ApiV1CoursesRoute
+  ApiV1JobsRoute: typeof ApiV1JobsRoute
+  ApiV1ProgramsRoute: typeof ApiV1ProgramsRoute
+  ApiV1UniversitiesRoute: typeof ApiV1UniversitiesRoute
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
+  ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -3645,6 +3783,13 @@ declare module '@tanstack/react-router' {
       path: '/global-education'
       fullPath: '/global-education'
       preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookies': {
@@ -3751,6 +3896,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/'
       preLoaderRoute: typeof GlobalEducationIndexRouteImport
       parentRoute: typeof GlobalEducationRoute
+    }
+    '/docs/': {
+      id: '/docs/'
+      path: '/'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsIndexRouteImport
+      parentRoute: typeof DocsRoute
     }
     '/academy/': {
       id: '/academy/'
@@ -4073,6 +4225,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/admission-process'
       preLoaderRoute: typeof GlobalEducationAdmissionProcessRouteImport
       parentRoute: typeof GlobalEducationRoute
+    }
+    '/docs/webhooks': {
+      id: '/docs/webhooks'
+      path: '/webhooks'
+      fullPath: '/docs/webhooks'
+      preLoaderRoute: typeof DocsWebhooksRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/authentication': {
+      id: '/docs/authentication'
+      path: '/authentication'
+      fullPath: '/docs/authentication'
+      preLoaderRoute: typeof DocsAuthenticationRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/api-reference': {
+      id: '/docs/api-reference'
+      path: '/api-reference'
+      fullPath: '/docs/api-reference'
+      preLoaderRoute: typeof DocsApiReferenceRouteImport
+      parentRoute: typeof DocsRoute
     }
     '/careers/$slug': {
       id: '/careers/$slug'
@@ -4696,6 +4869,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/countries/$slug'
       preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
       parentRoute: typeof GlobalEducationCountriesRoute
+    }
+    '/api/v1/universities': {
+      id: '/api/v1/universities'
+      path: '/api/v1/universities'
+      fullPath: '/api/v1/universities'
+      preLoaderRoute: typeof ApiV1UniversitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/programs': {
+      id: '/api/v1/programs'
+      path: '/api/v1/programs'
+      fullPath: '/api/v1/programs'
+      preLoaderRoute: typeof ApiV1ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/jobs': {
+      id: '/api/v1/jobs'
+      path: '/api/v1/jobs'
+      fullPath: '/api/v1/jobs'
+      preLoaderRoute: typeof ApiV1JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/courses': {
+      id: '/api/v1/courses'
+      path: '/api/v1/courses'
+      fullPath: '/api/v1/courses'
+      preLoaderRoute: typeof ApiV1CoursesRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/vector-search': {
       id: '/api/public/vector-search'
@@ -5355,6 +5556,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminApplicationsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/api': {
+      id: '/_authenticated/dashboard/admin/api'
+      path: '/api'
+      fullPath: '/dashboard/admin/api'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminApiRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/analytics': {
       id: '/_authenticated/dashboard/admin/analytics'
       path: '/analytics'
@@ -5438,6 +5646,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/crm/'
       preLoaderRoute: typeof AuthenticatedDashboardAdminCrmIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminCrmRoute
+    }
+    '/api/v1/certificates/verify/$id': {
+      id: '/api/v1/certificates/verify/$id'
+      path: '/api/v1/certificates/verify/$id'
+      fullPath: '/api/v1/certificates/verify/$id'
+      preLoaderRoute: typeof ApiV1CertificatesVerifyIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/technologies/proposals/$id': {
       id: '/_authenticated/dashboard/technologies/proposals/$id'
@@ -5620,6 +5835,7 @@ const AuthenticatedDashboardAdminVisaRouteWithChildren =
 interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminAiRoute: typeof AuthenticatedDashboardAdminAiRouteWithChildren
   AuthenticatedDashboardAdminAnalyticsRoute: typeof AuthenticatedDashboardAdminAnalyticsRoute
+  AuthenticatedDashboardAdminApiRoute: typeof AuthenticatedDashboardAdminApiRoute
   AuthenticatedDashboardAdminApplicationsRoute: typeof AuthenticatedDashboardAdminApplicationsRoute
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
@@ -5655,6 +5871,7 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminAiRouteWithChildren,
     AuthenticatedDashboardAdminAnalyticsRoute:
       AuthenticatedDashboardAdminAnalyticsRoute,
+    AuthenticatedDashboardAdminApiRoute: AuthenticatedDashboardAdminApiRoute,
     AuthenticatedDashboardAdminApplicationsRoute:
       AuthenticatedDashboardAdminApplicationsRoute,
     AuthenticatedDashboardAdminAssignmentsRoute:
@@ -6092,6 +6309,22 @@ const CareersRouteChildren: CareersRouteChildren = {
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
+interface DocsRouteChildren {
+  DocsApiReferenceRoute: typeof DocsApiReferenceRoute
+  DocsAuthenticationRoute: typeof DocsAuthenticationRoute
+  DocsWebhooksRoute: typeof DocsWebhooksRoute
+  DocsIndexRoute: typeof DocsIndexRoute
+}
+
+const DocsRouteChildren: DocsRouteChildren = {
+  DocsApiReferenceRoute: DocsApiReferenceRoute,
+  DocsAuthenticationRoute: DocsAuthenticationRoute,
+  DocsWebhooksRoute: DocsWebhooksRoute,
+  DocsIndexRoute: DocsIndexRoute,
+}
+
+const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
+
 interface GlobalEducationCountriesRouteChildren {
   GlobalEducationCountriesSlugRoute: typeof GlobalEducationCountriesSlugRoute
 }
@@ -6449,6 +6682,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConstitutionVersionsRoute: ConstitutionVersionsRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
+  DocsRoute: DocsRouteWithChildren,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   GovernanceRoute: GovernanceRoute,
   KernelRoute: KernelRoute,
@@ -6482,10 +6716,15 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicStrategyRoute: ApiPublicStrategyRoute,
   ApiPublicSystemHealthRoute: ApiPublicSystemHealthRoute,
   ApiPublicVectorSearchRoute: ApiPublicVectorSearchRoute,
+  ApiV1CoursesRoute: ApiV1CoursesRoute,
+  ApiV1JobsRoute: ApiV1JobsRoute,
+  ApiV1ProgramsRoute: ApiV1ProgramsRoute,
+  ApiV1UniversitiesRoute: ApiV1UniversitiesRoute,
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
+  ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
