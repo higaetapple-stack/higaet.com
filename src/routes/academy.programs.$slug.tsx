@@ -6,6 +6,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { LeadForm } from "@/components/site/LeadForm";
 import { getProgram, CATEGORY_LABELS, type Program, type ProgramCategory } from "@/lib/academy-programs";
+import { buildCourseJsonLd, buildBreadcrumbJsonLd, buildProviderJsonLd } from "@/lib/seo/course-schema";
 
 export const Route = createFileRoute("/academy/programs/$slug")({
   loader: ({ params }): { program: Program } => {
@@ -29,15 +30,18 @@ export const Route = createFileRoute("/academy/programs/$slug")({
       links: [{ rel: "canonical", href: `/academy/programs/${params.slug}` }],
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(faqJsonLd(program.faqs)) },
+        { type: "application/ld+json", children: JSON.stringify(buildCourseJsonLd(program, params.slug)) },
+        { type: "application/ld+json", children: JSON.stringify(buildProviderJsonLd()) },
         {
           type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Course",
-            name: program.title,
-            description: program.tagline,
-            provider: { "@type": "EducationalOrganization", name: "HIGAET Academy", sameAs: "/academy" },
-          }),
+          children: JSON.stringify(
+            buildBreadcrumbJsonLd([
+              { name: "Home", url: "/" },
+              { name: "Academy", url: "/academy" },
+              { name: "Programs", url: "/academy/programs" },
+              { name: program.title, url: `/academy/programs/${params.slug}` },
+            ])
+          ),
         },
       ],
     };
