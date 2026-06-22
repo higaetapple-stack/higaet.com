@@ -7,11 +7,14 @@ export const Route = createFileRoute("/_authenticated/dashboard/counselor")({
 
 const TABS: Array<{ to: string; label: string; exact?: boolean }> = [
   { to: "/dashboard/counselor", label: "Overview", exact: true },
+  { to: "/dashboard/counselor/pipeline", label: "Pipeline" },
+  { to: "/dashboard/counselor/workload", label: "Workload" },
   { to: "/dashboard/counselor/leads", label: "My leads" },
   { to: "/dashboard/counselor/applications", label: "My applications" },
   { to: "/dashboard/counselor/tasks", label: "Tasks" },
   { to: "/dashboard/counselor/follow-ups", label: "Follow-ups" },
   { to: "/dashboard/counselor/visa", label: "Visa cases" },
+  { to: "/dashboard/counselor/analytics", label: "Analytics" },
 ];
 
 function CounselorLayout() {
