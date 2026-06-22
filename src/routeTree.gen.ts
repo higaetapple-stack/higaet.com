@@ -236,6 +236,7 @@ import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authe
 import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
 import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
 import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
+import { Route as GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport } from './routes/global-education.knowledge-base.universities.index'
 import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
 import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
 import { Route as AuthenticatedDashboardCounselorIndexRouteImport } from './routes/_authenticated.dashboard.counselor.index'
@@ -244,6 +245,7 @@ import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/
 import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
+import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
 import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
@@ -1576,6 +1578,12 @@ const AuthenticatedAssistantConversationIdRoute =
     path: '/$conversationId',
     getParentRoute: () => AuthenticatedAssistantRoute,
   } as any)
+const GlobalEducationKnowledgeBaseUniversitiesIndexRoute =
+  GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport.update({
+    id: '/knowledge-base/universities/',
+    path: '/knowledge-base/universities/',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesIndexRoute =
   AuthenticatedDashboardTechnologiesIndexRouteImport.update({
     id: '/',
@@ -1623,6 +1631,12 @@ const AuthenticatedDashboardAdminIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
+  GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport.update({
+    id: '/knowledge-base/universities/$slug',
+    path: '/knowledge-base/universities/$slug',
+    getParentRoute: () => GlobalEducationRoute,
   } as any)
 const ApiPublicCronWebhookDispatchRoute =
   ApiPublicCronWebhookDispatchRouteImport.update({
@@ -2434,6 +2448,7 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2442,6 +2457,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/counselor/': typeof AuthenticatedDashboardCounselorIndexRoute
   '/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/technologies/': typeof AuthenticatedDashboardTechnologiesIndexRoute
+  '/global-education/knowledge-base/universities/': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -2740,6 +2756,7 @@ export interface FileRoutesByTo {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/dashboard/assignments': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -2748,6 +2765,7 @@ export interface FileRoutesByTo {
   '/dashboard/counselor': typeof AuthenticatedDashboardCounselorIndexRoute
   '/dashboard/projects': typeof AuthenticatedDashboardProjectsIndexRoute
   '/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesIndexRoute
+  '/global-education/knowledge-base/universities': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -3064,6 +3082,7 @@ export interface FileRoutesById {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
   '/_authenticated/dashboard/assignments/': typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -3072,6 +3091,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/counselor/': typeof AuthenticatedDashboardCounselorIndexRoute
   '/_authenticated/dashboard/projects/': typeof AuthenticatedDashboardProjectsIndexRoute
   '/_authenticated/dashboard/technologies/': typeof AuthenticatedDashboardTechnologiesIndexRoute
+  '/global-education/knowledge-base/universities/': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/_authenticated/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/_authenticated/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
@@ -3388,6 +3408,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
     | '/dashboard/assignments/'
@@ -3396,6 +3417,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor/'
     | '/dashboard/projects/'
     | '/dashboard/technologies/'
+    | '/global-education/knowledge-base/universities/'
     | '/dashboard/admin/ai/copilot'
     | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
@@ -3694,6 +3716,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
     | '/dashboard/applications'
     | '/dashboard/assignments'
@@ -3702,6 +3725,7 @@ export interface FileRouteTypes {
     | '/dashboard/counselor'
     | '/dashboard/projects'
     | '/dashboard/technologies'
+    | '/global-education/knowledge-base/universities'
     | '/dashboard/admin/ai/copilot'
     | '/dashboard/admin/ai/usage'
     | '/dashboard/admin/programs/$id'
@@ -4017,6 +4041,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
     | '/_authenticated/dashboard/assignments/'
@@ -4025,6 +4050,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/counselor/'
     | '/_authenticated/dashboard/projects/'
     | '/_authenticated/dashboard/technologies/'
+    | '/global-education/knowledge-base/universities/'
     | '/_authenticated/dashboard/admin/ai/copilot'
     | '/_authenticated/dashboard/admin/ai/usage'
     | '/_authenticated/dashboard/admin/programs/$id'
@@ -5708,6 +5734,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAssistantConversationIdRouteImport
       parentRoute: typeof AuthenticatedAssistantRoute
     }
+    '/global-education/knowledge-base/universities/': {
+      id: '/global-education/knowledge-base/universities/'
+      path: '/knowledge-base/universities'
+      fullPath: '/global-education/knowledge-base/universities/'
+      preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
     '/_authenticated/dashboard/technologies/': {
       id: '/_authenticated/dashboard/technologies/'
       path: '/'
@@ -5763,6 +5796,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/global-education/knowledge-base/universities/$slug': {
+      id: '/global-education/knowledge-base/universities/$slug'
+      path: '/knowledge-base/universities/$slug'
+      fullPath: '/global-education/knowledge-base/universities/$slug'
+      preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
     '/api/public/cron/webhook-dispatch': {
       id: '/api/public/cron/webhook-dispatch'
@@ -7101,6 +7141,8 @@ interface GlobalEducationRouteChildren {
   GlobalEducationUniversitiesRoute: typeof GlobalEducationUniversitiesRouteWithChildren
   GlobalEducationVisaGuidanceRoute: typeof GlobalEducationVisaGuidanceRoute
   GlobalEducationIndexRoute: typeof GlobalEducationIndexRoute
+  GlobalEducationKnowledgeBaseUniversitiesSlugRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
+  GlobalEducationKnowledgeBaseUniversitiesIndexRoute: typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
 }
 
 const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
@@ -7115,6 +7157,10 @@ const GlobalEducationRouteChildren: GlobalEducationRouteChildren = {
     GlobalEducationUniversitiesRouteWithChildren,
   GlobalEducationVisaGuidanceRoute: GlobalEducationVisaGuidanceRoute,
   GlobalEducationIndexRoute: GlobalEducationIndexRoute,
+  GlobalEducationKnowledgeBaseUniversitiesSlugRoute:
+    GlobalEducationKnowledgeBaseUniversitiesSlugRoute,
+  GlobalEducationKnowledgeBaseUniversitiesIndexRoute:
+    GlobalEducationKnowledgeBaseUniversitiesIndexRoute,
 }
 
 const GlobalEducationRouteWithChildren = GlobalEducationRoute._addFileChildren(
