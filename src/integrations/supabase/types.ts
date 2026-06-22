@@ -215,6 +215,36 @@ export type Database = {
           },
         ]
       }
+      ai_conversations: {
+        Row: {
+          context_id: string | null
+          context_type: Database["public"]["Enums"]["ai_context_type"]
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context_id?: string | null
+          context_type?: Database["public"]["Enums"]["ai_context_type"]
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: Database["public"]["Enums"]["ai_context_type"]
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_documents: {
         Row: {
           chunk_status: string
@@ -359,6 +389,44 @@ export type Database = {
             columns: ["conversation_log_id"]
             isOneToOne: false
             referencedRelation: "ai_conversation_logs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          role: Database["public"]["Enums"]["ai_message_role"]
+          token_count: number | null
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          role: Database["public"]["Enums"]["ai_message_role"]
+          token_count?: number | null
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          role?: Database["public"]["Enums"]["ai_message_role"]
+          token_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
             referencedColumns: ["id"]
           },
         ]
@@ -4540,6 +4608,8 @@ export type Database = {
       }
     }
     Enums: {
+      ai_context_type: "lesson" | "community" | "general"
+      ai_message_role: "user" | "assistant" | "system"
       app_role:
         | "student"
         | "faculty"
@@ -4830,6 +4900,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ai_context_type: ["lesson", "community", "general"],
+      ai_message_role: ["user", "assistant", "system"],
       app_role: [
         "student",
         "faculty",

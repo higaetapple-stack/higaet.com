@@ -87,6 +87,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
 import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholarship'
 import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
@@ -101,9 +102,11 @@ import { Route as AcademyCertificationsRouteImport } from './routes/academy.cert
 import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
+import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
+import { Route as AuthenticatedAssistantIndexRouteImport } from './routes/_authenticated.assistant.index'
 import { Route as TechnologiesInsightsSlugRouteImport } from './routes/technologies.insights.$slug'
 import { Route as TechnologiesIndustriesStartupsRouteImport } from './routes/technologies.industries.startups'
 import { Route as TechnologiesIndustriesSmeRouteImport } from './routes/technologies.industries.sme'
@@ -198,6 +201,7 @@ import { Route as AuthenticatedDashboardCareerRouteImport } from './routes/_auth
 import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated.dashboard.admin'
 import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
 import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
+import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
 import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
 import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
 import { Route as AuthenticatedDashboardCounselorIndexRouteImport } from './routes/_authenticated.dashboard.counselor.index'
@@ -697,6 +701,11 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
   id: '/success-stories',
   path: '/success-stories',
@@ -768,6 +777,11 @@ const AuthenticatedCommunityRoute = AuthenticatedCommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAssistantRoute = AuthenticatedAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
@@ -783,6 +797,12 @@ const AuthenticatedDashboardIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedAssistantIndexRoute =
+  AuthenticatedAssistantIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAssistantRoute,
   } as any)
 const TechnologiesInsightsSlugRoute =
   TechnologiesInsightsSlugRouteImport.update({
@@ -1329,6 +1349,12 @@ const AuthenticatedCommunitySlugRoute =
     path: '/$slug',
     getParentRoute: () => AuthenticatedCommunityRoute,
   } as any)
+const AuthenticatedAssistantConversationIdRoute =
+  AuthenticatedAssistantConversationIdRouteImport.update({
+    id: '/$conversationId',
+    path: '/$conversationId',
+    getParentRoute: () => AuthenticatedAssistantRoute,
+  } as any)
 const AuthenticatedDashboardTechnologiesIndexRoute =
   AuthenticatedDashboardTechnologiesIndexRouteImport.update({
     id: '/',
@@ -1846,6 +1872,7 @@ export interface FileRoutesByFullPath {
   '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
@@ -1860,6 +1887,7 @@ export interface FileRoutesByFullPath {
   '/academy/placements': typeof AcademyPlacementsRoute
   '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
+  '/api/chat': typeof ApiChatRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -1914,6 +1942,7 @@ export interface FileRoutesByFullPath {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
   '/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
   '/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
@@ -2008,6 +2037,7 @@ export interface FileRoutesByFullPath {
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
+  '/assistant/': typeof AuthenticatedAssistantIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -2128,6 +2158,7 @@ export interface FileRoutesByTo {
   '/academy/placements': typeof AcademyPlacementsRoute
   '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
+  '/api/chat': typeof ApiChatRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -2182,6 +2213,7 @@ export interface FileRoutesByTo {
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
+  '/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
   '/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
   '/dashboard/faculty': typeof AuthenticatedDashboardFacultyRouteWithChildren
@@ -2272,6 +2304,7 @@ export interface FileRoutesByTo {
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
+  '/assistant': typeof AuthenticatedAssistantIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
@@ -2380,6 +2413,7 @@ export interface FileRoutesById {
   '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/_authenticated/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
@@ -2394,6 +2428,7 @@ export interface FileRoutesById {
   '/academy/placements': typeof AcademyPlacementsRoute
   '/academy/scholarship': typeof AcademyScholarshipRoute
   '/academy/success-stories': typeof AcademySuccessStoriesRoute
+  '/api/chat': typeof ApiChatRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -2448,6 +2483,7 @@ export interface FileRoutesById {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/_authenticated/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/_authenticated/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
   '/_authenticated/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
   '/_authenticated/dashboard/admin': typeof AuthenticatedDashboardAdminRouteWithChildren
@@ -2542,6 +2578,7 @@ export interface FileRoutesById {
   '/technologies/industries/sme': typeof TechnologiesIndustriesSmeRoute
   '/technologies/industries/startups': typeof TechnologiesIndustriesStartupsRoute
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
+  '/_authenticated/assistant/': typeof AuthenticatedAssistantIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
@@ -2654,6 +2691,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/technologies'
     | '/terms'
+    | '/assistant'
     | '/community'
     | '/dashboard'
     | '/academy/admissions'
@@ -2668,6 +2706,7 @@ export interface FileRouteTypes {
     | '/academy/placements'
     | '/academy/scholarship'
     | '/academy/success-stories'
+    | '/api/chat'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -2722,6 +2761,7 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/assistant/$conversationId'
     | '/community/$slug'
     | '/community/events'
     | '/dashboard/admin'
@@ -2816,6 +2856,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
     | '/technologies/insights/$slug'
+    | '/assistant/'
     | '/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -2936,6 +2977,7 @@ export interface FileRouteTypes {
     | '/academy/placements'
     | '/academy/scholarship'
     | '/academy/success-stories'
+    | '/api/chat'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -2990,6 +3032,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/jobs'
     | '/technologies'
+    | '/assistant/$conversationId'
     | '/community/$slug'
     | '/community/events'
     | '/dashboard/faculty'
@@ -3080,6 +3123,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
     | '/technologies/insights/$slug'
+    | '/assistant'
     | '/dashboard'
     | '/academy/campuses'
     | '/academy/programs'
@@ -3187,6 +3231,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/technologies'
     | '/terms'
+    | '/_authenticated/assistant'
     | '/_authenticated/community'
     | '/_authenticated/dashboard'
     | '/academy/admissions'
@@ -3201,6 +3246,7 @@ export interface FileRouteTypes {
     | '/academy/placements'
     | '/academy/scholarship'
     | '/academy/success-stories'
+    | '/api/chat'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -3255,6 +3301,7 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/_authenticated/assistant/$conversationId'
     | '/_authenticated/community/$slug'
     | '/_authenticated/community/events'
     | '/_authenticated/dashboard/admin'
@@ -3349,6 +3396,7 @@ export interface FileRouteTypes {
     | '/technologies/industries/sme'
     | '/technologies/industries/startups'
     | '/technologies/insights/$slug'
+    | '/_authenticated/assistant/'
     | '/_authenticated/dashboard/'
     | '/academy/campuses/'
     | '/academy/programs/'
@@ -3461,6 +3509,7 @@ export interface RootRouteChildren {
   SystemDashboardRoute: typeof SystemDashboardRoute
   TechnologiesRoute: typeof TechnologiesRouteWithChildren
   TermsRoute: typeof TermsRoute
+  ApiChatRoute: typeof ApiChatRoute
   JobsSlugRoute: typeof JobsSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
@@ -4034,6 +4083,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/academy/success-stories': {
       id: '/academy/success-stories'
       path: '/success-stories'
@@ -4132,6 +4188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCommunityRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/assistant': {
+      id: '/_authenticated/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AuthenticatedAssistantRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/academy/programs/': {
       id: '/academy/programs/'
       path: '/programs'
@@ -4152,6 +4215,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/assistant/': {
+      id: '/_authenticated/assistant/'
+      path: '/'
+      fullPath: '/assistant/'
+      preLoaderRoute: typeof AuthenticatedAssistantIndexRouteImport
+      parentRoute: typeof AuthenticatedAssistantRoute
     }
     '/technologies/insights/$slug': {
       id: '/technologies/insights/$slug'
@@ -4811,6 +4881,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCommunitySlugRouteImport
       parentRoute: typeof AuthenticatedCommunityRoute
     }
+    '/_authenticated/assistant/$conversationId': {
+      id: '/_authenticated/assistant/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/assistant/$conversationId'
+      preLoaderRoute: typeof AuthenticatedAssistantConversationIdRouteImport
+      parentRoute: typeof AuthenticatedAssistantRoute
+    }
     '/_authenticated/dashboard/technologies/': {
       id: '/_authenticated/dashboard/technologies/'
       path: '/'
@@ -5388,6 +5465,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAssistantRouteChildren {
+  AuthenticatedAssistantConversationIdRoute: typeof AuthenticatedAssistantConversationIdRoute
+  AuthenticatedAssistantIndexRoute: typeof AuthenticatedAssistantIndexRoute
+}
+
+const AuthenticatedAssistantRouteChildren: AuthenticatedAssistantRouteChildren =
+  {
+    AuthenticatedAssistantConversationIdRoute:
+      AuthenticatedAssistantConversationIdRoute,
+    AuthenticatedAssistantIndexRoute: AuthenticatedAssistantIndexRoute,
+  }
+
+const AuthenticatedAssistantRouteWithChildren =
+  AuthenticatedAssistantRoute._addFileChildren(
+    AuthenticatedAssistantRouteChildren,
+  )
+
 interface AuthenticatedCommunitySlugRouteChildren {
   AuthenticatedCommunitySlugThreadIdRoute: typeof AuthenticatedCommunitySlugThreadIdRoute
 }
@@ -5860,11 +5954,13 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRouteWithChildren
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAssistantRoute: AuthenticatedAssistantRouteWithChildren,
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
@@ -6323,6 +6419,7 @@ const rootRouteChildren: RootRouteChildren = {
   SystemDashboardRoute: SystemDashboardRoute,
   TechnologiesRoute: TechnologiesRouteWithChildren,
   TermsRoute: TermsRoute,
+  ApiChatRoute: ApiChatRoute,
   JobsSlugRoute: JobsSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
