@@ -7,7 +7,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { getArticle, type DocArticle, type DocCategory } from "@/content/docs";
 import { buildBreadcrumbJsonLd } from "@/lib/seo/course-schema";
 
-const BASE = "https://higaet-core-engine.lovable.app";
+const BASE = "https://higaet.com";
 
 export const Route = createFileRoute("/docs/$category/$slug")({
   loader: ({ params }): { category: DocCategory; article: DocArticle } => {
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/docs/$category/$slug")({
         name: category.name,
         url: `${BASE}/docs/${category.slug}`,
       },
-      publisher: { "@id": "https://higaet-core-engine.lovable.app/#organization" },
+      publisher: { "@id": "https://higaet.com/#organization" },
       ...(article.mentions && article.mentions.length
         ? { mentions: article.mentions.map((u) => ({ "@id": u, url: u })) }
         : {}),

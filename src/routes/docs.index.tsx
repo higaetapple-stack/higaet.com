@@ -7,7 +7,7 @@ import { DOC_CATEGORIES } from "@/content/docs";
 import { buildBreadcrumbJsonLd } from "@/lib/seo/course-schema";
 
 const PATH = "/docs";
-const URL = `https://higaet-core-engine.lovable.app${PATH}`;
+const URL = `https://higaet.com${PATH}`;
 const TITLE = "HIGAET Documentation";
 const DESC = "Documentation across HIGAET Academy, Global Education Hub, AI Platform, APIs, and AI engineering guides.";
 
@@ -18,7 +18,7 @@ const COLLECTION = {
   url: URL,
   name: TITLE,
   description: DESC,
-  isPartOf: { "@id": "https://higaet-core-engine.lovable.app/#organization" },
+  isPartOf: { "@id": "https://higaet.com/#organization" },
   hasPart: DOC_CATEGORIES.map((c) => ({
     "@type": "CreativeWorkSeries",
     name: c.name,
