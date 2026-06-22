@@ -2401,7 +2401,9 @@ export type Database = {
           author_id: string
           body: string
           created_at: string
+          deleted_at: string | null
           id: string
+          is_hidden: boolean
           reaction_count: number
           thread_id: string
           updated_at: string
@@ -2410,7 +2412,9 @@ export type Database = {
           author_id: string
           body: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
+          is_hidden?: boolean
           reaction_count?: number
           thread_id: string
           updated_at?: string
@@ -2419,7 +2423,9 @@ export type Database = {
           author_id?: string
           body?: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
+          is_hidden?: boolean
           reaction_count?: number
           thread_id?: string
           updated_at?: string
@@ -3959,7 +3965,9 @@ export type Database = {
           body: string
           community_id: string
           created_at: string
+          deleted_at: string | null
           id: string
+          is_hidden: boolean
           last_reply_at: string | null
           lesson_id: string | null
           locked: boolean
@@ -3974,7 +3982,9 @@ export type Database = {
           body: string
           community_id: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
+          is_hidden?: boolean
           last_reply_at?: string | null
           lesson_id?: string | null
           locked?: boolean
@@ -3989,7 +3999,9 @@ export type Database = {
           body?: string
           community_id?: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
+          is_hidden?: boolean
           last_reply_at?: string | null
           lesson_id?: string | null
           locked?: boolean
