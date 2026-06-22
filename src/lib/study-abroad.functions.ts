@@ -122,7 +122,7 @@ export const listMyApplications = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const sb = context.supabase;
     const { data, error } = await sb.from("applications")
-      .select("id,status,intake,created_at,submitted_at,offer_received_at,universities(slug,name,countries(name,flag_emoji)),university_programs(name,level)")
+      .select("id,status,workflow_status,intake,created_at,submitted_at,offer_received_at,universities(slug,name,countries(name,flag_emoji)),university_programs(name,level)")
       .eq("student_id", context.userId).order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return data ?? [];
