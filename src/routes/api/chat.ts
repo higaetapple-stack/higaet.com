@@ -6,6 +6,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createClient } from "@supabase/supabase-js";
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
+import { embedTexts, toVectorLiteral } from "@/lib/ai-embeddings.server";
 import type { Database } from "@/integrations/supabase/types";
 
 const TUTOR_SYSTEM = `You are HIGAET's AI Tutor — an adaptive learning assistant for students of the Helen Institute of Gen AI Engineering & Technology.
