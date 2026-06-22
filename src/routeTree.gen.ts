@@ -100,6 +100,7 @@ import { Route as GlobalEducationAdmissionProcessRouteImport } from './routes/gl
 import { Route as DocsWebhooksRouteImport } from './routes/docs.webhooks'
 import { Route as DocsAuthenticationRouteImport } from './routes/docs.authentication'
 import { Route as DocsApiReferenceRouteImport } from './routes/docs.api-reference'
+import { Route as DocsCategoryRouteImport } from './routes/docs.$category'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
@@ -195,6 +196,7 @@ import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologi
 import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
 import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
 import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
+import { Route as DocsCategorySlugRouteImport } from './routes/docs.$category.$slug'
 import { Route as ApiV1UniversitiesRouteImport } from './routes/api/v1/universities'
 import { Route as ApiV1ProgramsRouteImport } from './routes/api/v1/programs'
 import { Route as ApiV1JobsRouteImport } from './routes/api/v1/jobs'
@@ -811,6 +813,11 @@ const DocsApiReferenceRoute = DocsApiReferenceRouteImport.update({
   path: '/api-reference',
   getParentRoute: () => DocsRoute,
 } as any)
+const DocsCategoryRoute = DocsCategoryRouteImport.update({
+  id: '/$category',
+  path: '/$category',
+  getParentRoute: () => DocsRoute,
+} as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -1352,6 +1359,11 @@ const GlobalEducationCountriesSlugRoute =
     path: '/$slug',
     getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
+const DocsCategorySlugRoute = DocsCategorySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => DocsCategoryRoute,
+} as any)
 const ApiV1UniversitiesRoute = ApiV1UniversitiesRouteImport.update({
   id: '/api/v1/universities',
   path: '/api/v1/universities',
@@ -2191,6 +2203,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/docs/$category': typeof DocsCategoryRouteWithChildren
   '/docs/api-reference': typeof DocsApiReferenceRoute
   '/docs/authentication': typeof DocsAuthenticationRoute
   '/docs/webhooks': typeof DocsWebhooksRoute
@@ -2284,6 +2297,7 @@ export interface FileRoutesByFullPath {
   '/api/v1/jobs': typeof ApiV1JobsRoute
   '/api/v1/programs': typeof ApiV1ProgramsRoute
   '/api/v1/universities': typeof ApiV1UniversitiesRoute
+  '/docs/$category/$slug': typeof DocsCategorySlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2503,6 +2517,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/docs/$category': typeof DocsCategoryRouteWithChildren
   '/docs/api-reference': typeof DocsApiReferenceRoute
   '/docs/authentication': typeof DocsAuthenticationRoute
   '/docs/webhooks': typeof DocsWebhooksRoute
@@ -2592,6 +2607,7 @@ export interface FileRoutesByTo {
   '/api/v1/jobs': typeof ApiV1JobsRoute
   '/api/v1/programs': typeof ApiV1ProgramsRoute
   '/api/v1/universities': typeof ApiV1UniversitiesRoute
+  '/docs/$category/$slug': typeof DocsCategorySlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -2817,6 +2833,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/docs/$category': typeof DocsCategoryRouteWithChildren
   '/docs/api-reference': typeof DocsApiReferenceRoute
   '/docs/authentication': typeof DocsAuthenticationRoute
   '/docs/webhooks': typeof DocsWebhooksRoute
@@ -2910,6 +2927,7 @@ export interface FileRoutesById {
   '/api/v1/jobs': typeof ApiV1JobsRoute
   '/api/v1/programs': typeof ApiV1ProgramsRoute
   '/api/v1/universities': typeof ApiV1UniversitiesRoute
+  '/docs/$category/$slug': typeof DocsCategorySlugRoute
   '/global-education/countries/$slug': typeof GlobalEducationCountriesSlugRoute
   '/global-education/universities/$slug': typeof GlobalEducationUniversitiesSlugRoute
   '/technologies/case-studies/$slug': typeof TechnologiesCaseStudiesSlugRoute
@@ -3139,6 +3157,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/docs/$category'
     | '/docs/api-reference'
     | '/docs/authentication'
     | '/docs/webhooks'
@@ -3232,6 +3251,7 @@ export interface FileRouteTypes {
     | '/api/v1/jobs'
     | '/api/v1/programs'
     | '/api/v1/universities'
+    | '/docs/$category/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3451,6 +3471,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/docs/$category'
     | '/docs/api-reference'
     | '/docs/authentication'
     | '/docs/webhooks'
@@ -3540,6 +3561,7 @@ export interface FileRouteTypes {
     | '/api/v1/jobs'
     | '/api/v1/programs'
     | '/api/v1/universities'
+    | '/docs/$category/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -3764,6 +3786,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/blog/$slug'
     | '/careers/$slug'
+    | '/docs/$category'
     | '/docs/api-reference'
     | '/docs/authentication'
     | '/docs/webhooks'
@@ -3857,6 +3880,7 @@ export interface FileRouteTypes {
     | '/api/v1/jobs'
     | '/api/v1/programs'
     | '/api/v1/universities'
+    | '/docs/$category/$slug'
     | '/global-education/countries/$slug'
     | '/global-education/universities/$slug'
     | '/technologies/case-studies/$slug'
@@ -4732,6 +4756,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsApiReferenceRouteImport
       parentRoute: typeof DocsRoute
     }
+    '/docs/$category': {
+      id: '/docs/$category'
+      path: '/$category'
+      fullPath: '/docs/$category'
+      preLoaderRoute: typeof DocsCategoryRouteImport
+      parentRoute: typeof DocsRoute
+    }
     '/careers/$slug': {
       id: '/careers/$slug'
       path: '/$slug'
@@ -5396,6 +5427,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/countries/$slug'
       preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
       parentRoute: typeof GlobalEducationCountriesRoute
+    }
+    '/docs/$category/$slug': {
+      id: '/docs/$category/$slug'
+      path: '/$slug'
+      fullPath: '/docs/$category/$slug'
+      preLoaderRoute: typeof DocsCategorySlugRouteImport
+      parentRoute: typeof DocsCategoryRoute
     }
     '/api/v1/universities': {
       id: '/api/v1/universities'
@@ -6994,7 +7032,20 @@ const CareersRouteChildren: CareersRouteChildren = {
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
+interface DocsCategoryRouteChildren {
+  DocsCategorySlugRoute: typeof DocsCategorySlugRoute
+}
+
+const DocsCategoryRouteChildren: DocsCategoryRouteChildren = {
+  DocsCategorySlugRoute: DocsCategorySlugRoute,
+}
+
+const DocsCategoryRouteWithChildren = DocsCategoryRoute._addFileChildren(
+  DocsCategoryRouteChildren,
+)
+
 interface DocsRouteChildren {
+  DocsCategoryRoute: typeof DocsCategoryRouteWithChildren
   DocsApiReferenceRoute: typeof DocsApiReferenceRoute
   DocsAuthenticationRoute: typeof DocsAuthenticationRoute
   DocsWebhooksRoute: typeof DocsWebhooksRoute
@@ -7002,6 +7053,7 @@ interface DocsRouteChildren {
 }
 
 const DocsRouteChildren: DocsRouteChildren = {
+  DocsCategoryRoute: DocsCategoryRouteWithChildren,
   DocsApiReferenceRoute: DocsApiReferenceRoute,
   DocsAuthenticationRoute: DocsAuthenticationRoute,
   DocsWebhooksRoute: DocsWebhooksRoute,
