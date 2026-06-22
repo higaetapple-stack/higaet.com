@@ -211,10 +211,34 @@ export const askCopilot = createServerFn({ method: "POST" })
     const allowed = userRoles.some((r: string) => (ALLOWED_ROLES as readonly string[]).includes(r));
     if (!allowed) throw new Error("Forbidden: Copilot requires staff role");
 
-    // Resolve collections
-    const slugs = data.collections && data.collections.length > 0 ? data.collections : COLLECTION_SLUGS;
-    const { data: colls } = await sb.from("ai_collections").select("id, slug").in("slug", slugs);
+    // Resolve collections — server-derived from role + mode. Client `collections` input is ignored.
+    const allowedSlugs = resolveAllowedCollections(userRoles, data.mode);
+    if (data.collections && data.collections.length > 0) {
+      const rejected = data.collections.filter((s) => !allowedSlugs.includes(s));
+      if (rejected.length > 0) {
+        await sb.from("domain_events").insert({
+          event_type: "rag.scope_violation",
+          aggregate_type: "ai_copilot",
+          aggregate_id: context.userId,
+          actor_id: context.userId,
+          payload: { requested: data.collections, allowed: allowedSlugs, rejected, mode: data.mode },
+        });
+      }
+    }
+    const { data: colls } = await sb
+      .from("ai_collections")
+      .select("id, slug")
+      .in("slug", allowedSlugs.length > 0 ? allowedSlugs : ["__none__"]);
     const collectionIds = (colls ?? []).map((c: any) => c.id);
+    if (collectionIds.length === 0) {
+      await sb.from("domain_events").insert({
+        event_type: "rag.collection_rejected",
+        aggregate_type: "ai_copilot",
+        aggregate_id: context.userId,
+        actor_id: context.userId,
+        payload: { reason: "no_allowed_collections_for_role_and_mode", roles: userRoles, mode: data.mode },
+      });
+    }
 
     // Fetch structured entity context (RLS-scoped)
     let entityRecord: any = null;
