@@ -70,7 +70,7 @@ export const getCollectionDetail = createServerFn({ method: "GET" })
 
     const { data: documents } = await sb
       .from("ai_documents")
-      .select("id, title, source_type, updated_at")
+      .select("id, title, entity_type, updated_at")
       .eq("collection_id", collection.id)
       .order("updated_at", { ascending: false })
       .limit(20);

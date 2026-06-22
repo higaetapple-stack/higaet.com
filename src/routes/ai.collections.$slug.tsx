@@ -51,7 +51,7 @@ function CollectionDetail() {
                 <div className="flex items-center gap-2 min-w-0">
                   <FileText className="size-3.5 text-muted-foreground shrink-0" />
                   <span className="text-sm text-ink truncate">{d.title}</span>
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{d.source_type}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{d.entity_type}</span>
                 </div>
                 <span className="text-xs text-muted-foreground shrink-0">
                   {new Date(d.updated_at).toLocaleDateString()}

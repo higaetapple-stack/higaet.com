@@ -18,13 +18,20 @@ export const Route = createFileRoute("/ai")({
   }),
 });
 
-const TABS = [
+interface AiTab {
+  to: "/ai" | "/ai/chat" | "/ai/history" | "/ai/collections" | "/ai/prompts";
+  label: string;
+  icon: typeof Sparkles;
+  exact?: boolean;
+}
+
+const TABS: AiTab[] = [
   { to: "/ai", label: "Overview", icon: Sparkles, exact: true },
   { to: "/ai/chat", label: "Chat", icon: MessageSquare },
   { to: "/ai/history", label: "History", icon: History },
   { to: "/ai/collections", label: "Knowledge", icon: Library },
   { to: "/ai/prompts", label: "Prompts", icon: Wand2 },
-] as const;
+];
 
 function AiHubLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
