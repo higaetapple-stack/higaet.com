@@ -117,6 +117,8 @@ export const listThreads = createServerFn({ method: "GET" })
     let q = context.supabase
       .from("threads")
       .select("*")
+      .is("deleted_at", null)
+      .eq("is_hidden", false)
       .order("pinned", { ascending: false })
       .order("last_reply_at", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })
