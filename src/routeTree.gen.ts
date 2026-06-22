@@ -112,11 +112,13 @@ import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.c
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
+import { Route as AuthenticatedEducationRouteImport } from './routes/_authenticated.education'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
 import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
+import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated.education.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
 import { Route as AuthenticatedAssistantIndexRouteImport } from './routes/_authenticated.assistant.index'
 import { Route as TechnologiesInsightsSlugRouteImport } from './routes/technologies.insights.$slug'
@@ -206,6 +208,9 @@ import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
+import { Route as AuthenticatedEducationProfileRouteImport } from './routes/_authenticated.education.profile'
+import { Route as AuthenticatedEducationDocumentsRouteImport } from './routes/_authenticated.education.documents'
+import { Route as AuthenticatedEducationApplicationsRouteImport } from './routes/_authenticated.education.applications'
 import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
 import { Route as AuthenticatedDashboardTechnologiesRouteImport } from './routes/_authenticated.dashboard.technologies'
 import { Route as AuthenticatedDashboardSecurityRouteImport } from './routes/_authenticated.dashboard.security'
@@ -851,6 +856,11 @@ const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
   path: '/admissions',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AuthenticatedEducationRoute = AuthenticatedEducationRouteImport.update({
+  id: '/education',
+  path: '/education',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -876,6 +886,12 @@ const AcademyCampusesIndexRoute = AcademyCampusesIndexRouteImport.update({
   path: '/campuses/',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AuthenticatedEducationIndexRoute =
+  AuthenticatedEducationIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedEducationRoute,
+  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/',
@@ -1385,6 +1401,24 @@ const AcademyBlogCertificationsComparisonRoute =
     id: '/blog/certifications-comparison',
     path: '/blog/certifications-comparison',
     getParentRoute: () => AcademyRoute,
+  } as any)
+const AuthenticatedEducationProfileRoute =
+  AuthenticatedEducationProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedEducationRoute,
+  } as any)
+const AuthenticatedEducationDocumentsRoute =
+  AuthenticatedEducationDocumentsRouteImport.update({
+    id: '/documents',
+    path: '/documents',
+    getParentRoute: () => AuthenticatedEducationRoute,
+  } as any)
+const AuthenticatedEducationApplicationsRoute =
+  AuthenticatedEducationApplicationsRouteImport.update({
+    id: '/applications',
+    path: '/applications',
+    getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
 const AuthenticatedDashboardVisaRoute =
   AuthenticatedDashboardVisaRouteImport.update({
@@ -2028,6 +2062,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/education': typeof AuthenticatedEducationRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2117,6 +2152,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/security': typeof AuthenticatedDashboardSecurityRoute
   '/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
+  '/education/applications': typeof AuthenticatedEducationApplicationsRoute
+  '/education/documents': typeof AuthenticatedEducationDocumentsRoute
+  '/education/profile': typeof AuthenticatedEducationProfileRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2206,6 +2244,7 @@ export interface FileRoutesByFullPath {
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/assistant/': typeof AuthenticatedAssistantIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/education/': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
@@ -2406,6 +2445,9 @@ export interface FileRoutesByTo {
   '/dashboard/programs': typeof AuthenticatedDashboardProgramsRouteWithChildren
   '/dashboard/security': typeof AuthenticatedDashboardSecurityRoute
   '/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
+  '/education/applications': typeof AuthenticatedEducationApplicationsRoute
+  '/education/documents': typeof AuthenticatedEducationDocumentsRoute
+  '/education/profile': typeof AuthenticatedEducationProfileRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2495,6 +2537,7 @@ export interface FileRoutesByTo {
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/assistant': typeof AuthenticatedAssistantIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/education': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
   '/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
@@ -2615,6 +2658,7 @@ export interface FileRoutesById {
   '/_authenticated/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/education': typeof AuthenticatedEducationRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2704,6 +2748,9 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/security': typeof AuthenticatedDashboardSecurityRoute
   '/_authenticated/dashboard/technologies': typeof AuthenticatedDashboardTechnologiesRouteWithChildren
   '/_authenticated/dashboard/visa': typeof AuthenticatedDashboardVisaRoute
+  '/_authenticated/education/applications': typeof AuthenticatedEducationApplicationsRoute
+  '/_authenticated/education/documents': typeof AuthenticatedEducationDocumentsRoute
+  '/_authenticated/education/profile': typeof AuthenticatedEducationProfileRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2793,6 +2840,7 @@ export interface FileRoutesById {
   '/technologies/insights/$slug': typeof TechnologiesInsightsSlugRoute
   '/_authenticated/assistant/': typeof AuthenticatedAssistantIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/education/': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/_authenticated/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
@@ -2917,6 +2965,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/community'
     | '/dashboard'
+    | '/education'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3006,6 +3055,9 @@ export interface FileRouteTypes {
     | '/dashboard/security'
     | '/dashboard/technologies'
     | '/dashboard/visa'
+    | '/education/applications'
+    | '/education/documents'
+    | '/education/profile'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3095,6 +3147,7 @@ export interface FileRouteTypes {
     | '/technologies/insights/$slug'
     | '/assistant/'
     | '/dashboard/'
+    | '/education/'
     | '/academy/campuses/'
     | '/academy/programs/'
     | '/dashboard/technologies/client'
@@ -3295,6 +3348,9 @@ export interface FileRouteTypes {
     | '/dashboard/programs'
     | '/dashboard/security'
     | '/dashboard/visa'
+    | '/education/applications'
+    | '/education/documents'
+    | '/education/profile'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3384,6 +3440,7 @@ export interface FileRouteTypes {
     | '/technologies/insights/$slug'
     | '/assistant'
     | '/dashboard'
+    | '/education'
     | '/academy/campuses'
     | '/academy/programs'
     | '/community/$slug/$threadId'
@@ -3503,6 +3560,7 @@ export interface FileRouteTypes {
     | '/_authenticated/assistant'
     | '/_authenticated/community'
     | '/_authenticated/dashboard'
+    | '/_authenticated/education'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3592,6 +3650,9 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/security'
     | '/_authenticated/dashboard/technologies'
     | '/_authenticated/dashboard/visa'
+    | '/_authenticated/education/applications'
+    | '/_authenticated/education/documents'
+    | '/_authenticated/education/profile'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3681,6 +3742,7 @@ export interface FileRouteTypes {
     | '/technologies/insights/$slug'
     | '/_authenticated/assistant/'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/education/'
     | '/academy/campuses/'
     | '/academy/programs/'
     | '/_authenticated/dashboard/technologies/client'
@@ -4558,6 +4620,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyAdmissionsRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/_authenticated/education': {
+      id: '/_authenticated/education'
+      path: '/education'
+      fullPath: '/education'
+      preLoaderRoute: typeof AuthenticatedEducationRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -4592,6 +4661,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/campuses/'
       preLoaderRoute: typeof AcademyCampusesIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/education/': {
+      id: '/_authenticated/education/'
+      path: '/'
+      fullPath: '/education/'
+      preLoaderRoute: typeof AuthenticatedEducationIndexRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
     }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
@@ -5215,6 +5291,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/blog/certifications-comparison'
       preLoaderRoute: typeof AcademyBlogCertificationsComparisonRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/education/profile': {
+      id: '/_authenticated/education/profile'
+      path: '/profile'
+      fullPath: '/education/profile'
+      preLoaderRoute: typeof AuthenticatedEducationProfileRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
+    }
+    '/_authenticated/education/documents': {
+      id: '/_authenticated/education/documents'
+      path: '/documents'
+      fullPath: '/education/documents'
+      preLoaderRoute: typeof AuthenticatedEducationDocumentsRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
+    }
+    '/_authenticated/education/applications': {
+      id: '/_authenticated/education/applications'
+      path: '/applications'
+      fullPath: '/education/applications'
+      preLoaderRoute: typeof AuthenticatedEducationApplicationsRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
     }
     '/_authenticated/dashboard/visa': {
       id: '/_authenticated/dashboard/visa'
@@ -6431,16 +6528,39 @@ const AuthenticatedDashboardRouteWithChildren =
     AuthenticatedDashboardRouteChildren,
   )
 
+interface AuthenticatedEducationRouteChildren {
+  AuthenticatedEducationApplicationsRoute: typeof AuthenticatedEducationApplicationsRoute
+  AuthenticatedEducationDocumentsRoute: typeof AuthenticatedEducationDocumentsRoute
+  AuthenticatedEducationProfileRoute: typeof AuthenticatedEducationProfileRoute
+  AuthenticatedEducationIndexRoute: typeof AuthenticatedEducationIndexRoute
+}
+
+const AuthenticatedEducationRouteChildren: AuthenticatedEducationRouteChildren =
+  {
+    AuthenticatedEducationApplicationsRoute:
+      AuthenticatedEducationApplicationsRoute,
+    AuthenticatedEducationDocumentsRoute: AuthenticatedEducationDocumentsRoute,
+    AuthenticatedEducationProfileRoute: AuthenticatedEducationProfileRoute,
+    AuthenticatedEducationIndexRoute: AuthenticatedEducationIndexRoute,
+  }
+
+const AuthenticatedEducationRouteWithChildren =
+  AuthenticatedEducationRoute._addFileChildren(
+    AuthenticatedEducationRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRouteWithChildren
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedEducationRoute: typeof AuthenticatedEducationRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAssistantRoute: AuthenticatedAssistantRouteWithChildren,
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedEducationRoute: AuthenticatedEducationRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
