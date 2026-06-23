@@ -20,8 +20,7 @@ export const Route = createFileRoute("/api/public/cron/embeddings")({
         if (!apiKeyHeader || apiKeyHeader !== expected) {
           return new Response("Unauthorized", { status: 401 });
         }
-        const lovableKey = process.env.LOVABLE_API_KEY;
-        if (!lovableKey) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
+        if (!process.env.OPENAI_API_KEY) return new Response("Missing OPENAI_API_KEY", { status: 500 });
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -78,7 +77,7 @@ export const Route = createFileRoute("/api/public/cron/embeddings")({
               continue;
             }
 
-            const vectors = await embedTexts(lovableKey, chunks);
+            const vectors = await embedTexts(undefined, chunks);
 
             // Replace existing chunks for this document
             await supabaseAdmin.from("ai_chunks").delete().eq("document_id", doc.id);

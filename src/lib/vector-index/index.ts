@@ -1,15 +1,13 @@
 /**
  * B.12 — Vector Knowledge Graph · In-Memory Vector Index
  * ---------------------------------------------------------------
- * Lazy, single-flight semantic index over the B.12 dataset. Uses
- * the Lovable AI Gateway embeddings endpoint (default model:
- * google/gemini-embedding-001, 3072 dims) — no per-request
+ * Lazy, single-flight semantic index over the B.12 dataset. Calls
+ * Google Gemini directly (default model: google/gemini-embedding-001,
+ * 3072 dims) via the shared provider router — no per-request
  * recomputation, no SSR blocking on the cold path.
  *
- * Server-only by construction: every code path that reads
- * `process.env.LOVABLE_API_KEY` is guarded inside a function body.
- * Do NOT import this module from client components — import only
- * from server functions or server route handlers.
+ * Server-only by construction. Do NOT import this module from client
+ * components — import only from server functions or server route handlers.
  *
  * Guardrails (B.12 spec):
  *   ❌ no mutation of B.10 graph or B.11 resolver
@@ -18,8 +16,8 @@
  */
 
 import { buildVectorDataset, type VectorRecord } from "./dataset";
+import { aiEmbeddings } from "@/lib/ai-gateway.server";
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/embeddings";
 const EMBEDDING_MODEL = "google/gemini-embedding-001";
 
 /** Feature flag — hybrid integration with B.11 is OFF by default. */
@@ -55,15 +53,8 @@ function cosineSim(a: number[], b: number[]): number {
   return denom === 0 ? 0 : dot / denom;
 }
 
-async function embedOne(input: string, apiKey: string): Promise<number[]> {
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({ model: EMBEDDING_MODEL, input }),
-  });
+async function embedOne(input: string): Promise<number[]> {
+  const res = await aiEmbeddings({ model: EMBEDDING_MODEL, input });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`Embedding request failed (${res.status}): ${body}`);
@@ -83,18 +74,16 @@ export async function buildVectorIndex(): Promise<VectorIndex> {
   if (_building) return _building;
 
   _building = (async () => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) {
+    if (!process.env.GEMINI_API_KEY) {
       throw new Error(
-        "LOVABLE_API_KEY missing — Vector Knowledge Graph (B.12) requires the Lovable AI Gateway.",
+        "GEMINI_API_KEY missing — Vector Knowledge Graph (B.12) requires a Gemini API key.",
       );
     }
 
     const records = buildVectorDataset();
-    // Sequential w/ small throttle keeps us inside the shared
-    // gateway rate-limit bucket (chat + embeddings share quota).
+    // Sequential keeps us inside provider per-minute quota.
     for (const r of records) {
-      r.embedding = await embedOne(r.text, apiKey);
+      r.embedding = await embedOne(r.text);
     }
 
     _index = { records, builtAt: Date.now() };
@@ -117,11 +106,10 @@ export async function searchSimilar(query: string, k = 5): Promise<VectorMatch[]
   const trimmed = query.trim();
   if (!trimmed) return [];
 
-  const apiKey = process.env.LOVABLE_API_KEY;
-  if (!apiKey) throw new Error("LOVABLE_API_KEY missing.");
+  if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY missing.");
 
   const index = await buildVectorIndex();
-  const qVec = await embedOne(trimmed, apiKey);
+  const qVec = await embedOne(trimmed);
 
   return index.records
     .map<VectorMatch>((r) => ({

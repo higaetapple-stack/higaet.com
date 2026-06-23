@@ -41,10 +41,9 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const lovableKey = process.env.LOVABLE_API_KEY;
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabasePub = process.env.SUPABASE_PUBLISHABLE_KEY;
-        if (!lovableKey || !supabaseUrl || !supabasePub) {
+        if (!process.env.OPENAI_API_KEY || !process.env.GEMINI_API_KEY || !supabaseUrl || !supabasePub) {
           return new Response("AI service not configured", { status: 500 });
         }
 
@@ -192,7 +191,7 @@ export const Route = createFileRoute("/api/chat")({
             }
 
             if (entityType && entityIds.length > 0) {
-              const [queryVec] = await embedTexts(lovableKey, [lastUserText.slice(0, 4000)]);
+              const [queryVec] = await embedTexts(undefined, [lastUserText.slice(0, 4000)]);
               const { data: matches, error: mErr } = await supabase.rpc("match_ai_chunks", {
                 query_embedding: toVectorLiteral(queryVec) as unknown as string,
                 p_entity_type: entityType,
@@ -218,7 +217,7 @@ export const Route = createFileRoute("/api/chat")({
           (contextType === "lesson" ? TUTOR_SYSTEM : ASSISTANT_SYSTEM) +
           (contextBlock ? `\n\n---\n${contextBlock}---\n` : "");
 
-        const gateway = createLovableAiGatewayProvider(lovableKey);
+        const gateway = createLovableAiGatewayProvider();
         const model = gateway("google/gemini-3-flash-preview");
 
         // Persist the latest user message immediately (so reload preserves it even if stream fails)
