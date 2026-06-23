@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { aiChatCompletion } from "@/lib/ai-gateway.server";
 
 const ADMIN_ROLES = ["admin", "super_admin"] as const;
 
@@ -250,24 +251,17 @@ export const runAgent = createServerFn({ method: "POST" })
       .map((c: any, i: number) => `[${i + 1}] ${c.chunk_text}`)
       .join("\n\n---\n\n");
 
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("LOVABLE_API_KEY missing");
-
-    const chatRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-      body: JSON.stringify({
-        model: agent.model,
-        temperature: Number(agent.temperature),
-        messages: [
-          { role: "system", content: agent.system_prompt },
-          {
-            role: "system",
-            content: `Use ONLY the following knowledge context. Cite sources as [n]. If unknown, say so.\n\n${contextText || "(no context)"}`,
-          },
-          { role: "user", content: data.prompt },
-        ],
-      }),
+    const chatRes = await aiChatCompletion({
+      model: agent.model,
+      temperature: Number(agent.temperature),
+      messages: [
+        { role: "system", content: agent.system_prompt },
+        {
+          role: "system",
+          content: `Use ONLY the following knowledge context. Cite sources as [n]. If unknown, say so.\n\n${contextText || "(no context)"}`,
+        },
+        { role: "user", content: data.prompt },
+      ],
     });
     if (!chatRes.ok) {
       const t = await chatRes.text();

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { aiChatCompletion, aiEmbeddings } from "@/lib/ai-gateway.server";
 
 const ALLOWED_ROLES = [
   "super_admin",
@@ -257,9 +258,6 @@ export const askCopilot = createServerFn({ method: "POST" })
     }
 
     // Embed query
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("LOVABLE_API_KEY missing");
-
     const enrichedQuery = [
       data.prompt,
       data.entity ? `Entity: ${data.entity.kind}` : "",
@@ -268,11 +266,7 @@ export const askCopilot = createServerFn({ method: "POST" })
       .filter(Boolean)
       .join("\n");
 
-    const embRes = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-      body: JSON.stringify({ model: "openai/text-embedding-3-small", input: enrichedQuery }),
-    });
+    const embRes = await aiEmbeddings({ model: "openai/text-embedding-3-small", input: enrichedQuery });
     if (!embRes.ok) {
       const t = await embRes.text();
       throw new Error(`Embedding failed: ${embRes.status} ${t.slice(0, 200)}`);
@@ -296,25 +290,21 @@ export const askCopilot = createServerFn({ method: "POST" })
         }`
       : "";
 
-    const chatRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        temperature: 0.3,
-        messages: [
-          { role: "system", content: COPILOT_SYSTEM },
-          { role: "system", content: MODE_HINTS[data.mode as Mode] ?? MODE_HINTS.overview },
-          {
-            role: "system",
-            content: `Knowledge context (cross-collection):\n\n${contextText || "(no HIGAET knowledge retrieved — rely on structured record only)"}`,
-          },
-          {
-            role: "user",
-            content: `${structuredBlock}\n\n--- REQUEST ---\n${data.prompt}`.trim(),
-          },
-        ],
-      }),
+    const chatRes = await aiChatCompletion({
+      model: "google/gemini-3-flash-preview",
+      temperature: 0.3,
+      messages: [
+        { role: "system", content: COPILOT_SYSTEM },
+        { role: "system", content: MODE_HINTS[data.mode as Mode] ?? MODE_HINTS.overview },
+        {
+          role: "system",
+          content: `Knowledge context (cross-collection):\n\n${contextText || "(no HIGAET knowledge retrieved — rely on structured record only)"}`,
+        },
+        {
+          role: "user",
+          content: `${structuredBlock}\n\n--- REQUEST ---\n${data.prompt}`.trim(),
+        },
+      ],
     });
     if (!chatRes.ok) {
       const t = await chatRes.text();
