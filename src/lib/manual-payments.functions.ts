@@ -245,13 +245,21 @@ export const adminApprovePayment = createServerFn({ method: "POST" })
       })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+    let activation_warning: string | undefined;
     try {
       await activateForPayment(context.supabase, payment);
     } catch (e) {
-      // Don't fail the approval if downstream activation has an issue — surface it
-      return { ok: true, activation_warning: (e as Error).message };
+      activation_warning = (e as Error).message;
     }
-    return { ok: true };
+    await notify(context.supabase, payment.user_id, {
+      event_type: "payment.approved",
+      title: "Payment Approved",
+      body: "Your payment has been approved and the requested service has been activated.",
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: payment.id },
+      priority: "high",
+    });
+    return activation_warning ? { ok: true, activation_warning } : { ok: true };
   });
 
 export const adminRejectPayment = createServerFn({ method: "POST" })
