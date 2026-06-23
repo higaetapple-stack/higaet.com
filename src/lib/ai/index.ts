@@ -158,7 +158,7 @@ export async function chatWithLogical(
   const chain = resolveChatChain(logical);
   return dispatch(
     chain,
-    (model) => aiChatCompletion({ ...body, model }, { signal: opts.signal }),
+    (model) => aiChatCompletion({ ...body, model } as ChatCompletionBody, { signal: opts.signal }),
     opts,
     logical,
   );
@@ -172,7 +172,7 @@ export async function embedWithLogical(
   const { chain, dims } = resolveEmbedChain(logical);
   const res = await dispatch(
     chain,
-    (model) => aiEmbeddings({ ...body, model }, { signal: opts.signal }),
+    (model) => aiEmbeddings({ ...body, model } as EmbeddingsBody, { signal: opts.signal }),
     opts,
     logical,
   );
