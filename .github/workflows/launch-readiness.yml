@@ -76,6 +76,13 @@ jobs:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:8080
           TEST_FIXTURE_PASSWORD: ${{ secrets.TEST_FIXTURE_PASSWORD }}
         run: bunx playwright test
+      - name: RLS integration matrix
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TEST_FIXTURE_PASSWORD: ${{ secrets.TEST_FIXTURE_PASSWORD }}
+        run: node tests/integration/rls-matrix.test.mjs
       - name: Generate launch-readiness report
         if: always()
         run: node scripts/generate-readiness-report.mjs || true
