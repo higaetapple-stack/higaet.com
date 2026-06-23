@@ -1,7 +1,9 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
+import { requireRolesOrRedirect, ROUTE_PERMISSIONS } from "@/lib/route-authorization";
 
 export const Route = createFileRoute("/_authenticated/dashboard/counselor")({
+  beforeLoad: () => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/counselor"]),
   component: CounselorLayout,
 });
 
