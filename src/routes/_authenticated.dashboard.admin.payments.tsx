@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Search } from "lucide-react";
 import {
   adminApprovePayment,
   adminListManualPayments,
@@ -13,14 +14,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/payments")({
   component: AdminPaymentsPage,
@@ -41,6 +37,16 @@ const STATUS_COLOR: Record<string, string> = {
   info_requested: "bg-warning/15 text-warning",
 };
 
+const FILTERS = [
+  { value: "pending_verification", label: "Pending" },
+  { value: "info_requested", label: "Info requested" },
+  { value: "approved", label: "Approved" },
+  { value: "rejected", label: "Rejected" },
+  { value: "all", label: "All" },
+] as const;
+
+type Filter = (typeof FILTERS)[number]["value"];
+
 function AdminPaymentsPage() {
   const list = useServerFn(adminListManualPayments);
   const approve = useServerFn(adminApprovePayment);
@@ -49,14 +55,21 @@ function AdminPaymentsPage() {
   const signProof = useServerFn(getProofSignedUrl);
   const qc = useQueryClient();
 
-  const [status, setStatus] = useState<"pending_verification" | "approved" | "rejected" | "info_requested" | "all">(
-    "pending_verification",
-  );
+  const [status, setStatus] = useState<Filter>("pending_verification");
+  const [search, setSearch] = useState("");
 
   const q = useQuery({
     queryKey: ["admin-manual-payments", status],
     queryFn: () => list({ data: { status } }),
   });
+
+  const filtered = useMemo(() => {
+    const s = search.trim().toLowerCase();
+    if (!s) return q.data ?? [];
+    return (q.data ?? []).filter((p) =>
+      [p.id, p.reference, p.user_id, p.ref_id ?? ""].some((v) => v?.toLowerCase().includes(s)),
+    );
+  }, [q.data, search]);
 
   const approveMut = useMutation({
     mutationFn: async (id: string) => approve({ data: { id } }),
@@ -67,69 +80,75 @@ function AdminPaymentsPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const openProof = async (path: string) => {
-    try {
-      const r = await signProof({ data: { path } });
-      window.open(r.url, "_blank", "noopener");
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  };
-
   return (
     <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Payment verification</h1>
-          <p className="text-sm text-muted-foreground">Review manual UPI / bank / PayPal submissions.</p>
-        </div>
-        <Select value={status} onValueChange={(v) => setStatus(v as never)}>
-          <SelectTrigger className="w-56"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="pending_verification">Pending</SelectItem>
-            <SelectItem value="info_requested">Info requested</SelectItem>
-            <SelectItem value="approved">Approved</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
-            <SelectItem value="all">All</SelectItem>
-          </SelectContent>
-        </Select>
+      <header className="space-y-1">
+        <h1 className="text-2xl font-semibold">Payment verification</h1>
+        <p className="text-sm text-muted-foreground">Review manual UPI / bank / PayPal submissions.</p>
       </header>
 
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap gap-1 p-1 rounded-md border border-border">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              type="button"
+              onClick={() => setStatus(f.value)}
+              className={cn(
+                "px-3 py-1.5 rounded text-sm",
+                status === f.value ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+              )}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+        <div className="relative flex-1 min-w-[220px] max-w-sm">
+          <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by UTR, payment id, user…"
+            className="pl-8"
+          />
+        </div>
+      </div>
+
       <Card>
-        <CardHeader><CardTitle>{q.data?.length ?? 0} payment(s)</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{filtered.length} payment(s)</CardTitle></CardHeader>
         <CardContent>
           {q.isLoading ? (
             <div className="text-sm text-muted-foreground">Loading…</div>
-          ) : (q.data ?? []).length === 0 ? (
-            <div className="text-sm text-muted-foreground">No payments in this view.</div>
+          ) : filtered.length === 0 ? (
+            <div className="text-sm text-muted-foreground">No payments match.</div>
           ) : (
             <ul className="divide-y divide-border">
-              {q.data!.map((p) => (
-                <li key={p.id} className="py-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold">
-                        {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
-                      </span>
-                      <Badge className={STATUS_COLOR[p.status] ?? ""}>{p.status.replace(/_/g, " ")}</Badge>
-                      <span className="text-xs text-muted-foreground">{p.purpose.replace(/_/g, " ")}</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground font-mono">
-                      {p.method} · ref {p.reference} · user {p.user_id.slice(0, 8)}…
-                      {p.ref_id ? ` · ${p.ref_table ?? "ref"} ${p.ref_id.slice(0, 8)}…` : ""}
-                    </div>
-                    {p.payer_notes && <div className="text-xs text-muted-foreground">&ldquo;{p.payer_notes}&rdquo;</div>}
-                    {p.rejection_reason && <div className="text-xs text-destructive">{p.rejection_reason}</div>}
-                    <div className="text-[11px] text-muted-foreground">
-                      Submitted {new Date(p.created_at).toLocaleString()}
+              {filtered.map((p) => (
+                <li key={p.id} className="py-4 grid md:grid-cols-[1fr_auto] gap-4">
+                  <div className="flex gap-3">
+                    {p.proof_url && (
+                      <ProofThumb path={p.proof_url} sign={(path) => signProof({ data: { path } })} />
+                    )}
+                    <div className="flex-1 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold">
+                          {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
+                        </span>
+                        <Badge className={STATUS_COLOR[p.status] ?? ""}>{p.status.replace(/_/g, " ")}</Badge>
+                        <span className="text-xs text-muted-foreground">{p.purpose.replace(/_/g, " ")}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground font-mono break-all">
+                        {p.method} · ref {p.reference} · user {p.user_id.slice(0, 8)}…
+                        {p.ref_id ? ` · ${p.ref_table ?? "ref"} ${p.ref_id.slice(0, 8)}…` : ""}
+                      </div>
+                      {p.payer_notes && <div className="text-xs text-muted-foreground">&ldquo;{p.payer_notes}&rdquo;</div>}
+                      {p.rejection_reason && <div className="text-xs text-destructive">{p.rejection_reason}</div>}
+                      <div className="text-[11px] text-muted-foreground">
+                        Submitted {new Date(p.created_at).toLocaleString()}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {p.proof_url && (
-                      <Button size="sm" variant="outline" onClick={() => openProof(p.proof_url!)}>
-                        View proof
-                      </Button>
-                    )}
+                  <div className="flex flex-wrap gap-2 md:justify-end">
                     {(p.status === "pending_verification" || p.status === "info_requested") && (
                       <>
                         <Button size="sm" onClick={() => approveMut.mutate(p.id)} disabled={approveMut.isPending}>
@@ -165,6 +184,52 @@ function AdminPaymentsPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function ProofThumb({
+  path,
+  sign,
+}: {
+  path: string;
+  sign: (path: string) => Promise<{ url: string }>;
+}) {
+  const q = useQuery({
+    queryKey: ["proof-url", path],
+    queryFn: () => sign(path),
+    staleTime: 4 * 60 * 1000,
+  });
+  const url = q.data?.url;
+  const isPdf = path.toLowerCase().endsWith(".pdf");
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="shrink-0 size-20 rounded-md border border-border bg-muted overflow-hidden grid place-items-center text-xs text-muted-foreground"
+          aria-label="View proof"
+        >
+          {url && !isPdf ? (
+            <img src={url} alt="Payment proof" className="w-full h-full object-cover" />
+          ) : (
+            <span>{isPdf ? "PDF" : q.isLoading ? "…" : "Open"}</span>
+          )}
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-w-3xl">
+        <DialogHeader><DialogTitle>Payment proof</DialogTitle></DialogHeader>
+        {url ? (
+          isPdf ? (
+            <iframe src={url} title="Payment proof PDF" className="w-full h-[70vh] rounded border border-border" />
+          ) : (
+            <img src={url} alt="Payment proof full size" className="max-h-[70vh] w-auto mx-auto rounded" />
+          )
+        ) : (
+          <div className="text-sm text-muted-foreground">Loading…</div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }
 
