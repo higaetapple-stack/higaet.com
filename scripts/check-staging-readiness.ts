@@ -563,6 +563,11 @@ function appendStepSummary(body: string): void {
     const { prior } = updateHistory(overall);
     appendStepSummary(buildStepSummary(overall));
     const links = deepLinks();
+    const linkCheck = validateDeepLinks(links);
+    writeArtifact("deep-link-validation.json", JSON.stringify(linkCheck, null, 2));
+    if (!linkCheck.ok) {
+      console.error(`[readiness] deep-link validation FAIL: ${linkCheck.details.join(", ")}`);
+    }
     appendGithubOutput({
       status: overall,
       transitioned: prior === "NO-GO" && overall === "GO" ? "true" : "false",
@@ -571,9 +576,12 @@ function appendStepSummary(body: string): void {
       artifact_url: links.artifactUrl,
       run_url: links.runUrl,
       cache_path: cachePath,
+      cache_key: cacheKey(),
+      deep_links_ok: linkCheck.ok ? "true" : "false",
     });
     console.log(`\nReport: ${reportPath}`);
-    console.log(`Cache:  ${cachePath}`);
+    console.log(`Cache:  ${cachePath} (key=${cacheKey()})`);
+    console.log(`DeepLinks: ${linkCheck.ok ? "OK" : "FAIL"} — ${linkCheck.details.join(", ")}`);
     console.log(`Overall: ${overall} (prior: ${prior ?? "none"})`);
     process.exit(overall === "GO" ? 0 : 1);
   } catch (err) {
