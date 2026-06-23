@@ -61,9 +61,11 @@ const ITEMS: Item[] = [
   { to: "/dashboard/faculty", label: "Faculty workspace", icon: BookOpen, roles: ["faculty", "mentor"] },
   { to: "/dashboard/faculty/submissions", label: "Grading queue", icon: ClipboardList, roles: ["faculty", "mentor"] },
   { to: "/dashboard/counselor", label: "Counselling", icon: ClipboardList, roles: ["counselor", "placement_officer"] },
+  { to: "/dashboard/payments/new", label: "Pay / submit proof", icon: Wallet, roles: "all" },
   { to: "/dashboard/technologies", label: "Technologies", icon: Building2, roles: ["admin", "super_admin"] },
   { to: "/dashboard/technologies/client", label: "My projects", icon: Building2, roles: ["tech_client"] },
   { to: "/dashboard/admin", label: "Admin", icon: ShieldCheck, roles: ["admin", "super_admin"] },
+  { to: "/dashboard/admin/payments", label: "Payment verification", icon: Wallet, roles: ["admin", "super_admin"] },
 ];
 
 export function RoleSidebar({ roles }: { roles: AppRole[] }) {
