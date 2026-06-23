@@ -163,12 +163,17 @@ const walk = (dir) => {
   return out;
 };
 
+// Strip JS comments so doc/inline comments mentioning "supabaseAdmin" don't
+// produce false positives — we only care about real code references.
+const stripComments = (src) =>
+  src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/[^\n]*/g, "$1");
+
 const fnFiles = walk("src").filter((f) => f.endsWith(".functions.ts"));
 for (const f of fnFiles) {
-  const src = readFileSync(f, "utf8");
+  const src = stripComments(readFileSync(f, "utf8"));
   const usesAdmin =
     /from\s+["']@\/integrations\/supabase\/client\.server["']/.test(src) ||
-    /supabaseAdmin/.test(src);
+    /\bsupabaseAdmin\b/.test(src);
   if (!usesAdmin) continue;
   const hasAuthMiddleware = /requireSupabaseAuth/.test(src);
   const hasRoleCheck = /has_role|has_any_role/.test(src);
