@@ -1,323 +1,276 @@
-# HIGAET Phase 1 Implementation Planning
+# HIGAET AI Independence + Runtime Migration Blueprint
 
-Planning only. No code changes, no deploys, no migrations executed.
-
-Current: Hostinger DNS → higaet.com → Lovable/Cloudflare Worker → Supabase Cloud → Lovable AI Gateway
-Target: Hostinger DNS → higaet.com → MilesWeb Node.js (Passenger) → Supabase Cloud → OpenAI + Gemini direct
-
-Preserves: SSR, SEO/AEO/GEO, sitemap, robots, llms.txt, Auth, RLS, createServerFn, API routes, Payments, Webhooks, AI Platform, RAG, Knowledge Graph, Search Console + Analytics readiness.
+Planning only. No code changes. No deployment. No commits.
 
 ---
 
-## Deliverable 1 — AI Provider Migration Plan
+## Deliverable 1 — AI Provider Abstraction Architecture
 
-**Goal:** Replace Lovable AI Gateway with direct OpenAI + Google Gemini SDKs, preserving AI SDK v5 surface (streamText/generateText/embed) so callers don't change.
+### Target architecture
 
-### Files requiring modification (12)
-- `src/lib/ai-gateway.server.ts` — replace `createOpenAICompatible` gateway with a multi-provider factory (`@ai-sdk/openai`, `@ai-sdk/google`) keyed by model id prefix (`openai/*` → openai, `google/*` → gemini).
-- `src/lib/ai-embeddings.server.ts` — swap `https://ai.gateway.lovable.dev/v1/embeddings` fetch for `openai.embedding('text-embedding-3-small')` via `embed`/`embedMany`. Keep 1536 dims + pgvector literal helper unchanged.
-- `src/lib/ai-knowledge.server.ts` — same swap; remove `LOVABLE_API_KEY` env read, route through new gateway helper.
-- `src/lib/ai-tutor.functions.ts`, `ai-coach.functions.ts`, `ai-advisor.functions.ts`, `ai-copilot.functions.ts`, `ai-hub.functions.ts`, `ai-chat.functions.ts`, `ai-knowledge.functions.ts`, `ai/internal.functions.ts` — no logic change; they already consume the gateway helper. Verify model id strings resolve under new router.
-- `src/routes/api/chat.ts` (and any streaming route) — keep `toUIMessageStreamResponse`; remove Lovable run-id header forwarding.
-- `.env.example` — add `OPENAI_API_KEY`, `GEMINI_API_KEY`; mark `LOVABLE_API_KEY` deprecated.
-
-### Replacement architecture
 ```text
-caller → getModel("openai/gpt-5-mini" | "google/gemini-2.5-flash" | ...)
-            ↓
-        providerRouter
-        ├── openai(model)   uses OPENAI_API_KEY
-        └── google(model)   uses GEMINI_API_KEY
-            ↓
-        AI SDK streamText / generateText / embed
+            ┌─────────────────────────────────────────┐
+            │   Consumers (Tutor/Coach/Advisor/...)   │
+            └───────────────┬─────────────────────────┘
+                            │  aiChat / aiEmbed / aiStream
+                            ▼
+            ┌─────────────────────────────────────────┐
+            │      Provider Abstraction Layer         │
+            │  router → policy → retry → fallback     │
+            │  cost meter · telemetry · circuit break │
+            └───┬──────┬──────┬──────┬──────┬─────┬───┘
+                │      │      │      │      │     │
+              OpenAI Gemini Groq OpenRouter HF  NVIDIA
 ```
 
-### Model mapping
-| Current (Lovable) | Direct |
-|---|---|
-| `google/gemini-2.5-flash` | `@ai-sdk/google` `gemini-2.5-flash` |
-| `google/gemini-2.5-pro` | `@ai-sdk/google` `gemini-2.5-pro` |
-| `openai/text-embedding-3-small` | `@ai-sdk/openai` `text-embedding-3-small` |
-| `openai/gpt-5-mini` (if used) | `@ai-sdk/openai` `gpt-5-mini` |
+### Components
 
-### Embeddings migration
-- Single batch endpoint (`embedMany`) replaces hand-rolled fetch in `ai-embeddings.server.ts` (lines 5-30) and `ai-knowledge.server.ts` (lines 8-25).
-- Vector dims stay 1536 — no DB migration, pgvector schema untouched.
-- Re-embedding existing rows NOT required.
+- **Capability registry** — declares each provider's supported capabilities (`chat`, `embed`, `stream`, `tools`, `vision`, `json-mode`, max-context, $/Mtok in/out, latency tier).
+- **Logical model IDs** — consumers request `chat.fast`, `chat.reason`, `embed.small`, `embed.large`, `vision.default`. Router maps logical → physical (`openai/gpt-5-mini`, `google/gemini-3-flash-preview`, etc.).
+- **Router** — picks primary by policy (cost / latency / quality / region) per logical ID.
+- **Fallback chain** — ordered list per logical ID, e.g. `chat.fast = [groq/llama-3.3-70b, openai/gpt-5-mini, google/gemini-3-flash, openrouter/*]`.
+- **Failover triggers** — 429, 5xx, timeout > N ms, schema-validation failure, circuit-open.
+- **Retry** — exponential backoff w/ jitter, max 2 attempts per provider before failover; idempotency key for streamed completions.
+- **Circuit breaker** — per provider, opens on >X% errors / Y window, half-open probe.
+- **Cost control** — token budget per request, daily spend cap per consumer (`tutor`, `coach`, …), kill-switch env flag, model downgrade on budget pressure.
+- **Telemetry** — uniform log: `{requestId, consumer, logicalId, provider, model, tokensIn, tokensOut, latencyMs, costUsd, attempt, outcome}`. Sink → Supabase `ai_usage` table.
 
-### Streaming migration
-- AI SDK abstracts SSE; `streamText().toUIMessageStreamResponse()` works identically against `@ai-sdk/openai` and `@ai-sdk/google`.
-- Drop `withLovableAiGatewayRunIdHeader` wrapper and `X-Lovable-AIG-*` header forwarding.
+### Preserved features
 
-### Fallback strategy
-- Primary by feature: chat/agents → Gemini 2.5 Flash (cost), reasoning → GPT-5; embeddings → OpenAI.
-- Try/catch in `getModel` caller: on 429/5xx from primary, retry with secondary provider (Gemini ↔ OpenAI) using equivalent model from `ai-models-catalog`.
-- Circuit breaker: 3 failures in 60s → flip provider for that feature for 5min.
-
-### Cost considerations
-- Lovable gateway markup removed; direct pricing applies.
-- Add per-request token logging (already partially in `rag-observability.functions.ts`) for cost attribution.
-- Gemini 2.5 Flash remains cheapest for high-volume RAG queries.
-
-### Impact on subsystems (all green if helper preserved)
-- **AI Tutor / Coach / Advisor / Copilot / Hub**: zero logic change — they call gateway helper.
-- **AI Knowledge / RAG**: embeddings path swap only; chunking + pgvector retrieval untouched.
-- **Multi-agent (`src/lib/multi-agent/`, `agent/`, `conversation/`, `workflow/`)**: untouched — they use `streamText`/tools through gateway helper.
-- **Knowledge Graph (`src/lib/knowledge-graph.ts`, `memory-graph/`)**: untouched.
-
-### Validation checklist
-- [ ] Unit: `embedTexts()` returns 1536-dim vector
-- [ ] Tutor stream: SSE chunks render in `AiTutor.tsx`
-- [ ] RAG: `ai-knowledge.functions.ts` ingest + query roundtrip
-- [ ] Agent loop: `stopWhen: stepCountIs(50)` still terminates
-- [ ] Fallback: kill OPENAI_API_KEY → chat falls to Gemini
-- [ ] Cost log: token usage recorded per call
-
-**Estimated effort: 8–12 hrs.**
+Tutor, Coach, Advisor, Copilot, Knowledge, Hub, RAG, Knowledge Graph, agents, embeddings, AI APIs all keep their current call signatures; only their underlying helper is swapped to `aiChat/aiEmbed`.
 
 ---
 
-## Deliverable 2 — Authentication Preservation Plan
+## Deliverable 2 — AI Migration Inventory
 
-**Goal:** Auth/Authz behavior identical after runtime swap. Supabase Cloud remains source of truth.
+| File | Purpose | Current dep | Required change | Complexity | Tests |
+|---|---|---|---|---|---|
+| `src/lib/ai-gateway.server.ts` | Provider entry | OpenAI + Gemini SDKs (already migrated off Lovable) | Expand into router w/ Groq, OpenRouter, HF, NVIDIA; add policy/fallback/breaker | M | unit: router selection, fallback, breaker |
+| `src/lib/ai-embeddings.server.ts` | Embed helper | OpenAI text-embedding-3-small | Add Gemini + HF as fallbacks; preserve 1536 dims | S | golden vectors, dim assertion |
+| `src/lib/ai-chat.functions.ts` | Chat server fn | gateway | Switch to logical IDs | S | smoke |
+| `src/lib/ai-tutor.functions.ts` | Tutor | gateway | Logical ID `chat.reason` | S | smoke + eval prompt set |
+| `src/lib/ai-coach.functions.ts` | Coach | gateway | Logical ID `chat.fast` | S | smoke |
+| `src/lib/ai-advisor.functions.ts` | Advisor | gateway | Logical ID `chat.reason` | S | smoke |
+| `src/lib/ai-copilot.functions.ts` | Copilot | gateway | Logical ID `chat.fast` + tools | M | tool-call test |
+| `src/lib/ai-knowledge.functions.ts` | Knowledge | gateway + embed | Both logical IDs | M | RAG eval |
+| `src/lib/ai-hub.functions.ts` | Hub orchestrator | gateway | Logical IDs | S | smoke |
+| `src/routes/api/chat.ts` | SSE chat | gateway | Stream-capable router | M | stream e2e |
+| `src/routes/api/public/cron/embeddings.ts` | Batch embed | embed helper | Use embed fallback chain | S | dry-run cron |
+| `src/lib/vector-index/*` | pgvector ops | embed | Logical embed ID + dim guard | S | index rebuild test |
+| `src/lib/multi-agent/*` | Multi-agent loop | gateway | Logical IDs per role | M | scripted scenario |
+| `src/lib/agent/*` | Agent runtime | gateway | Logical IDs | M | controller test |
+| `src/lib/conversation/orchestrator.ts` | Convo orch | gateway | Logical IDs | S | unit |
+| `src/lib/governor/*` | Policy/firewall | n/a | Add cost-cap + breaker hooks | M | policy tests |
+| `src/lib/memory-graph/*` | KG ingest | embed | Logical embed ID | S | ingest test |
+| `src/lib/intent-router/*` | Intent classify | gateway | `chat.fast` | S | dataset eval |
 
-### Files requiring NO modification
-- `src/integrations/supabase/client.ts` (browser client)
-- `src/integrations/supabase/client.server.ts` (admin)
-- `src/integrations/supabase/auth-middleware.ts` (`requireSupabaseAuth`)
-- `src/integrations/supabase/auth-attacher.ts`
-- `src/integrations/supabase/types.ts`
-- All 36 `*.functions.ts` files using `.middleware([requireSupabaseAuth])`
-- All RLS policies, `has_role()`, `user_roles` table — DB-level, runtime-agnostic
-- `src/routes/_authenticated/route.tsx` gate
+Complexity legend: S = <2h, M = 2–6h, L = >6h.
 
-### Files requiring modification
-- `src/start.ts` — verify `attachSupabaseAuth` middleware present (no change if already wired).
-- `src/server.ts` — adjust Nitro/server entry for `node-server` preset (see Deliverable 4).
-- `vite.config.ts` — change Nitro preset `cloudflare-module` → `node-server`.
+---
 
-### Flows (unchanged)
+## Deliverable 3 — Runtime Preservation Plan (Cloudflare → MilesWeb Node)
+
+### Migration steps
+
+1. **Nitro/Vite preset** — `vite.config.ts`: change preset from `cloudflare-module` → `node-server`.
+2. **Server entry** — TanStack Start emits `.output/server/index.mjs`; wrap with Phusion Passenger `app.js` shim that imports the handler.
+3. **Middleware** — re-implement Cloudflare-specific bits (Workers headers, `request.cf`) using Node `req`/`res`; keep `attachSupabaseAuth`, `errorMiddleware` unchanged.
+4. **Security headers** — move from Workers response shim → Node middleware (helmet-style) returning identical CSP/HSTS/Referrer-Policy/Permissions-Policy.
+5. **Logging** — replace `console.log` → JSON line logger (pino) writing to stdout; Passenger captures.
+6. **Tracing** — request-id middleware (uuid v7) on each request; propagate via `X-Request-ID`.
+7. **Static assets** — Vite client build served by Passenger from `dist/client/`; long-cache hashed files; `sitemap.xml`, `robots.txt`, `llms.txt` served as static files generated at build.
+8. **Dynamic sitemap** — keep `/api/sitemap.xml` route; cache 1h via `Cache-Control`.
+9. **Deployment architecture**
+
 ```text
-Browser → Supabase JS (publishable key) → /auth → session in localStorage
-       ↓
-Browser → useServerFn(fn) → POST /_serverFn/... with Authorization: Bearer <jwt>
-       ↓
-Node (Passenger) → attachSupabaseAuth (global functionMiddleware)
-       ↓
-requireSupabaseAuth → supabase.auth.getUser(jwt) → context.{supabase,userId,claims}
-       ↓
-PostgREST query → RLS evaluated with auth.uid() → result
+GitHub Actions
+  ├─ build (bun install, bun run build)
+  ├─ tar dist + .output + package.json
+  └─ scp → MilesWeb /home/<user>/releases/<sha>/
+            → symlink current → releases/<sha>
+            → touch tmp/restart.txt   (Passenger reload)
 ```
 
-API routes under `src/routes/api/` keep `Authorization` header parsing identical — Node/Passenger forwards headers like Cloudflare Workers.
+### Preserved
+
+SSR, SEO/AEO/GEO, dynamic sitemap, robots, llms.txt, Supabase Auth, RLS, `createServerFn`, API routes, payments, webhooks all unchanged at the application layer.
+
+---
+
+## Deliverable 4 — Authentication Preservation Plan
+
+### Flow (unchanged post-migration)
+
+```text
+Browser ──login──▶ Supabase Auth ──JWT──▶ localStorage (sb-*-auth-token)
+   │                                            │
+   │  fetch /_serverFn/* with Bearer            │
+   ▼                                            ▼
+Node (MilesWeb) ─ attachSupabaseAuth ─ requireSupabaseAuth ─ supabase (RLS as user)
+```
+
+- `requireSupabaseAuth` middleware: untouched.
+- `attachSupabaseAuth` global functionMiddleware in `src/start.ts`: untouched.
+- API route auth: existing per-route `getAuthFromRequest` helpers: untouched.
+- RLS policies: live in Postgres, runtime-agnostic.
+
+### Files
+
+- **No change**: `integrations/supabase/*`, `start.ts`, all `*.functions.ts` auth middleware, RLS migrations.
+- **Possibly touched**: any middleware reading `request.cf.country` → fall back to `cf-ipcountry`/`x-forwarded-for` parser.
 
 ### Risks
-- **Low**: header casing — Passenger normalizes; Supabase JS sends `Authorization` correctly.
-- **Low**: cookie/SameSite changes — none, JWT lives in localStorage.
-- **Medium**: SSR fetch base URL — `_authenticated` loader runs at SSR; ensure `VITE_SUPABASE_URL` resolvable from Node.
 
-### Validation tests
-- [ ] Sign in via Google + email/password
-- [ ] `/dashboard` loader returns user data (proves SSR + RLS)
-- [ ] Admin-only RPC `has_role(uid,'admin')` gated
-- [ ] Sign out clears session; protected routes redirect to `/auth`
-- [ ] `supabaseAdmin` privileged fn rejects non-admin
+- Cookie domain on `higaet.com` vs `*.lovable.app` during cutover → mitigate w/ DNS staging on subdomain first.
+- Clock skew on MilesWeb host invalidating JWTs → enable NTP, verify `date -u`.
 
-**Estimated effort: 4–6 hrs (mostly verification, not code).**
+### Validation checklist
+
+- [ ] Login → JWT present in localStorage.
+- [ ] `requireSupabaseAuth` server fn returns 200 for signed-in user, 401 otherwise.
+- [ ] RLS denies cross-user reads.
+- [ ] Refresh-token rotation works across server restart.
 
 ---
 
-## Deliverable 3 — Environment Variable Mapping
+## Deliverable 5 — Environment Variable Mapping
 
-Security classes: P=Public, I=Internal, S=Secret, CS=Critical Secret.
-
-### GitHub Actions Secrets
-| Var | Purpose | Class |
-|---|---|---|
-| `MILESWEB_SSH_HOST` | deploy target | I |
-| `MILESWEB_SSH_USER` | cPanel user | I |
-| `MILESWEB_SSH_KEY` | deploy key | CS |
-| `MILESWEB_APP_PATH` | app root | I |
-| `OPENAI_API_KEY` | build-time smoke | CS |
-| `GEMINI_API_KEY` | build-time smoke | CS |
-
-### cPanel Node.js Environment Variables (runtime)
-| Var | Purpose | Req | Source | Class |
+| Name | Purpose | Location | Time | Class |
 |---|---|---|---|---|
-| `NODE_ENV` | production | ✓ | static | P |
-| `PORT` | Passenger-injected | ✓ | Passenger | I |
-| `SUPABASE_URL` | server SB client | ✓ | Supabase | I |
-| `SUPABASE_PUBLISHABLE_KEY` | server public reads | ✓ | Supabase | I |
-| `SUPABASE_SERVICE_ROLE_KEY` | admin client | ✓ | Supabase | CS |
-| `OPENAI_API_KEY` | direct OpenAI | ✓ | OpenAI | CS |
-| `GEMINI_API_KEY` | direct Gemini | ✓ | Google AI Studio | CS |
-| `SESSION_SECRET` | cookie/session encryption | ✓ | generated 64ch | CS |
-| `STRIPE_SECRET_KEY` | payments | ✓ | Stripe | CS |
-| `STRIPE_WEBHOOK_SECRET` | webhook sig | ✓ | Stripe | CS |
-| `RESEND_API_KEY` or SMTP_* | transactional email | opt | provider | S |
-| `WEBHOOK_SIGNING_SECRET` | inbound webhooks | ✓ | generated 64ch | CS |
-| `SITE_URL` | canonical (https://higaet.com) | ✓ | static | P |
-| `LOG_LEVEL` | observability | opt | static | P |
+| `VITE_SUPABASE_URL` | Browser client | GH Actions build, cPanel, local | build | Public |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Browser client | same | build | Public |
+| `SUPABASE_URL` | Server | cPanel, GH Actions | runtime | Internal |
+| `SUPABASE_PUBLISHABLE_KEY` | Server public client | cPanel | runtime | Internal |
+| `SUPABASE_SERVICE_ROLE_KEY` | Admin client | cPanel, GH (deploy only) | runtime | **Critical Secret** |
+| `OPENAI_API_KEY` | Provider | cPanel, GH | runtime | Secret |
+| `GEMINI_API_KEY` | Provider | cPanel, GH | runtime | Secret |
+| `GROQ_API_KEY` | Provider | cPanel | runtime | Secret |
+| `OPENROUTER_API_KEY` | Provider | cPanel | runtime | Secret |
+| `HUGGINGFACE_API_KEY` | Provider | cPanel | runtime | Secret |
+| `NVIDIA_API_KEY` | Provider | cPanel | runtime | Secret |
+| `AI_BUDGET_DAILY_USD` | Cost cap | cPanel | runtime | Internal |
+| `AI_KILL_SWITCH` | Disable all AI | cPanel | runtime | Internal |
+| `STRIPE_SECRET_KEY` | Payments | cPanel | runtime | **Critical Secret** |
+| `STRIPE_WEBHOOK_SECRET` | Webhook verify | cPanel | runtime | Secret |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | Browser | build | build | Public |
+| `RESEND_API_KEY` / SMTP_* | Email | cPanel | runtime | Secret |
+| `WEBHOOK_SHARED_SECRET` | Internal HMAC | cPanel | runtime | Secret |
+| `GA4_MEASUREMENT_ID` | Analytics | build | build | Public |
+| `GSC_VERIFICATION` | Search Console meta | build | build | Public |
+| `SESSION_SECRET` | Cookie encrypt | cPanel | runtime | **Critical Secret** |
+| `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_ENDPOINT` | Object store | cPanel | runtime | Secret |
+| `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` | DNS/R2 ops | GH | build/admin | Secret |
+| `GITHUB_TOKEN` | CI | GH | build | Secret |
+| `SSH_HOST` / `SSH_USER` / `SSH_KEY` | Deploy target | GH | build | **Critical Secret** |
 
-### Local Development Variables (`.env`)
-Same as above + `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` (browser, P).
-
-### Production Variables
-All cPanel vars above; managed via cPanel "Setup Node.js App" → Environment variables panel.
-
-### Supabase Variables
-`SUPABASE_URL` (I), `SUPABASE_PUBLISHABLE_KEY` (I), `SUPABASE_SERVICE_ROLE_KEY` (CS), `VITE_SUPABASE_*` mirrors (P/I).
-
-### OpenAI Variables
-`OPENAI_API_KEY` (CS), `OPENAI_ORG_ID` (opt, I), `OPENAI_PROJECT_ID` (opt, I).
-
-### Gemini Variables
-`GEMINI_API_KEY` (CS), `GOOGLE_GENAI_BASE_URL` (opt, I).
-
-### Payments Variables
-`STRIPE_SECRET_KEY` (CS), `STRIPE_WEBHOOK_SECRET` (CS), `STRIPE_PUBLISHABLE_KEY` (P, exposed via `VITE_`).
-
-### Webhook Variables
-`WEBHOOK_SIGNING_SECRET` (CS), `WEBHOOK_ALLOWED_ORIGINS` (I).
-
-### Analytics / Search Console Variables
-`VITE_GA4_MEASUREMENT_ID` (P), `VITE_GSC_VERIFICATION` (P), `SENTRY_DSN` (I, optional).
-
-### Future Variables (Phase 2/3)
-`PERPLEXITY_API_KEY` (CS), `PINECONE_API_KEY` (CS, if leaving pgvector), `REDIS_URL` (CS, rate limiting), `POSTGRES_URL` (CS, if moving DB).
-
-### Deprecated post-Phase-1
-`LOVABLE_API_KEY` — remove after AI swap verified.
+GitHub Actions Secrets = all above marked GH. cPanel Node.js Variables = all marked cPanel. Local dev = `.env.local` mirroring cPanel set minus critical secrets.
 
 ---
 
-## Deliverable 4 — MilesWeb Production Deployment Runbook
+## Deliverable 6 — MilesWeb Production Deployment Runbook
 
-### MilesWeb Node.js App Setup (cPanel → Setup Node.js App)
-- **Node version**: 22 LTS (matches TanStack Start v1 requirements; verify MilesWeb supports — fallback Node 20 LTS)
-- **Application mode**: Production
-- **Application root**: `/home/<cpuser>/apps/higaet`
-- **Application URL**: `higaet.com`
-- **Application startup file**: `.output/server/index.mjs` (TanStack Start node-server preset output)
-- **Passenger config** (`/home/<cpuser>/apps/higaet/.htaccess` auto-generated; verify `PassengerNodejs` points to selected Node).
+### cPanel Node.js Setup
+- Node version: **20 LTS** (or 22 if available).
+- Application mode: **Production**.
+- Application root: `/home/<user>/apps/higaet`.
+- Application URL: `higaet.com`.
+- Startup file: `app.js` (Passenger shim importing `.output/server/index.mjs`).
+- Passenger: enable, `passenger_friendly_error_pages off`, restart via `tmp/restart.txt`.
 
-### Build Process (local or CI)
-```bash
+### Build (GitHub Actions)
+```
 bun install --frozen-lockfile
-bun run build          # produces .output/ with node-server preset
-tar czf release.tgz .output package.json bun.lockb
+bun run build       # produces dist/ + .output/
+tar czf release.tgz dist .output app.js package.json bun.lock
 ```
 
-### Deployment Process
-1. `scp release.tgz` to `~/releases/<timestamp>/`
-2. Extract; `cd .output && npm install --omit=dev` (only if preset externals)
-3. Atomic symlink: `ln -sfn ~/releases/<timestamp> ~/apps/higaet/current`
-4. Restart: `touch ~/apps/higaet/tmp/restart.txt` (Passenger graceful reload)
+### Deploy
+```
+scp release.tgz $SSH_USER@$SSH_HOST:releases/$SHA.tgz
+ssh ... 'mkdir releases/$SHA && tar xzf releases/$SHA.tgz -C releases/$SHA'
+ssh ... 'cd apps/higaet && ln -sfn ../../releases/$SHA current'
+```
+
+### Restart
+```
+ssh ... 'mkdir -p apps/higaet/tmp && touch apps/higaet/tmp/restart.txt'
+```
+
+### Rollback
+```
+ssh ... 'ln -sfn ../../releases/<previous_sha> apps/higaet/current && touch apps/higaet/tmp/restart.txt'
+```
 
 ### DNS Cutover
-- Lower Hostinger A/AAAA TTL to 300s 24h ahead.
-- Cutover window: change A record to MilesWeb IP; keep Lovable as fallback CNAME for 24h.
-- Verify with `dig higaet.com @1.1.1.1`.
+1. Stage on `staging.higaet.com` → A/AAAA → MilesWeb IP, validate.
+2. Lower TTL on `higaet.com` to 300s 24h ahead.
+3. Switch A/AAAA to MilesWeb. CNAME `www` → `higaet.com`.
+4. Monitor; rollback by reverting A record.
 
-### SSL Verification
-- cPanel → SSL/TLS Status → AutoSSL for `higaet.com` + `www.higaet.com`.
-- Verify HSTS header present; redirect 80→443 via .htaccess.
+### SSL Validation
+- AutoSSL in cPanel issues Let's Encrypt for `higaet.com` + `www`.
+- Verify `curl -vI https://higaet.com` → HTTP/2, valid chain, HSTS header.
 
-### Search Console Verification
-- Re-verify DNS TXT record (unchanged).
-- Submit fresh `https://higaet.com/sitemap.xml`.
-- Inspect URL → "Live test" on `/`, `/academy`, `/technologies`.
-
-### Analytics Verification
-- GA4 Realtime: load homepage; confirm event.
-- Check `robots.txt`, `sitemap.xml`, `llms.txt` return 200 with correct content-type.
+### Auth Validation
+- Sign in flow, refresh, sign out; verify Supabase JWT in browser; protected server fn → 200/401 correctly.
 
 ### AI Validation
-- Hit `/api/chat` with curl → SSE stream from Gemini.
-- Trigger AI Tutor session in browser; verify response + token log.
-- RAG query through `ai-knowledge.functions.ts` returns chunks.
-
-### Authentication Validation
-- Sign in (email + Google); inspect Network → `Authorization: Bearer ...` on serverFn calls; protected route loads.
-
-### Payment Validation
-- Stripe test mode checkout; webhook receives `checkout.session.completed`; signature verified.
-
-### Webhook Validation
-- Send signed test POST to `/api/public/<hook>`; HMAC validated; row persisted.
+- Hit Tutor/Coach/Advisor/Copilot; confirm telemetry rows in `ai_usage`; force-fail primary key → fallback fires.
 
 ### RAG Validation
-- Ingest doc → embeddings table row count increments; query returns top-K with cosine sim > 0.7.
+- Run embeddings cron; query knowledge endpoint; compare top-k vs baseline.
 
-### SEO Validation
-- View-source on `/`, `/academy/*`, `/technologies/*`: unique `<title>`, meta description, canonical, og:image, JSON-LD.
-- `curl -I` confirms 200 + correct cache-control.
+### Payments Validation
+- Stripe test charge; webhook delivery 200; reconciliation row inserted.
 
-### Rollback Procedure
-1. Revert Hostinger A record to previous Lovable IP (TTL 300s = ~5min propagation).
-2. Or: `ln -sfn ~/releases/<previous> ~/apps/higaet/current && touch tmp/restart.txt`.
-3. Confirm `dig` + browser smoke test.
-4. Postmortem ticket within 24h.
+### Webhooks Validation
+- Send signed test event; verify HMAC; idempotency key dedupes.
 
-**Estimated effort: 10–14 hrs setup + 2–4 hrs cutover.**
+### SEO / Search Console / Analytics
+- `/sitemap.xml`, `/robots.txt`, `/llms.txt` 200 + correct `Content-Type`.
+- GSC URL inspection: live test passes.
+- GA4 realtime shows pageview after smoke browse.
 
 ---
 
-## Deliverable 5 — Phase 1 Execution Plan
+## Deliverable 7 — Phase 1 Execution Plan
 
-Sequenced tasks. Total: **23–34 hrs**.
+Ordered. **Hrs** are engineering estimates.
 
-| # | Task | Files | Hrs | Deps | Risk | Test | Rollback |
+| # | Task | Files | Deps | Hrs | Risk | Tests | Rollback |
 |---|---|---|---|---|---|---|---|
-| 1 | Add OpenAI + Gemini secrets via add_secret | env only | 0.5 | — | Low | env present | delete secret |
-| 2 | Install `@ai-sdk/openai`, `@ai-sdk/google` | package.json | 0.5 | 1 | Low | build green | bun remove |
-| 3 | Refactor `ai-gateway.server.ts` to provider router | 1 file | 3 | 2 | Med | unit test | git revert |
-| 4 | Swap embeddings to `@ai-sdk/openai` `embed` | `ai-embeddings.server.ts`, `ai-knowledge.server.ts` | 2 | 3 | Med | embed roundtrip | git revert |
-| 5 | Verify all 12 AI consumer fns + streaming route | 12 files (no edits expected) | 2 | 3,4 | Low | per-feature smoke | n/a |
-| 6 | Add fallback wrapper (try OpenAI→Gemini) | gateway helper | 2 | 3 | Low | kill-key test | flag off |
-| 7 | Switch Nitro preset to `node-server` | `vite.config.ts` | 1 | — | Med | local build | revert preset |
-| 8 | Adjust `src/server.ts` for Node entry | 1 file | 1.5 | 7 | Med | `node .output/server/index.mjs` boots | revert |
-| 9 | Local smoke: auth + RAG + chat on Node build | — | 2 | 5,8 | Med | full e2e | n/a |
-| 10 | Provision MilesWeb Node app + env vars | cPanel | 1.5 | — | Low | app starts | delete app |
-| 11 | CI deploy pipeline (GH Actions → SSH) | `.github/workflows/deploy.yml` | 3 | 10 | Med | dry-run deploy | disable workflow |
-| 12 | Staging deploy to MilesWeb subdomain | — | 1.5 | 11 | Med | staging smoke | redeploy prev |
-| 13 | Full validation suite on staging | — | 3 | 12 | Med | checklist D4 | n/a |
-| 14 | Lower Hostinger TTL 24h pre-cutover | DNS | 0.25 | 13 | Low | dig TTL | revert TTL |
-| 15 | Production DNS cutover + monitor 2h | — | 2 | 14 | High | live smoke | revert A record |
-| 16 | Remove `LOVABLE_API_KEY` references | env + helper | 1 | 15 | Low | grep clean | restore var |
+| 1 | Expand gateway router (Groq/OpenRouter/HF/NVIDIA) | `ai-gateway.server.ts` | provider keys | 4 | M | router unit | revert file |
+| 2 | Logical model registry + policy | new `ai-registry.ts` | 1 | 2 | L | unit | revert |
+| 3 | Retry/breaker/cost meter | `ai-gateway.server.ts` | 1 | 3 | M | unit + chaos | revert |
+| 4 | Telemetry sink table + insert | migration + helper | — | 1 | L | insert test | drop table |
+| 5 | Switch all `ai-*.functions.ts` to logical IDs | 8 files | 2 | 2 | L | smoke | per-file revert |
+| 6 | Stream router on `/api/chat` | `routes/api/chat.ts` | 1 | 2 | M | e2e stream | revert |
+| 7 | Embeddings fallback chain | `ai-embeddings.server.ts`, `vector-index/*` | 1 | 2 | M | dim guard | revert |
+| 8 | Vite preset → `node-server` | `vite.config.ts` | — | 1 | H | local prod build | flip back |
+| 9 | Passenger `app.js` shim | new | 8 | 1 | M | `node app.js` boot | delete |
+| 10 | Security/logging/tracing middleware | `start.ts`, new mw | 8 | 3 | M | header tests | revert |
+| 11 | GH Actions deploy workflow | `.github/workflows/deploy.yml` | 9 | 3 | M | dry-run | disable workflow |
+| 12 | cPanel Node app provisioned | MilesWeb | 9 | 2 | M | passenger boot | delete app |
+| 13 | Staging DNS + smoke | DNS | 12 | 2 | L | runbook §Validation | revert DNS |
+| 14 | Production DNS cutover | DNS | 13 | 1 | H | full runbook | revert A record |
+| 15 | Post-cutover monitoring 24h | — | 14 | 4 | M | dashboards | rollback symlink |
 
-### Start immediately
-- Tasks 1–9 (AI swap + Node preset). Reversible, no production impact.
-
-### Wait
-- Tasks 10–14 until AI + Node build verified locally.
-- Task 15 (cutover) until staging passes 48h soak.
-
-### Do NOT touch in Phase 1
-- Supabase schema, migrations, RLS, `auth.users`, storage buckets
-- Edge functions (none in use; keep state)
-- `src/integrations/supabase/*` autogen files
-- Knowledge Graph DB structures
-- `multi-agent/`, `agent/`, `kernel/`, `governor/` runtime logic
-
-### Phase 1 checklist
-- [ ] OPENAI_API_KEY + GEMINI_API_KEY added
-- [ ] Gateway helper routes by model prefix
-- [ ] Embeddings via @ai-sdk/openai, 1536 dims preserved
-- [ ] Streaming chat works on both providers
-- [ ] Fallback flips on primary failure
-- [ ] `vite.config.ts` preset = `node-server`
-- [ ] `.output/server/index.mjs` boots under Node 22
-- [ ] MilesWeb Node app + envs configured
-- [ ] CI pipeline deploys atomic releases
-- [ ] Staging passes auth/RAG/payments/webhooks/SEO
-- [ ] DNS cutover with rollback ready
-- [ ] LOVABLE_API_KEY removed
+**Immediate**: 1–7 (AI independence, runtime-agnostic).
+**Deferred**: 8–15 (runtime cutover) — execute once MilesWeb provisioned.
+**Out of scope**: Supabase migration, Cloudflare R2 swap, payment provider change.
 
 ---
 
-## Verdict
+## Deliverable 8 — Final Go/No-Go Assessment
 
-**Realistic effort: 25–35 hrs** (matches lower bound; agent + RAG architecture is provider-agnostic via AI SDK, so swap is mechanical). Above 40 hrs only if MilesWeb Node 22 unsupported (forces Node 20 + preset workarounds) or Passenger streaming buffers SSE (requires `PassengerBufferResponse off` + verification).
+- **Total est. hours**: 33 eng hours (1–7: 16h; 8–15: 17h) + 24h soak.
+- **Phases**: (A) AI abstraction in current runtime, (B) Node runtime + deploy pipeline, (C) DNS cutover + soak.
+- **Critical risks**: cookie domain on cutover; Passenger cold-start latency; AI provider key quota mismatches; pgvector dim drift if embed model changes silently.
+- **Blockers**: MilesWeb account + SSH key; cPanel Node 20 availability; all provider keys present in cPanel; lowered DNS TTL 24h before cutover.
+- **Recommended order**: A → B (on staging subdomain) → C.
 
-Awaiting approval to proceed with Task 1.
+**Preservation confirmation under Phase 1:**
+
+✅ SSR · ✅ SEO · ✅ AEO · ✅ GEO · ✅ Dynamic Sitemap · ✅ robots.txt · ✅ llms.txt · ✅ Authentication · ✅ Authorization (RLS) · ✅ createServerFn · ✅ API Routes · ✅ Payments · ✅ Webhooks · ✅ AI Platform · ✅ RAG · ✅ Knowledge Graph · ✅ Analytics readiness · ✅ Search Console readiness · ✅ Future scalability
+
+**Go** for Phase A immediately. **Conditional Go** for Phases B/C pending MilesWeb provisioning and a successful staging-subdomain dry run.
