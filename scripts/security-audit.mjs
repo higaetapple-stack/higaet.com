@@ -108,21 +108,21 @@ for (const [path, roles] of Object.entries(routePermissions)) {
   }
 }
 
-// ---- 2. Dashboard layout routes must call requireRolesOrRedirect -------------
+// ---- 2. Layout routes must call requireRolesOrRedirect ----------------------
 
 const ROUTES_DIR = "src/routes";
-const layoutRoutes = readdirSync(ROUTES_DIR).filter((f) =>
-  /^_authenticated\.dashboard\.[a-z-]+\.tsx$/.test(f),
-);
+// Surface URL → expected layout filename(s). Handles `/dashboard/x` and `/x`.
+const surfaceToFile = (surface) => {
+  const tail = surface.replace(/^\//, "").replace(/\//g, ".");
+  return `_authenticated.${tail}.tsx`;
+};
+const layoutRoutes = Object.keys(routePermissions)
+  .map((surface) => ({ surface, file: surfaceToFile(surface) }))
+  .filter(({ file }) => existsSync(join(ROUTES_DIR, file)));
 const guardedSurfaces = [];
-for (const file of layoutRoutes) {
+for (const { surface, file } of layoutRoutes) {
   const full = join(ROUTES_DIR, file);
   const src = readFileSync(full, "utf8");
-  const surface = file
-    .replace(/^_authenticated\.dashboard\./, "/dashboard/")
-    .replace(/\.tsx$/, "");
-  const isProtected = Object.keys(routePermissions).includes(surface);
-  if (!isProtected) continue;
   guardedSurfaces.push(surface);
   if (!/requireRolesOrRedirect\s*\(/.test(src)) {
     add(
