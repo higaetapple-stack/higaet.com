@@ -358,12 +358,27 @@ function categoryStatus(cat: string): "PASS" | "FAIL" {
   return rows.every((r) => r.status === "PASS") ? "PASS" : "FAIL";
 }
 
-function buildStepSummary(overall: "GO" | "NO-GO"): string {
+function deepLinks(): { runUrl: string; artifactUrl: string; reportPath: string; historyPath: string } {
   const runId = env.GITHUB_RUN_ID ?? "local";
   const repo = env.GITHUB_REPOSITORY ?? "";
-  const artifactLink = repo && runId !== "local"
+  const branch = env.GITHUB_REF_NAME ?? "main";
+  const runUrl = repo && runId !== "local"
     ? `https://github.com/${repo}/actions/runs/${runId}`
-    : `\`${evidenceDir}\``;
+    : evidenceDir;
+  const artifactUrl = repo && runId !== "local"
+    ? `https://github.com/${repo}/actions/runs/${runId}#artifacts`
+    : evidenceDir;
+  const reportPath = repo
+    ? `https://github.com/${repo}/blob/${branch}/docs/infrastructure/phase-2-2-prerequisite-report.md`
+    : "docs/infrastructure/phase-2-2-prerequisite-report.md";
+  const historyPath = repo
+    ? `https://github.com/${repo}/blob/${branch}/docs/infrastructure/staging-readiness-history.md`
+    : "docs/infrastructure/staging-readiness-history.md";
+  return { runUrl, artifactUrl, reportPath, historyPath };
+}
+
+function buildStepSummary(overall: "GO" | "NO-GO"): string {
+  const { runUrl, artifactUrl, reportPath, historyPath } = deepLinks();
   const rows: Array<[string, string]> = [
     ["DNS", categoryStatus("DNS")],
     ["SSL", categoryStatus("SSL")],
@@ -378,8 +393,13 @@ function buildStepSummary(overall: "GO" | "NO-GO"): string {
     "## Staging Readiness",
     "",
     `- **Timestamp:** ${startedAt.toISOString()}`,
-    `- **Run ID:** ${runId}`,
-    `- **Evidence:** ${artifactLink}`,
+    `- **Run ID:** ${env.GITHUB_RUN_ID ?? "local"}`,
+    "",
+    "**Evidence:**",
+    `- [Readiness Report](${reportPath})`,
+    `- [Raw Evidence Artifact](${artifactUrl})`,
+    `- [Workflow Run](${runUrl})`,
+    `- [Readiness History](${historyPath})`,
     "",
     "| Check | Status |",
     "| --- | --- |",
@@ -389,6 +409,24 @@ function buildStepSummary(overall: "GO" | "NO-GO"): string {
     "",
   ];
   return lines.join("\n");
+}
+
+function writeCache(overall: "GO" | "NO-GO"): string {
+  const cachePath = resolve(process.cwd(), "test-results/readiness/cache.json");
+  const { runUrl, artifactUrl, reportPath } = deepLinks();
+  const payload = {
+    run_id: env.GITHUB_RUN_ID ?? "local",
+    timestamp: startedAt.toISOString(),
+    status: overall,
+    artifact_url: artifactUrl,
+    report_url: reportPath,
+    run_url: runUrl,
+    evidence_dir: evidenceDir,
+    ttl_hours: Number(env.READINESS_CACHE_TTL_HOURS ?? "24"),
+  };
+  mkdirSync(resolve(process.cwd(), "test-results/readiness"), { recursive: true });
+  writeFileSync(cachePath, JSON.stringify(payload, null, 2));
+  return cachePath;
 }
 
 function updateHistory(overall: "GO" | "NO-GO"): { prior: "GO" | "NO-GO" | null } {
@@ -448,10 +486,15 @@ function appendStepSummary(body: string): void {
 
 (async () => {
   try {
-    await checkDns();
-    await checkSsl();
-    await checkSsh();
-    await checkGithub();
+    const fixture = env.READINESS_FIXTURE_STATUS;
+    if (fixture === "GO" || fixture === "NO-GO") {
+      record({ category: "Fixture", name: `forced ${fixture}`, status: fixture === "GO" ? "PASS" : "FAIL", required: true, evidence: "READINESS_FIXTURE_STATUS override" });
+    } else {
+      await checkDns();
+      await checkSsl();
+      await checkSsh();
+      await checkGithub();
+    }
     const failed = checks.filter((c) => c.required && c.status === "FAIL");
     const overall: "GO" | "NO-GO" = failed.length === 0 ? "GO" : "NO-GO";
     const report = buildReport();
@@ -461,14 +504,21 @@ function appendStepSummary(body: string): void {
     );
     writeFileSync(reportPath, report);
     writeArtifact("summary.json", JSON.stringify(checks, null, 2));
+    const cachePath = writeCache(overall);
     const { prior } = updateHistory(overall);
     appendStepSummary(buildStepSummary(overall));
+    const links = deepLinks();
     appendGithubOutput({
       status: overall,
       transitioned: prior === "NO-GO" && overall === "GO" ? "true" : "false",
       prior_status: prior ?? "none",
+      report_url: links.reportPath,
+      artifact_url: links.artifactUrl,
+      run_url: links.runUrl,
+      cache_path: cachePath,
     });
     console.log(`\nReport: ${reportPath}`);
+    console.log(`Cache:  ${cachePath}`);
     console.log(`Overall: ${overall} (prior: ${prior ?? "none"})`);
     process.exit(overall === "GO" ? 0 : 1);
   } catch (err) {
