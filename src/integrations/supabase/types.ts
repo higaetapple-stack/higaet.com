@@ -5198,7 +5198,7 @@ export type Database = {
         | "delivered"
         | "failed"
         | "read"
-      payment_provider: "razorpay" | "stripe"
+      payment_provider: "razorpay" | "stripe" | "manual"
       payment_purpose:
         | "course_enrollment"
         | "program_enrollment"
@@ -5215,6 +5215,10 @@ export type Database = {
         | "refunded"
         | "partially_refunded"
         | "cancelled"
+        | "pending_verification"
+        | "approved"
+        | "rejected"
+        | "info_requested"
       portfolio_visibility: "private" | "unlisted" | "public"
       program_status: "draft" | "published" | "archived"
       project_submission_status:
@@ -5504,7 +5508,7 @@ export const Constants = {
         "failed",
         "read",
       ],
-      payment_provider: ["razorpay", "stripe"],
+      payment_provider: ["razorpay", "stripe", "manual"],
       payment_purpose: [
         "course_enrollment",
         "program_enrollment",
@@ -5522,6 +5526,10 @@ export const Constants = {
         "refunded",
         "partially_refunded",
         "cancelled",
+        "pending_verification",
+        "approved",
+        "rejected",
+        "info_requested",
       ],
       portfolio_visibility: ["private", "unlisted", "public"],
       program_status: ["draft", "published", "archived"],
