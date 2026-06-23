@@ -1,6 +1,8 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { requireRolesOrRedirect, ROUTE_PERMISSIONS } from "@/lib/route-authorization";
 
 export const Route = createFileRoute("/_authenticated/education")({
+  beforeLoad: ({ location }) => requireRolesOrRedirect(ROUTE_PERMISSIONS["/education"], { location }),
   component: EducationLayout,
 });
 
