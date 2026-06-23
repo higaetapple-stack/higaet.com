@@ -434,6 +434,57 @@ export type Database = {
           },
         ]
       }
+      ai_usage: {
+        Row: {
+          attempt: number
+          consumer: string
+          cost_usd: number | null
+          created_at: string
+          error_code: string | null
+          id: string
+          latency_ms: number | null
+          logical_id: string
+          model: string
+          outcome: string
+          provider: string
+          request_id: string
+          tokens_in: number | null
+          tokens_out: number | null
+        }
+        Insert: {
+          attempt: number
+          consumer: string
+          cost_usd?: number | null
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          latency_ms?: number | null
+          logical_id: string
+          model: string
+          outcome: string
+          provider: string
+          request_id: string
+          tokens_in?: number | null
+          tokens_out?: number | null
+        }
+        Update: {
+          attempt?: number
+          consumer?: string
+          cost_usd?: number | null
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          latency_ms?: number | null
+          logical_id?: string
+          model?: string
+          outcome?: string
+          provider?: string
+          request_id?: string
+          tokens_in?: number | null
+          tokens_out?: number | null
+        }
+        Relationships: []
+      }
       api_key_scopes: {
         Row: {
           api_key_id: string
