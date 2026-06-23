@@ -12,8 +12,9 @@ on:
     - cron: "0 6 * * *"
 
 concurrency:
-  group: staging-readiness
-  cancel-in-progress: true
+  # Single writer for staging-readiness-history.md — queue updates, never cancel.
+  group: staging-readiness-history
+  cancel-in-progress: false
 
 permissions:
   contents: write          # commit updated report + history
@@ -63,6 +64,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_RUN_ID: ${{ github.run_id }}
         run: bun scripts/check-staging-readiness.ts
+
+      - name: Validate deep links
+        if: always()
+        run: |
+          OK="${{ steps.check.outputs.deep_links_ok }}"
+          echo "deep_links_ok=$OK"
+          if [ "$OK" != "true" ]; then
+            echo "::warning::Deep-link validation reported issues — see test-results/readiness/*/deep-link-validation.json"
+          fi
 
       - name: Upload evidence
         if: always()

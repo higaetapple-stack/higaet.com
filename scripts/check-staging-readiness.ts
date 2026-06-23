@@ -411,6 +411,60 @@ function buildStepSummary(overall: "GO" | "NO-GO"): string {
   return lines.join("\n");
 }
 
+function cacheKey(): string {
+  const crypto = require("node:crypto");
+  const fs = require("node:fs");
+  const parts: string[] = [];
+  for (const p of [
+    ".github/workflows/staging-readiness.yml",
+    "scripts/check-staging-readiness.ts",
+  ]) {
+    try {
+      parts.push(p + ":" + crypto.createHash("sha256").update(fs.readFileSync(p)).digest("hex"));
+    } catch {
+      parts.push(p + ":missing");
+    }
+  }
+  const requiredSecrets = ["STAGING_HOST", "STAGING_BASE_URL", "SSH_HOST", "SSH_USER", "SSH_KEY"];
+  parts.push("secrets:" + requiredSecrets.sort().join(","));
+  return crypto.createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 16);
+}
+
+function validateDeepLinks(links: ReturnType<typeof deepLinks>): { ok: boolean; details: string[] } {
+  const fs = require("node:fs");
+  const details: string[] = [];
+  let ok = true;
+  const reportLocal = "docs/infrastructure/phase-2-2-prerequisite-report.md";
+  const historyLocal = "docs/infrastructure/staging-readiness-history.md";
+  for (const [name, p] of [["report", reportLocal], ["history", historyLocal]] as const) {
+    if (fs.existsSync(p)) {
+      details.push(`${name}=ok`);
+    } else {
+      ok = false;
+      details.push(`${name}=missing(${p})`);
+    }
+  }
+  for (const [name, u] of [
+    ["run_url", links.runUrl],
+    ["artifact_url", links.artifactUrl],
+    ["report_url", links.reportPath],
+    ["history_url", links.historyPath],
+  ] as const) {
+    if (!u || !/^https?:\/\//.test(u)) {
+      // local mode is allowed; only flag invalid http URLs
+      if (u && !u.startsWith("/") && !u.startsWith("docs/")) {
+        ok = false;
+        details.push(`${name}=invalid(${u})`);
+      } else {
+        details.push(`${name}=local`);
+      }
+    } else {
+      details.push(`${name}=ok`);
+    }
+  }
+  return { ok, details };
+}
+
 function writeCache(overall: "GO" | "NO-GO"): string {
   const cachePath = resolve(process.cwd(), "test-results/readiness/cache.json");
   const { runUrl, artifactUrl, reportPath } = deepLinks();
@@ -418,6 +472,7 @@ function writeCache(overall: "GO" | "NO-GO"): string {
     run_id: env.GITHUB_RUN_ID ?? "local",
     timestamp: startedAt.toISOString(),
     status: overall,
+    cache_key: cacheKey(),
     artifact_url: artifactUrl,
     report_url: reportPath,
     run_url: runUrl,
@@ -508,6 +563,11 @@ function appendStepSummary(body: string): void {
     const { prior } = updateHistory(overall);
     appendStepSummary(buildStepSummary(overall));
     const links = deepLinks();
+    const linkCheck = validateDeepLinks(links);
+    writeArtifact("deep-link-validation.json", JSON.stringify(linkCheck, null, 2));
+    if (!linkCheck.ok) {
+      console.error(`[readiness] deep-link validation FAIL: ${linkCheck.details.join(", ")}`);
+    }
     appendGithubOutput({
       status: overall,
       transitioned: prior === "NO-GO" && overall === "GO" ? "true" : "false",
@@ -516,9 +576,12 @@ function appendStepSummary(body: string): void {
       artifact_url: links.artifactUrl,
       run_url: links.runUrl,
       cache_path: cachePath,
+      cache_key: cacheKey(),
+      deep_links_ok: linkCheck.ok ? "true" : "false",
     });
     console.log(`\nReport: ${reportPath}`);
-    console.log(`Cache:  ${cachePath}`);
+    console.log(`Cache:  ${cachePath} (key=${cacheKey()})`);
+    console.log(`DeepLinks: ${linkCheck.ok ? "OK" : "FAIL"} — ${linkCheck.details.join(", ")}`);
     console.log(`Overall: ${overall} (prior: ${prior ?? "none"})`);
     process.exit(overall === "GO" ? 0 : 1);
   } catch (err) {
