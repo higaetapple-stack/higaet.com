@@ -47,11 +47,23 @@ export function Header() {
           </ul>
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
+          <Link
+            to="/auth/login"
+            className="text-sm font-medium text-muted-foreground hover:text-ink transition-colors px-3 py-2"
+          >
+            Login
+          </Link>
+          <Link
+            to="/auth/register"
+            className="text-sm font-medium text-ink ring-1 ring-border hover:bg-muted/40 transition-colors px-3 py-2 rounded-md"
+          >
+            Sign Up
+          </Link>
           <Link
             to="/contact"
             className={cn(
-              "bg-ink text-surface text-sm font-medium py-2 pl-3 pr-3 inline-flex items-center gap-1.5 rounded-md",
+              "bg-ink text-surface text-sm font-medium py-2 pl-3 pr-3 inline-flex items-center gap-1.5 rounded-md ml-1",
               "ring-1 ring-ink hover:bg-ink/90 transition-colors",
             )}
           >
