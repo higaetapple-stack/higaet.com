@@ -18,22 +18,76 @@ permissions:
   actions: read
 
 jobs:
+  cache-check:
+    runs-on: ubuntu-latest
+    outputs:
+      cache_hit: ${{ steps.cache.outputs.cache_hit }}
+      cache_status: ${{ steps.cache.outputs.cache_status }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: cache
+        name: Inspect readiness cache
+        env:
+          TTL_HOURS: ${{ vars.READINESS_CACHE_TTL_HOURS || '24' }}
+        run: |
+          F=test-results/readiness/cache.json
+          if [ ! -f "$F" ]; then
+            echo "cache_hit=false" >> "$GITHUB_OUTPUT"
+            echo "cache_status=missing" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          STATUS=$(jq -r .status "$F")
+          TS=$(jq -r .timestamp "$F")
+          AGE=$(( ( $(date -u +%s) - $(date -u -d "$TS" +%s) ) / 3600 ))
+          echo "cache age=${AGE}h status=${STATUS} ttl=${TTL_HOURS}h"
+          if [ "$STATUS" = "GO" ] && [ "$AGE" -lt "$TTL_HOURS" ]; then
+            echo "cache_hit=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "cache_hit=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "cache_status=$STATUS" >> "$GITHUB_OUTPUT"
+
   authorize:
+    needs: cache-check
+    if: needs.cache-check.outputs.cache_hit != 'true'
     uses: ./.github/workflows/staging-readiness.yml
     secrets: inherit
 
   gate:
-    needs: authorize
+    needs: [cache-check, authorize]
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Decision
+        env:
+          CACHE_HIT: ${{ needs.cache-check.outputs.cache_hit }}
+          CACHE_STATUS: ${{ needs.cache-check.outputs.cache_status }}
+          LIVE_STATUS: ${{ needs.authorize.outputs.status }}
         run: |
-          STATUS="${{ needs.authorize.outputs.status }}"
-          echo "## Phase 2.2 Authorization" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$CACHE_HIT" = "true" ]; then
+            STATUS="$CACHE_STATUS"
+            SOURCE="cache"
+          else
+            STATUS="$LIVE_STATUS"
+            SOURCE="live"
+          fi
+          {
+            echo "## Phase 2.2 Authorization"
+            echo ""
+            echo "- Source: \`$SOURCE\`"
+            echo "- Status: \`$STATUS\`"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
           if [ "$STATUS" = "GO" ]; then
             echo "**GO** — readiness PASS. Dispatch \`staging-rollback-validation.yml\` to deploy." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          echo "**NO-GO** — readiness $STATUS. See \`docs/infrastructure/phase-2-2-prerequisite-report.md\`." >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "**NO-GO** — readiness \`$STATUS\`."
+            echo ""
+            echo "Evidence:"
+            echo "- [Readiness Report](../../blob/main/docs/infrastructure/phase-2-2-prerequisite-report.md)"
+            echo "- [Readiness History](../../blob/main/docs/infrastructure/staging-readiness-history.md)"
+            echo "- Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } >> "$GITHUB_STEP_SUMMARY"
           exit 1
