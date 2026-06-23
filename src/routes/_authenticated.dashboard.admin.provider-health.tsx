@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Activity, AlertTriangle, CheckCircle2, RefreshCw, Zap } from "lucide-react";
@@ -7,12 +7,21 @@ import {
   getProviderHealthMetrics,
   runProviderHealthCheck,
 } from "@/lib/provider-health.functions";
+import {
+  listEmbeddingQueue,
+  requeueEmbeddingItems,
+  requeueDeadLetters,
+  getEmbeddingAlerts,
+} from "@/lib/rag-observability.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/provider-health")({
   component: ProviderHealthDashboard,
 });
 
+type Tab = "providers" | "queue";
+
 function ProviderHealthDashboard() {
+  const [tab, setTab] = useState<Tab>("providers");
   const [hours, setHours] = useState(24);
   const fetchMetrics = useServerFn(getProviderHealthMetrics);
   const runCheck = useServerFn(runProviderHealthCheck);
@@ -20,6 +29,7 @@ function ProviderHealthDashboard() {
   const metrics = useQuery({
     queryKey: ["provider-health-metrics", hours],
     queryFn: () => fetchMetrics({ data: { hours } }),
+    enabled: tab === "providers",
   });
 
   const ping = useMutation({
