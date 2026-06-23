@@ -1,7 +1,9 @@
 // Phase 7.2 RAG observability — admin-only metrics for the embedding pipeline.
 // Surfaces queue health, retry rate, dead-letter size, throughput, and per-entity chunk coverage.
+// Phase 1.13 adds: queue listing, single/batch requeue, alert thresholds, audit logging.
 
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
