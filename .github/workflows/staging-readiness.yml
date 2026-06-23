@@ -12,8 +12,9 @@ on:
     - cron: "0 6 * * *"
 
 concurrency:
-  group: staging-readiness
-  cancel-in-progress: true
+  # Single writer for staging-readiness-history.md — queue updates, never cancel.
+  group: staging-readiness-history
+  cancel-in-progress: false
 
 permissions:
   contents: write          # commit updated report + history
