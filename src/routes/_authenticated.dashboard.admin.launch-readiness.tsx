@@ -365,7 +365,7 @@ function HistoryTable() {
                 </TableCell>
               </TableRow>
             ) : (
-              rows.map((r) => (
+              rows.map((r: LaunchReadinessRun) => (
                 <TableRow key={r.id}>
                   <TableCell>{new Date(r.created_at).toLocaleString()}</TableCell>
                   <TableCell>{r.environment}</TableCell>
