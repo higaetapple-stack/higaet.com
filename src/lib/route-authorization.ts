@@ -12,7 +12,7 @@ export const ROUTE_PERMISSIONS: Record<string, AppRole[]> = {
   "/dashboard/faculty": ["faculty", "admin", "super_admin"],
   "/dashboard/counselor": ["counselor", "mentor", "admin", "super_admin"],
   "/dashboard/career": ["student", "placement_officer", "admin", "super_admin"],
-  "/dashboard/education": ["enterprise_client", "admin", "super_admin"],
+  "/education": ["enterprise_client", "admin", "super_admin"],
   "/dashboard/technologies": ["tech_client", "admin", "super_admin"],
 };
 

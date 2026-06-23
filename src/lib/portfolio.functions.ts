@@ -1,11 +1,22 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { getServerPublicClient } from "@/integrations/supabase/server-public";
+
+/**
+ * Public portfolio + public job board endpoints.
+ *
+ * All three handlers use the server publishable (anon) client. Visibility is
+ * enforced by `TO anon` RLS policies on `profiles`, `certificates`,
+ * `project_submissions`, `job_postings`, and `employers`. We do NOT use
+ * supabaseAdmin here — RLS must be the source of truth for what anonymous
+ * users can read.
+ */
 
 export const getPublicPortfolio = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => z.object({ slug: z.string().min(1).max(60) }).parse(input))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: profile, error } = await supabaseAdmin
+    const supabase = getServerPublicClient();
+    const { data: profile, error } = await supabase
       .from("profiles")
       .select(
         "id,full_name,email,phone,avatar_url,headline,bio,location,github_url,linkedin_url,website_url,skills,career_goals,education,experience,portfolio_slug,portfolio_visibility,show_email,show_phone,show_resume,show_certificates,show_projects",
@@ -18,7 +29,7 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
 
     const [certs, projects] = await Promise.all([
       profile.show_certificates
-        ? supabaseAdmin
+        ? supabase
             .from("certificates")
             .select("id,certificate_number,issued_at,programs(title,category)")
             .eq("student_id", profile.id)
@@ -26,7 +37,7 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
             .order("issued_at", { ascending: false })
         : Promise.resolve({ data: [] as any[] }),
       profile.show_projects
-        ? supabaseAdmin
+        ? supabase
             .from("project_submissions")
             .select("id,repo_url,demo_url,summary,projects(title,brief)")
             .eq("student_id", profile.id)
@@ -71,8 +82,8 @@ const jobFilters = z
 export const listPublicJobs = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => jobFilters.parse(input ?? {}))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    let q = supabaseAdmin
+    const supabase = getServerPublicClient();
+    let q = supabase
       .from("job_postings")
       .select(
         "id,title,slug,location,remote_type,employment_type,experience_level,skills,salary_min,salary_max,salary_currency,posted_at,closes_at,employers(name,slug,logo_url)",
@@ -94,8 +105,8 @@ export const listPublicJobs = createServerFn({ method: "GET" })
 export const getPublicJob = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => z.object({ slug: z.string() }).parse(input))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: job, error } = await supabaseAdmin
+    const supabase = getServerPublicClient();
+    const { data: job, error } = await supabase
       .from("job_postings")
       .select("*,employers(name,slug,logo_url,website,description,industry,hq_location)")
       .eq("slug", data.slug)

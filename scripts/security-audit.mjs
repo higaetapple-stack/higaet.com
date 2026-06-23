@@ -29,15 +29,40 @@ const add = (severity, area, message, file) =>
 
 // ---- 1. Enum vs ROUTE_PERMISSIONS / AppRole ----------------------------------
 
-const ENUM_PATH = "supabase/migrations/20260613015152_280b0bc7-a527-4253-8ae5-8aec948aa3a9.sql";
+const MIGRATIONS_DIR = "supabase/migrations";
 const ROUTE_AUTH_PATH = "src/lib/route-authorization.ts";
 const AUTH_FN_PATH = "src/lib/auth.functions.ts";
 
+// Prefer the live DB enum when PGHOST is available; otherwise reconstruct it
+// from all migration files (CREATE TYPE + ALTER TYPE ADD VALUE).
 const enumRoles = (() => {
-  const sql = readFileSync(ENUM_PATH, "utf8");
-  const m = sql.match(/CREATE TYPE public\.app_role AS ENUM \(([^)]+)\)/);
-  if (!m) return [];
-  return [...m[1].matchAll(/'([a-z_]+)'/g)].map((x) => x[1]);
+  if (process.env.PGHOST) {
+    try {
+      const out = execSync(
+        `psql -At -c "SELECT unnest(enum_range(NULL::public.app_role))"`,
+        { encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] },
+      ).trim();
+      const live = out.split("\n").filter(Boolean);
+      if (live.length) return live;
+    } catch {
+      // fall through to file scan
+    }
+  }
+  const roles = new Set();
+  const files = existsSync(MIGRATIONS_DIR)
+    ? readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith(".sql")).sort()
+    : [];
+  for (const f of files) {
+    const sql = readFileSync(join(MIGRATIONS_DIR, f), "utf8");
+    const create = sql.match(/CREATE TYPE\s+public\.app_role\s+AS ENUM\s*\(([^)]+)\)/i);
+    if (create) for (const m of create[1].matchAll(/'([a-z_]+)'/g)) roles.add(m[1]);
+    for (const m of sql.matchAll(
+      /ALTER TYPE\s+public\.app_role\s+ADD VALUE(?:\s+IF NOT EXISTS)?\s+'([a-z_]+)'/gi,
+    )) {
+      roles.add(m[1]);
+    }
+  }
+  return [...roles];
 })();
 
 const appRoleTypeRoles = (() => {
@@ -83,21 +108,21 @@ for (const [path, roles] of Object.entries(routePermissions)) {
   }
 }
 
-// ---- 2. Dashboard layout routes must call requireRolesOrRedirect -------------
+// ---- 2. Layout routes must call requireRolesOrRedirect ----------------------
 
 const ROUTES_DIR = "src/routes";
-const layoutRoutes = readdirSync(ROUTES_DIR).filter((f) =>
-  /^_authenticated\.dashboard\.[a-z-]+\.tsx$/.test(f),
-);
+// Surface URL → expected layout filename(s). Handles `/dashboard/x` and `/x`.
+const surfaceToFile = (surface) => {
+  const tail = surface.replace(/^\//, "").replace(/\//g, ".");
+  return `_authenticated.${tail}.tsx`;
+};
+const layoutRoutes = Object.keys(routePermissions)
+  .map((surface) => ({ surface, file: surfaceToFile(surface) }))
+  .filter(({ file }) => existsSync(join(ROUTES_DIR, file)));
 const guardedSurfaces = [];
-for (const file of layoutRoutes) {
+for (const { surface, file } of layoutRoutes) {
   const full = join(ROUTES_DIR, file);
   const src = readFileSync(full, "utf8");
-  const surface = file
-    .replace(/^_authenticated\.dashboard\./, "/dashboard/")
-    .replace(/\.tsx$/, "");
-  const isProtected = Object.keys(routePermissions).includes(surface);
-  if (!isProtected) continue;
   guardedSurfaces.push(surface);
   if (!/requireRolesOrRedirect\s*\(/.test(src)) {
     add(
@@ -138,12 +163,17 @@ const walk = (dir) => {
   return out;
 };
 
+// Strip JS comments so doc/inline comments mentioning "supabaseAdmin" don't
+// produce false positives — we only care about real code references.
+const stripComments = (src) =>
+  src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/[^\n]*/g, "$1");
+
 const fnFiles = walk("src").filter((f) => f.endsWith(".functions.ts"));
 for (const f of fnFiles) {
-  const src = readFileSync(f, "utf8");
+  const src = stripComments(readFileSync(f, "utf8"));
   const usesAdmin =
     /from\s+["']@\/integrations\/supabase\/client\.server["']/.test(src) ||
-    /supabaseAdmin/.test(src);
+    /\bsupabaseAdmin\b/.test(src);
   if (!usesAdmin) continue;
   const hasAuthMiddleware = /requireSupabaseAuth/.test(src);
   const hasRoleCheck = /has_role|has_any_role/.test(src);
@@ -174,7 +204,7 @@ const clientFiles = walk("src").filter(
     !f.endsWith(".functions.tsx"),
 );
 for (const f of clientFiles) {
-  const src = readFileSync(f, "utf8");
+  const src = stripComments(readFileSync(f, "utf8"));
   if (/SUPABASE_SERVICE_ROLE_KEY/.test(src)) {
     add("CRITICAL", "client-leak", `Service-role key referenced in client-reachable file.`, f);
   }
@@ -255,7 +285,7 @@ const auditMd = `# Security Audit Report
 
 | Check | Source |
 |---|---|
-| app_role enum vs AppRole type | \`${ENUM_PATH}\` vs \`${AUTH_FN_PATH}\` |
+| app_role enum vs AppRole type | live DB (when \`PGHOST\` set) or \`${MIGRATIONS_DIR}/*.sql\` vs \`${AUTH_FN_PATH}\` |
 | ROUTE_PERMISSIONS vs enum | \`${ROUTE_AUTH_PATH}\` |
 | Dashboard layout guards | \`src/routes/_authenticated.dashboard.*.tsx\` |
 | Privileged server functions | \`src/**/*.functions.ts\` |
