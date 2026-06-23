@@ -1,94 +1,90 @@
-# Milestone 2 — Phases A + C
+# Launch Readiness Monitoring & Deployment Safety
 
-Verify architecture (A) and real-user behavior (C). No onboarding, no new dashboards, no enum changes, no payments/email infra.
+Scope is large (8 parts spanning CI, scripts, DB, API, UI, tests). I will implement directly into the existing HIGAET codebase — no new project, reusing TanStack Start routes under `_authenticated/admin`, existing Supabase (Lovable Cloud — Postgres, not MySQL), shadcn UI, `createServerFn` + `requireSupabaseAuth`, and the existing `launch-readiness.yml` workflow.
 
-## Phase A — Security Audit (static)
+Two clarifications baked in (calling them out, not blocking):
+- **"MySQL" in Part 2** — this project uses Postgres via Lovable Cloud. I'll validate against the actual schema (`app_role` enum + `user_roles` policies) using the existing audit infrastructure.
+- **Notifications** — I'll wire Slack/Discord/Teams/generic webhooks via repo secrets (`SLACK_WEBHOOK_URL`, `DISCORD_WEBHOOK_URL`, `TEAMS_WEBHOOK_URL`, `GENERIC_WEBHOOK_URL`). User must add the secret(s) they want active; absent secrets are skipped silently.
 
-Build a deterministic Node script that fails on mismatches.
+## Plan
 
-`scripts/security-audit.mjs`
-1. Parse `src/lib/route-authorization.ts` → extract `ROUTE_PERMISSIONS` matrix.
-2. Walk `src/routes/_authenticated.dashboard.*.tsx` → confirm each has `beforeLoad` calling `requireRolesOrRedirect` with roles matching the matrix. Fail on any protected route without a guard.
-3. Scan `src/**/*.functions.ts` → flag any `createServerFn` that imports `client.server` / does privileged work but lacks `requireSupabaseAuth` + an explicit `has_role` check.
-4. Query the DB (via psql with PG* env) for:
-   - tables in `public` with `rowsecurity = false`
-   - tables with zero policies
-   - any policy referencing roles not present in `app_role` enum
-5. Cross-check `ROUTE_PERMISSIONS` vs RLS: for each dashboard surface, list the tables it reads and confirm RLS policies allow only the same role set (manual mapping table in the script).
-6. Grep client bundle entry points for `SUPABASE_SERVICE_ROLE_KEY` / `client.server` imports outside `.server.ts` → fail.
+### Part 1 — CI failure notifications
+- New `scripts/notify-failure.mjs` — reusable, reads payload JSON + iterates configured webhook env vars, formats per channel (Slack blocks, Discord embeds, Teams MessageCard, generic POST).
+- Update `.github/workflows/launch-readiness.yml`:
+  - Add `if: failure()` notify step at job end, passing env/branch/sha/workflow/job/run URL + artifact URLs.
+  - Wire secrets via `env:` block.
 
-Outputs (regenerated each run):
-- `docs/infrastructure/security-audit-report.md` — pass/fail summary + findings table.
-- `docs/infrastructure/rls-route-consistency-report.md` — overwrite existing with script-generated matrix.
+### Part 2 — Predeploy schema validation
+- New `scripts/predeploy-schema-validation.ts` (run via `tsx`):
+  - Reads `AppRole` from `src/lib/route-authorization.ts` (already canonical role source).
+  - Reads route→role map from same module.
+  - Queries Postgres for `app_role` enum values + `user_roles` policy targets via `psql` (uses existing PG* env).
+  - Diffs both directions; checks every protected route maps to known roles; flags orphans/duplicates.
+  - Writes `artifacts/schema-validation.json` with `{status, missingRoles, extraRoles, missingRoutes, invalidPermissions, timestamp}`.
+  - Exits non-zero on mismatch.
+- Hook into `launch-readiness.yml` as a required step before deploy gating.
 
-Wire into `.github/workflows/authorization-verification.yml` as a required step.
+### Part 3 — Persistence
+- Migration `launch_readiness_runs` table with all listed columns (jsonb for `audit_*`, `artifact_urls`), indexes on `created_at desc`, `branch`, `environment`, `overall_status`.
+- RLS: admin-only SELECT via `has_role(auth.uid(),'admin')`; INSERT via service_role only.
+- GRANTs: `SELECT` to `authenticated`, `ALL` to `service_role`.
+- Typed model + repository in `src/lib/launch-readiness.functions.ts` (server fns: `getLatestRun`, `listRuns({page,filters})`, `getRun(id)`).
+- Ingestion via internal route `POST /api/public/launch-readiness/ingest` guarded by HMAC `LAUNCH_READINESS_INGEST_SECRET` (workflow posts after audit completes).
 
-## Phase C — Playwright E2E with seeded fixtures
+### Part 4 — Admin dashboard
+- Route `src/routes/_authenticated/admin.launch-readiness.tsx`:
+  - Role gate: `has_role admin` via existing `RoleGuard`.
+  - Summary cards (Overall, Audit Errors/Warnings, PW Pass/Fail, Sec Pass/Fail, Last Check, SHA, Env).
+  - Audit breakdown by category (Security/A11y/SEO/Perf/Architecture) — fed from `audit.json` shape already produced by `security-audit.mjs` (extended to bucket categories).
+  - Playwright section + report link.
+  - Schema validation block.
+  - Artifacts download list.
+  - Historical table with pagination + filter (env, branch, status) using shadcn `Table`, `Select`, `Pagination`.
 
-### Seed migration (dev/staging only)
+### Part 5 — Workflow artifacts
+- Update `launch-readiness.yml` to always (`if: always()`) upload: `audit.json`, `playwright-report/`, `security-logs/`, `artifacts/schema-validation.json` via `actions/upload-artifact@v4`, `retention-days: 30`.
+- After upload, POST run summary (with artifact URLs constructed from `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`) to ingest endpoint.
 
-New migration: idempotent seed for test users via `auth.admin` is not available from SQL, so instead:
-- Create `scripts/seed-test-users.mjs` using `supabaseAdmin` (service role) — runs only when `ENVIRONMENT !== 'production'` (guard in script).
-- Provisions: `student.test@higaet.dev`, `counselor.test@higaet.dev`, `faculty.test@higaet.dev`, `admin.test@higaet.dev` (password from `TEST_FIXTURE_PASSWORD` secret, generated once).
-- Idempotent: upsert via `getUserByEmail`; assign role in `user_roles` with `ON CONFLICT DO NOTHING`.
-- Only roles already in `app_role` enum.
-- Document in `docs/testing/e2e-test-users.md`.
+### Part 6 — API endpoints
+TanStack server fns (preferred over raw routes for app-internal):
+- `getLatestReadiness`, `listReadinessHistory`, `getReadinessRun(id)`, `getReadinessArtifacts(id)` — all `.middleware([requireSupabaseAuth])` + admin role check inside handler.
 
-### Playwright suite
+### Part 7 — Observability
+- Reuse existing logger from `src/lib/` (or add thin `src/lib/logger.ts` if absent). Log validation start/finish, workflow failures, artifact uploads, dashboard access at `info`/`error`. No `console.log`.
 
-`tests/e2e/auth/` — one spec per scenario, shared fixtures in `tests/e2e/fixtures.ts`:
+### Part 8 — Quality
+- TS strict throughout.
+- Vitest tests: `tests/integration/role-validation.test.mjs`, `permission-validation.test.mjs`, server-fn unit tests.
+- Playwright: `tests/e2e/admin/launch-readiness.spec.ts` covering load, filter, artifact link.
 
-| Spec | Coverage |
-|---|---|
-| `registration.spec.ts` | Sign-up form, email validation |
-| `login.spec.ts` | Each role logs in → lands on correct dashboard |
-| `logout.spec.ts` | Sign-out clears cache, back-button cannot restore |
-| `password-reset.spec.ts` | Forgot password flow renders + submits |
-| `session-expiry.spec.ts` | Expired token → redirect to `/auth/login` |
-| `role-redirect.spec.ts` | `dashboardForRoles()` mapping per role |
-| `protected-routes.spec.ts` | Unauth → `/auth/login?redirect=`; wrong role → `/403` with `from` + `required` |
-| `403-page.spec.ts` | 403 renders user roles + missing roles |
-| `redirect-preservation.spec.ts` | Deep-link → login → returns to original URL |
-| `mobile-nav.spec.ts` | Header guest/user toggle on mobile viewport |
+## Files
 
-Run via `bunx playwright test`. Local config uses `http://localhost:8080`; CI uses preview URL.
+**Created**
+- `scripts/notify-failure.mjs`
+- `scripts/predeploy-schema-validation.ts`
+- `src/lib/launch-readiness.functions.ts`
+- `src/lib/launch-readiness.types.ts`
+- `src/routes/_authenticated/admin.launch-readiness.tsx`
+- `src/routes/api/public/launch-readiness.ingest.ts`
+- `tests/integration/role-validation.test.mjs`
+- `tests/integration/permission-validation.test.mjs`
+- `tests/e2e/admin/launch-readiness.spec.ts`
+- migration: `launch_readiness_runs`
 
-### Reports
+**Modified**
+- `.github/workflows/launch-readiness.yml` (notify + uploads + ingest + schema validation step)
+- `scripts/security-audit.mjs` (bucket findings by category for dashboard)
+- `package.json` (scripts: `predeploy:validate`, `notify:failure`)
 
-- `docs/testing/playwright-test-matrix.md` — scenario × role grid with expected outcomes.
-- `docs/testing/launch-readiness-report.md` — generated by a small post-run script that parses Playwright JSON results into the matrix from the planning doc, with pass-rate.
+## Environment variables
+Repo/workflow secrets (user adds the channels they want):
+- `SLACK_WEBHOOK_URL`, `DISCORD_WEBHOOK_URL`, `TEAMS_WEBHOOK_URL`, `GENERIC_WEBHOOK_URL` — optional, any combination
+- `LAUNCH_READINESS_INGEST_SECRET` — HMAC for ingest endpoint (will mint via `generate_secret`)
+- DB: existing `PGHOST/PGPORT/PGUSER/PGPASSWORD/PGDATABASE` already wired in CI
 
-### CI
+## Blockers / decisions to confirm
+1. **Scope confirmation** — this is ~10 files + migration + workflow rewrite + tests. ~30+ min of edits. Confirm proceed full scope, or trim (e.g. ship Parts 2/3/4/6 first; defer notifications + tests to next pass)?
+2. **Notification channel** — which webhook(s) do you want active on day 1? I'll still wire all four; the secret you provide decides which fire.
+3. **Ingest source of truth** — OK with workflow POSTing readiness JSON to `/api/public/launch-readiness/ingest` (HMAC-signed) rather than a direct DB write from CI? This keeps DB creds out of GitHub Actions.
 
-Extend `.github/workflows/authorization-verification.yml`:
-1. Run `scripts/security-audit.mjs` (Phase A gate).
-2. Apply migrations + run `scripts/seed-test-users.mjs` against the dev backend.
-3. `bunx playwright install --with-deps chromium`.
-4. `bunx playwright test`.
-5. Upload `playwright-report/` + generated readiness report as artifacts.
-
-## Out of scope (deferred per directive)
-
-Onboarding wizard, new dashboard aliases, role enum changes, payments/email/backup validation, mentor/placement/enterprise portals.
-
-## Files to create
-
-- `scripts/security-audit.mjs`
-- `scripts/seed-test-users.mjs`
-- `scripts/generate-readiness-report.mjs`
-- `playwright.config.ts` (if absent)
-- `tests/e2e/fixtures.ts` + 10 spec files above
-- `docs/testing/e2e-test-users.md`
-- `docs/testing/playwright-test-matrix.md`
-- `docs/infrastructure/security-audit-report.md` (script-generated)
-
-## Files to edit
-
-- `.github/workflows/authorization-verification.yml` — add audit + E2E jobs
-- `docs/infrastructure/rls-route-consistency-report.md` — convert to generated artifact
-
-## Secrets needed
-
-- `TEST_FIXTURE_PASSWORD` — generated via `generate_secret`, used by seed script and Playwright.
-
-Approve to proceed, or trim spec count / drop CI wiring if you want a smaller first cut.
+Confirm scope (full vs trimmed) + the three answers above and I'll execute in one pass.
