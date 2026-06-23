@@ -67,6 +67,30 @@ function ProviderHealthDashboard() {
         </div>
       </header>
 
+      <div className="flex border-b border-border gap-1">
+        {(
+          [
+            ["providers", "Providers"],
+            ["queue", "Embedding queue"],
+          ] as const
+        ).map(([k, label]) => (
+          <button
+            key={k}
+            onClick={() => setTab(k)}
+            className={`px-4 py-2 text-sm -mb-px border-b-2 ${
+              tab === k
+                ? "border-primary text-ink"
+                : "border-transparent text-muted-foreground hover:text-ink"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "queue" && <EmbeddingQueueTab />}
+      {tab === "providers" && (
+        <>
       {/* Live ping results */}
       <section className="p-5 rounded-xl border border-border bg-surface">
         <h2 className="text-sm font-medium text-ink mb-3">Live ping</h2>
