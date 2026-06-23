@@ -351,12 +351,109 @@ function buildReport(): string {
   return lines.join("\n") + "\n";
 }
 
+// ---------- History + Step Summary ----------
+function categoryStatus(cat: string): "PASS" | "FAIL" {
+  const rows = checks.filter((c) => c.required && c.category === cat);
+  if (rows.length === 0) return "FAIL";
+  return rows.every((r) => r.status === "PASS") ? "PASS" : "FAIL";
+}
+
+function buildStepSummary(overall: "GO" | "NO-GO"): string {
+  const runId = env.GITHUB_RUN_ID ?? "local";
+  const repo = env.GITHUB_REPOSITORY ?? "";
+  const artifactLink = repo && runId !== "local"
+    ? `https://github.com/${repo}/actions/runs/${runId}`
+    : `\`${evidenceDir}\``;
+  const rows: Array<[string, string]> = [
+    ["DNS", categoryStatus("DNS")],
+    ["SSL", categoryStatus("SSL")],
+    ["SSH", categoryStatus("SSH")],
+    ["GitHub Environment", checks.find((c) => c.name === "staging environment exists")?.status ?? "FAIL"],
+    ["Required Secrets", checks.filter((c) => c.category === "GitHub" && c.name.startsWith("Secret ")).every((c) => c.status === "PASS") ? "PASS" : "FAIL"],
+    ["Deploy Directory", checks.find((c) => c.name.includes("writable"))?.status ?? "FAIL"],
+    ["Node Runtime", checks.find((c) => c.name === "Node 20 available")?.status ?? "FAIL"],
+    ["Passenger Restart", checks.find((c) => c.name.includes("Passenger"))?.status ?? "FAIL"],
+  ];
+  const lines = [
+    "## Staging Readiness",
+    "",
+    `- **Timestamp:** ${startedAt.toISOString()}`,
+    `- **Run ID:** ${runId}`,
+    `- **Evidence:** ${artifactLink}`,
+    "",
+    "| Check | Status |",
+    "| --- | --- |",
+    ...rows.map(([k, v]) => `| ${k} | ${v === "PASS" ? "✅ PASS" : "❌ FAIL"} |`),
+    "",
+    `**STATUS: ${overall}**`,
+    "",
+  ];
+  return lines.join("\n");
+}
+
+function updateHistory(overall: "GO" | "NO-GO"): { prior: "GO" | "NO-GO" | null } {
+  const historyPath = resolve(
+    process.cwd(),
+    "docs/infrastructure/staging-readiness-history.md",
+  );
+  const header = [
+    "# Staging Readiness History",
+    "",
+    "Auto-maintained by `scripts/check-staging-readiness.ts`. Newest first.",
+    "",
+    "| Timestamp | Run ID | DNS | SSL | SSH | Secrets | Result | Evidence |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- |",
+  ];
+  let existing = "";
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    existing = require("node:fs").readFileSync(historyPath, "utf8");
+  } catch {}
+  const existingRows = existing
+    .split("\n")
+    .filter((l) => l.startsWith("| ") && !l.startsWith("| ---") && !l.startsWith("| Timestamp"));
+  const prior: "GO" | "NO-GO" | null = existingRows.length
+    ? (existingRows[0].includes("| GO |") ? "GO" : "NO-GO")
+    : null;
+  const runId = env.GITHUB_RUN_ID ?? "local";
+  const repo = env.GITHUB_REPOSITORY ?? "";
+  const evidenceLink = repo && runId !== "local"
+    ? `[run](https://github.com/${repo}/actions/runs/${runId})`
+    : "local";
+  const secretsStatus = checks
+    .filter((c) => c.category === "GitHub" && c.name.startsWith("Secret "))
+    .every((c) => c.status === "PASS")
+    ? "PASS"
+    : "FAIL";
+  const newRow = `| ${startedAt.toISOString()} | ${runId} | ${categoryStatus("DNS")} | ${categoryStatus("SSL")} | ${categoryStatus("SSH")} | ${secretsStatus} | ${overall} | ${evidenceLink} |`;
+  const body = [...header, newRow, ...existingRows].join("\n") + "\n";
+  writeFileSync(historyPath, body);
+  return { prior };
+}
+
+function appendGithubOutput(kv: Record<string, string>): void {
+  const out = env.GITHUB_OUTPUT;
+  if (!out) return;
+  const lines = Object.entries(kv).map(([k, v]) => `${k}=${v}`).join("\n") + "\n";
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require("node:fs").appendFileSync(out, lines);
+}
+
+function appendStepSummary(body: string): void {
+  const out = env.GITHUB_STEP_SUMMARY;
+  if (!out) return;
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require("node:fs").appendFileSync(out, body);
+}
+
 (async () => {
   try {
     await checkDns();
     await checkSsl();
     await checkSsh();
     await checkGithub();
+    const failed = checks.filter((c) => c.required && c.status === "FAIL");
+    const overall: "GO" | "NO-GO" = failed.length === 0 ? "GO" : "NO-GO";
     const report = buildReport();
     const reportPath = resolve(
       process.cwd(),
@@ -364,11 +461,19 @@ function buildReport(): string {
     );
     writeFileSync(reportPath, report);
     writeArtifact("summary.json", JSON.stringify(checks, null, 2));
+    const { prior } = updateHistory(overall);
+    appendStepSummary(buildStepSummary(overall));
+    appendGithubOutput({
+      status: overall,
+      transitioned: prior === "NO-GO" && overall === "GO" ? "true" : "false",
+      prior_status: prior ?? "none",
+    });
     console.log(`\nReport: ${reportPath}`);
-    const failed = checks.filter((c) => c.required && c.status === "FAIL");
-    process.exit(failed.length === 0 ? 0 : 1);
+    console.log(`Overall: ${overall} (prior: ${prior ?? "none"})`);
+    process.exit(overall === "GO" ? 0 : 1);
   } catch (err) {
     console.error("[readiness] checker errored:", err);
     process.exit(2);
   }
 })();
+

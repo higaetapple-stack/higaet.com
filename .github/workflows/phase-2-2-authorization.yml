@@ -1,0 +1,39 @@
+name: Phase 2.2 Authorization Gate
+
+# Hard gate before any Phase 2.2 staging deployment. Re-runs the readiness
+# checker on demand and refuses to authorize when any required category is
+# FAIL. Replaces manual approval as the source of truth — deployment
+# workflows should require this job's success via `workflow_run` or by
+# inspecting the latest run.
+
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: phase-2-2-authorization
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  authorize:
+    uses: ./.github/workflows/staging-readiness.yml
+    secrets: inherit
+
+  gate:
+    needs: authorize
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decision
+        run: |
+          STATUS="${{ needs.authorize.outputs.status }}"
+          echo "## Phase 2.2 Authorization" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$STATUS" = "GO" ]; then
+            echo "**GO** — readiness PASS. Dispatch \`staging-rollback-validation.yml\` to deploy." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "**NO-GO** — readiness $STATUS. See \`docs/infrastructure/phase-2-2-prerequisite-report.md\`." >> "$GITHUB_STEP_SUMMARY"
+          exit 1
