@@ -29,15 +29,40 @@ const add = (severity, area, message, file) =>
 
 // ---- 1. Enum vs ROUTE_PERMISSIONS / AppRole ----------------------------------
 
-const ENUM_PATH = "supabase/migrations/20260613015152_280b0bc7-a527-4253-8ae5-8aec948aa3a9.sql";
+const MIGRATIONS_DIR = "supabase/migrations";
 const ROUTE_AUTH_PATH = "src/lib/route-authorization.ts";
 const AUTH_FN_PATH = "src/lib/auth.functions.ts";
 
+// Prefer the live DB enum when PGHOST is available; otherwise reconstruct it
+// from all migration files (CREATE TYPE + ALTER TYPE ADD VALUE).
 const enumRoles = (() => {
-  const sql = readFileSync(ENUM_PATH, "utf8");
-  const m = sql.match(/CREATE TYPE public\.app_role AS ENUM \(([^)]+)\)/);
-  if (!m) return [];
-  return [...m[1].matchAll(/'([a-z_]+)'/g)].map((x) => x[1]);
+  if (process.env.PGHOST) {
+    try {
+      const out = execSync(
+        `psql -At -c "SELECT unnest(enum_range(NULL::public.app_role))"`,
+        { encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] },
+      ).trim();
+      const live = out.split("\n").filter(Boolean);
+      if (live.length) return live;
+    } catch {
+      // fall through to file scan
+    }
+  }
+  const roles = new Set();
+  const files = existsSync(MIGRATIONS_DIR)
+    ? readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith(".sql")).sort()
+    : [];
+  for (const f of files) {
+    const sql = readFileSync(join(MIGRATIONS_DIR, f), "utf8");
+    const create = sql.match(/CREATE TYPE\s+public\.app_role\s+AS ENUM\s*\(([^)]+)\)/i);
+    if (create) for (const m of create[1].matchAll(/'([a-z_]+)'/g)) roles.add(m[1]);
+    for (const m of sql.matchAll(
+      /ALTER TYPE\s+public\.app_role\s+ADD VALUE(?:\s+IF NOT EXISTS)?\s+'([a-z_]+)'/gi,
+    )) {
+      roles.add(m[1]);
+    }
+  }
+  return [...roles];
 })();
 
 const appRoleTypeRoles = (() => {
