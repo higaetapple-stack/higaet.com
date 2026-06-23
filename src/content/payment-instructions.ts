@@ -1,42 +1,42 @@
 /**
  * Payment instructions shown to users on the manual checkout page.
- * Edit these values to match HIGAET's real receiving accounts.
+ * These are HIGAET's real receiving accounts.
  */
 export const PAYMENT_INSTRUCTIONS = {
   upi: {
-    id: "higaet@upi",
+    ids: ["higaet@ybl", "higaet@ibl", "higaet@axl"] as const,
     name: "HIGAET",
-    qrImage: "/payment-qr.png", // place file in public/ or replace with hosted URL
+    qrImage: "/payment-qr.png",
   },
   bank: {
     accountName: "Helen Institute of Gen AI Engineering & Technology",
-    accountNumber: "XXXXXXXXXXXX",
-    ifsc: "XXXXX0000000",
-    bankName: "HDFC Bank",
-    branch: "Bengaluru",
+    accountNumber: "39700100002312",
+    ifsc: "BARB0NARASA",
+    bankName: "Bank of Baroda",
+    branch: "Narasaraopet",
   },
   paypal: {
     email: "payments@higaet.com",
   },
   bankWire: {
-    accountName: "HIGAET Technologies Pvt Ltd",
-    accountNumber: "XXXXXXXXXXXX",
-    swift: "HDFCINBB",
-    bankName: "HDFC Bank",
-    address: "Bengaluru, India",
+    accountName: "Helen Institute of Gen AI Engineering & Technology",
+    accountNumber: "39700100002312",
+    swift: "BARBINBBXXX",
+    bankName: "Bank of Baroda",
+    address: "Narasaraopet, Andhra Pradesh, India",
   },
 } as const;
 
 export const PAYMENT_METHODS = [
-  { value: "upi", label: "UPI", region: "IN" },
-  { value: "google_pay", label: "Google Pay", region: "IN" },
-  { value: "phonepe", label: "PhonePe", region: "IN" },
-  { value: "paytm", label: "Paytm", region: "IN" },
-  { value: "amazon_pay", label: "Amazon Pay UPI", region: "IN" },
-  { value: "bank_transfer", label: "Bank Transfer (NEFT/IMPS/RTGS)", region: "IN" },
-  { value: "paypal", label: "PayPal", region: "INTL" },
-  { value: "bank_wire", label: "Bank Wire", region: "INTL" },
-  { value: "other", label: "Other", region: "ANY" },
+  { value: "upi", label: "UPI", region: "IN", icon: "📲" },
+  { value: "google_pay", label: "Google Pay", region: "IN", icon: "🟢" },
+  { value: "phonepe", label: "PhonePe", region: "IN", icon: "🟣" },
+  { value: "paytm", label: "Paytm", region: "IN", icon: "🔵" },
+  { value: "amazon_pay", label: "Amazon Pay UPI", region: "IN", icon: "🟠" },
+  { value: "bank_transfer", label: "Bank Transfer (NEFT/IMPS/RTGS)", region: "IN", icon: "🏦" },
+  { value: "paypal", label: "PayPal", region: "INTL", icon: "💳" },
+  { value: "bank_wire", label: "Bank Wire (International)", region: "INTL", icon: "🌐" },
+  { value: "other", label: "Other", region: "ANY", icon: "•" },
 ] as const;
 
 export const PAYMENT_PURPOSES = [
@@ -47,4 +47,11 @@ export const PAYMENT_PURPOSES = [
   { value: "proposal", label: "Proposal" },
   { value: "subscription", label: "Subscription" },
   { value: "other", label: "Other" },
+] as const;
+
+export const PAYMENT_STATUS_FLOW = [
+  { key: "pending_verification", label: "Pending Verification" },
+  { key: "info_requested", label: "More Information Required" },
+  { key: "approved", label: "Approved" },
+  { key: "rejected", label: "Rejected" },
 ] as const;

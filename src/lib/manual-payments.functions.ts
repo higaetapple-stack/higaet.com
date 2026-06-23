@@ -62,8 +62,43 @@ export const submitManualPayment = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+    await notify(supabase, userId, {
+      event_type: "payment.submitted",
+      title: "Payment Submitted",
+      body: "We received your payment proof and will verify it shortly.",
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: row.id },
+    });
     return { id: row.id };
   });
+
+async function notify(
+  supabase: any,
+  userId: string,
+  n: {
+    event_type: string;
+    title: string;
+    body: string;
+    action_url?: string;
+    data?: Record<string, unknown>;
+    priority?: "low" | "normal" | "high";
+  },
+) {
+  try {
+    await supabase.from("notifications").insert({
+      user_id: userId,
+      event_type: n.event_type,
+      category: "payment",
+      title: n.title,
+      body: n.body,
+      action_url: n.action_url ?? null,
+      priority: n.priority ?? "normal",
+      data: n.data ?? {},
+    });
+  } catch {
+    // best-effort; never block the payment flow on notification failure
+  }
+}
 
 export const listMyManualPayments = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -210,13 +245,21 @@ export const adminApprovePayment = createServerFn({ method: "POST" })
       })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+    let activation_warning: string | undefined;
     try {
       await activateForPayment(context.supabase, payment);
     } catch (e) {
-      // Don't fail the approval if downstream activation has an issue — surface it
-      return { ok: true, activation_warning: (e as Error).message };
+      activation_warning = (e as Error).message;
     }
-    return { ok: true };
+    await notify(context.supabase, payment.user_id, {
+      event_type: "payment.approved",
+      title: "Payment Approved",
+      body: "Your payment has been approved and the requested service has been activated.",
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: payment.id },
+      priority: "high",
+    });
+    return activation_warning ? { ok: true, activation_warning } : { ok: true };
   });
 
 export const adminRejectPayment = createServerFn({ method: "POST" })
@@ -231,7 +274,7 @@ export const adminRejectPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const { error } = await context.supabase
+    const { data: row, error } = await context.supabase
       .from("payments")
       .update({
         status: "rejected",
@@ -239,8 +282,18 @@ export const adminRejectPayment = createServerFn({ method: "POST" })
         verified_at: new Date().toISOString(),
         rejection_reason: data.reason,
       })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("user_id")
+      .single();
     if (error) throw new Error(error.message);
+    await notify(context.supabase, row.user_id, {
+      event_type: "payment.rejected",
+      title: "Payment Rejected",
+      body: `Your payment could not be verified: ${data.reason}`,
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: data.id, reason: data.reason },
+      priority: "high",
+    });
     return { ok: true };
   });
 
@@ -256,13 +309,23 @@ export const adminRequestPaymentInfo = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const { error } = await context.supabase
+    const { data: row, error } = await context.supabase
       .from("payments")
       .update({
         status: "info_requested",
         rejection_reason: data.reason,
       })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("user_id")
+      .single();
     if (error) throw new Error(error.message);
+    await notify(context.supabase, row.user_id, {
+      event_type: "payment.info_requested",
+      title: "More Information Required",
+      body: `Additional payment details are required: ${data.reason}`,
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: data.id, reason: data.reason },
+      priority: "high",
+    });
     return { ok: true };
   });

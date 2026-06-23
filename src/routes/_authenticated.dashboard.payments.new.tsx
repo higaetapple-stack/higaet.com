@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Download, Maximize2 } from "lucide-react";
 import {
   listMyManualPayments,
   submitManualPayment,
@@ -19,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -27,6 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { CopyButton } from "@/components/payments/CopyButton";
+import { PaymentStatusTimeline } from "@/components/payments/PaymentStatusTimeline";
 
 const SearchSchema = z.object({
   purpose: z.string().optional(),
@@ -40,13 +44,6 @@ export const Route = createFileRoute("/_authenticated/dashboard/payments/new")({
   validateSearch: (s) => SearchSchema.parse(s),
   component: NewPaymentPage,
 });
-
-const STATUS_COLOR: Record<string, string> = {
-  pending_verification: "bg-warning/15 text-warning",
-  approved: "bg-success/15 text-success",
-  rejected: "bg-destructive/15 text-destructive",
-  info_requested: "bg-warning/15 text-warning",
-};
 
 function NewPaymentPage() {
   const search = Route.useSearch();
@@ -110,7 +107,8 @@ function NewPaymentPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const isIndia = ["upi", "google_pay", "phonepe", "paytm", "amazon_pay", "bank_transfer"].includes(method);
+  const isUpiLike = ["upi", "google_pay", "phonepe", "paytm", "amazon_pay"].includes(method);
+  const isBank = method === "bank_transfer";
   const isPaypal = method === "paypal";
   const isWire = method === "bank_wire";
 
@@ -123,63 +121,93 @@ function NewPaymentPage() {
         </p>
       </header>
 
+      {/* Method picker as visual cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" role="radiogroup" aria-label="Payment method">
+        {PAYMENT_METHODS.map((m) => (
+          <button
+            type="button"
+            key={m.value}
+            role="radio"
+            aria-checked={method === m.value}
+            onClick={() => setMethod(m.value)}
+            className={cn(
+              "rounded-lg border p-3 text-left transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              method === m.value ? "border-primary bg-primary/5" : "border-border",
+            )}
+          >
+            <div className="text-lg" aria-hidden>{m.icon}</div>
+            <div className="text-sm font-medium mt-1">{m.label}</div>
+            <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{m.region}</div>
+          </button>
+        ))}
+      </div>
+
       <div className="grid lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>1. Pay using your preferred method</CardTitle>
+            <CardTitle>1. Pay using {PAYMENT_METHODS.find((m) => m.value === method)?.label}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>Method</Label>
-              <Select value={method} onValueChange={setMethod}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {PAYMENT_METHODS.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {(isUpiLike || isBank) && (
+              <>
+                {isUpiLike && (
+                  <div className="rounded-md border border-border p-4 space-y-3 text-sm">
+                    <div className="font-medium">UPI</div>
+                    <ul className="space-y-1">
+                      {PAYMENT_INSTRUCTIONS.upi.ids.map((id) => (
+                        <li key={id} className="flex items-center justify-between gap-2">
+                          <span className="font-mono">{id}</span>
+                          <CopyButton value={id} label={`UPI ID ${id}`} />
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="text-xs text-muted-foreground">Name: {PAYMENT_INSTRUCTIONS.upi.name}</div>
 
-            {isIndia && (
-              <div className="rounded-md border border-border p-4 space-y-2 text-sm">
-                <div className="font-medium">UPI</div>
-                <div>UPI ID: <span className="font-mono">{PAYMENT_INSTRUCTIONS.upi.id}</span></div>
-                <div>Name: {PAYMENT_INSTRUCTIONS.upi.name}</div>
-                <img
-                  src={PAYMENT_INSTRUCTIONS.upi.qrImage}
-                  alt="UPI QR code"
-                  className="size-40 border border-border rounded-md mt-2"
-                  onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
-                />
-                <div className="pt-3 mt-3 border-t border-border">
-                  <div className="font-medium mb-1">Bank transfer (NEFT / IMPS / RTGS)</div>
-                  <div>Account: {PAYMENT_INSTRUCTIONS.bank.accountName}</div>
-                  <div>A/C No: <span className="font-mono">{PAYMENT_INSTRUCTIONS.bank.accountNumber}</span></div>
-                  <div>IFSC: <span className="font-mono">{PAYMENT_INSTRUCTIONS.bank.ifsc}</span></div>
-                  <div>Bank: {PAYMENT_INSTRUCTIONS.bank.bankName}, {PAYMENT_INSTRUCTIONS.bank.branch}</div>
-                </div>
-              </div>
+                    <QrSection />
+                  </div>
+                )}
+                {isBank && (
+                  <div className="rounded-md border border-border p-4 space-y-2 text-sm">
+                    <div className="font-medium">Bank transfer (NEFT / IMPS / RTGS)</div>
+                    <DetailRow label="Account name" value={PAYMENT_INSTRUCTIONS.bank.accountName} mono={false} />
+                    <DetailRow label="Account number" value={PAYMENT_INSTRUCTIONS.bank.accountNumber} />
+                    <DetailRow label="IFSC" value={PAYMENT_INSTRUCTIONS.bank.ifsc} />
+                    <DetailRow label="Bank" value={`${PAYMENT_INSTRUCTIONS.bank.bankName}, ${PAYMENT_INSTRUCTIONS.bank.branch}`} mono={false} />
+                  </div>
+                )}
+              </>
             )}
 
             {isPaypal && (
-              <div className="rounded-md border border-border p-4 space-y-1 text-sm">
+              <div className="rounded-md border border-border p-4 space-y-2 text-sm">
                 <div className="font-medium">PayPal</div>
-                <div>Send to: <span className="font-mono">{PAYMENT_INSTRUCTIONS.paypal.email}</span></div>
+                <DetailRow label="Send to" value={PAYMENT_INSTRUCTIONS.paypal.email} />
                 <div className="text-muted-foreground text-xs">Please send as &quot;Goods &amp; Services&quot; and include your name in the note.</div>
               </div>
             )}
 
             {isWire && (
-              <div className="rounded-md border border-border p-4 space-y-1 text-sm">
+              <div className="rounded-md border border-border p-4 space-y-2 text-sm">
                 <div className="font-medium">International bank wire</div>
-                <div>Beneficiary: {PAYMENT_INSTRUCTIONS.bankWire.accountName}</div>
-                <div>A/C No: <span className="font-mono">{PAYMENT_INSTRUCTIONS.bankWire.accountNumber}</span></div>
-                <div>SWIFT: <span className="font-mono">{PAYMENT_INSTRUCTIONS.bankWire.swift}</span></div>
-                <div>Bank: {PAYMENT_INSTRUCTIONS.bankWire.bankName}</div>
-                <div>{PAYMENT_INSTRUCTIONS.bankWire.address}</div>
+                <DetailRow label="Beneficiary" value={PAYMENT_INSTRUCTIONS.bankWire.accountName} mono={false} />
+                <DetailRow label="Account number" value={PAYMENT_INSTRUCTIONS.bankWire.accountNumber} />
+                <DetailRow label="SWIFT" value={PAYMENT_INSTRUCTIONS.bankWire.swift} />
+                <DetailRow label="Bank" value={PAYMENT_INSTRUCTIONS.bankWire.bankName} mono={false} />
+                <div className="text-xs text-muted-foreground">{PAYMENT_INSTRUCTIONS.bankWire.address}</div>
               </div>
             )}
+
+            <div className="rounded-md bg-muted/40 border border-border p-4 text-sm">
+              <div className="font-medium mb-2">How it works</div>
+              <ol className="list-decimal pl-5 space-y-1 text-muted-foreground">
+                <li>Make the payment using the details above</li>
+                <li>Save the success screenshot from your app</li>
+                <li>Enter the UTR / transaction ID on the right</li>
+                <li>Upload the screenshot as proof</li>
+                <li>Submit for verification</li>
+                <li>You&apos;ll be notified once an admin verifies it (usually within a few hours)</li>
+              </ol>
+            </div>
           </CardContent>
         </Card>
 
@@ -225,7 +253,7 @@ function NewPaymentPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Screenshot (optional)</Label>
+              <Label>Screenshot (recommended)</Label>
               <Input type="file" accept="image/*,application/pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
             </div>
 
@@ -251,7 +279,7 @@ function NewPaymentPage() {
           ) : (
             <ul className="divide-y divide-border">
               {myQ.data!.map((p) => (
-                <li key={p.id} className="py-3 flex items-center justify-between gap-4">
+                <li key={p.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <div className="text-sm font-medium">
                       {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
@@ -262,13 +290,67 @@ function NewPaymentPage() {
                       <div className="text-xs text-destructive mt-1">{p.rejection_reason}</div>
                     )}
                   </div>
-                  <Badge className={STATUS_COLOR[p.status] ?? ""}>{p.status.replace(/_/g, " ")}</Badge>
+                  <PaymentStatusTimeline status={p.status} />
                 </li>
               ))}
             </ul>
           )}
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function DetailRow({ label, value, mono = true }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <div>
+        <div className="text-xs text-muted-foreground">{label}</div>
+        <div className={cn("text-sm", mono && "font-mono")}>{value}</div>
+      </div>
+      <CopyButton value={value} label={label} />
+    </div>
+  );
+}
+
+function QrSection() {
+  return (
+    <div className="pt-2">
+      <Dialog>
+        <div className="flex flex-col items-start gap-2">
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="group relative"
+              aria-label="Open QR full screen"
+            >
+              <img
+                src={PAYMENT_INSTRUCTIONS.upi.qrImage}
+                alt="HIGAET UPI QR code — scan to pay"
+                className="size-44 border border-border rounded-md bg-white p-2"
+                onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+              />
+              <span className="absolute inset-0 hidden group-hover:flex items-center justify-center bg-black/40 text-white rounded-md">
+                <Maximize2 className="size-5" />
+              </span>
+            </button>
+          </DialogTrigger>
+          <div className="flex gap-2">
+            <Button asChild size="sm" variant="outline">
+              <a href={PAYMENT_INSTRUCTIONS.upi.qrImage} download="higaet-payment-qr.png">
+                <Download className="size-3.5 mr-1" /> Download QR
+              </a>
+            </Button>
+          </div>
+        </div>
+        <DialogContent className="max-w-md">
+          <img
+            src={PAYMENT_INSTRUCTIONS.upi.qrImage}
+            alt="HIGAET UPI QR code — full size"
+            className="w-full h-auto rounded-md bg-white p-4"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
