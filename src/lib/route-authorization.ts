@@ -31,22 +31,29 @@ export function hasAnyRole(userRoles: AppRole[], allowed: AppRole[]): boolean {
 }
 
 /**
- * For use inside a route's `beforeLoad`. Throws a redirect to /dashboard
- * if the user lacks any of the required roles. Always allows admin / super_admin.
+ * Use inside a route's `beforeLoad`. Behavior:
+ *  - Unauthenticated → redirect to `/auth/login?redirect=<location>`.
+ *  - Authenticated but unauthorized → redirect to `/403` with `from` + `required`.
+ *  - `admin` / `super_admin` always bypass.
  */
 export async function requireRolesOrRedirect(
   required: AppRole[],
-  fallback: string = "/dashboard",
+  opts?: { location?: { href: string; pathname: string } },
 ): Promise<AppRole[]> {
+  const here = opts?.location?.href ?? opts?.location?.pathname ?? "/dashboard";
+  let roles: AppRole[];
   try {
-    const roles = await getMyRoles();
-    const allowed = Array.from(new Set([...required, "admin" as AppRole, "super_admin" as AppRole]));
-    if (!hasAnyRole(roles, allowed)) {
-      throw redirect({ to: fallback });
-    }
-    return roles;
+    roles = await getMyRoles();
   } catch (e: any) {
     if (e?.isRedirect) throw e;
-    throw redirect({ to: fallback });
+    throw redirect({ to: "/auth/login", search: { redirect: here } as any });
   }
+  const allowed = Array.from(new Set([...required, "admin" as AppRole, "super_admin" as AppRole]));
+  if (!hasAnyRole(roles, allowed)) {
+    throw redirect({
+      to: "/403",
+      search: { from: here, required: required.join(",") } as any,
+    });
+  }
+  return roles;
 }

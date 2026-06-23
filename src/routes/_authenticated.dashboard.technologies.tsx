@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { requireRolesOrRedirect, ROUTE_PERMISSIONS } from "@/lib/route-authorization";
 
 export const Route = createFileRoute("/_authenticated/dashboard/technologies")({
-  beforeLoad: () => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/technologies"]),
+  beforeLoad: ({ location }) => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/technologies"], { location }),
   component: TechLayout,
 });
 

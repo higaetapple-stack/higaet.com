@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { requireRolesOrRedirect, ROUTE_PERMISSIONS } from "@/lib/route-authorization";
 
 export const Route = createFileRoute("/_authenticated/dashboard/career")({
-  beforeLoad: () => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/career"]),
+  beforeLoad: ({ location }) => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/career"], { location }),
   component: CareerLayout,
 });
 

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { requireRolesOrRedirect, ROUTE_PERMISSIONS } from "@/lib/route-authorization";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin")({
-  beforeLoad: () => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/admin"]),
+  beforeLoad: ({ location }) => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/admin"], { location }),
   component: AdminLayout,
 });
 
