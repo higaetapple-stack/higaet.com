@@ -24,7 +24,7 @@ describe("brevo client", () => {
     fetchMock.mockResolvedValueOnce(
       new Response(JSON.stringify({ messageId: "abc-123" }), { status: 201 }),
     );
-    const { sendBrevoEmail } = await import("../brevo.client");
+    const { sendBrevoEmail } = await import("../brevo");
     const res = await sendBrevoEmail({
       to: [{ email: "u@example.com" }],
       subject: "hi",
@@ -42,7 +42,7 @@ describe("brevo client", () => {
     fetchMock.mockResolvedValueOnce(
       new Response(JSON.stringify({ message: "bad" }), { status: 400 }),
     );
-    const { sendBrevoEmail } = await import("../brevo.client");
+    const { sendBrevoEmail } = await import("../brevo");
     const res = await sendBrevoEmail({
       to: [{ email: "u@example.com" }],
       subject: "hi",
