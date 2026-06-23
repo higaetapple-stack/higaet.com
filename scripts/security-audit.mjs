@@ -214,19 +214,12 @@ if (dbAvailable) {
     for (const t of noPolicies.split("\n").filter(Boolean)) {
       add("HIGH", "rls", `public.${t} has RLS enabled but no policies (locked).`);
     }
-    const tables = psql(
-      `SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-       WHERE n.nspname='public' AND c.relkind='r' ORDER BY relname`,
-    ).split("\n").filter(Boolean);
-    for (const t of tables) {
-      const lit = `'${t.replace(/'/g, "''")}'`;
-      const rls = psql(
-        `SELECT relrowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname=${lit}`,
-      );
-      const pc = psql(
-        `SELECT COUNT(*) FROM pg_policies WHERE schemaname='public' AND tablename=${lit}`,
-      );
-      dbRows.push({ table: t, rls: rls === "t", policies: Number(pc) });
+    const combined = psql(
+      `SELECT c.relname, c.relrowsecurity, COALESCE((SELECT COUNT(*) FROM pg_policies p WHERE p.schemaname='public' AND p.tablename=c.relname), 0) AS pcount FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind='r' ORDER BY c.relname`,
+    );
+    for (const line of combined.split("\n").filter(Boolean)) {
+      const [table, rls, policies] = line.split("|");
+      dbRows.push({ table, rls: rls === "t", policies: Number(policies) });
     }
   } catch (e) {
     add("INFO", "rls", `Database checks skipped: ${e.message.split("\n")[0]}`);
