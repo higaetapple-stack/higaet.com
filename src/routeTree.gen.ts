@@ -260,6 +260,7 @@ import { Route as AuthenticatedDashboardTechnologiesFinanceRouteImport } from '.
 import { Route as AuthenticatedDashboardTechnologiesContractsRouteImport } from './routes/_authenticated.dashboard.technologies.contracts'
 import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
+import { Route as AuthenticatedDashboardPaymentsNewRouteImport } from './routes/_authenticated.dashboard.payments.new'
 import { Route as AuthenticatedDashboardNotificationsPreferencesRouteImport } from './routes/_authenticated.dashboard.notifications.preferences'
 import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
 import { Route as AuthenticatedDashboardFacultySubmissionsRouteImport } from './routes/_authenticated.dashboard.faculty.submissions'
@@ -299,6 +300,7 @@ import { Route as AuthenticatedDashboardAdminRagRouteImport } from './routes/_au
 import { Route as AuthenticatedDashboardAdminProviderHealthRouteImport } from './routes/_authenticated.dashboard.admin.provider-health'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
+import { Route as AuthenticatedDashboardAdminPaymentsRouteImport } from './routes/_authenticated.dashboard.admin.payments'
 import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
 import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
 import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
@@ -1724,6 +1726,12 @@ const AuthenticatedDashboardProgramsSlugRoute =
     path: '/$slug',
     getParentRoute: () => AuthenticatedDashboardProgramsRoute,
   } as any)
+const AuthenticatedDashboardPaymentsNewRoute =
+  AuthenticatedDashboardPaymentsNewRouteImport.update({
+    id: '/payments/new',
+    path: '/payments/new',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardNotificationsPreferencesRoute =
   AuthenticatedDashboardNotificationsPreferencesRouteImport.update({
     id: '/preferences',
@@ -1956,6 +1964,12 @@ const AuthenticatedDashboardAdminPlacementsRoute =
   AuthenticatedDashboardAdminPlacementsRouteImport.update({
     id: '/placements',
     path: '/placements',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminPaymentsRoute =
+  AuthenticatedDashboardAdminPaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminObservabilityRoute =
@@ -2427,6 +2441,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
+  '/dashboard/admin/payments': typeof AuthenticatedDashboardAdminPaymentsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -2466,6 +2481,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/notifications/preferences': typeof AuthenticatedDashboardNotificationsPreferencesRoute
+  '/dashboard/payments/new': typeof AuthenticatedDashboardPaymentsNewRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
@@ -2741,6 +2757,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
+  '/dashboard/admin/payments': typeof AuthenticatedDashboardAdminPaymentsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -2780,6 +2797,7 @@ export interface FileRoutesByTo {
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/notifications/preferences': typeof AuthenticatedDashboardNotificationsPreferencesRoute
+  '/dashboard/payments/new': typeof AuthenticatedDashboardPaymentsNewRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
@@ -3069,6 +3087,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/_authenticated/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
+  '/_authenticated/dashboard/admin/payments': typeof AuthenticatedDashboardAdminPaymentsRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/_authenticated/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -3108,6 +3127,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/_authenticated/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/_authenticated/dashboard/notifications/preferences': typeof AuthenticatedDashboardNotificationsPreferencesRoute
+  '/_authenticated/dashboard/payments/new': typeof AuthenticatedDashboardPaymentsNewRoute
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/_authenticated/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
@@ -3399,6 +3419,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
+    | '/dashboard/admin/payments'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/provider-health'
@@ -3438,6 +3459,7 @@ export interface FileRouteTypes {
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/notifications/preferences'
+    | '/dashboard/payments/new'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/technologies/contracts'
@@ -3713,6 +3735,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
+    | '/dashboard/admin/payments'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/provider-health'
@@ -3752,6 +3775,7 @@ export interface FileRouteTypes {
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/notifications/preferences'
+    | '/dashboard/payments/new'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/technologies/finance'
@@ -4040,6 +4064,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/launch-readiness'
     | '/_authenticated/dashboard/admin/notifications'
     | '/_authenticated/dashboard/admin/observability'
+    | '/_authenticated/dashboard/admin/payments'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
     | '/_authenticated/dashboard/admin/provider-health'
@@ -4079,6 +4104,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/faculty/submissions'
     | '/_authenticated/dashboard/lessons/$lessonId'
     | '/_authenticated/dashboard/notifications/preferences'
+    | '/_authenticated/dashboard/payments/new'
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/projects/$id'
     | '/_authenticated/dashboard/technologies/contracts'
@@ -5955,6 +5981,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProgramsSlugRouteImport
       parentRoute: typeof AuthenticatedDashboardProgramsRoute
     }
+    '/_authenticated/dashboard/payments/new': {
+      id: '/_authenticated/dashboard/payments/new'
+      path: '/payments/new'
+      fullPath: '/dashboard/payments/new'
+      preLoaderRoute: typeof AuthenticatedDashboardPaymentsNewRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/notifications/preferences': {
       id: '/_authenticated/dashboard/notifications/preferences'
       path: '/preferences'
@@ -6226,6 +6259,13 @@ declare module '@tanstack/react-router' {
       path: '/placements'
       fullPath: '/dashboard/admin/placements'
       preLoaderRoute: typeof AuthenticatedDashboardAdminPlacementsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/payments': {
+      id: '/_authenticated/dashboard/admin/payments'
+      path: '/payments'
+      fullPath: '/dashboard/admin/payments'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminPaymentsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/observability': {
@@ -6621,6 +6661,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminLaunchReadinessRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   AuthenticatedDashboardAdminNotificationsRoute: typeof AuthenticatedDashboardAdminNotificationsRoute
   AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
+  AuthenticatedDashboardAdminPaymentsRoute: typeof AuthenticatedDashboardAdminPaymentsRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
   AuthenticatedDashboardAdminProviderHealthRoute: typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -6672,6 +6713,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminNotificationsRoute,
     AuthenticatedDashboardAdminObservabilityRoute:
       AuthenticatedDashboardAdminObservabilityRoute,
+    AuthenticatedDashboardAdminPaymentsRoute:
+      AuthenticatedDashboardAdminPaymentsRoute,
     AuthenticatedDashboardAdminPlacementsRoute:
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
@@ -6952,6 +6995,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardCertificatesIdRoute: typeof AuthenticatedDashboardCertificatesIdRoute
   AuthenticatedDashboardCoursesCourseIdRoute: typeof AuthenticatedDashboardCoursesCourseIdRoute
   AuthenticatedDashboardLessonsLessonIdRoute: typeof AuthenticatedDashboardLessonsLessonIdRoute
+  AuthenticatedDashboardPaymentsNewRoute: typeof AuthenticatedDashboardPaymentsNewRoute
   AuthenticatedDashboardProjectsIdRoute: typeof AuthenticatedDashboardProjectsIdRoute
   AuthenticatedDashboardApplicationsIndexRoute: typeof AuthenticatedDashboardApplicationsIndexRoute
   AuthenticatedDashboardAssignmentsIndexRoute: typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -6992,6 +7036,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
       AuthenticatedDashboardCoursesCourseIdRoute,
     AuthenticatedDashboardLessonsLessonIdRoute:
       AuthenticatedDashboardLessonsLessonIdRoute,
+    AuthenticatedDashboardPaymentsNewRoute:
+      AuthenticatedDashboardPaymentsNewRoute,
     AuthenticatedDashboardProjectsIdRoute:
       AuthenticatedDashboardProjectsIdRoute,
     AuthenticatedDashboardApplicationsIndexRoute:

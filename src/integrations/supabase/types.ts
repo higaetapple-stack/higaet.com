@@ -2402,7 +2402,10 @@ export type Database = {
           currency: string
           error: Json | null
           id: string
+          method: string | null
           notes: Json
+          payer_notes: string | null
+          proof_url: string | null
           provider: Database["public"]["Enums"]["payment_provider"]
           provider_order_id: string | null
           provider_payment_id: string | null
@@ -2410,9 +2413,13 @@ export type Database = {
           receipt: string | null
           ref_id: string | null
           ref_table: string | null
+          reference: string | null
+          rejection_reason: string | null
           status: Database["public"]["Enums"]["payment_status"]
           updated_at: string
           user_id: string
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           amount_minor: number
@@ -2420,7 +2427,10 @@ export type Database = {
           currency?: string
           error?: Json | null
           id?: string
+          method?: string | null
           notes?: Json
+          payer_notes?: string | null
+          proof_url?: string | null
           provider: Database["public"]["Enums"]["payment_provider"]
           provider_order_id?: string | null
           provider_payment_id?: string | null
@@ -2428,9 +2438,13 @@ export type Database = {
           receipt?: string | null
           ref_id?: string | null
           ref_table?: string | null
+          reference?: string | null
+          rejection_reason?: string | null
           status?: Database["public"]["Enums"]["payment_status"]
           updated_at?: string
           user_id: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           amount_minor?: number
@@ -2438,7 +2452,10 @@ export type Database = {
           currency?: string
           error?: Json | null
           id?: string
+          method?: string | null
           notes?: Json
+          payer_notes?: string | null
+          proof_url?: string | null
           provider?: Database["public"]["Enums"]["payment_provider"]
           provider_order_id?: string | null
           provider_payment_id?: string | null
@@ -2446,9 +2463,13 @@ export type Database = {
           receipt?: string | null
           ref_id?: string | null
           ref_table?: string | null
+          reference?: string | null
+          rejection_reason?: string | null
           status?: Database["public"]["Enums"]["payment_status"]
           updated_at?: string
           user_id?: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: []
       }
@@ -5198,7 +5219,7 @@ export type Database = {
         | "delivered"
         | "failed"
         | "read"
-      payment_provider: "razorpay" | "stripe"
+      payment_provider: "razorpay" | "stripe" | "manual"
       payment_purpose:
         | "course_enrollment"
         | "program_enrollment"
@@ -5215,6 +5236,10 @@ export type Database = {
         | "refunded"
         | "partially_refunded"
         | "cancelled"
+        | "pending_verification"
+        | "approved"
+        | "rejected"
+        | "info_requested"
       portfolio_visibility: "private" | "unlisted" | "public"
       program_status: "draft" | "published" | "archived"
       project_submission_status:
@@ -5504,7 +5529,7 @@ export const Constants = {
         "failed",
         "read",
       ],
-      payment_provider: ["razorpay", "stripe"],
+      payment_provider: ["razorpay", "stripe", "manual"],
       payment_purpose: [
         "course_enrollment",
         "program_enrollment",
@@ -5522,6 +5547,10 @@ export const Constants = {
         "refunded",
         "partially_refunded",
         "cancelled",
+        "pending_verification",
+        "approved",
+        "rejected",
+        "info_requested",
       ],
       portfolio_visibility: ["private", "unlisted", "public"],
       program_status: ["draft", "published", "archived"],
