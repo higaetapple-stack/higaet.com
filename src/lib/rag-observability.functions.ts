@@ -202,5 +202,144 @@ export const requeueDeadLetters = createServerFn({ method: "POST" })
       .eq("status", "dead")
       .select("id");
     if (error) throw new Error(error.message);
+    await supabaseAdmin.from("audit_logs").insert({
+      actor_id: context.userId,
+      action: "embeddings.requeue_dead_all",
+      resource_type: "ai_embeddings_queue",
+      metadata: { count: data?.length ?? 0 },
+    });
     return { requeued: data?.length ?? 0 };
+  });
+
+// List queue items for the admin embedding-queue dashboard tab.
+export const listEmbeddingQueue = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z
+      .object({
+        status: z.enum(["pending", "processing", "failed", "dead", "completed", "queued", "all"]).default("failed"),
+        limit: z.number().int().min(1).max(200).default(50),
+      })
+      .parse(d ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    let q = supabaseAdmin
+      .from("ai_embeddings_queue")
+      .select("id, document_id, status, attempts, last_error, scheduled_for, processed_at, created_at, updated_at")
+      .order("updated_at", { ascending: false })
+      .limit(data.limit);
+    if (data.status !== "all") q = q.eq("status", data.status);
+    const { data: rows, error } = await q;
+    if (error) throw new Error(error.message);
+
+    const docIds = Array.from(new Set((rows ?? []).map((r) => r.document_id).filter(Boolean) as string[]));
+    const docs = docIds.length
+      ? (await supabaseAdmin.from("ai_documents").select("id, entity_type, title").in("id", docIds)).data ?? []
+      : [];
+    const docMap = new Map(docs.map((d) => [d.id, d]));
+    return (rows ?? []).map((r) => ({
+      ...r,
+      entity_type: r.document_id ? docMap.get(r.document_id)?.entity_type ?? null : null,
+      title: r.document_id ? docMap.get(r.document_id)?.title ?? null : null,
+    }));
+  });
+
+// Requeue specific item(s) by id. Admin-only, audit-logged.
+export const requeueEmbeddingItems = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z.object({ ids: z.array(z.string().uuid()).min(1).max(500) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: updated, error } = await supabaseAdmin
+      .from("ai_embeddings_queue")
+      .update({
+        status: "pending",
+        attempts: 0,
+        last_error: null,
+        scheduled_for: new Date().toISOString(),
+      })
+      .in("id", data.ids)
+      .select("id");
+    if (error) throw new Error(error.message);
+    await supabaseAdmin.from("audit_logs").insert({
+      actor_id: context.userId,
+      action: data.ids.length === 1 ? "embeddings.requeue_one" : "embeddings.requeue_batch",
+      resource_type: "ai_embeddings_queue",
+      resource_id: data.ids.length === 1 ? data.ids[0] : null,
+      metadata: { ids: data.ids, count: updated?.length ?? 0 },
+    });
+    return { requeued: updated?.length ?? 0 };
+  });
+
+// Alert thresholds derived from current queue + recent telemetry.
+export interface EmbeddingAlerts {
+  warnings: Array<{ code: string; severity: "warn" | "critical"; message: string }>;
+  thresholds: { failed_max: number; pending_max: number; error_rate_max: number; stall_minutes_max: number };
+  observed: {
+    failed: number;
+    pending: number;
+    error_rate: number;
+    minutes_since_progress: number | null;
+  };
+}
+
+export const getEmbeddingAlerts = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<EmbeddingAlerts> => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const thresholds = { failed_max: 100, pending_max: 500, error_rate_max: 0.2, stall_minutes_max: 15 };
+    const cnt = async (status: string) => {
+      const { count } = await supabaseAdmin
+        .from("ai_embeddings_queue")
+        .select("id", { head: true, count: "exact" })
+        .eq("status", status);
+      return count ?? 0;
+    };
+    const [failed, pending, processing] = await Promise.all([cnt("failed"), cnt("pending"), cnt("processing")]);
+
+    // Provider error rate from ai_usage embeddings rows in the last hour.
+    const hourAgo = new Date(Date.now() - 3600_000).toISOString();
+    const { data: usage } = await supabaseAdmin
+      .from("ai_usage")
+      .select("outcome")
+      .eq("consumer", "embeddings")
+      .gte("created_at", hourAgo)
+      .limit(2000);
+    const total = usage?.length ?? 0;
+    const errors = (usage ?? []).filter((r) => r.outcome !== "success" && r.outcome !== "fallback").length;
+    const errorRate = total > 0 ? errors / total : 0;
+
+    // Stall detection — last completed timestamp.
+    const { data: lastCompleted } = await supabaseAdmin
+      .from("ai_embeddings_queue")
+      .select("processed_at")
+      .eq("status", "completed")
+      .order("processed_at", { ascending: false })
+      .limit(1);
+    const lastTs = lastCompleted?.[0]?.processed_at ? new Date(lastCompleted[0].processed_at).getTime() : null;
+    const minutesSince = lastTs ? Math.round((Date.now() - lastTs) / 60_000) : null;
+    const hasBacklog = pending + processing > 0;
+
+    const warnings: EmbeddingAlerts["warnings"] = [];
+    if (failed > thresholds.failed_max)
+      warnings.push({ code: "FAILED_HIGH", severity: "warn", message: `${failed} failed items (> ${thresholds.failed_max}).` });
+    if (pending > thresholds.pending_max)
+      warnings.push({ code: "PENDING_HIGH", severity: "warn", message: `${pending} pending items (> ${thresholds.pending_max}).` });
+    if (errorRate > thresholds.error_rate_max && total >= 10)
+      warnings.push({ code: "ERROR_RATE_HIGH", severity: "critical", message: `Embedding provider error rate ${Math.round(errorRate * 100)}% in last hour.` });
+    if (hasBacklog && minutesSince !== null && minutesSince > thresholds.stall_minutes_max)
+      warnings.push({ code: "QUEUE_STALLED", severity: "critical", message: `Queue has backlog; no progress for ${minutesSince}m.` });
+
+    return {
+      warnings,
+      thresholds,
+      observed: { failed, pending, error_rate: Number(errorRate.toFixed(3)), minutes_since_progress: minutesSince },
+    };
   });
