@@ -1,29 +1,21 @@
 // Phase 7.2 RAG — embedding helpers.
-// Server-only. Calls Lovable AI Gateway's OpenAI-compatible /embeddings endpoint.
+// Server-only. Calls OpenAI directly via the shared provider router.
 // Uses openai/text-embedding-3-small (1536 dims) to match public.ai_chunks.embedding column.
+
+import { aiEmbeddings } from "@/lib/ai-gateway.server";
 
 export const EMBEDDING_MODEL = "openai/text-embedding-3-small";
 export const EMBEDDING_DIMS = 1536;
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/embeddings";
-
-export async function embedTexts(apiKey: string, inputs: string[]): Promise<number[][]> {
+// `apiKey` arg kept for back-compat; ignored. Direct providers read OPENAI_API_KEY/GEMINI_API_KEY from env.
+export async function embedTexts(_apiKey: string | undefined, inputs: string[]): Promise<number[][]> {
   if (inputs.length === 0) return [];
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": apiKey,
-      "X-Lovable-AIG-SDK": "rest",
-    },
-    body: JSON.stringify({ model: EMBEDDING_MODEL, input: inputs }),
-  });
+  const res = await aiEmbeddings({ model: EMBEDDING_MODEL, input: inputs });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`embedTexts ${res.status}: ${text.slice(0, 500)}`);
   }
   const json = (await res.json()) as { data: Array<{ embedding: number[]; index: number }> };
-  // Ensure ordering matches input order
   const out: number[][] = new Array(inputs.length);
   for (const item of json.data) out[item.index] = item.embedding;
   return out;
@@ -43,7 +35,6 @@ export function chunkText(text: string, size = 900, overlap = 150): string[] {
   while (i < clean.length) {
     const end = Math.min(i + size, clean.length);
     let slice = clean.slice(i, end);
-    // try to break on paragraph or sentence boundary if possible
     if (end < clean.length) {
       const lastBreak = Math.max(
         slice.lastIndexOf("\n\n"),

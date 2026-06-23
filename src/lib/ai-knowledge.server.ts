@@ -1,21 +1,13 @@
 // Server-only helpers for the Knowledge Intelligence Platform (Sprint 6A).
-// - Embedding via Lovable AI Gateway (OpenAI-compatible /embeddings).
+// - Embedding via direct OpenAI (routed through shared provider helper).
 // - Naive but effective paragraph/sentence chunking.
 
+import { aiEmbeddings } from "@/lib/ai-gateway.server";
+
 const EMBEDDING_MODEL = "openai/text-embedding-3-small"; // 1536 dims, matches vector(1536) column
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/embeddings";
 
 export async function embedText(input: string): Promise<number[]> {
-  const key = process.env.LOVABLE_API_KEY;
-  if (!key) throw new Error("LOVABLE_API_KEY missing");
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": key,
-    },
-    body: JSON.stringify({ model: EMBEDDING_MODEL, input }),
-  });
+  const res = await aiEmbeddings({ model: EMBEDDING_MODEL, input });
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Embedding failed: ${res.status} ${text.slice(0, 300)}`);
