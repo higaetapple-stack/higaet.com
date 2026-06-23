@@ -1,183 +1,226 @@
-# HIGAET Migration Planning Audit
+# HIGAET Complete Supabase Dependency Audit
 
-Planning + architecture only. No code changes, no deploys, no migrations.
+Audit-only. No code changes. No deployment. No migration.
 
-Current: Hostinger DNS → higaet.com → Lovable Runtime (Cloudflare Workers) → Supabase → Lovable AI Gateway
-Target direction: Hostinger DNS → higaet.com → MilesWeb Node.js → PostgreSQL → self-managed Auth → self-managed Storage → independent AI providers
-
----
-
-## Deliverable 1 — Hybrid Architecture (MilesWeb Node + Supabase Cloud + OpenAI/Gemini)
-
-**Architecture:** Hostinger DNS → MilesWeb cPanel Node 20 (Passenger) → Supabase Cloud (Auth + DB + Storage + Realtime) → OpenAI/Gemini direct.
-
-**Engineering tasks & hours**
-| Task | Hrs |
-|---|---|
-| Runtime: switch nitro preset → `node-server`, port `src/server.ts` security headers + correlation id into nitro middleware, add `start` script, pin nitro stable | 6–8 |
-| AI: refactor `src/lib/ai-gateway.server.ts` + `ai-embeddings.server.ts` + `routes/api/chat.ts` to `@ai-sdk/openai` / `@ai-sdk/google`, swap embedding model, update `routes/api/public/cron/embeddings.ts` URL | 6–8 |
-| Deployment: GitHub Actions build → tar → scp → symlink swap → `tmp/restart.txt`; cPanel Node App config | 4–6 |
-| Testing: smoke (auth, RAG, payments, realtime, certs PDF, cron), Lighthouse, security re-lint | 6–8 |
-| Cutover: DNS TTL drop, Stripe/Paddle webhook URL update, pg_cron URL update, 7-day rollback window | 3–4 |
-| **Total** | **25–34 hrs** |
-
-**Risks:** nitro beta on `node-server`; Passenger cold-start 502s; shared-cPanel WS proxy uncertainty (Realtime stays on Supabase edge so OK); AI cost surprises; pg_cron URL must be stable.
-
-**Rollout:** preset switch on branch → preview build → cPanel staging subdomain → smoke → DNS cutover (low TTL 300s) → 7-day watch.
-**Rollback:** Keep Lovable deploy live; revert DNS A record; previous symlink kept on server.
-
-**Ops cost (monthly est.):** MilesWeb ~$5–15, Supabase Cloud Pro $25 (or free), OpenAI ~$20–80 (RAG embeddings + chat), Gemini optional. **vs Lovable+managed: usually cheaper by $20–40/mo, +25–34 hrs once.**
-
-**Benefits:** keeps Auth/Realtime/Storage stable; smallest-blast-radius first step toward independence.
-**Drawbacks:** still vendor-locked on Supabase; loses Lovable AI Gateway free credits and edge CDN.
+Inventory measured by grep across `src/` and `supabase/migrations/` on the current HEAD.
 
 ---
 
-## Deliverable 2 — Supabase Auth Replacement
+## Deliverable 1 — Auth Dependency Inventory
 
-### Option A — Auth.js (NextAuth core)
-- Architecture: JWT or DB sessions, OAuth adapters, Postgres adapter via Drizzle/Prisma.
-- Pros: large ecosystem, OAuth providers prebuilt, well-documented.
-- Cons: opinionated; TanStack Start integration is community-grade; MFA is BYO; not a 1:1 drop-in for `requireSupabaseAuth`.
+### Headline counts
+- 71 files import `@/integrations/supabase/*` or `@supabase/supabase-js`
+- 36 server functions use `.middleware([requireSupabaseAuth])`
+- 22 files call `supabase.auth.*` directly
+- 1 file uses Lovable broker (`@/integrations/lovable`) for Google OAuth
 
-### Option B — Lucia
-- Architecture: session-based, database-of-record sessions, framework-agnostic, you own everything.
-- Pros: minimal, transparent, easy to fit TanStack Start middleware, easy to wire to existing Postgres.
-- Cons: **Lucia v3 is in maintenance / sunset mode** — author recommends rolling auth from primitives. OAuth/MFA/recovery are BYO.
-
-### Required schema changes (both options)
-- New `users` table (replaces `auth.users`) — id, email, hashed_password, email_verified_at, mfa_enrolled, created_at.
-- New `sessions` table — id, user_id, expires_at, ip, user_agent.
-- New `oauth_accounts` — provider, provider_user_id, user_id.
-- New `password_reset_tokens`, `email_verification_tokens`.
-- Repoint ~30 FKs from `auth.users(id)` → `public.users(id)`.
-- Rewrite `has_role(uuid, app_role)` to read `auth.uid()` replacement from JWT claim (`request.jwt.claim.sub`).
-- Migrate `user_mfa_recovery_codes` to new user_id FK.
-
-### File modification inventory (both options)
-- `src/integrations/supabase/auth-middleware.ts` — replace
-- `src/integrations/supabase/auth-attacher.ts` — replace
-- `src/integrations/supabase/client.ts` — drop auth methods
-- `src/routes/auth.*.tsx` (login, register, forgot-password, reset, callback) — rewrite
-- `src/routes/_authenticated/route.tsx` — rewire session check
-- `src/components/security/MfaCard.tsx`, `SessionsCard.tsx`, `SecurityActivity.tsx` — rewrite
-- `src/lib/security.functions.ts`, `security/events.server.ts` — rewrite
-- All ~80 `*.functions.ts` using `requireSupabaseAuth` — swap middleware import (mechanical)
-- Google OAuth: implement `/api/auth/google` + `/callback`
-- MFA: TOTP enroll/verify, recovery codes regen
-- Password reset: token table + email send via Resend/SES
-
-### Effort
-| Option | Hours | Complexity |
+### Critical auth integration files (Hard — replace wholesale)
+| File | Role | Replace with |
 |---|---|---|
-| Auth.js | 60–80 | High |
-| Lucia (DIY primitives) | 70–95 | High |
+| `src/integrations/supabase/client.ts` | Browser client + session storage | Auth.js / Lucia browser client |
+| `src/integrations/supabase/auth-middleware.ts` | `requireSupabaseAuth` server middleware | Auth.js `auth()` middleware |
+| `src/integrations/supabase/auth-attacher.ts` | `attachSupabaseAuth` bearer attacher in `src/start.ts` | Cookie session (no bearer needed) |
+| `src/integrations/supabase/client.server.ts` | `supabaseAdmin` service-role client | PG pool + `auth.admin.*` shim |
+| `src/integrations/lovable/index.ts` | Google OAuth broker (iframe-safe) | Auth.js Google provider |
+| `src/lib/server/require-auth-http.ts` | HTTP-level auth guard for `/api/*` | New JWT/cookie guard |
 
-**Recommended for HIGAET: Auth.js** — broader docs, OAuth adapters built-in, MFA via community plugins. Lucia's sunset makes long-term ownership risky. But **strongest recommendation: don't replace Supabase Auth unless the business requires it** — keep the hybrid (Deliverable 1).
+### Auth surface in pages/components (Medium — swap client API)
+- `src/routes/auth.login.tsx` — `supabase.auth.signInWithPassword`, `lovable.auth.signInWithOAuth('google')`
+- `src/routes/auth.register.tsx` — `supabase.auth.signUp`, Google OAuth
+- `src/routes/auth.forgot-password.tsx` — `resetPasswordForEmail`
+- `src/routes/_authenticated.tsx` — `supabase.auth.getUser()` route gate
+- `src/routes/__root.tsx` — `onAuthStateChange` listener
+- `src/routes/ai.chat.tsx`, `ai.history.tsx`, `jobs.$slug.tsx`, `global-education.universities.$slug.tsx` — `getSession()` for conditional UI
+- `src/components/dashboard/DashboardHeader.tsx` — `signOut`
+- `src/components/security/SessionsCard.tsx` — list/revoke sessions
+- `src/components/security/MfaCard.tsx` — 6 calls: `mfa.enroll/challenge/verify/unenroll/listFactors` (Hard — Supabase MFA API)
+- `src/components/notifications/NotificationBell.tsx`, `ChatWindow.tsx` — `getSession()` for bearer
 
----
+### Protected server functions (36 files, all `*.functions.ts`)
+admin, ai-advisor, ai-chat, ai-coach, ai-copilot, ai-hub, ai-knowledge, ai-tutor, ai/internal, api-keys, academic, career, career-admin, certificates, community, counselor, crm, education-hub, leads, learn, notifications, observability, placements, portfolio, rag-observability, security, stories, study-abroad, system-health, tech-commercial, tech-finance, tech-pdf-server consumers, tech-support, technologies, visa. Plus API routes: `src/routes/api/chat.ts`, `src/routes/api/public/self-optimize.ts`, `src/routes/api/public/constitution.apply.ts`.
 
-## Deliverable 3 — Realtime Replacement
+**Migration complexity:** Critical. Every `.middleware([requireSupabaseAuth])` returns `{ supabase, userId, claims }` from a JWT. Replacement must inject equivalent context (signed-in PG client + `userId` + role claims) into all 36 files without touching handler bodies.
 
-HIGAET realtime touchpoints:
-- `src/components/notifications/NotificationBell.tsx` (notifications)
-- `src/components/community/LessonDiscussion.tsx` (threads, replies, reactions)
-- `event_rsvps` live updates (events page)
-- `src/lib/ai-embeddings.server.ts` (queue notify — can use polling)
-- Presence: none currently
-
-| Option | Architecture | Monthly cost | Ops | Complexity |
-|---|---|---|---|---|
-| Pusher Channels | Managed pub/sub | $0–49 (free 200k msg/day) | None | Low |
-| Ably | Managed, global, presence built-in | $0–29+ | None | Low |
-| Soketi | Self-host Pusher-protocol on VPS | ~$5 VPS | High (you run it) | Medium |
-| Native WS | `ws` library on Node | included | Medium | High (auth, scaling, reconnect) |
-| Socket.IO | Node + Redis adapter | included + Redis | High | High |
-
-**Shared cPanel reality:** WebSocket upgrade proxying is unreliable → self-host options need a VPS or a separate WS dyno. Managed (Pusher/Ably) sidesteps this entirely.
-
-Files to refactor (all options): the 3 components above + a thin `src/lib/realtime/client.ts` adapter so swap is isolated. Server-side broadcast helpers replace `supabase.channel().send()` writes.
-
-**Effort:** Pusher/Ably 16–24 hrs · Soketi 24–32 hrs · Native WS / Socket.IO 32–48 hrs.
-
-**Recommended for HIGAET: Ably** — built-in presence, cheaper at HIGAET's notification volume, has TanStack-friendly React hooks, edge POPs comparable to Supabase Realtime.
+### Auth admin usage
+- `src/lib/security.functions.ts` — `supabase.auth.admin.signOut`, `getUserById`, recovery code generation
+- `src/lib/admin.functions.ts` (likely; uses `supabaseAdmin`) — user provisioning
 
 ---
 
-## Deliverable 4 — Storage Migration
+## Deliverable 2 — Database Dependency Inventory
 
-Current buckets: `certificates` (private, signed URLs from `src/lib/certificates/pdf.server.ts`). Likely future: course media, profile avatars, application documents.
+### Scale
+- **93 tables** in `public`, **44 migrations** in `supabase/migrations/`
+- ~180 RLS policies; all routed through `public.has_role(uid, role)` / `has_any_role`
+- 4 enabled extensions: `pgvector`, `pg_cron`, `pgcrypto`, `citext`
 
-| Option | $/GB | $/GB egress | Complexity | Ops |
-|---|---|---|---|---|
-| Cloudflare R2 | $0.015 | **$0 egress** | Low | None |
-| AWS S3 | $0.023 | $0.09 | Low | None |
-| DO Spaces | $5 flat/250 GB | included 1 TB | Low | None |
-| MinIO self-host | VPS cost | none | High | You run it |
+### Critical table clusters
+| Cluster | Tables | Bound to |
+|---|---|---|
+| **Identity** | `profiles`, `user_roles`, `user_mfa_recovery_codes`, `identity_providers`, `sso_domains` | `auth.users(id)` FK — ~30 onward FKs in `applications`, `enrollments`, `progress`, `submissions`, `notifications`, `payments`, `community_members`, `crm_*`, etc. **Critical** |
+| **Payments** | `payments`, `refunds`, `tech_invoices`, `tech_invoice_items`, `tech_payments`, `tech_payment_allocations` | Stripe/Paddle webhooks, `audit_logs` |
+| **AI/RAG** | `ai_documents`, `ai_chunks` (vector(1536)), `ai_collections`, `ai_embeddings_queue`, `ai_conversations`, `ai_messages`, `ai_conversation_logs`, `ai_agent_configs`, `ai_feedback`, `knowledge_sources` | `pgvector` + `match_ai_chunks()` IVFFLAT/HNSW |
+| **LMS** | `programs`, `courses`, `lessons`, `assignments`, `submissions`, `enrollments`, `progress`, `certificates`, `certificate_templates` | Storage bucket `certificates`, `pg_cron` embeddings |
+| **CRM/Apps** | `applications`, `application_documents`, `application_status_history`, `counselor_assignments`, `visa_cases`, `crm_tasks`, `crm_notes`, `crm_follow_ups`, `crm_activity_log` | `tg_applications_workflow_status_audit` trigger emits `domain_events` |
+| **Events bus** | `domain_events`, `webhook_events`, `api_webhook_subscriptions`, `api_webhook_deliveries`, `notification_*` | `lease_webhook_deliveries()` SKIP LOCKED queue, cron |
+| **Observability** | `system_errors`, `system_metrics`, `security_events`, `audit_logs` | `observability_summary()` SECURITY DEFINER |
+| **Community** | `communities`, `threads`, `replies`, `reactions`, `events`, `event_rsvps` | trigger counters |
+| **API** | `api_keys`, `api_scopes`, `api_key_scopes`, `api_key_usage`, `api_rate_limits` | `check_api_rate_limit()` |
 
-Touchpoints to update:
-- `src/lib/certificates/pdf.server.ts` — upload + signed URL
-- `src/lib/certificates.functions.ts` — read
-- Any future `application_documents` flows
-- RLS-based access → replace with **presigned URLs** (15-min expiry) issued from server functions after `requireSupabaseAuth` + `has_role` check
-- Webhook `tech_contract_documents`, `tech_project_documents`, `tech_request_attachments`, `tech_ticket_attachments` flows — same presigned pattern
+### DB functions / triggers (must port verbatim)
+- Security-definer: `has_role`, `has_any_role`, `verify_certificate`, `verify_certificate_by_token`, `is_program_eligible`, `match_ai_chunks`, `observability_summary`, `emit_domain_event`, `lease_webhook_deliveries`, `check_api_rate_limit`, `ai_delete_document`, `ai_upsert_document_and_enqueue`, `notifications_unread_count`, `notifications_mark_all_read`, `generate_portfolio_slug`, `cleanup_api_rate_limits`
+- Triggers: `tg_applications_workflow_status_audit`, `tg_lessons_enqueue_embedding`, `tg_crm_tasks_assigned_event`, `tg_threads_count`, `tg_replies_count`, `tg_reactions_count`, `tg_event_rsvps_count`, `audit_certificate_changes`, `prevent_student_grade_tampering`, `notifications_guard_user_update`, `threads_guard_user_update`, `profiles_assign_portfolio_slug`, `update_updated_at_column`
 
-Replacement architecture: server fn validates auth + ownership → returns presigned PUT (upload) or GET (download) → client uses URL directly → background fn records metadata row in Postgres.
+### `auth.users` FK fanout (must rewrite under self-managed auth)
+~30 tables reference `auth.users(id)`: `profiles`, `user_roles`, `user_mfa_recovery_codes`, `enrollments`, `progress`, `submissions`, `assignments` (graded_by), `certificates` (student_id), `notifications`, `notification_preferences`, `notification_delivery_logs`, `community_members`, `threads`, `replies`, `reactions`, `event_rsvps`, `applications`, `application_documents`, `counselor_assignments`, `visa_cases`, `crm_tasks` (assigned_to/created_by), `crm_notes`, `crm_follow_ups`, `crm_activity_log`, `audit_logs` (actor_id), `domain_events` (actor_id), `security_events`, `api_keys`, `ai_conversations`, `ai_feedback`. **Critical.**
 
-**Effort:** 16–24 hrs (any provider; difference is config, not code).
+### `pg_cron` jobs
+- AI embeddings drain → calls `/api/public/cron/embeddings`
+- `cleanup_api_rate_limits`
+- Webhook delivery retry
 
-**Recommended for HIGAET: Cloudflare R2** — zero egress matters for certificate PDFs and academy media; S3-API compatible (`@aws-sdk/client-s3` works unchanged).
+**Migration complexity:** Critical (~60–80 hrs). Schema is portable Postgres; the blocker is recreating `auth.users` under self-managed auth and re-pointing all FKs without identity loss.
 
 ---
 
-## Deliverable 5 — Vendor Independence Roadmap
+## Deliverable 3 — Storage Dependency Inventory
 
-Minimum changes to be Lovable-independent + Cloudflare-independent + AI-provider-independent, preserving every listed system.
+### Buckets
+- `certificates` — private, RLS via `storage.objects` policies `students_view_own_certificates` + `admins_manage_certificates`
 
-| System | Affected files | Hours | Risk |
+### Code touchpoints
+- `src/lib/certificates/pdf.server.ts` — generate + upload PDF
+- `src/lib/certificates/qr.server.ts` — QR for verification URL
+- `src/lib/certificates.functions.ts` — issue, list, sign URL
+- `src/lib/tech-finance.functions.ts` — `storage.from(...)` for invoice/contract documents
+- `src/lib/tech-pdf.server.ts` — tech invoice PDF render + upload
+- Document tables (no separate bucket scan; paths stored as `storage_path`): `application_documents`, `visa_documents`, `tech_contract_documents`, `tech_project_documents`, `tech_request_attachments`, `tech_ticket_attachments`
+
+### Flows
+- **Upload:** server fns only (no direct browser upload) — `supabaseAdmin.storage.from('certificates').upload(...)`
+- **Download:** `createSignedUrl` issued by server fn after RLS check
+- **Public read:** none — all buckets private
+
+**Migration complexity:** Medium (~16–24 hrs). Replace with S3-compatible (R2/MinIO/Backblaze) + presigned URLs. `storage.objects` RLS rewritten as application-layer ACL.
+
+---
+
+## Deliverable 4 — Realtime Dependency Inventory
+
+**Direct `supabase.channel(...)`/`postgres_changes` usage:** 0 hits in current codebase.
+
+Files mentioning "realtime" are documentation/SEO content (`src/content/insights.ts`, `case-studies.ts`, `sitemap.xml.ts`) or observability dashboards using polling (`observability.tsx`, `observability.functions.ts`, `observability/events.server.ts`).
+
+Components that *could* use realtime but currently poll via TanStack Query:
+- `src/components/notifications/NotificationBell.tsx` — `notifications_unread_count()` on interval
+- `src/components/community/LessonDiscussion.tsx` — thread refetch
+- `src/routes/_authenticated.community.$slug.$threadId.tsx` — reply refetch
+
+**Migration complexity:** Low (~0–8 hrs). HIGAET does not currently depend on Supabase Realtime. Replacement only needed if realtime UX is later added (Ably/Pusher).
+
+---
+
+## Deliverable 5 — RLS & Security Inventory
+
+### Counts
+- ~180 RLS policies across 93 tables
+- All authorization flows through 2 SECURITY DEFINER role checks: `has_role(uid, app_role)` and `has_any_role(uid, app_role[])`
+- `app_role` enum: `student`, `faculty`, `counselor`, `agent`, `admin`, `super_admin`, plus domain-specific roles
+
+### Security-definer functions (auth-coupled)
+`has_role`, `has_any_role`, `notifications_unread_count`, `notifications_mark_all_read`, `notifications_guard_user_update`, `threads_guard_user_update`, `prevent_student_grade_tampering`, `audit_certificate_changes`, `emit_domain_event`, `observability_summary`, `verify_certificate*`, `is_program_eligible`, `match_ai_chunks`, `check_api_rate_limit`, `lease_webhook_deliveries`, `ai_delete_document`, `cleanup_api_rate_limits`
+
+### Permission model
+- Roles stored exclusively in `user_roles` (admin-managed, no self-grant) — already follows the secure pattern
+- Every policy reads `auth.uid()`; under self-managed auth, must read JWT `sub` claim injected by replacement auth
+
+**Migration complexity:** Medium (~16 hrs). Policies are portable PostgreSQL; only `auth.uid()` → `current_setting('request.jwt.claim.sub')::uuid` (or equivalent) needs swapping.
+
+---
+
+## Deliverable 6 — AI Dependency Inventory
+
+### Lovable AI Gateway (12 files)
+| File | Purpose | Models |
+|---|---|---|
+| `src/lib/ai-gateway.server.ts` | OpenAI-compatible provider via `https://ai.gateway.lovable.dev/v1` | `google/gemini-2.5-flash`, `openai/gpt-5-mini` |
+| `src/lib/ai-embeddings.server.ts` | Batch embed → `ai_chunks.embedding` | `openai/text-embedding-3-small` (1536-dim) |
+| `src/lib/ai-knowledge.server.ts` / `.functions.ts` | RAG retrieval + grounding | gemini + embeddings |
+| `src/lib/ai-tutor.functions.ts`, `ai-coach.functions.ts`, `ai-advisor.functions.ts`, `ai-copilot.functions.ts`, `ai-chat.functions.ts` | Role-specific agents | gemini-flash |
+| `src/routes/api/chat.ts` | `streamText` SSE endpoint | gemini-flash |
+| `src/routes/api/public/cron/embeddings.ts` | pg_cron drain of `ai_embeddings_queue` | embedding-3-small |
+| `src/lib/vector-index/index.ts` | In-memory dense+sparse hybrid index | n/a |
+| `src/integrations/lovable/index.ts` | Lovable broker (auth + AI auth header) | n/a |
+
+### Secret
+- `LOVABLE_API_KEY` (server-only, non-portable)
+
+### Vector / RAG stack
+- `pgvector` 1536-dim, IVFFLAT index, `match_ai_chunks()` cosine
+- `ai_embeddings_queue` worker pattern (status, attempts, leased_until)
+- `tg_lessons_enqueue_embedding` trigger auto-enqueues on lesson change
+
+### Agent / multi-agent
+- `src/lib/agent/*`, `src/lib/multi-agent/*`, `src/lib/conversation/orchestrator.ts`, `src/lib/decision/*`, `src/lib/governor/*`, `src/lib/execution/*`, `src/lib/self-opt/*`, `src/lib/replay/*`, `src/lib/kernel/*`, `src/lib/goal/*`, `src/lib/strategy/*`, `src/lib/simulation/*`, `src/lib/shared-memory/*`, `src/lib/memory-graph/*`, `src/lib/fusion/hybrid-resolver.ts`, `src/lib/intent-router/*`, `src/lib/ai-mode/reasoner.ts` — all call `ai-gateway.server.ts`; provider-agnostic if gateway swapped
+
+**Migration complexity:** Low (~8–12 hrs) given user owns OpenAI/Gemini keys — only `createLovableAiGatewayProvider` → `@ai-sdk/openai` + `@ai-sdk/google` swap.
+
+---
+
+## Deliverable 7 — Migration Difficulty Matrix
+
+| System | Complexity | Effort | Blockers |
 |---|---|---|---|
-| SSR / runtime (Lovable + CF out) | `vite.config.ts`, `src/server.ts` → `src/middleware/*`, `package.json` | 6–8 | Medium |
-| AI provider (Lovable Gateway out) | `src/lib/ai-gateway.server.ts`, `ai-embeddings.server.ts`, `ai-chat.functions.ts`, `ai-tutor/coach/advisor/copilot/knowledge.functions.ts`, `multi-agent/*`, `agent/*`, `routes/api/chat.ts`, `routes/api/public/cron/embeddings.ts` | 8–12 | Low |
-| Auth / Authorization | see Deliverable 2 | 60–80 | High |
-| createServerFn / API routes / middleware | mechanical import swap across ~80 `*.functions.ts` | included | Low |
-| Payments / Webhooks | `routes/api/public/webhooks/*`, Stripe/Paddle dashboard URL update | 2–4 | Low |
-| Admin / Academy / Hub / Docs / Community / Certificates | no logic changes; depend on auth+storage+realtime swaps above | 0 (covered) | inherited |
-| SEO / AEO / GEO / AIO / JSON-LD / FAQ / Course / Service / Breadcrumb / Canonicals / OG | `src/lib/seo/*`, route `head()` — already framework-portable | 0 | None |
-| sitemap.xml / robots.txt / llms.txt | `src/routes/sitemap[.]xml.ts`, `public/robots.txt`, `public/llms.txt` — portable | 0 | None |
-| Search Console / Bing / AI crawlers | DNS-level, no code | 0 | None |
-| Tutor / Coach / Advisor / Copilot / Knowledge / RAG / Embeddings / Vector / Agents | covered under AI provider swap; `pgvector` stays on Postgres | included | Low |
-| Analytics / Pixels / Ads readiness | `src/lib/analytics.ts`, root `head()` — already vendor-neutral | 0 | None |
-| Realtime | see Deliverable 3 | 16–24 | Medium |
-| Storage | see Deliverable 4 | 16–24 | Low |
-| Database (if leaving Supabase Cloud) | dump/restore + RLS rewrite for new JWT claim | 60–80 | Critical |
-
-**Total to full independence: 170–250 hrs.** Total to Lovable+CF+AI-provider independence only (keep Supabase Cloud): **40–60 hrs**.
+| **AI Gateway** | Easy | 8–12 h | None — user owns provider keys |
+| **Realtime** | Easy | 0–8 h | Not currently used |
+| **Storage** | Medium | 16–24 h | Re-sign URL flow, port `storage.objects` RLS to app ACL |
+| **RLS policies** | Medium | 16 h | Swap `auth.uid()` → JWT claim helper |
+| **Auth (incl. MFA, OAuth, sessions, recovery codes)** | **Critical** | 60–80 h | 36 protected server fns, 6 MFA calls, 30 FK fanout, role-claim JWT issuance, Google broker, email recovery flow |
+| **Database** | **Critical** | 60–80 h | Recreate `auth.users` under new auth, repoint ~30 FKs, port 44 migrations + 17 SECURITY DEFINER fns + 13 triggers, preserve `pgvector`/`pg_cron`/`pgcrypto`/`citext` |
+| **Webhooks / payments** | Medium | 8–12 h | URL re-pointing, HMAC unchanged |
+| **pg_cron** | Medium | 4–8 h | Repoint URLs to MilesWeb domain; needs MilesWeb to host PG with pg_cron or external scheduler |
+| **TOTAL (full independence)** | — | **170–240 h** | — |
 
 ---
 
-## Deliverable 6 — Recommended Migration Sequence
+## Deliverable 8 — Recommended Preservation Strategy (Phase 1)
 
-Lowest-risk → highest-risk, each phase independently shippable and revertible via DNS.
+### Keep on Supabase Cloud during Phase 1
+| Service | Why keep |
+|---|---|
+| **Auth** | 36 protected fns + MFA + Google OAuth + 30 FK fanout = 60–80 h risk; defer |
+| **Database** | 93 tables, `pgvector`, `pg_cron`, 17 SECURITY DEFINER fns, 13 triggers; MilesWeb shared PG lacks `pg_cron`/`pgvector` guarantee |
+| **Storage** | `certificates` bucket + `storage.objects` RLS works as-is via service-role from MilesWeb Node |
+| **Realtime** | Not currently used → nothing to preserve |
+| **RLS** | Lives with database; keep |
 
-| # | Phase | Risk | Hrs |
-|---|---|---|---|
-| 1 | Runtime: nitro `node-server` + middleware port + GitHub Actions → MilesWeb staging subdomain | **Low** | 10–14 |
-| 2 | AI provider: Lovable Gateway → OpenAI/Gemini (BYO keys) | **Low** | 8–12 |
-| 3 | Storage: Supabase Storage → Cloudflare R2 (certificates only first, then expand) | **Low–Medium** | 16–24 |
-| 4 | Realtime: Supabase Realtime → Ably (notifications first, then community) | **Medium** | 16–24 |
-| 5 | Production cutover: DNS Hostinger → MilesWeb, Stripe/Paddle webhook URLs, pg_cron URLs, 7-day watch | **Medium** | 4–6 |
-| 6 | (Optional) Auth: Supabase Auth → Auth.js | **High** | 60–80 |
-| 7 | (Optional) Database: Supabase Cloud → self-managed Postgres + pgvector + pg_cron | **Critical** | 60–80 |
+### Move in Phase 1 (Lovable runtime → MilesWeb Node)
+| Item | Action | Effort |
+|---|---|---|
+| Nitro preset | `cloudflare-module` → `node-server`; port `src/server.ts` Worker fetch to Node middleware | 6–8 h |
+| AI Gateway | Lovable → BYO OpenAI + Google via `@ai-sdk/*`; refactor `ai-gateway.server.ts`, `ai-embeddings.server.ts`, `chat.ts`; drop `LOVABLE_API_KEY` | 8–12 h |
+| `pg_cron` targets | Repoint `/api/public/cron/*` URLs to `higaet.com` | 1 h |
+| Webhook receivers | Repoint Stripe/Paddle/Supabase webhooks to `higaet.com` | 2 h |
+| Deployment | GitHub Actions → SCP → symlink swap → Passenger restart on cPanel | 4–6 h |
+| DNS cutover | Hostinger → MilesWeb, 7-day rollback window | 2 h |
+| **Phase 1 total** | — | **23–31 h** |
 
-**Milestones:** M1 = phase 1–2 on staging green. M2 = phase 3–4 on staging green. M3 = production cutover (phase 5). M4 = full independence (phase 6–7) — only if business demands it.
+### Preservation verification (Phase 1)
+✅ SSR — node-server preset preserves TanStack Start SSR
+✅ SEO / AEO / GEO — `head()` + JSON-LD untouched
+✅ Dynamic sitemap (`src/routes/sitemap[.]xml.ts`), `public/robots.txt`, `public/llms.txt` — unchanged
+✅ Authentication — Supabase Cloud Auth kept; bearer attacher works on Node
+✅ Authorization — RLS via Supabase Cloud unchanged
+✅ `createServerFn` — Node runtime supports all current handlers
+✅ API Routes — `src/routes/api/*` runs on Node
+✅ Payments — Stripe/Paddle webhook URL update only
+✅ Webhooks — `lease_webhook_deliveries` + dispatcher unchanged
+✅ AI Platform / RAG / Knowledge Graph — same `ai_chunks`/`pgvector`; provider swap is transparent to agents
+✅ Search Console / Analytics — verification meta unchanged
+✅ Future scalability — Phases 2–4 (Storage, Auth, Database self-host) can proceed independently
 
-**Rollback strategy:** Each phase ships behind DNS or feature-flag. Keep Lovable deploy alive for 30 days post-cutover; DNS revert is the universal undo. Phase 6/7 require dual-write windows and explicit rollback playbooks.
+### Go / No-Go
+🟢 **GO** for Phase 1 (Lovable runtime → MilesWeb Node, keep Supabase Cloud + BYO AI keys) — **23–31 h, Low–Medium risk**.
+🛑 **NO-GO** for full Supabase replacement in Phase 1 — 170–240 h, Critical risk on Auth + Database, with realistic feature regressions in MFA, OAuth, RLS fidelity.
 
-**Production cutover plan (phase 5):** drop DNS TTL to 300s 48 hrs prior → run security linter + smoke suite on staging → swap A record → monitor error rate, p95, payment success, AI latency for 7 days → keep old symlink + old Lovable deploy 30 days.
-
-**Final recommendation**
-1. **Do phases 1–5 only.** ~55–80 hrs, Medium overall risk, achieves Lovable + Cloudflare + AI-vendor independence while keeping Supabase Cloud (which is itself portable Postgres + standard OAuth + S3-API storage).
-2. **Defer phases 6–7 indefinitely.** They add 120–160 hrs and Critical risk for marginal independence — Supabase Cloud's Postgres + Auth are already exportable when/if needed.
-3. **Total recommended project: 55–80 engineering hours over ~2 weeks, 1 dev.**
-
-Awaiting approval before any implementation.
+Audit complete. No code modified. Ready to scope Phase 1 implementation on your signal.
