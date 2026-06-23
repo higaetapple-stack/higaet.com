@@ -1,0 +1,89 @@
+name: Launch Readiness (Audit + E2E)
+
+# Phase A security audit (static) + Phase C Playwright E2E with seeded users.
+# Treat as the gate for Milestone 2 sign-off.
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - "src/**"
+      - "scripts/security-audit.mjs"
+      - "scripts/seed-test-users.mjs"
+      - "scripts/generate-readiness-report.mjs"
+      - "tests/e2e/**"
+      - "playwright.config.ts"
+      - ".github/workflows/launch-readiness.yml"
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Phase A — static security audit
+        env:
+          PGHOST: ${{ secrets.SUPABASE_DB_HOST }}
+          PGPORT: ${{ secrets.SUPABASE_DB_PORT }}
+          PGUSER: ${{ secrets.SUPABASE_DB_USER }}
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PGDATABASE: ${{ secrets.SUPABASE_DB_NAME }}
+        run: node scripts/security-audit.mjs
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-${{ github.run_id }}
+          path: |
+            docs/infrastructure/security-audit-report.md
+            docs/infrastructure/rls-route-consistency-report.md
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: security-audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Install Playwright
+        run: bunx playwright install --with-deps chromium
+      - name: Seed test users (dev backend)
+        env:
+          ENVIRONMENT: staging
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TEST_FIXTURE_PASSWORD: ${{ secrets.TEST_FIXTURE_PASSWORD }}
+        run: node scripts/seed-test-users.mjs
+      - name: Start preview build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          bun run build
+          bun run preview --host 127.0.0.1 --port 8080 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8080 && break
+            sleep 2
+          done
+      - name: Phase C — Playwright E2E
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:8080
+          TEST_FIXTURE_PASSWORD: ${{ secrets.TEST_FIXTURE_PASSWORD }}
+        run: bunx playwright test
+      - name: Generate launch-readiness report
+        if: always()
+        run: node scripts/generate-readiness-report.mjs || true
+      - name: Upload Playwright + readiness artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: launch-readiness-${{ github.run_id }}
+          path: |
+            playwright-report/**
+            playwright-results.json
+            docs/testing/launch-readiness-report.md
