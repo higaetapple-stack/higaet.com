@@ -1,25 +1,33 @@
 name: Staging Readiness Check (Phase 2.2-A)
 
-# Probes DNS / SSL / SSH / GitHub / deploy-target for staging.higaet.com and
-# regenerates docs/infrastructure/phase-2-2-prerequisite-report.md. Safe to
-# run before any infrastructure exists — it records FAIL with evidence
-# instead of crashing. Does NOT deploy.
+# Probes DNS / SSL / SSH / GitHub / deploy-target for staging.higaet.com,
+# regenerates docs/infrastructure/phase-2-2-prerequisite-report.md, appends
+# a row to staging-readiness-history.md, publishes a GitHub Actions Job
+# Summary, and on the FAIL→PASS transition files an issue notification.
+# Safe to run before any infrastructure exists. Does NOT deploy.
 
 on:
   workflow_dispatch: {}
   schedule:
-    # Daily at 06:00 UTC so the report reflects the current state without
-    # needing manual dispatch.
     - cron: "0 6 * * *"
 
 concurrency:
   group: staging-readiness
   cancel-in-progress: true
 
+permissions:
+  contents: write          # commit updated report + history
+  issues: write            # post transition notification
+  actions: read
+
 jobs:
   readiness:
     runs-on: ubuntu-latest
     environment: staging
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+      transitioned: ${{ steps.check.outputs.transitioned }}
+      prior_status: ${{ steps.check.outputs.prior_status }}
     steps:
       - uses: actions/checkout@v4
 
@@ -64,6 +72,46 @@ jobs:
           path: |
             test-results/readiness/**
             docs/infrastructure/phase-2-2-prerequisite-report.md
+            docs/infrastructure/staging-readiness-history.md
+
+      - name: Commit updated report + history
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          git config user.name "higaet-readiness-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/infrastructure/phase-2-2-prerequisite-report.md docs/infrastructure/staging-readiness-history.md || true
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "chore(readiness): update prerequisite report + history [skip ci]"
+            git push || echo "push failed (likely branch protection) — artifact still uploaded"
+          fi
+
+      - name: Post FAIL→PASS transition notification
+        if: steps.check.outputs.transitioned == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              "## STAGING READY",
+              "",
+              "All readiness checks passed.",
+              "",
+              `- Run: ${runUrl}`,
+              `- Prior status: ${{ steps.check.outputs.prior_status }}`,
+              "- Evidence: see workflow artifact `readiness-${{ github.run_id }}`",
+              "- Report: `docs/infrastructure/phase-2-2-prerequisite-report.md`",
+              "",
+              "Phase 2.2 Authorization may now proceed.",
+            ].join("\n");
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `STAGING READY — readiness run ${context.runId}`,
+              body,
+              labels: ["readiness", "phase-2.2"],
+            });
 
       - name: Fail job on NO-GO
         if: steps.check.outcome != 'success'
