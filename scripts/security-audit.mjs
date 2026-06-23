@@ -280,7 +280,7 @@ const auditMd = `# Security Audit Report
 
 | Check | Source |
 |---|---|
-| app_role enum vs AppRole type | \`${ENUM_PATH}\` vs \`${AUTH_FN_PATH}\` |
+| app_role enum vs AppRole type | live DB (when \`PGHOST\` set) or \`${MIGRATIONS_DIR}/*.sql\` vs \`${AUTH_FN_PATH}\` |
 | ROUTE_PERMISSIONS vs enum | \`${ROUTE_AUTH_PATH}\` |
 | Dashboard layout guards | \`src/routes/_authenticated.dashboard.*.tsx\` |
 | Privileged server functions | \`src/**/*.functions.ts\` |
