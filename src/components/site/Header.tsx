@@ -47,11 +47,23 @@ export function Header() {
           </ul>
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
+          <Link
+            to="/auth/login"
+            className="text-sm font-medium text-muted-foreground hover:text-ink transition-colors px-3 py-2"
+          >
+            Login
+          </Link>
+          <Link
+            to="/auth/register"
+            className="text-sm font-medium text-ink ring-1 ring-border hover:bg-muted/40 transition-colors px-3 py-2 rounded-md"
+          >
+            Sign Up
+          </Link>
           <Link
             to="/contact"
             className={cn(
-              "bg-ink text-surface text-sm font-medium py-2 pl-3 pr-3 inline-flex items-center gap-1.5 rounded-md",
+              "bg-ink text-surface text-sm font-medium py-2 pl-3 pr-3 inline-flex items-center gap-1.5 rounded-md ml-1",
               "ring-1 ring-ink hover:bg-ink/90 transition-colors",
             )}
           >
@@ -86,10 +98,24 @@ export function Header() {
                   </Link>
                 </li>
               ))}
-              <li>
+              <li className="pt-2 border-t border-border/60 mt-2 flex flex-col gap-2">
+                <Link
+                  to="/auth/login"
+                  className="block py-2 text-muted-foreground hover:text-ink"
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/auth/register"
+                  className="inline-flex items-center justify-center py-2 px-3 rounded-md ring-1 ring-border text-ink text-sm font-medium"
+                  onClick={() => setOpen(false)}
+                >
+                  Sign Up
+                </Link>
                 <Link
                   to="/contact"
-                  className="mt-2 inline-flex items-center gap-1.5 bg-ink text-surface text-sm font-medium py-2 px-3 rounded-md"
+                  className="mt-1 inline-flex items-center gap-1.5 bg-ink text-surface text-sm font-medium py-2 px-3 rounded-md"
                   onClick={() => setOpen(false)}
                 >
                   Get Started <ArrowRight className="size-4" />
