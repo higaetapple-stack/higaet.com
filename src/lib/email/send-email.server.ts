@@ -49,13 +49,6 @@ async function log(
       error: error ?? null,
       attempts,
       delivered_at: status === "sent" ? new Date().toISOString() : null,
-      metadata: {
-        to: input.to,
-        subject: input.subject,
-        event_type: input.eventType ?? null,
-        idempotency_key: input.idempotencyKey ?? null,
-        tags: input.tags ?? [],
-      } as never,
     });
   } catch {
     // Never let logging failure mask the send result.
