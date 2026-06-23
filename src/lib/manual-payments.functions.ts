@@ -62,8 +62,43 @@ export const submitManualPayment = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+    await notify(supabase, userId, {
+      event_type: "payment.submitted",
+      title: "Payment Submitted",
+      body: "We received your payment proof and will verify it shortly.",
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: row.id },
+    });
     return { id: row.id };
   });
+
+async function notify(
+  supabase: any,
+  userId: string,
+  n: {
+    event_type: string;
+    title: string;
+    body: string;
+    action_url?: string;
+    data?: Record<string, unknown>;
+    priority?: "low" | "normal" | "high";
+  },
+) {
+  try {
+    await supabase.from("notifications").insert({
+      user_id: userId,
+      event_type: n.event_type,
+      category: "payment",
+      title: n.title,
+      body: n.body,
+      action_url: n.action_url ?? null,
+      priority: n.priority ?? "normal",
+      data: n.data ?? {},
+    });
+  } catch {
+    // best-effort; never block the payment flow on notification failure
+  }
+}
 
 export const listMyManualPayments = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
