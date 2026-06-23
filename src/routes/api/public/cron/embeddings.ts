@@ -9,7 +9,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { chunkText, embedTexts, toVectorLiteral } from "@/lib/ai-embeddings.server";
 
 const BATCH = 5; // documents per run
-const MAX_ATTEMPTS = 4;
+// Phase 1.13: increased from 4 → 10 with exponential backoff so transient
+// provider outages (429/503) don't dead-letter content prematurely.
+const MAX_ATTEMPTS = 10;
 
 export const Route = createFileRoute("/api/public/cron/embeddings")({
   server: {
@@ -20,7 +22,9 @@ export const Route = createFileRoute("/api/public/cron/embeddings")({
         if (!apiKeyHeader || apiKeyHeader !== expected) {
           return new Response("Unauthorized", { status: 401 });
         }
-        if (!process.env.OPENAI_API_KEY) return new Response("Missing OPENAI_API_KEY", { status: 500 });
+        // Phase 1.13: removed hard-fail on OPENAI_API_KEY — embedTexts() now
+        // falls over to OpenRouter, so the worker must run even if OpenAI is
+        // unavailable. Provider key validation happens inside embedTexts().
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
