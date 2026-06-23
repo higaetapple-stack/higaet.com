@@ -65,6 +65,15 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
         run: bun scripts/check-staging-readiness.ts
 
+      - name: Validate deep links
+        if: always()
+        run: |
+          OK="${{ steps.check.outputs.deep_links_ok }}"
+          echo "deep_links_ok=$OK"
+          if [ "$OK" != "true" ]; then
+            echo "::warning::Deep-link validation reported issues — see test-results/readiness/*/deep-link-validation.json"
+          fi
+
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
