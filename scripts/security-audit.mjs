@@ -193,8 +193,10 @@ for (const f of clientFiles) {
 const dbAvailable = !!process.env.PGHOST;
 const dbRows = [];
 if (dbAvailable) {
-  const psql = (q) =>
-    execSync(`psql -At -F"|" -c ${JSON.stringify(q)}`, { encoding: "utf8" }).trim();
+  const psql = (q) => {
+    const flat = q.replace(/\s+/g, " ").trim();
+    return execSync(`psql -At -F"|" -c ${JSON.stringify(flat)}`, { encoding: "utf8" }).trim();
+  };
   try {
     const noRls = psql(
       `SELECT relname FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
