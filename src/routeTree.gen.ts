@@ -300,6 +300,7 @@ import { Route as AuthenticatedDashboardAdminRagRouteImport } from './routes/_au
 import { Route as AuthenticatedDashboardAdminProviderHealthRouteImport } from './routes/_authenticated.dashboard.admin.provider-health'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
+import { Route as AuthenticatedDashboardAdminPaymentsRouteImport } from './routes/_authenticated.dashboard.admin.payments'
 import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
 import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
 import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
@@ -1965,6 +1966,12 @@ const AuthenticatedDashboardAdminPlacementsRoute =
     path: '/placements',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminPaymentsRoute =
+  AuthenticatedDashboardAdminPaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminObservabilityRoute =
   AuthenticatedDashboardAdminObservabilityRouteImport.update({
     id: '/observability',
@@ -2434,6 +2441,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
+  '/dashboard/admin/payments': typeof AuthenticatedDashboardAdminPaymentsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -2749,6 +2757,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
+  '/dashboard/admin/payments': typeof AuthenticatedDashboardAdminPaymentsRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -3078,6 +3087,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/_authenticated/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
+  '/_authenticated/dashboard/admin/payments': typeof AuthenticatedDashboardAdminPaymentsRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
   '/_authenticated/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -3409,6 +3419,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
+    | '/dashboard/admin/payments'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/provider-health'
@@ -3724,6 +3735,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
+    | '/dashboard/admin/payments'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
     | '/dashboard/admin/provider-health'
@@ -4052,6 +4064,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/launch-readiness'
     | '/_authenticated/dashboard/admin/notifications'
     | '/_authenticated/dashboard/admin/observability'
+    | '/_authenticated/dashboard/admin/payments'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
     | '/_authenticated/dashboard/admin/provider-health'
@@ -6248,6 +6261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminPlacementsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/payments': {
+      id: '/_authenticated/dashboard/admin/payments'
+      path: '/payments'
+      fullPath: '/dashboard/admin/payments'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminPaymentsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/observability': {
       id: '/_authenticated/dashboard/admin/observability'
       path: '/observability'
@@ -6641,6 +6661,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminLaunchReadinessRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   AuthenticatedDashboardAdminNotificationsRoute: typeof AuthenticatedDashboardAdminNotificationsRoute
   AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
+  AuthenticatedDashboardAdminPaymentsRoute: typeof AuthenticatedDashboardAdminPaymentsRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
   AuthenticatedDashboardAdminProviderHealthRoute: typeof AuthenticatedDashboardAdminProviderHealthRoute
@@ -6692,6 +6713,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminNotificationsRoute,
     AuthenticatedDashboardAdminObservabilityRoute:
       AuthenticatedDashboardAdminObservabilityRoute,
+    AuthenticatedDashboardAdminPaymentsRoute:
+      AuthenticatedDashboardAdminPaymentsRoute,
     AuthenticatedDashboardAdminPlacementsRoute:
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
