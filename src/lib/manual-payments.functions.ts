@@ -274,7 +274,7 @@ export const adminRejectPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const { error } = await context.supabase
+    const { data: row, error } = await context.supabase
       .from("payments")
       .update({
         status: "rejected",
@@ -282,8 +282,18 @@ export const adminRejectPayment = createServerFn({ method: "POST" })
         verified_at: new Date().toISOString(),
         rejection_reason: data.reason,
       })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("user_id")
+      .single();
     if (error) throw new Error(error.message);
+    await notify(context.supabase, row.user_id, {
+      event_type: "payment.rejected",
+      title: "Payment Rejected",
+      body: `Your payment could not be verified: ${data.reason}`,
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: data.id, reason: data.reason },
+      priority: "high",
+    });
     return { ok: true };
   });
 
@@ -299,13 +309,23 @@ export const adminRequestPaymentInfo = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const { error } = await context.supabase
+    const { data: row, error } = await context.supabase
       .from("payments")
       .update({
         status: "info_requested",
         rejection_reason: data.reason,
       })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("user_id")
+      .single();
     if (error) throw new Error(error.message);
+    await notify(context.supabase, row.user_id, {
+      event_type: "payment.info_requested",
+      title: "More Information Required",
+      body: `Additional payment details are required: ${data.reason}`,
+      action_url: "/dashboard/payments/new",
+      data: { payment_id: data.id, reason: data.reason },
+      priority: "high",
+    });
     return { ok: true };
   });
