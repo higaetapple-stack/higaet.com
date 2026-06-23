@@ -1,0 +1,93 @@
+name: Deploy to MilesWeb (Node 20)
+
+# Manual / tag-only for now. Wire to push:main once staging is validated.
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        default: "staging"
+        type: choice
+        options: [staging, production]
+
+concurrency:
+  group: milesweb-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Validate environment
+        run: node scripts/validate-env.mjs --strict
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+
+      - name: Build
+        run: bun run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          GA4_MEASUREMENT_ID: ${{ secrets.GA4_MEASUREMENT_ID }}
+          GSC_VERIFICATION: ${{ secrets.GSC_VERIFICATION }}
+
+      - name: Boot probe
+        run: node -e "import('./.output/server/index.mjs').then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); })"
+
+      - name: Package release
+        run: |
+          SHA=${GITHUB_SHA::12}
+          echo "SHA=$SHA" >> "$GITHUB_ENV"
+          tar -czf release-$SHA.tgz dist .output app.js package.json bun.lock
+
+      - name: SCP release
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "release-${{ env.SHA }}.tgz"
+          target: "releases/"
+
+      - name: Activate release
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd ~/apps/higaet
+            mkdir -p releases/${{ env.SHA }}
+            tar -xzf ~/releases/release-${{ env.SHA }}.tgz -C releases/${{ env.SHA }}
+            ln -sfn ../releases/${{ env.SHA }} current
+            mkdir -p tmp
+            touch tmp/restart.txt
+
+      - name: Smoke probe
+        run: |
+          URL="https://${{ github.event.inputs.environment == 'production' && 'higaet.com' || 'staging.higaet.com' }}/healthz"
+          for i in 1 2 3 4 5; do
+            if curl -fsS "$URL" > /dev/null; then echo "ok"; exit 0; fi
+            sleep 5
+          done
+          echo "smoke probe failed"; exit 1
