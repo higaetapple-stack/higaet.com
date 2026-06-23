@@ -10,6 +10,8 @@ import { lovable } from "@/integrations/lovable";
 import { AuthCard } from "./auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getMyRoles } from "@/lib/auth.functions";
+import { dashboardForRoles, safeRedirectPath } from "@/lib/role-routing";
 
 const Schema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email").max(255),
@@ -17,7 +19,10 @@ const Schema = z.object({
 });
 type Values = z.infer<typeof Schema>;
 
+const SearchSchema = z.object({ redirect: z.string().optional() });
+
 export const Route = createFileRoute("/auth/login")({
+  validateSearch: (s) => SearchSchema.parse(s),
   head: () => ({
     meta: [
       { title: "Sign in — HIGAET" },
@@ -27,8 +32,20 @@ export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
 });
 
+async function resolvePostLoginDestination(redirectParam: string | undefined): Promise<string> {
+  const safe = safeRedirectPath(redirectParam);
+  if (safe) return safe;
+  try {
+    const roles = await getMyRoles();
+    return dashboardForRoles(roles);
+  } catch {
+    return "/dashboard";
+  }
+}
+
 function LoginPage() {
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [appleLoading, setAppleLoading] = useState(false);
@@ -40,7 +57,8 @@ function LoginPage() {
       const { error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
       toast.success("Welcome back");
-      navigate({ to: "/dashboard" });
+      const to = await resolvePostLoginDestination(search.redirect);
+      navigate({ to, replace: true });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Sign-in failed");
     } finally {
