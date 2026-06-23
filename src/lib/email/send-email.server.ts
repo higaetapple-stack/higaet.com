@@ -2,7 +2,7 @@
 // Cloudflare Worker compatible — uses Brevo HTTP API.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { sendBrevoEmail } from "./brevo.client";
+import { sendBrevoEmail } from "./brevo";
 import { renderEmailHtml, renderEmailText } from "./templates";
 
 export interface SendEmailInput {

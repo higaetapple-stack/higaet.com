@@ -2,7 +2,7 @@
 // Server-only. Import dynamically from inside server-fn handlers.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { pingBrevo } from "./brevo.client";
+import { pingBrevo } from "./brevo";
 
 export interface EmailHealthCheck {
   name: string;
