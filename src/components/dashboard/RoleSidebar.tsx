@@ -38,6 +38,8 @@ type Item = {
     | "/dashboard/technologies"
     | "/dashboard/technologies/client"
     | "/dashboard/admin"
+    | "/dashboard/admin/payments"
+    | "/dashboard/payments/new"
     | "/community";
   label: string;
   icon: typeof LayoutDashboard;
