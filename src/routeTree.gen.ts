@@ -294,6 +294,7 @@ import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
 import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
 import { Route as AuthenticatedDashboardAdminRagRouteImport } from './routes/_authenticated.dashboard.admin.rag'
+import { Route as AuthenticatedDashboardAdminProviderHealthRouteImport } from './routes/_authenticated.dashboard.admin.provider-health'
 import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
@@ -1925,6 +1926,12 @@ const AuthenticatedDashboardAdminRagRoute =
     path: '/rag',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminProviderHealthRoute =
+  AuthenticatedDashboardAdminProviderHealthRouteImport.update({
+    id: '/provider-health',
+    path: '/provider-health',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminProjectsRoute =
   AuthenticatedDashboardAdminProjectsRouteImport.update({
     id: '/projects',
@@ -2400,6 +2407,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
   '/dashboard/admin/rag': typeof AuthenticatedDashboardAdminRagRoute
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
@@ -2710,6 +2718,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
   '/dashboard/admin/rag': typeof AuthenticatedDashboardAdminRagRoute
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
@@ -3034,6 +3043,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
   '/_authenticated/dashboard/admin/projects': typeof AuthenticatedDashboardAdminProjectsRoute
+  '/_authenticated/dashboard/admin/provider-health': typeof AuthenticatedDashboardAdminProviderHealthRoute
   '/_authenticated/dashboard/admin/rag': typeof AuthenticatedDashboardAdminRagRoute
   '/_authenticated/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/_authenticated/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
@@ -3360,6 +3370,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/provider-health'
     | '/dashboard/admin/rag'
     | '/dashboard/admin/sa-applications'
     | '/dashboard/admin/sa-leads'
@@ -3670,6 +3681,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
     | '/dashboard/admin/projects'
+    | '/dashboard/admin/provider-health'
     | '/dashboard/admin/rag'
     | '/dashboard/admin/sa-applications'
     | '/dashboard/admin/sa-leads'
@@ -3993,6 +4005,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/observability'
     | '/_authenticated/dashboard/admin/placements'
     | '/_authenticated/dashboard/admin/projects'
+    | '/_authenticated/dashboard/admin/provider-health'
     | '/_authenticated/dashboard/admin/rag'
     | '/_authenticated/dashboard/admin/sa-applications'
     | '/_authenticated/dashboard/admin/sa-leads'
@@ -6140,6 +6153,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminRagRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/provider-health': {
+      id: '/_authenticated/dashboard/admin/provider-health'
+      path: '/provider-health'
+      fullPath: '/dashboard/admin/provider-health'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProviderHealthRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/projects': {
       id: '/_authenticated/dashboard/admin/projects'
       path: '/projects'
@@ -6541,6 +6561,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
   AuthenticatedDashboardAdminProjectsRoute: typeof AuthenticatedDashboardAdminProjectsRoute
+  AuthenticatedDashboardAdminProviderHealthRoute: typeof AuthenticatedDashboardAdminProviderHealthRoute
   AuthenticatedDashboardAdminRagRoute: typeof AuthenticatedDashboardAdminRagRoute
   AuthenticatedDashboardAdminSaApplicationsRoute: typeof AuthenticatedDashboardAdminSaApplicationsRoute
   AuthenticatedDashboardAdminSaLeadsRoute: typeof AuthenticatedDashboardAdminSaLeadsRoute
@@ -6591,6 +6612,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminPlacementsRoute,
     AuthenticatedDashboardAdminProjectsRoute:
       AuthenticatedDashboardAdminProjectsRoute,
+    AuthenticatedDashboardAdminProviderHealthRoute:
+      AuthenticatedDashboardAdminProviderHealthRoute,
     AuthenticatedDashboardAdminRagRoute: AuthenticatedDashboardAdminRagRoute,
     AuthenticatedDashboardAdminSaApplicationsRoute:
       AuthenticatedDashboardAdminSaApplicationsRoute,
