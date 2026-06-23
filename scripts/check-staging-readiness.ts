@@ -486,10 +486,15 @@ function appendStepSummary(body: string): void {
 
 (async () => {
   try {
-    await checkDns();
-    await checkSsl();
-    await checkSsh();
-    await checkGithub();
+    const fixture = env.READINESS_FIXTURE_STATUS;
+    if (fixture === "GO" || fixture === "NO-GO") {
+      record({ category: "Fixture", name: `forced ${fixture}`, status: fixture === "GO" ? "PASS" : "FAIL", required: true, evidence: "READINESS_FIXTURE_STATUS override" });
+    } else {
+      await checkDns();
+      await checkSsl();
+      await checkSsh();
+      await checkGithub();
+    }
     const failed = checks.filter((c) => c.required && c.status === "FAIL");
     const overall: "GO" | "NO-GO" = failed.length === 0 ? "GO" : "NO-GO";
     const report = buildReport();
@@ -499,14 +504,21 @@ function appendStepSummary(body: string): void {
     );
     writeFileSync(reportPath, report);
     writeArtifact("summary.json", JSON.stringify(checks, null, 2));
+    const cachePath = writeCache(overall);
     const { prior } = updateHistory(overall);
     appendStepSummary(buildStepSummary(overall));
+    const links = deepLinks();
     appendGithubOutput({
       status: overall,
       transitioned: prior === "NO-GO" && overall === "GO" ? "true" : "false",
       prior_status: prior ?? "none",
+      report_url: links.reportPath,
+      artifact_url: links.artifactUrl,
+      run_url: links.runUrl,
+      cache_path: cachePath,
     });
     console.log(`\nReport: ${reportPath}`);
+    console.log(`Cache:  ${cachePath}`);
     console.log(`Overall: ${overall} (prior: ${prior ?? "none"})`);
     process.exit(overall === "GO" ? 0 : 1);
   } catch (err) {
