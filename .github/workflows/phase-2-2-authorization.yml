@@ -38,9 +38,17 @@ jobs:
           fi
           STATUS=$(jq -r .status "$F")
           TS=$(jq -r .timestamp "$F")
+          CACHED_KEY=$(jq -r .cache_key "$F")
           AGE=$(( ( $(date -u +%s) - $(date -u -d "$TS" +%s) ) / 3600 ))
-          echo "cache age=${AGE}h status=${STATUS} ttl=${TTL_HOURS}h"
-          if [ "$STATUS" = "GO" ] && [ "$AGE" -lt "$TTL_HOURS" ]; then
+          # Recompute current cache key from workflow + checker + required secret list
+          REQUIRED="SSH_HOST,SSH_KEY,SSH_USER,STAGING_BASE_URL,STAGING_HOST"
+          CURRENT_KEY=$( { \
+            printf '%s:' .github/workflows/staging-readiness.yml; sha256sum .github/workflows/staging-readiness.yml | awk '{print $1}'; \
+            printf '%s:' scripts/check-staging-readiness.ts;     sha256sum scripts/check-staging-readiness.ts     | awk '{print $1}'; \
+            echo "secrets:$REQUIRED"; \
+          } | sha256sum | awk '{print substr($1,1,16)}')
+          echo "cache age=${AGE}h status=${STATUS} ttl=${TTL_HOURS}h cached_key=${CACHED_KEY} current_key=${CURRENT_KEY}"
+          if [ "$STATUS" = "GO" ] && [ "$AGE" -lt "$TTL_HOURS" ] && [ "$CACHED_KEY" = "$CURRENT_KEY" ]; then
             echo "cache_hit=true" >> "$GITHUB_OUTPUT"
           else
             echo "cache_hit=false" >> "$GITHUB_OUTPUT"
