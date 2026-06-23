@@ -1,0 +1,72 @@
+name: Staging Readiness Check (Phase 2.2-A)
+
+# Probes DNS / SSL / SSH / GitHub / deploy-target for staging.higaet.com and
+# regenerates docs/infrastructure/phase-2-2-prerequisite-report.md. Safe to
+# run before any infrastructure exists — it records FAIL with evidence
+# instead of crashing. Does NOT deploy.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Daily at 06:00 UTC so the report reflects the current state without
+    # needing manual dispatch.
+    - cron: "0 6 * * *"
+
+concurrency:
+  group: staging-readiness
+  cancel-in-progress: true
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install OpenSSL + dig
+        run: sudo apt-get update -y && sudo apt-get install -y dnsutils openssl openssh-client
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Write SSH key (if provided)
+        if: ${{ secrets.SSH_KEY != '' }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+      - name: Run readiness checker
+        id: check
+        continue-on-error: true
+        env:
+          STAGING_HOST: ${{ secrets.STAGING_HOST }}
+          STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY_PATH: ${{ secrets.SSH_KEY != '' && '/home/runner/.ssh/id_ed25519' || '' }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR || '~/apps/higaet' }}
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: bun scripts/check-staging-readiness.ts
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readiness-${{ github.run_id }}
+          path: |
+            test-results/readiness/**
+            docs/infrastructure/phase-2-2-prerequisite-report.md
+
+      - name: Fail job on NO-GO
+        if: steps.check.outcome != 'success'
+        run: |
+          echo "::error::Staging prerequisites failed — see phase-2-2-prerequisite-report.md"
+          exit 1
