@@ -2083,6 +2083,72 @@ export type Database = {
           },
         ]
       }
+      launch_readiness_runs: {
+        Row: {
+          artifact_urls: Json
+          audit_breakdown: Json
+          audit_errors: number
+          audit_warnings: number
+          branch: string
+          commit_sha: string
+          created_at: string
+          environment: string
+          id: string
+          overall_status: string
+          playwright_duration_ms: number
+          playwright_failed: number
+          playwright_passed: number
+          playwright_skipped: number
+          schema_validation_details: Json
+          schema_validation_status: string
+          security_failed: number
+          security_passed: number
+          workflow_run_id: string | null
+        }
+        Insert: {
+          artifact_urls?: Json
+          audit_breakdown?: Json
+          audit_errors?: number
+          audit_warnings?: number
+          branch: string
+          commit_sha: string
+          created_at?: string
+          environment: string
+          id?: string
+          overall_status?: string
+          playwright_duration_ms?: number
+          playwright_failed?: number
+          playwright_passed?: number
+          playwright_skipped?: number
+          schema_validation_details?: Json
+          schema_validation_status?: string
+          security_failed?: number
+          security_passed?: number
+          workflow_run_id?: string | null
+        }
+        Update: {
+          artifact_urls?: Json
+          audit_breakdown?: Json
+          audit_errors?: number
+          audit_warnings?: number
+          branch?: string
+          commit_sha?: string
+          created_at?: string
+          environment?: string
+          id?: string
+          overall_status?: string
+          playwright_duration_ms?: number
+          playwright_failed?: number
+          playwright_passed?: number
+          playwright_skipped?: number
+          schema_validation_details?: Json
+          schema_validation_status?: string
+          security_failed?: number
+          security_passed?: number
+          workflow_run_id?: string | null
+        }
+        Relationships: []
+      }
       lessons: {
         Row: {
           content_md: string | null
