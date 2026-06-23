@@ -36,6 +36,7 @@ async function logEmbedTelemetry(opts: {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { provider, model } = splitModelId(opts.model);
     await supabaseAdmin.from("ai_usage").insert({
+      request_id: crypto.randomUUID(),
       consumer: "embeddings",
       logical_id: "embed.small",
       provider,
