@@ -3,7 +3,7 @@ import { BookOpen } from "lucide-react";
 import { requireRolesOrRedirect, ROUTE_PERMISSIONS } from "@/lib/route-authorization";
 
 export const Route = createFileRoute("/_authenticated/dashboard/faculty")({
-  beforeLoad: () => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/faculty"]),
+  beforeLoad: ({ location }) => requireRolesOrRedirect(ROUTE_PERMISSIONS["/dashboard/faculty"], { location }),
   component: FacultyHome,
 });
 
