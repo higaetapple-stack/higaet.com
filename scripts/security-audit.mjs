@@ -265,7 +265,10 @@ findings.sort((a, b) => sevOrder[a.severity] - sevOrder[b.severity]);
 
 const critical = findings.filter((f) => f.severity === "CRITICAL").length;
 const high = findings.filter((f) => f.severity === "HIGH").length;
-const overall = critical || high ? "FAIL" : "PASS";
+const medium = findings.filter((f) => f.severity === "MEDIUM").length;
+// STRICT=1 (used in CI) fails on ANY finding, including medium/info.
+const strict = process.env.STRICT === "1" || process.env.SECURITY_AUDIT_STRICT === "1";
+const overall = critical || high || (strict && findings.length) ? "FAIL" : "PASS";
 
 const rows = findings
   .map(
