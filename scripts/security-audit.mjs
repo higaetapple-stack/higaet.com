@@ -219,12 +219,12 @@ if (dbAvailable) {
        WHERE n.nspname='public' AND c.relkind='r' ORDER BY relname`,
     ).split("\n").filter(Boolean);
     for (const t of tables) {
+      const lit = `'${t.replace(/'/g, "''")}'`;
       const rls = psql(
-        `SELECT relrowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-         WHERE n.nspname='public' AND c.relname=${JSON.stringify(t)}`,
+        `SELECT relrowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname=${lit}`,
       );
       const pc = psql(
-        `SELECT COUNT(*) FROM pg_policies WHERE schemaname='public' AND tablename=${JSON.stringify(t)}`,
+        `SELECT COUNT(*) FROM pg_policies WHERE schemaname='public' AND tablename=${lit}`,
       );
       dbRows.push({ table: t, rls: rls === "t", policies: Number(pc) });
     }
