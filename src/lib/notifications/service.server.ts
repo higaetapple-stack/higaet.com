@@ -153,7 +153,7 @@ export async function dispatchNotification(
     result.skipped.push("in_app");
   }
 
-  // ----- Email -----
+  // ----- Email (Brevo HTTP API — Cloudflare Worker compatible) -----
   if (channels.includes("email")) {
     const tpl = templates.email;
     const subject =
@@ -164,44 +164,45 @@ export async function dispatchNotification(
       (tpl?.body_template && renderTemplate(tpl.body_template, vars)) ||
       opts.fallback?.body ||
       "";
+    const actionUrl =
+      (tpl?.action_url && renderTemplate(tpl.action_url, vars)) ||
+      opts.fallback?.actionUrl ||
+      null;
 
     try {
-      // Look up email
       const { data: profile } = await supabaseAdmin
         .from("profiles")
-        .select("email")
+        .select("email, full_name")
         .eq("id", opts.userId)
         .maybeSingle();
 
       if (!profile?.email) {
         result.errors.push({ channel: "email", error: "no email on profile" });
       } else {
-        // Try Lovable email queue if available; else log only.
-        const { error: enqErr } = await supabaseAdmin.rpc(
-          "enqueue_email" as never,
-          {
-            queue: "transactional_emails",
-            payload: {
-              to: profile.email,
-              subject,
-              html: `<div>${body}</div>`,
-            },
-          } as never,
-        );
-        const logStatus = enqErr ? "failed" : "queued";
-        await supabaseAdmin.from("notification_delivery_logs").insert({
-          notification_id: result.notificationId,
-          user_id: opts.userId,
-          channel: "email",
-          status: logStatus,
-          provider: "lovable_email",
-          error: enqErr?.message ?? null,
-          attempts: 1,
+        const { sendEmail } = await import("@/lib/email/send-email.server");
+        const sendRes = await sendEmail({
+          to: profile.email,
+          toName: profile.full_name ?? null,
+          subject,
+          body,
+          actionUrl,
+          actionLabel: actionUrl ? "Open" : null,
+          recipientName: profile.full_name ?? null,
+          tags: [category, opts.eventType],
+          userId: opts.userId,
+          notificationId: result.notificationId,
+          eventType: opts.eventType,
+          idempotencyKey: opts.eventId
+            ? `${opts.eventType}:${opts.eventId}`
+            : null,
         });
-        if (enqErr) {
-          result.errors.push({ channel: "email", error: enqErr.message });
-        } else {
+        if (sendRes.ok) {
           result.delivered.push("email");
+        } else {
+          result.errors.push({
+            channel: "email",
+            error: sendRes.error ?? "email failed",
+          });
         }
       }
     } catch (e) {
