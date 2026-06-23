@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { aiChatCompletion, aiEmbeddings } from "@/lib/ai-gateway.server";
 
 const ACADEMY_SLUG = "academy";
 
@@ -58,14 +59,7 @@ export const askTutor = createServerFn({ method: "POST" })
     const enrichedQuery = contextPrefix + data.prompt;
 
     // Embed
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("LOVABLE_API_KEY missing");
-
-    const embRes = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-      body: JSON.stringify({ model: "openai/text-embedding-3-small", input: enrichedQuery }),
-    });
+    const embRes = await aiEmbeddings({ model: "openai/text-embedding-3-small", input: enrichedQuery });
     if (!embRes.ok) {
       const t = await embRes.text();
       throw new Error(`Embedding failed: ${embRes.status} ${t.slice(0, 200)}`);
@@ -86,22 +80,18 @@ export const askTutor = createServerFn({ method: "POST" })
       .join("\n\n---\n\n");
 
     // Chat completion
-    const chatRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        temperature: 0.3,
-        messages: [
-          { role: "system", content: TUTOR_SYSTEM },
-          {
-            role: "system",
-            content: `Knowledge context (Academy):\n\n${contextText || "(no relevant context found — say you don't have specific HIGAET material on this topic)"}`,
-          },
-          ...(contextPrefix ? [{ role: "system", content: `Current student context: ${contextPrefix.trim()}` }] : []),
-          { role: "user", content: data.prompt },
-        ],
-      }),
+    const chatRes = await aiChatCompletion({
+      model: "google/gemini-3-flash-preview",
+      temperature: 0.3,
+      messages: [
+        { role: "system", content: TUTOR_SYSTEM },
+        {
+          role: "system",
+          content: `Knowledge context (Academy):\n\n${contextText || "(no relevant context found — say you don't have specific HIGAET material on this topic)"}`,
+        },
+        ...(contextPrefix ? [{ role: "system" as const, content: `Current student context: ${contextPrefix.trim()}` }] : []),
+        { role: "user", content: data.prompt },
+      ],
     });
     if (!chatRes.ok) {
       const t = await chatRes.text();
