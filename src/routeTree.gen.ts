@@ -247,6 +247,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
+import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
 import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
@@ -300,6 +301,7 @@ import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './route
 import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
 import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
 import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
+import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
@@ -1645,6 +1647,12 @@ const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
     path: '/knowledge-base/universities/$slug',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
+const ApiPublicLaunchReadinessIngestRoute =
+  ApiPublicLaunchReadinessIngestRouteImport.update({
+    id: '/api/public/launch-readiness/ingest',
+    path: '/api/public/launch-readiness/ingest',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronWebhookDispatchRoute =
   ApiPublicCronWebhookDispatchRouteImport.update({
     id: '/api/public/cron/webhook-dispatch',
@@ -1960,6 +1968,12 @@ const AuthenticatedDashboardAdminNotificationsRoute =
   AuthenticatedDashboardAdminNotificationsRouteImport.update({
     id: '/notifications',
     path: '/notifications',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminLaunchReadinessRoute =
+  AuthenticatedDashboardAdminLaunchReadinessRouteImport.update({
+    id: '/launch-readiness',
+    path: '/launch-readiness',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminJobsRoute =
@@ -2410,6 +2424,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
+  '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -2463,6 +2478,7 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2722,6 +2738,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
+  '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -2773,6 +2790,7 @@ export interface FileRoutesByTo {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3048,6 +3066,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
+  '/_authenticated/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/_authenticated/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/_authenticated/dashboard/admin/placements': typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -3101,6 +3120,7 @@ export interface FileRoutesById {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3376,6 +3396,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
+    | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
@@ -3429,6 +3450,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/api/public/launch-readiness/ingest'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -3688,6 +3710,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
+    | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
     | '/dashboard/admin/placements'
@@ -3739,6 +3762,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/api/public/launch-readiness/ingest'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -4013,6 +4037,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/identity-providers'
     | '/_authenticated/dashboard/admin/jobs'
+    | '/_authenticated/dashboard/admin/launch-readiness'
     | '/_authenticated/dashboard/admin/notifications'
     | '/_authenticated/dashboard/admin/observability'
     | '/_authenticated/dashboard/admin/placements'
@@ -4066,6 +4091,7 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/api/public/launch-readiness/ingest'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -4166,6 +4192,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
   ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
+  ApiPublicLaunchReadinessIngestRoute: typeof ApiPublicLaunchReadinessIngestRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
@@ -5837,6 +5864,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport
       parentRoute: typeof GlobalEducationRoute
     }
+    '/api/public/launch-readiness/ingest': {
+      id: '/api/public/launch-readiness/ingest'
+      path: '/api/public/launch-readiness/ingest'
+      fullPath: '/api/public/launch-readiness/ingest'
+      preLoaderRoute: typeof ApiPublicLaunchReadinessIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/webhook-dispatch': {
       id: '/api/public/cron/webhook-dispatch'
       path: '/api/public/cron/webhook-dispatch'
@@ -6208,6 +6242,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminNotificationsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/launch-readiness': {
+      id: '/_authenticated/dashboard/admin/launch-readiness'
+      path: '/launch-readiness'
+      fullPath: '/dashboard/admin/launch-readiness'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/jobs': {
       id: '/_authenticated/dashboard/admin/jobs'
       path: '/jobs'
@@ -6577,6 +6618,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminIdentityProvidersRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
+  AuthenticatedDashboardAdminLaunchReadinessRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   AuthenticatedDashboardAdminNotificationsRoute: typeof AuthenticatedDashboardAdminNotificationsRoute
   AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
   AuthenticatedDashboardAdminPlacementsRoute: typeof AuthenticatedDashboardAdminPlacementsRoute
@@ -6624,6 +6666,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
     AuthenticatedDashboardAdminIdentityProvidersRoute:
       AuthenticatedDashboardAdminIdentityProvidersRoute,
     AuthenticatedDashboardAdminJobsRoute: AuthenticatedDashboardAdminJobsRoute,
+    AuthenticatedDashboardAdminLaunchReadinessRoute:
+      AuthenticatedDashboardAdminLaunchReadinessRoute,
     AuthenticatedDashboardAdminNotificationsRoute:
       AuthenticatedDashboardAdminNotificationsRoute,
     AuthenticatedDashboardAdminObservabilityRoute:
@@ -7564,6 +7608,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
   ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
+  ApiPublicLaunchReadinessIngestRoute: ApiPublicLaunchReadinessIngestRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport

@@ -11,9 +11,18 @@ on:
       - "scripts/security-audit.mjs"
       - "scripts/seed-test-users.mjs"
       - "scripts/generate-readiness-report.mjs"
+      - "scripts/predeploy-schema-validation.ts"
+      - "scripts/notify-failure.mjs"
       - "tests/e2e/**"
+      - "tests/integration/**"
       - "playwright.config.ts"
       - ".github/workflows/launch-readiness.yml"
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+  GENERIC_WEBHOOK_URL: ${{ secrets.GENERIC_WEBHOOK_URL }}
 
 jobs:
   security-audit:
@@ -33,14 +42,55 @@ jobs:
           PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
           PGDATABASE: ${{ secrets.SUPABASE_DB_NAME }}
         run: node scripts/security-audit.mjs
+      - name: Predeploy schema validation
+        env:
+          PGHOST: ${{ secrets.SUPABASE_DB_HOST }}
+          PGPORT: ${{ secrets.SUPABASE_DB_PORT }}
+          PGUSER: ${{ secrets.SUPABASE_DB_USER }}
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PGDATABASE: ${{ secrets.SUPABASE_DB_NAME }}
+        run: bunx tsx scripts/predeploy-schema-validation.ts
+      - name: Permission validation (code-only)
+        run: node tests/integration/permission-validation.test.mjs
+      - name: Role validation (code vs DB)
+        env:
+          PGHOST: ${{ secrets.SUPABASE_DB_HOST }}
+          PGPORT: ${{ secrets.SUPABASE_DB_PORT }}
+          PGUSER: ${{ secrets.SUPABASE_DB_USER }}
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PGDATABASE: ${{ secrets.SUPABASE_DB_NAME }}
+        run: node tests/integration/role-validation.test.mjs
       - name: Upload audit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: security-audit-${{ github.run_id }}
+          retention-days: 30
           path: |
             docs/infrastructure/security-audit-report.md
             docs/infrastructure/rls-route-consistency-report.md
+            artifacts/schema-validation.json
+      - name: Notify on failure
+        if: failure()
+        env:
+          PAYLOAD_FILE: /tmp/notify-payload.json
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          cat > "$PAYLOAD_FILE" <<EOF
+          {
+            "environment": "${{ github.event_name == 'pull_request' && 'preview' || 'ci' }}",
+            "branch": "${{ github.ref_name }}",
+            "commitSha": "${{ github.sha }}",
+            "workflow": "${{ github.workflow }}",
+            "job": "security-audit",
+            "failedAt": "$(date -u +%FT%TZ)",
+            "runUrl": "$RUN_URL",
+            "artifacts": [
+              { "name": "audit + schema validation", "url": "$RUN_URL" }
+            ]
+          }
+          EOF
+          node scripts/notify-failure.mjs || true
 
   e2e:
     runs-on: ubuntu-latest
@@ -91,7 +141,77 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: launch-readiness-${{ github.run_id }}
+          retention-days: 30
           path: |
             playwright-report/**
             playwright-results.json
             docs/testing/launch-readiness-report.md
+            artifacts/schema-validation.json
+      - name: Ingest readiness summary
+        if: always()
+        env:
+          INGEST_URL: ${{ secrets.LAUNCH_READINESS_INGEST_URL }}
+          INGEST_SECRET: ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}
+        run: |
+          if [ -z "$INGEST_URL" ] || [ -z "$INGEST_SECRET" ]; then
+            echo "Ingest URL or secret not configured — skipping"
+            exit 0
+          fi
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          PW_PASSED=$(jq '[.suites[].specs[].tests[].results[] | select(.status=="passed")] | length' playwright-results.json 2>/dev/null || echo 0)
+          PW_FAILED=$(jq '[.suites[].specs[].tests[].results[] | select(.status=="failed")] | length' playwright-results.json 2>/dev/null || echo 0)
+          PW_SKIPPED=$(jq '[.suites[].specs[].tests[].results[] | select(.status=="skipped")] | length' playwright-results.json 2>/dev/null || echo 0)
+          PW_DURATION=$(jq '.stats.duration // 0' playwright-results.json 2>/dev/null || echo 0)
+          SCHEMA_STATUS=$(jq -r '.status // "unknown"' artifacts/schema-validation.json 2>/dev/null || echo unknown)
+          SCHEMA_DETAILS=$(cat artifacts/schema-validation.json 2>/dev/null || echo '{}')
+          OVERALL=$([ "${{ job.status }}" = "success" ] && echo "passed" || echo "failed")
+          PAYLOAD=$(jq -n \
+            --arg sha "${{ github.sha }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg env "ci" \
+            --arg run "${{ github.run_id }}" \
+            --arg url "$RUN_URL" \
+            --argjson pwp "$PW_PASSED" \
+            --argjson pwf "$PW_FAILED" \
+            --argjson pws "$PW_SKIPPED" \
+            --argjson pwd "$PW_DURATION" \
+            --arg schema "$SCHEMA_STATUS" \
+            --argjson schemaD "$SCHEMA_DETAILS" \
+            --arg overall "$OVERALL" \
+            '{
+              commit_sha:$sha, branch:$branch, environment:$env, workflow_run_id:$run,
+              audit_errors:0, audit_warnings:0, audit_breakdown:{},
+              playwright_passed:$pwp, playwright_failed:$pwf, playwright_skipped:$pws,
+              playwright_duration_ms:$pwd,
+              security_passed:0, security_failed:0,
+              schema_validation_status:$schema, schema_validation_details:$schemaD,
+              overall_status:$overall,
+              artifact_urls:{ workflowRun:$url, playwrightReport:$url, schemaValidation:$url }
+            }')
+          SIG=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "$INGEST_SECRET" | awk '{print $2}')
+          curl -fsS -X POST "$INGEST_URL" \
+            -H "content-type: application/json" \
+            -H "x-signature: $SIG" \
+            --data "$PAYLOAD"
+      - name: Notify on failure
+        if: failure()
+        env:
+          PAYLOAD_FILE: /tmp/notify-payload.json
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          cat > "$PAYLOAD_FILE" <<EOF
+          {
+            "environment": "ci",
+            "branch": "${{ github.ref_name }}",
+            "commitSha": "${{ github.sha }}",
+            "workflow": "${{ github.workflow }}",
+            "job": "e2e",
+            "failedAt": "$(date -u +%FT%TZ)",
+            "runUrl": "$RUN_URL",
+            "artifacts": [
+              { "name": "Playwright report", "url": "$RUN_URL" },
+              { "name": "Schema validation", "url": "$RUN_URL" }
+            ]
+          }
+          EOF
+          node scripts/notify-failure.mjs || true
