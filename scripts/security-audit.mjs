@@ -204,7 +204,7 @@ const clientFiles = walk("src").filter(
     !f.endsWith(".functions.tsx"),
 );
 for (const f of clientFiles) {
-  const src = readFileSync(f, "utf8");
+  const src = stripComments(readFileSync(f, "utf8"));
   if (/SUPABASE_SERVICE_ROLE_KEY/.test(src)) {
     add("CRITICAL", "client-leak", `Service-role key referenced in client-reachable file.`, f);
   }
