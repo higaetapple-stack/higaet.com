@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Activity, AlertTriangle, CheckCircle2, RefreshCw, Zap } from "lucide-react";
@@ -7,12 +7,21 @@ import {
   getProviderHealthMetrics,
   runProviderHealthCheck,
 } from "@/lib/provider-health.functions";
+import {
+  listEmbeddingQueue,
+  requeueEmbeddingItems,
+  requeueDeadLetters,
+  getEmbeddingAlerts,
+} from "@/lib/rag-observability.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/provider-health")({
   component: ProviderHealthDashboard,
 });
 
+type Tab = "providers" | "queue";
+
 function ProviderHealthDashboard() {
+  const [tab, setTab] = useState<Tab>("providers");
   const [hours, setHours] = useState(24);
   const fetchMetrics = useServerFn(getProviderHealthMetrics);
   const runCheck = useServerFn(runProviderHealthCheck);
@@ -20,6 +29,7 @@ function ProviderHealthDashboard() {
   const metrics = useQuery({
     queryKey: ["provider-health-metrics", hours],
     queryFn: () => fetchMetrics({ data: { hours } }),
+    enabled: tab === "providers",
   });
 
   const ping = useMutation({
@@ -57,6 +67,30 @@ function ProviderHealthDashboard() {
         </div>
       </header>
 
+      <div className="flex border-b border-border gap-1">
+        {(
+          [
+            ["providers", "Providers"],
+            ["queue", "Embedding queue"],
+          ] as const
+        ).map(([k, label]) => (
+          <button
+            key={k}
+            onClick={() => setTab(k)}
+            className={`px-4 py-2 text-sm -mb-px border-b-2 ${
+              tab === k
+                ? "border-primary text-ink"
+                : "border-transparent text-muted-foreground hover:text-ink"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "queue" && <EmbeddingQueueTab />}
+      {tab === "providers" && (
+        <>
       {/* Live ping results */}
       <section className="p-5 rounded-xl border border-border bg-surface">
         <h2 className="text-sm font-medium text-ink mb-3">Live ping</h2>
@@ -171,6 +205,195 @@ function ProviderHealthDashboard() {
           </section>
         </>
       )}
+        </>
+      )}
+    </div>
+  );
+}
+
+function EmbeddingQueueTab() {
+  const qc = useQueryClient();
+  const [status, setStatus] = useState<
+    "failed" | "dead" | "pending" | "processing" | "completed" | "all"
+  >("failed");
+  const listFn = useServerFn(listEmbeddingQueue);
+  const requeueFn = useServerFn(requeueEmbeddingItems);
+  const requeueAllDead = useServerFn(requeueDeadLetters);
+  const alertsFn = useServerFn(getEmbeddingAlerts);
+
+  const alerts = useQuery({
+    queryKey: ["embedding-alerts"],
+    queryFn: () => alertsFn({ data: undefined as any }),
+    refetchInterval: 30_000,
+  });
+
+  const items = useQuery({
+    queryKey: ["embedding-queue", status],
+    queryFn: () => listFn({ data: { status, limit: 100 } }),
+  });
+
+  const [selected, setSelected] = useState<Record<string, boolean>>({});
+  const selectedIds = Object.keys(selected).filter((k) => selected[k]);
+
+  const requeueOne = useMutation({
+    mutationFn: (id: string) => requeueFn({ data: { ids: [id] } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["embedding-queue"] });
+      qc.invalidateQueries({ queryKey: ["embedding-alerts"] });
+    },
+  });
+  const requeueBatch = useMutation({
+    mutationFn: (ids: string[]) => requeueFn({ data: { ids } }),
+    onSuccess: () => {
+      setSelected({});
+      qc.invalidateQueries({ queryKey: ["embedding-queue"] });
+      qc.invalidateQueries({ queryKey: ["embedding-alerts"] });
+    },
+  });
+  const requeueDead = useMutation({
+    mutationFn: () => requeueAllDead({ data: undefined as any }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["embedding-queue"] });
+      qc.invalidateQueries({ queryKey: ["embedding-alerts"] });
+    },
+  });
+
+  return (
+    <div className="space-y-4">
+      {alerts.data && alerts.data.warnings.length > 0 && (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 space-y-1">
+          {alerts.data.warnings.map((w) => (
+            <div key={w.code} className="text-sm flex items-center gap-2">
+              <AlertTriangle className="size-4 text-destructive" />
+              <span className="font-medium text-ink">{w.code}</span>
+              <span className="text-muted-foreground">{w.message}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {alerts.data && (
+        <div className="grid sm:grid-cols-4 gap-3">
+          <Stat icon={Activity} label="Pending" value={alerts.data.observed.pending} />
+          <Stat icon={AlertTriangle} label="Failed" value={alerts.data.observed.failed} tone="danger" />
+          <Stat
+            icon={Zap}
+            label="Error rate 1h"
+            value={`${Math.round(alerts.data.observed.error_rate * 100)}%`}
+          />
+          <Stat
+            icon={CheckCircle2}
+            label="Mins since progress"
+            value={alerts.data.observed.minutes_since_progress ?? "—"}
+          />
+        </div>
+      )}
+
+      <section className="p-5 rounded-xl border border-border bg-surface">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <h2 className="text-sm font-medium text-ink">Embedding queue</h2>
+          <div className="flex items-center gap-2">
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value as any)}
+              className="px-3 py-1.5 rounded-md border border-border bg-surface text-sm"
+            >
+              {["failed", "dead", "pending", "processing", "completed", "all"].map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => {
+                if (selectedIds.length === 0) return;
+                if (!confirm(`Requeue ${selectedIds.length} item(s)?`)) return;
+                requeueBatch.mutate(selectedIds);
+              }}
+              disabled={selectedIds.length === 0 || requeueBatch.isPending}
+              className="px-3 py-1.5 rounded-md border border-border text-sm disabled:opacity-50"
+            >
+              Requeue selected ({selectedIds.length})
+            </button>
+            <button
+              onClick={() => {
+                if (!confirm("Requeue ALL dead-letter items?")) return;
+                requeueDead.mutate();
+              }}
+              disabled={requeueDead.isPending}
+              className="px-3 py-1.5 rounded-md bg-destructive text-destructive-foreground text-sm disabled:opacity-50"
+            >
+              Requeue all dead
+            </button>
+          </div>
+        </div>
+
+        {items.isLoading && <div className="text-sm text-muted-foreground">Loading queue…</div>}
+        {items.error && (
+          <div className="text-sm text-destructive">{(items.error as Error).message}</div>
+        )}
+        {items.data && (
+          <div className="overflow-x-auto">
+            <table className="text-sm w-full">
+              <thead className="text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="py-1.5 w-8"></th>
+                  <th className="text-left py-1.5">Title</th>
+                  <th className="text-left py-1.5">Type</th>
+                  <th className="text-left py-1.5">Status</th>
+                  <th className="text-right py-1.5">Attempts</th>
+                  <th className="text-left py-1.5 pl-3">Last error</th>
+                  <th className="text-left py-1.5">Scheduled</th>
+                  <th className="py-1.5"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.data.map((r) => (
+                  <tr key={r.id} className="border-t border-border">
+                    <td className="py-1.5">
+                      <input
+                        type="checkbox"
+                        checked={!!selected[r.id]}
+                        onChange={(e) =>
+                          setSelected((s) => ({ ...s, [r.id]: e.target.checked }))
+                        }
+                      />
+                    </td>
+                    <td className="py-1.5 max-w-xs truncate">{r.title ?? "—"}</td>
+                    <td className="py-1.5 text-xs">{r.entity_type ?? "—"}</td>
+                    <td className="py-1.5 text-xs">{r.status}</td>
+                    <td className="py-1.5 text-right">{r.attempts}</td>
+                    <td className="py-1.5 pl-3 text-xs text-muted-foreground truncate max-w-md">
+                      {r.last_error ?? "—"}
+                    </td>
+                    <td className="py-1.5 text-xs text-muted-foreground">
+                      {r.scheduled_for ? new Date(r.scheduled_for).toLocaleString() : "—"}
+                    </td>
+                    <td className="py-1.5 text-right">
+                      <button
+                        onClick={() => {
+                          if (!confirm("Requeue this item?")) return;
+                          requeueOne.mutate(r.id);
+                        }}
+                        disabled={requeueOne.isPending}
+                        className="px-2 py-1 rounded border border-border text-xs"
+                      >
+                        Requeue
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {items.data.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="py-4 text-center text-muted-foreground">
+                      No items.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
