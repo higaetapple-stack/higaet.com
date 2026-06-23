@@ -1,19 +1,35 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { useEffect } from "react";
 import { ArrowRight, GraduationCap, Award, ClipboardCheck, BookOpen, PlayCircle } from "lucide-react";
-import { getMyProfile } from "@/lib/auth.functions";
+import { getMyProfile, getMyRoles } from "@/lib/auth.functions";
 import { getDashboardSummary } from "@/lib/learn.functions";
+import { dashboardForRoles } from "@/lib/role-routing";
 
 export const Route = createFileRoute("/_authenticated/dashboard/")({
   component: Overview,
 });
 
 function Overview() {
+  const navigate = useNavigate();
   const fetchProfile = useServerFn(getMyProfile);
   const fetchSummary = useServerFn(getDashboardSummary);
+  const fetchRoles = useServerFn(getMyRoles);
   const profile = useQuery({ queryKey: ["my-profile"], queryFn: () => fetchProfile() });
   const summary = useQuery({ queryKey: ["dashboard-summary"], queryFn: () => fetchSummary() });
+  const roles = useQuery({ queryKey: ["my-roles"], queryFn: () => fetchRoles() });
+
+  // Role-aware landing: if the user belongs to a role with its own dashboard
+  // (admin/counselor/faculty/etc.), forward them once. Students stay here.
+  useEffect(() => {
+    if (!roles.data) return;
+    const dest = dashboardForRoles(roles.data);
+    if (dest && dest !== "/dashboard") {
+      navigate({ to: dest, replace: true });
+    }
+  }, [roles.data, navigate]);
+
 
   const name = profile.data?.full_name?.split(" ")[0] || "there";
   const stats = summary.data?.stats;
