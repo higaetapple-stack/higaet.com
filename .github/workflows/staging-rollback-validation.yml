@@ -1,0 +1,143 @@
+name: Staging Deploy + Rollback Validation (Phase 2.0.2)
+
+# Deploys a candidate build to MilesWeb staging, runs the smoke suite against
+# the live host, and automatically rolls back to the previous release if any
+# post-deploy check fails. Manual-only until staging is fully validated.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: "Commit SHA to deploy (defaults to current ref)"
+        required: false
+        type: string
+
+concurrency:
+  group: staging-rollback-validation
+  cancel-in-progress: false
+
+env:
+  STAGING_HOST: ${{ secrets.STAGING_HOST }}
+  STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+
+jobs:
+  deploy-and-validate:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha || github.sha }}
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Pre-deploy — typecheck
+        run: bunx tsc --noEmit
+
+      - name: Pre-deploy — env validation
+        run: node scripts/validate-env.mjs --strict
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+
+      - name: Build
+        run: bun run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Package release
+        id: pkg
+        run: |
+          SHA=${GITHUB_SHA::12}
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          tar -czf release-$SHA.tgz dist .output app.js package.json bun.lock
+
+      - name: SCP release
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.STAGING_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "release-${{ steps.pkg.outputs.sha }}.tgz"
+          target: "releases/"
+
+      - name: Activate release (with rollback marker)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ env.STAGING_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd ~/apps/higaet
+            # Record previous symlink target for rollback
+            PREV=$(readlink current || true)
+            echo "$PREV" > .previous-release
+            mkdir -p releases/${{ steps.pkg.outputs.sha }}
+            tar -xzf ~/releases/release-${{ steps.pkg.outputs.sha }}.tgz \
+              -C releases/${{ steps.pkg.outputs.sha }}
+            ln -sfn releases/${{ steps.pkg.outputs.sha }} current
+            mkdir -p tmp && touch tmp/restart.txt
+
+      - name: Post-deploy — health endpoint
+        id: health
+        run: |
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS "$STAGING_BASE_URL/api/public/health" > /dev/null; then
+              echo "ok"; exit 0
+            fi
+            sleep 5
+          done
+          echo "health probe failed"; exit 1
+
+      - name: Post-deploy — smoke suite
+        id: smoke
+        env:
+          SMOKE_BASE_URL: ${{ env.STAGING_BASE_URL }}
+        run: bun scripts/run-smoke-tests.ts
+
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-report-${{ steps.pkg.outputs.sha }}
+          path: test-results/smoke
+
+      - name: Rollback on failure
+        if: failure() && (steps.health.outcome == 'failure' || steps.smoke.outcome == 'failure')
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ env.STAGING_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd ~/apps/higaet
+            PREV=$(cat .previous-release || true)
+            if [ -n "$PREV" ] && [ -d "$PREV" ]; then
+              ln -sfn "$PREV" current
+              mkdir -p tmp && touch tmp/restart.txt
+              echo "rolled back to $PREV"
+            else
+              echo "no previous release recorded; manual intervention required"
+              exit 1
+            fi
+
+      - name: Verify rollback health
+        if: failure() && (steps.health.outcome == 'failure' || steps.smoke.outcome == 'failure')
+        run: |
+          for i in 1 2 3 4 5 6 7 8; do
+            if curl -fsS "$STAGING_BASE_URL/api/public/health" > /dev/null; then
+              echo "rollback healthy"; exit 0
+            fi
+            sleep 5
+          done
+          echo "ROLLBACK FAILED — staging unhealthy"; exit 1
