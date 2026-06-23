@@ -260,6 +260,7 @@ import { Route as AuthenticatedDashboardTechnologiesFinanceRouteImport } from '.
 import { Route as AuthenticatedDashboardTechnologiesContractsRouteImport } from './routes/_authenticated.dashboard.technologies.contracts'
 import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
 import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
+import { Route as AuthenticatedDashboardPaymentsNewRouteImport } from './routes/_authenticated.dashboard.payments.new'
 import { Route as AuthenticatedDashboardNotificationsPreferencesRouteImport } from './routes/_authenticated.dashboard.notifications.preferences'
 import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
 import { Route as AuthenticatedDashboardFacultySubmissionsRouteImport } from './routes/_authenticated.dashboard.faculty.submissions'
@@ -1724,6 +1725,12 @@ const AuthenticatedDashboardProgramsSlugRoute =
     path: '/$slug',
     getParentRoute: () => AuthenticatedDashboardProgramsRoute,
   } as any)
+const AuthenticatedDashboardPaymentsNewRoute =
+  AuthenticatedDashboardPaymentsNewRouteImport.update({
+    id: '/payments/new',
+    path: '/payments/new',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardNotificationsPreferencesRoute =
   AuthenticatedDashboardNotificationsPreferencesRouteImport.update({
     id: '/preferences',
@@ -2466,6 +2473,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/notifications/preferences': typeof AuthenticatedDashboardNotificationsPreferencesRoute
+  '/dashboard/payments/new': typeof AuthenticatedDashboardPaymentsNewRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
@@ -2780,6 +2788,7 @@ export interface FileRoutesByTo {
   '/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/dashboard/notifications/preferences': typeof AuthenticatedDashboardNotificationsPreferencesRoute
+  '/dashboard/payments/new': typeof AuthenticatedDashboardPaymentsNewRoute
   '/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
@@ -3108,6 +3117,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/faculty/submissions': typeof AuthenticatedDashboardFacultySubmissionsRoute
   '/_authenticated/dashboard/lessons/$lessonId': typeof AuthenticatedDashboardLessonsLessonIdRoute
   '/_authenticated/dashboard/notifications/preferences': typeof AuthenticatedDashboardNotificationsPreferencesRoute
+  '/_authenticated/dashboard/payments/new': typeof AuthenticatedDashboardPaymentsNewRoute
   '/_authenticated/dashboard/programs/$slug': typeof AuthenticatedDashboardProgramsSlugRoute
   '/_authenticated/dashboard/projects/$id': typeof AuthenticatedDashboardProjectsIdRoute
   '/_authenticated/dashboard/technologies/contracts': typeof AuthenticatedDashboardTechnologiesContractsRouteWithChildren
@@ -3438,6 +3448,7 @@ export interface FileRouteTypes {
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/notifications/preferences'
+    | '/dashboard/payments/new'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/technologies/contracts'
@@ -3752,6 +3763,7 @@ export interface FileRouteTypes {
     | '/dashboard/faculty/submissions'
     | '/dashboard/lessons/$lessonId'
     | '/dashboard/notifications/preferences'
+    | '/dashboard/payments/new'
     | '/dashboard/programs/$slug'
     | '/dashboard/projects/$id'
     | '/dashboard/technologies/finance'
@@ -4079,6 +4091,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/faculty/submissions'
     | '/_authenticated/dashboard/lessons/$lessonId'
     | '/_authenticated/dashboard/notifications/preferences'
+    | '/_authenticated/dashboard/payments/new'
     | '/_authenticated/dashboard/programs/$slug'
     | '/_authenticated/dashboard/projects/$id'
     | '/_authenticated/dashboard/technologies/contracts'
@@ -5955,6 +5968,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProgramsSlugRouteImport
       parentRoute: typeof AuthenticatedDashboardProgramsRoute
     }
+    '/_authenticated/dashboard/payments/new': {
+      id: '/_authenticated/dashboard/payments/new'
+      path: '/payments/new'
+      fullPath: '/dashboard/payments/new'
+      preLoaderRoute: typeof AuthenticatedDashboardPaymentsNewRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/notifications/preferences': {
       id: '/_authenticated/dashboard/notifications/preferences'
       path: '/preferences'
@@ -6952,6 +6972,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardCertificatesIdRoute: typeof AuthenticatedDashboardCertificatesIdRoute
   AuthenticatedDashboardCoursesCourseIdRoute: typeof AuthenticatedDashboardCoursesCourseIdRoute
   AuthenticatedDashboardLessonsLessonIdRoute: typeof AuthenticatedDashboardLessonsLessonIdRoute
+  AuthenticatedDashboardPaymentsNewRoute: typeof AuthenticatedDashboardPaymentsNewRoute
   AuthenticatedDashboardProjectsIdRoute: typeof AuthenticatedDashboardProjectsIdRoute
   AuthenticatedDashboardApplicationsIndexRoute: typeof AuthenticatedDashboardApplicationsIndexRoute
   AuthenticatedDashboardAssignmentsIndexRoute: typeof AuthenticatedDashboardAssignmentsIndexRoute
@@ -6992,6 +7013,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
       AuthenticatedDashboardCoursesCourseIdRoute,
     AuthenticatedDashboardLessonsLessonIdRoute:
       AuthenticatedDashboardLessonsLessonIdRoute,
+    AuthenticatedDashboardPaymentsNewRoute:
+      AuthenticatedDashboardPaymentsNewRoute,
     AuthenticatedDashboardProjectsIdRoute:
       AuthenticatedDashboardProjectsIdRoute,
     AuthenticatedDashboardApplicationsIndexRoute:
