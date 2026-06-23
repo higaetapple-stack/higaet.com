@@ -1,8 +1,12 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Container } from "./Container";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { signOutAndClear } from "@/lib/sign-out";
+import { toast } from "sonner";
 
 type NavLink = { to: string; label: string };
 
@@ -17,6 +21,19 @@ const PRIMARY_NAV: NavLink[] = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated, isReady } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  async function handleSignOut() {
+    try {
+      await signOutAndClear(queryClient);
+      toast.success("Signed out");
+      navigate({ to: "/", replace: true });
+    } catch {
+      toast.error("Sign out failed. Please try again.");
+    }
+  }
 
   return (
     <nav
@@ -48,18 +65,44 @@ export function Header() {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-          <Link
-            to="/auth/login"
-            className="text-sm font-medium text-muted-foreground hover:text-ink transition-colors px-3 py-2"
-          >
-            Login
-          </Link>
-          <Link
-            to="/auth/register"
-            className="text-sm font-medium text-ink ring-1 ring-border hover:bg-muted/40 transition-colors px-3 py-2 rounded-md"
-          >
-            Sign Up
-          </Link>
+          {isReady && isAuthenticated ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="text-sm font-medium text-muted-foreground hover:text-ink transition-colors px-3 py-2"
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/dashboard/profile"
+                className="text-sm font-medium text-muted-foreground hover:text-ink transition-colors px-3 py-2"
+              >
+                Profile
+              </Link>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="text-sm font-medium text-ink ring-1 ring-border hover:bg-muted/40 transition-colors px-3 py-2 rounded-md"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/auth/login"
+                className="text-sm font-medium text-muted-foreground hover:text-ink transition-colors px-3 py-2"
+              >
+                Login
+              </Link>
+              <Link
+                to="/auth/register"
+                className="text-sm font-medium text-ink ring-1 ring-border hover:bg-muted/40 transition-colors px-3 py-2 rounded-md"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
           <Link
             to="/contact"
             className={cn(
@@ -99,20 +142,51 @@ export function Header() {
                 </li>
               ))}
               <li className="pt-2 border-t border-border/60 mt-2 flex flex-col gap-2">
-                <Link
-                  to="/auth/login"
-                  className="block py-2 text-muted-foreground hover:text-ink"
-                  onClick={() => setOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/auth/register"
-                  className="inline-flex items-center justify-center py-2 px-3 rounded-md ring-1 ring-border text-ink text-sm font-medium"
-                  onClick={() => setOpen(false)}
-                >
-                  Sign Up
-                </Link>
+                {isReady && isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="block py-2 text-muted-foreground hover:text-ink"
+                      onClick={() => setOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/dashboard/profile"
+                      className="block py-2 text-muted-foreground hover:text-ink"
+                      onClick={() => setOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOpen(false);
+                        void handleSignOut();
+                      }}
+                      className="text-left py-2 text-ink ring-1 ring-border rounded-md px-3"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/auth/login"
+                      className="block py-2 text-muted-foreground hover:text-ink"
+                      onClick={() => setOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/auth/register"
+                      className="inline-flex items-center justify-center py-2 px-3 rounded-md ring-1 ring-border text-ink text-sm font-medium"
+                      onClick={() => setOpen(false)}
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
                 <Link
                   to="/contact"
                   className="mt-1 inline-flex items-center gap-1.5 bg-ink text-surface text-sm font-medium py-2 px-3 rounded-md"
