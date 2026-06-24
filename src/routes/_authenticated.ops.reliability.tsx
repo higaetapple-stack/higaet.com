@@ -311,6 +311,19 @@ function ReliabilityDashboard() {
           <DeploymentTable rows={audit.slice(0, 50)} />
         </CardContent>
       </Card>
+
+      {/* 9. CI AUDIT INGEST FAILURES (Admin diagnostics) */}
+      <Card>
+        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+          <CardTitle className="text-base">CI Audit Ingest Failures</CardTitle>
+          <Button size="sm" variant="outline" onClick={() => ingestFailuresQ.refetch()}>
+            Refresh
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <IngestFailureTable rows={ingestFailuresQ.data ?? []} loading={ingestFailuresQ.isLoading} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
