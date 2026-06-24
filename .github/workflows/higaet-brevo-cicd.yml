@@ -1,0 +1,80 @@
+name: HIGAET Production CI/CD (Brevo-Gated)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  ci-gate:
+    runs-on: ubuntu-latest
+    env:
+      BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+      APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ---------------- SECURITY: hardcoded-key scan ----------------
+      # Only flag real Brevo key prefixes; env-var references are allowed.
+      - name: Secret leakage scan
+        run: |
+          set -e
+          if grep -RIn --exclude-dir=node_modules --exclude-dir=.git \
+               -E "xkeysib-[A-Za-z0-9]{16,}" . ; then
+            echo "❌ Hardcoded Brevo API key detected"
+            exit 1
+          fi
+          echo "✅ No hardcoded Brevo keys found"
+
+      # ---------------- SETUP ----------------
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # ---------------- QUALITY GATES ----------------
+      - name: Typecheck
+        run: bunx tsgo --noEmit
+
+      - name: Build
+        run: bun run build
+
+      # ---------------- BREVO HARD GATE ----------------
+      - name: Brevo API authentication test
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            https://api.brevo.com/v3/account \
+            -H "api-key: $BREVO_API_KEY")
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Brevo authentication failed (HTTP $STATUS)"
+            exit 1
+          fi
+          echo "✅ Brevo authentication OK"
+
+      # ---------------- LIVE ENDPOINT HEALTH ----------------
+      - name: Email system verification (live)
+        if: env.APP_BASE_URL != ''
+        run: |
+          RESPONSE=$(curl -s -X POST "$APP_BASE_URL/api/public/email-verify" \
+            -H "Authorization: Bearer ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -d '{"to":"admin@higaet.com"}')
+          echo "$RESPONSE"
+          echo "$RESPONSE" | grep -q '"success":true' || {
+            echo "❌ Email verification endpoint failed"
+            exit 1
+          }
+          echo "✅ Email system healthy"
+
+  deploy:
+    needs: ci-gate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Trigger deploy webhook
+        if: ${{ secrets.DEPLOY_WEBHOOK_URL != '' }}
+        run: curl -fsS -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}"
