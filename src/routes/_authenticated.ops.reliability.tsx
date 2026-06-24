@@ -117,7 +117,7 @@ function ReliabilityDashboard() {
   const latest = audit[0];
 
   const setRange = (r: Range) =>
-    navigate({ search: (prev) => ({ ...prev, range: r }) });
+    navigate({ search: (prev: { range: Range }) => ({ ...prev, range: r }) });
 
   return (
     <div className="space-y-6">

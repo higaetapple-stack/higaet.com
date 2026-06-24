@@ -223,6 +223,7 @@ import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
+import { Route as AuthenticatedOpsReliabilityRouteImport } from './routes/_authenticated.ops.reliability'
 import { Route as AuthenticatedEducationProfileRouteImport } from './routes/_authenticated.education.profile'
 import { Route as AuthenticatedEducationDocumentsRouteImport } from './routes/_authenticated.education.documents'
 import { Route as AuthenticatedEducationApplicationsRouteImport } from './routes/_authenticated.education.applications'
@@ -1506,6 +1507,12 @@ const AcademyBlogCertificationsComparisonRoute =
     path: '/blog/certifications-comparison',
     getParentRoute: () => AcademyRoute,
   } as any)
+const AuthenticatedOpsReliabilityRoute =
+  AuthenticatedOpsReliabilityRouteImport.update({
+    id: '/reliability',
+    path: '/reliability',
+    getParentRoute: () => AuthenticatedOpsRoute,
+  } as any)
 const AuthenticatedEducationProfileRoute =
   AuthenticatedEducationProfileRouteImport.update({
     id: '/profile',
@@ -2255,7 +2262,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/education': typeof AuthenticatedEducationRouteWithChildren
-  '/ops': typeof AuthenticatedOpsRoute
+  '/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2349,6 +2356,7 @@ export interface FileRoutesByFullPath {
   '/education/applications': typeof AuthenticatedEducationApplicationsRoute
   '/education/documents': typeof AuthenticatedEducationDocumentsRoute
   '/education/profile': typeof AuthenticatedEducationProfileRoute
+  '/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2580,7 +2588,7 @@ export interface FileRoutesByTo {
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
   '/community': typeof AuthenticatedCommunityRouteWithChildren
-  '/ops': typeof AuthenticatedOpsRoute
+  '/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2670,6 +2678,7 @@ export interface FileRoutesByTo {
   '/education/applications': typeof AuthenticatedEducationApplicationsRoute
   '/education/documents': typeof AuthenticatedEducationDocumentsRoute
   '/education/profile': typeof AuthenticatedEducationProfileRoute
+  '/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2907,7 +2916,7 @@ export interface FileRoutesById {
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/education': typeof AuthenticatedEducationRouteWithChildren
-  '/_authenticated/ops': typeof AuthenticatedOpsRoute
+  '/_authenticated/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -3001,6 +3010,7 @@ export interface FileRoutesById {
   '/_authenticated/education/applications': typeof AuthenticatedEducationApplicationsRoute
   '/_authenticated/education/documents': typeof AuthenticatedEducationDocumentsRoute
   '/_authenticated/education/profile': typeof AuthenticatedEducationProfileRoute
+  '/_authenticated/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -3336,6 +3346,7 @@ export interface FileRouteTypes {
     | '/education/applications'
     | '/education/documents'
     | '/education/profile'
+    | '/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3657,6 +3668,7 @@ export interface FileRouteTypes {
     | '/education/applications'
     | '/education/documents'
     | '/education/profile'
+    | '/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3987,6 +3999,7 @@ export interface FileRouteTypes {
     | '/_authenticated/education/applications'
     | '/_authenticated/education/documents'
     | '/_authenticated/education/profile'
+    | '/_authenticated/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -5760,6 +5773,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyBlogCertificationsComparisonRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/_authenticated/ops/reliability': {
+      id: '/_authenticated/ops/reliability'
+      path: '/reliability'
+      fullPath: '/ops/reliability'
+      preLoaderRoute: typeof AuthenticatedOpsReliabilityRouteImport
+      parentRoute: typeof AuthenticatedOpsRoute
+    }
     '/_authenticated/education/profile': {
       id: '/_authenticated/education/profile'
       path: '/profile'
@@ -7135,12 +7155,23 @@ const AuthenticatedEducationRouteWithChildren =
     AuthenticatedEducationRouteChildren,
   )
 
+interface AuthenticatedOpsRouteChildren {
+  AuthenticatedOpsReliabilityRoute: typeof AuthenticatedOpsReliabilityRoute
+}
+
+const AuthenticatedOpsRouteChildren: AuthenticatedOpsRouteChildren = {
+  AuthenticatedOpsReliabilityRoute: AuthenticatedOpsReliabilityRoute,
+}
+
+const AuthenticatedOpsRouteWithChildren =
+  AuthenticatedOpsRoute._addFileChildren(AuthenticatedOpsRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRouteWithChildren
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
   AuthenticatedEducationRoute: typeof AuthenticatedEducationRouteWithChildren
-  AuthenticatedOpsRoute: typeof AuthenticatedOpsRoute
+  AuthenticatedOpsRoute: typeof AuthenticatedOpsRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -7148,7 +7179,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
   AuthenticatedEducationRoute: AuthenticatedEducationRouteWithChildren,
-  AuthenticatedOpsRoute: AuthenticatedOpsRoute,
+  AuthenticatedOpsRoute: AuthenticatedOpsRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
