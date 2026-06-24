@@ -1,4 +1,4 @@
-name: HIGAET Production CI/CD (Brevo-Gated)
+name: HIGAET Brevo CI/CD (Self-Diagnosing)
 
 on:
   push:
@@ -6,74 +6,79 @@ on:
   pull_request:
 
 jobs:
-  ci-gate:
+  brevo-ci:
     runs-on: ubuntu-latest
     env:
       BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
       APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+      LAUNCH_READINESS_INGEST_SECRET: ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # ---------------- SECURITY: hardcoded-key scan ----------------
-      # Only flag real Brevo key prefixes; env-var references are allowed.
-      - name: Secret leakage scan
+      # 1. ENV DIAGNOSIS
+      - name: Diagnose environment
         run: |
-          set -e
+          if [ -z "$BREVO_API_KEY" ]; then
+            echo "DIAGNOSIS=BREVO_ENV_MISSING"; exit 1
+          fi
+          echo "DIAGNOSIS=ENV_OK"
+
+      # 2. SAFE SECRET SCAN (real key shape only)
+      - name: Secret leak scan
+        run: |
           if grep -RIn --exclude-dir=node_modules --exclude-dir=.git \
                -E "xkeysib-[A-Za-z0-9]{16,}" . ; then
-            echo "❌ Hardcoded Brevo API key detected"
-            exit 1
+            echo "DIAGNOSIS=BREVO_SECRET_LEAK"; exit 1
           fi
-          echo "✅ No hardcoded Brevo keys found"
+          echo "DIAGNOSIS=SCAN_OK"
 
-      # ---------------- SETUP ----------------
+      # 3. BUILD
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: Install dependencies
+      - name: Install deps
         run: bun install --frozen-lockfile
-
-      # ---------------- QUALITY GATES ----------------
       - name: Typecheck
-        run: bunx tsgo --noEmit
-
+        run: bunx tsgo --noEmit || { echo "DIAGNOSIS=TYPECHECK_FAIL"; exit 1; }
       - name: Build
-        run: bun run build
+        run: bun run build || { echo "DIAGNOSIS=BUILD_FAIL"; exit 1; }
 
-      # ---------------- BREVO HARD GATE ----------------
-      - name: Brevo API authentication test
+      # 4. BREVO AUTH DIAGNOSIS
+      - name: Brevo API test
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
             https://api.brevo.com/v3/account \
             -H "api-key: $BREVO_API_KEY")
-          if [ "$STATUS" != "200" ]; then
-            echo "❌ Brevo authentication failed (HTTP $STATUS)"
-            exit 1
-          fi
-          echo "✅ Brevo authentication OK"
+          echo "Brevo HTTP_CODE=$HTTP_CODE"
+          case "$HTTP_CODE" in
+            200) echo "DIAGNOSIS=BREVO_AUTH_OK" ;;
+            401) echo "DIAGNOSIS=BREVO_AUTH_FAILED_INVALID_KEY"; exit 1 ;;
+            403) echo "DIAGNOSIS=BREVO_AUTH_FORBIDDEN"; exit 1 ;;
+            *)   echo "DIAGNOSIS=BREVO_NETWORK_OR_TIMEOUT"; exit 1 ;;
+          esac
 
-      # ---------------- LIVE ENDPOINT HEALTH ----------------
-      - name: Email system verification (live)
+      # 5. APP HEALTH DIAGNOSIS
+      - name: Email endpoint test
         if: env.APP_BASE_URL != ''
         run: |
           RESPONSE=$(curl -s -X POST "$APP_BASE_URL/api/public/email-verify" \
-            -H "Authorization: Bearer ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}" \
+            -H "Authorization: Bearer $LAUNCH_READINESS_INGEST_SECRET" \
             -H "Content-Type: application/json" \
             -d '{"to":"admin@higaet.com"}')
-          echo "$RESPONSE"
-          echo "$RESPONSE" | grep -q '"success":true' || {
-            echo "❌ Email verification endpoint failed"
-            exit 1
-          }
-          echo "✅ Email system healthy"
+          echo "Response=$RESPONSE"
+          if echo "$RESPONSE" | grep -q '"success":true'; then
+            echo "DIAGNOSIS=EMAIL_SYSTEM_OK"
+          elif echo "$RESPONSE" | grep -q '"success":false'; then
+            echo "DIAGNOSIS=EMAIL_LOGIC_FAIL"; exit 1
+          else
+            echo "DIAGNOSIS=EMAIL_ENDPOINT_BROKEN"; exit 1
+          fi
 
   deploy:
-    needs: ci-gate
-    runs-on: ubuntu-latest
+    needs: brevo-ci
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
     steps:
       - name: Trigger deploy webhook
         if: ${{ secrets.DEPLOY_WEBHOOK_URL != '' }}
