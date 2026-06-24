@@ -153,6 +153,7 @@ function ReliabilityDashboard() {
             trendsQ.refetch();
             govQ.refetch();
             brevoQ.refetch();
+            ingestFailuresQ.refetch();
           }}
         >
           Refresh
