@@ -4,6 +4,17 @@ on:
   push:
     branches: ["main"]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      override_decision:
+        description: "Break-glass override: DEPLOY | CANARY | BLOCK | ROLLBACK | NONE"
+        type: choice
+        default: "NONE"
+        options: [NONE, DEPLOY, CANARY, BLOCK, ROLLBACK]
+      override_reason:
+        description: "Reason for override (required if override_decision != NONE)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -389,6 +400,12 @@ jobs:
           LEVEL: ${{ needs.predict.outputs.level }}
           HEALTH: ${{ needs.health-score.outputs.score }}
           HSTATUS: ${{ needs.health-score.outputs.status }}
+          # Governance controls (set via repo Variables; default to NORMAL/ENABLED)
+          SYSTEM_MODE: ${{ vars.SYSTEM_MODE || 'NORMAL' }}
+          AUTONOMOUS_MODE: ${{ vars.AUTONOMOUS_MODE || 'ENABLED' }}
+          OVERRIDE_DECISION: ${{ github.event.inputs.override_decision || 'NONE' }}
+          OVERRIDE_REASON: ${{ github.event.inputs.override_reason || '' }}
+          OVERRIDE_ACTOR: ${{ github.actor }}
         with:
           script: |
             const diag    = process.env.DIAG    || "UNKNOWN";
@@ -398,11 +415,17 @@ jobs:
             const health  = parseInt(process.env.HEALTH || "0", 10);
             const hstatus = process.env.HSTATUS || "CRITICAL";
 
-            // SAFETY OVERRIDES — non-negotiable
+            const sysMode    = process.env.SYSTEM_MODE;       // NORMAL | FREEZE
+            const autoMode   = process.env.AUTONOMOUS_MODE;   // ENABLED | DISABLED
+            const overrideD  = process.env.OVERRIDE_DECISION; // NONE | DEPLOY | CANARY | BLOCK | ROLLBACK
+            const overrideR  = process.env.OVERRIDE_REASON || "";
+            const actor      = process.env.OVERRIDE_ACTOR;
+
+            // 1. AUTONOMOUS DECISION (base)
             const leak       = diag === "BREVO_SECRET_LEAK";
             const authBroken = diag === "BREVO_AUTH_FAILED_INVALID_KEY" || diag === "BREVO_AUTH_FORBIDDEN";
+            let decision, reason, source = "AUTONOMOUS";
 
-            let decision, reason;
             if (leak || authBroken) {
               decision = "ROLLBACK";
               reason   = leak ? "SECRET_LEAK_DETECTED" : "AUTH_SYSTEM_COMPROMISE";
@@ -420,32 +443,158 @@ jobs:
               reason   = `SAFE_STATE health=${health} level=${level}`;
             }
 
-            const out = [
+            // 2. BREAK-GLASS OVERRIDE
+            if (overrideD && overrideD !== "NONE") {
+              if (!overrideR.trim()) {
+                core.setFailed("Override requires override_reason");
+                return;
+              }
+              if ((leak || authBroken) && overrideD !== "ROLLBACK" && overrideD !== "BLOCK") {
+                core.setFailed(`Safety override active (${reason}); cannot override to ${overrideD}`);
+                return;
+              }
+              source   = `OVERRIDE by @${actor}`;
+              reason   = `${overrideR} (was AUTONOMOUS=${decision}: ${reason})`;
+              decision = overrideD;
+            }
+
+            // 3. FREEZE MODE — blocks deploys/canary, allows rollback
+            let execute = true;
+            let executeReason = "ok";
+            if (sysMode === "FREEZE" && decision !== "ROLLBACK" && decision !== "BLOCK") {
+              execute = false;
+              executeReason = "SYSTEM_MODE=FREEZE (deploys suspended)";
+            }
+            // 4. AUTONOMOUS_MODE DISABLED — observe only, never execute (override always executes)
+            if (autoMode === "DISABLED" && !source.startsWith("OVERRIDE")) {
+              execute = false;
+              executeReason = "AUTONOMOUS_MODE=DISABLED (monitoring only)";
+            }
+            if (decision === "BLOCK") { execute = false; executeReason = "decision=BLOCK"; }
+
+            const platformState =
+              health >= 90 ? "HEALTHY" :
+              health >= 70 ? "STABLE"  :
+              health >= 50 ? "DEGRADED": "CRITICAL";
+
+            core.info([
               `DEPLOYMENT_DECISION: ${decision}`,
+              `DECISION_SOURCE: ${source}`,
+              `DECISION_REASON: ${reason}`,
               `SYSTEM_HEALTH_SCORE: ${health}`,
               `RISK_LEVEL: ${level}`,
-              `SYSTEM_STATE: AUTONOMOUS_ACTIVE`,
-              `REASON: ${reason}`,
-            ].join("\n");
-            core.info(out);
+              `SYSTEM_MODE: ${sysMode}`,
+              `AUTONOMOUS_MODE: ${autoMode}`,
+              `EXECUTE: ${execute} (${executeReason})`,
+              `PLATFORM_STATE: ${platformState}`,
+            ].join("\n"));
+
             await core.summary
               .addHeading("HIGAET Autonomous Controller")
-              .addRaw(`**Decision:** \`${decision}\`  \n**Health:** ${health}/100 (${hstatus})  \n**Risk:** ${risk}/100 (${level})  \n**Reason:** ${reason}`)
+              .addRaw(
+                `**Decision:** \`${decision}\` (${source})  \n` +
+                `**Reason:** ${reason}  \n` +
+                `**Execute:** \`${execute}\` — ${executeReason}  \n` +
+                `**Health:** ${health}/100 (${hstatus}) · **Risk:** ${risk}/100 (${level})  \n` +
+                `**System Mode:** \`${sysMode}\` · **Autonomous Mode:** \`${autoMode}\`  \n` +
+                `**Platform State:** \`${platformState}\``
+              )
               .write();
+
             core.setOutput("decision", decision);
             core.setOutput("reason", reason);
+            core.setOutput("source", source);
+            core.setOutput("execute", String(execute));
+            core.setOutput("execute_reason", executeReason);
+            core.setOutput("platform_state", platformState);
+            core.setOutput("system_mode", sysMode);
+            core.setOutput("autonomous_mode", autoMode);
 
       - name: Execute DEPLOY (full)
-        if: steps.decide.outputs.decision == 'DEPLOY' && secrets.DEPLOY_WEBHOOK_URL != ''
+        if: steps.decide.outputs.execute == 'true' && steps.decide.outputs.decision == 'DEPLOY' && secrets.DEPLOY_WEBHOOK_URL != ''
         run: curl -fsS -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}"
 
       - name: Execute CANARY (10-20% traffic)
-        if: steps.decide.outputs.decision == 'CANARY' && secrets.CANARY_WEBHOOK_URL != ''
+        if: steps.decide.outputs.execute == 'true' && steps.decide.outputs.decision == 'CANARY' && secrets.CANARY_WEBHOOK_URL != ''
         run: curl -fsS -X POST "${{ secrets.CANARY_WEBHOOK_URL }}" -H 'Content-Type: application/json' -d '{"traffic":15}'
 
       - name: Execute AUTO-ROLLBACK
-        if: steps.decide.outputs.decision == 'ROLLBACK' && secrets.ROLLBACK_WEBHOOK_URL != ''
+        if: steps.decide.outputs.execute == 'true' && steps.decide.outputs.decision == 'ROLLBACK' && secrets.ROLLBACK_WEBHOOK_URL != ''
         run: curl -fsS -X POST "${{ secrets.ROLLBACK_WEBHOOK_URL }}"
+
+      # GOVERNANCE: immutable decision audit log (artifact + tracking issue comment)
+      - name: Write decision audit record
+        id: audit
+        uses: actions/github-script@v7
+        env:
+          DIAG: ${{ needs.brevo-ci.outputs.diagnosis }}
+          HEALTH: ${{ needs.health-score.outputs.score }}
+          LEVEL: ${{ needs.predict.outputs.level }}
+          DECISION: ${{ steps.decide.outputs.decision }}
+          SOURCE: ${{ steps.decide.outputs.source }}
+          REASON: ${{ steps.decide.outputs.reason }}
+          EXECUTE: ${{ steps.decide.outputs.execute }}
+          EXECUTE_REASON: ${{ steps.decide.outputs.execute_reason }}
+          PLATFORM_STATE: ${{ steps.decide.outputs.platform_state }}
+          SYSTEM_MODE: ${{ steps.decide.outputs.system_mode }}
+          AUTONOMOUS_MODE: ${{ steps.decide.outputs.autonomous_mode }}
+        with:
+          script: |
+            const fs = require("fs");
+            const record = {
+              timestamp: new Date().toISOString(),
+              sha: context.sha,
+              branch: context.ref.replace("refs/heads/", ""),
+              actor: context.actor,
+              run_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              decision: process.env.DECISION,
+              decision_source: process.env.SOURCE,
+              decision_reason: process.env.REASON,
+              executed: process.env.EXECUTE === "true",
+              execute_reason: process.env.EXECUTE_REASON,
+              system_health_score: parseInt(process.env.HEALTH || "0", 10),
+              risk_level: process.env.LEVEL,
+              platform_state: process.env.PLATFORM_STATE,
+              system_mode: process.env.SYSTEM_MODE,
+              autonomous_mode: process.env.AUTONOMOUS_MODE,
+              diagnosis: process.env.DIAG,
+            };
+            fs.mkdirSync("audit", { recursive: true });
+            fs.writeFileSync("audit/decision.json", JSON.stringify(record, null, 2));
+
+            // Find/create the rolling audit tracking issue and append a row
+            const auditTitle = "[HIGAET CONTROL PLANE] Decision Audit Log";
+            const { data: open } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: "open", labels: "audit,control-plane", per_page: 10,
+            });
+            let issue = open.find(i => i.title === auditTitle);
+            if (!issue) {
+              const { data: created } = await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: auditTitle,
+                labels: ["audit", "control-plane"],
+                body: "Immutable append-only audit log of all autonomous controller decisions.\n",
+              });
+              issue = created;
+            }
+            const row =
+              `\n- \`${record.timestamp}\` · **${record.decision}** (${record.decision_source}) · ` +
+              `exec=${record.executed} · health=${record.system_health_score} · risk=${record.risk_level} · ` +
+              `state=${record.platform_state} · sha=\`${record.sha.slice(0,7)}\` · diag=\`${record.diagnosis}\` · ` +
+              `[run](${record.run_url}) — ${record.decision_reason}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issue.number, body: row,
+            });
+            core.setOutput("audit_issue", String(issue.number));
+
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: decision-audit-${{ github.run_id }}
+          path: audit/decision.json
+          retention-days: 90
 
       - name: Escalate incident on ROLLBACK / BLOCK
         if: steps.decide.outputs.decision == 'ROLLBACK' || steps.decide.outputs.decision == 'BLOCK'
@@ -454,18 +603,36 @@ jobs:
           script: |
             const decision = "${{ steps.decide.outputs.decision }}";
             const reason   = "${{ steps.decide.outputs.reason }}";
+            const source   = "${{ steps.decide.outputs.source }}";
             const diag     = "${{ needs.brevo-ci.outputs.diagnosis }}";
+            const auditNo  = "${{ steps.audit.outputs.audit_issue }}";
             const runUrl   = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             await github.rest.issues.create({
               owner: context.repo.owner, repo: context.repo.repo,
               title: `[HIGAET AUTONOMOUS] ${decision} — ${diag}`,
-              body: `**Decision:** \`${decision}\`\n**Reason:** ${reason}\n**Diagnosis:** \`${diag}\`\n**Run:** ${runUrl}`,
+              body: `**Decision:** \`${decision}\` (${source})\n**Reason:** ${reason}\n**Diagnosis:** \`${diag}\`\n**Audit:** #${auditNo}\n**Run:** ${runUrl}`,
               labels: ["incident", "autonomous", decision.toLowerCase()],
             });
+
+      - name: Executive status summary
+        if: always()
+        run: |
+          echo "## HIGAET Executive Status" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Field | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Deployment Decision | \`${{ steps.decide.outputs.decision }}\` (${{ steps.decide.outputs.source }}) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Executed | \`${{ steps.decide.outputs.execute }}\` — ${{ steps.decide.outputs.execute_reason }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Health Score | ${{ needs.health-score.outputs.score }}/100 |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Risk Level | ${{ needs.predict.outputs.level }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Platform State | \`${{ steps.decide.outputs.platform_state }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| System Mode | \`${{ steps.decide.outputs.system_mode }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Autonomous Mode | \`${{ steps.decide.outputs.autonomous_mode }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Audit Issue | #${{ steps.audit.outputs.audit_issue }} |" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Slack autonomous decision
         if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
         run: |
           curl -fsS -X POST -H 'Content-Type: application/json' \
-            -d "{\"text\":\"🤖 HIGAET AUTONOMOUS: ${{ steps.decide.outputs.decision }}\\nHealth: ${{ needs.health-score.outputs.score }}/100 · Risk: ${{ needs.predict.outputs.level }}\\nReason: ${{ steps.decide.outputs.reason }}\"}" \
+            -d "{\"text\":\"🤖 HIGAET AUTONOMOUS: ${{ steps.decide.outputs.decision }} (${{ steps.decide.outputs.source }})\\nExecuted: ${{ steps.decide.outputs.execute }} · Platform: ${{ steps.decide.outputs.platform_state }}\\nHealth: ${{ needs.health-score.outputs.score }}/100 · Risk: ${{ needs.predict.outputs.level }}\\nReason: ${{ steps.decide.outputs.reason }}\"}" \
             "${{ secrets.SLACK_WEBHOOK_URL }}"
