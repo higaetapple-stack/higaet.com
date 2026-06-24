@@ -34,6 +34,13 @@ export const Route = createFileRoute("/api/public/email-verify")({
 
         const ping = await pingBrevo();
 
+        if (!ping.ok) {
+          return Response.json(
+            { success: false, provider: "brevo", error: `Brevo unreachable: ${ping.error}`, env },
+            { status: 502 },
+          );
+        }
+
         const send = await sendEmail({
           to,
           subject: "HIGAET Brevo Verification",
@@ -41,7 +48,20 @@ export const Route = createFileRoute("/api/public/email-verify")({
           tags: ["verification"],
         });
 
-        return Response.json({ env, ping, send });
+        if (!send.ok) {
+          return Response.json(
+            { success: false, provider: "brevo", error: send.error ?? "send failed", attempts: send.attempts, env },
+            { status: 502 },
+          );
+        }
+
+        return Response.json({
+          success: true,
+          provider: "brevo",
+          messageId: send.messageId,
+          attempts: send.attempts,
+          env,
+        });
       },
     },
   },
