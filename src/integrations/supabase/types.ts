@@ -5174,6 +5174,7 @@ export type Database = {
         | "admin"
         | "super_admin"
         | "tech_client"
+        | "ops"
       application_status:
         | "submitted"
         | "under_review"
@@ -5479,6 +5480,7 @@ export const Constants = {
         "admin",
         "super_admin",
         "tech_client",
+        "ops",
       ],
       application_status: [
         "submitted",
