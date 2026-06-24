@@ -12,7 +12,7 @@ async function assertOps(supabase: any, userId: string) {
     .eq("user_id", userId);
   if (error) throw new Error(error.message);
   const roles = (data ?? []).map((r: { role: string }) => r.role as AppRole);
-  if (!roles.some((r) => OPS_ROLES.includes(r))) {
+  if (!roles.some((r: AppRole) => OPS_ROLES.includes(r))) {
     throw new Error("Forbidden: requires ops, admin, or super_admin role");
   }
 }
