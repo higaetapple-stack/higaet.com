@@ -596,6 +596,18 @@ jobs:
           path: audit/decision.json
           retention-days: 90
 
+      # Mirror the audit record into the Reliability Ops dashboard DB
+      - name: POST audit to Reliability Ops dashboard
+        if: ${{ secrets.OPS_DASHBOARD_URL != '' && secrets.CI_AUDIT_INGEST_SECRET != '' }}
+        run: |
+          BODY=$(cat audit/decision.json)
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "${{ secrets.CI_AUDIT_INGEST_SECRET }}" | awk '{print $2}')
+          curl -fsS -X POST "${{ secrets.OPS_DASHBOARD_URL }}/api/public/ci-audit/ingest" \
+            -H "Content-Type: application/json" \
+            -H "X-Signature: ${SIG}" \
+            --data-binary "$BODY" || echo "ingest POST failed (non-blocking)"
+
+
       - name: Escalate incident on ROLLBACK / BLOCK
         if: steps.decide.outputs.decision == 'ROLLBACK' || steps.decide.outputs.decision == 'BLOCK'
         uses: actions/github-script@v7
