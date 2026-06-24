@@ -68,6 +68,7 @@ const ITEMS: Item[] = [
   { to: "/dashboard/technologies/client", label: "My projects", icon: Building2, roles: ["tech_client"] },
   { to: "/dashboard/admin", label: "Admin", icon: ShieldCheck, roles: ["admin", "super_admin"] },
   { to: "/dashboard/admin/payments", label: "Payment verification", icon: Wallet, roles: ["admin", "super_admin"] },
+  { to: "/ops/reliability", label: "Reliability Ops", icon: Activity, roles: ["ops", "admin", "super_admin"] },
 ];
 
 export function RoleSidebar({ roles }: { roles: AppRole[] }) {
