@@ -77,7 +77,7 @@ export const Route = createFileRoute("/api/public/ci-audit/ingest")({
             system_mode: d.system_mode ?? null,
             autonomous_mode: d.autonomous_mode ?? null,
             diagnosis: d.diagnosis ?? null,
-            raw: d as unknown as Record<string, unknown>,
+            raw: JSON.parse(JSON.stringify(d)),
           },
           { onConflict: "sha,ts,decision", ignoreDuplicates: true },
         );

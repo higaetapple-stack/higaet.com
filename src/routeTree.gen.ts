@@ -254,6 +254,7 @@ import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
 import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
+import { Route as ApiPublicCiAuditIngestRouteImport } from './routes/api/public/ci-audit/ingest'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
 import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
@@ -1690,6 +1691,11 @@ const ApiPublicConstitutionAmendmentsRoute =
     path: '/api/public/constitution/amendments',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicCiAuditIngestRoute = ApiPublicCiAuditIngestRouteImport.update({
+  id: '/api/public/ci-audit/ingest',
+  path: '/api/public/ci-audit/ingest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardTechnologiesSupportRoute =
   AuthenticatedDashboardTechnologiesSupportRouteImport.update({
     id: '/support',
@@ -2496,6 +2502,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -2811,6 +2818,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -3144,6 +3152,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -3477,6 +3486,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/proposals'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
+    | '/api/public/ci-audit/ingest'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -3792,6 +3802,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/finance'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
+    | '/api/public/ci-audit/ingest'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -4124,6 +4135,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/proposals'
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
+    | '/api/public/ci-audit/ingest'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -4226,6 +4238,7 @@ export interface RootRouteChildren {
   ApiV1JobsRoute: typeof ApiV1JobsRoute
   ApiV1ProgramsRoute: typeof ApiV1ProgramsRoute
   ApiV1UniversitiesRoute: typeof ApiV1UniversitiesRoute
+  ApiPublicCiAuditIngestRoute: typeof ApiPublicCiAuditIngestRoute
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
@@ -5952,6 +5965,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/ci-audit/ingest': {
+      id: '/api/public/ci-audit/ingest'
+      path: '/api/public/ci-audit/ingest'
+      fullPath: '/api/public/ci-audit/ingest'
+      preLoaderRoute: typeof ApiPublicCiAuditIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard/technologies/support': {
       id: '/_authenticated/dashboard/technologies/support'
       path: '/support'
@@ -7670,6 +7690,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiV1JobsRoute: ApiV1JobsRoute,
   ApiV1ProgramsRoute: ApiV1ProgramsRoute,
   ApiV1UniversitiesRoute: ApiV1UniversitiesRoute,
+  ApiPublicCiAuditIngestRoute: ApiPublicCiAuditIngestRoute,
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
