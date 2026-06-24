@@ -294,21 +294,15 @@ jobs:
             -d "{\"text\":\"🔮 HIGAET Risk: ${{ steps.p.outputs.risk }}/100 (${{ steps.p.outputs.level }}) → ${{ steps.p.outputs.decision }}\"}" \
             "${{ secrets.SLACK_WEBHOOK_URL }}"
 
-  deploy:
-    needs: [brevo-ci, predict]
-    if: needs.brevo-ci.result == 'success' && needs.predict.outputs.decision != 'BLOCKED' && github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger deploy webhook
-        if: ${{ secrets.DEPLOY_WEBHOOK_URL != '' }}
-        run: curl -fsS -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}"
-
   health-score:
     needs: brevo-ci
     if: always()
     runs-on: ubuntu-latest
     permissions:
       issues: read
+    outputs:
+      score: ${{ steps.score.outputs.score }}
+      status: ${{ steps.score.outputs.status }}
     steps:
       - name: Compute SYSTEM_HEALTH_SCORE
         id: score
