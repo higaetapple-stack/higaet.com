@@ -32,6 +32,46 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Workflow context
+        run: |
+          echo "::group::Workflow context"
+          echo "workflow=${{ github.workflow }}"
+          echo "repository=${{ github.repository }}"
+          echo "ref=${{ github.ref }}"
+          echo "event=${{ github.event_name }}"
+          echo "actor=${{ github.actor }}"
+          echo "triggering_actor=${{ github.triggering_actor }}"
+          echo "run_id=${{ github.run_id }}"
+          echo "run_attempt=${{ github.run_attempt }}"
+          echo "job=${{ github.job }}"
+          echo "runner_os=${{ runner.os }}"
+          echo "permissions: contents=write actions=read issues=write"
+          echo "::endgroup::"
+
+      - name: Preflight validation
+        env:
+          STAGING_HOST: ${{ secrets.STAGING_HOST }}
+          STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
+        run: |
+          missing=0
+          check() {
+            local name="$1" reason="$2" value="$3"
+            if [ -z "$value" ]; then
+              echo "::error::❌ Missing: $name"
+              echo "   $reason"
+              missing=$((missing+1))
+            fi
+          }
+          check STAGING_HOST "Hostname for DNS + SSL probes." "$STAGING_HOST"
+          check STAGING_BASE_URL "Base URL for HTTP readiness probes." "$STAGING_BASE_URL"
+          check STAGING_EXPECTED_IP "Expected origin IP for DNS verification (set as repo variable)." "$STAGING_EXPECTED_IP"
+          if [ "$missing" -gt 0 ]; then
+            echo "::error::$missing required secret/variable(s) missing — aborting before probes."
+            exit 1
+          fi
+          echo "✅ All required secrets and variables validated."
+
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
