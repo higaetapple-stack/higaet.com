@@ -18,7 +18,10 @@ on:
 
 permissions:
   contents: read
+  actions: read
   issues: write
+
+
 
 jobs:
   brevo-ci:
