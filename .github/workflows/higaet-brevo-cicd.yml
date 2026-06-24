@@ -368,3 +368,104 @@ jobs:
           curl -fsS -X POST -H 'Content-Type: application/json' \
             -d "{\"text\":\"📉 HIGAET Health: ${{ steps.score.outputs.score }}/100 (${{ steps.score.outputs.status }})\"}" \
             "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+  autonomous-controller:
+    name: Autonomous Deployment Controller
+    needs: [brevo-ci, predict, health-score]
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    outputs:
+      decision: ${{ steps.decide.outputs.decision }}
+    steps:
+      - name: Decide DEPLOY | CANARY | BLOCK | ROLLBACK
+        id: decide
+        uses: actions/github-script@v7
+        env:
+          DIAG: ${{ needs.brevo-ci.outputs.diagnosis }}
+          CI_RESULT: ${{ needs.brevo-ci.result }}
+          RISK: ${{ needs.predict.outputs.risk }}
+          LEVEL: ${{ needs.predict.outputs.level }}
+          HEALTH: ${{ needs.health-score.outputs.score }}
+          HSTATUS: ${{ needs.health-score.outputs.status }}
+        with:
+          script: |
+            const diag    = process.env.DIAG    || "UNKNOWN";
+            const ci      = process.env.CI_RESULT || "failure";
+            const risk    = parseInt(process.env.RISK   || "0", 10);
+            const level   = process.env.LEVEL   || "LOW";
+            const health  = parseInt(process.env.HEALTH || "0", 10);
+            const hstatus = process.env.HSTATUS || "CRITICAL";
+
+            // SAFETY OVERRIDES — non-negotiable
+            const leak       = diag === "BREVO_SECRET_LEAK";
+            const authBroken = diag === "BREVO_AUTH_FAILED_INVALID_KEY" || diag === "BREVO_AUTH_FORBIDDEN";
+
+            let decision, reason;
+            if (leak || authBroken) {
+              decision = "ROLLBACK";
+              reason   = leak ? "SECRET_LEAK_DETECTED" : "AUTH_SYSTEM_COMPROMISE";
+            } else if (ci !== "success" || level === "CRITICAL" || health < 50) {
+              decision = "BLOCK";
+              reason   = `CRITICAL_STATE ci=${ci} health=${health} level=${level}`;
+            } else if (level === "HIGH" || health < 70) {
+              decision = "BLOCK";
+              reason   = `RISK_STATE health=${health} level=${level} (staging only)`;
+            } else if (level === "MEDIUM" || health < 85) {
+              decision = "CANARY";
+              reason   = `CAUTION_STATE health=${health} level=${level} (10-20% traffic)`;
+            } else {
+              decision = "DEPLOY";
+              reason   = `SAFE_STATE health=${health} level=${level}`;
+            }
+
+            const out = [
+              `DEPLOYMENT_DECISION: ${decision}`,
+              `SYSTEM_HEALTH_SCORE: ${health}`,
+              `RISK_LEVEL: ${level}`,
+              `SYSTEM_STATE: AUTONOMOUS_ACTIVE`,
+              `REASON: ${reason}`,
+            ].join("\n");
+            core.info(out);
+            await core.summary
+              .addHeading("HIGAET Autonomous Controller")
+              .addRaw(`**Decision:** \`${decision}\`  \n**Health:** ${health}/100 (${hstatus})  \n**Risk:** ${risk}/100 (${level})  \n**Reason:** ${reason}`)
+              .write();
+            core.setOutput("decision", decision);
+            core.setOutput("reason", reason);
+
+      - name: Execute DEPLOY (full)
+        if: steps.decide.outputs.decision == 'DEPLOY' && secrets.DEPLOY_WEBHOOK_URL != ''
+        run: curl -fsS -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}"
+
+      - name: Execute CANARY (10-20% traffic)
+        if: steps.decide.outputs.decision == 'CANARY' && secrets.CANARY_WEBHOOK_URL != ''
+        run: curl -fsS -X POST "${{ secrets.CANARY_WEBHOOK_URL }}" -H 'Content-Type: application/json' -d '{"traffic":15}'
+
+      - name: Execute AUTO-ROLLBACK
+        if: steps.decide.outputs.decision == 'ROLLBACK' && secrets.ROLLBACK_WEBHOOK_URL != ''
+        run: curl -fsS -X POST "${{ secrets.ROLLBACK_WEBHOOK_URL }}"
+
+      - name: Escalate incident on ROLLBACK / BLOCK
+        if: steps.decide.outputs.decision == 'ROLLBACK' || steps.decide.outputs.decision == 'BLOCK'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const decision = "${{ steps.decide.outputs.decision }}";
+            const reason   = "${{ steps.decide.outputs.reason }}";
+            const diag     = "${{ needs.brevo-ci.outputs.diagnosis }}";
+            const runUrl   = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `[HIGAET AUTONOMOUS] ${decision} — ${diag}`,
+              body: `**Decision:** \`${decision}\`\n**Reason:** ${reason}\n**Diagnosis:** \`${diag}\`\n**Run:** ${runUrl}`,
+              labels: ["incident", "autonomous", decision.toLowerCase()],
+            });
+
+      - name: Slack autonomous decision
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        run: |
+          curl -fsS -X POST -H 'Content-Type: application/json' \
+            -d "{\"text\":\"🤖 HIGAET AUTONOMOUS: ${{ steps.decide.outputs.decision }}\\nHealth: ${{ needs.health-score.outputs.score }}/100 · Risk: ${{ needs.predict.outputs.level }}\\nReason: ${{ steps.decide.outputs.reason }}\"}" \
+            "${{ secrets.SLACK_WEBHOOK_URL }}"
