@@ -228,6 +228,7 @@ jobs:
       issues: read
     steps:
       - name: Compute SYSTEM_HEALTH_SCORE
+        id: score
         uses: actions/github-script@v7
         with:
           script: |
