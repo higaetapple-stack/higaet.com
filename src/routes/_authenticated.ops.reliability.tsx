@@ -114,6 +114,12 @@ function ReliabilityDashboard() {
     queryKey: ["ops", "brevo", range],
     queryFn: () => fetchBrevo({ data: { range } }),
   });
+  const fetchIngestFailures = useServerFn(getIngestFailures);
+  const ingestFailuresQ = useQuery({
+    queryKey: ["ops", "ingest-failures"],
+    queryFn: () => fetchIngestFailures(),
+    refetchInterval: 60_000,
+  });
 
   const audit: AuditRow[] = auditQ.data ?? [];
   const latest = audit[0];
