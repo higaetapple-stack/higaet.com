@@ -37,6 +37,54 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 0a. Workflow context — log identity/permissions for forensics
+      - name: Workflow context
+        run: |
+          echo "::group::Workflow context"
+          echo "workflow=${{ github.workflow }}"
+          echo "repository=${{ github.repository }}"
+          echo "ref=${{ github.ref }}"
+          echo "event=${{ github.event_name }}"
+          echo "actor=${{ github.actor }}"
+          echo "triggering_actor=${{ github.triggering_actor }}"
+          echo "run_id=${{ github.run_id }}"
+          echo "run_attempt=${{ github.run_attempt }}"
+          echo "job=${{ github.job }}"
+          echo "runner_os=${{ runner.os }}"
+          echo "permissions: contents=read actions=read issues=write"
+          echo "::endgroup::"
+
+      # 0b. Preflight — validate every required secret/variable before any work
+      - name: Preflight validation
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          LAUNCH_READINESS_INGEST_SECRET: ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}
+          CI_AUDIT_INGEST_SECRET: ${{ secrets.CI_AUDIT_INGEST_SECRET }}
+          OPS_DASHBOARD_URL: ${{ secrets.OPS_DASHBOARD_URL }}
+        run: |
+          missing=0
+          check_secret() {
+            local name="$1" reason="$2" value="$3"
+            if [ -z "$value" ]; then
+              echo "::error::❌ Missing secret: $name"
+              echo "   $reason"
+              missing=$((missing+1))
+            fi
+          }
+          check_secret BREVO_API_KEY "Authenticates the Brevo API health probe." "$BREVO_API_KEY"
+          check_secret APP_BASE_URL "Base URL for the email-verify round-trip." "$APP_BASE_URL"
+          check_secret LAUNCH_READINESS_INGEST_SECRET "Bearer for the email-verify endpoint." "$LAUNCH_READINESS_INGEST_SECRET"
+          check_secret CI_AUDIT_INGEST_SECRET "HMAC key for posting audit + ingest-failure diagnostics." "$CI_AUDIT_INGEST_SECRET"
+          check_secret OPS_DASHBOARD_URL "Base URL of the Ops dashboard receiving audit POSTs." "$OPS_DASHBOARD_URL"
+          if [ "$missing" -gt 0 ]; then
+            echo "::error::$missing required secret(s) missing — aborting before any network calls."
+            exit 1
+          fi
+          echo "✅ All required secrets and variables validated."
+
+
+
       # 1. ENV (no retry)
       - name: Diagnose environment
         id: env_check
