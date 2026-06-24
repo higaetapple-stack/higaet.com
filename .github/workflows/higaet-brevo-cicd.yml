@@ -1,9 +1,13 @@
-name: HIGAET Brevo CI/CD (Self-Diagnosing)
+name: HIGAET Brevo CI/CD (Self-Healing + Incidents)
 
 on:
   push:
     branches: ["main"]
   pull_request:
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   brevo-ci:
@@ -12,72 +16,144 @@ jobs:
       BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
       APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
       LAUNCH_READINESS_INGEST_SECRET: ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}
+    outputs:
+      diagnosis: ${{ steps.finalize.outputs.diagnosis }}
+      status: ${{ steps.finalize.outputs.status }}
 
     steps:
       - uses: actions/checkout@v4
 
-      # 1. ENV DIAGNOSIS
+      # 1. ENV (no retry)
       - name: Diagnose environment
+        id: env_check
         run: |
           if [ -z "$BREVO_API_KEY" ]; then
-            echo "DIAGNOSIS=BREVO_ENV_MISSING"; exit 1
+            echo "diagnosis=BREVO_ENV_MISSING" >> "$GITHUB_OUTPUT"; exit 1
           fi
-          echo "DIAGNOSIS=ENV_OK"
+          echo "diagnosis=ENV_OK" >> "$GITHUB_OUTPUT"
 
-      # 2. SAFE SECRET SCAN (real key shape only)
+      # 2. Secret leak scan (no retry)
       - name: Secret leak scan
+        id: scan
         run: |
           if grep -RIn --exclude-dir=node_modules --exclude-dir=.git \
                -E "xkeysib-[A-Za-z0-9]{16,}" . ; then
-            echo "DIAGNOSIS=BREVO_SECRET_LEAK"; exit 1
+            echo "diagnosis=BREVO_SECRET_LEAK" >> "$GITHUB_OUTPUT"; exit 1
           fi
-          echo "DIAGNOSIS=SCAN_OK"
+          echo "diagnosis=SCAN_OK" >> "$GITHUB_OUTPUT"
 
-      # 3. BUILD
+      # 3. Build (no retry)
       - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+        with: { bun-version: latest }
       - name: Install deps
         run: bun install --frozen-lockfile
       - name: Typecheck
-        run: bunx tsgo --noEmit || { echo "DIAGNOSIS=TYPECHECK_FAIL"; exit 1; }
+        id: typecheck
+        run: bunx tsgo --noEmit || { echo "diagnosis=TYPECHECK_FAIL" >> "$GITHUB_OUTPUT"; exit 1; }
       - name: Build
-        run: bun run build || { echo "DIAGNOSIS=BUILD_FAIL"; exit 1; }
+        id: build
+        run: bun run build || { echo "diagnosis=BUILD_FAIL" >> "$GITHUB_OUTPUT"; exit 1; }
 
-      # 4. BREVO AUTH DIAGNOSIS
-      - name: Brevo API test
+      # 4. Brevo auth — retry only on network/timeout
+      - name: Brevo API test (auto-heal)
+        id: brevo
         run: |
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-            https://api.brevo.com/v3/account \
-            -H "api-key: $BREVO_API_KEY")
-          echo "Brevo HTTP_CODE=$HTTP_CODE"
-          case "$HTTP_CODE" in
-            200) echo "DIAGNOSIS=BREVO_AUTH_OK" ;;
-            401) echo "DIAGNOSIS=BREVO_AUTH_FAILED_INVALID_KEY"; exit 1 ;;
-            403) echo "DIAGNOSIS=BREVO_AUTH_FORBIDDEN"; exit 1 ;;
-            *)   echo "DIAGNOSIS=BREVO_NETWORK_OR_TIMEOUT"; exit 1 ;;
-          esac
+          attempt=0
+          while [ $attempt -lt 3 ]; do
+            attempt=$((attempt+1))
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+              https://api.brevo.com/v3/account \
+              -H "api-key: $BREVO_API_KEY" || echo "000")
+            echo "attempt=$attempt http=$HTTP_CODE"
+            case "$HTTP_CODE" in
+              200)
+                echo "diagnosis=BREVO_AUTH_OK" >> "$GITHUB_OUTPUT"
+                [ $attempt -gt 1 ] && echo "status=RECOVERED" >> "$GITHUB_OUTPUT" || echo "status=OK" >> "$GITHUB_OUTPUT"
+                exit 0 ;;
+              401)
+                echo "diagnosis=BREVO_AUTH_FAILED_INVALID_KEY" >> "$GITHUB_OUTPUT"; exit 1 ;;
+              403)
+                echo "diagnosis=BREVO_AUTH_FORBIDDEN" >> "$GITHUB_OUTPUT"; exit 1 ;;
+              *)
+                [ $attempt -lt 3 ] && sleep 5 && continue
+                echo "diagnosis=BREVO_NETWORK_OR_TIMEOUT" >> "$GITHUB_OUTPUT"; exit 1 ;;
+            esac
+          done
 
-      # 5. APP HEALTH DIAGNOSIS
-      - name: Email endpoint test
+      # 5. Email endpoint — single retry on broken response
+      - name: Email endpoint test (auto-heal)
+        id: email
         if: env.APP_BASE_URL != ''
         run: |
-          RESPONSE=$(curl -s -X POST "$APP_BASE_URL/api/public/email-verify" \
-            -H "Authorization: Bearer $LAUNCH_READINESS_INGEST_SECRET" \
-            -H "Content-Type: application/json" \
-            -d '{"to":"admin@higaet.com"}')
-          echo "Response=$RESPONSE"
-          if echo "$RESPONSE" | grep -q '"success":true'; then
-            echo "DIAGNOSIS=EMAIL_SYSTEM_OK"
-          elif echo "$RESPONSE" | grep -q '"success":false'; then
-            echo "DIAGNOSIS=EMAIL_LOGIC_FAIL"; exit 1
-          else
-            echo "DIAGNOSIS=EMAIL_ENDPOINT_BROKEN"; exit 1
-          fi
+          check() {
+            curl -s -X POST "$APP_BASE_URL/api/public/email-verify" \
+              -H "Authorization: Bearer $LAUNCH_READINESS_INGEST_SECRET" \
+              -H "Content-Type: application/json" \
+              -d '{"to":"admin@higaet.com"}'
+          }
+          for attempt in 1 2; do
+            RESPONSE=$(check)
+            echo "attempt=$attempt response=$RESPONSE"
+            if echo "$RESPONSE" | grep -q '"success":true'; then
+              echo "diagnosis=EMAIL_SYSTEM_OK" >> "$GITHUB_OUTPUT"
+              [ $attempt -gt 1 ] && echo "status=RECOVERED" >> "$GITHUB_OUTPUT" || echo "status=OK" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if echo "$RESPONSE" | grep -q '"success":false'; then
+              echo "diagnosis=EMAIL_LOGIC_FAIL" >> "$GITHUB_OUTPUT"; exit 1
+            fi
+            sleep 5
+          done
+          echo "diagnosis=EMAIL_ENDPOINT_BROKEN" >> "$GITHUB_OUTPUT"; exit 1
+
+      - name: Finalize
+        id: finalize
+        if: always()
+        run: |
+          DIAG="${{ steps.email.outputs.diagnosis || steps.brevo.outputs.diagnosis || steps.build.outputs.diagnosis || steps.typecheck.outputs.diagnosis || steps.scan.outputs.diagnosis || steps.env_check.outputs.diagnosis }}"
+          echo "diagnosis=$DIAG" >> "$GITHUB_OUTPUT"
+          echo "status=${{ job.status }}" >> "$GITHUB_OUTPUT"
+
+  incident:
+    needs: brevo-ci
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create incident issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const diag = "${{ needs.brevo-ci.outputs.diagnosis }}" || "UNKNOWN";
+            const title = `[HIGAET CI INCIDENT] ${diag}`;
+            const body = [
+              `**DIAGNOSIS:** \`${diag}\``,
+              `**Branch:** \`${context.ref}\``,
+              `**Commit:** \`${context.sha}\``,
+              `**Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              `**Timestamp:** ${new Date().toISOString()}`,
+              ``,
+              `Automatic recovery did not resolve this failure. See run logs for the failing step and HTTP response.`,
+            ].join("\n");
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title, body,
+              labels: ["incident", "ci", "brevo"],
+            });
+
+      - name: Slack alert
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        run: |
+          DIAG="${{ needs.brevo-ci.outputs.diagnosis }}"
+          curl -fsS -X POST -H 'Content-Type: application/json' \
+            -d "{\"text\":\"🚨 HIGAET CI FAILURE\\nDIAGNOSIS: ${DIAG}\\nSTATUS: FAILED\\nACTION REQUIRED: YES\"}" \
+            "${{ secrets.SLACK_WEBHOOK_URL }}"
 
   deploy:
     needs: brevo-ci
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger deploy webhook
