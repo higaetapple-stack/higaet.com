@@ -1,0 +1,154 @@
+name: Deploy MilesWeb Staging
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [staging]
+
+concurrency:
+  group: deploy-milesweb-staging
+  cancel-in-progress: false
+
+env:
+  CPANEL_USER: wnwpopno
+  APP_ROOT: /home/wnwpopno/higaet-staging
+  NODE_VERSION: "20.20.2"
+  STARTUP_FILE: app.js
+  APP_URL: https://staging.higaet.com
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to MilesWeb (staging)
+    runs-on: ubuntu-latest
+    environment: staging
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies (frozen)
+        run: bun install --frozen-lockfile
+
+      - name: Validate required env
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+        run: |
+          for v in VITE_SUPABASE_URL VITE_SUPABASE_PUBLISHABLE_KEY VITE_SUPABASE_PROJECT_ID; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Missing required secret: $v"; exit 1
+            fi
+          done
+
+      - name: Build (Node target)
+        env:
+          BUILD_TARGET: node
+          NODE_ENV: production
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+        run: bun run build:node
+
+      - name: Verify build artifacts
+        run: |
+          test -f .output/server/index.mjs || { echo "::error::Missing .output/server/index.mjs"; exit 1; }
+          test -f app.js || { echo "::error::Missing app.js"; exit 1; }
+          test -f package.json || { echo "::error::Missing package.json"; exit 1; }
+          [ -d dist ] || echo "::warning::dist/ not present (ok if Nitro emits only .output)"
+
+      - name: Create production package.json (prod deps only)
+        run: |
+          node -e "const p=require('./package.json');delete p.devDependencies;delete p.scripts;p.scripts={start:'node app.js'};require('fs').writeFileSync('package.prod.json',JSON.stringify(p,null,2));"
+
+      - name: Package release tarball
+        run: |
+          mkdir -p release
+          cp app.js release/app.js
+          cp package.prod.json release/package.json
+          [ -f bun.lockb ] && cp bun.lockb release/ || true
+          [ -f package-lock.json ] && cp package-lock.json release/ || true
+          cp -R .output release/.output
+          [ -d dist ] && cp -R dist release/dist || true
+          tar -czf release.tar.gz -C release .
+          ls -lh release.tar.gz
+
+      - name: Upload release to MilesWeb
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          username: ${{ env.CPANEL_USER }}
+          key: ${{ secrets.MILESWEB_SSH_KEY }}
+          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          source: "release.tar.gz"
+          target: "/home/wnwpopno/deploy-staging/"
+
+      - name: Activate release on server (atomic) & restart Passenger
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          username: ${{ env.CPANEL_USER }}
+          key: ${{ secrets.MILESWEB_SSH_KEY }}
+          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          script: |
+            set -euo pipefail
+            APP_ROOT="${{ env.APP_ROOT }}"
+            RELEASES_DIR="$APP_ROOT/releases"
+            SHARED_DIR="$APP_ROOT/shared"
+            STAMP=$(date -u +%Y%m%d-%H%M%S)
+            NEW_REL="$RELEASES_DIR/$STAMP"
+            mkdir -p "$RELEASES_DIR" "$SHARED_DIR" "$NEW_REL"
+
+            tar -xzf /home/wnwpopno/deploy-staging/release.tar.gz -C "$NEW_REL"
+
+            # Link shared .env if present
+            if [ -f "$SHARED_DIR/.env" ]; then
+              ln -sf "$SHARED_DIR/.env" "$NEW_REL/.env"
+            fi
+
+            # Install prod deps using cPanel Node
+            source /home/wnwpopno/nodevenv/higaet-staging/20/bin/activate 2>/dev/null || true
+            cd "$NEW_REL"
+            if command -v npm >/dev/null 2>&1; then
+              npm install --omit=dev --no-audit --no-fund
+            fi
+
+            # Atomic swap: keep app.js/.output/dist/node_modules at app root
+            cd "$APP_ROOT"
+            for item in app.js package.json .output dist node_modules; do
+              rm -rf "$APP_ROOT/$item"
+              if [ -e "$NEW_REL/$item" ]; then
+                ln -s "$NEW_REL/$item" "$APP_ROOT/$item"
+              fi
+            done
+
+            # Restart Passenger
+            mkdir -p "$APP_ROOT/tmp"
+            touch "$APP_ROOT/tmp/restart.txt"
+
+            # Retain last 5 releases
+            ls -1dt "$RELEASES_DIR"/*/ | tail -n +6 | xargs -r rm -rf
+
+            rm -f /home/wnwpopno/deploy-staging/release.tar.gz
+            echo "Deployed release: $STAMP"
+
+      - name: Smoke test (health endpoint)
+        run: |
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            code=$(curl -s -o /tmp/health.txt -w "%{http_code}" "${{ env.APP_URL }}/api/public/health" || true)
+            echo "Attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 6
+          done
+          echo "::error::Smoke test failed"; cat /tmp/health.txt || true; exit 1
