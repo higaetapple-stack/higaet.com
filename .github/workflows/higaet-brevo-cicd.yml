@@ -18,7 +18,10 @@ on:
 
 permissions:
   contents: read
+  actions: read
   issues: write
+
+
 
 jobs:
   brevo-ci:
@@ -33,6 +36,54 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      # 0a. Workflow context — log identity/permissions for forensics
+      - name: Workflow context
+        run: |
+          echo "::group::Workflow context"
+          echo "workflow=${{ github.workflow }}"
+          echo "repository=${{ github.repository }}"
+          echo "ref=${{ github.ref }}"
+          echo "event=${{ github.event_name }}"
+          echo "actor=${{ github.actor }}"
+          echo "triggering_actor=${{ github.triggering_actor }}"
+          echo "run_id=${{ github.run_id }}"
+          echo "run_attempt=${{ github.run_attempt }}"
+          echo "job=${{ github.job }}"
+          echo "runner_os=${{ runner.os }}"
+          echo "permissions: contents=read actions=read issues=write"
+          echo "::endgroup::"
+
+      # 0b. Preflight — validate every required secret/variable before any work
+      - name: Preflight validation
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          LAUNCH_READINESS_INGEST_SECRET: ${{ secrets.LAUNCH_READINESS_INGEST_SECRET }}
+          CI_AUDIT_INGEST_SECRET: ${{ secrets.CI_AUDIT_INGEST_SECRET }}
+          OPS_DASHBOARD_URL: ${{ secrets.OPS_DASHBOARD_URL }}
+        run: |
+          missing=0
+          check_secret() {
+            local name="$1" reason="$2" value="$3"
+            if [ -z "$value" ]; then
+              echo "::error::❌ Missing secret: $name"
+              echo "   $reason"
+              missing=$((missing+1))
+            fi
+          }
+          check_secret BREVO_API_KEY "Authenticates the Brevo API health probe." "$BREVO_API_KEY"
+          check_secret APP_BASE_URL "Base URL for the email-verify round-trip." "$APP_BASE_URL"
+          check_secret LAUNCH_READINESS_INGEST_SECRET "Bearer for the email-verify endpoint." "$LAUNCH_READINESS_INGEST_SECRET"
+          check_secret CI_AUDIT_INGEST_SECRET "HMAC key for posting audit + ingest-failure diagnostics." "$CI_AUDIT_INGEST_SECRET"
+          check_secret OPS_DASHBOARD_URL "Base URL of the Ops dashboard receiving audit POSTs." "$OPS_DASHBOARD_URL"
+          if [ "$missing" -gt 0 ]; then
+            echo "::error::$missing required secret(s) missing — aborting before any network calls."
+            exit 1
+          fi
+          echo "✅ All required secrets and variables validated."
+
+
 
       # 1. ENV (no retry)
       - name: Diagnose environment
@@ -596,16 +647,73 @@ jobs:
           path: audit/decision.json
           retention-days: 90
 
-      # Mirror the audit record into the Reliability Ops dashboard DB
+      # Mirror the audit record into the Reliability Ops dashboard DB,
+      # with diagnostic capture on failure (status code, response body, correlation id).
       - name: POST audit to Reliability Ops dashboard
         if: ${{ secrets.OPS_DASHBOARD_URL != '' && secrets.CI_AUDIT_INGEST_SECRET != '' }}
+        env:
+          OPS_DASHBOARD_URL: ${{ secrets.OPS_DASHBOARD_URL }}
+          CI_AUDIT_INGEST_SECRET: ${{ secrets.CI_AUDIT_INGEST_SECRET }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          JOB_NAME: ${{ github.job }}
+          GH_RUN_ID: ${{ github.run_id }}
         run: |
+          set +e
           BODY=$(cat audit/decision.json)
-          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "${{ secrets.CI_AUDIT_INGEST_SECRET }}" | awk '{print $2}')
-          curl -fsS -X POST "${{ secrets.OPS_DASHBOARD_URL }}/api/public/ci-audit/ingest" \
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$CI_AUDIT_INGEST_SECRET" | awk '{print $2}')
+          CORR_ID="${GH_RUN_ID}-$(date +%s)-$RANDOM"
+          INGEST_URL="${OPS_DASHBOARD_URL}/api/public/ci-audit/ingest"
+          RETRY=0
+          MAX_RETRY=2
+          while :; do
+            HTTP_CODE=$(curl -sS -o /tmp/ingest_resp.txt -w "%{http_code}" \
+              -X POST "$INGEST_URL" \
+              -H "Content-Type: application/json" \
+              -H "X-Signature: ${SIG}" \
+              -H "X-Correlation-Id: ${CORR_ID}" \
+              -H "X-Request-Id: ${GH_RUN_ID}" \
+              -H "X-Retry-Count: ${RETRY}" \
+              --data-binary "$BODY" || echo "000")
+            echo "ingest attempt=$RETRY status=$HTTP_CODE"
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "✅ audit ingested (correlation=$CORR_ID)"
+              exit 0
+            fi
+            if [ "$RETRY" -ge "$MAX_RETRY" ]; then
+              break
+            fi
+            RETRY=$((RETRY+1))
+            sleep 3
+          done
+
+          # Capture diagnostics
+          RESPONSE_BODY=$(head -c 4000 /tmp/ingest_resp.txt || echo "")
+          REASON="HTTP_${HTTP_CODE}_after_${RETRY}_retries"
+          echo "::warning::Audit ingest failed: $REASON"
+          echo "response: $RESPONSE_BODY"
+
+          # Report failure to dashboard diagnostics endpoint (best-effort)
+          FAIL_PAYLOAD=$(jq -nc \
+            --arg w "$WORKFLOW_NAME" \
+            --arg j "$JOB_NAME" \
+            --arg env "production" \
+            --arg url "$INGEST_URL" \
+            --argjson code "$HTTP_CODE" \
+            --arg resp "$RESPONSE_BODY" \
+            --arg corr "$CORR_ID" \
+            --arg req "$GH_RUN_ID" \
+            --argjson retry "$RETRY" \
+            --arg reason "$REASON" \
+            '{workflow_name:$w, job_name:$j, environment:$env, ingest_url:$url, status_code:$code, response_body:$resp, correlation_id:$corr, request_id:$req, retry_count:$retry, failure_reason:$reason}')
+          FAIL_SIG=$(printf '%s' "$FAIL_PAYLOAD" | openssl dgst -sha256 -hmac "$CI_AUDIT_INGEST_SECRET" | awk '{print $2}')
+          curl -sS -o /dev/null -X POST "${OPS_DASHBOARD_URL}/api/public/ci-ingest-failures/log" \
             -H "Content-Type: application/json" \
-            -H "X-Signature: ${SIG}" \
-            --data-binary "$BODY" || echo "ingest POST failed (non-blocking)"
+            -H "X-Signature: ${FAIL_SIG}" \
+            --data-binary "$FAIL_PAYLOAD" || echo "failure-log POST also failed (non-blocking)"
+          # Non-blocking: don't fail the workflow on dashboard outage
+          exit 0
+
+
 
 
       - name: Escalate incident on ROLLBACK / BLOCK

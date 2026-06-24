@@ -10,9 +10,11 @@ import {
   getAuditTrends,
   getGovernanceState,
   getBrevoReliability,
+  getIngestFailures,
   type AuditRow,
   type IncidentRow,
   type TrendPoint,
+  type IngestFailureRow,
 } from "@/lib/ops-reliability.functions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -112,6 +114,12 @@ function ReliabilityDashboard() {
     queryKey: ["ops", "brevo", range],
     queryFn: () => fetchBrevo({ data: { range } }),
   });
+  const fetchIngestFailures = useServerFn(getIngestFailures);
+  const ingestFailuresQ = useQuery({
+    queryKey: ["ops", "ingest-failures"],
+    queryFn: () => fetchIngestFailures(),
+    refetchInterval: 60_000,
+  });
 
   const audit: AuditRow[] = auditQ.data ?? [];
   const latest = audit[0];
@@ -145,6 +153,7 @@ function ReliabilityDashboard() {
             trendsQ.refetch();
             govQ.refetch();
             brevoQ.refetch();
+            ingestFailuresQ.refetch();
           }}
         >
           Refresh
@@ -302,6 +311,19 @@ function ReliabilityDashboard() {
           <DeploymentTable rows={audit.slice(0, 50)} />
         </CardContent>
       </Card>
+
+      {/* 9. CI AUDIT INGEST FAILURES (Admin diagnostics) */}
+      <Card>
+        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+          <CardTitle className="text-base">CI Audit Ingest Failures</CardTitle>
+          <Button size="sm" variant="outline" onClick={() => ingestFailuresQ.refetch()}>
+            Refresh
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <IngestFailureTable rows={ingestFailuresQ.data ?? []} loading={ingestFailuresQ.isLoading} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -454,6 +476,65 @@ function DeploymentTable({ rows }: { rows: AuditRow[] }) {
                 {r.run_url ? (
                   <a className="text-academy underline" href={r.run_url} target="_blank" rel="noreferrer">view</a>
                 ) : "—"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function IngestFailureTable({ rows, loading }: { rows: IngestFailureRow[]; loading: boolean }) {
+  if (loading) return <div className="text-sm text-muted-foreground">Loading…</div>;
+  if (!rows.length) {
+    return <div className="text-sm text-muted-foreground">No ingest failures recorded.</div>;
+  }
+  const copy = (row: IngestFailureRow) => {
+    void navigator.clipboard.writeText(JSON.stringify(row, null, 2));
+  };
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="text-left text-xs text-muted-foreground uppercase">
+            <th className="py-2 pr-3">Time</th>
+            <th className="py-2 pr-3">Workflow / Job</th>
+            <th className="py-2 pr-3">Status</th>
+            <th className="py-2 pr-3">Reason</th>
+            <th className="py-2 pr-3">Correlation</th>
+            <th className="py-2 pr-3">Retries</th>
+            <th className="py-2 pr-3">Response</th>
+            <th className="py-2 pr-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id} className="border-t border-border align-top">
+              <td className="py-2 pr-3 whitespace-nowrap">{new Date(r.created_at).toLocaleString()}</td>
+              <td className="py-2 pr-3">
+                <div className="font-medium">{r.workflow_name ?? "—"}</div>
+                <div className="text-xs text-muted-foreground">{r.job_name ?? ""}</div>
+              </td>
+              <td className="py-2 pr-3">
+                <Badge variant={r.status_code && r.status_code >= 500 ? "destructive" : "outline"}>
+                  {r.status_code ?? "—"}
+                </Badge>
+              </td>
+              <td className="py-2 pr-3 max-w-[16rem] truncate" title={r.failure_reason ?? ""}>
+                {r.failure_reason ?? "—"}
+              </td>
+              <td className="py-2 pr-3 font-mono text-xs">{r.correlation_id?.slice(0, 8) ?? "—"}</td>
+              <td className="py-2 pr-3">{r.retry_count}</td>
+              <td className="py-2 pr-3 max-w-[20rem]">
+                <pre className="whitespace-pre-wrap break-all text-xs text-muted-foreground line-clamp-3">
+                  {r.response_body ?? "—"}
+                </pre>
+              </td>
+              <td className="py-2 pr-3">
+                <Button size="sm" variant="outline" onClick={() => copy(r)}>
+                  Copy
+                </Button>
               </td>
             </tr>
           ))}

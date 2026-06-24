@@ -359,3 +359,34 @@ export const getBrevoReliability = createServerFn({ method: "GET" })
 
     return { totalRuns: total, authSuccessRate, authFailures, timeouts, endpointSuccessRate, lastVerifiedAt };
   });
+
+export type IngestFailureRow = {
+  id: string;
+  created_at: string;
+  workflow_name: string | null;
+  job_name: string | null;
+  environment: string | null;
+  ingest_url: string | null;
+  status_code: number | null;
+  response_body: string | null;
+  correlation_id: string | null;
+  request_id: string | null;
+  retry_count: number;
+  failure_reason: string | null;
+  payload_hash: string | null;
+};
+
+export const getIngestFailures = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<IngestFailureRow[]> => {
+    await assertOps(context.supabase, context.userId);
+    const { data, error } = await context.supabase
+      .from("ci_ingest_failures")
+      .select(
+        "id, created_at, workflow_name, job_name, environment, ingest_url, status_code, response_body, correlation_id, request_id, retry_count, failure_reason, payload_hash",
+      )
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (error) throw new Error(error.message);
+    return (data ?? []) as IngestFailureRow[];
+  });

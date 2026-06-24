@@ -256,6 +256,7 @@ import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
 import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
+import { Route as ApiPublicCiIngestFailuresLogRouteImport } from './routes/api/public/ci-ingest-failures/log'
 import { Route as ApiPublicCiAuditIngestRouteImport } from './routes/api/public/ci-audit/ingest'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
@@ -1704,6 +1705,12 @@ const ApiPublicConstitutionAmendmentsRoute =
     path: '/api/public/constitution/amendments',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicCiIngestFailuresLogRoute =
+  ApiPublicCiIngestFailuresLogRouteImport.update({
+    id: '/api/public/ci-ingest-failures/log',
+    path: '/api/public/ci-ingest-failures/log',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCiAuditIngestRoute = ApiPublicCiAuditIngestRouteImport.update({
   id: '/api/public/ci-audit/ingest',
   path: '/api/public/ci-audit/ingest',
@@ -2518,6 +2525,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
+  '/api/public/ci-ingest-failures/log': typeof ApiPublicCiIngestFailuresLogRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -2836,6 +2844,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
+  '/api/public/ci-ingest-failures/log': typeof ApiPublicCiIngestFailuresLogRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -3172,6 +3181,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
   '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
+  '/api/public/ci-ingest-failures/log': typeof ApiPublicCiIngestFailuresLogRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -3508,6 +3518,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/ci-audit/ingest'
+    | '/api/public/ci-ingest-failures/log'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -3826,6 +3837,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
     | '/api/public/ci-audit/ingest'
+    | '/api/public/ci-ingest-failures/log'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -4161,6 +4173,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
     | '/api/public/ci-audit/ingest'
+    | '/api/public/ci-ingest-failures/log'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -4264,6 +4277,7 @@ export interface RootRouteChildren {
   ApiV1ProgramsRoute: typeof ApiV1ProgramsRoute
   ApiV1UniversitiesRoute: typeof ApiV1UniversitiesRoute
   ApiPublicCiAuditIngestRoute: typeof ApiPublicCiAuditIngestRoute
+  ApiPublicCiIngestFailuresLogRoute: typeof ApiPublicCiIngestFailuresLogRoute
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
@@ -6002,6 +6016,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/constitution/amendments'
       fullPath: '/api/public/constitution/amendments'
       preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ci-ingest-failures/log': {
+      id: '/api/public/ci-ingest-failures/log'
+      path: '/api/public/ci-ingest-failures/log'
+      fullPath: '/api/public/ci-ingest-failures/log'
+      preLoaderRoute: typeof ApiPublicCiIngestFailuresLogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/ci-audit/ingest': {
@@ -7743,6 +7764,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiV1ProgramsRoute: ApiV1ProgramsRoute,
   ApiV1UniversitiesRoute: ApiV1UniversitiesRoute,
   ApiPublicCiAuditIngestRoute: ApiPublicCiAuditIngestRoute,
+  ApiPublicCiIngestFailuresLogRoute: ApiPublicCiIngestFailuresLogRoute,
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
@@ -7754,13 +7776,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
