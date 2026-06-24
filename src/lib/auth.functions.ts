@@ -10,6 +10,7 @@ export type AppRole =
   | "placement_officer"
   | "enterprise_client"
   | "tech_client"
+  | "ops"
   | "admin"
   | "super_admin";
 

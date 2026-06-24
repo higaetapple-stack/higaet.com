@@ -8,6 +8,7 @@ import type { AppRole } from "@/lib/auth.functions";
 export const ROLE_DASHBOARD: Record<AppRole, string> = {
   super_admin: "/dashboard/admin",
   admin: "/dashboard/admin",
+  ops: "/ops/reliability",
   counselor: "/dashboard/counselor",
   mentor: "/dashboard/counselor",
   faculty: "/dashboard/faculty",
@@ -21,6 +22,7 @@ export const ROLE_DASHBOARD: Record<AppRole, string> = {
 const ROLE_PRIORITY: AppRole[] = [
   "super_admin",
   "admin",
+  "ops",
   "faculty",
   "counselor",
   "mentor",

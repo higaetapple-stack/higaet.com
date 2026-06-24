@@ -1148,6 +1148,72 @@ export type Database = {
           },
         ]
       }
+      ci_audit_log: {
+        Row: {
+          actor: string | null
+          autonomous_mode: string | null
+          branch: string
+          created_at: string
+          decision: string
+          decision_reason: string | null
+          decision_source: string | null
+          diagnosis: string | null
+          execute_reason: string | null
+          executed: boolean
+          id: string
+          platform_state: string | null
+          raw: Json
+          risk_level: string | null
+          run_url: string | null
+          sha: string
+          system_health_score: number | null
+          system_mode: string | null
+          ts: string
+        }
+        Insert: {
+          actor?: string | null
+          autonomous_mode?: string | null
+          branch: string
+          created_at?: string
+          decision: string
+          decision_reason?: string | null
+          decision_source?: string | null
+          diagnosis?: string | null
+          execute_reason?: string | null
+          executed?: boolean
+          id?: string
+          platform_state?: string | null
+          raw?: Json
+          risk_level?: string | null
+          run_url?: string | null
+          sha: string
+          system_health_score?: number | null
+          system_mode?: string | null
+          ts: string
+        }
+        Update: {
+          actor?: string | null
+          autonomous_mode?: string | null
+          branch?: string
+          created_at?: string
+          decision?: string
+          decision_reason?: string | null
+          decision_source?: string | null
+          diagnosis?: string | null
+          execute_reason?: string | null
+          executed?: boolean
+          id?: string
+          platform_state?: string | null
+          raw?: Json
+          risk_level?: string | null
+          run_url?: string | null
+          sha?: string
+          system_health_score?: number | null
+          system_mode?: string | null
+          ts?: string
+        }
+        Relationships: []
+      }
       communities: {
         Row: {
           cover_url: string | null
@@ -5174,6 +5240,7 @@ export type Database = {
         | "admin"
         | "super_admin"
         | "tech_client"
+        | "ops"
       application_status:
         | "submitted"
         | "under_review"
@@ -5479,6 +5546,7 @@ export const Constants = {
         "admin",
         "super_admin",
         "tech_client",
+        "ops",
       ],
       application_status: [
         "submitted",

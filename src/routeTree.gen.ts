@@ -124,6 +124,7 @@ import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.c
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
+import { Route as AuthenticatedOpsRouteImport } from './routes/_authenticated.ops'
 import { Route as AuthenticatedEducationRouteImport } from './routes/_authenticated.education'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
@@ -222,6 +223,7 @@ import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
 import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
+import { Route as AuthenticatedOpsReliabilityRouteImport } from './routes/_authenticated.ops.reliability'
 import { Route as AuthenticatedEducationProfileRouteImport } from './routes/_authenticated.education.profile'
 import { Route as AuthenticatedEducationDocumentsRouteImport } from './routes/_authenticated.education.documents'
 import { Route as AuthenticatedEducationApplicationsRouteImport } from './routes/_authenticated.education.applications'
@@ -254,6 +256,7 @@ import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
 import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
 import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
+import { Route as ApiPublicCiAuditIngestRouteImport } from './routes/api/public/ci-audit/ingest'
 import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
 import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
 import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
@@ -943,6 +946,11 @@ const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
   path: '/admissions',
   getParentRoute: () => AcademyRoute,
 } as any)
+const AuthenticatedOpsRoute = AuthenticatedOpsRouteImport.update({
+  id: '/ops',
+  path: '/ops',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedEducationRoute = AuthenticatedEducationRouteImport.update({
   id: '/education',
   path: '/education',
@@ -1499,6 +1507,12 @@ const AcademyBlogCertificationsComparisonRoute =
     path: '/blog/certifications-comparison',
     getParentRoute: () => AcademyRoute,
   } as any)
+const AuthenticatedOpsReliabilityRoute =
+  AuthenticatedOpsReliabilityRouteImport.update({
+    id: '/reliability',
+    path: '/reliability',
+    getParentRoute: () => AuthenticatedOpsRoute,
+  } as any)
 const AuthenticatedEducationProfileRoute =
   AuthenticatedEducationProfileRouteImport.update({
     id: '/profile',
@@ -1690,6 +1704,11 @@ const ApiPublicConstitutionAmendmentsRoute =
     path: '/api/public/constitution/amendments',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicCiAuditIngestRoute = ApiPublicCiAuditIngestRouteImport.update({
+  id: '/api/public/ci-audit/ingest',
+  path: '/api/public/ci-audit/ingest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardTechnologiesSupportRoute =
   AuthenticatedDashboardTechnologiesSupportRouteImport.update({
     id: '/support',
@@ -2243,6 +2262,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/education': typeof AuthenticatedEducationRouteWithChildren
+  '/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2336,6 +2356,7 @@ export interface FileRoutesByFullPath {
   '/education/applications': typeof AuthenticatedEducationApplicationsRoute
   '/education/documents': typeof AuthenticatedEducationDocumentsRoute
   '/education/profile': typeof AuthenticatedEducationProfileRoute
+  '/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2496,6 +2517,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -2566,6 +2588,7 @@ export interface FileRoutesByTo {
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
   '/community': typeof AuthenticatedCommunityRouteWithChildren
+  '/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2655,6 +2678,7 @@ export interface FileRoutesByTo {
   '/education/applications': typeof AuthenticatedEducationApplicationsRoute
   '/education/documents': typeof AuthenticatedEducationDocumentsRoute
   '/education/profile': typeof AuthenticatedEducationProfileRoute
+  '/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -2811,6 +2835,7 @@ export interface FileRoutesByTo {
   '/dashboard/technologies/finance': typeof AuthenticatedDashboardTechnologiesFinanceRoute
   '/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -2891,6 +2916,7 @@ export interface FileRoutesById {
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/education': typeof AuthenticatedEducationRouteWithChildren
+  '/_authenticated/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2984,6 +3010,7 @@ export interface FileRoutesById {
   '/_authenticated/education/applications': typeof AuthenticatedEducationApplicationsRoute
   '/_authenticated/education/documents': typeof AuthenticatedEducationDocumentsRoute
   '/_authenticated/education/profile': typeof AuthenticatedEducationProfileRoute
+  '/_authenticated/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
@@ -3144,6 +3171,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/technologies/proposals': typeof AuthenticatedDashboardTechnologiesProposalsRouteWithChildren
   '/_authenticated/dashboard/technologies/requests': typeof AuthenticatedDashboardTechnologiesRequestsRoute
   '/_authenticated/dashboard/technologies/support': typeof AuthenticatedDashboardTechnologiesSupportRoute
+  '/api/public/ci-audit/ingest': typeof ApiPublicCiAuditIngestRoute
   '/api/public/constitution/amendments': typeof ApiPublicConstitutionAmendmentsRoute
   '/api/public/constitution/apply': typeof ApiPublicConstitutionApplyRoute
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
@@ -3224,6 +3252,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/dashboard'
     | '/education'
+    | '/ops'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3317,6 +3346,7 @@ export interface FileRouteTypes {
     | '/education/applications'
     | '/education/documents'
     | '/education/profile'
+    | '/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3477,6 +3507,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/proposals'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
+    | '/api/public/ci-audit/ingest'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -3547,6 +3578,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/terms'
     | '/community'
+    | '/ops'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3636,6 +3668,7 @@ export interface FileRouteTypes {
     | '/education/applications'
     | '/education/documents'
     | '/education/profile'
+    | '/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -3792,6 +3825,7 @@ export interface FileRouteTypes {
     | '/dashboard/technologies/finance'
     | '/dashboard/technologies/requests'
     | '/dashboard/technologies/support'
+    | '/api/public/ci-audit/ingest'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -3871,6 +3905,7 @@ export interface FileRouteTypes {
     | '/_authenticated/community'
     | '/_authenticated/dashboard'
     | '/_authenticated/education'
+    | '/_authenticated/ops'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3964,6 +3999,7 @@ export interface FileRouteTypes {
     | '/_authenticated/education/applications'
     | '/_authenticated/education/documents'
     | '/_authenticated/education/profile'
+    | '/_authenticated/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
     | '/academy/programs/$slug'
@@ -4124,6 +4160,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/technologies/proposals'
     | '/_authenticated/dashboard/technologies/requests'
     | '/_authenticated/dashboard/technologies/support'
+    | '/api/public/ci-audit/ingest'
     | '/api/public/constitution/amendments'
     | '/api/public/constitution/apply'
     | '/api/public/constitution/status'
@@ -4226,6 +4263,7 @@ export interface RootRouteChildren {
   ApiV1JobsRoute: typeof ApiV1JobsRoute
   ApiV1ProgramsRoute: typeof ApiV1ProgramsRoute
   ApiV1UniversitiesRoute: typeof ApiV1UniversitiesRoute
+  ApiPublicCiAuditIngestRoute: typeof ApiPublicCiAuditIngestRoute
   ApiPublicConstitutionAmendmentsRoute: typeof ApiPublicConstitutionAmendmentsRoute
   ApiPublicConstitutionApplyRoute: typeof ApiPublicConstitutionApplyRoute
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
@@ -5042,6 +5080,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyAdmissionsRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/_authenticated/ops': {
+      id: '/_authenticated/ops'
+      path: '/ops'
+      fullPath: '/ops'
+      preLoaderRoute: typeof AuthenticatedOpsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/education': {
       id: '/_authenticated/education'
       path: '/education'
@@ -5728,6 +5773,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyBlogCertificationsComparisonRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/_authenticated/ops/reliability': {
+      id: '/_authenticated/ops/reliability'
+      path: '/reliability'
+      fullPath: '/ops/reliability'
+      preLoaderRoute: typeof AuthenticatedOpsReliabilityRouteImport
+      parentRoute: typeof AuthenticatedOpsRoute
+    }
     '/_authenticated/education/profile': {
       id: '/_authenticated/education/profile'
       path: '/profile'
@@ -5950,6 +6002,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/constitution/amendments'
       fullPath: '/api/public/constitution/amendments'
       preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ci-audit/ingest': {
+      id: '/api/public/ci-audit/ingest'
+      path: '/api/public/ci-audit/ingest'
+      fullPath: '/api/public/ci-audit/ingest'
+      preLoaderRoute: typeof ApiPublicCiAuditIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/technologies/support': {
@@ -7096,11 +7155,23 @@ const AuthenticatedEducationRouteWithChildren =
     AuthenticatedEducationRouteChildren,
   )
 
+interface AuthenticatedOpsRouteChildren {
+  AuthenticatedOpsReliabilityRoute: typeof AuthenticatedOpsReliabilityRoute
+}
+
+const AuthenticatedOpsRouteChildren: AuthenticatedOpsRouteChildren = {
+  AuthenticatedOpsReliabilityRoute: AuthenticatedOpsReliabilityRoute,
+}
+
+const AuthenticatedOpsRouteWithChildren =
+  AuthenticatedOpsRoute._addFileChildren(AuthenticatedOpsRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRouteWithChildren
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
   AuthenticatedEducationRoute: typeof AuthenticatedEducationRouteWithChildren
+  AuthenticatedOpsRoute: typeof AuthenticatedOpsRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -7108,6 +7179,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
   AuthenticatedEducationRoute: AuthenticatedEducationRouteWithChildren,
+  AuthenticatedOpsRoute: AuthenticatedOpsRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -7670,6 +7742,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiV1JobsRoute: ApiV1JobsRoute,
   ApiV1ProgramsRoute: ApiV1ProgramsRoute,
   ApiV1UniversitiesRoute: ApiV1UniversitiesRoute,
+  ApiPublicCiAuditIngestRoute: ApiPublicCiAuditIngestRoute,
   ApiPublicConstitutionAmendmentsRoute: ApiPublicConstitutionAmendmentsRoute,
   ApiPublicConstitutionApplyRoute: ApiPublicConstitutionApplyRoute,
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,

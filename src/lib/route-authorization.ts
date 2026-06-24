@@ -14,6 +14,7 @@ export const ROUTE_PERMISSIONS: Record<string, AppRole[]> = {
   "/dashboard/career": ["student", "placement_officer", "admin", "super_admin"],
   "/education": ["enterprise_client", "admin", "super_admin"],
   "/dashboard/technologies": ["tech_client", "admin", "super_admin"],
+  "/ops": ["ops", "admin", "super_admin"],
 };
 
 export function allowedRolesForPath(pathname: string): AppRole[] | null {
