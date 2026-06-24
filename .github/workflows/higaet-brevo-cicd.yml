@@ -4,6 +4,17 @@ on:
   push:
     branches: ["main"]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      override_decision:
+        description: "Break-glass override: DEPLOY | CANARY | BLOCK | ROLLBACK | NONE"
+        type: choice
+        default: "NONE"
+        options: [NONE, DEPLOY, CANARY, BLOCK, ROLLBACK]
+      override_reason:
+        description: "Reason for override (required if override_decision != NONE)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
