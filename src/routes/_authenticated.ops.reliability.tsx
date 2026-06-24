@@ -10,9 +10,11 @@ import {
   getAuditTrends,
   getGovernanceState,
   getBrevoReliability,
+  getIngestFailures,
   type AuditRow,
   type IncidentRow,
   type TrendPoint,
+  type IngestFailureRow,
 } from "@/lib/ops-reliability.functions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
