@@ -2,9 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { pingBrevo } from "@/lib/email/brevo";
 import { sendEmail } from "@/lib/email/send-email.server";
 
-// Temporary end-to-end Brevo verification endpoint.
+// End-to-end Brevo verification endpoint.
 // Auth: Bearer LAUNCH_READINESS_INGEST_SECRET
 // Usage: POST /api/public/email-verify  { "to": "addr@example.com" }
+// Response contract: boolean status only. No secrets, no env metadata, no key fragments.
 export const Route = createFileRoute("/api/public/email-verify")({
   server: {
     handlers: {
@@ -14,54 +15,39 @@ export const Route = createFileRoute("/api/public/email-verify")({
         if (!secret || auth !== `Bearer ${secret}`) {
           return new Response("Unauthorized", { status: 401 });
         }
+
         let to = "";
         try {
           const body = (await request.json()) as { to?: string };
           to = body?.to ?? "";
         } catch {
-          return Response.json({ error: "invalid json" }, { status: 400 });
+          return Response.json({ success: false }, { status: 400 });
         }
         if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
-          return Response.json({ error: "valid 'to' required" }, { status: 400 });
+          return Response.json({ success: false }, { status: 400 });
         }
 
-        const env = {
-          BREVO_API_KEY: Boolean(process.env.BREVO_API_KEY),
-          EMAIL_FROM_ADDRESS: process.env.EMAIL_FROM_ADDRESS ?? null,
-          EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME ?? null,
-          EMAIL_REPLY_TO: process.env.EMAIL_REPLY_TO ?? null,
-        };
+        if (!process.env.BREVO_API_KEY) {
+          return Response.json({ success: false }, { status: 500 });
+        }
 
         const ping = await pingBrevo();
-
         if (!ping.ok) {
-          return Response.json(
-            { success: false, provider: "brevo", error: `Brevo unreachable: ${ping.error}`, env },
-            { status: 502 },
-          );
+          return Response.json({ success: false }, { status: 502 });
         }
 
         const send = await sendEmail({
           to,
           subject: "HIGAET Brevo Verification",
-          body: "<p>This is an end-to-end verification email from HIGAET via Brevo HTTP API.</p><p>If you received this, transactional email delivery is working.</p>",
+          body: "<p>End-to-end verification email from HIGAET via Brevo HTTP API.</p>",
           tags: ["verification"],
         });
 
         if (!send.ok) {
-          return Response.json(
-            { success: false, provider: "brevo", error: send.error ?? "send failed", attempts: send.attempts, env },
-            { status: 502 },
-          );
+          return Response.json({ success: false }, { status: 502 });
         }
 
-        return Response.json({
-          success: true,
-          provider: "brevo",
-          messageId: send.messageId,
-          attempts: send.attempts,
-          env,
-        });
+        return Response.json({ success: true });
       },
     },
   },
