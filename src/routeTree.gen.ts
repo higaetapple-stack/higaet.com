@@ -214,6 +214,7 @@ import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/me
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicGovernanceRouteImport } from './routes/api/public/governance'
 import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
+import { Route as ApiPublicEmailVerifyRouteImport } from './routes/api/public/email-verify'
 import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
@@ -1457,6 +1458,11 @@ const ApiPublicGoalsRoute = ApiPublicGoalsRouteImport.update({
   path: '/api/public/goals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicEmailVerifyRoute = ApiPublicEmailVerifyRouteImport.update({
+  id: '/api/public/email-verify',
+  path: '/api/public/email-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicDecisionsRoute = ApiPublicDecisionsRouteImport.update({
   id: '/api/public/decisions',
   path: '/api/public/decisions',
@@ -2337,6 +2343,7 @@ export interface FileRoutesByFullPath {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
+  '/api/public/email-verify': typeof ApiPublicEmailVerifyRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -2655,6 +2662,7 @@ export interface FileRoutesByTo {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
+  '/api/public/email-verify': typeof ApiPublicEmailVerifyRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -2983,6 +2991,7 @@ export interface FileRoutesById {
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
+  '/api/public/email-verify': typeof ApiPublicEmailVerifyRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
   '/api/public/governance': typeof ApiPublicGovernanceRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -3315,6 +3324,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
+    | '/api/public/email-verify'
     | '/api/public/goals'
     | '/api/public/governance'
     | '/api/public/health'
@@ -3633,6 +3643,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
+    | '/api/public/email-verify'
     | '/api/public/goals'
     | '/api/public/governance'
     | '/api/public/health'
@@ -3960,6 +3971,7 @@ export interface FileRouteTypes {
     | '/api/public/ai-mode'
     | '/api/public/chat'
     | '/api/public/decisions'
+    | '/api/public/email-verify'
     | '/api/public/goals'
     | '/api/public/governance'
     | '/api/public/health'
@@ -4197,6 +4209,7 @@ export interface RootRouteChildren {
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
+  ApiPublicEmailVerifyRoute: typeof ApiPublicEmailVerifyRoute
   ApiPublicGoalsRoute: typeof ApiPublicGoalsRoute
   ApiPublicGovernanceRoute: typeof ApiPublicGovernanceRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
@@ -5657,6 +5670,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/goals'
       fullPath: '/api/public/goals'
       preLoaderRoute: typeof ApiPublicGoalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/email-verify': {
+      id: '/api/public/email-verify'
+      path: '/api/public/email-verify'
+      fullPath: '/api/public/email-verify'
+      preLoaderRoute: typeof ApiPublicEmailVerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/decisions': {
@@ -7633,6 +7653,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
+  ApiPublicEmailVerifyRoute: ApiPublicEmailVerifyRoute,
   ApiPublicGoalsRoute: ApiPublicGoalsRoute,
   ApiPublicGovernanceRoute: ApiPublicGovernanceRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
