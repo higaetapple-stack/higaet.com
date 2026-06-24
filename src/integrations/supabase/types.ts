@@ -1214,6 +1214,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ci_ingest_failures: {
+        Row: {
+          correlation_id: string | null
+          created_at: string
+          environment: string | null
+          failure_reason: string | null
+          id: string
+          ingest_url: string | null
+          job_name: string | null
+          payload_hash: string | null
+          raw: Json | null
+          request_id: string | null
+          response_body: string | null
+          retry_count: number
+          status_code: number | null
+          workflow_name: string | null
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string
+          environment?: string | null
+          failure_reason?: string | null
+          id?: string
+          ingest_url?: string | null
+          job_name?: string | null
+          payload_hash?: string | null
+          raw?: Json | null
+          request_id?: string | null
+          response_body?: string | null
+          retry_count?: number
+          status_code?: number | null
+          workflow_name?: string | null
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string
+          environment?: string | null
+          failure_reason?: string | null
+          id?: string
+          ingest_url?: string | null
+          job_name?: string | null
+          payload_hash?: string | null
+          raw?: Json | null
+          request_id?: string | null
+          response_body?: string | null
+          retry_count?: number
+          status_code?: number | null
+          workflow_name?: string | null
+        }
+        Relationships: []
+      }
       communities: {
         Row: {
           cover_url: string | null
