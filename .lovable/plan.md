@@ -1,90 +1,77 @@
-# Launch Readiness Monitoring & Deployment Safety
+## HIGAET Reliability Operations Dashboard
 
-Scope is large (8 parts spanning CI, scripts, DB, API, UI, tests). I will implement directly into the existing HIGAET codebase — no new project, reusing TanStack Start routes under `_authenticated/admin`, existing Supabase (Lovable Cloud — Postgres, not MySQL), shadcn UI, `createServerFn` + `requireSupabaseAuth`, and the existing `launch-readiness.yml` workflow.
+Read-only, single-pane-of-glass view of the CI/CD autonomous controller. Lives at `/ops/reliability`, restricted to admin, super_admin, and a new `ops` role.
 
-Two clarifications baked in (calling them out, not blocking):
-- **"MySQL" in Part 2** — this project uses Postgres via Lovable Cloud. I'll validate against the actual schema (`app_role` enum + `user_roles` policies) using the existing audit infrastructure.
-- **Notifications** — I'll wire Slack/Discord/Teams/generic webhooks via repo secrets (`SLACK_WEBHOOK_URL`, `DISCORD_WEBHOOK_URL`, `TEAMS_WEBHOOK_URL`, `GENERIC_WEBHOOK_URL`). User must add the secret(s) they want active; absent secrets are skipped silently.
+### Data model
 
-## Plan
+Add the `ops` value to the existing `app_role` enum and one new table:
 
-### Part 1 — CI failure notifications
-- New `scripts/notify-failure.mjs` — reusable, reads payload JSON + iterates configured webhook env vars, formats per channel (Slack blocks, Discord embeds, Teams MessageCard, generic POST).
-- Update `.github/workflows/launch-readiness.yml`:
-  - Add `if: failure()` notify step at job end, passing env/branch/sha/workflow/job/run URL + artifact URLs.
-  - Wire secrets via `env:` block.
+```text
+ci_audit_log (mirrored from CI for trend charts)
+  id, ts, sha, branch, actor, run_url,
+  decision, decision_source, decision_reason, executed, execute_reason,
+  system_health_score, risk_level, platform_state,
+  system_mode, autonomous_mode, diagnosis,
+  raw jsonb
+```
 
-### Part 2 — Predeploy schema validation
-- New `scripts/predeploy-schema-validation.ts` (run via `tsx`):
-  - Reads `AppRole` from `src/lib/route-authorization.ts` (already canonical role source).
-  - Reads route→role map from same module.
-  - Queries Postgres for `app_role` enum values + `user_roles` policy targets via `psql` (uses existing PG* env).
-  - Diffs both directions; checks every protected route maps to known roles; flags orphans/duplicates.
-  - Writes `artifacts/schema-validation.json` with `{status, missingRoles, extraRoles, missingRoutes, invalidPermissions, timestamp}`.
-  - Exits non-zero on mismatch.
-- Hook into `launch-readiness.yml` as a required step before deploy gating.
+RLS: SELECT for admin/super_admin/ops; INSERT only via the ingest server route (verified by a shared secret header), no UPDATE/DELETE.
 
-### Part 3 — Persistence
-- Migration `launch_readiness_runs` table with all listed columns (jsonb for `audit_*`, `artifact_urls`), indexes on `created_at desc`, `branch`, `environment`, `overall_status`.
-- RLS: admin-only SELECT via `has_role(auth.uid(),'admin')`; INSERT via service_role only.
-- GRANTs: `SELECT` to `authenticated`, `ALL` to `service_role`.
-- Typed model + repository in `src/lib/launch-readiness.functions.ts` (server fns: `getLatestRun`, `listRuns({page,filters})`, `getRun(id)`).
-- Ingestion via internal route `POST /api/public/launch-readiness/ingest` guarded by HMAC `LAUNCH_READINESS_INGEST_SECRET` (workflow posts after audit completes).
+### Ingestion
 
-### Part 4 — Admin dashboard
-- Route `src/routes/_authenticated/admin.launch-readiness.tsx`:
-  - Role gate: `has_role admin` via existing `RoleGuard`.
-  - Summary cards (Overall, Audit Errors/Warnings, PW Pass/Fail, Sec Pass/Fail, Last Check, SHA, Env).
-  - Audit breakdown by category (Security/A11y/SEO/Perf/Architecture) — fed from `audit.json` shape already produced by `security-audit.mjs` (extended to bucket categories).
-  - Playwright section + report link.
-  - Schema validation block.
-  - Artifacts download list.
-  - Historical table with pagination + filter (env, branch, status) using shadcn `Table`, `Select`, `Pagination`.
+- Extend `.github/workflows/higaet-brevo-cicd.yml` audit step to POST `audit/decision.json` to a new public server route `/api/public/ci-audit/ingest`, authenticated with HMAC of the body using `CI_AUDIT_INGEST_SECRET` (timing-safe compare, Zod validation, then write via `supabaseAdmin` loaded inside the handler).
+- The route is idempotent on `(sha, ts, decision)`.
 
-### Part 5 — Workflow artifacts
-- Update `launch-readiness.yml` to always (`if: always()`) upload: `audit.json`, `playwright-report/`, `security-logs/`, `artifacts/schema-validation.json` via `actions/upload-artifact@v4`, `retention-days: 30`.
-- After upload, POST run summary (with artifact URLs constructed from `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`) to ingest endpoint.
+### Live GitHub data (no token storage in DB)
 
-### Part 6 — API endpoints
-TanStack server fns (preferred over raw routes for app-internal):
-- `getLatestReadiness`, `listReadinessHistory`, `getReadinessRun(id)`, `getReadinessArtifacts(id)` — all `.middleware([requireSupabaseAuth])` + admin role check inside handler.
+Server functions in `src/lib/ops-reliability.functions.ts`, all `requireSupabaseAuth` + role check (admin/super_admin/ops):
 
-### Part 7 — Observability
-- Reuse existing logger from `src/lib/` (or add thin `src/lib/logger.ts` if absent). Log validation start/finish, workflow failures, artifact uploads, dashboard access at `info`/`error`. No `console.log`.
+- `getLiveControllerState()` — fetches latest successful `HIGAET Brevo CI/CD` workflow run summary + outputs via GitHub REST (token from `GITHUB_OPS_TOKEN` secret).
+- `getOpenIncidents()` — lists open issues with label `incident,brevo` grouped by severity (parsed from `<!-- severity:X -->` body marker).
+- `getAuditTrends({ range })` — reads `ci_audit_log` for 24h / 7d / 30d, returns time-bucketed series for health score, risk, retry/diagnosis counts.
+- `getDeploymentTimeline({ limit })` — joins recent `ci_audit_log` rows with comments on the Decision Audit Log issue.
+- `getGovernanceState()` — reads `vars.SYSTEM_MODE` / `vars.AUTONOMOUS_MODE` via GitHub repo variables API, plus most recent OVERRIDE rows from `ci_audit_log`.
+- `getBrevoReliability({ range })` — derived from `ci_audit_log.diagnosis`: counts of `BREVO_AUTH_*`, `BREVO_NETWORK_OR_TIMEOUT`, success rate, last `BREVO_AUTH_OK`.
 
-### Part 8 — Quality
-- TS strict throughout.
-- Vitest tests: `tests/integration/role-validation.test.mjs`, `permission-validation.test.mjs`, server-fn unit tests.
-- Playwright: `tests/e2e/admin/launch-readiness.spec.ts` covering load, filter, artifact link.
+Secrets needed: `GITHUB_OPS_TOKEN` (repo read), `GITHUB_REPO_OWNER`, `GITHUB_REPO_NAME`, `CI_AUDIT_INGEST_SECRET` — request via add_secret in a follow-up turn.
 
-## Files
+### Routes & UI
 
-**Created**
-- `scripts/notify-failure.mjs`
-- `scripts/predeploy-schema-validation.ts`
-- `src/lib/launch-readiness.functions.ts`
-- `src/lib/launch-readiness.types.ts`
-- `src/routes/_authenticated/admin.launch-readiness.tsx`
-- `src/routes/api/public/launch-readiness.ingest.ts`
-- `tests/integration/role-validation.test.mjs`
-- `tests/integration/permission-validation.test.mjs`
-- `tests/e2e/admin/launch-readiness.spec.ts`
-- migration: `launch_readiness_runs`
+- `src/routes/_authenticated/ops/route.tsx` — pathless ops layout with role guard (admin / super_admin / ops). Non-ops users redirect to `/403`.
+- `src/routes/_authenticated/ops/reliability.tsx` — main dashboard, TanStack Query for every section, refresh button + 60s auto-refetch on live sections, `range` search param (24h/7d/30d) drives trend queries.
 
-**Modified**
-- `.github/workflows/launch-readiness.yml` (notify + uploads + ingest + schema validation step)
-- `scripts/security-audit.mjs` (bucket findings by category for dashboard)
-- `package.json` (scripts: `predeploy:validate`, `notify:failure`)
+Eight sections, each its own component under `src/components/ops/reliability/`:
 
-## Environment variables
-Repo/workflow secrets (user adds the channels they want):
-- `SLACK_WEBHOOK_URL`, `DISCORD_WEBHOOK_URL`, `TEAMS_WEBHOOK_URL`, `GENERIC_WEBHOOK_URL` — optional, any combination
-- `LAUNCH_READINESS_INGEST_SECRET` — HMAC for ingest endpoint (will mint via `generate_secret`)
-- DB: existing `PGHOST/PGPORT/PGUSER/PGPASSWORD/PGDATABASE` already wired in CI
+```text
+1. PlatformHealthOverview   — big status tiles (HEALTHY/STABLE/DEGRADED/CRITICAL)
+2. DeploymentTimeline       — virtualized table from audit + run links
+3. IncidentCenter           — accordion grouped by severity
+4. BrevoReliabilityPanel    — auth success %, timeout/auth-failure counts, last verify
+5. AutonomousControllerPanel — decision source/reason, override badge
+6. RiskAnalytics            — recharts line charts: health, risk, incident, retry
+7. GovernancePanel          — SYSTEM_MODE / AUTONOMOUS_MODE state pills, audit link
+8. ExecutiveSummary         — single compact card at top
+```
 
-## Blockers / decisions to confirm
-1. **Scope confirmation** — this is ~10 files + migration + workflow rewrite + tests. ~30+ min of edits. Confirm proceed full scope, or trim (e.g. ship Parts 2/3/4/6 first; defer notifications + tests to next pass)?
-2. **Notification channel** — which webhook(s) do you want active on day 1? I'll still wire all four; the secret you provide decides which fire.
-3. **Ingest source of truth** — OK with workflow POSTing readiness JSON to `/api/public/launch-readiness/ingest` (HMAC-signed) rather than a direct DB write from CI? This keeps DB creds out of GitHub Actions.
+Color tokens already in `src/styles.css`; use semantic Badge variants only, no hardcoded colors.
 
-Confirm scope (full vs trimmed) + the three answers above and I'll execute in one pass.
+### Access control
+
+- New migration adds `'ops'` to `app_role`, grants/policies use existing `has_any_role`.
+- Sidebar item "Reliability Ops" shown only when `has_any_role(user, ['admin','super_admin','ops'])`.
+
+### Out of scope
+
+- No actions that execute deploys/rollbacks (read-only by directive).
+- No new tracking system — reuses GitHub issues + ci_audit_log.
+- Cost/Security/Business dashboards (later phases per user).
+
+### Implementation order
+
+1. Migration: enum value + `ci_audit_log` + RLS + grants.
+2. Server route `/api/public/ci-audit/ingest` with HMAC.
+3. CI workflow audit step posts to ingest route.
+4. Server functions for live + trend reads.
+5. Layout + dashboard route + 8 section components.
+6. Sidebar entry behind role check.
+7. Request secrets (`GITHUB_OPS_TOKEN`, `CI_AUDIT_INGEST_SECRET`).
