@@ -124,6 +124,7 @@ import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.c
 import { Route as AcademyContactRouteImport } from './routes/academy.contact'
 import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
 import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
+import { Route as AuthenticatedOpsRouteImport } from './routes/_authenticated.ops'
 import { Route as AuthenticatedEducationRouteImport } from './routes/_authenticated.education'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
@@ -943,6 +944,11 @@ const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
   id: '/admissions',
   path: '/admissions',
   getParentRoute: () => AcademyRoute,
+} as any)
+const AuthenticatedOpsRoute = AuthenticatedOpsRouteImport.update({
+  id: '/ops',
+  path: '/ops',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedEducationRoute = AuthenticatedEducationRouteImport.update({
   id: '/education',
@@ -2249,6 +2255,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/education': typeof AuthenticatedEducationRouteWithChildren
+  '/ops': typeof AuthenticatedOpsRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2573,6 +2580,7 @@ export interface FileRoutesByTo {
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
   '/community': typeof AuthenticatedCommunityRouteWithChildren
+  '/ops': typeof AuthenticatedOpsRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -2899,6 +2907,7 @@ export interface FileRoutesById {
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/education': typeof AuthenticatedEducationRouteWithChildren
+  '/_authenticated/ops': typeof AuthenticatedOpsRoute
   '/academy/admissions': typeof AcademyAdmissionsRoute
   '/academy/certifications': typeof AcademyCertificationsRoute
   '/academy/contact': typeof AcademyContactRoute
@@ -3233,6 +3242,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/dashboard'
     | '/education'
+    | '/ops'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3557,6 +3567,7 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/terms'
     | '/community'
+    | '/ops'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -3882,6 +3893,7 @@ export interface FileRouteTypes {
     | '/_authenticated/community'
     | '/_authenticated/dashboard'
     | '/_authenticated/education'
+    | '/_authenticated/ops'
     | '/academy/admissions'
     | '/academy/certifications'
     | '/academy/contact'
@@ -5054,6 +5066,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/admissions'
       preLoaderRoute: typeof AcademyAdmissionsRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/ops': {
+      id: '/_authenticated/ops'
+      path: '/ops'
+      fullPath: '/ops'
+      preLoaderRoute: typeof AuthenticatedOpsRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/education': {
       id: '/_authenticated/education'
@@ -7121,6 +7140,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCommunityRoute: typeof AuthenticatedCommunityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
   AuthenticatedEducationRoute: typeof AuthenticatedEducationRouteWithChildren
+  AuthenticatedOpsRoute: typeof AuthenticatedOpsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -7128,6 +7148,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCommunityRoute: AuthenticatedCommunityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
   AuthenticatedEducationRoute: AuthenticatedEducationRouteWithChildren,
+  AuthenticatedOpsRoute: AuthenticatedOpsRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
