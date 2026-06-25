@@ -27,6 +27,75 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Workflow context
+        run: |
+          echo "Workflow:   $GITHUB_WORKFLOW"
+          echo "Run ID:     $GITHUB_RUN_ID (attempt $GITHUB_RUN_ATTEMPT)"
+          echo "Ref:        $GITHUB_REF"
+          echo "Actor:      $GITHUB_ACTOR"
+          echo "Event:      $GITHUB_EVENT_NAME"
+          echo "Environment: staging"
+
+      - name: Preflight validation (secrets & variables)
+        env:
+          # Build-time (required)
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+          # SSH / deploy (required)
+          MILESWEB_SSH_HOST: ${{ secrets.MILESWEB_SSH_HOST }}
+          MILESWEB_SSH_KEY: ${{ secrets.MILESWEB_SSH_KEY }}
+          # Optional
+          MILESWEB_SSH_PORT: ${{ secrets.MILESWEB_SSH_PORT }}
+        run: |
+          set -u
+          echo "::group::Preflight: required secrets"
+          MISSING=0
+          check_required() {
+            local name="$1" purpose="$2"
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing required secret: $name — $purpose"
+              MISSING=$((MISSING+1))
+            else
+              echo "  ok  $name"
+            fi
+          }
+          check_optional() {
+            local name="$1" purpose="$2"
+            if [ -z "${!name:-}" ]; then
+              echo "  --  $name (optional, $purpose) — using default"
+            else
+              echo "  ok  $name"
+            fi
+          }
+
+          # Build-time
+          check_required VITE_SUPABASE_URL          "Supabase URL baked into client bundle at build time"
+          check_required VITE_SUPABASE_PUBLISHABLE_KEY "Supabase publishable key baked into client bundle"
+          check_required VITE_SUPABASE_PROJECT_ID   "Supabase project ref baked into client bundle"
+
+          # Deploy-time (SSH)
+          check_required MILESWEB_SSH_HOST          "MilesWeb cPanel SSH host for scp/ssh"
+          check_required MILESWEB_SSH_KEY           "Private SSH key for user ${CPANEL_USER}"
+          check_optional MILESWEB_SSH_PORT          "SSH port; defaults to 22"
+
+          # Workflow env sanity
+          for v in CPANEL_USER APP_ROOT NODE_VERSION STARTUP_FILE APP_URL; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing workflow env: $v"
+              MISSING=$((MISSING+1))
+            else
+              echo "  ok  $v=${!v}"
+            fi
+          done
+
+          echo "::endgroup::"
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::Preflight failed: $MISSING required value(s) missing. Fix repository/environment secrets before retrying."
+            exit 1
+          fi
+          echo "Preflight passed."
+
       - name: Setup Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
@@ -40,17 +109,6 @@ jobs:
       - name: Install dependencies (frozen)
         run: bun install --frozen-lockfile
 
-      - name: Validate required env
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-        run: |
-          for v in VITE_SUPABASE_URL VITE_SUPABASE_PUBLISHABLE_KEY VITE_SUPABASE_PROJECT_ID; do
-            if [ -z "${!v}" ]; then
-              echo "::error::Missing required secret: $v"; exit 1
-            fi
-          done
 
       - name: Build (Node target)
         env:
