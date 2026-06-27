@@ -116,10 +116,12 @@ jobs:
           # Guard against any inherited preview/sandbox flag forcing the Cloud build preset.
           LOVABLE_SANDBOX: "0"
           NODE_ENV: production
+          # Raise V8 heap for CI bundling (Vite/Nitro can exceed the 2GB default → exit 134).
+          NODE_OPTIONS: "--max-old-space-size=6144"
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-        run: env -u DEV_SERVER__PROJECT_PATH LOVABLE_SANDBOX=0 bun run build:node
+        run: env -u DEV_SERVER__PROJECT_PATH LOVABLE_SANDBOX=0 NODE_OPTIONS="--max-old-space-size=6144" bun run build:node
 
       - name: Verify build artifacts
         run: |
