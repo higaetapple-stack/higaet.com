@@ -121,10 +121,13 @@ jobs:
 
       - name: Verify build artifacts
         run: |
+          echo "::group::Local Nitro artifact verification"
           test -f .output/server/index.mjs || { echo "::error::Missing .output/server/index.mjs"; exit 1; }
           test -f app.js || { echo "::error::Missing app.js"; exit 1; }
           test -f package.json || { echo "::error::Missing package.json"; exit 1; }
+          ls -lh .output/server/index.mjs app.js package.json
           [ -d dist ] || echo "::warning::dist/ not present (ok if Nitro emits only .output)"
+          echo "::endgroup::"
 
       - name: Create production package.json (prod deps only)
         run: |
@@ -132,6 +135,7 @@ jobs:
 
       - name: Package release tarball
         run: |
+          set -euo pipefail
           mkdir -p release
           cp app.js release/app.js
           cp package.prod.json release/package.json
@@ -139,7 +143,9 @@ jobs:
           [ -f package-lock.json ] && cp package-lock.json release/ || true
           cp -R .output release/.output
           [ -d dist ] && cp -R dist release/dist || true
+          test -f release/.output/server/index.mjs || { echo "::error::Release package is missing .output/server/index.mjs before tar"; exit 1; }
           tar -czf release.tar.gz -C release .
+          tar -tzf release.tar.gz | grep -qx './.output/server/index.mjs' || { echo "::error::Tarball is missing .output/server/index.mjs"; exit 1; }
           ls -lh release.tar.gz
 
       - name: Upload release to MilesWeb
@@ -169,6 +175,14 @@ jobs:
             mkdir -p "$RELEASES_DIR" "$SHARED_DIR" "$NEW_REL"
 
             tar -xzf /home/wnwpopno/deploy-staging/release.tar.gz -C "$NEW_REL"
+            test -f "$NEW_REL/.output/server/index.mjs" || {
+              echo "FATAL: extracted release is missing .output/server/index.mjs"
+              echo "Release dir: $NEW_REL"
+              ls -la "$NEW_REL" || true
+              exit 1
+            }
+            test -f "$NEW_REL/app.js" || { echo "FATAL: extracted release is missing app.js"; exit 1; }
+            test -f "$NEW_REL/package.json" || { echo "FATAL: extracted release is missing package.json"; exit 1; }
 
             # Link shared .env if present
             if [ -f "$SHARED_DIR/.env" ]; then
@@ -190,6 +204,19 @@ jobs:
                 ln -s "$NEW_REL/$item" "$APP_ROOT/$item"
               fi
             done
+
+            # Hard gate: Passenger must be able to resolve the app root bundle.
+            test -f "$APP_ROOT/.output/server/index.mjs" || {
+              echo "FATAL: app root is missing .output/server/index.mjs after activation"
+              echo "APP_ROOT=$APP_ROOT"
+              echo "app.js -> $(readlink "$APP_ROOT/app.js" 2>/dev/null || echo 'not a symlink')"
+              echo ".output -> $(readlink "$APP_ROOT/.output" 2>/dev/null || echo 'not a symlink')"
+              ls -la "$APP_ROOT" || true
+              exit 1
+            }
+            echo "app.js -> $(readlink "$APP_ROOT/app.js" 2>/dev/null || echo 'not a symlink')"
+            echo ".output -> $(readlink "$APP_ROOT/.output" 2>/dev/null || echo 'not a symlink')"
+            ls -lh "$APP_ROOT/.output/server/index.mjs"
 
             # Restart Passenger
             mkdir -p "$APP_ROOT/tmp"
