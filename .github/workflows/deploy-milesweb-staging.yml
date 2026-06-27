@@ -113,6 +113,8 @@ jobs:
       - name: Build (Node target)
         env:
           BUILD_TARGET: node
+          # Guard against any inherited preview/sandbox flag forcing the Cloud build preset.
+          LOVABLE_SANDBOX: "0"
           NODE_ENV: production
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
@@ -123,6 +125,11 @@ jobs:
         run: |
           echo "::group::Local Nitro artifact verification"
           test -f .output/server/index.mjs || { echo "::error::Missing .output/server/index.mjs"; exit 1; }
+          if [ -f dist/nitro.json ] && grep -q 'cloudflare' dist/nitro.json; then
+            echo "::error::Wrong build preset detected: dist/nitro.json is Cloud-targeted. Expected Node output under .output/."
+            cat dist/nitro.json
+            exit 1
+          fi
           test -f app.js || { echo "::error::Missing app.js"; exit 1; }
           test -f package.json || { echo "::error::Missing package.json"; exit 1; }
           ls -lh .output/server/index.mjs app.js package.json
@@ -157,6 +164,23 @@ jobs:
           port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
           source: "release.tar.gz"
           target: "/home/wnwpopno/deploy-staging/"
+
+      - name: Verify uploaded release on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          username: ${{ env.CPANEL_USER }}
+          key: ${{ secrets.MILESWEB_SSH_KEY }}
+          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          script: |
+            set -euo pipefail
+            test -f /home/wnwpopno/deploy-staging/release.tar.gz || { echo "FATAL: release.tar.gz was not uploaded"; exit 1; }
+            tar -tzf /home/wnwpopno/deploy-staging/release.tar.gz | grep -qx './.output/server/index.mjs' || {
+              echo "FATAL: uploaded tarball is missing .output/server/index.mjs"
+              tar -tzf /home/wnwpopno/deploy-staging/release.tar.gz | sed -n '1,80p'
+              exit 1
+            }
+            echo "Uploaded release contains .output/server/index.mjs"
 
       - name: Activate release on server (atomic) & restart Passenger
         uses: appleboy/ssh-action@v1.0.3
