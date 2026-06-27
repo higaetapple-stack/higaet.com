@@ -3,12 +3,45 @@
 // Nitro auto-listens on process.env.PORT + 0.0.0.0 when imported — do NOT
 // add an http.createServer here, that would replace the real SSR app.
 
-import { existsSync, readlinkSync } from "node:fs";
+import { existsSync, readFileSync, readlinkSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const serverPath = resolve(here, ".output/server/index.mjs");
+const envPath = resolve(here, ".env");
+
+function loadDotEnvFile(path) {
+  if (!existsSync(path)) return false;
+
+  const content = readFileSync(path, "utf8");
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+
+    const match = line.match(/^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/);
+    if (!match) continue;
+
+    const [, key, rawValue] = match;
+    if (process.env[key] !== undefined) continue;
+
+    let value = rawValue.trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    process.env[key] = value;
+  }
+
+  return true;
+}
+
+process.env.NODE_ENV ||= "production";
+process.env.HOST ||= "0.0.0.0";
+const dotEnvLoaded = loadDotEnvFile(envPath);
 
 // Boot diagnostics — surface in cPanel stderr.log so 504s are debuggable.
 console.log("[passenger] booting HIGAET node server");
@@ -19,6 +52,14 @@ console.log("[passenger] env:", {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
   HOST: process.env.HOST,
+});
+console.log("[passenger] dotenv loaded:", dotEnvLoaded);
+console.log("[passenger] runtime config:", {
+  SUPABASE_URL: process.env.SUPABASE_URL ? "set" : "missing",
+  SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
+  VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL ? "set" : "missing",
+  VITE_SUPABASE_PUBLISHABLE_KEY: process.env.VITE_SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
+  BREVO_API_KEY: process.env.BREVO_API_KEY ? "set" : "missing",
 });
 
 try {
@@ -43,9 +84,14 @@ if (!existsSync(serverPath)) {
 
 process.on("uncaughtException", (err) => {
   console.error("[passenger] uncaughtException:", err);
+  setImmediate(() => process.exit(1));
 });
 process.on("unhandledRejection", (reason) => {
   console.error("[passenger] unhandledRejection:", reason);
+  setImmediate(() => process.exit(1));
+});
+process.on("warning", (warning) => {
+  console.warn("[passenger] warning:", warning);
 });
 
 import(pathToFileURL(serverPath).href)
