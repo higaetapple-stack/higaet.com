@@ -119,7 +119,7 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-        run: bun run build:node
+        run: env -u DEV_SERVER__PROJECT_PATH LOVABLE_SANDBOX=0 bun run build:node
 
       - name: Verify build artifacts
         run: |
