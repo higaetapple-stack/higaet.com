@@ -31,4 +31,13 @@ export default defineConfig({
       }
     : {}),
 
+  vite: {
+    build: {
+      // Disable sourcemaps and heavy reporting in CI/production to cut peak heap during bundling.
+      sourcemap: false,
+      minify: "esbuild",
+      reportCompressedSize: false,
+      chunkSizeWarningLimit: 2000,
+    },
+  },
 });
