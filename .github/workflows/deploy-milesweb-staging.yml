@@ -252,6 +252,66 @@ jobs:
             rm -f /home/wnwpopno/deploy-staging/release.tar.gz
             echo "Deployed release: $STAMP"
 
+      - name: Server-side Passenger reality check
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          username: ${{ env.CPANEL_USER }}
+          key: ${{ secrets.MILESWEB_SSH_KEY }}
+          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          script: |
+            set -u
+            APP_ROOT="${{ env.APP_ROOT }}"
+            APP_URL="${{ env.APP_URL }}"
+
+            echo "===== 1. FILE CHECK ====="
+            ls -la "$APP_ROOT/.output/server/index.mjs" 2>&1
+            ls -la "$APP_ROOT/app.js" 2>&1
+            echo "app.js -> $(readlink "$APP_ROOT/app.js" 2>/dev/null || echo 'not a symlink')"
+            echo ".output -> $(readlink "$APP_ROOT/.output" 2>/dev/null || echo 'not a symlink')"
+
+            echo "===== 2. PASSENGER ROOT ====="
+            cd "$APP_ROOT" || exit 1
+            pwd
+
+            echo "===== 3. APP ENTRY ====="
+            head -40 app.js 2>&1
+
+            echo "===== 4. NODE RUNTIME ====="
+            source /home/wnwpopno/nodevenv/higaet-staging/20/bin/activate 2>/dev/null || true
+            which node 2>&1 || true
+            node --version 2>&1 || true
+            node --check app.js 2>&1 || true
+
+            echo "===== 5. RESTART MARKER ====="
+            ls -la "$APP_ROOT/tmp/restart.txt" 2>&1 || true
+
+            echo "===== 6. TRIGGER PASSENGER REQUEST ====="
+            curl -ksS -m 20 -o /tmp/higaet-health-body.txt -w 'HTTP=%{http_code} DNS=%{time_namelookup} CONNECT=%{time_connect} TLS=%{time_appconnect} TOTAL=%{time_total}\n' "$APP_URL/api/public/health" 2>&1 || true
+            sed -n '1,40p' /tmp/higaet-health-body.txt 2>/dev/null || true
+
+            echo "===== 7. PROCESS CHECK ====="
+            ps -u "$USER" -o pid,ppid,stat,etime,cmd 2>/dev/null | grep -E 'node|Passenger|passenger' | grep -v grep || echo "no node/passenger process visible for $USER"
+
+            echo "===== 8. LISTENING PORTS ====="
+            ss -tulpn 2>/dev/null || netstat -tuln 2>/dev/null || true
+
+            echo "===== 9. LOG CANDIDATES ====="
+            for log in \
+              "$APP_ROOT/stderr.log" \
+              "$APP_ROOT/stdout.log" \
+              "$APP_ROOT/logs/stderr.log" \
+              "$APP_ROOT/logs/stdout.log" \
+              "$HOME/logs/staging.higaet.com.error.log" \
+              "$HOME/logs/staging.higaet.com.log"; do
+              if [ -e "$log" ]; then
+                echo "--- $log ---"
+                tail -100 "$log" 2>&1 || true
+              else
+                echo "missing: $log"
+              fi
+            done
+
       - name: Smoke test (health endpoint)
         run: |
           for i in 1 2 3 4 5 6 7 8 9 10; do
