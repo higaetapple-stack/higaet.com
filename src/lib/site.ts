@@ -95,6 +95,13 @@ export const PRIVATE_PATH_PREFIXES = [
   "/account",
   "/settings",
   "/_authenticated",
+  // Internal-only operator / verification surfaces
+  "/kernel",
+  "/replay",
+  "/simulate",
+  "/system-dashboard",
+  "/verify",
+  "/verify-certificate",
 ] as const;
 
 export function isPrivatePath(pathname: string): boolean {
