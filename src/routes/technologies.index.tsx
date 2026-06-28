@@ -93,7 +93,6 @@ export const Route = createFileRoute("/technologies/")({
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://higaet.com/og-higaet.png" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/technologies" }],
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",

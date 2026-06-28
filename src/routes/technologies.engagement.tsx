@@ -28,7 +28,6 @@ export const Route = createFileRoute("/technologies/engagement")({
       { property: "og:url", content: "https://higaet.com/technologies/engagement" },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/technologies/engagement" }],
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",

@@ -18,7 +18,6 @@ export const Route = createFileRoute("/contact")({
       { property: "og:description", content: "Get in touch with the HIGAET team." },
       { property: "og:url", content: "https://higaet.com/contact" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/contact" }],
   }),
   component: ContactPage,
 });

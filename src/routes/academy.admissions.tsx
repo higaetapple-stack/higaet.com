@@ -22,7 +22,6 @@ export const Route = createFileRoute("/academy/admissions")({
       { property: "og:description", content: "Apply, talk to an advisor, or request a brochure." },
       { property: "og:url", content: "https://higaet.com/academy/admissions" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/admissions" }],
   }),
   component: AdmissionsPage,
 });

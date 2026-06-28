@@ -37,7 +37,6 @@ export const Route = createFileRoute("/academy/scholarship")({
       { property: "og:description", content: "Free entrance test for HIGAET scholarships up to 100%." },
       { property: "og:url", content: "https://higaet.com/academy/scholarship" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/scholarship" }],
     scripts: [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) }],
   }),
   component: ScholarshipPage,

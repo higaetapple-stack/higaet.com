@@ -24,7 +24,6 @@ export const Route = createFileRoute("/academy/programs/")({
       { property: "og:description", content: "Industry-aligned career tracks with placement support." },
       { property: "og:url", content: "https://higaet.com/academy/programs" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/programs" }],
   }),
   component: ProgramsIndex,
 });

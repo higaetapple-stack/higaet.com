@@ -9,7 +9,6 @@ export const Route = createFileRoute("/global-education/admission-process")({
       { title: "Admission Process — HIGAET Global Education Hub" },
       { name: "description", content: "Understand the HIGAET Global Education Hub admissions process from profile review and shortlisting to applications, offers, and visa support." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/global-education/admission-process" }],
     scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["admission-process"]),
   }),
   component: AdmissionProcessPage,

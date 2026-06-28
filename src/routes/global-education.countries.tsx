@@ -13,7 +13,6 @@ export const Route = createFileRoute("/global-education/countries")({
       { property: "og:title", content: "Top Study-Abroad Destinations | HIGAET" },
       { property: "og:url", content: "https://higaet.com/global-education/countries" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/global-education/countries" }],
   }),
   component: CountriesPage,
 });

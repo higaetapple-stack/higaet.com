@@ -165,6 +165,5 @@ export const Route = createFileRoute("/status")({
       { property: "og:title", content: "System status — HIGAET" },
       { property: "og:url", content: "https://higaet.com/status" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/status" }],
   }),
 });

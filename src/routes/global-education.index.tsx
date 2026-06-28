@@ -24,7 +24,6 @@ export const Route = createFileRoute("/global-education/")({
       { property: "og:url", content: "https://higaet.com/global-education" },
       { property: "og:image", content: "https://higaet.com/og-higaet.png" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/global-education" }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
     ],

@@ -10,7 +10,6 @@ export const Route = createFileRoute("/privacy")({
       { name: "description", content: "How HIGAET collects, uses, and protects your information." },
       { property: "og:url", content: "https://higaet.com/privacy" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/privacy" }],
   }),
   component: PrivacyPage,
 });

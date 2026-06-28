@@ -7,7 +7,6 @@ export const Route = createFileRoute("/global-education/faq")({
       { title: "Study Abroad FAQ — HIGAET Global Education Hub" },
       { name: "description", content: "Answers to common study abroad questions about countries, universities, scholarships, visas, and counselling with HIGAET." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/global-education/faq" }],
   }),
   component: GlobalFaqPage,
 });

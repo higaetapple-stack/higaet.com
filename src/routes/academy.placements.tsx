@@ -7,7 +7,6 @@ export const Route = createFileRoute("/academy/placements")({
       { title: "Placement Support — HIGAET Academy" },
       { name: "description", content: "Structured placement preparation, employer introductions, portfolio support, and interview coaching for HIGAET Academy learners." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/placements" }],
   }),
   component: PlacementsPage,
 });

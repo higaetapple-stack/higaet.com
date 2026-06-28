@@ -7,7 +7,6 @@ export const Route = createFileRoute("/academy/contact")({
       { title: "Contact HIGAET Academy Admissions" },
       { name: "description", content: "Contact HIGAET Academy admissions for online courses, offline training, certifications, internships, and placement support." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/contact" }],
   }),
   component: AcademyContactPage,
 });

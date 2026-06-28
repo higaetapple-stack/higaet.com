@@ -40,7 +40,6 @@ export const Route = createFileRoute("/blog")({
       { property: "og:description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
       { property: "og:url", content: "https://higaet.com/blog" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/blog" }],
   }),
   component: BlogIndex,
 });

@@ -7,7 +7,6 @@ export const Route = createFileRoute("/academy/offline-training")({
       { title: "Offline AI Training — HIGAET Academy" },
       { name: "description", content: "Campus-based AI engineering bootcamps and intensive workshops with labs, instructors, and placement-oriented support." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/offline-training" }],
   }),
   component: OfflineTrainingPage,
 });

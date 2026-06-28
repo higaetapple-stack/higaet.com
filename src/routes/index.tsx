@@ -24,7 +24,6 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://higaet.com/" },
       { property: "og:image", content: "https://higaet.com/og-higaet.png" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/" }],
   }),
   component: HomePage,
 });

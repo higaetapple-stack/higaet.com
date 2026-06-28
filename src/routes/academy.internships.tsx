@@ -7,7 +7,6 @@ export const Route = createFileRoute("/academy/internships")({
       { title: "AI Internships — HIGAET Academy" },
       { name: "description", content: "Applied AI internship pathways for HIGAET learners to gain project experience, mentorship, and portfolio evidence." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/internships" }],
   }),
   component: InternshipsPage,
 });

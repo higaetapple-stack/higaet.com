@@ -20,7 +20,6 @@ export const Route = createFileRoute("/jobs/")({
       { property: "og:description", content: "Open roles for HIGAET graduates." },
       { property: "og:url", content: "https://higaet.com/jobs" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/jobs" }],
   }),
   component: JobBoard,
 });

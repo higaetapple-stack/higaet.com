@@ -23,7 +23,6 @@ export const Route = createFileRoute("/careers")({
       { property: "og:description", content: "Open roles across Academy, Global Education Hub, and Technologies." },
       { property: "og:url", content: "https://higaet.com/careers" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/careers" }],
   }),
   component: CareersPage,
 });

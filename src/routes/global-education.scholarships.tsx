@@ -16,7 +16,6 @@ export const Route = createFileRoute("/global-education/scholarships")({
       { name: "description", content: "Active merit, need-based, and institutional scholarships for international students applying through HIGAET." },
       { property: "og:url", content: "https://higaet.com/global-education/scholarships" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/global-education/scholarships" }],
     scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["scholarships"]),
   }),
   component: ScholarshipsPage,

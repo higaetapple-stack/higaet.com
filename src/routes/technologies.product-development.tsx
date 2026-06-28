@@ -7,7 +7,6 @@ export const Route = createFileRoute("/technologies/product-development")({
       { title: "Product Development — HIGAET Technologies" },
       { name: "description", content: "Product discovery, UX, prototyping, engineering, launch planning, and iteration support from HIGAET Technologies." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/technologies/product-development" }],
   }),
   component: ProductDevelopmentPage,
 });

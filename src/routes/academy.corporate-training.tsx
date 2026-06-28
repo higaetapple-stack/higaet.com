@@ -7,7 +7,6 @@ export const Route = createFileRoute("/academy/corporate-training")({
       { title: "Corporate AI Training — HIGAET Academy" },
       { name: "description", content: "Enterprise AI upskilling programs for teams, including GenAI adoption, workflow automation, and applied engineering workshops." },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/corporate-training" }],
   }),
   component: CorporateTrainingPage,
 });

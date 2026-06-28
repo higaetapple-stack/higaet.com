@@ -14,7 +14,6 @@ export const Route = createFileRoute("/academy/campuses/")({
       { property: "og:description", content: "On-campus industry diplomas at HIGAET Bengaluru and Hyderabad." },
       { property: "og:url", content: "https://higaet.com/academy/campuses" },
     ],
-    links: [{ rel: "canonical", href: "https://higaet.com/academy/campuses" }],
   }),
   component: CampusesIndex,
 });
