@@ -2,6 +2,9 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteShell } from "@/components/site/SiteShell";
 import { Section } from "@/components/site/Section";
 import { ArrowLeft } from "lucide-react";
+import { seoHead } from "@/lib/seo/seo-head";
+import { articleJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 type Post = {
   slug: string;
