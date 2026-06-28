@@ -15,6 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Bookmark, MapPin, Clock, Briefcase, ExternalLink, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { ApplicationStatusBadge } from "@/components/career/ApplicationStatusBadge";
+import { seoHead } from "@/lib/seo/seo-head";
+import { jobPostingJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 export const Route = createFileRoute("/jobs/$slug")({
   loader: async ({ params }) => {
