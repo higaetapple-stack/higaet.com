@@ -27,7 +27,6 @@ export const Route = createFileRoute("/academy/programs/$slug")({
         { property: "og:url", content: `/academy/programs/${params.slug}` },
         { property: "og:type", content: "article" },
       ],
-      links: [` }],
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(faqJsonLd(program.faqs)) },
         { type: "application/ld+json", children: JSON.stringify(buildCourseJsonLd(program, params.slug)) },

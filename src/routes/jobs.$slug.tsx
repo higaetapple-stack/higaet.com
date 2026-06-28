@@ -34,7 +34,6 @@ export const Route = createFileRoute("/jobs/$slug")({
         { property: "og:type", content: "article" },
         { property: "og:url", content: `/jobs/${params.slug}` },
       ],
-      links: [` }],
       scripts: j ? [{
         type: "application/ld+json",
         children: JSON.stringify({
