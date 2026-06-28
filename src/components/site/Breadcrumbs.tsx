@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { Fragment } from "react";
 import { cn } from "@/lib/utils";
+import { SITE } from "@/lib/site";
 
 export type Crumb = { label: string; href?: string };
 
