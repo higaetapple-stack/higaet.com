@@ -81,7 +81,7 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "article:published_time", content: post.date },
         { property: "article:section", content: post.tag },
       ],
-      links: [{ rel: "canonical", href: `/blog/${post.slug}` }],
+      links: [` }],
       scripts: [
         {
           type: "application/ld+json",

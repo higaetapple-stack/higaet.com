@@ -17,7 +17,6 @@ export const Route = createFileRoute("/founder")({
       { property: "og:url", content: URL },
       { property: "og:type", content: "profile" },
     ],
-    links: [{ rel: "canonical", href: URL }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify(profilePageJsonLd({

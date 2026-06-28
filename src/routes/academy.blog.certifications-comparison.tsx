@@ -26,7 +26,6 @@ export const Route = createFileRoute("/academy/blog/certifications-comparison")(
       { property: "og:url", content: CANONICAL },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: CANONICAL }],
     scripts: [
       {
         type: "application/ld+json",

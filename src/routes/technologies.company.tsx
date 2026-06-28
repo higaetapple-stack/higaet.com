@@ -30,7 +30,6 @@ export const Route = createFileRoute("/technologies/company")({
       { property: "og:url", content: PATH },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: PATH }],
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",

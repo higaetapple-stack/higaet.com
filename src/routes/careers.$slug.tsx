@@ -144,7 +144,7 @@ export const Route = createFileRoute("/careers/$slug")({
         { property: "og:url", content: `/careers/${job.slug}` },
         { property: "og:type", content: "article" },
       ],
-      links: [{ rel: "canonical", href: `/careers/${job.slug}` }],
+      links: [` }],
       scripts: [
         {
           type: "application/ld+json",

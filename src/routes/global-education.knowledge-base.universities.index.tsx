@@ -34,7 +34,6 @@ export const Route = createFileRoute(
       },
       { property: "og:url", content: BASE },
     ],
-    links: [{ rel: "canonical", href: BASE }],
     scripts: [
       {
         type: "application/ld+json",

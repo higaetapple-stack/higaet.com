@@ -24,7 +24,7 @@ export const Route = createFileRoute("/academy/campuses/$slug")({
         { property: "og:description", content: campus.degree },
         { property: "og:url", content: `/academy/campuses/${params.slug}` },
       ],
-      links: [{ rel: "canonical", href: `/academy/campuses/${params.slug}` }],
+      links: [` }],
     };
   },
   notFoundComponent: () => (

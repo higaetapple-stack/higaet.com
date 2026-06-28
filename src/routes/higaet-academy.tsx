@@ -31,7 +31,6 @@ export const Route = createFileRoute("/higaet-academy")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: URL }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(HIGAET_KNOWLEDGE_GRAPH) },
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },

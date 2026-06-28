@@ -30,7 +30,6 @@ export const Route = createFileRoute(
         { property: "og:url", content: url },
         { property: "og:type", content: "article" },
       ],
-      links: [{ rel: "canonical", href: url }],
       scripts: [
         {
           type: "application/ld+json",

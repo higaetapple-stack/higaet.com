@@ -49,7 +49,6 @@ export const Route = createFileRoute("/technologies/insights")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: PATH }],
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",
