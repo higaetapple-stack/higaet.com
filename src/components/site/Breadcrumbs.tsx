@@ -51,6 +51,9 @@ export function crumbsFromPath(pathname: string, labelOverrides: Record<string, 
     crumbs.push({ label: human, href: i === parts.length - 1 ? undefined : acc });
   });
   return crumbs;
+}
+
+
 
 /** Build a BreadcrumbList JSON-LD block. Hrefs are absolutised to SITE.url for AI/LLM grounding. */
 export function breadcrumbJsonLd(items: Crumb[]) {
