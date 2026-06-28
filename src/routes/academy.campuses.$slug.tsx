@@ -5,6 +5,9 @@ import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { LeadForm } from "@/components/site/LeadForm";
 import { getCampus, type Campus } from "@/lib/academy-programs";
+import { seoHead } from "@/lib/seo/seo-head";
+import { universityJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 export const Route = createFileRoute("/academy/campuses/$slug")({
   loader: ({ params }): { campus: Campus } => {
