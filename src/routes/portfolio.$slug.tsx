@@ -26,7 +26,7 @@ export const Route = createFileRoute("/portfolio/$slug")({
         { property: "og:type", content: "profile" },
         { property: "og:url", content: `/portfolio/${params.slug}` },
       ],
-      links: noindex ? [] : [` }],
+      links: [],
       scripts:
         d && !noindex
           ? [
