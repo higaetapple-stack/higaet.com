@@ -73,32 +73,32 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => {
     const post = loaderData?.post;
     if (!post) return { meta: [{ title: "Post not found — HIGAET" }] };
-    return {
-      meta: [
-        { title: `${post.title} — HIGAET` },
-        { name: "description", content: post.excerpt },
-        { property: "og:title", content: post.title },
-        { property: "og:description", content: post.excerpt },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `/blog/${post.slug}` },
+    const path = `/blog/${post.slug}`;
+    return seoHead({
+      path,
+      title: `${post.title} — HIGAET`,
+      description: post.excerpt,
+      ogType: "article",
+      extraMeta: [
         { property: "article:published_time", content: post.date },
         { property: "article:section", content: post.tag },
       ],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: post.title,
-            description: post.excerpt,
-            datePublished: post.date,
-            author: { "@type": "Organization", name: "HIGAET" },
-            articleSection: post.tag,
-          }),
-        },
+      jsonLd: [
+        articleJsonLd({
+          type: "BlogPosting",
+          path,
+          headline: post.title,
+          description: post.excerpt,
+          datePublished: post.date,
+          keywords: [post.tag, "HIGAET", "AI engineering"],
+        }),
+        breadcrumbJsonLd([
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/blog" },
+          { label: post.title },
+        ]),
       ],
-    };
+    });
   },
   notFoundComponent: () => (
     <SiteShell>
