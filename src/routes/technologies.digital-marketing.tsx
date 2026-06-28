@@ -7,7 +7,7 @@ export const Route = createFileRoute("/technologies/digital-marketing")({
       { title: "Digital Marketing — HIGAET Technologies" },
       { name: "description", content: "Performance marketing, SEO, content systems, analytics, and growth workflows connected to product and technology strategy." },
     ],
-    links: [{ rel: "canonical", href: "/technologies/digital-marketing" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/technologies/digital-marketing" }],
   }),
   component: DigitalMarketingPage,
 });

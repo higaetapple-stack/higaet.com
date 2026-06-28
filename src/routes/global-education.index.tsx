@@ -21,10 +21,10 @@ export const Route = createFileRoute("/global-education/")({
       { name: "description", content: "University partnerships, scholarships, and visa guidance for students applying to global institutions. End-to-end counselling from HIGAET." },
       { property: "og:title", content: "HIGAET Global Education Hub — Study Abroad & Visas" },
       { property: "og:description", content: "Study abroad, simplified — from shortlisting to visa." },
-      { property: "og:url", content: "/global-education" },
-      { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
+      { property: "og:url", content: "https://higaet.com/global-education" },
+      { property: "og:image", content: "https://higaet.com/og-higaet.png" },
     ],
-    links: [{ rel: "canonical", href: "/global-education" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/global-education" }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
     ],

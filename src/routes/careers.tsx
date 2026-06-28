@@ -21,9 +21,9 @@ export const Route = createFileRoute("/careers")({
       { name: "description", content: "Open roles at HIGAET across Academy, Global Education Hub, and Technologies." },
       { property: "og:title", content: "Careers at HIGAET" },
       { property: "og:description", content: "Open roles across Academy, Global Education Hub, and Technologies." },
-      { property: "og:url", content: "/careers" },
+      { property: "og:url", content: "https://higaet.com/careers" },
     ],
-    links: [{ rel: "canonical", href: "/careers" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/careers" }],
   }),
   component: CareersPage,
 });

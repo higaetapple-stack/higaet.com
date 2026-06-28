@@ -21,10 +21,10 @@ export const Route = createFileRoute("/")({
       { name: "description", content: SITE.description },
       { property: "og:title", content: `${SITE.name} — ${SITE.tagline}` },
       { property: "og:description", content: SITE.description },
-      { property: "og:url", content: "/" },
-      { property: "og:image", content: "https://higaet-ecosystem-core.lovable.app/og-higaet.png" },
+      { property: "og:url", content: "https://higaet.com/" },
+      { property: "og:image", content: "https://higaet.com/og-higaet.png" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/" }],
   }),
   component: HomePage,
 });

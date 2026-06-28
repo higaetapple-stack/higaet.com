@@ -18,9 +18,9 @@ export const Route = createFileRoute("/jobs/")({
       { name: "description", content: "Open roles for HIGAET graduates: AI engineers, data scientists, full-stack developers, and more." },
       { property: "og:title", content: "HIGAET Job Board" },
       { property: "og:description", content: "Open roles for HIGAET graduates." },
-      { property: "og:url", content: "/jobs" },
+      { property: "og:url", content: "https://higaet.com/jobs" },
     ],
-    links: [{ rel: "canonical", href: "/jobs" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/jobs" }],
   }),
   component: JobBoard,
 });

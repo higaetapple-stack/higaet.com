@@ -7,7 +7,7 @@ export const Route = createFileRoute("/technologies/software-development")({
       { title: "Software Development — HIGAET Technologies" },
       { name: "description", content: "Custom software development for web, mobile, platforms, APIs, and enterprise systems from HIGAET Technologies." },
     ],
-    links: [{ rel: "canonical", href: "/technologies/software-development" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/technologies/software-development" }],
   }),
   component: SoftwareDevelopmentPage,
 });

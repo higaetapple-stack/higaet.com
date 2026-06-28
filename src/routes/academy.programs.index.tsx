@@ -22,9 +22,9 @@ export const Route = createFileRoute("/academy/programs/")({
       { name: "description", content: "Flagship HIGAET Academy programs in Generative AI, Data Science, Cloud, Cybersecurity, and AI Product Management." },
       { property: "og:title", content: "Programs — HIGAET Academy" },
       { property: "og:description", content: "Industry-aligned career tracks with placement support." },
-      { property: "og:url", content: "/academy/programs" },
+      { property: "og:url", content: "https://higaet.com/academy/programs" },
     ],
-    links: [{ rel: "canonical", href: "/academy/programs" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/academy/programs" }],
   }),
   component: ProgramsIndex,
 });

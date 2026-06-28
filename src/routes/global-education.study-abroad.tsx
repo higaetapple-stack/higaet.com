@@ -9,7 +9,7 @@ export const Route = createFileRoute("/global-education/study-abroad")({
       { title: "Study Abroad Counselling — HIGAET Global Education Hub" },
       { name: "description", content: "Study abroad counselling for students planning international admissions, university shortlists, applications, and visa pathways." },
     ],
-    links: [{ rel: "canonical", href: "/global-education/study-abroad" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/global-education/study-abroad" }],
     scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["study-abroad"]),
   }),
   component: StudyAbroadPage,

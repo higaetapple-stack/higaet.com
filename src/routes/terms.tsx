@@ -8,9 +8,9 @@ export const Route = createFileRoute("/terms")({
     meta: [
       { title: "Terms of Service — HIGAET" },
       { name: "description", content: "Terms governing your use of HIGAET websites and services." },
-      { property: "og:url", content: "/terms" },
+      { property: "og:url", content: "https://higaet.com/terms" },
     ],
-    links: [{ rel: "canonical", href: "/terms" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/terms" }],
   }),
   component: TermsPage,
 });

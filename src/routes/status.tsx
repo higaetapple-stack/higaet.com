@@ -16,7 +16,7 @@ interface Check {
 }
 
 const PREVIEW_BASE = "https://id-preview--a5499f07-de61-442e-81aa-fd1dbb361ba7.lovable.app";
-const PROD_BASE = "https://higaet-ecosystem-core.lovable.app";
+const PROD_BASE = "https://higaet.com";
 
 const INITIAL: Check[] = [
   { id: "local", label: "Current origin · /api/public/health", url: "/api/public/health", state: "idle" },

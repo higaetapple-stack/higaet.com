@@ -3,7 +3,7 @@ import { Section } from "@/components/site/Section";
 import { PageHero } from "@/components/site/PageHero";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 
-const CANONICAL = "https://higaet-ecosystem-core.lovable.app/academy/blog/certifications-comparison";
+const CANONICAL = "https://higaet.com/academy/blog/certifications-comparison";
 const PUBLISHED = "2026-06-15";
 const UPDATED = "2026-06-15";
 
@@ -50,8 +50,8 @@ export const Route = createFileRoute("/academy/blog/certifications-comparison")(
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Academy", item: "https://higaet-ecosystem-core.lovable.app/academy" },
-            { "@type": "ListItem", position: 2, name: "Blog", item: "https://higaet-ecosystem-core.lovable.app/blog" },
+            { "@type": "ListItem", position: 1, name: "Academy", item: "https://higaet.com/academy" },
+            { "@type": "ListItem", position: 2, name: "Blog", item: "https://higaet.com/blog" },
             {
               "@type": "ListItem",
               position: 3,

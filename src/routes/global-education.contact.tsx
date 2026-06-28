@@ -7,7 +7,7 @@ export const Route = createFileRoute("/global-education/contact")({
       { title: "Contact HIGAET Global Education Hub" },
       { name: "description", content: "Contact HIGAET Global Education Hub for study abroad counselling, university applications, scholarships, visa guidance, and student services." },
     ],
-    links: [{ rel: "canonical", href: "/global-education/contact" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/global-education/contact" }],
   }),
   component: GlobalContactPage,
 });

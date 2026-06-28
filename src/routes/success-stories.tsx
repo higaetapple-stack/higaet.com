@@ -23,7 +23,7 @@ export const Route = createFileRoute("/success-stories")({
         content: "Featured graduates and placement highlights from HIGAET Academy.",
       },
     ],
-    links: [{ rel: "canonical", href: "/success-stories" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/success-stories" }],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(storiesQuery),
   component: SuccessStoriesPage,

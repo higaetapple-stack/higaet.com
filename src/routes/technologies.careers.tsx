@@ -7,7 +7,7 @@ export const Route = createFileRoute("/technologies/careers")({
       { title: "Careers at HIGAET Technologies" },
       { name: "description", content: "Explore technology careers with HIGAET Technologies across software engineering, AI systems, product, design, and growth." },
     ],
-    links: [{ rel: "canonical", href: "/technologies/careers" }],
+    links: [{ rel: "canonical", href: "https://higaet.com/technologies/careers" }],
   }),
   component: TechCareersPage,
 });
