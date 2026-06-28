@@ -18,33 +18,25 @@ export const Route = createFileRoute("/academy/programs/$slug")({
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Program not found — HIGAET Academy" }] };
     const { program } = loaderData;
+    const path = `/academy/programs/${params.slug}`;
     const title = `${program.title} — HIGAET Academy`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: program.tagline },
-        { property: "og:title", content: title },
-        { property: "og:description", content: program.tagline },
-        { property: "og:url", content: `/academy/programs/${params.slug}` },
-        { property: "og:type", content: "article" },
+    return seoHead({
+      path,
+      title,
+      description: program.tagline,
+      ogType: "article",
+      jsonLd: [
+        faqJsonLd(program.faqs),
+        buildCourseJsonLd(program, params.slug),
+        buildProviderJsonLd(),
+        buildBreadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Academy", url: "/academy" },
+          { name: "Programs", url: "/academy/programs" },
+          { name: program.title, url: path },
+        ]),
       ],
-      scripts: [
-        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(program.faqs)) },
-        { type: "application/ld+json", children: JSON.stringify(buildCourseJsonLd(program, params.slug)) },
-        { type: "application/ld+json", children: JSON.stringify(buildProviderJsonLd()) },
-        {
-          type: "application/ld+json",
-          children: JSON.stringify(
-            buildBreadcrumbJsonLd([
-              { name: "Home", url: "/" },
-              { name: "Academy", url: "/academy" },
-              { name: "Programs", url: "/academy/programs" },
-              { name: program.title, url: `/academy/programs/${params.slug}` },
-            ])
-          ),
-        },
-      ],
-    };
+    });
   },
   notFoundComponent: () => (
     <Section>
