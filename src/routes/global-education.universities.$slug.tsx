@@ -13,15 +13,31 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { getUniversityPublic, createMyApplication } from "@/lib/study-abroad.functions";
+import { seoHead } from "@/lib/seo/seo-head";
+import { universityJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 export const Route = createFileRoute("/global-education/universities/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug.replace(/-/g, " ")} — HIGAET Global Hub` },
-      { name: "description", content: `Programs, tuition, intakes, and application path for ${params.slug}.` },
-      { property: "og:url", content: `/global-education/universities/${params.slug}` },
-    ],
-  }),
+  head: ({ params }) => {
+    const path = `/global-education/universities/${params.slug}`;
+    const name = params.slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const title = `${name} — HIGAET Global Hub`;
+    const description = `Programs, tuition, intakes, scholarships, and application path for ${name} via HIGAET Global Education Hub.`;
+    return seoHead({
+      path,
+      title,
+      description,
+      jsonLd: [
+        universityJsonLd({ path, name, description }),
+        breadcrumbJsonLd([
+          { label: "Home", href: "/" },
+          { label: "Global Education", href: "/global-education" },
+          { label: "Universities", href: "/global-education/universities" },
+          { label: name },
+        ]),
+      ],
+    });
+  },
   component: UniversityDetail,
   notFoundComponent: () => <div className="p-10">University not found.</div>,
   errorComponent: ({ error }) => <div className="p-10">Error: {error.message}</div>,
