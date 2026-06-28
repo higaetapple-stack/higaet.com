@@ -18,16 +18,23 @@ export const Route = createFileRoute("/academy/campuses/$slug")({
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Campus not found — HIGAET" }] };
     const { campus } = loaderData;
+    const path = `/academy/campuses/${params.slug}`;
     const title = `${campus.name} — HIGAET Academy`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: `${campus.degree} at ${campus.name}, ${campus.city}.` },
-        { property: "og:title", content: title },
-        { property: "og:description", content: campus.degree },
-        { property: "og:url", content: `/academy/campuses/${params.slug}` },
+    const description = `${campus.degree} at ${campus.name}, ${campus.city}. Apply via the HIGAET Aptitude Test for scholarships up to 100%.`;
+    return seoHead({
+      path,
+      title,
+      description,
+      jsonLd: [
+        universityJsonLd({ path, name: campus.name, description, city: campus.city, country: "IN" }),
+        breadcrumbJsonLd([
+          { label: "Home", href: "/" },
+          { label: "Academy", href: "/academy" },
+          { label: "Campuses", href: "/academy/campuses" },
+          { label: campus.name },
+        ]),
       ],
-    };
+    });
   },
   notFoundComponent: () => (
     <Section>
