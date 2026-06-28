@@ -10,7 +10,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { ORG_JSONLD, SITE, WEBSITE_JSONLD } from "@/lib/site";
+import { ORG_JSONLD, SITE, WEBSITE_JSONLD, canonicalUrl, isPrivatePath } from "@/lib/site";
 import { ANALYTICS_IDS, getConsent, loadTags } from "@/lib/analytics";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,6 +18,19 @@ import { DevErrorOverlay } from "@/components/DevErrorOverlay";
 import { supabase } from "@/integrations/supabase/client";
 import { ObservabilityErrorBoundary } from "@/components/observability/ErrorBoundary";
 import { HostGate } from "@/components/site/HostGate";
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
+
+const getCurrentPathname = createIsomorphicFn()
+  .server(() => {
+    try {
+      const req = getRequest();
+      return new URL(req.url).pathname || "/";
+    } catch {
+      return "/";
+    }
+  })
+  .client(() => (typeof window !== "undefined" ? window.location.pathname : "/"));
 
 function NotFoundComponent() {
   return (
