@@ -10,7 +10,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { ORG_JSONLD, SITE, WEBSITE_JSONLD } from "@/lib/site";
+import { ORG_JSONLD, SITE, WEBSITE_JSONLD, canonicalUrl, isPrivatePath } from "@/lib/site";
 import { ANALYTICS_IDS, getConsent, loadTags } from "@/lib/analytics";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,6 +18,19 @@ import { DevErrorOverlay } from "@/components/DevErrorOverlay";
 import { supabase } from "@/integrations/supabase/client";
 import { ObservabilityErrorBoundary } from "@/components/observability/ErrorBoundary";
 import { HostGate } from "@/components/site/HostGate";
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
+
+const getCurrentPathname = createIsomorphicFn()
+  .server(() => {
+    try {
+      const req = getRequest();
+      return new URL(req.url).pathname || "/";
+    } catch {
+      return "/";
+    }
+  })
+  .client(() => (typeof window !== "undefined" ? window.location.pathname : "/"));
 
 function NotFoundComponent() {
   return (
@@ -78,7 +91,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => {
+  loader: () => ({ pathname: getCurrentPathname() }),
+  head: ({ loaderData }) => {
+    const pathname = loaderData?.pathname ?? "/";
+    const isPrivate = isPrivatePath(pathname);
+    const canonical = canonicalUrl(pathname);
+
     const meta: Array<Record<string, string>> = [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
@@ -90,27 +108,42 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: `${SITE.name} — ${SITE.tagline}` },
       { property: "og:description", content: SITE.description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: canonical },
+      { property: "og:image", content: `${SITE.url}/og-higaet.png` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: SITE.twitter },
       { name: "twitter:title", content: `${SITE.name} — ${SITE.tagline}` },
       { name: "twitter:description", content: SITE.description },
+      { name: "twitter:image", content: `${SITE.url}/og-higaet.png` },
     ];
     if (ANALYTICS_IDS.gscVerification) {
       meta.push({ name: "google-site-verification", content: ANALYTICS_IDS.gscVerification });
     }
+    if (isPrivate) {
+      meta.push({ name: "robots", content: "noindex, nofollow, noarchive" });
+      meta.push({ name: "googlebot", content: "noindex, nofollow" });
+    } else {
+      meta.push({ name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" });
+    }
+
+    const links: Array<Record<string, string>> = [
+      { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "icon", href: "/favicon.ico" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600&display=swap",
+      },
+    ];
+    if (!isPrivate) {
+      links.push({ rel: "canonical", href: canonical });
+    }
+
     return {
       meta,
-      links: [
-        { rel: "stylesheet", href: appCss },
-        { rel: "manifest", href: "/manifest.webmanifest" },
-        { rel: "icon", href: "/favicon.ico" },
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-        {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600&display=swap",
-        },
-      ],
+      links,
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(ORG_JSONLD) },
         { type: "application/ld+json", children: JSON.stringify(WEBSITE_JSONLD) },
