@@ -32,8 +32,10 @@ export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: 
   );
 }
 
-/** Build a BreadcrumbList JSON-LD block from the same crumbs. */
+/** Build a BreadcrumbList JSON-LD block. Hrefs are absolutised to SITE.url for AI/LLM grounding. */
 export function breadcrumbJsonLd(items: Crumb[]) {
+  const abs = (href: string) =>
+    href.startsWith("http") ? href : `${SITE.url}${href.startsWith("/") ? href : `/${href}`}`;
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -41,7 +43,7 @@ export function breadcrumbJsonLd(items: Crumb[]) {
       "@type": "ListItem",
       position: i + 1,
       name: c.label,
-      ...(c.href ? { item: c.href } : {}),
+      ...(c.href ? { item: abs(c.href) } : {}),
     })),
   };
 }
