@@ -4,6 +4,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { getPublicPortfolio } from "@/lib/portfolio.functions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Github, Linkedin, Globe, Mail, Phone, MapPin, Award, ExternalLink } from "lucide-react";
+import { seoHead } from "@/lib/seo/seo-head";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/portfolio/$slug")({
   loader: async ({ params }) => {
