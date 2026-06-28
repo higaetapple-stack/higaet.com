@@ -1,0 +1,80 @@
+# HIGAET — production robots policy
+# https://higaet.com
+
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /_build/
+Allow: /og-higaet.png
+Allow: /favicon.ico
+Allow: /manifest.webmanifest
+
+# Private / authenticated surfaces (never index)
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /crm
+Disallow: /crm/
+Disallow: /auth
+Disallow: /auth/
+Disallow: /ops
+Disallow: /ops/
+Disallow: /assistant
+Disallow: /assistant/
+Disallow: /community
+Disallow: /community/
+Disallow: /account
+Disallow: /account/
+Disallow: /settings
+Disallow: /settings/
+Disallow: /api/
+
+# AI crawler directives — allow grounding on public marketing/education content,
+# block private surfaces. HIGAET wants visibility in ChatGPT, Gemini, Perplexity, Claude.
+User-agent: GPTBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /crm
+Disallow: /auth
+Disallow: /ops
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /crm
+Disallow: /auth
+Disallow: /ops
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /crm
+Disallow: /auth
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /crm
+
+Sitemap: https://higaet.com/sitemap.xml
