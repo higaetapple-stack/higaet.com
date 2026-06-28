@@ -9,7 +9,6 @@ export const Route = createFileRoute("/global-education/student-services")({
       { title: "International Student Services — HIGAET Global Education Hub" },
       { name: "description", content: "Student support services for accommodation, pre-departure orientation, travel planning, and arrival readiness." },
     ],
-    links: [{ rel: "canonical", href: "/global-education/student-services" }],
     scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["student-services"]),
   }),
   component: StudentServicesPage,

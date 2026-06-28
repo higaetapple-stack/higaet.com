@@ -7,6 +7,7 @@ import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { LeadForm } from "@/components/site/LeadForm";
 import { getProgram, CATEGORY_LABELS, type Program, type ProgramCategory } from "@/lib/academy-programs";
 import { buildCourseJsonLd, buildBreadcrumbJsonLd, buildProviderJsonLd } from "@/lib/seo/course-schema";
+import { seoHead } from "@/lib/seo/seo-head";
 
 export const Route = createFileRoute("/academy/programs/$slug")({
   loader: ({ params }): { program: Program } => {
@@ -17,34 +18,25 @@ export const Route = createFileRoute("/academy/programs/$slug")({
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Program not found — HIGAET Academy" }] };
     const { program } = loaderData;
+    const path = `/academy/programs/${params.slug}`;
     const title = `${program.title} — HIGAET Academy`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: program.tagline },
-        { property: "og:title", content: title },
-        { property: "og:description", content: program.tagline },
-        { property: "og:url", content: `/academy/programs/${params.slug}` },
-        { property: "og:type", content: "article" },
+    return seoHead({
+      path,
+      title,
+      description: program.tagline,
+      ogType: "article",
+      jsonLd: [
+        faqJsonLd(program.faqs),
+        buildCourseJsonLd(program, params.slug),
+        buildProviderJsonLd(),
+        buildBreadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Academy", url: "/academy" },
+          { name: "Programs", url: "/academy/programs" },
+          { name: program.title, url: path },
+        ]),
       ],
-      links: [{ rel: "canonical", href: `/academy/programs/${params.slug}` }],
-      scripts: [
-        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(program.faqs)) },
-        { type: "application/ld+json", children: JSON.stringify(buildCourseJsonLd(program, params.slug)) },
-        { type: "application/ld+json", children: JSON.stringify(buildProviderJsonLd()) },
-        {
-          type: "application/ld+json",
-          children: JSON.stringify(
-            buildBreadcrumbJsonLd([
-              { name: "Home", url: "/" },
-              { name: "Academy", url: "/academy" },
-              { name: "Programs", url: "/academy/programs" },
-              { name: program.title, url: `/academy/programs/${params.slug}` },
-            ])
-          ),
-        },
-      ],
-    };
+    });
   },
   notFoundComponent: () => (
     <Section>

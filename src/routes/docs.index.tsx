@@ -37,7 +37,6 @@ export const Route = createFileRoute("/docs/")({
       { property: "og:url", content: URL },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: URL }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(COLLECTION) },
       { type: "application/ld+json", children: JSON.stringify(buildBreadcrumbJsonLd([

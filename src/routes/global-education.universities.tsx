@@ -15,9 +15,8 @@ export const Route = createFileRoute("/global-education/universities")({
     meta: [
       { title: "Partner Universities — HIGAET Global Education Hub" },
       { name: "description", content: "Browse partner universities across the USA, Canada, UK, Australia, Germany, Ireland, New Zealand, and Singapore." },
-      { property: "og:url", content: "/global-education/universities" },
+      { property: "og:url", content: "https://higaet.com/global-education/universities" },
     ],
-    links: [{ rel: "canonical", href: "/global-education/universities" }],
     scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["universities"]),
   }),
   component: UniversitiesPage,

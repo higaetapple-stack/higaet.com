@@ -5,6 +5,9 @@ import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { LeadForm } from "@/components/site/LeadForm";
 import { getCampus, type Campus } from "@/lib/academy-programs";
+import { seoHead } from "@/lib/seo/seo-head";
+import { universityJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 export const Route = createFileRoute("/academy/campuses/$slug")({
   loader: ({ params }): { campus: Campus } => {
@@ -15,17 +18,23 @@ export const Route = createFileRoute("/academy/campuses/$slug")({
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Campus not found — HIGAET" }] };
     const { campus } = loaderData;
+    const path = `/academy/campuses/${params.slug}`;
     const title = `${campus.name} — HIGAET Academy`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: `${campus.degree} at ${campus.name}, ${campus.city}.` },
-        { property: "og:title", content: title },
-        { property: "og:description", content: campus.degree },
-        { property: "og:url", content: `/academy/campuses/${params.slug}` },
+    const description = `${campus.degree} at ${campus.name}, ${campus.city}. Apply via the HIGAET Aptitude Test for scholarships up to 100%.`;
+    return seoHead({
+      path,
+      title,
+      description,
+      jsonLd: [
+        universityJsonLd({ path, name: campus.name, description, city: campus.city, country: "IN" }),
+        breadcrumbJsonLd([
+          { label: "Home", href: "/" },
+          { label: "Academy", href: "/academy" },
+          { label: "Campuses", href: "/academy/campuses" },
+          { label: campus.name },
+        ]),
       ],
-      links: [{ rel: "canonical", href: `/academy/campuses/${params.slug}` }],
-    };
+    });
   },
   notFoundComponent: () => (
     <Section>

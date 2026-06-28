@@ -18,7 +18,6 @@ export const Route = createFileRoute("/global-education/countries/$slug")({
         { name: "description", content: `Universities, tuition, scholarships, and visa info for studying in ${human}.` },
         { property: "og:url", content: path },
       ],
-      links: [{ rel: "canonical", href: path }],
       scripts: buildServiceJsonLdScripts({
         path,
         name: `${human} Admissions`,

@@ -7,7 +7,6 @@ export const Route = createFileRoute("/technologies/contact")({
       { title: "Contact HIGAET Technologies" },
       { name: "description", content: "Contact HIGAET Technologies for software development, AI solutions, SaaS products, digital marketing, and enterprise product development." },
     ],
-    links: [{ rel: "canonical", href: "/technologies/contact" }],
   }),
   component: TechContactPage,
 });

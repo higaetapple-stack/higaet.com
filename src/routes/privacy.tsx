@@ -8,9 +8,8 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy — HIGAET" },
       { name: "description", content: "How HIGAET collects, uses, and protects your information." },
-      { property: "og:url", content: "/privacy" },
+      { property: "og:url", content: "https://higaet.com/privacy" },
     ],
-    links: [{ rel: "canonical", href: "/privacy" }],
   }),
   component: PrivacyPage,
 });

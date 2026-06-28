@@ -21,7 +21,6 @@ export const Route = createFileRoute("/cookies")({
       },
       { property: "og:url", content: PATH },
     ],
-    links: [{ rel: "canonical", href: PATH }],
   }),
   component: CookiesPage,
 });

@@ -9,7 +9,6 @@ export const Route = createFileRoute("/global-education/visa-guidance")({
       { title: "Student Visa Guidance — HIGAET Global Education Hub" },
       { name: "description", content: "Student visa guidance for documentation, financial readiness, mock interviews, and pre-departure preparation." },
     ],
-    links: [{ rel: "canonical", href: "/global-education/visa-guidance" }],
     scripts: buildServiceJsonLdScripts(SERVICE_SCHEMAS["visa-guidance"]),
   }),
   component: VisaGuidancePage,

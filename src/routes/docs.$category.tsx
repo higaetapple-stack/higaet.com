@@ -29,7 +29,6 @@ export const Route = createFileRoute("/docs/$category")({
         { property: "og:url", content: url },
         { property: "og:type", content: "website" },
       ],
-      links: [{ rel: "canonical", href: url }],
       scripts: [
         {
           type: "application/ld+json",

@@ -15,6 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Bookmark, MapPin, Clock, Briefcase, ExternalLink, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { ApplicationStatusBadge } from "@/components/career/ApplicationStatusBadge";
+import { seoHead } from "@/lib/seo/seo-head";
+import { jobPostingJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 export const Route = createFileRoute("/jobs/$slug")({
   loader: async ({ params }) => {
@@ -24,32 +27,46 @@ export const Route = createFileRoute("/jobs/$slug")({
   },
   head: ({ loaderData, params }) => {
     const j: any = loaderData;
+    const path = `/jobs/${params.slug}`;
     const title = j ? `${j.title} at ${j.employers?.name} | HIGAET Jobs` : "Job | HIGAET";
     const desc = j?.description?.slice(0, 160) ?? "Open role for HIGAET graduates.";
-    return {
-      meta: [
-        { title }, { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `/jobs/${params.slug}` },
-      ],
-      links: [{ rel: "canonical", href: `/jobs/${params.slug}` }],
-      scripts: j ? [{
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "JobPosting",
-          title: j.title,
-          description: j.description,
-          datePosted: j.posted_at,
-          validThrough: j.closes_at ?? undefined,
-          employmentType: j.employment_type,
-          hiringOrganization: { "@type": "Organization", name: j.employers?.name, sameAs: j.employers?.website ?? undefined },
-          jobLocation: { "@type": "Place", address: j.location ?? "" },
-        }),
-      }] : [],
-    };
+    return seoHead({
+      path,
+      title,
+      description: desc,
+      ogType: "article",
+      jsonLd: j
+        ? [
+            jobPostingJsonLd({
+              path,
+              title: j.title,
+              description: j.description,
+              datePosted: j.posted_at,
+              validThrough: j.closes_at ?? undefined,
+              employmentType: j.employment_type,
+              hiringOrganization: {
+                name: j.employers?.name ?? "HIGAET",
+                sameAs: j.employers?.website ?? undefined,
+              },
+              jobLocation: j.location ? { city: j.location } : undefined,
+              remote: j.remote_type && j.remote_type !== "onsite",
+              baseSalary:
+                j.salary_min && j.salary_currency
+                  ? {
+                      currency: j.salary_currency,
+                      value: Number(j.salary_min),
+                      unitText: "YEAR",
+                    }
+                  : undefined,
+            }),
+            breadcrumbJsonLd([
+              { label: "Home", href: "/" },
+              { label: "Jobs", href: "/jobs" },
+              { label: j.title },
+            ]),
+          ]
+        : [],
+    });
   },
   notFoundComponent: () => <SiteShell><Section><p>Job not found.</p></Section></SiteShell>,
   errorComponent: ({ error }) => <SiteShell><Section><p>{error.message}</p></Section></SiteShell>,

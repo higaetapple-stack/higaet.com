@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { Fragment } from "react";
 import { cn } from "@/lib/utils";
+import { SITE } from "@/lib/site";
 
 export type Crumb = { label: string; href?: string };
 
@@ -31,8 +32,33 @@ export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: 
   );
 }
 
-/** Build a BreadcrumbList JSON-LD block from the same crumbs. */
+/**
+ * Build crumbs from a pathname, e.g. "/academy/programs" →
+ * [Home, Academy, Programs] with labels humanised from slugs.
+ * The final segment has no href (current page). Skips empty segments.
+ */
+export function crumbsFromPath(pathname: string, labelOverrides: Record<string, string> = {}): Crumb[] {
+  const parts = pathname.split("/").filter(Boolean);
+  const crumbs: Crumb[] = [{ label: "Home", href: "/" }];
+  let acc = "";
+  parts.forEach((seg, i) => {
+    acc += `/${seg}`;
+    const human =
+      labelOverrides[acc] ??
+      seg
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+    crumbs.push({ label: human, href: i === parts.length - 1 ? undefined : acc });
+  });
+  return crumbs;
+}
+
+
+
+/** Build a BreadcrumbList JSON-LD block. Hrefs are absolutised to SITE.url for AI/LLM grounding. */
 export function breadcrumbJsonLd(items: Crumb[]) {
+  const abs = (href: string) =>
+    href.startsWith("http") ? href : `${SITE.url}${href.startsWith("/") ? href : `/${href}`}`;
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -40,7 +66,7 @@ export function breadcrumbJsonLd(items: Crumb[]) {
       "@type": "ListItem",
       position: i + 1,
       name: c.label,
-      ...(c.href ? { item: c.href } : {}),
+      ...(c.href ? { item: abs(c.href) } : {}),
     })),
   };
 }

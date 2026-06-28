@@ -4,6 +4,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { getPublicPortfolio } from "@/lib/portfolio.functions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Github, Linkedin, Globe, Mail, Phone, MapPin, Award, ExternalLink } from "lucide-react";
+import { seoHead } from "@/lib/seo/seo-head";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/portfolio/$slug")({
   loader: async ({ params }) => {
@@ -13,38 +16,43 @@ export const Route = createFileRoute("/portfolio/$slug")({
   },
   head: ({ params, loaderData }) => {
     const d: any = loaderData;
+    const path = `/portfolio/${params.slug}`;
     const title = d ? `${d.full_name ?? "Portfolio"} | ${d.headline ?? "HIGAET Graduate"} | HIGAET` : "Portfolio";
     const description = d?.bio ?? "Projects, certifications, and skills earned through HIGAET Academy.";
     const noindex = d?.visibility !== "public";
-    return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        ...(noindex ? [{ name: "robots", content: "noindex" }] : []),
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "profile" },
-        { property: "og:url", content: `/portfolio/${params.slug}` },
-      ],
-      links: noindex ? [] : [{ rel: "canonical", href: `/portfolio/${params.slug}` }],
-      scripts:
-        d && !noindex
-          ? [
-              {
-                type: "application/ld+json",
-                children: JSON.stringify({
-                  "@context": "https://schema.org",
-                  "@type": "Person",
-                  name: d.full_name,
-                  jobTitle: d.headline ?? undefined,
-                  description: d.bio ?? undefined,
-                  image: d.avatar_url ?? undefined,
-                  sameAs: [d.github_url, d.linkedin_url, d.website_url].filter(Boolean),
-                }),
-              },
-            ]
-          : [],
-    };
+    const personLd =
+      d && !noindex
+        ? {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "@id": `${SITE.url}${path}#person`,
+            name: d.full_name,
+            url: `${SITE.url}${path}`,
+            jobTitle: d.headline ?? undefined,
+            description: d.bio ?? undefined,
+            image: d.avatar_url ?? undefined,
+            sameAs: [d.github_url, d.linkedin_url, d.website_url].filter(Boolean),
+            alumniOf: { "@id": `${SITE.url}/#academy` },
+          }
+        : null;
+    return seoHead({
+      path,
+      title,
+      description,
+      ogType: "profile",
+      image: d?.avatar_url,
+      noindex,
+      jsonLd: personLd
+        ? [
+            personLd,
+            breadcrumbJsonLd([
+              { label: "Home", href: "/" },
+              { label: "Graduates", href: "/portfolio" },
+              { label: d.full_name ?? params.slug },
+            ]),
+          ]
+        : [],
+    });
   },
   component: PortfolioPage,
   notFoundComponent: () => (

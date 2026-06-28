@@ -3,6 +3,9 @@ import { SiteShell } from "@/components/site/SiteShell";
 import { Section } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { ArrowLeft, MapPin, Briefcase } from "lucide-react";
+import { seoHead } from "@/lib/seo/seo-head";
+import { jobPostingJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 type Job = {
   slug: string;
@@ -130,37 +133,31 @@ export const Route = createFileRoute("/careers/$slug")({
   },
   head: ({ loaderData }) => {
     const job = loaderData?.job;
-    if (!job)
-      return {
-        meta: [{ title: "Role not found — HIGAET Careers" }],
-      };
+    if (!job) return { meta: [{ title: "Role not found — HIGAET Careers" }] };
+    const path = `/careers/${job.slug}`;
     const title = `${job.title} — HIGAET Careers`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: job.summary },
-        { property: "og:title", content: title },
-        { property: "og:description", content: job.summary },
-        { property: "og:url", content: `/careers/${job.slug}` },
-        { property: "og:type", content: "article" },
+    return seoHead({
+      path,
+      title,
+      description: job.summary,
+      ogType: "article",
+      jsonLd: [
+        jobPostingJsonLd({
+          path,
+          title: job.title,
+          description: job.summary,
+          datePosted: new Date().toISOString().slice(0, 10),
+          employmentType: job.type.toUpperCase().replace(/[-\s]/g, "_"),
+          jobLocation: { city: job.location.split("/")[0].trim(), country: "IN" },
+          remote: /remote/i.test(job.location),
+        }),
+        breadcrumbJsonLd([
+          { label: "Home", href: "/" },
+          { label: "Careers", href: "/careers" },
+          { label: job.title },
+        ]),
       ],
-      links: [{ rel: "canonical", href: `/careers/${job.slug}` }],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "JobPosting",
-            title: job.title,
-            description: job.summary,
-            employmentType: job.type.toUpperCase().replace("-", "_"),
-            hiringOrganization: { "@type": "Organization", name: "HIGAET" },
-            jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: job.location } },
-            datePosted: new Date().toISOString().slice(0, 10),
-          }),
-        },
-      ],
-    };
+    });
   },
   notFoundComponent: () => (
     <SiteShell>

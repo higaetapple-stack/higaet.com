@@ -30,7 +30,6 @@ export const Route = createFileRoute("/technologies/industries")({
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
     ],
-    links: [{ rel: "canonical", href: PATH }],
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",

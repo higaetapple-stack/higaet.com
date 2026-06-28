@@ -46,10 +46,9 @@ export const Route = createFileRoute("/technologies/case-studies")({
       { name: "description", content: META_DESC },
       { property: "og:title", content: META_TITLE },
       { property: "og:description", content: META_DESC },
-      { property: "og:url", content: "/technologies/case-studies" },
+      { property: "og:url", content: "https://higaet.com/technologies/case-studies" },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/technologies/case-studies" }],
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",

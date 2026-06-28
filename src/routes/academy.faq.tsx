@@ -7,7 +7,6 @@ export const Route = createFileRoute("/academy/faq")({
       { title: "Academy FAQ — HIGAET Academy" },
       { name: "description", content: "Answers about HIGAET Academy programs, eligibility, schedules, certifications, internships, and placement support." },
     ],
-    links: [{ rel: "canonical", href: "/academy/faq" }],
   }),
   component: AcademyFaqPage,
 });
