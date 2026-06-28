@@ -40,7 +40,7 @@ const STATIC_ENTRIES: SitemapEntry[] = [
   ...DOC_CATEGORIES.flatMap<SitemapEntry>((c) =>
     c.articles.map((a) => ({ path: `/docs/${c.slug}/${a.slug}`, changefreq: "monthly" as const, priority: "0.6" })),
   ),
-  { path: "/auth", changefreq: "monthly", priority: "0.3" },
+  // /auth removed — private surface (noindex, nofollow)
   { path: "/careers", changefreq: "weekly", priority: "0.6" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
