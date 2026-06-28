@@ -3,6 +3,9 @@ import { SiteShell } from "@/components/site/SiteShell";
 import { Section } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { ArrowLeft, MapPin, Briefcase } from "lucide-react";
+import { seoHead } from "@/lib/seo/seo-head";
+import { jobPostingJsonLd } from "@/lib/seo/schema";
+import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
 
 type Job = {
   slug: string;
