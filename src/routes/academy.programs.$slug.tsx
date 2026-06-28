@@ -7,6 +7,7 @@ import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { LeadForm } from "@/components/site/LeadForm";
 import { getProgram, CATEGORY_LABELS, type Program, type ProgramCategory } from "@/lib/academy-programs";
 import { buildCourseJsonLd, buildBreadcrumbJsonLd, buildProviderJsonLd } from "@/lib/seo/course-schema";
+import { seoHead } from "@/lib/seo/seo-head";
 
 export const Route = createFileRoute("/academy/programs/$slug")({
   loader: ({ params }): { program: Program } => {
