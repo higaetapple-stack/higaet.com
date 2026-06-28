@@ -133,7 +133,7 @@ export const Route = createFileRoute("/careers/$slug")({
   },
   head: ({ loaderData }) => {
     const job = loaderData?.job;
-    if (!job)
+    if (!job) return { meta: [{ title: "Role not found — HIGAET Careers" }] };
     const path = `/careers/${job.slug}`;
     const title = `${job.title} — HIGAET Careers`;
     return seoHead({
