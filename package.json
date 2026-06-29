@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "lock:check": "bun scripts/production-lock-check.mjs",
-    "lint:seo-orphans": "bun scripts/lint-seo-clusters.ts"
+    "lint:seo-orphans": "bun scripts/lint-seo-clusters.ts",
+    "seo:graph:report": "bun scripts/seo-graph-report.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.83",
