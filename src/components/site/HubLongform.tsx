@@ -1,5 +1,6 @@
 import { getHubLongform } from "@/lib/seo/hub-longform";
 import { RelatedCluster } from "./RelatedCluster";
+import { HubAuthorityBlock } from "@/components/seo/HubAuthorityBlock";
 import type { ClusterId } from "@/lib/seo/topic-clusters";
 
 interface HubLongformProps {
@@ -35,6 +36,8 @@ export function HubLongform({ clusterId, withRelated = true, className }: HubLon
       aria-label={data.heading}
       className={className ?? "mx-auto w-full max-w-6xl px-4 py-16 md:py-20"}
     >
+      {/* P5.2 — Authority block (definition, comparison, workflow, entities, reinforcement) */}
+      <HubAuthorityBlock clusterId={clusterId} className="mb-12 px-0 py-0" />
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Topic cluster · {data.clusterId}
