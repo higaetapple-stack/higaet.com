@@ -40,7 +40,7 @@ function fileToRoutePath(file: string): string | null {
   stem = stem.replace(/\//g, ".");
   stem = stem.replace(/\.index$/, "").replace(/^index$/, "");
   if (!stem) return "/";
-  return "/" + stem.replace(/\./g, "/");
+  return ("/" + stem.replace(/\./g, "/")).replace(/\/+/g, "/");
 }
 async function collectRoutes(): Promise<{ literals: Set<string>; patterns: RegExp[]; files: Map<string, string> }> {
   const literals = new Set<string>(["/"]);
