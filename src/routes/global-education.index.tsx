@@ -103,6 +103,10 @@ function GlobalHome() {
         secondaryHref="/global-education/universities"
         secondaryLabel="Browse universities"
       />
+
+      <div className="mx-auto max-w-6xl px-6 pb-16">
+        <RelatedCluster path="/global-education" />
+      </div>
     </>
   );
 }
