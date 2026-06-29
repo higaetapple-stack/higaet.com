@@ -1,0 +1,35 @@
+name: SEO Graph Integrity Check
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    paths:
+      - "src/routes/**"
+      - "src/lib/seo/**"
+      - "src/components/site/RelatedCluster.tsx"
+      - "src/components/site/HubLongform.tsx"
+      - "scripts/seo-graph-report.ts"
+      - ".github/workflows/seo-graph-report.yml"
+
+jobs:
+  seo-graph:
+    name: Generate SEO_GRAPH_STATUS report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Generate SEO graph report
+        run: bun run seo:graph:report
+      - name: Upload SEO Graph Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-graph-status
+          path: |
+            dist/reports/SEO_GRAPH_STATUS.json
+            dist/reports/SEO_GRAPH_STATUS.md
+            docs/seo/backlink-architecture-map.json
