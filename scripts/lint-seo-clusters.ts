@@ -48,14 +48,26 @@ function fileToRoutePath(file: string): string | null {
   return "/" + stem.replace(/\./g, "/");
 }
 
-async function collectRoutePaths(): Promise<Set<string>> {
-  const out = new Set<string>(["/"]);
+async function collectRoutePaths(): Promise<{ literals: Set<string>; patterns: RegExp[] }> {
+  const literals = new Set<string>(["/"]);
+  const patterns: RegExp[] = [];
   for await (const f of walk(ROUTES_DIR)) {
     const p = fileToRoutePath(f);
-    if (p && !p.includes("$")) out.add(p);
-    if (p && p.includes("$")) out.add(p); // keep dynamic too — useful for diagnostics
+    if (!p) continue;
+    if (p.includes("$")) {
+      // Convert dynamic segments ($slug, $) into a regex matching one URL segment.
+      const re = "^" + p.replace(/\$[^/]*/g, "[^/]+") + "$";
+      patterns.push(new RegExp(re));
+    } else {
+      literals.add(p);
+    }
   }
-  return out;
+  return { literals, patterns };
+}
+
+function routeExists(p: string, routes: { literals: Set<string>; patterns: RegExp[] }): boolean {
+  if (routes.literals.has(p)) return true;
+  return routes.patterns.some((re) => re.test(p));
 }
 
 // ──────────────────────────── similarity helpers ─────────────────────────────
@@ -99,13 +111,7 @@ async function main() {
 
   // 1. Orphan paths — not resolvable in routes/
   for (const n of allNodes) {
-    const exists =
-      routePaths.has(n.path) ||
-      // Allow dynamic-base parents (e.g. /technologies/case-studies matches
-      // technologies.case-studies.index.tsx); collectRoutePaths already
-      // normalizes both index and leaf forms, so a miss here is real.
-      false;
-    if (!exists) {
+    if (!routeExists(n.path, routePaths)) {
       violations.push({
         kind: "ORPHAN_PATH",
         detail: `Cluster "${n.clusterId}" references ${n.path} (${n.role}) but no route file resolves to it.`,
@@ -175,7 +181,7 @@ async function main() {
   console.log("───────────────────────────────────");
   console.log(`Clusters scanned : ${listClusters().length}`);
   console.log(`Pages mapped     : ${totalPages}`);
-  console.log(`Route files seen : ${routePaths.size}`);
+  console.log(`Route files seen : ${routePaths.literals.size} literal + ${routePaths.patterns.length} dynamic`);
   console.log(`Violations       : ${violations.length}\n`);
 
   if (violations.length === 0) {
