@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: "0 6 * * *"
 
-  # ✅ FIX: enables reusable workflow calls from authorization gate
+  # Enables reusable workflow calls
   workflow_call:
     inputs:
       mode:
@@ -68,7 +68,10 @@ jobs:
           missing=0
 
           check() {
-            local name="$1" reason="$2" value="$3"
+            local name="$1"
+            local reason="$2"
+            local value="$3"
+
             if [ -z "$value" ]; then
               echo "::error::Missing: $name"
               echo "$reason"
@@ -95,14 +98,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # ✅ FIX: safe SSH check (no invalid empty string expression in workflow_call context)
+      # ✅ SAFE SSH HANDLING (FIXED)
       - name: Write SSH key (if provided)
-        if: ${{ secrets.SSH_KEY != null && secrets.SSH_KEY != '' }}
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          if [ -n "$SSH_KEY" ]; then
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+            chmod 600 ~/.ssh/id_ed25519
+          fi
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Run readiness checker
         id: check
@@ -113,11 +119,15 @@ jobs:
           STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY_PATH: ${{ secrets.SSH_KEY }}
-          DEPLOY_DIR: ${{ vars.DEPLOY_DIR || '~/apps/higaet' }}
+
+          # FIXED: always use file path, not secret value
+          SSH_KEY_PATH: /home/runner/.ssh/id_ed25519
+
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_RUN_ID: ${{ github.run_id }}
+
         run: bun scripts/check-staging-readiness.ts
 
       - name: Validate deep links
@@ -141,6 +151,7 @@ jobs:
         run: |
           git config user.name "higaet-readiness-bot"
           git config user.email "actions@users.noreply.github.com"
+
           git add docs/infrastructure/ || true
 
           if git diff --cached --quiet; then
