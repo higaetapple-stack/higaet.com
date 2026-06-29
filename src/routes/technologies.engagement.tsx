@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { ServiceHero } from "@/components/site/ServiceHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
+import { HubLongform } from "@/components/site/HubLongform";
 import { EngagementModelCard, type EngagementModel } from "@/components/site/EngagementModelCard";
 import { breadcrumbJsonLd, type Crumb } from "@/components/site/Breadcrumbs";
 import { jsonLdScript } from "@/components/site/JsonLd";
@@ -125,6 +126,7 @@ function EngagementHub() {
         secondaryHref="/technologies/case-studies"
         secondaryLabel="See case studies"
       />
+      <HubLongform clusterId="tech-engagement-models" />
     </>
   );
 }

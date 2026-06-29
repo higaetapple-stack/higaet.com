@@ -3,6 +3,7 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
+import { HubLongform } from "@/components/site/HubLongform";
 import { CAMPUSES } from "@/lib/academy-programs";
 
 export const Route = createFileRoute("/academy/campuses/")({
@@ -58,6 +59,7 @@ function CampusesIndex() {
         primaryHref="/academy/contact"
         primaryLabel="Book a campus visit"
       />
+      <HubLongform clusterId="academy-campuses-formats" />
     </>
   );
 }

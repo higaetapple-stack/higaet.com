@@ -6,6 +6,7 @@ import { Search, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { ServiceHero } from "@/components/site/ServiceHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
+import { HubLongform } from "@/components/site/HubLongform";
 import { CaseStudyCard, type CaseStudy } from "@/components/site/CaseStudyCard";
 import { breadcrumbJsonLd, type Crumb } from "@/components/site/Breadcrumbs";
 import { jsonLdScript } from "@/components/site/JsonLd";
@@ -306,6 +307,7 @@ function CaseStudiesHub() {
         secondaryHref="/technologies/engagement"
         secondaryLabel="Compare engagement models"
       />
+      <HubLongform clusterId="tech-industry-solutions" />
     </>
   );
 }
