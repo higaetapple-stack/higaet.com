@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DivisionDetailPage } from "@/components/site/DivisionDetailPage";
+import { HubLongform } from "@/components/site/HubLongform";
 import { buildServiceJsonLdScripts } from "@/lib/seo/service-schema";
 import { SERVICE_SCHEMAS } from "@/lib/seo/global-education-services";
 
