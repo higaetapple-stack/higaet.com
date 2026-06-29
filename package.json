@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "lock:check": "bun scripts/production-lock-check.mjs",
     "lint:seo-orphans": "bun scripts/lint-seo-clusters.ts",
+    "lint:backlinks": "bun scripts/lint-backlink-architecture.ts",
     "seo:graph:report": "bun scripts/seo-graph-report.ts"
   },
   "dependencies": {
