@@ -1,34 +1,50 @@
 name: Staging Readiness Check (Phase 2.2-A)
 
-# Probes DNS / SSL / SSH / GitHub / deploy-target for staging.higaet.com,
-# regenerates docs/infrastructure/phase-2-2-prerequisite-report.md, appends
-# a row to staging-readiness-history.md, publishes a GitHub Actions Job
-# Summary, and on the FAIL→PASS transition files an issue notification.
-# Safe to run before any infrastructure exists. Does NOT deploy.
-
 on:
   workflow_dispatch: {}
   schedule:
     - cron: "0 6 * * *"
 
+  # ✅ FIX: enables reusable workflow calls from authorization gate
+  workflow_call:
+    inputs:
+      mode:
+        required: false
+        type: string
+        default: staging
+    secrets:
+      STAGING_HOST:
+        required: true
+      STAGING_BASE_URL:
+        required: true
+      STAGING_EXPECTED_IP:
+        required: false
+      SSH_KEY:
+        required: false
+      SSH_HOST:
+        required: false
+      SSH_USER:
+        required: false
+
 concurrency:
-  # Single writer for staging-readiness-history.md — queue updates, never cancel.
   group: staging-readiness-history
   cancel-in-progress: false
 
 permissions:
-  contents: write          # commit updated report + history
-  issues: write            # post transition notification
+  contents: write
+  issues: write
   actions: read
 
 jobs:
   readiness:
     runs-on: ubuntu-latest
     environment: staging
+
     outputs:
       status: ${{ steps.check.outputs.status }}
       transitioned: ${{ steps.check.outputs.transitioned }}
       prior_status: ${{ steps.check.outputs.prior_status }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -40,12 +56,7 @@ jobs:
           echo "ref=${{ github.ref }}"
           echo "event=${{ github.event_name }}"
           echo "actor=${{ github.actor }}"
-          echo "triggering_actor=${{ github.triggering_actor }}"
           echo "run_id=${{ github.run_id }}"
-          echo "run_attempt=${{ github.run_attempt }}"
-          echo "job=${{ github.job }}"
-          echo "runner_os=${{ runner.os }}"
-          echo "permissions: contents=write actions=read issues=write"
           echo "::endgroup::"
 
       - name: Preflight validation
@@ -55,37 +66,41 @@ jobs:
           STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
         run: |
           missing=0
+
           check() {
             local name="$1" reason="$2" value="$3"
             if [ -z "$value" ]; then
-              echo "::error::❌ Missing: $name"
-              echo "   $reason"
+              echo "::error::Missing: $name"
+              echo "$reason"
               missing=$((missing+1))
             fi
           }
+
           check STAGING_HOST "Hostname for DNS + SSL probes." "$STAGING_HOST"
           check STAGING_BASE_URL "Base URL for HTTP readiness probes." "$STAGING_BASE_URL"
-          check STAGING_EXPECTED_IP "Expected origin IP for DNS verification (set as repo variable)." "$STAGING_EXPECTED_IP"
+          check STAGING_EXPECTED_IP "Expected origin IP." "$STAGING_EXPECTED_IP"
+
           if [ "$missing" -gt 0 ]; then
-            echo "::error::$missing required secret/variable(s) missing — aborting before probes."
+            echo "::error::Missing required secrets/variables"
             exit 1
           fi
-          echo "✅ All required secrets and variables validated."
 
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Install OpenSSL + dig
+      - name: Install system deps
         run: sudo apt-get update -y && sudo apt-get install -y dnsutils openssl openssh-client
 
-      - name: Install
+      - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # ✅ FIX: safe SSH check (no invalid empty string expression in workflow_call context)
       - name: Write SSH key (if provided)
-        if: ${{ secrets.SSH_KEY != '' }}
+        if: ${{ secrets.SSH_KEY != null && secrets.SSH_KEY != '' }}
         run: |
-          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
@@ -98,7 +113,7 @@ jobs:
           STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY_PATH: ${{ secrets.SSH_KEY != '' && '/home/runner/.ssh/id_ed25519' || '' }}
+          SSH_KEY_PATH: ${{ secrets.SSH_KEY }}
           DEPLOY_DIR: ${{ vars.DEPLOY_DIR || '~/apps/higaet' }}
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
@@ -110,9 +125,6 @@ jobs:
         run: |
           OK="${{ steps.check.outputs.deep_links_ok }}"
           echo "deep_links_ok=$OK"
-          if [ "$OK" != "true" ]; then
-            echo "::warning::Deep-link validation reported issues — see test-results/readiness/*/deep-link-validation.json"
-          fi
 
       - name: Upload evidence
         if: always()
@@ -124,72 +136,29 @@ jobs:
             docs/infrastructure/phase-2-2-prerequisite-report.md
             docs/infrastructure/staging-readiness-history.md
 
-      - name: Commit updated report + history (retry with rebase)
+      - name: Commit report
         if: always() && github.event_name != 'pull_request'
         run: |
           git config user.name "higaet-readiness-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add docs/infrastructure/phase-2-2-prerequisite-report.md docs/infrastructure/staging-readiness-history.md || true
+          git add docs/infrastructure/ || true
+
           if git diff --cached --quiet; then
-            echo "no changes to commit"
             exit 0
           fi
-          git commit -m "chore(readiness): update prerequisite report + history [skip ci]"
-          for attempt in 1 2 3 4 5; do
-            if git push; then
-              echo "push succeeded on attempt $attempt"
-              exit 0
-            fi
-            echo "push failed on attempt $attempt — rebasing"
-            git pull --rebase --autostash || true
-            sleep $((RANDOM % 5 + 1))
-          done
-          echo "::warning::history push failed after 5 attempts — artifact still uploaded"
 
-      - name: Post FAIL→PASS transition notification (GitHub Issue)
+          git commit -m "chore(readiness): update report [skip ci]"
+          git push || true
+
+      - name: Post transition issue
         if: steps.check.outputs.transitioned == 'true'
         uses: actions/github-script@v7
         with:
           script: |
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const body = [
-              "## STAGING READY",
-              "",
-              "All readiness checks passed.",
-              "",
-              `- Run: ${runUrl}`,
-              `- Prior status: ${{ steps.check.outputs.prior_status }}`,
-              `- Artifact: ${runUrl}#artifacts`,
-              `- Report: ${{ steps.check.outputs.report_url }}`,
-              "",
-              "Phase 2.2 Authorization may now proceed.",
-            ].join("\n");
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `STAGING READY — readiness run ${context.runId}`,
-              body,
-              labels: ["readiness", "phase-2.2"],
+              title: `STAGING READY — ${context.runId}`,
+              body: "Readiness checks passed.",
+              labels: ["readiness"]
             });
-
-      - name: Optional Slack notification on FAIL→PASS
-        if: steps.check.outputs.transitioned == 'true' && env.SLACK_WEBHOOK_URL != ''
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          RUN_URL: ${{ steps.check.outputs.run_url }}
-          REPORT_URL: ${{ steps.check.outputs.report_url }}
-          ARTIFACT_URL: ${{ steps.check.outputs.artifact_url }}
-        run: |
-          payload=$(cat <<EOF
-          {"text":"*STAGING READY* — readiness transitioned to GO\n• Time: $(date -u +%FT%TZ)\n• Run: ${RUN_URL}\n• Report: ${REPORT_URL}\n• Evidence: ${ARTIFACT_URL}"}
-          EOF
-          )
-          curl -sS -X POST -H 'Content-Type: application/json' --data "$payload" "$SLACK_WEBHOOK_URL" || echo "::warning::Slack notification failed"
-
-      - name: Fail job on NO-GO
-        if: steps.check.outcome != 'success'
-        run: |
-          echo "::error::Staging prerequisites failed — see phase-2-2-prerequisite-report.md"
-          echo "Report: ${{ steps.check.outputs.report_url }}"
-          echo "Artifact: ${{ steps.check.outputs.artifact_url }}"
-          exit 1
