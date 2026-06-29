@@ -56,10 +56,7 @@ jobs:
           echo "::group::Workflow context"
           echo "workflow=${{ github.workflow }}"
           echo "repo=${{ github.repository }}"
-          echo "ref=${{ github.ref }}"
-          echo "event=${{ github.event_name }}"
-          echo "actor=${{ github.actor }}"
-          echo "run_id=${{ github.run_id }}"
+          echo "run=${{ github.run_id }}"
           echo "::endgroup::"
 
       # -------------------------
@@ -73,29 +70,21 @@ jobs:
         run: |
           missing=0
 
-          require() {
-            local name="$1"
-            local value="$2"
+          check() {
+            name="$1"
+            value="$2"
             if [ -z "$value" ]; then
-              echo "::error::Missing required: $name"
+              echo "::error::Missing: $name"
               missing=$((missing+1))
             fi
           }
 
-          optional() {
-            local name="$1"
-            local value="$2"
-            if [ -z "$value" ]; then
-              echo "::warning::Optional not set: $name"
-            fi
-          }
-
-          require STAGING_HOST "$STAGING_HOST"
-          require STAGING_BASE_URL "$STAGING_BASE_URL"
-          optional STAGING_EXPECTED_IP "$STAGING_EXPECTED_IP"
+          check "STAGING_HOST" "$STAGING_HOST"
+          check "STAGING_BASE_URL" "$STAGING_BASE_URL"
+          check "STAGING_EXPECTED_IP" "$STAGING_EXPECTED_IP"
 
           if [ "$missing" -gt 0 ]; then
-            echo "::error::Required secrets/variables missing — aborting."
+            echo "::error::Missing required config"
             exit 1
           fi
 
@@ -110,14 +99,14 @@ jobs:
         run: bun install --frozen-lockfile
 
       # -------------------------
-      # SSH KEY (SAFE — never pass secret as path)
+      # SSH SETUP (FIXED SAFE)
       # -------------------------
       - name: Write SSH key (if provided)
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
           if [ -z "$SSH_KEY" ]; then
-            echo "SSH key not provided, skipping write step"
+            echo "No SSH key provided — skipping"
             exit 0
           fi
 
@@ -125,7 +114,6 @@ jobs:
           chmod 700 ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          echo "SSH key written to ~/.ssh/id_ed25519"
 
       # -------------------------
       # MAIN CHECKER
@@ -137,32 +125,27 @@ jobs:
           STAGING_HOST: ${{ secrets.STAGING_HOST }}
           STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
           STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
+
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
+
+          # FIX: real file path (NOT secret content)
           SSH_KEY_PATH: /home/runner/.ssh/id_ed25519
+
           DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
-          GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
         run: bun scripts/check-staging-readiness.ts
 
-      - name: Validate deep links
-        if: always()
-        run: |
-          OK="${{ steps.check.outputs.deep_links_ok }}"
-          echo "deep_links_ok=$OK"
-
       # -------------------------
-      # DATADOG (SAFE — skip if keys missing)
+      # DATADOG (NON-BLOCKING FIX)
       # -------------------------
       - name: Run Datadog Synthetic tests
-        if: always()
         env:
           DD_API_KEY: ${{ secrets.DD_API_KEY }}
           DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
         run: |
           if [ -z "$DD_API_KEY" ] || [ -z "$DD_APP_KEY" ]; then
-            echo "Datadog keys missing — skipping Synthetic tests"
+            echo "Datadog keys missing — skipping safely"
             exit 0
           fi
 
@@ -181,8 +164,7 @@ jobs:
           name: readiness-${{ github.run_id }}
           path: |
             test-results/readiness/**
-            docs/infrastructure/phase-2-2-prerequisite-report.md
-            docs/infrastructure/staging-readiness-history.md
+            docs/infrastructure/**
 
       # -------------------------
       # COMMIT REPORT
@@ -196,12 +178,11 @@ jobs:
           git add docs/infrastructure/ || true
 
           if git diff --cached --quiet; then
-            echo "No report changes to commit"
             exit 0
           fi
 
           git commit -m "chore(readiness): update report [skip ci]"
-          git push || echo "::warning::git push failed — continuing"
+          git push || true
 
       # -------------------------
       # NOTIFICATION
