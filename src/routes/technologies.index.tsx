@@ -35,6 +35,7 @@ import { CaseStudyCard, type CaseStudy } from "@/components/site/CaseStudyCard";
 import { TestimonialCarousel, type Testimonial } from "@/components/site/TestimonialCarousel";
 import { FAQ, faqJsonLd, type QA } from "@/components/site/FAQ";
 import { CTASection } from "@/components/site/CTASection";
+import { RelatedCluster } from "@/components/site/RelatedCluster";
 import { LeadForm } from "@/components/site/LeadForm";
 import { jsonLdScript } from "@/components/site/JsonLd";
 
@@ -461,6 +462,10 @@ function TechHome() {
         secondaryHref="/technologies/case-studies"
         secondaryLabel="See case studies"
       />
+
+      <div className="mx-auto max-w-6xl px-6 pb-16">
+        <RelatedCluster path="/technologies" />
+      </div>
     </>
   );
 }

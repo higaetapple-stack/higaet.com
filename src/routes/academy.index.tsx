@@ -18,6 +18,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { StatBand } from "@/components/site/StatBand";
 import { CTASection } from "@/components/site/CTASection";
+import { RelatedCluster } from "@/components/site/RelatedCluster";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { PROGRAMS } from "@/lib/academy-programs";
 import { getAcademyTestimonials, type TestimonialEntry } from "@/content/providers";
@@ -387,6 +388,10 @@ function AcademyHome() {
         secondaryHref="/academy/programs"
         secondaryLabel="Explore programs"
       />
+
+      <div className="mx-auto max-w-6xl px-6 pb-16">
+        <RelatedCluster path="/academy" />
+      </div>
     </>
   );
 }
