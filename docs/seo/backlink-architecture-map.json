@@ -1,0 +1,929 @@
+[
+  {
+    "cluster": "academy-genai-engineering",
+    "title": "Gen AI Engineering Programs",
+    "hub": "/academy",
+    "spokes": [
+      {
+        "path": "/academy/programs",
+        "linksToHub": true,
+        "anchors": [
+          "Gen AI degree & diploma programs"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy/placements",
+            "anchor": "HIGAET placements & career outcomes"
+          },
+          {
+            "to": "/academy/campuses",
+            "anchor": "HIGAET Academy campuses"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/learning-paths",
+        "linksToHub": true,
+        "anchors": [
+          "AI engineer learning paths"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy/placements",
+            "anchor": "HIGAET placements & career outcomes"
+          },
+          {
+            "to": "/academy/campuses",
+            "anchor": "HIGAET Academy campuses"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/certifications",
+        "linksToHub": true,
+        "anchors": [
+          "industry-recognized AI certifications"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy/placements",
+            "anchor": "HIGAET placements & career outcomes"
+          },
+          {
+            "to": "/academy/campuses",
+            "anchor": "HIGAET Academy campuses"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/admissions",
+        "linksToHub": true,
+        "anchors": [
+          "Academy admissions process"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy/placements",
+            "anchor": "HIGAET placements & career outcomes"
+          },
+          {
+            "to": "/academy/campuses",
+            "anchor": "HIGAET Academy campuses"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/faq",
+        "linksToHub": true,
+        "anchors": [
+          "Academy FAQs"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy/placements",
+            "anchor": "HIGAET placements & career outcomes"
+          },
+          {
+            "to": "/academy/campuses",
+            "anchor": "HIGAET Academy campuses"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/blog/certifications-comparison",
+        "linksToHub": true,
+        "anchors": [
+          "comparing AI certifications"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy/placements",
+            "anchor": "HIGAET placements & career outcomes"
+          },
+          {
+            "to": "/academy/campuses",
+            "anchor": "HIGAET Academy campuses"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "academy-career-outcomes",
+    "title": "Career Outcomes & Placements",
+    "hub": "/academy/placements",
+    "spokes": [
+      {
+        "path": "/academy/internships",
+        "linksToHub": true,
+        "anchors": [
+          "AI engineering internships"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/academy/success-stories",
+        "linksToHub": true,
+        "anchors": [
+          "alumni success stories"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/academy/scholarship",
+        "linksToHub": true,
+        "anchors": [
+          "merit and need-based scholarships"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/careers",
+        "linksToHub": true,
+        "anchors": [
+          "open roles at HIGAET"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/academy/contact",
+        "linksToHub": true,
+        "anchors": [
+          "talk to an admissions counselor"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "academy-campuses-formats",
+    "title": "Campuses & Learning Formats",
+    "hub": "/academy/campuses",
+    "spokes": [
+      {
+        "path": "/academy/campuses/higaet-bengaluru",
+        "linksToHub": true,
+        "anchors": [
+          "HIGAET Bengaluru campus"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/campuses/higaet-hyderabad",
+        "linksToHub": true,
+        "anchors": [
+          "HIGAET Hyderabad campus"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/online-courses",
+        "linksToHub": true,
+        "anchors": [
+          "online cohort delivery"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/offline-training",
+        "linksToHub": true,
+        "anchors": [
+          "in-person campus training"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/academy/corporate-training",
+        "linksToHub": true,
+        "anchors": [
+          "private cohorts for companies"
+        ],
+        "crossLinks": [
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          },
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "global-study-abroad",
+    "title": "Study Abroad & University Pathways",
+    "hub": "/global-education",
+    "spokes": [
+      {
+        "path": "/global-education/study-abroad",
+        "linksToHub": true,
+        "anchors": [
+          "study abroad programs"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/universities",
+        "linksToHub": true,
+        "anchors": [
+          "partner universities"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/countries",
+        "linksToHub": true,
+        "anchors": [
+          "study destinations by country"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/admission-process",
+        "linksToHub": true,
+        "anchors": [
+          "international admissions process"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/student-services",
+        "linksToHub": true,
+        "anchors": [
+          "pre-departure & student services"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/faq",
+        "linksToHub": true,
+        "anchors": [
+          "study abroad FAQs"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/contact",
+        "linksToHub": true,
+        "anchors": [
+          "speak with an education counselor"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education/visa-guidance",
+            "anchor": "HIGAET visa guidance"
+          },
+          {
+            "to": "/academy",
+            "anchor": "HIGAET Academy"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "global-visa-funding",
+    "title": "Visa Guidance & Funding",
+    "hub": "/global-education/visa-guidance",
+    "spokes": [
+      {
+        "path": "/global-education/scholarships",
+        "linksToHub": true,
+        "anchors": [
+          "international scholarships"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/knowledge-base/universities",
+        "linksToHub": true,
+        "anchors": [
+          "university knowledge base"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/countries/usa",
+        "linksToHub": true,
+        "anchors": [
+          "USA student visa pathway"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/countries/uk",
+        "linksToHub": true,
+        "anchors": [
+          "UK student visa pathway"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      },
+      {
+        "path": "/global-education/countries/canada",
+        "linksToHub": true,
+        "anchors": [
+          "Canada student visa pathway"
+        ],
+        "crossLinks": [
+          {
+            "to": "/global-education",
+            "anchor": "HIGAET Global Education Hub"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "tech-ai-services",
+    "title": "AI & Engineering Services",
+    "hub": "/technologies",
+    "spokes": [
+      {
+        "path": "/technologies/ai-solutions",
+        "linksToHub": true,
+        "anchors": [
+          "applied AI solutions"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/expertise/ai-automation",
+        "linksToHub": true,
+        "anchors": [
+          "AI automation expertise"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/data-engineering",
+        "linksToHub": true,
+        "anchors": [
+          "data engineering services"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/business-intelligence",
+        "linksToHub": true,
+        "anchors": [
+          "business intelligence"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/custom-software-development",
+        "linksToHub": true,
+        "anchors": [
+          "custom software engineering"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/cloud-solutions",
+        "linksToHub": true,
+        "anchors": [
+          "cloud solutions"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/cloud-migration",
+        "linksToHub": true,
+        "anchors": [
+          "cloud migration"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/devops",
+        "linksToHub": true,
+        "anchors": [
+          "DevOps & platform engineering"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/api-development",
+        "linksToHub": true,
+        "anchors": [
+          "API development"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/digital-transformation",
+        "linksToHub": true,
+        "anchors": [
+          "digital transformation programs"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "tech-engagement-models",
+    "title": "Engagement Models",
+    "hub": "/technologies/engagement",
+    "spokes": [
+      {
+        "path": "/technologies/engagement/dedicated-development-team",
+        "linksToHub": true,
+        "anchors": [
+          "dedicated development team"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/engagement/staff-augmentation",
+        "linksToHub": true,
+        "anchors": [
+          "staff augmentation"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/engagement/offshore-development-center",
+        "linksToHub": true,
+        "anchors": [
+          "offshore development center"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/engagement/build-operate-transfer",
+        "linksToHub": true,
+        "anchors": [
+          "build-operate-transfer"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/engagement/fixed-price-projects",
+        "linksToHub": true,
+        "anchors": [
+          "fixed-price projects"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/engagement/time-and-materials",
+        "linksToHub": true,
+        "anchors": [
+          "time and materials"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/dedicated-team",
+        "linksToHub": true,
+        "anchors": [
+          "dedicated team overview"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/case-studies",
+            "anchor": "HIGAET Technologies case studies"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "cluster": "tech-industry-solutions",
+    "title": "Industry Solutions & Proof",
+    "hub": "/technologies/case-studies",
+    "spokes": [
+      {
+        "path": "/technologies/enterprise-software",
+        "linksToHub": true,
+        "anchors": [
+          "enterprise software"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/digital-marketing",
+        "linksToHub": true,
+        "anchors": [
+          "AI-powered digital marketing"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/company",
+        "linksToHub": true,
+        "anchors": [
+          "about HIGAET Technologies"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/careers",
+        "linksToHub": true,
+        "anchors": [
+          "Technologies careers"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/contact",
+        "linksToHub": true,
+        "anchors": [
+          "talk to a solutions architect"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          }
+        ]
+      },
+      {
+        "path": "/technologies/industries",
+        "linksToHub": true,
+        "anchors": [
+          "industries we serve"
+        ],
+        "crossLinks": [
+          {
+            "to": "/technologies",
+            "anchor": "HIGAET Technologies services"
+          },
+          {
+            "to": "/technologies/engagement",
+            "anchor": "HIGAET engagement models"
+          }
+        ]
+      }
+    ]
+  }
+]
