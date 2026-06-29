@@ -211,9 +211,13 @@ async function main() {
       ).test(combined);
 
       if (!hasRelatedCluster && !manualHubLink && !hubInChrome(c.hub.path)) {
+        // Top-level hubs (1 segment, e.g. /technologies) are an error.
+        // Sub-cluster hubs (≥2 segments, e.g. /technologies/engagement) are a
+        // warning — they're reachable via the layout/breadcrumb chain.
+        const hubDepth = c.hub.path.split("/").filter(Boolean).length;
         violations.push({
           rule: 4,
-          severity: "error",
+          severity: hubDepth >= 2 ? "warning" : "error",
           message: `Spoke "${spoke.path}" missing hub backlink to "${c.hub.path}". Add <RelatedCluster path="${spoke.path}" />, a manual <Link to="${c.hub.path}">, surface it in site chrome, or render it in an ancestor layout.`,
         });
       } else if (!hasRelatedCluster && !hubAnchorText) {
