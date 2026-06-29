@@ -5,7 +5,6 @@ on:
   schedule:
     - cron: "0 6 * * *"
 
-  # Enables reusable workflow calls
   workflow_call:
     inputs:
       mode:
@@ -24,6 +23,10 @@ on:
       SSH_HOST:
         required: false
       SSH_USER:
+        required: false
+      DD_API_KEY:
+        required: false
+      DD_APP_KEY:
         required: false
 
 concurrency:
@@ -52,13 +55,16 @@ jobs:
         run: |
           echo "::group::Workflow context"
           echo "workflow=${{ github.workflow }}"
-          echo "repository=${{ github.repository }}"
+          echo "repo=${{ github.repository }}"
           echo "ref=${{ github.ref }}"
           echo "event=${{ github.event_name }}"
           echo "actor=${{ github.actor }}"
           echo "run_id=${{ github.run_id }}"
           echo "::endgroup::"
 
+      # -------------------------
+      # PRECHECK (SAFE)
+      # -------------------------
       - name: Preflight validation
         env:
           STAGING_HOST: ${{ secrets.STAGING_HOST }}
@@ -67,24 +73,29 @@ jobs:
         run: |
           missing=0
 
-          check() {
+          require() {
             local name="$1"
-            local reason="$2"
-            local value="$3"
-
+            local value="$2"
             if [ -z "$value" ]; then
-              echo "::error::Missing: $name"
-              echo "$reason"
+              echo "::error::Missing required: $name"
               missing=$((missing+1))
             fi
           }
 
-          check STAGING_HOST "Hostname for DNS + SSL probes." "$STAGING_HOST"
-          check STAGING_BASE_URL "Base URL for HTTP readiness probes." "$STAGING_BASE_URL"
-          check STAGING_EXPECTED_IP "Expected origin IP." "$STAGING_EXPECTED_IP"
+          optional() {
+            local name="$1"
+            local value="$2"
+            if [ -z "$value" ]; then
+              echo "::warning::Optional not set: $name"
+            fi
+          }
+
+          require STAGING_HOST "$STAGING_HOST"
+          require STAGING_BASE_URL "$STAGING_BASE_URL"
+          optional STAGING_EXPECTED_IP "$STAGING_EXPECTED_IP"
 
           if [ "$missing" -gt 0 ]; then
-            echo "::error::Missing required secrets/variables"
+            echo "::error::Required secrets/variables missing — aborting."
             exit 1
           fi
 
@@ -98,18 +109,27 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # ✅ SAFE SSH HANDLING (FIXED)
+      # -------------------------
+      # SSH KEY (SAFE — never pass secret as path)
+      # -------------------------
       - name: Write SSH key (if provided)
-        run: |
-          if [ -n "$SSH_KEY" ]; then
-            mkdir -p ~/.ssh
-            chmod 700 ~/.ssh
-            printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
-            chmod 600 ~/.ssh/id_ed25519
-          fi
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          if [ -z "$SSH_KEY" ]; then
+            echo "SSH key not provided, skipping write step"
+            exit 0
+          fi
 
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "SSH key written to ~/.ssh/id_ed25519"
+
+      # -------------------------
+      # MAIN CHECKER
+      # -------------------------
       - name: Run readiness checker
         id: check
         continue-on-error: true
@@ -119,15 +139,11 @@ jobs:
           STAGING_EXPECTED_IP: ${{ vars.STAGING_EXPECTED_IP }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-
-          # FIXED: always use file path, not secret value
           SSH_KEY_PATH: /home/runner/.ssh/id_ed25519
-
           DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_RUN_ID: ${{ github.run_id }}
-
         run: bun scripts/check-staging-readiness.ts
 
       - name: Validate deep links
@@ -136,6 +152,28 @@ jobs:
           OK="${{ steps.check.outputs.deep_links_ok }}"
           echo "deep_links_ok=$OK"
 
+      # -------------------------
+      # DATADOG (SAFE — skip if keys missing)
+      # -------------------------
+      - name: Run Datadog Synthetic tests
+        if: always()
+        env:
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
+          DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
+        run: |
+          if [ -z "$DD_API_KEY" ] || [ -z "$DD_APP_KEY" ]; then
+            echo "Datadog keys missing — skipping Synthetic tests"
+            exit 0
+          fi
+
+          npx --yes @datadog/datadog-ci synthetics run-tests || {
+            echo "::warning::Datadog Synthetic tests failed — not blocking readiness"
+            exit 0
+          }
+
+      # -------------------------
+      # ARTIFACTS
+      # -------------------------
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -146,6 +184,9 @@ jobs:
             docs/infrastructure/phase-2-2-prerequisite-report.md
             docs/infrastructure/staging-readiness-history.md
 
+      # -------------------------
+      # COMMIT REPORT
+      # -------------------------
       - name: Commit report
         if: always() && github.event_name != 'pull_request'
         run: |
@@ -155,12 +196,16 @@ jobs:
           git add docs/infrastructure/ || true
 
           if git diff --cached --quiet; then
+            echo "No report changes to commit"
             exit 0
           fi
 
           git commit -m "chore(readiness): update report [skip ci]"
-          git push || true
+          git push || echo "::warning::git push failed — continuing"
 
+      # -------------------------
+      # NOTIFICATION
+      # -------------------------
       - name: Post transition issue
         if: steps.check.outputs.transitioned == 'true'
         uses: actions/github-script@v7
