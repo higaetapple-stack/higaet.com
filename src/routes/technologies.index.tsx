@@ -462,6 +462,10 @@ function TechHome() {
         secondaryHref="/technologies/case-studies"
         secondaryLabel="See case studies"
       />
+
+      <div className="mx-auto max-w-6xl px-6 pb-16">
+        <RelatedCluster path="/technologies" />
+      </div>
     </>
   );
 }
