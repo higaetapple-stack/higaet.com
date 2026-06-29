@@ -5,6 +5,7 @@ import { Section } from "@/components/site/Section";
 import { StatBand } from "@/components/site/StatBand";
 import { CTASection } from "@/components/site/CTASection";
 import { RelatedCluster } from "@/components/site/RelatedCluster";
+import { HubLongform } from "@/components/site/HubLongform";
 import { FeatureGrid } from "@/components/site/FeatureGrid";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 
@@ -104,9 +105,7 @@ function GlobalHome() {
         secondaryLabel="Browse universities"
       />
 
-      <div className="mx-auto max-w-6xl px-6 pb-16">
-        <RelatedCluster path="/global-education" />
-      </div>
+      <HubLongform clusterId="global-study-abroad" />
     </>
   );
 }
