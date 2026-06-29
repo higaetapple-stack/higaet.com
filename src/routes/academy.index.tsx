@@ -388,6 +388,10 @@ function AcademyHome() {
         secondaryHref="/academy/programs"
         secondaryLabel="Explore programs"
       />
+
+      <div className="mx-auto max-w-6xl px-6 pb-16">
+        <RelatedCluster path="/academy" />
+      </div>
     </>
   );
 }
