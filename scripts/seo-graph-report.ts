@@ -51,12 +51,18 @@ async function collectRoutes() {
   const literals = new Set<string>(["/"]);
   const patterns: RegExp[] = [];
   const files = new Map<string, string>();
+  const filesIsIndex = new Map<string, boolean>();
   for await (const f of walk(ROUTES_DIR)) {
     const p = fileToRoutePath(f);
     if (!p) continue;
-    files.set(p, f);
+    const isIndex = /\.index\.(t|j)sx?$/.test(f) || /\/index\.(t|j)sx?$/.test(f);
     if (p.includes("$")) patterns.push(new RegExp("^" + p.replace(/\$[^/]*/g, "[^/]+") + "$"));
     else literals.add(p);
+    const prev = files.get(p);
+    if (!prev || (isIndex && !filesIsIndex.get(p))) {
+      files.set(p, f);
+      filesIsIndex.set(p, isIndex);
+    }
   }
   return { literals, patterns, files };
 }
