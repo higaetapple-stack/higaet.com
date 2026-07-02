@@ -1,38 +1,42 @@
 # Phase 2.2 — Prerequisite Report
 
-- **Generated:** 2026-07-02T08:42:13.400Z
-- **Workflow / Run:** 28577113157
+- **Generated:** 2026-07-02T23:46:33.261Z
+- **Workflow / Run:** 28628733871
 - **Overall status:** STAGING BLOCKED
-- **Evidence artifacts:** `/home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T08-42-13-400Z`
+- **Evidence artifacts:** `/home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T23-46-33-261Z`
 
 ## Evidence Matrix
 
 | Category | Check | Status | Evidence |
 | --- | --- | --- | --- |
-| DNS | staging.higaet.com via 1.1.1.1 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T08-42-13-400Z/dns-1.1.1.1.txt |
-| DNS | staging.higaet.com via 8.8.8.8 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T08-42-13-400Z/dns-8.8.8.8.txt |
+| DNS | staging.higaet.com via 1.1.1.1 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T23-46-33-261Z/dns-1.1.1.1.txt |
+| DNS | staging.higaet.com via 8.8.8.8 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T23-46-33-261Z/dns-8.8.8.8.txt |
 | DNS | Matches STAGING_EXPECTED_IP (103.102.234.161) | **PASS** | Resolved IPs: 103.102.234.161, 103.102.234.161 |
-| SSL | Cert for staging.higaet.com valid ≥30d & CN matches | **PASS** | notAfter=Jun 24 03:42:13 2027 GMT, daysLeft=356, CN match=true — see /home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T08-42-13-400Z/ssl.txt |
-| SSH | Auth to wnwpopno@103.102.234.161 | **FAIL** | Error: ssh: connect to host 103.102.234.161 port 22: Connection refused
+| SSL | Cert for staging.higaet.com valid ≥30d & CN matches | **PASS** | notAfter=Jun 24 03:42:13 2027 GMT, daysLeft=356, CN match=true — see /home/runner/work/higaet-core-engine/higaet-core-engine/test-results/readiness/2026-07-02T23-46-33-261Z/ssl.txt |
+| SSH | Auth to wnwpopno@103.102.234.161:22999 | **FAIL** | Error: Warning: Permanently added '[103.102.234.161]:22999' (ED25519) to the list of known hosts.
+wnwpopno@103.102.234.161: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
  |
-| GitHub | API access | **FAIL** | GITHUB_REPO and GITHUB_TOKEN not set — cannot verify environment/secrets remotely |
-| GitHub | Secret STAGING_HOST | **FAIL** | GitHub API not reachable |
-| GitHub | Secret STAGING_BASE_URL | **FAIL** | GitHub API not reachable |
-| GitHub | Secret SSH_HOST | **FAIL** | GitHub API not reachable |
-| GitHub | Secret SSH_USER | **FAIL** | GitHub API not reachable |
-| GitHub | Secret SSH_KEY | **FAIL** | GitHub API not reachable |
+| GitHub | staging environment exists | **FAIL** | GET /environments/staging → 401 |
+| GitHub | Secret STAGING_HOST | **FAIL** | staging environment missing |
+| GitHub | Secret STAGING_BASE_URL | **FAIL** | staging environment missing |
+| GitHub | Secret SSH_HOST | **FAIL** | staging environment missing |
+| GitHub | Secret SSH_PORT | **FAIL** | staging environment missing |
+| GitHub | Secret SSH_USER | **FAIL** | staging environment missing |
+| GitHub | Secret SSH_KEY | **FAIL** | staging environment missing |
 
 ## Result
 
-**STAGING BLOCKED.** 7 of 11 required checks failed:
+**STAGING BLOCKED.** 8 of 12 required checks failed:
 
-- SSH / Auth to wnwpopno@103.102.234.161 — Error: ssh: connect to host 103.102.234.161 port 22: Connection refused
+- SSH / Auth to wnwpopno@103.102.234.161:22999 — Error: Warning: Permanently added '[103.102.234.161]:22999' (ED25519) to the list of known hosts.
+wnwpopno@103.102.234.161: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
 
-- GitHub / API access — GITHUB_REPO and GITHUB_TOKEN not set — cannot verify environment/secrets remotely
-- GitHub / Secret STAGING_HOST — GitHub API not reachable
-- GitHub / Secret STAGING_BASE_URL — GitHub API not reachable
-- GitHub / Secret SSH_HOST — GitHub API not reachable
-- GitHub / Secret SSH_USER — GitHub API not reachable
-- GitHub / Secret SSH_KEY — GitHub API not reachable
+- GitHub / staging environment exists — GET /environments/staging → 401
+- GitHub / Secret STAGING_HOST — staging environment missing
+- GitHub / Secret STAGING_BASE_URL — staging environment missing
+- GitHub / Secret SSH_HOST — staging environment missing
+- GitHub / Secret SSH_PORT — staging environment missing
+- GitHub / Secret SSH_USER — staging environment missing
+- GitHub / Secret SSH_KEY — staging environment missing
 
 See `infrastructure-activation-checklist.md` for remediation.
