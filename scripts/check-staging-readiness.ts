@@ -193,7 +193,7 @@ async function checkSsh() {
   writeArtifact("ssh-auth.txt", auth.stdout + "\n" + auth.stderr);
   record({
     category: "SSH",
-    name: `Auth to ${sshUser}@${sshHost}`,
+    name: `Auth to ${sshUser}@${sshHost}:${sshPort}`,
     status: auth.ok && auth.stdout.trim() === "ok" ? "PASS" : "FAIL",
     required: true,
     evidence: auth.ok ? "Returned ok" : `Error: ${auth.stderr.slice(0, 200)}`,
