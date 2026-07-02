@@ -245,6 +245,7 @@ async function checkGithub() {
     "STAGING_HOST",
     "STAGING_BASE_URL",
     "SSH_HOST",
+    "SSH_PORT",
     "SSH_USER",
     "SSH_KEY",
   ];
