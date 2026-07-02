@@ -203,13 +203,17 @@ async function checkSsh() {
 
   const node = await run("ssh", [...sshArgs, "node --version || true"]);
   writeArtifact("ssh-node.txt", node.stdout + "\n" + node.stderr);
-  const isNode20 = /^v20\./.test(node.stdout.trim());
+  const nodeVersion = node.stdout.trim();
+  const major = /^v(\d+)\./.exec(nodeVersion)?.[1];
+  const majorNum = major ? Number(major) : 0;
+  // MilesWeb cPanel offers Node 20 and Node 24 LTS. Accept either.
+  const nodeOk = majorNum >= 20;
   record({
     category: "Deployment Target",
-    name: "Node 20 available",
-    status: isNode20 ? "PASS" : "FAIL",
+    name: "Node ≥20 available (20 or 24 LTS)",
+    status: nodeOk ? "PASS" : "FAIL",
     required: true,
-    evidence: `node --version: ${node.stdout.trim() || "(none)"}`,
+    evidence: `node --version: ${nodeVersion || "(none)"}`,
   });
 
   const dir = await run("ssh", [
