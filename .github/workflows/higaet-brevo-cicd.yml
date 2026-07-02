@@ -102,7 +102,7 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ]; then
             echo "::warning::SSH deployment skipped (missing config)"
