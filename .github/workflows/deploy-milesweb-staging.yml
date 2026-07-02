@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CPANEL_USER: wnwpopno
+  CPANEL_USER: ${{ secrets.SSH_USER }}
   APP_ROOT: /home/wnwpopno/higaet-staging
   NODE_VERSION: "20.20.2"
   STARTUP_FILE: app.js
@@ -77,7 +77,7 @@ jobs:
           # Deploy-time (SSH)
           check_required SSH_HOST          "MilesWeb cPanel SSH host for scp/ssh"
           check_required SSH_KEY           "Private SSH key for user ${CPANEL_USER}"
-          check_optional SSH_PORT          "SSH port; defaults to 22"
+          check_required SSH_PORT          "SSH port (required, no default)"
 
           # Workflow env sanity
           for v in CPANEL_USER APP_ROOT NODE_VERSION STARTUP_FILE APP_URL; do
