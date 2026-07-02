@@ -203,13 +203,17 @@ async function checkSsh() {
 
   const node = await run("ssh", [...sshArgs, "node --version || true"]);
   writeArtifact("ssh-node.txt", node.stdout + "\n" + node.stderr);
-  const isNode20 = /^v20\./.test(node.stdout.trim());
+  const nodeVersion = node.stdout.trim();
+  const major = /^v(\d+)\./.exec(nodeVersion)?.[1];
+  const majorNum = major ? Number(major) : 0;
+  // MilesWeb cPanel offers Node 20 and Node 24 LTS. Accept either.
+  const nodeOk = majorNum >= 20;
   record({
     category: "Deployment Target",
-    name: "Node 20 available",
-    status: isNode20 ? "PASS" : "FAIL",
+    name: "Node ≥20 available (20 or 24 LTS)",
+    status: nodeOk ? "PASS" : "FAIL",
     required: true,
-    evidence: `node --version: ${node.stdout.trim() || "(none)"}`,
+    evidence: `node --version: ${nodeVersion || "(none)"}`,
   });
 
   const dir = await run("ssh", [
@@ -305,14 +309,29 @@ async function checkGithub() {
   );
   const secretsBody = await secretsRes.json().catch(() => ({}));
   writeArtifact("gh-secrets.json", JSON.stringify(secretsBody, null, 2));
-  const names: string[] = (secretsBody?.secrets ?? []).map((s: any) => s.name);
+  const envNames: string[] = (secretsBody?.secrets ?? []).map((s: any) => s.name);
+
+  // Also list repo-scoped secrets — env-scope secrets can inherit / override, and
+  // some teams keep the SSH_* set at repo scope only. Either scope satisfies the check.
+  const repoSecretsRes = await fetch(
+    `https://api.github.com/repos/${ghRepo}/actions/secrets`,
+    { headers },
+  );
+  const repoSecretsBody = await repoSecretsRes.json().catch(() => ({}));
+  writeArtifact("gh-secrets-repo.json", JSON.stringify(repoSecretsBody, null, 2));
+  const repoNames: string[] = (repoSecretsBody?.secrets ?? []).map((s: any) => s.name);
+
   for (const s of required) {
+    const inEnv = envNames.includes(s);
+    const inRepo = repoNames.includes(s);
+    const present = inEnv || inRepo;
+    const scope = inEnv && inRepo ? "env+repo" : inEnv ? "env" : inRepo ? "repo" : "missing";
     record({
       category: "GitHub",
       name: `Secret ${s}`,
-      status: names.includes(s) ? "PASS" : "FAIL",
+      status: present ? "PASS" : "FAIL",
       required: true,
-      evidence: names.includes(s) ? "present" : `not in [${names.join(", ") || "—"}]`,
+      evidence: present ? `present (${scope})` : `not in env=[${envNames.join(", ") || "—"}] or repo=[${repoNames.join(", ") || "—"}]`,
     });
   }
 }
@@ -389,7 +408,7 @@ function buildStepSummary(overall: "GO" | "NO-GO"): string {
     ["GitHub Environment", checks.find((c) => c.name === "staging environment exists")?.status ?? "FAIL"],
     ["Required Secrets", checks.filter((c) => c.category === "GitHub" && c.name.startsWith("Secret ")).every((c) => c.status === "PASS") ? "PASS" : "FAIL"],
     ["Deploy Directory", checks.find((c) => c.name.includes("writable"))?.status ?? "FAIL"],
-    ["Node Runtime", checks.find((c) => c.name === "Node 20 available")?.status ?? "FAIL"],
+    ["Node Runtime", checks.find((c) => c.name.startsWith("Node "))?.status ?? "FAIL"],
     ["Passenger Restart", checks.find((c) => c.name.includes("Passenger"))?.status ?? "FAIL"],
   ];
   const lines = [
