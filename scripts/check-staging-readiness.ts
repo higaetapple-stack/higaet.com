@@ -309,14 +309,29 @@ async function checkGithub() {
   );
   const secretsBody = await secretsRes.json().catch(() => ({}));
   writeArtifact("gh-secrets.json", JSON.stringify(secretsBody, null, 2));
-  const names: string[] = (secretsBody?.secrets ?? []).map((s: any) => s.name);
+  const envNames: string[] = (secretsBody?.secrets ?? []).map((s: any) => s.name);
+
+  // Also list repo-scoped secrets — env-scope secrets can inherit / override, and
+  // some teams keep the SSH_* set at repo scope only. Either scope satisfies the check.
+  const repoSecretsRes = await fetch(
+    `https://api.github.com/repos/${ghRepo}/actions/secrets`,
+    { headers },
+  );
+  const repoSecretsBody = await repoSecretsRes.json().catch(() => ({}));
+  writeArtifact("gh-secrets-repo.json", JSON.stringify(repoSecretsBody, null, 2));
+  const repoNames: string[] = (repoSecretsBody?.secrets ?? []).map((s: any) => s.name);
+
   for (const s of required) {
+    const inEnv = envNames.includes(s);
+    const inRepo = repoNames.includes(s);
+    const present = inEnv || inRepo;
+    const scope = inEnv && inRepo ? "env+repo" : inEnv ? "env" : inRepo ? "repo" : "missing";
     record({
       category: "GitHub",
       name: `Secret ${s}`,
-      status: names.includes(s) ? "PASS" : "FAIL",
+      status: present ? "PASS" : "FAIL",
       required: true,
-      evidence: names.includes(s) ? "present" : `not in [${names.join(", ") || "—"}]`,
+      evidence: present ? `present (${scope})` : `not in env=[${envNames.join(", ") || "—"}] or repo=[${repoNames.join(", ") || "—"}]`,
     });
   }
 }
