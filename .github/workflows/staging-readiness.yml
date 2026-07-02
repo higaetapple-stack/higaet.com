@@ -24,6 +24,8 @@ on:
         required: false
       SSH_USER:
         required: false
+      SSH_PORT:
+        required: false
       DD_API_KEY:
         required: false
       DD_APP_KEY:
