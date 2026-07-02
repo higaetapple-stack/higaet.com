@@ -408,7 +408,7 @@ function buildStepSummary(overall: "GO" | "NO-GO"): string {
     ["GitHub Environment", checks.find((c) => c.name === "staging environment exists")?.status ?? "FAIL"],
     ["Required Secrets", checks.filter((c) => c.category === "GitHub" && c.name.startsWith("Secret ")).every((c) => c.status === "PASS") ? "PASS" : "FAIL"],
     ["Deploy Directory", checks.find((c) => c.name.includes("writable"))?.status ?? "FAIL"],
-    ["Node Runtime", checks.find((c) => c.name === "Node 20 available")?.status ?? "FAIL"],
+    ["Node Runtime", checks.find((c) => c.name.startsWith("Node "))?.status ?? "FAIL"],
     ["Passenger Restart", checks.find((c) => c.name.includes("Passenger"))?.status ?? "FAIL"],
   ];
   const lines = [
