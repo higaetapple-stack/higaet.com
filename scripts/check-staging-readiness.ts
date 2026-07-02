@@ -181,6 +181,7 @@ async function checkSsh() {
   }
   const keyArgs = sshKey ? ["-i", sshKey] : [];
   const sshArgs = [
+    "-p", sshPort,
     "-o", "BatchMode=yes",
     "-o", "StrictHostKeyChecking=accept-new",
     "-o", "ConnectTimeout=10",
