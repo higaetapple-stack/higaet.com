@@ -43,10 +43,10 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
           # SSH / deploy (required)
-          MILESWEB_SSH_HOST: ${{ secrets.MILESWEB_SSH_HOST }}
-          MILESWEB_SSH_KEY: ${{ secrets.MILESWEB_SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
           # Optional
-          MILESWEB_SSH_PORT: ${{ secrets.MILESWEB_SSH_PORT }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           set -u
           echo "::group::Preflight: required secrets"
@@ -75,9 +75,9 @@ jobs:
           check_required VITE_SUPABASE_PROJECT_ID   "Supabase project ref baked into client bundle"
 
           # Deploy-time (SSH)
-          check_required MILESWEB_SSH_HOST          "MilesWeb cPanel SSH host for scp/ssh"
-          check_required MILESWEB_SSH_KEY           "Private SSH key for user ${CPANEL_USER}"
-          check_optional MILESWEB_SSH_PORT          "SSH port; defaults to 22"
+          check_required SSH_HOST          "MilesWeb cPanel SSH host for scp/ssh"
+          check_required SSH_KEY           "Private SSH key for user ${CPANEL_USER}"
+          check_optional SSH_PORT          "SSH port; defaults to 22"
 
           # Workflow env sanity
           for v in CPANEL_USER APP_ROOT NODE_VERSION STARTUP_FILE APP_URL; do
@@ -160,20 +160,20 @@ jobs:
       - name: Upload release to MilesWeb
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ env.CPANEL_USER }}
-          key: ${{ secrets.MILESWEB_SSH_KEY }}
-          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: "release.tar.gz"
           target: "/home/wnwpopno/deploy-staging/"
 
       - name: Verify uploaded release on server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ env.CPANEL_USER }}
-          key: ${{ secrets.MILESWEB_SSH_KEY }}
-          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             set -euo pipefail
             test -f /home/wnwpopno/deploy-staging/release.tar.gz || { echo "FATAL: release.tar.gz was not uploaded"; exit 1; }
@@ -187,10 +187,10 @@ jobs:
       - name: Activate release on server (atomic) & restart Passenger
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ env.CPANEL_USER }}
-          key: ${{ secrets.MILESWEB_SSH_KEY }}
-          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             set -euo pipefail
             APP_ROOT="${{ env.APP_ROOT }}"
@@ -257,10 +257,10 @@ jobs:
       - name: Server-side Passenger reality check
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.MILESWEB_SSH_HOST }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ env.CPANEL_USER }}
-          key: ${{ secrets.MILESWEB_SSH_KEY }}
-          port: ${{ secrets.MILESWEB_SSH_PORT || 22 }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             set -u
             APP_ROOT="${{ env.APP_ROOT }}"

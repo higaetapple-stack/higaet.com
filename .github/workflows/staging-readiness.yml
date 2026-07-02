@@ -130,7 +130,7 @@ jobs:
 
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
 
           # FIX: real file path (NOT secret content)
           SSH_KEY_PATH: /home/runner/.ssh/id_ed25519
