@@ -66,6 +66,7 @@ jobs:
           host: ${{ env.STAGING_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           source: "release-${{ steps.pkg.outputs.sha }}.tgz"
           target: "releases/"
 
@@ -75,6 +76,7 @@ jobs:
           host: ${{ env.STAGING_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             set -euo pipefail
             cd ~/apps/higaet
