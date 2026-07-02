@@ -86,6 +86,7 @@ const expectedIp = env.STAGING_EXPECTED_IP ?? "";
 const sshHost = env.SSH_HOST ?? "";
 const sshUser = env.SSH_USER ?? "";
 const sshKey = env.SSH_KEY_PATH ?? "";
+const sshPort = env.SSH_PORT ?? "22";
 const deployDir = env.DEPLOY_DIR ?? "~/apps/higaet";
 const ghRepo = env.GITHUB_REPO ?? "";
 const ghToken = env.GITHUB_TOKEN ?? "";
@@ -180,6 +181,7 @@ async function checkSsh() {
   }
   const keyArgs = sshKey ? ["-i", sshKey] : [];
   const sshArgs = [
+    "-p", sshPort,
     "-o", "BatchMode=yes",
     "-o", "StrictHostKeyChecking=accept-new",
     "-o", "ConnectTimeout=10",
@@ -191,7 +193,7 @@ async function checkSsh() {
   writeArtifact("ssh-auth.txt", auth.stdout + "\n" + auth.stderr);
   record({
     category: "SSH",
-    name: `Auth to ${sshUser}@${sshHost}`,
+    name: `Auth to ${sshUser}@${sshHost}:${sshPort}`,
     status: auth.ok && auth.stdout.trim() === "ok" ? "PASS" : "FAIL",
     required: true,
     evidence: auth.ok ? "Returned ok" : `Error: ${auth.stderr.slice(0, 200)}`,
@@ -243,6 +245,7 @@ async function checkGithub() {
     "STAGING_HOST",
     "STAGING_BASE_URL",
     "SSH_HOST",
+    "SSH_PORT",
     "SSH_USER",
     "SSH_KEY",
   ];
@@ -425,7 +428,7 @@ function cacheKey(): string {
       parts.push(p + ":missing");
     }
   }
-  const requiredSecrets = ["STAGING_HOST", "STAGING_BASE_URL", "SSH_HOST", "SSH_USER", "SSH_KEY"];
+  const requiredSecrets = ["STAGING_HOST", "STAGING_BASE_URL", "SSH_HOST", "SSH_PORT", "SSH_USER", "SSH_KEY"];
   parts.push("secrets:" + requiredSecrets.sort().join(","));
   return crypto.createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 16);
 }

@@ -41,7 +41,7 @@ jobs:
           CACHED_KEY=$(jq -r .cache_key "$F")
           AGE=$(( ( $(date -u +%s) - $(date -u -d "$TS" +%s) ) / 3600 ))
           # Recompute current cache key from workflow + checker + required secret list
-          REQUIRED="SSH_HOST,SSH_KEY,SSH_USER,STAGING_BASE_URL,STAGING_HOST"
+          REQUIRED="SSH_HOST,SSH_KEY,SSH_PORT,SSH_USER,STAGING_BASE_URL,STAGING_HOST"
           CURRENT_KEY=$( { \
             printf '%s:' .github/workflows/staging-readiness.yml; sha256sum .github/workflows/staging-readiness.yml | awk '{print $1}'; \
             printf '%s:' scripts/check-staging-readiness.ts;     sha256sum scripts/check-staging-readiness.ts     | awk '{print $1}'; \

@@ -102,6 +102,7 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
         run: |
           if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ]; then
             echo "::warning::SSH deployment skipped (missing config)"
@@ -113,7 +114,7 @@ jobs:
             exit 0
           fi
 
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 \
+          ssh -o StrictHostKeyChecking=no -p "$SSH_PORT" -i ~/.ssh/id_ed25519 \
             "$SSH_USER@$SSH_HOST" "echo 'Deploy step placeholder'"
 
       # ----------------------------
