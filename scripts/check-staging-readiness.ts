@@ -428,7 +428,7 @@ function cacheKey(): string {
       parts.push(p + ":missing");
     }
   }
-  const requiredSecrets = ["STAGING_HOST", "STAGING_BASE_URL", "SSH_HOST", "SSH_USER", "SSH_KEY"];
+  const requiredSecrets = ["STAGING_HOST", "STAGING_BASE_URL", "SSH_HOST", "SSH_PORT", "SSH_USER", "SSH_KEY"];
   parts.push("secrets:" + requiredSecrets.sort().join(","));
   return crypto.createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 16);
 }
