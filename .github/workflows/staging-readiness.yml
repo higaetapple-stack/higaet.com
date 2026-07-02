@@ -130,11 +130,13 @@ jobs:
 
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
 
           # FIX: real file path (NOT secret content)
           SSH_KEY_PATH: /home/runner/.ssh/id_ed25519
 
           DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+          GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.READINESS_GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: bun scripts/check-staging-readiness.ts
 
