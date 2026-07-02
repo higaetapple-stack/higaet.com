@@ -86,6 +86,7 @@ const expectedIp = env.STAGING_EXPECTED_IP ?? "";
 const sshHost = env.SSH_HOST ?? "";
 const sshUser = env.SSH_USER ?? "";
 const sshKey = env.SSH_KEY_PATH ?? "";
+const sshPort = env.SSH_PORT ?? "22";
 const deployDir = env.DEPLOY_DIR ?? "~/apps/higaet";
 const ghRepo = env.GITHUB_REPO ?? "";
 const ghToken = env.GITHUB_TOKEN ?? "";
