@@ -20,6 +20,7 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as KernelRouteImport } from './routes/kernel'
 import { Route as HigaetTechnologiesRouteImport } from './routes/higaet-technologies'
@@ -129,6 +130,8 @@ import { Route as AuthenticatedEducationRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
 import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated.education.index'
@@ -240,6 +243,7 @@ import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authe
 import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
 import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
 import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport } from './routes/global-education.knowledge-base.universities.index'
 import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
 import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
@@ -397,6 +401,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadershipRoute = LeadershipRouteImport.update({
@@ -972,6 +981,18 @@ const AuthenticatedAssistantRoute = AuthenticatedAssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
@@ -1609,6 +1630,12 @@ const AuthenticatedAssistantConversationIdRoute =
     id: '/$conversationId',
     path: '/$conversationId',
     getParentRoute: () => AuthenticatedAssistantRoute,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const GlobalEducationKnowledgeBaseUniversitiesIndexRoute =
   GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport.update({
@@ -2254,6 +2281,7 @@ export interface FileRoutesByFullPath {
   '/higaet-technologies': typeof HigaetTechnologiesRoute
   '/kernel': typeof KernelRoute
   '/leadership': typeof LeadershipRoute
+  '/mcp': typeof McpRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -2265,6 +2293,8 @@ export interface FileRoutesByFullPath {
   '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
@@ -2347,6 +2377,7 @@ export interface FileRoutesByFullPath {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
   '/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
@@ -2585,6 +2616,7 @@ export interface FileRoutesByTo {
   '/higaet-technologies': typeof HigaetTechnologiesRoute
   '/kernel': typeof KernelRoute
   '/leadership': typeof LeadershipRoute
+  '/mcp': typeof McpRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -2595,6 +2627,8 @@ export interface FileRoutesByTo {
   '/success-stories': typeof SuccessStoriesRoute
   '/system-dashboard': typeof SystemDashboardRoute
   '/terms': typeof TermsRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/community': typeof AuthenticatedCommunityRouteWithChildren
   '/ops': typeof AuthenticatedOpsRouteWithChildren
   '/academy/admissions': typeof AcademyAdmissionsRoute
@@ -2674,6 +2708,7 @@ export interface FileRoutesByTo {
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
   '/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
@@ -2910,6 +2945,7 @@ export interface FileRoutesById {
   '/higaet-technologies': typeof HigaetTechnologiesRoute
   '/kernel': typeof KernelRoute
   '/leadership': typeof LeadershipRoute
+  '/mcp': typeof McpRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -2921,6 +2957,8 @@ export interface FileRoutesById {
   '/system-dashboard': typeof SystemDashboardRoute
   '/technologies': typeof TechnologiesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/assistant': typeof AuthenticatedAssistantRouteWithChildren
   '/_authenticated/community': typeof AuthenticatedCommunityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
@@ -3003,6 +3041,7 @@ export interface FileRoutesById {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/_authenticated/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
   '/_authenticated/community/events': typeof AuthenticatedCommunityEventsRouteWithChildren
@@ -3247,6 +3286,7 @@ export interface FileRouteTypes {
     | '/higaet-technologies'
     | '/kernel'
     | '/leadership'
+    | '/mcp'
     | '/partners'
     | '/privacy'
     | '/replay'
@@ -3258,6 +3298,8 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/technologies'
     | '/terms'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/assistant'
     | '/community'
     | '/dashboard'
@@ -3340,6 +3382,7 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/.mcp/invoke-tool/$tool'
     | '/assistant/$conversationId'
     | '/community/$slug'
     | '/community/events'
@@ -3578,6 +3621,7 @@ export interface FileRouteTypes {
     | '/higaet-technologies'
     | '/kernel'
     | '/leadership'
+    | '/mcp'
     | '/partners'
     | '/privacy'
     | '/replay'
@@ -3588,6 +3632,8 @@ export interface FileRouteTypes {
     | '/success-stories'
     | '/system-dashboard'
     | '/terms'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/community'
     | '/ops'
     | '/academy/admissions'
@@ -3667,6 +3713,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/jobs'
     | '/technologies'
+    | '/.mcp/invoke-tool/$tool'
     | '/assistant/$conversationId'
     | '/community/$slug'
     | '/community/events'
@@ -3902,6 +3949,7 @@ export interface FileRouteTypes {
     | '/higaet-technologies'
     | '/kernel'
     | '/leadership'
+    | '/mcp'
     | '/partners'
     | '/privacy'
     | '/replay'
@@ -3913,6 +3961,8 @@ export interface FileRouteTypes {
     | '/system-dashboard'
     | '/technologies'
     | '/terms'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/assistant'
     | '/_authenticated/community'
     | '/_authenticated/dashboard'
@@ -3995,6 +4045,7 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/assistant/$conversationId'
     | '/_authenticated/community/$slug'
     | '/_authenticated/community/events'
@@ -4239,6 +4290,7 @@ export interface RootRouteChildren {
   HigaetTechnologiesRoute: typeof HigaetTechnologiesRoute
   KernelRoute: typeof KernelRoute
   LeadershipRoute: typeof LeadershipRoute
+  McpRoute: typeof McpRoute
   PartnersRoute: typeof PartnersRoute
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
@@ -4250,12 +4302,15 @@ export interface RootRouteChildren {
   SystemDashboardRoute: typeof SystemDashboardRoute
   TechnologiesRoute: typeof TechnologiesRouteWithChildren
   TermsRoute: typeof TermsRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiChatRoute: typeof ApiChatRoute
   JobsSlugRoute: typeof JobsSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
   JobsIndexRoute: typeof JobsIndexRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
@@ -4364,6 +4419,13 @@ declare module '@tanstack/react-router' {
       path: '/partners'
       fullPath: '/partners'
       preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leadership': {
@@ -5128,6 +5190,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/assistant'
       preLoaderRoute: typeof AuthenticatedAssistantRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/academy/programs/': {
       id: '/academy/programs/'
@@ -5905,6 +5981,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/assistant/$conversationId'
       preLoaderRoute: typeof AuthenticatedAssistantConversationIdRouteImport
       parentRoute: typeof AuthenticatedAssistantRoute
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/global-education/knowledge-base/universities/': {
       id: '/global-education/knowledge-base/universities/'
@@ -7726,6 +7809,7 @@ const rootRouteChildren: RootRouteChildren = {
   HigaetTechnologiesRoute: HigaetTechnologiesRoute,
   KernelRoute: KernelRoute,
   LeadershipRoute: LeadershipRoute,
+  McpRoute: McpRoute,
   PartnersRoute: PartnersRoute,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,
@@ -7737,12 +7821,16 @@ const rootRouteChildren: RootRouteChildren = {
   SystemDashboardRoute: SystemDashboardRoute,
   TechnologiesRoute: TechnologiesRouteWithChildren,
   TermsRoute: TermsRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ApiChatRoute: ApiChatRoute,
   JobsSlugRoute: JobsSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   VerifyTokenRoute: VerifyTokenRoute,
   JobsIndexRoute: JobsIndexRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
