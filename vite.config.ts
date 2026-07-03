@@ -21,7 +21,6 @@ const sentryEnv = process.env.VITE_SENTRY_ENV ?? "development";
 const gitSha = process.env.GIT_COMMIT_SHA ?? process.env.GITHUB_SHA;
 const sentryEnabled = Boolean(sentryAuthToken && gitSha);
 //     which emits .output/server/index.mjs that `app.js` boots via Passenger.
-const isNodeTarget = process.env.BUILD_TARGET === "node";
 
 export default defineConfig({
   tanstackStart: {
