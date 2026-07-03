@@ -312,21 +312,53 @@ function NewPaymentPage() {
             <div className="text-sm text-muted-foreground">No payments submitted yet.</div>
           ) : (
             <ul className="divide-y divide-border">
-              {myQ.data!.map((p) => (
-                <li key={p.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-medium">
-                      {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
-                      <span className="text-muted-foreground font-normal"> · {p.purpose.replace(/_/g, " ")}</span>
+              {myQ.data!.map((p) => {
+                const refund = refundMap.get(p.id);
+                const canRefund = !refund && ["approved", "captured", "partially_refunded"].includes(p.status);
+                return (
+                  <li key={p.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <div className="text-sm font-medium">
+                        {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
+                        <span className="text-muted-foreground font-normal"> · {p.purpose.replace(/_/g, " ")}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground font-mono">{p.method} · {p.reference}</div>
+                      {p.rejection_reason && (
+                        <div className="text-xs text-destructive mt-1">{p.rejection_reason}</div>
+                      )}
+                      {refund && (
+                        <div className="text-xs mt-1">
+                          <span className="text-muted-foreground">Refund: </span>
+                          <span
+                            className={cn(
+                              refund.status === "processed" && "text-success",
+                              refund.status === "failed" && "text-destructive",
+                              refund.status === "pending" && "text-warning",
+                            )}
+                          >
+                            {refund.status}
+                          </span>
+                          {refund.reason && <span className="text-muted-foreground"> — {refund.reason}</span>}
+                        </div>
+                      )}
                     </div>
-                    <div className="text-xs text-muted-foreground font-mono">{p.method} · {p.reference}</div>
-                    {p.rejection_reason && (
-                      <div className="text-xs text-destructive mt-1">{p.rejection_reason}</div>
-                    )}
-                  </div>
-                  <PaymentStatusTimeline status={p.status} />
-                </li>
-              ))}
+                    <div className="flex items-center gap-3">
+                      <PaymentStatusTimeline status={p.status} />
+                      {canRefund && (
+                        <RequestRefundDialog
+                          payment={{ id: p.id, amount_minor: p.amount_minor, currency: p.currency }}
+                          onSubmit={async (reason) => {
+                            await requestRefundFn({ data: { payment_id: p.id, reason } });
+                            paymentEvents.refundRequested({ payment_id: p.id, reason });
+                            toast.success("Refund request submitted");
+                            qc.invalidateQueries({ queryKey: ["my-refunds"] });
+                          }}
+                        />
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </CardContent>
