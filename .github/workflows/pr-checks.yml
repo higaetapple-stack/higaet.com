@@ -1,0 +1,71 @@
+name: PR Checks
+
+# Runs on every PR to main or staging. Enforces the same quality gates as
+# production builds and always uploads logs (even on failure) so regressions
+# are diagnosable from the PR page.
+#
+# To make these checks required before merging, configure branch protection:
+#   GitHub → Settings → Branches → Add rule for `main` / `staging`
+#   → Require status checks: `build`, `lint`, `typecheck`
+
+on:
+  pull_request:
+    branches: [main, staging]
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gates:
+    name: Lint · Typecheck · Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci 2>&1 | tee install.log
+
+      - name: Lint
+        id: lint
+        run: npm run lint 2>&1 | tee lint.log
+
+      - name: Typecheck
+        id: typecheck
+        if: always()
+        run: npm run typecheck 2>&1 | tee typecheck.log
+
+      - name: Build
+        id: build
+        if: always()
+        env:
+          NODE_OPTIONS: "--max-old-space-size=6144"
+          # Publishable client-side keys; safe to expose. Kept blank in PR CI
+          # since we only need to verify the build compiles, not run against a
+          # real backend. Populate via repo secrets if a PR needs live values.
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+        run: npm run build 2>&1 | tee build.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-${{ github.event.pull_request.number }}-logs
+          path: |
+            install.log
+            lint.log
+            typecheck.log
+            build.log
+          retention-days: 14
+          if-no-files-found: warn
