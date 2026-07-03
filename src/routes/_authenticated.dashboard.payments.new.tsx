@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Download, Maximize2 } from "lucide-react";
@@ -9,6 +9,7 @@ import {
   listMyManualPayments,
   submitManualPayment,
 } from "@/lib/manual-payments.functions";
+import { listMyRefunds, requestRefund } from "@/lib/refunds.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { paymentEvents } from "@/lib/analytics-events";
 import {
@@ -28,7 +29,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { CopyButton } from "@/components/payments/CopyButton";
 import { PaymentStatusTimeline } from "@/components/payments/PaymentStatusTimeline";
@@ -50,10 +58,18 @@ function NewPaymentPage() {
   const search = Route.useSearch();
   const submit = useServerFn(submitManualPayment);
   const listMine = useServerFn(listMyManualPayments);
+  const listRefundsFn = useServerFn(listMyRefunds);
+  const requestRefundFn = useServerFn(requestRefund);
   const qc = useQueryClient();
   const router = useRouter();
 
   const myQ = useQuery({ queryKey: ["my-manual-payments"], queryFn: () => listMine() });
+  const refundQ = useQuery({ queryKey: ["my-refunds"], queryFn: () => listRefundsFn() });
+  const refundMap = useMemo(() => {
+    const m = new Map<string, { status: string; reason: string | null }>();
+    for (const r of refundQ.data ?? []) m.set(r.payment_id, { status: r.status, reason: r.reason });
+    return m;
+  }, [refundQ.data]);
 
   const [method, setMethod] = useState<string>("upi");
   const [purpose, setPurpose] = useState<string>(search.purpose ?? "course_enrollment");
@@ -296,21 +312,53 @@ function NewPaymentPage() {
             <div className="text-sm text-muted-foreground">No payments submitted yet.</div>
           ) : (
             <ul className="divide-y divide-border">
-              {myQ.data!.map((p) => (
-                <li key={p.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-medium">
-                      {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
-                      <span className="text-muted-foreground font-normal"> · {p.purpose.replace(/_/g, " ")}</span>
+              {myQ.data!.map((p) => {
+                const refund = refundMap.get(p.id);
+                const canRefund = !refund && ["approved", "captured", "partially_refunded"].includes(p.status);
+                return (
+                  <li key={p.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <div className="text-sm font-medium">
+                        {(p.amount_minor / 100).toLocaleString(undefined, { style: "currency", currency: p.currency })}
+                        <span className="text-muted-foreground font-normal"> · {p.purpose.replace(/_/g, " ")}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground font-mono">{p.method} · {p.reference}</div>
+                      {p.rejection_reason && (
+                        <div className="text-xs text-destructive mt-1">{p.rejection_reason}</div>
+                      )}
+                      {refund && (
+                        <div className="text-xs mt-1">
+                          <span className="text-muted-foreground">Refund: </span>
+                          <span
+                            className={cn(
+                              refund.status === "processed" && "text-success",
+                              refund.status === "failed" && "text-destructive",
+                              refund.status === "pending" && "text-warning",
+                            )}
+                          >
+                            {refund.status}
+                          </span>
+                          {refund.reason && <span className="text-muted-foreground"> — {refund.reason}</span>}
+                        </div>
+                      )}
                     </div>
-                    <div className="text-xs text-muted-foreground font-mono">{p.method} · {p.reference}</div>
-                    {p.rejection_reason && (
-                      <div className="text-xs text-destructive mt-1">{p.rejection_reason}</div>
-                    )}
-                  </div>
-                  <PaymentStatusTimeline status={p.status} />
-                </li>
-              ))}
+                    <div className="flex items-center gap-3">
+                      <PaymentStatusTimeline status={p.status} />
+                      {canRefund && (
+                        <RequestRefundDialog
+                          payment={{ id: p.id, amount_minor: p.amount_minor, currency: p.currency }}
+                          onSubmit={async (reason) => {
+                            await requestRefundFn({ data: { payment_id: p.id, reason } });
+                            paymentEvents.refundRequested({ payment_id: p.id, reason });
+                            toast.success("Refund request submitted");
+                            qc.invalidateQueries({ queryKey: ["my-refunds"] });
+                          }}
+                        />
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </CardContent>
@@ -370,5 +418,69 @@ function QrSection() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+function RequestRefundDialog({
+  payment,
+  onSubmit,
+}: {
+  payment: { id: string; amount_minor: number; currency: string };
+  onSubmit: (reason: string) => Promise<void>;
+}) {
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="outline">Request refund</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            Request refund ·{" "}
+            {(payment.amount_minor / 100).toLocaleString(undefined, {
+              style: "currency",
+              currency: payment.currency,
+            })}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-2">
+          <Label htmlFor="refund-reason">Reason</Label>
+          <Textarea
+            id="refund-reason"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            rows={4}
+            maxLength={1000}
+            placeholder="Tell us why you'd like a refund. Our team reviews requests within 3 business days."
+          />
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={busy}>
+            Cancel
+          </Button>
+          <Button
+            disabled={busy || reason.trim().length < 4}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                await onSubmit(reason.trim());
+                setOpen(false);
+                setReason("");
+              } catch (e) {
+                toast.error((e as Error).message);
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            Submit request
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

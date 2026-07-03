@@ -1,8 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { listVisaCases, visaKpis } from "@/lib/visa.functions";
+import { toast } from "sonner";
+import { createVisaCase, listVisaCases, visaKpis } from "@/lib/visa.functions";
+import { studyAbroadEvents } from "@/lib/analytics-events";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/visa")({
   component: AdminVisa,
@@ -44,7 +57,10 @@ function AdminVisa() {
 
   return (
     <div>
-      <h2 className="font-display text-xl font-medium text-ink mb-4">Visa operations</h2>
+      <div className="flex items-center justify-between mb-4 gap-3">
+        <h2 className="font-display text-xl font-medium text-ink">Visa operations</h2>
+        <NewVisaCaseDialog />
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <Kpi label="Open" value={kpis.data?.open ?? 0} />
@@ -123,5 +139,81 @@ function AdminVisa() {
         </table>
       </div>
     </div>
+  );
+}
+
+function NewVisaCaseDialog() {
+  const create = useServerFn(createVisaCase);
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [studentId, setStudentId] = useState("");
+  const [applicationId, setApplicationId] = useState("");
+  const [countryId, setCountryId] = useState("");
+  const [visaType, setVisaType] = useState("");
+
+  const mut = useMutation({
+    mutationFn: async () => {
+      if (!studentId.trim()) throw new Error("Student ID is required");
+      return create({
+        data: {
+          student_id: studentId.trim(),
+          application_id: applicationId.trim() || undefined,
+          country_id: countryId.trim() || undefined,
+          visa_type: visaType.trim() || undefined,
+        },
+      });
+    },
+    onSuccess: (row) => {
+      studyAbroadEvents.visaCaseCreated({
+        case_id: row.id,
+        country: countryId.trim() || undefined,
+      });
+      toast.success("Visa case created");
+      qc.invalidateQueries({ queryKey: ["visa-list"] });
+      qc.invalidateQueries({ queryKey: ["visa-kpis"] });
+      setOpen(false);
+      setStudentId("");
+      setApplicationId("");
+      setCountryId("");
+      setVisaType("");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm">New visa case</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader><DialogTitle>Create visa case</DialogTitle></DialogHeader>
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <Label htmlFor="v-student">Student user ID (UUID)</Label>
+            <Input id="v-student" value={studentId} onChange={(e) => setStudentId(e.target.value)} placeholder="00000000-0000-0000-0000-000000000000" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label htmlFor="v-app">Application ID</Label>
+              <Input id="v-app" value={applicationId} onChange={(e) => setApplicationId(e.target.value)} placeholder="optional" />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="v-country">Country ID</Label>
+              <Input id="v-country" value={countryId} onChange={(e) => setCountryId(e.target.value)} placeholder="optional" />
+            </div>
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="v-type">Visa type</Label>
+            <Input id="v-type" value={visaType} onChange={(e) => setVisaType(e.target.value)} placeholder="e.g. F-1, Tier 4" />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={mut.isPending}>Cancel</Button>
+          <Button onClick={() => mut.mutate()} disabled={mut.isPending}>
+            {mut.isPending ? "Creating…" : "Create case"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

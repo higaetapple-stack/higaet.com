@@ -55,4 +55,13 @@ export const paymentEvents = {
   }) => trackEvent("payment_failed", props),
   refundRequested: (props: { payment_id: string; reason?: string }) =>
     trackEvent("refund_requested", props),
+  /** Refund processed successfully by admin (downstream outcome). */
+  refundProcessed: (props: {
+    payment_id: string;
+    amount_minor: number;
+    currency: string;
+  }) => trackEvent("refund_processed", props),
+  /** Refund attempt failed / declined by admin (downstream outcome). */
+  refundFailed: (props: { payment_id: string; reason?: string }) =>
+    trackEvent("refund_failed", props),
 };

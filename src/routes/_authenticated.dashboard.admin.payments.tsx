@@ -11,6 +11,8 @@ import {
   adminRequestPaymentInfo,
   getProofSignedUrl,
 } from "@/lib/manual-payments.functions";
+import { adminListRefunds, adminUpdateRefundStatus } from "@/lib/refunds.functions";
+import { paymentEvents } from "@/lib/analytics-events";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -183,7 +185,218 @@ function AdminPaymentsPage() {
           )}
         </CardContent>
       </Card>
+
+      <RefundsPanel />
     </div>
+  );
+}
+
+function RefundsPanel() {
+  const list = useServerFn(adminListRefunds);
+  const update = useServerFn(adminUpdateRefundStatus);
+  const qc = useQueryClient();
+  const [status, setStatus] = useState<"pending" | "processed" | "failed" | "all">("pending");
+
+  const q = useQuery({
+    queryKey: ["admin-refunds", status],
+    queryFn: () => list({ data: { status } }),
+  });
+
+  const resolve = useMutation({
+    mutationFn: async (args: {
+      id: string;
+      payment_id: string;
+      amount_minor: number;
+      currency: string;
+      status: "processed" | "failed";
+      note: string;
+    }) => {
+      await update({
+        data: {
+          id: args.id,
+          status: args.status,
+          note: args.note || undefined,
+        },
+      });
+      return args;
+    },
+    onSuccess: (args) => {
+      if (args.status === "processed") {
+        paymentEvents.refundProcessed({
+          payment_id: args.payment_id,
+          amount_minor: args.amount_minor,
+          currency: args.currency,
+        });
+        toast.success("Refund processed");
+      } else {
+        paymentEvents.refundFailed({
+          payment_id: args.payment_id,
+          reason: args.note || undefined,
+        });
+        toast.success("Refund marked as failed");
+      }
+      qc.invalidateQueries({ queryKey: ["admin-refunds"] });
+      qc.invalidateQueries({ queryKey: ["admin-manual-payments"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const TABS = [
+    { value: "pending" as const, label: "Pending" },
+    { value: "processed" as const, label: "Processed" },
+    { value: "failed" as const, label: "Failed" },
+    { value: "all" as const, label: "All" },
+  ];
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <CardTitle>Refund requests</CardTitle>
+          <div className="flex flex-wrap gap-1 p-1 rounded-md border border-border">
+            {TABS.map((t) => (
+              <button
+                key={t.value}
+                type="button"
+                onClick={() => setStatus(t.value)}
+                className={cn(
+                  "px-3 py-1.5 rounded text-sm",
+                  status === t.value ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+                )}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {q.isLoading ? (
+          <div className="text-sm text-muted-foreground">Loading…</div>
+        ) : (q.data ?? []).length === 0 ? (
+          <div className="text-sm text-muted-foreground">No refund requests match.</div>
+        ) : (
+          <ul className="divide-y divide-border">
+            {q.data!.map((r) => (
+              <li key={r.id} className="py-4 grid md:grid-cols-[1fr_auto] gap-4">
+                <div className="space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-semibold">
+                      {(r.amount_minor / 100).toLocaleString(undefined, {
+                        style: "currency",
+                        currency: r.currency,
+                      })}
+                    </span>
+                    <Badge className={cn(
+                      r.status === "pending" && "bg-warning/15 text-warning",
+                      r.status === "processed" && "bg-success/15 text-success",
+                      r.status === "failed" && "bg-destructive/15 text-destructive",
+                    )}>{r.status}</Badge>
+                  </div>
+                  <div className="text-xs text-muted-foreground font-mono break-all">
+                    payment {r.payment_id.slice(0, 8)}…{r.provider_refund_id ? ` · provider ${r.provider_refund_id}` : ""}
+                  </div>
+                  {r.reason && <div className="text-xs text-muted-foreground">&ldquo;{r.reason}&rdquo;</div>}
+                  <div className="text-[11px] text-muted-foreground">
+                    Requested {new Date(r.created_at).toLocaleString()}
+                  </div>
+                </div>
+                {r.status === "pending" && (
+                  <div className="flex flex-wrap gap-2 md:justify-end">
+                    <ResolveRefundDialog
+                      label="Mark processed"
+                      confirmLabel="Confirm processed"
+                      variant="default"
+                      requireNote={false}
+                      onSubmit={(note) => resolve.mutateAsync({
+                        id: r.id,
+                        payment_id: r.payment_id,
+                        amount_minor: r.amount_minor,
+                        currency: r.currency,
+                        status: "processed",
+                        note,
+                      })}
+                    />
+                    <ResolveRefundDialog
+                      label="Mark failed"
+                      confirmLabel="Confirm failed"
+                      variant="destructive"
+                      requireNote
+                      onSubmit={(note) => resolve.mutateAsync({
+                        id: r.id,
+                        payment_id: r.payment_id,
+                        amount_minor: r.amount_minor,
+                        currency: r.currency,
+                        status: "failed",
+                        note,
+                      })}
+                    />
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function ResolveRefundDialog({
+  label,
+  confirmLabel,
+  variant,
+  requireNote,
+  onSubmit,
+}: {
+  label: string;
+  confirmLabel: string;
+  variant: "default" | "destructive";
+  requireNote: boolean;
+  onSubmit: (note: string) => Promise<unknown>;
+}) {
+  const [open, setOpen] = useState(false);
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" variant={variant === "default" ? "default" : "destructive"}>
+          {label}
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader><DialogTitle>{label}</DialogTitle></DialogHeader>
+        <Textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={4}
+          placeholder={requireNote ? "Reason (required)" : "Note (optional) — provider refund id, etc."}
+        />
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={busy}>Cancel</Button>
+          <Button
+            variant={variant === "default" ? "default" : "destructive"}
+            disabled={busy || (requireNote && note.trim().length < 2)}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                await onSubmit(note.trim());
+                setOpen(false);
+                setNote("");
+              } catch (e) {
+                toast.error((e as Error).message);
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            {confirmLabel}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
