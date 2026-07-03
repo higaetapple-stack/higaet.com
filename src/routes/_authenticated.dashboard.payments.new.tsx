@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Download, Maximize2 } from "lucide-react";
@@ -9,6 +9,7 @@ import {
   listMyManualPayments,
   submitManualPayment,
 } from "@/lib/manual-payments.functions";
+import { listMyRefunds, requestRefund } from "@/lib/refunds.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { paymentEvents } from "@/lib/analytics-events";
 import {
@@ -28,7 +29,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { CopyButton } from "@/components/payments/CopyButton";
 import { PaymentStatusTimeline } from "@/components/payments/PaymentStatusTimeline";
