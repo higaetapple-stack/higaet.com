@@ -214,7 +214,7 @@ const emitInput = z.object({
   eventType: z.string().min(1).max(128),
   aggregateType: z.string().max(64).optional(),
   aggregateId: z.string().max(128).optional(),
-  payload: z.record(z.unknown()).default({}),
+  payload: z.record(z.string(), z.unknown()).default({}),
 });
 
 export const emitDomainEvent = createServerFn({ method: "POST" })
