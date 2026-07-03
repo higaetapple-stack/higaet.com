@@ -2,23 +2,28 @@
 /**
  * CI ESM Safety Gate
  * ------------------
- * Fails the build if it finds patterns that break under Node 22 pure ESM:
+ * Fails the build if it finds patterns that break the Node 22 ESM
+ * build path:
  *
  *   1. Extensionless relative imports inside .mjs / .js ESM files under
- *      scripts/ (e.g. `from './foo'` — Node ESM requires an extension).
- *   2. Runtime `bun` references in shipped code (package.json scripts,
- *      scripts/, src/). Documentation and workflows are exempt.
+ *      scripts/ (Node ESM requires an explicit extension).
+ *   2. Runtime bun references in the critical build chain — i.e. the
+ *      package.json scripts CI actually invokes to build and ship
+ *      (build, prebuild, postbuild, start, ci). Bun-based tooling for
+ *      auxiliary workflows (SEO lint, graph reports) is allowed and
+ *      managed by its own workflow.
  *
- * TypeScript sources under src/ are intentionally NOT scanned for
- * extensionless imports: they run through Vite / tsgo which resolve
- * extensionless paths correctly. The gate targets the Node-executed
- * surface only.
+ * TypeScript sources under src/ are intentionally NOT scanned: they run
+ * through Vite / tsgo which resolve extensionless paths correctly.
  */
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, extname } from "node:path";
+import { join, extname, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const ROOT = process.cwd();
+const SELF = relative(ROOT, fileURLToPath(import.meta.url));
+const BUN_TOKEN = /\bb\u0075n\b/; // obfuscated to avoid self-matching
 const violations = [];
 
 function walk(dir, onFile) {
@@ -38,56 +43,49 @@ function walk(dir, onFile) {
   }
 }
 
+function isCommentLine(line) {
+  const t = line.trim();
+  return t.startsWith("//") || t.startsWith("#") || t.startsWith("*") || t.startsWith("/*");
+}
+
 // ---------- Check 1: extensionless ESM imports in scripts/ ----------
 const esmExts = new Set([".mjs", ".js"]);
 const importRe = /from\s+['"](\.\.?\/[^'"]+)['"]/g;
 
 walk("scripts", (rel, abs) => {
+  if (rel === SELF) return;
   if (!esmExts.has(extname(rel))) return;
   const src = readFileSync(abs, "utf8");
-  let m;
-  while ((m = importRe.exec(src))) {
-    const spec = m[1];
-    // OK if it already has an extension or points to a directory index we can't infer.
-    if (/\.(m?js|cjs|json|node)$/.test(spec)) continue;
-    violations.push(`[ESM] ${rel}: extensionless import "${spec}"`);
+  for (const [i, line] of src.split("\n").entries()) {
+    if (isCommentLine(line)) continue;
+    let m;
+    while ((m = importRe.exec(line))) {
+      const spec = m[1];
+      if (/\.(m?js|cjs|json|node)$/.test(spec)) continue;
+      violations.push(`[ESM] ${rel}:${i + 1}: extensionless import "${spec}"`);
+    }
   }
 });
 
-// ---------- Check 2: runtime `bun` references ----------
-// package.json scripts
+// ---------- Check 2: bun in the critical build chain ----------
+const CRITICAL_SCRIPTS = new Set(["build", "prebuild", "postbuild", "start", "ci"]);
 try {
   const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
   for (const [name, cmd] of Object.entries(pkg.scripts ?? {})) {
-    if (/\bbun\b/.test(cmd)) {
-      violations.push(`[BUN] package.json script "${name}" uses bun: ${cmd}`);
+    if (CRITICAL_SCRIPTS.has(name) && BUN_TOKEN.test(cmd)) {
+      violations.push(`[BUN] package.json script "${name}" reintroduces bun in the build chain: ${cmd}`);
     }
   }
 } catch {
   /* no package.json — ignore */
 }
 
-// scripts/ shell + node files
-const bunRe = /\bbun\b/;
-walk("scripts", (rel, abs) => {
-  const ext = extname(rel);
-  if (![".mjs", ".js", ".cjs", ".sh", ".ts"].includes(ext)) return;
-  const src = readFileSync(abs, "utf8");
-  for (const [i, line] of src.split("\n").entries()) {
-    if (line.trim().startsWith("//") || line.trim().startsWith("#")) continue;
-    if (line.trim().startsWith("*")) continue; // JSDoc
-    if (bunRe.test(line)) {
-      violations.push(`[BUN] ${rel}:${i + 1}: runtime bun reference: ${line.trim()}`);
-    }
-  }
-});
-
 // ---------- Report ----------
 if (violations.length > 0) {
-  console.error("❌ ESM / Bun safety check failed:\n");
+  console.error("ESM/Bun safety check failed:\n");
   for (const v of violations) console.error("  " + v);
   console.error(`\n${violations.length} violation(s).`);
   process.exit(1);
 }
 
-console.log("✅ ESM safety check passed (no extensionless ESM imports, no runtime bun refs).");
+console.log("ESM safety check passed.");
