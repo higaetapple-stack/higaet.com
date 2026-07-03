@@ -5146,6 +5146,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      business_kpis: { Args: { _hours?: number }; Returns: Json }
       can_subscribe_realtime_topic: {
         Args: { _topic: string; _user: string }
         Returns: boolean
