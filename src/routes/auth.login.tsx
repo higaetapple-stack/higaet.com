@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getMyRoles } from "@/lib/auth.functions";
 import { dashboardForRoles, safeRedirectPath } from "@/lib/role-routing";
+import { authEvents } from "@/lib/analytics-events";
 
 const Schema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email").max(255),
@@ -56,6 +57,7 @@ function LoginPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
+      authEvents.login("email");
       toast.success("Welcome back");
       const to = await resolvePostLoginDestination(search.redirect);
       navigate({ to, replace: true });
@@ -78,6 +80,7 @@ function LoginPage() {
         setBusy(false);
         return;
       }
+      authEvents.login(provider);
       if (result.redirected) return;
       navigate({ to: "/dashboard" });
     } catch (e) {

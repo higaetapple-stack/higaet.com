@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { LeadSchema, type LeadDivision, type LeadPayload } from "@/lib/schemas";
 import { submitLead } from "@/lib/leads.functions";
-import { trackEvent } from "@/lib/analytics";
+import { studyAbroadEvents } from "@/lib/analytics-events";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -34,7 +34,7 @@ export function LeadForm({
   const onSubmit = async (values: LeadPayload) => {
     try {
       await submit({ data: values });
-      trackEvent("lead_submit", { division, source });
+      studyAbroadEvents.leadCaptured({ division, source });
       setSubmitted(true);
       form.reset({ ...values, name: "", email: "", phone: "", message: "" });
     } catch (e) {

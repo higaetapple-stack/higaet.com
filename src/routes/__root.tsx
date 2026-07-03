@@ -11,7 +11,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ORG_JSONLD, SITE, WEBSITE_JSONLD, canonicalUrl, isPrivatePath } from "@/lib/site";
-import { ANALYTICS_IDS, getConsent, loadTags } from "@/lib/analytics";
+import { ANALYTICS_IDS, getConsent, identifyUser, loadTags, resetIdentity } from "@/lib/analytics";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
 import { DevErrorOverlay } from "@/components/DevErrorOverlay";
@@ -180,10 +180,17 @@ function RootComponent() {
   }, []);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       router.invalidate();
-      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+      if (event === "SIGNED_OUT") {
+        resetIdentity();
+      } else {
+        queryClient.invalidateQueries();
+        if (session?.user) {
+          identifyUser(session.user.id, { email: session.user.email });
+        }
+      }
     });
     return () => sub.subscription.unsubscribe();
   }, [router, queryClient]);

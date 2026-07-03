@@ -10,6 +10,7 @@ import { lovable } from "@/integrations/lovable";
 import { AuthCard } from "./auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authEvents } from "@/lib/analytics-events";
 
 const Schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(120),
@@ -39,6 +40,7 @@ function RegisterPage() {
 
   const onSubmit = async (values: Values) => {
     setLoading(true);
+    authEvents.signupStarted("register_page");
     try {
       const { error } = await supabase.auth.signUp({
         email: values.email,
@@ -49,6 +51,7 @@ function RegisterPage() {
         },
       });
       if (error) throw error;
+      authEvents.signupCompleted({ method: "email", source: "register_page" });
       toast.success("Account created. Check your email to confirm.");
       navigate({ to: "/auth/login" });
     } catch (e) {
@@ -61,6 +64,7 @@ function RegisterPage() {
 
   async function signUpWithGoogle() {
     setGoogleLoading(true);
+    authEvents.signupStarted("register_page_google");
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/dashboard",
@@ -70,6 +74,7 @@ function RegisterPage() {
         setGoogleLoading(false);
         return;
       }
+      authEvents.signupCompleted({ method: "google", source: "register_page" });
       if (result.redirected) return;
       navigate({ to: "/dashboard" });
     } catch (e) {

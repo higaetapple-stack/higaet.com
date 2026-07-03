@@ -11,6 +11,8 @@ export const ANALYTICS_IDS = {
   clarity: import.meta.env.VITE_CLARITY_ID ?? "",
   linkedIn: import.meta.env.VITE_LINKEDIN_PARTNER_ID ?? "",
   gscVerification: import.meta.env.VITE_GSC_VERIFICATION ?? "",
+  posthogKey: import.meta.env.VITE_POSTHOG_KEY ?? "",
+  posthogHost: import.meta.env.VITE_POSTHOG_HOST ?? "https://eu.i.posthog.com",
 } as const;
 
 export const CONSENT_KEY = "higaet.consent.v1";
@@ -77,11 +79,45 @@ export function loadTags() {
     init.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","${ANALYTICS_IDS.clarity}");`;
     document.head.appendChild(init);
   }
+
+  // PostHog (product analytics)
+  if (ANALYTICS_IDS.posthogKey) {
+    // Lazy-import so it stays out of the initial bundle until consent granted.
+    void import("posthog-js").then(({ default: posthog }) => {
+      posthog.init(ANALYTICS_IDS.posthogKey, {
+        api_host: ANALYTICS_IDS.posthogHost,
+        capture_pageview: true,
+        capture_pageleave: true,
+        person_profiles: "identified_only",
+      });
+      (window as unknown as { posthog?: unknown }).posthog = posthog;
+    });
+  }
 }
 
-/** Push a custom event into dataLayer / Pixel. Safe no-op when tags aren't loaded. */
+/** Push a custom event into dataLayer / Pixel / PostHog. Safe no-op when tags aren't loaded. */
 export function trackEvent(name: string, params: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
   window.dataLayer?.push({ event: name, ...params });
   window.fbq?.("trackCustom", name, params);
+  const ph = (window as unknown as { posthog?: { capture: (n: string, p?: Record<string, unknown>) => void } }).posthog;
+  ph?.capture(name, params);
+}
+
+/** Identify a signed-in user across analytics providers. Safe no-op when tags aren't loaded. */
+export function identifyUser(userId: string, traits: Record<string, unknown> = {}) {
+  if (typeof window === "undefined" || !userId) return;
+  // GA4 via GTM
+  window.dataLayer?.push({ event: "user_identified", user_id: userId, ...traits });
+  // PostHog
+  const ph = (window as unknown as { posthog?: { identify: (id: string, t?: Record<string, unknown>) => void } }).posthog;
+  ph?.identify(userId, traits);
+}
+
+/** Reset identity on sign-out. */
+export function resetIdentity() {
+  if (typeof window === "undefined") return;
+  window.dataLayer?.push({ event: "user_signed_out" });
+  const ph = (window as unknown as { posthog?: { reset: () => void } }).posthog;
+  ph?.reset();
 }

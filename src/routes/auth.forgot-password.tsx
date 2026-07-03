@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthCard } from "./auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authEvents } from "@/lib/analytics-events";
 
 const Schema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email").max(255),
@@ -32,6 +33,7 @@ function ForgotPage() {
 
   const onSubmit = async (values: Values) => {
     setLoading(true);
+    authEvents.passwordReset("requested");
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
