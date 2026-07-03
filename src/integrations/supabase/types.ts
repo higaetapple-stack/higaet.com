@@ -5146,6 +5146,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      can_subscribe_realtime_topic: {
+        Args: { _topic: string; _user: string }
+        Returns: boolean
+      }
       check_api_rate_limit: {
         Args: { _api_key_id: string; _limit: number; _window_seconds?: number }
         Returns: {
