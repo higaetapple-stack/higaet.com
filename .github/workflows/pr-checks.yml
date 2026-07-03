@@ -4,9 +4,14 @@ name: PR Checks
 # production builds and always uploads logs (even on failure) so regressions
 # are diagnosable from the PR page.
 #
-# To make these checks required before merging, configure branch protection:
-#   GitHub → Settings → Branches → Add rule for `main` / `staging`
-#   → Require status checks: `build`, `lint`, `typecheck`
+# BRANCH PROTECTION (manual, one-time setup — GitHub UI):
+#   Settings → Branches → Add branch protection rule for `main` and again for `staging`.
+#   Enable "Require status checks to pass before merging" and select:
+#     - Lint · Typecheck · Build
+#     - Lighthouse
+#   Also enable "Require branches to be up to date before merging" and
+#   "Do not allow bypassing the above settings". This is what actually blocks
+#   merging when any job (including artifact upload steps) fails.
 
 on:
   pull_request:
@@ -32,6 +37,18 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      - name: Cache Vite build output
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules/.vite
+            .output
+            dist
+          key: ${{ runner.os }}-vite-${{ hashFiles('package-lock.json', 'vite.config.ts') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-vite-${{ hashFiles('package-lock.json', 'vite.config.ts') }}-
+            ${{ runner.os }}-vite-
+
       - name: Install dependencies
         run: npm ci 2>&1 | tee install.log
 
@@ -49,13 +66,21 @@ jobs:
         if: always()
         env:
           NODE_OPTIONS: "--max-old-space-size=6144"
-          # Publishable client-side keys; safe to expose. Kept blank in PR CI
-          # since we only need to verify the build compiles, not run against a
-          # real backend. Populate via repo secrets if a PR needs live values.
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
         run: npm run build 2>&1 | tee build.log
+
+      - name: Persist build output for Lighthouse job
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-${{ github.event.pull_request.number }}-build
+          path: |
+            dist
+            .output
+          retention-days: 3
+          if-no-files-found: warn
 
       - name: Upload logs
         if: always()
@@ -67,5 +92,49 @@ jobs:
             lint.log
             typecheck.log
             build.log
+          retention-days: 14
+          if-no-files-found: warn
+
+  lighthouse:
+    name: Lighthouse
+    needs: quality-gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-${{ github.event.pull_request.number }}-build
+          path: .
+
+      - name: Install Lighthouse CI
+        run: npm install --no-save @lhci/cli@0.14.x
+
+      - name: Run Lighthouse CI
+        id: lhci
+        env:
+          # If dist/ isn't a static SPA (SSR-only), LHCI's built-in static server
+          # will still serve index.html when present. Falls back to .output/public.
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+        run: npx lhci autorun --config=./lighthouserc.json 2>&1 | tee lighthouse.log
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-${{ github.event.pull_request.number }}-lighthouse
+          path: |
+            .lighthouseci
+            lighthouse.log
           retention-days: 14
           if-no-files-found: warn

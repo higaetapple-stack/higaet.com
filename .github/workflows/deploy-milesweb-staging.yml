@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: [staging]
+    # Release-candidate tags (e.g. rc-2026-01-15, rc-1.2.3) auto-deploy to
+    # staging so QA can validate a tagged build before promotion to prod.
+    tags: ["rc-*"]
+
 
 concurrency:
   group: deploy-milesweb-staging
