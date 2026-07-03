@@ -75,6 +75,10 @@ jobs:
           CACHE_STATUS: ${{ needs.cache-check.outputs.cache_status || 'unknown' }}
           LIVE_STATUS: ${{ needs.authorize.outputs.status || 'FAIL' }}
         run: |
+          echo "CACHE_HIT=$CACHE_HIT"
+          echo "CACHE_STATUS=$CACHE_STATUS"
+          echo "LIVE_STATUS=$LIVE_STATUS"
+
           if [ "$CACHE_HIT" = "true" ]; then
             STATUS="$CACHE_STATUS"
             SOURCE="cache"
@@ -85,16 +89,16 @@ jobs:
           {
             echo "## Phase 2.2 Authorization"
             echo ""
-            echo "- Source: \`$SOURCE\`"
-            echo "- Status: \`$STATUS\`"
+            echo "- Source: $SOURCE"
+            echo "- Status: $STATUS"
             echo ""
           } >> "$GITHUB_STEP_SUMMARY"
           if [ "$STATUS" = "GO" ]; then
-            echo "**GO** — readiness PASS. Dispatch \`staging-rollback-validation.yml\` to deploy." >> "$GITHUB_STEP_SUMMARY"
+            echo "GO — readiness PASS" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           {
-            echo "**NO-GO** — readiness \`$STATUS\`."
+            echo "NO-GO — readiness $STATUS"
             echo ""
             echo "Evidence:"
             echo "- [Readiness Report](../../blob/main/docs/infrastructure/phase-2-2-prerequisite-report.md)"
