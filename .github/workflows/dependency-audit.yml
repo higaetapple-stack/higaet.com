@@ -1,0 +1,103 @@
+name: Dependency Vulnerability Audit
+
+# Fails the build when high or critical severity vulnerabilities are found in
+# npm dependencies. Runs on PRs and pushes to main, plus a weekly schedule to
+# catch newly disclosed advisories against unchanged lockfiles.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'bun.lockb'
+      - 'bun.lock'
+      - '.github/workflows/dependency-audit.yml'
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'bun.lockb'
+      - 'bun.lock'
+      - '.github/workflows/dependency-audit.yml'
+  schedule:
+    - cron: '0 6 * * 1'  # Mondays 06:00 UTC
+  workflow_dispatch: {}
+
+concurrency:
+  group: dependency-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fork-guard
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Skipping audit on fork PR"
+          exit 0
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node (for npm audit)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (frozen lockfile)
+        run: bun install --frozen-lockfile
+
+      - name: Generate package-lock.json for audit
+        # bun audit is limited; use npm audit against a generated lockfile so we
+        # get the full GitHub Advisory Database coverage with severity filtering.
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Run npm audit (high + critical)
+        id: audit
+        run: |
+          set +e
+          npm audit --audit-level=high --omit=dev --json > audit.json
+          AUDIT_EXIT=$?
+          set -e
+
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit.json)
+          CRIT=$(jq '.metadata.vulnerabilities.critical // 0' audit.json)
+          MOD=$(jq '.metadata.vulnerabilities.moderate // 0' audit.json)
+          LOW=$(jq '.metadata.vulnerabilities.low // 0' audit.json)
+
+          {
+            echo "## Dependency Vulnerability Audit"
+            echo ""
+            echo "| Severity | Count |"
+            echo "|---|---|"
+            echo "| Critical | $CRIT |"
+            echo "| High | $HIGH |"
+            echo "| Moderate | $MOD |"
+            echo "| Low | $LOW |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$CRIT" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "### Vulnerable packages" >> "$GITHUB_STEP_SUMMARY"
+            jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "high" or .value.severity == "critical") | "- **\(.key)** (\(.value.severity)) — fix: \(.value.fixAvailable)"' audit.json >> "$GITHUB_STEP_SUMMARY" || true
+            echo ""
+            echo "Failing build: $CRIT critical + $HIGH high severity vulnerabilities found."
+            exit 1
+          fi
+
+          echo "No high or critical vulnerabilities."
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: audit.json
+          retention-days: 30
