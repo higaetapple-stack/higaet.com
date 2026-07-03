@@ -16,6 +16,7 @@ import { getUniversityPublic, createMyApplication } from "@/lib/study-abroad.fun
 import { seoHead } from "@/lib/seo/seo-head";
 import { universityJsonLd } from "@/lib/seo/schema";
 import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
+import { studyAbroadEvents } from "@/lib/analytics-events";
 
 export const Route = createFileRoute("/global-education/universities/$slug")({
   head: ({ params }) => {
