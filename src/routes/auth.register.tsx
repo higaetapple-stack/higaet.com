@@ -64,6 +64,7 @@ function RegisterPage() {
 
   async function signUpWithGoogle() {
     setGoogleLoading(true);
+    authEvents.signupStarted("register_page_google");
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/dashboard",
@@ -73,6 +74,7 @@ function RegisterPage() {
         setGoogleLoading(false);
         return;
       }
+      authEvents.signupCompleted({ method: "google", source: "register_page" });
       if (result.redirected) return;
       navigate({ to: "/dashboard" });
     } catch (e) {
