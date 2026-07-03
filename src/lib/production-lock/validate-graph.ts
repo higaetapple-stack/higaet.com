@@ -7,7 +7,7 @@
  * or route output (B.5–B.9 boundaries are read-only here).
  */
 
-import { ROUTE_GRAPH, type RouteGraphNode } from "./contracts";
+import { ROUTE_GRAPH, type RouteGraphNode } from "./contracts.ts";
 import { getAcademyBreadcrumbs } from "@/content/providers";
 
 export type LockLayer = "route" | "breadcrumb" | "sitemap" | "intelligence";
