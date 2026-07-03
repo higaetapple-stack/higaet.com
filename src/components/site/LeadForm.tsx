@@ -34,7 +34,7 @@ export function LeadForm({
   const onSubmit = async (values: LeadPayload) => {
     try {
       await submit({ data: values });
-      trackEvent("lead_submit", { division, source });
+      studyAbroadEvents.leadCaptured({ division, source });
       setSubmitted(true);
       form.reset({ ...values, name: "", email: "", phone: "", message: "" });
     } catch (e) {
