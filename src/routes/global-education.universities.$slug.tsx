@@ -64,10 +64,19 @@ function UniversityDetail() {
         throw new Error("Sign in required");
       }
       if (!q.data?.university.id) throw new Error("University missing");
+      studyAbroadEvents.applicationStarted({
+        university_id: q.data.university.id,
+        program_id: programId || undefined,
+      });
       const result = await apply({ data: { university_id: q.data.university.id, program_id: programId || undefined, intake: intake || undefined, notes: notes || undefined } });
       return result;
     },
     onSuccess: (r: any) => {
+      studyAbroadEvents.applicationSubmitted({
+        application_id: r.id,
+        university_id: q.data?.university.id,
+        program_id: programId || undefined,
+      });
       toast.success("Application started");
       qc.invalidateQueries({ queryKey: ["my-applications"] });
       setOpen(false);
