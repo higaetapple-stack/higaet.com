@@ -420,3 +420,67 @@ function QrSection() {
     </div>
   );
 }
+
+function RequestRefundDialog({
+  payment,
+  onSubmit,
+}: {
+  payment: { id: string; amount_minor: number; currency: string };
+  onSubmit: (reason: string) => Promise<void>;
+}) {
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="outline">Request refund</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            Request refund ·{" "}
+            {(payment.amount_minor / 100).toLocaleString(undefined, {
+              style: "currency",
+              currency: payment.currency,
+            })}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-2">
+          <Label htmlFor="refund-reason">Reason</Label>
+          <Textarea
+            id="refund-reason"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            rows={4}
+            maxLength={1000}
+            placeholder="Tell us why you'd like a refund. Our team reviews requests within 3 business days."
+          />
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={busy}>
+            Cancel
+          </Button>
+          <Button
+            disabled={busy || reason.trim().length < 4}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                await onSubmit(reason.trim());
+                setOpen(false);
+                setReason("");
+              } catch (e) {
+                toast.error((e as Error).message);
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            Submit request
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
