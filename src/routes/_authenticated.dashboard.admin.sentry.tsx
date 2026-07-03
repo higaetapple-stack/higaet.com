@@ -140,7 +140,17 @@ function IncidentCard({ item }: { item: SentryInsightsSummaryItem }) {
           </div>
           <h3 className="font-semibold truncate">{item.title}</h3>
         </div>
-        <Badge variant={confTone}>{conf}% confidence</Badge>
+        <div className="flex flex-col items-end gap-2 shrink-0">
+          <Badge variant={confTone}>{conf}% confidence</Badge>
+          <Button asChild variant="outline" size="sm">
+            <Link
+              to="/dashboard/admin/incident-replay/$issueId"
+              params={{ issueId: item.issueId }}
+            >
+              <Rewind className="size-3 mr-1" /> Replay
+            </Link>
+          </Button>
+        </div>
       </header>
 
       <div>
