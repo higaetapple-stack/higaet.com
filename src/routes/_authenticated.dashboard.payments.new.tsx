@@ -58,14 +58,13 @@ function NewPaymentPage() {
   const search = Route.useSearch();
   const submit = useServerFn(submitManualPayment);
   const listMine = useServerFn(listMyManualPayments);
+  const listRefundsFn = useServerFn(listMyRefunds);
+  const requestRefundFn = useServerFn(requestRefund);
   const qc = useQueryClient();
   const router = useRouter();
 
   const myQ = useQuery({ queryKey: ["my-manual-payments"], queryFn: () => listMine() });
-  const refundQ = useQuery({
-    queryKey: ["my-refunds"],
-    queryFn: () => useServerFn(listMyRefunds)(),
-  });
+  const refundQ = useQuery({ queryKey: ["my-refunds"], queryFn: () => listRefundsFn() });
   const refundMap = useMemo(() => {
     const m = new Map<string, { status: string; reason: string | null }>();
     for (const r of refundQ.data ?? []) m.set(r.payment_id, { status: r.status, reason: r.reason });
