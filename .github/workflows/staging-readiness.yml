@@ -47,7 +47,7 @@ permissions:
 jobs:
   readiness:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: ${{ inputs.environment || 'staging' }}
 
     outputs:
       status: ${{ steps.check.outputs.status }}
