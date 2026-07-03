@@ -10,6 +10,7 @@ import {
   submitManualPayment,
 } from "@/lib/manual-payments.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { paymentEvents } from "@/lib/analytics-events";
 import {
   PAYMENT_INSTRUCTIONS,
   PAYMENT_METHODS,
