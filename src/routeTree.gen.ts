@@ -315,6 +315,7 @@ import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './
 import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
+import { Route as AuthenticatedDashboardAdminFeatureFlagsRouteImport } from './routes/_authenticated.dashboard.admin.feature-flags'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
 import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
@@ -2061,6 +2062,12 @@ const AuthenticatedDashboardAdminIdentityProvidersRoute =
     path: '/identity-providers',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminFeatureFlagsRoute =
+  AuthenticatedDashboardAdminFeatureFlagsRouteImport.update({
+    id: '/feature-flags',
+    path: '/feature-flags',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminEnrollmentsRoute =
   AuthenticatedDashboardAdminEnrollmentsRouteImport.update({
     id: '/enrollments',
@@ -2502,6 +2509,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  '/dashboard/admin/feature-flags': typeof AuthenticatedDashboardAdminFeatureFlagsRoute
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -2827,6 +2835,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  '/dashboard/admin/feature-flags': typeof AuthenticatedDashboardAdminFeatureFlagsRoute
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -3166,6 +3175,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  '/_authenticated/dashboard/admin/feature-flags': typeof AuthenticatedDashboardAdminFeatureFlagsRoute
   '/_authenticated/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -3507,6 +3517,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/crm'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
+    | '/dashboard/admin/feature-flags'
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/launch-readiness'
@@ -3832,6 +3843,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/countries'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
+    | '/dashboard/admin/feature-flags'
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/launch-readiness'
@@ -4170,6 +4182,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/crm'
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
+    | '/_authenticated/dashboard/admin/feature-flags'
     | '/_authenticated/dashboard/admin/identity-providers'
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/launch-readiness'
@@ -6486,6 +6499,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/feature-flags': {
+      id: '/_authenticated/dashboard/admin/feature-flags'
+      path: '/feature-flags'
+      fullPath: '/dashboard/admin/feature-flags'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminFeatureFlagsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/enrollments': {
       id: '/_authenticated/dashboard/admin/enrollments'
       path: '/enrollments'
@@ -6839,6 +6859,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminCrmRoute: typeof AuthenticatedDashboardAdminCrmRouteWithChildren
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
+  AuthenticatedDashboardAdminFeatureFlagsRoute: typeof AuthenticatedDashboardAdminFeatureFlagsRoute
   AuthenticatedDashboardAdminIdentityProvidersRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminLaunchReadinessRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -6887,6 +6908,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminEmployersRoute,
     AuthenticatedDashboardAdminEnrollmentsRoute:
       AuthenticatedDashboardAdminEnrollmentsRoute,
+    AuthenticatedDashboardAdminFeatureFlagsRoute:
+      AuthenticatedDashboardAdminFeatureFlagsRoute,
     AuthenticatedDashboardAdminIdentityProvidersRoute:
       AuthenticatedDashboardAdminIdentityProvidersRoute,
     AuthenticatedDashboardAdminJobsRoute: AuthenticatedDashboardAdminJobsRoute,
