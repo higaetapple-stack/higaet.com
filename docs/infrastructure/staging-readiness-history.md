@@ -4,6 +4,7 @@ Auto-maintained by `scripts/check-staging-readiness.ts`. Newest first.
 
 | Timestamp | Run ID | DNS | SSL | SSH | Secrets | Result | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-07-03T00:09:23.370Z | 28629592230 | PASS | PASS | FAIL | FAIL | NO-GO | [run](https://github.com/higaetapple-stack/higaet-core-engine/actions/runs/28629592230) |
 | 2026-07-02T23:46:33.261Z | 28628733871 | PASS | PASS | FAIL | FAIL | NO-GO | [run](https://github.com/higaetapple-stack/higaet-core-engine/actions/runs/28628733871) |
 | 2026-07-02T08:42:13.400Z | 28577113157 | PASS | PASS | FAIL | FAIL | NO-GO | [run](https://github.com/higaetapple-stack/higaet-core-engine/actions/runs/28577113157) |
 | 2026-07-01T09:29:28.751Z | 28507681886 | PASS | PASS | FAIL | FAIL | NO-GO | [run](https://github.com/higaetapple-stack/higaet-core-engine/actions/runs/28507681886) |
