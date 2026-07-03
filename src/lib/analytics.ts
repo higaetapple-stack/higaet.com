@@ -95,9 +95,20 @@ export function loadTags() {
   }
 }
 
-/** Push a custom event into dataLayer / Pixel / PostHog. Safe no-op when tags aren't loaded. */
+import { validateEvent } from "./analytics-contract";
+
+/** Push a custom event into dataLayer / Pixel / PostHog. Safe no-op when tags aren't loaded.
+ *  Known events are validated against the Zod contract; invalid payloads are dropped
+ *  (and logged in dev) to prevent silent analytics drift. */
 export function trackEvent(name: string, params: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
+  const result = validateEvent(name, params);
+  if (!result.ok) {
+    if (import.meta.env.DEV) {
+      console.error(`[analytics] invalid event "${name}": ${result.error}`);
+    }
+    return;
+  }
   window.dataLayer?.push({ event: name, ...params });
   window.fbq?.("trackCustom", name, params);
   const ph = (window as unknown as { posthog?: { capture: (n: string, p?: Record<string, unknown>) => void } }).posthog;
