@@ -32,7 +32,21 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+
+      # Bun is required by `prebuild` (bun scripts/production-lock-check.mjs).
+      # GitHub runners do NOT ship Bun by default — install it explicitly and
+      # put it on PATH before any npm script that shells out to `bun`.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Verify Bun on PATH
+        run: |
+          set -eu
+          command -v bun >/dev/null || { echo "::error::bun not found on PATH after setup"; exit 1; }
+          bun --version
 
       - name: Install dependencies
         run: npm install
