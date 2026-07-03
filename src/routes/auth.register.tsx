@@ -10,6 +10,7 @@ import { lovable } from "@/integrations/lovable";
 import { AuthCard } from "./auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authEvents } from "@/lib/analytics-events";
 
 const Schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(120),
