@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import {
+  adminBusinessKpis,
   adminListSystemErrors,
   adminListSystemMetrics,
   adminObservabilitySummary,
+  type BusinessKpis,
   type ObservabilitySummary,
 } from "@/lib/observability.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
