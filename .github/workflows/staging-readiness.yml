@@ -11,6 +11,10 @@ on:
         required: false
         type: string
         default: staging
+      environment:
+        required: false
+        type: string
+        default: staging
     secrets:
       STAGING_HOST:
         required: true
@@ -43,7 +47,7 @@ permissions:
 jobs:
   readiness:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: ${{ inputs.environment || 'staging' }}
 
     outputs:
       status: ${{ steps.check.outputs.status }}
