@@ -1,0 +1,42 @@
+name: Analytics QA
+
+on:
+  pull_request:
+    branches: [main, staging]
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+jobs:
+  analytics-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
+      - name: Run analytics contract E2E
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ secrets.STAGING_URL }}
+          HIGAET_TEST_USER_EMAIL: ${{ secrets.HIGAET_TEST_USER_EMAIL }}
+          HIGAET_TEST_USER_PASSWORD: ${{ secrets.HIGAET_TEST_USER_PASSWORD }}
+          HIGAET_TEST_ADMIN_EMAIL: ${{ secrets.HIGAET_TEST_ADMIN_EMAIL }}
+          HIGAET_TEST_ADMIN_PASSWORD: ${{ secrets.HIGAET_TEST_ADMIN_PASSWORD }}
+          HIGAET_TEST_UNIVERSITY_SLUG: ${{ secrets.HIGAET_TEST_UNIVERSITY_SLUG }}
+          HIGAET_TEST_PAYMENT_ID: ${{ secrets.HIGAET_TEST_PAYMENT_ID }}
+        run: bunx playwright test tests/e2e/analytics
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: analytics-playwright-report
+          path: |
+            playwright-report
+            playwright-results.json
+          retention-days: 14
