@@ -166,3 +166,42 @@ export const adminObservabilitySummary = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return (summary ?? {}) as unknown as ObservabilitySummary;
   });
+
+// ---------- Admin: business funnels / KPIs ----------
+export interface BusinessKpis {
+  window_hours: number;
+  funnel: {
+    leads_captured: number;
+    applications_started: number;
+    applications_submitted: number;
+    checkouts_started: number;
+    payments_succeeded: number;
+    payments_failed: number;
+    refunds_requested: number;
+    refunds_processed: number;
+    refunds_failed: number;
+  };
+  rates: {
+    lead_to_application_pct: number | null;
+    application_completion_pct: number | null;
+    payment_success_pct: number | null;
+    payment_failure_pct: number | null;
+    refund_rate_pct: number | null;
+    refund_failure_pct: number | null;
+  };
+}
+
+export const adminBusinessKpis = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z.object({ hours: z.number().int().min(1).max(720).default(24) }).parse(d ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context as never);
+    const { data: kpis, error } = await context.supabase.rpc(
+      "business_kpis" as never,
+      { _hours: data.hours } as never,
+    );
+    if (error) throw new Error(error.message);
+    return (kpis ?? {}) as unknown as BusinessKpis;
+  });
