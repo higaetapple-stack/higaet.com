@@ -60,6 +60,8 @@ jobs:
     needs: cache-check
     if: needs.cache-check.outputs.cache_hit != 'true'
     uses: ./.github/workflows/staging-readiness.yml
+    with:
+      environment: staging
     secrets: inherit
 
   gate:
