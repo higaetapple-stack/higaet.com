@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { adminReleaseReport } from "@/lib/releases.functions";
+import { adminReleaseReport, adminSreReport } from "@/lib/releases.functions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,10 +32,15 @@ function ReleaseDashboard() {
   const [releaseId, setReleaseId] = useState("latest");
   const [pendingId, setPendingId] = useState("latest");
   const reportFn = useServerFn(adminReleaseReport);
+  const sreFn = useServerFn(adminSreReport);
 
   const report = useQuery({
     queryKey: ["releases", "report", releaseId],
     queryFn: () => reportFn({ data: { releaseId } }),
+  });
+  const sre = useQuery({
+    queryKey: ["releases", "sre", releaseId],
+    queryFn: () => sreFn({ data: { releaseId } }),
   });
 
   return (
@@ -159,7 +164,80 @@ function ReleaseDashboard() {
               <SnapshotBlock title="After (24h post-release)" snap={report.data.after} />
             </CardContent>
           </Card>
+
+          {sre.data && (
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>AI SRE Decision</CardTitle>
+                <Badge
+                  variant={
+                    sre.data.analysis.decision === "ROLLBACK_RECOMMENDED"
+                      ? "destructive"
+                      : sre.data.analysis.decision === "WARN"
+                        ? "secondary"
+                        : "default"
+                  }
+                >
+                  {sre.data.analysis.decision}
+                </Badge>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                <div>
+                  <div className="font-medium">Reasons</div>
+                  <ul className="list-disc pl-5">
+                    {sre.data.analysis.reasons.map((r, i) => (
+                      <li key={i}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <div className="font-medium">Rollback signal</div>
+                  <p className="text-muted-foreground">
+                    {sre.data.signal.action} — signals only, no automatic deploy.
+                  </p>
+                </div>
+                <div>
+                  <div className="font-medium">Predictive gate (next release)</div>
+                  <p>
+                    Risk: <span className="font-mono">{sre.data.predictive.riskLevel}</span> —{" "}
+                    {sre.data.predictive.allowDeploy ? "deploy allowed" : "deploy blocked"}
+                  </p>
+                  {sre.data.predictive.warnings.length > 0 && (
+                    <ul className="list-disc pl-5 mt-1">
+                      {sre.data.predictive.warnings.map((w, i) => (
+                        <li key={i}>{w}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div>
+                  <div className="font-medium">Auto-fix plan</div>
+                  {sre.data.fixPlan.patches.length === 0 ? (
+                    <p className="text-muted-foreground">No fixes suggested.</p>
+                  ) : (
+                    <ul className="list-disc pl-5">
+                      {sre.data.fixPlan.patches.map((p, i) => (
+                        <li key={i}>
+                          <span className="font-mono">{p.file}</span> — {p.change}
+                          {p.needsManualReview && (
+                            <Badge variant="outline" className="ml-2">manual review</Badge>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <details>
+                  <summary className="cursor-pointer font-medium">Alert preview</summary>
+                  <pre className="mt-2 text-xs whitespace-pre-wrap bg-muted p-3 rounded">
+{sre.data.alert.body}
+                  </pre>
+                </details>
+              </CardContent>
+            </Card>
+          )}
         </>
+
       )}
     </div>
   );
