@@ -13,6 +13,8 @@
     "start": "node app.js",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "lock:check": "bun scripts/production-lock-check.mjs",
     "lint:seo-orphans": "bun scripts/lint-seo-clusters.ts",
     "lint:backlinks": "bun scripts/lint-backlink-architecture.ts",
