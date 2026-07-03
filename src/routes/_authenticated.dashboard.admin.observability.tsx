@@ -44,6 +44,7 @@ function ObservabilityPage() {
   const summaryFn = useServerFn(adminObservabilitySummary);
   const errorsFn = useServerFn(adminListSystemErrors);
   const metricsFn = useServerFn(adminListSystemMetrics);
+  const kpisFn = useServerFn(adminBusinessKpis);
 
   const summary = useQuery({
     queryKey: ["observability", "summary", hours],
