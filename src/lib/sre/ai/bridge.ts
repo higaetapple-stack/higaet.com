@@ -48,11 +48,18 @@ export async function processSentryIssues(
     analyses.push(runAISRELoop(incident));
   }
 
-  return {
+  const result: ProcessSentryIssuesResult = {
     scanned: issues.length,
     analyses,
     autoPRRecommended: analyses.filter((a) => a.autoPRRecommended),
   };
+  if (useCache) cache = { at: Date.now(), result };
+  return result;
+}
+
+/** Clear the throttle cache (test / manual-refresh use only). */
+export function _clearSentryInsightsCache() {
+  cache = null;
 }
 
 async function hydrateIncident(client: SentryClient, issue: SentryIssue, hydrateEvent: boolean) {
