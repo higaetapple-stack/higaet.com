@@ -10,10 +10,8 @@ const input = z.object({
   releaseId: z.string().trim().min(1).max(120).default("latest"),
 });
 
-async function assertAdmin(ctx: {
-  supabase: { rpc: (n: "has_role", a: { _user_id: string; _role: "admin" | "super_admin" }) => Promise<{ data: boolean | null; error: { message: string } | null }> };
-  userId: string;
-}) {
+// Uses the authenticated Supabase client from requireSupabaseAuth context.
+async function assertAdmin(ctx: { supabase: any; userId: string }) {
   const { data: isAdmin, error } = await ctx.supabase.rpc("has_role", {
     _user_id: ctx.userId,
     _role: "admin",
