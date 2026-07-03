@@ -233,6 +233,10 @@ function ObservabilityPage() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="funnels" className="mt-4 space-y-4">
+          <FunnelsPanel data={kpis.data} loading={kpis.isLoading} />
+        </TabsContent>
+
         <TabsContent value="security" className="mt-4">
           <Card>
             <CardContent className="p-6 text-sm text-muted-foreground">
