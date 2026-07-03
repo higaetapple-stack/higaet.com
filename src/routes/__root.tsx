@@ -11,7 +11,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ORG_JSONLD, SITE, WEBSITE_JSONLD, canonicalUrl, isPrivatePath } from "@/lib/site";
-import { ANALYTICS_IDS, getConsent, loadTags } from "@/lib/analytics";
+import { ANALYTICS_IDS, getConsent, identifyUser, loadTags, resetIdentity } from "@/lib/analytics";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
 import { DevErrorOverlay } from "@/components/DevErrorOverlay";
