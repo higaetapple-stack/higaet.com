@@ -49,3 +49,34 @@ export interface IncidentReplay {
     systemic: boolean;
   };
 }
+
+// ---------------------------------------------------------------------------
+// B.48 — Agent execution replay (pre-existing). Kept alongside incident replay
+// types since both modules already import from this file.
+// ---------------------------------------------------------------------------
+
+export type AgentRole = "planner" | "researcher" | "navigator" | "validator";
+
+export interface ExecutionEvent {
+  id: string;
+  timestamp: number;
+  agent: AgentRole;
+  action: string;
+  input?: Record<string, unknown>;
+  output?: Record<string, unknown>;
+  metadata?: {
+    strategy?: string;
+    memoryKeys?: string[];
+    blocked?: boolean;
+  };
+}
+
+export interface TimelineStep {
+  step: number;
+  timestamp: number;
+  agent: AgentRole;
+  action: string;
+  strategy: string;
+  memoryKeys: string[];
+  blocked: boolean;
+}
