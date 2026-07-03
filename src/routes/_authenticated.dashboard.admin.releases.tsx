@@ -32,10 +32,15 @@ function ReleaseDashboard() {
   const [releaseId, setReleaseId] = useState("latest");
   const [pendingId, setPendingId] = useState("latest");
   const reportFn = useServerFn(adminReleaseReport);
+  const sreFn = useServerFn(adminSreReport);
 
   const report = useQuery({
     queryKey: ["releases", "report", releaseId],
     queryFn: () => reportFn({ data: { releaseId } }),
+  });
+  const sre = useQuery({
+    queryKey: ["releases", "sre", releaseId],
+    queryFn: () => sreFn({ data: { releaseId } }),
   });
 
   return (
