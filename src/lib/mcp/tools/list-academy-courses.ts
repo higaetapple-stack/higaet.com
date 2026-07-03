@@ -21,9 +21,9 @@ export default defineTool({
       .describe("Optional maximum number of courses to return."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: ({ query, limit }) => {
+  handler: async ({ query, limit }) => {
     const q = query?.toLowerCase();
-    const all = getAcademyCourses();
+    const all = await getAcademyCourses();
     const filtered = q
       ? all.filter((c) =>
           [c.title, c.slug, (c as { categoryId?: string }).categoryId ?? ""].some((v) =>
