@@ -124,6 +124,12 @@ jobs:
           echo "SSH_KEY_PATH=/home/runner/.ssh/id_deploy" >> "$GITHUB_ENV"
 
       # ----------------------------
+      # ESM SAFETY GATE (blocks Node ESM regressions + bun in build chain)
+      # ----------------------------
+      - name: ESM safety check
+        run: node scripts/ci-esm-safety-check.mjs
+
+      # ----------------------------
       # BUILD STEP
       # ----------------------------
       - name: Build project
