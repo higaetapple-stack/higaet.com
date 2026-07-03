@@ -71,9 +71,9 @@ jobs:
     steps:
       - name: Decision
         env:
-          CACHE_HIT: ${{ needs.cache-check.outputs.cache_hit }}
-          CACHE_STATUS: ${{ needs.cache-check.outputs.cache_status }}
-          LIVE_STATUS: ${{ needs.authorize.outputs.status }}
+          CACHE_HIT: ${{ needs.cache-check.outputs.cache_hit || 'false' }}
+          CACHE_STATUS: ${{ needs.cache-check.outputs.cache_status || 'unknown' }}
+          LIVE_STATUS: ${{ needs.authorize.outputs.status || 'FAIL' }}
         run: |
           if [ "$CACHE_HIT" = "true" ]; then
             STATUS="$CACHE_STATUS"
