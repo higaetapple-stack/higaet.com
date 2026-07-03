@@ -57,7 +57,10 @@ function AdminVisa() {
 
   return (
     <div>
-      <h2 className="font-display text-xl font-medium text-ink mb-4">Visa operations</h2>
+      <div className="flex items-center justify-between mb-4 gap-3">
+        <h2 className="font-display text-xl font-medium text-ink">Visa operations</h2>
+        <NewVisaCaseDialog />
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <Kpi label="Open" value={kpis.data?.open ?? 0} />
