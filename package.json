@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "prebuild": "bun scripts/production-lock-check.mjs",
+    "prebuild": "node scripts/production-lock-check.mjs",
     "build": "vite build",
     "build:node": "BUILD_TARGET=node vite build",
     "build:dev": "vite build --mode development",
