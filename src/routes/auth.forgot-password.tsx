@@ -33,6 +33,7 @@ function ForgotPage() {
 
   const onSubmit = async (values: Values) => {
     setLoading(true);
+    authEvents.passwordReset("requested");
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
