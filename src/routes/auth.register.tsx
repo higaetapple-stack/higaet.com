@@ -39,6 +39,7 @@ function RegisterPage() {
 
   const onSubmit = async (values: Values) => {
     setLoading(true);
+    authEvents.signupStarted("register_page");
     try {
       const { error } = await supabase.auth.signUp({
         email: values.email,
@@ -49,6 +50,7 @@ function RegisterPage() {
         },
       });
       if (error) throw error;
+      authEvents.signupCompleted({ method: "email", source: "register_page" });
       toast.success("Account created. Check your email to confirm.");
       navigate({ to: "/auth/login" });
     } catch (e) {
