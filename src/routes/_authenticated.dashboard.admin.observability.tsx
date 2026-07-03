@@ -267,6 +267,103 @@ function ObservabilityPage() {
   );
 }
 
+function pct(n: number | null | undefined) {
+  return n === null || n === undefined ? "—" : `${n}%`;
+}
+
+function FunnelsPanel({
+  data,
+  loading,
+}: {
+  data: BusinessKpis | undefined;
+  loading: boolean;
+}) {
+  if (loading || !data) {
+    return (
+      <Card>
+        <CardContent className="p-6 text-sm text-muted-foreground">
+          {loading ? "Loading funnel data…" : "No funnel data yet."}
+        </CardContent>
+      </Card>
+    );
+  }
+  const { funnel, rates } = data;
+  const stages = [
+    { label: "Leads captured", value: funnel.leads_captured },
+    { label: "Applications started", value: funnel.applications_started },
+    { label: "Applications submitted", value: funnel.applications_submitted },
+    { label: "Checkouts started", value: funnel.checkouts_started },
+    { label: "Payments succeeded", value: funnel.payments_succeeded },
+  ];
+  const peak = Math.max(1, ...stages.map((s) => s.value));
+  return (
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <StatCard label="Lead → application" value={pct(rates.lead_to_application_pct)} />
+        <StatCard label="Application completion" value={pct(rates.application_completion_pct)} />
+        <StatCard label="Payment success" value={pct(rates.payment_success_pct)} />
+        <StatCard
+          label="Payment failure"
+          value={pct(rates.payment_failure_pct)}
+          tone={(rates.payment_failure_pct ?? 0) > 10 ? "warn" : "ok"}
+        />
+        <StatCard
+          label="Refund rate"
+          value={pct(rates.refund_rate_pct)}
+          tone={(rates.refund_rate_pct ?? 0) > 10 ? "warn" : "ok"}
+        />
+        <StatCard
+          label="Refund failure"
+          value={pct(rates.refund_failure_pct)}
+          tone={(rates.refund_failure_pct ?? 0) > 20 ? "warn" : "ok"}
+        />
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm">Conversion funnel</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {stages.map((s) => (
+            <div key={s.label} className="space-y-1">
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>{s.label}</span>
+                <span className="tabular-nums text-ink">{s.value}</span>
+              </div>
+              <div className="h-2 rounded-full bg-muted overflow-hidden">
+                <div
+                  className="h-full bg-ink"
+                  style={{ width: `${(s.value / peak) * 100}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm">Refund lifecycle</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div>
+              <div className="text-xs text-muted-foreground">Requested</div>
+              <div className="text-2xl font-medium tabular-nums">{funnel.refunds_requested}</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Processed</div>
+              <div className="text-2xl font-medium tabular-nums text-ink">{funnel.refunds_processed}</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Failed</div>
+              <div className="text-2xl font-medium tabular-nums text-destructive">{funnel.refunds_failed}</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </>
+  );
+}
+
 function StatCard({
   label,
   value,
