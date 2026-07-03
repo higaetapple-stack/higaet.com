@@ -80,6 +80,7 @@ function LoginPage() {
         setBusy(false);
         return;
       }
+      authEvents.login(provider);
       if (result.redirected) return;
       navigate({ to: "/dashboard" });
     } catch (e) {
