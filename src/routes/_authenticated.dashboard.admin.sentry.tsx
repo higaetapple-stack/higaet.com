@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
+import { AlertTriangle, RefreshCw, Rewind, ShieldCheck, Sparkles } from "lucide-react";
 
 const sentryInsightsQuery = () =>
   queryOptions({
