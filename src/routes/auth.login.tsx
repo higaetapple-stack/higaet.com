@@ -57,6 +57,7 @@ function LoginPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
+      authEvents.login("email");
       toast.success("Welcome back");
       const to = await resolvePostLoginDestination(search.redirect);
       navigate({ to, replace: true });
