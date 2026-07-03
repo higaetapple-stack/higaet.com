@@ -1,0 +1,124 @@
+name: License Audit
+
+# Scans production npm dependencies for disallowed licenses (copyleft:
+# GPL/AGPL/LGPL and similar) and fails the build on any violation.
+# Uses license-checker-rseidelsohn against a generated package-lock.json so
+# results are reproducible regardless of the local package manager.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'bun.lockb'
+      - 'bun.lock'
+      - '.github/workflows/license-audit.yml'
+      - '.github/license-allowlist.json'
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'bun.lockb'
+      - 'bun.lock'
+      - '.github/workflows/license-audit.yml'
+      - '.github/license-allowlist.json'
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch: {}
+
+concurrency:
+  group: license-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  licenses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fork-guard
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Skipping audit on fork PR"
+          exit 0
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install production dependencies
+        # license-checker walks node_modules, so install prod deps only.
+        run: npm install --omit=dev --ignore-scripts --no-audit --no-fund --package-lock-only=false
+        env:
+          npm_config_legacy_peer_deps: 'true'
+
+      - name: Run license audit
+        id: licenses
+        run: |
+          set -e
+          # Explicit deny list — copyleft and source-availability licenses that
+          # would infect the codebase or block redistribution.
+          DENY="GPL;GPL-1.0;GPL-2.0;GPL-3.0;AGPL;AGPL-1.0;AGPL-3.0;LGPL;LGPL-2.0;LGPL-2.1;LGPL-3.0;SSPL;SSPL-1.0;CC-BY-NC;CC-BY-NC-SA;CC-BY-NC-ND;BUSL;BUSL-1.1;EUPL;EUPL-1.1;EUPL-1.2;OSL;OSL-3.0;EPL;EPL-1.0;EPL-2.0;MPL-1.0;MPL-1.1;CDDL;CDDL-1.0;CDDL-1.1;CPAL;CPAL-1.0;Elastic-2.0;Commons-Clause"
+
+          npx --yes license-checker-rseidelsohn@4.4.2 \
+            --production \
+            --json \
+            --excludePrivatePackages \
+            --out licenses.json
+
+          # Emit a compact table for the run summary.
+          {
+            echo "## License Audit"
+            echo ""
+            echo "| Package | License |"
+            echo "|---|---|"
+            jq -r 'to_entries | .[] | "| \(.key) | \(.value.licenses // "UNKNOWN") |"' licenses.json | head -n 200
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          set +e
+          npx --yes license-checker-rseidelsohn@4.4.2 \
+            --production \
+            --excludePrivatePackages \
+            --failOn "$DENY" > deny-check.log 2>&1
+          DENY_EXIT=$?
+          set -e
+
+          # Also flag UNKNOWN / UNLICENSED as a hard failure — unclear licensing
+          # is treated as disallowed until a human classifies it.
+          UNKNOWN_COUNT=$(jq '[to_entries[] | select((.value.licenses // "UNKNOWN") | test("UNKNOWN|UNLICENSED"))] | length' licenses.json)
+
+          if [ "$DENY_EXIT" -ne 0 ] || [ "$UNKNOWN_COUNT" -gt 0 ]; then
+            {
+              echo "### Violations"
+              echo ""
+              if [ "$DENY_EXIT" -ne 0 ]; then
+                echo "Disallowed licenses detected:"
+                echo '```'
+                cat deny-check.log
+                echo '```'
+              fi
+              if [ "$UNKNOWN_COUNT" -gt 0 ]; then
+                echo ""
+                echo "Packages with UNKNOWN / UNLICENSED classification:"
+                echo '```'
+                jq -r 'to_entries[] | select((.value.licenses // "UNKNOWN") | test("UNKNOWN|UNLICENSED")) | "- \(.key) → \(.value.licenses // "UNKNOWN")"' licenses.json
+                echo '```'
+              fi
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "License audit failed."
+            exit 1
+          fi
+
+          echo "License audit passed."
+
+      - name: Upload license report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: licenses.json
+          retention-days: 30
