@@ -11,6 +11,8 @@ export const ANALYTICS_IDS = {
   clarity: import.meta.env.VITE_CLARITY_ID ?? "",
   linkedIn: import.meta.env.VITE_LINKEDIN_PARTNER_ID ?? "",
   gscVerification: import.meta.env.VITE_GSC_VERIFICATION ?? "",
+  posthogKey: import.meta.env.VITE_POSTHOG_KEY ?? "",
+  posthogHost: import.meta.env.VITE_POSTHOG_HOST ?? "https://eu.i.posthog.com",
 } as const;
 
 export const CONSENT_KEY = "higaet.consent.v1";
