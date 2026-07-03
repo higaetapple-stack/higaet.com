@@ -303,6 +303,7 @@ import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './rout
 import { Route as AuthenticatedDashboardAdminSystemRouteImport } from './routes/_authenticated.dashboard.admin.system'
 import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
+import { Route as AuthenticatedDashboardAdminSentryRouteImport } from './routes/_authenticated.dashboard.admin.sentry'
 import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
 import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
 import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
@@ -1991,6 +1992,12 @@ const AuthenticatedDashboardAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminSentryRoute =
+  AuthenticatedDashboardAdminSentryRouteImport.update({
+    id: '/sentry',
+    path: '/sentry',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminScholarshipsRoute =
   AuthenticatedDashboardAdminScholarshipsRouteImport.update({
     id: '/scholarships',
@@ -2538,6 +2545,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
+  '/dashboard/admin/sentry': typeof AuthenticatedDashboardAdminSentryRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
@@ -2866,6 +2874,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
+  '/dashboard/admin/sentry': typeof AuthenticatedDashboardAdminSentryRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
@@ -3208,6 +3217,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/sa-applications': typeof AuthenticatedDashboardAdminSaApplicationsRoute
   '/_authenticated/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/_authenticated/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
+  '/_authenticated/dashboard/admin/sentry': typeof AuthenticatedDashboardAdminSentryRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
   '/_authenticated/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/_authenticated/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
@@ -3552,6 +3562,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/sa-applications'
     | '/dashboard/admin/sa-leads'
     | '/dashboard/admin/scholarships'
+    | '/dashboard/admin/sentry'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
     | '/dashboard/admin/system'
@@ -3880,6 +3891,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/sa-applications'
     | '/dashboard/admin/sa-leads'
     | '/dashboard/admin/scholarships'
+    | '/dashboard/admin/sentry'
     | '/dashboard/admin/settings'
     | '/dashboard/admin/stories'
     | '/dashboard/admin/system'
@@ -4221,6 +4233,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/sa-applications'
     | '/_authenticated/dashboard/admin/sa-leads'
     | '/_authenticated/dashboard/admin/scholarships'
+    | '/_authenticated/dashboard/admin/sentry'
     | '/_authenticated/dashboard/admin/settings'
     | '/_authenticated/dashboard/admin/stories'
     | '/_authenticated/dashboard/admin/system'
@@ -6440,6 +6453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/sentry': {
+      id: '/_authenticated/dashboard/admin/sentry'
+      path: '/sentry'
+      fullPath: '/dashboard/admin/sentry'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSentryRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/scholarships': {
       id: '/_authenticated/dashboard/admin/scholarships'
       path: '/scholarships'
@@ -6913,6 +6933,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminSaApplicationsRoute: typeof AuthenticatedDashboardAdminSaApplicationsRoute
   AuthenticatedDashboardAdminSaLeadsRoute: typeof AuthenticatedDashboardAdminSaLeadsRoute
   AuthenticatedDashboardAdminScholarshipsRoute: typeof AuthenticatedDashboardAdminScholarshipsRoute
+  AuthenticatedDashboardAdminSentryRoute: typeof AuthenticatedDashboardAdminSentryRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
   AuthenticatedDashboardAdminStoriesRoute: typeof AuthenticatedDashboardAdminStoriesRoute
   AuthenticatedDashboardAdminSystemRoute: typeof AuthenticatedDashboardAdminSystemRoute
@@ -6976,6 +6997,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminSaLeadsRoute,
     AuthenticatedDashboardAdminScholarshipsRoute:
       AuthenticatedDashboardAdminScholarshipsRoute,
+    AuthenticatedDashboardAdminSentryRoute:
+      AuthenticatedDashboardAdminSentryRoute,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
     AuthenticatedDashboardAdminStoriesRoute:

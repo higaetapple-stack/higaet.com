@@ -23,9 +23,18 @@ export interface ProcessSentryIssuesResult {
   skippedReason?: "not-configured";
 }
 
+// In-worker throttle: at most one live Sentry sweep every 30s per isolate.
+// A caller can force a fresh fetch by passing a custom client.
+const CACHE_TTL_MS = 30_000;
+let cache: { at: number; result: ProcessSentryIssuesResult } | null = null;
+
 export async function processSentryIssues(
   opts: ProcessSentryIssuesOptions = {},
 ): Promise<ProcessSentryIssuesResult> {
+  const useCache = !opts.client;
+  if (useCache && cache && Date.now() - cache.at < CACHE_TTL_MS) {
+    return cache.result;
+  }
   const client = opts.client ?? new SentryClient();
   if (!client.isConfigured()) {
     return { scanned: 0, analyses: [], autoPRRecommended: [], skippedReason: "not-configured" };
@@ -39,11 +48,18 @@ export async function processSentryIssues(
     analyses.push(runAISRELoop(incident));
   }
 
-  return {
+  const result: ProcessSentryIssuesResult = {
     scanned: issues.length,
     analyses,
     autoPRRecommended: analyses.filter((a) => a.autoPRRecommended),
   };
+  if (useCache) cache = { at: Date.now(), result };
+  return result;
+}
+
+/** Clear the throttle cache (test / manual-refresh use only). */
+export function _clearSentryInsightsCache() {
+  cache = null;
 }
 
 async function hydrateIncident(client: SentryClient, issue: SentryIssue, hydrateEvent: boolean) {
