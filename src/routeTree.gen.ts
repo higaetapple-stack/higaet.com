@@ -348,6 +348,7 @@ import { Route as AuthenticatedDashboardTechnologiesClientIdRouteImport } from '
 import { Route as AuthenticatedDashboardCounselorTimelineIdRouteImport } from './routes/_authenticated.dashboard.counselor.timeline.$id'
 import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
 import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
+import { Route as AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport } from './routes/_authenticated.dashboard.admin.incident-replay.$issueId'
 import { Route as AuthenticatedDashboardAdminAiUsageRouteImport } from './routes/_authenticated.dashboard.admin.ai.usage'
 import { Route as AuthenticatedDashboardAdminAiCopilotRouteImport } from './routes/_authenticated.dashboard.admin.ai.copilot'
 import { Route as AuthenticatedDashboardAdminCrmTypeIdRouteImport } from './routes/_authenticated.dashboard.admin.crm.$type.$id'
@@ -2262,6 +2263,12 @@ const AuthenticatedDashboardAdminProgramsIdRoute =
     path: '/programs/$id',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminIncidentReplayIssueIdRoute =
+  AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport.update({
+    id: '/incident-replay/$issueId',
+    path: '/incident-replay/$issueId',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminAiUsageRoute =
   AuthenticatedDashboardAdminAiUsageRouteImport.update({
     id: '/usage',
@@ -2606,6 +2613,7 @@ export interface FileRoutesByFullPath {
   '/global-education/knowledge-base/universities/': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
+  '/dashboard/admin/incident-replay/$issueId': typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/counselor/timeline/$id': typeof AuthenticatedDashboardCounselorTimelineIdRoute
@@ -2933,6 +2941,7 @@ export interface FileRoutesByTo {
   '/global-education/knowledge-base/universities': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
+  '/dashboard/admin/incident-replay/$issueId': typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRoute
   '/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/dashboard/counselor/timeline/$id': typeof AuthenticatedDashboardCounselorTimelineIdRoute
@@ -3278,6 +3287,7 @@ export interface FileRoutesById {
   '/global-education/knowledge-base/universities/': typeof GlobalEducationKnowledgeBaseUniversitiesIndexRoute
   '/_authenticated/dashboard/admin/ai/copilot': typeof AuthenticatedDashboardAdminAiCopilotRoute
   '/_authenticated/dashboard/admin/ai/usage': typeof AuthenticatedDashboardAdminAiUsageRoute
+  '/_authenticated/dashboard/admin/incident-replay/$issueId': typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRoute
   '/_authenticated/dashboard/admin/programs/$id': typeof AuthenticatedDashboardAdminProgramsIdRoute
   '/_authenticated/dashboard/admin/visa/$id': typeof AuthenticatedDashboardAdminVisaIdRoute
   '/_authenticated/dashboard/counselor/timeline/$id': typeof AuthenticatedDashboardCounselorTimelineIdRoute
@@ -3623,6 +3633,7 @@ export interface FileRouteTypes {
     | '/global-education/knowledge-base/universities/'
     | '/dashboard/admin/ai/copilot'
     | '/dashboard/admin/ai/usage'
+    | '/dashboard/admin/incident-replay/$issueId'
     | '/dashboard/admin/programs/$id'
     | '/dashboard/admin/visa/$id'
     | '/dashboard/counselor/timeline/$id'
@@ -3950,6 +3961,7 @@ export interface FileRouteTypes {
     | '/global-education/knowledge-base/universities'
     | '/dashboard/admin/ai/copilot'
     | '/dashboard/admin/ai/usage'
+    | '/dashboard/admin/incident-replay/$issueId'
     | '/dashboard/admin/programs/$id'
     | '/dashboard/admin/visa/$id'
     | '/dashboard/counselor/timeline/$id'
@@ -4294,6 +4306,7 @@ export interface FileRouteTypes {
     | '/global-education/knowledge-base/universities/'
     | '/_authenticated/dashboard/admin/ai/copilot'
     | '/_authenticated/dashboard/admin/ai/usage'
+    | '/_authenticated/dashboard/admin/incident-replay/$issueId'
     | '/_authenticated/dashboard/admin/programs/$id'
     | '/_authenticated/dashboard/admin/visa/$id'
     | '/_authenticated/dashboard/counselor/timeline/$id'
@@ -6768,6 +6781,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIdRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/incident-replay/$issueId': {
+      id: '/_authenticated/dashboard/admin/incident-replay/$issueId'
+      path: '/incident-replay/$issueId'
+      fullPath: '/dashboard/admin/incident-replay/$issueId'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/ai/usage': {
       id: '/_authenticated/dashboard/admin/ai/usage'
       path: '/usage'
@@ -6944,6 +6964,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminVisaRoute: typeof AuthenticatedDashboardAdminVisaRouteWithChildren
   AuthenticatedDashboardAdminWebhooksRoute: typeof AuthenticatedDashboardAdminWebhooksRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
+  AuthenticatedDashboardAdminIncidentReplayIssueIdRoute: typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRoute
   AuthenticatedDashboardAdminProgramsIdRoute: typeof AuthenticatedDashboardAdminProgramsIdRoute
   AuthenticatedDashboardAdminProgramsIndexRoute: typeof AuthenticatedDashboardAdminProgramsIndexRoute
 }
@@ -7019,6 +7040,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminWebhooksRoute,
     AuthenticatedDashboardAdminIndexRoute:
       AuthenticatedDashboardAdminIndexRoute,
+    AuthenticatedDashboardAdminIncidentReplayIssueIdRoute:
+      AuthenticatedDashboardAdminIncidentReplayIssueIdRoute,
     AuthenticatedDashboardAdminProgramsIdRoute:
       AuthenticatedDashboardAdminProgramsIdRoute,
     AuthenticatedDashboardAdminProgramsIndexRoute:

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
+import { AlertTriangle, RefreshCw, Rewind, ShieldCheck, Sparkles } from "lucide-react";
 
 const sentryInsightsQuery = () =>
   queryOptions({
@@ -140,7 +140,17 @@ function IncidentCard({ item }: { item: SentryInsightsSummaryItem }) {
           </div>
           <h3 className="font-semibold truncate">{item.title}</h3>
         </div>
-        <Badge variant={confTone}>{conf}% confidence</Badge>
+        <div className="flex flex-col items-end gap-2 shrink-0">
+          <Badge variant={confTone}>{conf}% confidence</Badge>
+          <Button asChild variant="outline" size="sm">
+            <Link
+              to="/dashboard/admin/incident-replay/$issueId"
+              params={{ issueId: item.issueId }}
+            >
+              <Rewind className="size-3 mr-1" /> Replay
+            </Link>
+          </Button>
+        </div>
       </header>
 
       <div>

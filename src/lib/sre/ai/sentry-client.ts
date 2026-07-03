@@ -108,26 +108,53 @@ export class SentryClient {
   /** Get the latest event on an issue and flatten the top exception + frames. */
   async getLatestEvent(issueId: string): Promise<SentryEventDetail | null> {
     const raw = await this.request<any>(`/issues/${issueId}/events/latest/`);
-    if (!raw) return null;
-    const exceptionEntry = (raw.entries ?? []).find((e: any) => e.type === "exception");
-    const exc = exceptionEntry?.data?.values?.[0];
-    const frames: SentryEventFrame[] = (exc?.stacktrace?.frames ?? []).map((f: any) => ({
-      filename: f.filename,
-      function: f.function,
-      lineNo: f.lineNo,
-      module: f.module,
-    }));
-    const tags: Record<string, string> = {};
-    for (const t of raw.tags ?? []) if (t?.key) tags[t.key] = String(t.value ?? "");
-    return {
-      id: raw.id,
-      eventID: raw.eventID,
-      message: raw.message ?? raw.title,
-      platform: raw.platform,
-      errorType: exc?.type,
-      errorValue: exc?.value,
-      frames,
-      tags,
-    };
+    return raw ? flattenEvent(raw) : null;
   }
+
+  /**
+   * List recent events for an issue in chronological order (oldest → newest).
+   * Powers the incident replay timeline.
+   */
+  async listIssueEvents(
+    issueId: string,
+    opts: { limit?: number } = {},
+  ): Promise<Array<SentryEventDetail & { timestamp: number }>> {
+    const limit = Math.min(opts.limit ?? 25, 100);
+    const params = new URLSearchParams({ full: "true", limit: String(limit) });
+    const raw = await this.request<any[]>(`/issues/${issueId}/events/?${params}`);
+    const events = (raw ?? [])
+      .map((r) => {
+        const detail = flattenEvent(r);
+        if (!detail) return null;
+        const ts = Date.parse(r.dateCreated ?? r.dateReceived ?? "");
+        return { ...detail, timestamp: Number.isFinite(ts) ? ts : Date.now() };
+      })
+      .filter((e): e is SentryEventDetail & { timestamp: number } => e !== null);
+    events.sort((a, b) => a.timestamp - b.timestamp);
+    return events;
+  }
+}
+
+function flattenEvent(raw: any): SentryEventDetail | null {
+  if (!raw) return null;
+  const exceptionEntry = (raw.entries ?? []).find((e: any) => e.type === "exception");
+  const exc = exceptionEntry?.data?.values?.[0];
+  const frames: SentryEventFrame[] = (exc?.stacktrace?.frames ?? []).map((f: any) => ({
+    filename: f.filename,
+    function: f.function,
+    lineNo: f.lineNo,
+    module: f.module,
+  }));
+  const tags: Record<string, string> = {};
+  for (const t of raw.tags ?? []) if (t?.key) tags[t.key] = String(t.value ?? "");
+  return {
+    id: raw.id,
+    eventID: raw.eventID,
+    message: raw.message ?? raw.title,
+    platform: raw.platform,
+    errorType: exc?.type,
+    errorValue: exc?.value,
+    frames,
+    tags,
+  };
 }
