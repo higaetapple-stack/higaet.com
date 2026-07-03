@@ -117,6 +117,7 @@ function ObservabilityPage() {
         <TabsList>
           <TabsTrigger value="errors">Errors</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="funnels">Funnels</TabsTrigger>
           <TabsTrigger value="security">Security events</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
         </TabsList>
