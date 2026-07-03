@@ -62,6 +62,15 @@ function NewPaymentPage() {
   const router = useRouter();
 
   const myQ = useQuery({ queryKey: ["my-manual-payments"], queryFn: () => listMine() });
+  const refundQ = useQuery({
+    queryKey: ["my-refunds"],
+    queryFn: () => useServerFn(listMyRefunds)(),
+  });
+  const refundMap = useMemo(() => {
+    const m = new Map<string, { status: string; reason: string | null }>();
+    for (const r of refundQ.data ?? []) m.set(r.payment_id, { status: r.status, reason: r.reason });
+    return m;
+  }, [refundQ.data]);
 
   const [method, setMethod] = useState<string>("upi");
   const [purpose, setPurpose] = useState<string>(search.purpose ?? "course_enrollment");
