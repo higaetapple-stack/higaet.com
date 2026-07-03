@@ -18,6 +18,10 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Single source of truth: all SSH/staging secrets live in the `staging`
+    # GitHub Environment. Repo-level fallbacks are intentionally NOT used —
+    # they mask misconfiguration.
+    environment: staging
 
     steps:
       - uses: actions/checkout@v4
@@ -34,42 +38,69 @@ jobs:
         run: npm install
 
       # ----------------------------
-      # ENV SAFETY CHECK (NO FAIL CRASH)
+      # ENV PREFLIGHT (FAIL LOUD)
       # ----------------------------
-      - name: Validate environment (safe mode)
+      - name: Validate environment
         env:
           STAGING_HOST: ${{ secrets.STAGING_HOST }}
           STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
-          echo "Checking required env..."
-
-          if [ -z "$STAGING_HOST" ]; then
-            echo "::warning::Missing STAGING_HOST"
-          fi
-
-          if [ -z "$STAGING_BASE_URL" ]; then
-            echo "::warning::Missing STAGING_BASE_URL"
+          set -u
+          MISSING=0
+          for v in STAGING_HOST STAGING_BASE_URL SSH_HOST SSH_USER SSH_PORT SSH_KEY; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing required secret in staging environment: $v"
+              MISSING=$((MISSING+1))
+            else
+              echo "  ok  $v"
+            fi
+          done
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::Preflight failed — configure the missing secrets on the 'staging' GitHub Environment."
+            exit 1
           fi
 
       # ----------------------------
-      # SSH SETUP (UNIFIED SAFE)
+      # SSH SETUP (format-agnostic, fail loud)
       # ----------------------------
+      # We accept both RSA and ED25519 private keys. The file is always
+      # written to a neutral path (~/.ssh/id_deploy) so downstream steps
+      # never assume a specific key algorithm.
       - name: Setup SSH key
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          if [ -z "$SSH_KEY" ]; then
-            echo "No SSH key provided — skipping SSH setup"
-            exit 0
-          fi
-
+          set -eu
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
 
-          echo "SSH_KEY_PATH=/home/runner/.ssh/id_ed25519" >> $GITHUB_ENV
+          # Detect key format for diagnostics; do NOT rename the file.
+          if head -1 ~/.ssh/id_deploy | grep -q 'OPENSSH PRIVATE KEY'; then
+            echo "SSH key format: OpenSSH (likely ED25519 or newer RSA)"
+          elif head -1 ~/.ssh/id_deploy | grep -q 'RSA PRIVATE KEY'; then
+            echo "SSH key format: PEM RSA"
+          else
+            echo "::error::SSH_KEY does not look like a valid private key (bad header)"
+            head -1 ~/.ssh/id_deploy || true
+            exit 1
+          fi
+
+          # Trust the host up front so ssh doesn't hang or silently skip.
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || {
+            echo "::error::ssh-keyscan failed for $SSH_HOST:$SSH_PORT"
+            exit 1
+          }
+
+          echo "SSH_KEY_PATH=/home/runner/.ssh/id_deploy" >> "$GITHUB_ENV"
 
       # ----------------------------
       # BUILD STEP
@@ -78,25 +109,23 @@ jobs:
         run: npm run build
 
       # ----------------------------
-      # DATADOG (NON-BLOCKING FIX)
+      # DATADOG (non-blocking by design — observability, not deploy gate)
       # ----------------------------
       - name: Run Datadog Synthetic Tests
         env:
           DD_API_KEY: ${{ secrets.DD_API_KEY }}
           DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
         run: |
-          if [ -z "$DD_API_KEY" ] || [ -z "$DD_APP_KEY" ]; then
-            echo "Datadog keys missing — skipping safely"
+          if [ -z "${DD_API_KEY:-}" ] || [ -z "${DD_APP_KEY:-}" ]; then
+            echo "::warning::Datadog keys missing — skipping synthetic tests"
             exit 0
           fi
-
           npx --yes @datadog/datadog-ci synthetics run-tests || {
             echo "::warning::Datadog Synthetic tests failed — non-blocking"
-            exit 0
           }
 
       # ----------------------------
-      # DEPLOY STEP (SAFE SSH USAGE)
+      # DEPLOY STEP (fail loud on any SSH problem)
       # ----------------------------
       - name: Deploy via SSH
         env:
@@ -104,18 +133,20 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ]; then
-            echo "::warning::SSH deployment skipped (missing config)"
-            exit 0
+          set -eu
+          if [ ! -f "$SSH_KEY_PATH" ]; then
+            echo "::error::SSH key not present at $SSH_KEY_PATH — Setup SSH step failed"
+            exit 1
           fi
 
-          if [ ! -f ~/.ssh/id_ed25519 ]; then
-            echo "::warning::SSH key not configured — skipping deploy"
-            exit 0
-          fi
-
-          ssh -o StrictHostKeyChecking=no -p "$SSH_PORT" -i ~/.ssh/id_ed25519 \
-            "$SSH_USER@$SSH_HOST" "echo 'Deploy step placeholder'"
+          ssh -o StrictHostKeyChecking=yes \
+              -o UserKnownHostsFile=~/.ssh/known_hosts \
+              -o BatchMode=yes \
+              -o ConnectTimeout=15 \
+              -p "$SSH_PORT" \
+              -i "$SSH_KEY_PATH" \
+              "$SSH_USER@$SSH_HOST" \
+              "echo 'SSH OK on '$(hostname)"
 
       # ----------------------------
       # POST BUILD CLEANUP
@@ -130,10 +161,6 @@ jobs:
             dist/**
           if-no-files-found: ignore
 
-      # ----------------------------
-      # NOTIFY (SAFE)
-      # ----------------------------
       - name: Notify success
         if: success()
-        run: |
-          echo "CI completed successfully"
+        run: echo "CI completed successfully"
