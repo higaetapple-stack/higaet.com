@@ -68,6 +68,11 @@ function ObservabilityPage() {
     queryFn: () => metricsFn({ data: { limit: 100 } }),
   });
 
+  const kpis = useQuery({
+    queryKey: ["observability", "kpis", hours],
+    queryFn: () => kpisFn({ data: { hours } }),
+  });
+
   const s = summary.data as ObservabilitySummary | undefined;
 
   return (
