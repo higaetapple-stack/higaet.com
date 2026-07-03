@@ -70,6 +70,13 @@ function NewPaymentPage() {
       if (!Number.isFinite(amt) || amt <= 0) throw new Error("Enter a valid amount");
       if (reference.trim().length < 2) throw new Error("Enter your UTR / transaction reference");
 
+      paymentEvents.checkoutStarted({
+        purpose,
+        method,
+        amount_minor: amt,
+        currency,
+      });
+
       let proof_url: string | undefined;
       if (file) {
         setUploading(true);
@@ -97,7 +104,14 @@ function NewPaymentPage() {
         },
       });
     },
-    onSuccess: () => {
+    onSuccess: (result: any) => {
+      const amt = Math.round(Number(amount) * 100);
+      paymentEvents.paymentSucceeded({
+        payment_id: result?.id,
+        purpose,
+        amount_minor: amt,
+        currency,
+      });
       toast.success("Payment submitted — awaiting verification");
       qc.invalidateQueries({ queryKey: ["my-manual-payments"] });
       setReference("");
@@ -105,7 +119,10 @@ function NewPaymentPage() {
       setFile(null);
       router.navigate({ to: "/dashboard/payments/new", search: {} });
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => {
+      paymentEvents.paymentFailed({ purpose, method, reason: e.message });
+      toast.error(e.message);
+    },
   });
 
   const isUpiLike = ["upi", "google_pay", "phonepe", "paytm", "amazon_pay"].includes(method);
