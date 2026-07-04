@@ -1,0 +1,66 @@
+name: SRE E2E Smoke
+
+# Runs the AI SRE end-to-end smoke test (Sentry → AI → PR → CI → readiness)
+# by invoking the deployed admin endpoint and asserting the returned status.
+# Provides a single job with clear pass/fail reporting for CI dashboards.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Base URL (defaults to stable preview)"
+        required: false
+        default: "https://project--019358d1-d5d3-491a-8f03-bd2f647a26b3.lovable.app"
+  schedule:
+    # Every 6 hours — cheap, but keeps token health + pipeline integrity visible.
+    - cron: "0 */6 * * *"
+
+jobs:
+  sre-e2e:
+    name: Sentry → AI → PR → CI → Deploy readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check required secrets
+        run: |
+          if [ -z "${{ secrets.SRE_E2E_BEARER }}" ]; then
+            echo "::error::SRE_E2E_BEARER not set — add an admin Supabase access token to repo secrets."
+            exit 1
+          fi
+
+      - name: Trigger E2E smoke test
+        id: run
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url || 'https://project--019358d1-d5d3-491a-8f03-bd2f647a26b3.lovable.app' }}
+          BEARER: ${{ secrets.SRE_E2E_BEARER }}
+        run: |
+          set -euo pipefail
+          echo "Invoking $BASE_URL /_serverFn (runSreE2ETest)"
+          RESP=$(curl -sS -w "\n%{http_code}" -X POST \
+            "$BASE_URL/api/sre/e2e/trigger" \
+            -H "Authorization: Bearer $BEARER" \
+            -H "Content-Type: application/json" \
+            --data '{}')
+          BODY=$(echo "$RESP" | head -n -1)
+          CODE=$(echo "$RESP" | tail -n 1)
+          echo "HTTP $CODE"
+          echo "$BODY" | tee response.json
+          if [ "$CODE" != "200" ]; then
+            echo "::error::E2E trigger failed with HTTP $CODE"
+            exit 1
+          fi
+          STATUS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('response.json')).status || 'unknown')")
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          if [ "$STATUS" != "passed" ]; then
+            echo "::error::E2E smoke returned status=$STATUS"
+            exit 1
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## SRE E2E Result" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ steps.run.outputs.status || 'error' }}" >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat response.json 2>/dev/null || echo '{"error":"no response"}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
