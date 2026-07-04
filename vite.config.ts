@@ -6,12 +6,21 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/tanstack/vite";
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 // Build target selection:
 //   - default (Lovable preview / published Lovable hosting) → Cloudflare Workers preset
 //   - BUILD_TARGET=node (MilesWeb / standard Linux Node.js hosting) → node-server preset,
 //     which emits .output/server/index.mjs that `app.js` boots via Passenger.
 const isNodeTarget = process.env.BUILD_TARGET === "node";
+
+// Sentry sourcemap upload only runs when the CI-provided auth token is present.
+// Locally and in preview the plugin is skipped so builds stay fast and quiet.
+const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
+const sentryEnv = process.env.VITE_SENTRY_ENV ?? "development";
+const gitSha = process.env.GIT_COMMIT_SHA ?? process.env.GITHUB_SHA;
+const sentryEnabled = Boolean(sentryAuthToken && gitSha);
+//     which emits .output/server/index.mjs that `app.js` boots via Passenger.
 
 export default defineConfig({
   tanstackStart: {
@@ -33,10 +42,24 @@ export default defineConfig({
     : {}),
 
   vite: {
-    plugins: [mcpPlugin()],
+    plugins: [
+      mcpPlugin(),
+      ...(sentryEnabled
+        ? [
+            sentryVitePlugin({
+              org: process.env.SENTRY_ORG ?? "higaet-5y",
+              project: process.env.SENTRY_PROJECT ?? "higaet-frontend",
+              authToken: sentryAuthToken,
+              release: { name: `${sentryEnv}-${gitSha}` },
+              sourcemaps: { assets: "./dist/**" },
+              telemetry: false,
+            }),
+          ]
+        : []),
+    ],
     build: {
-      // Disable sourcemaps and heavy reporting in CI/production to cut peak heap during bundling.
-      sourcemap: false,
+      // Sourcemaps only when Sentry upload is active — otherwise skip to cut peak heap.
+      sourcemap: sentryEnabled ? "hidden" : false,
       minify: "esbuild",
       reportCompressedSize: false,
       chunkSizeWarningLimit: 2000,
