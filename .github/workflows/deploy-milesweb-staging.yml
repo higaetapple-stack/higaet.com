@@ -100,18 +100,13 @@ jobs:
           fi
           echo "Preflight passed."
 
-      - name: Setup Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+      # P1: unified toolchain via composite action. Node is pinned to
+      # NODE_VERSION (20.20.2) because MilesWeb cPanel Passenger runs
+      # Node 20 — deploy runner must match to avoid ABI/native-module drift.
+      - name: Setup toolchain (Node ${{ env.NODE_VERSION }} + Bun, frozen install)
+        uses: ./.github/actions/setup-node-bun
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies (frozen)
-        run: bun install --frozen-lockfile
 
 
       - name: Build (Node target)
