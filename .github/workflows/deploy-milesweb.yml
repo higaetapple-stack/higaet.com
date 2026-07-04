@@ -22,12 +22,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      # P1: unified toolchain via composite action. Node pinned to 20.20.2
+      # to match the MilesWeb cPanel Passenger runtime (Node 20).
+      - name: Setup toolchain (Node 20 + Bun, frozen install)
+        uses: ./.github/actions/setup-node-bun
         with:
-          bun-version: latest
-
-      - name: Install
-        run: bun install --frozen-lockfile
+          node-version: "20.20.2"
 
       - name: Validate environment
         run: node scripts/validate-env.mjs --strict
