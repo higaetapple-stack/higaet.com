@@ -37,7 +37,7 @@ jobs:
           set -euo pipefail
           echo "Invoking $BASE_URL /_serverFn (runSreE2ETest)"
           RESP=$(curl -sS -w "\n%{http_code}" -X POST \
-            "$BASE_URL/api/sre/e2e/trigger" \
+            "$BASE_URL/api/public/sre/e2e-trigger" \
             -H "Authorization: Bearer $BEARER" \
             -H "Content-Type: application/json" \
             --data '{}')
