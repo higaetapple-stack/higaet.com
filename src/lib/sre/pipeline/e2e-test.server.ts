@@ -160,7 +160,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
   const draft = buildPRDraft(analysis, {
     id: issueId,
     shortId: incident.shortId,
-    title: incident.title,
+    title: incident.title ?? "E2E synthetic incident",
   });
 
   let prUrl: string | undefined;
