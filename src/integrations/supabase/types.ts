@@ -3822,6 +3822,60 @@ export type Database = {
           },
         ]
       }
+      sentry_webhook_queue: {
+        Row: {
+          attempt_count: number
+          completed_at: string | null
+          created_at: string
+          dedupe_key: string
+          event_type: string
+          id: string
+          issue_id: string | null
+          last_error: string | null
+          locked_at: string | null
+          locked_by: string | null
+          next_retry_at: string | null
+          payload: Json
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempt_count?: number
+          completed_at?: string | null
+          created_at?: string
+          dedupe_key: string
+          event_type: string
+          id?: string
+          issue_id?: string | null
+          last_error?: string | null
+          locked_at?: string | null
+          locked_by?: string | null
+          next_retry_at?: string | null
+          payload: Json
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempt_count?: number
+          completed_at?: string | null
+          created_at?: string
+          dedupe_key?: string
+          event_type?: string
+          id?: string
+          issue_id?: string | null
+          last_error?: string | null
+          locked_at?: string | null
+          locked_by?: string | null
+          next_retry_at?: string | null
+          payload?: Json
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sso_domains: {
         Row: {
           created_at: string
