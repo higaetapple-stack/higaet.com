@@ -225,6 +225,7 @@ function DecisionLog() {
     }
   }
 
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
   const rows = pages.flatMap((p) => p.rows);
   const total = pages[0]?.total ?? null;
   const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
@@ -345,6 +346,7 @@ function KnowledgePackages() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
   const rows = pages.flatMap((p) => p.rows);
   const total = pages[0]?.total ?? null;
   const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
@@ -529,6 +531,7 @@ function SignatureFailures() {
     }
   }
 
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
   const rows = pages.flatMap((p) => p.rows);
   const total = pages[0]?.total ?? null;
   const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
