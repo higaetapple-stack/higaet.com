@@ -1,0 +1,45 @@
+name: Upload Sentry Sourcemaps
+
+on:
+  push:
+    branches: [main, staging]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - name: Build with sourcemaps
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'higaet-frontend' }}
+          VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+          VITE_GIT_COMMIT_SHA: ${{ github.sha }}
+          GIT_COMMIT_SHA: ${{ github.sha }}
+        run: bun run build
+
+      # sentryVitePlugin uploads sourcemaps during the build when
+      # SENTRY_AUTH_TOKEN + GIT_COMMIT_SHA are present. This step is a
+      # safety net for build outputs that skip the plugin's own upload path.
+      - name: Sourcemaps safety upload
+        if: ${{ env.SENTRY_AUTH_TOKEN != '' }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'higaet-frontend' }}
+        run: |
+          RELEASE="${VITE_SENTRY_ENV:-production}-${{ github.sha }}"
+          npx --yes @sentry/cli releases new "$RELEASE" || true
+          npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./dist || true
+          npx --yes @sentry/cli releases set-commits "$RELEASE" --auto || true
+          npx --yes @sentry/cli releases finalize "$RELEASE" || true

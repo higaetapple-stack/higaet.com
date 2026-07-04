@@ -255,6 +255,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
+import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
 import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
 import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
@@ -1707,6 +1708,11 @@ const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
     path: '/knowledge-base/universities/$slug',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
+const ApiPublicRiskEvaluatePrRoute = ApiPublicRiskEvaluatePrRouteImport.update({
+  id: '/api/public/risk/evaluate-pr',
+  path: '/api/public/risk/evaluate-pr',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicLaunchReadinessIngestRoute =
   ApiPublicLaunchReadinessIngestRouteImport.update({
     id: '/api/public/launch-readiness/ingest',
@@ -2601,6 +2607,7 @@ export interface FileRoutesByFullPath {
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
+  '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2929,6 +2936,7 @@ export interface FileRoutesByTo {
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
+  '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3275,6 +3283,7 @@ export interface FileRoutesById {
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
+  '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3621,6 +3630,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/launch-readiness/ingest'
+    | '/api/public/risk/evaluate-pr'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -3949,6 +3959,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/launch-readiness/ingest'
+    | '/api/public/risk/evaluate-pr'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -4294,6 +4305,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/launch-readiness/ingest'
+    | '/api/public/risk/evaluate-pr'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -4403,6 +4415,7 @@ export interface RootRouteChildren {
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
   ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
   ApiPublicLaunchReadinessIngestRoute: typeof ApiPublicLaunchReadinessIngestRoute
+  ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
@@ -6129,6 +6142,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/knowledge-base/universities/$slug'
       preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport
       parentRoute: typeof GlobalEducationRoute
+    }
+    '/api/public/risk/evaluate-pr': {
+      id: '/api/public/risk/evaluate-pr'
+      path: '/api/public/risk/evaluate-pr'
+      fullPath: '/api/public/risk/evaluate-pr'
+      preLoaderRoute: typeof ApiPublicRiskEvaluatePrRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/launch-readiness/ingest': {
       id: '/api/public/launch-readiness/ingest'
@@ -7972,6 +7992,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
   ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
   ApiPublicLaunchReadinessIngestRoute: ApiPublicLaunchReadinessIngestRoute,
+  ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport
