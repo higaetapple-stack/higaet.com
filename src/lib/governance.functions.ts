@@ -281,12 +281,8 @@ export const listSignatureFailures = createServerFn({ method: "POST" })
     if (data.reason) q = q.eq("reason", data.reason);
     if (data.since) q = q.gte("created_at", data.since);
     if (data.until) q = q.lte("created_at", data.until);
-    if (data.cursor) q = q.lt("created_at", data.cursor);
-    const { data: rows, error, count } = await q;
-    if (error) throw new Error(error.message);
-    const list = (rows ?? []) as any[];
-    const nextCursor = list.length === data.limit ? list[list.length - 1].created_at : null;
-    return { rows: list, nextCursor, total: count ?? null };
+    const { decodeCursor, paginateList } = await import("@/lib/governance/rbac.server");
+    return paginateList(q, { cursor: decodeCursor(data.cursor), limit: data.limit });
   });
 
 const KpDecideInput = z.object({
