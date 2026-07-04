@@ -42,10 +42,24 @@ export default defineConfig({
     : {}),
 
   vite: {
-    plugins: [mcpPlugin()],
+    plugins: [
+      mcpPlugin(),
+      ...(sentryEnabled
+        ? [
+            sentryVitePlugin({
+              org: process.env.SENTRY_ORG ?? "higaet-5y",
+              project: process.env.SENTRY_PROJECT ?? "higaet-frontend",
+              authToken: sentryAuthToken,
+              release: { name: `${sentryEnv}-${gitSha}` },
+              sourcemaps: { assets: "./dist/**" },
+              telemetry: false,
+            }),
+          ]
+        : []),
+    ],
     build: {
-      // Disable sourcemaps and heavy reporting in CI/production to cut peak heap during bundling.
-      sourcemap: false,
+      // Sourcemaps only when Sentry upload is active — otherwise skip to cut peak heap.
+      sourcemap: sentryEnabled ? "hidden" : false,
       minify: "esbuild",
       reportCompressedSize: false,
       chunkSizeWarningLimit: 2000,
