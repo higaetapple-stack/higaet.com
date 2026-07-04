@@ -11,6 +11,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getPRDiff } from "@/lib/risk/github-diff";
 import { evaluatePR } from "@/lib/risk/gate";
 import { recordOutcome, type PROutcome } from "@/lib/risk/learning";
+import {
+  recordPrediction,
+  summarizeAccuracy,
+  type ActualOutcome,
+} from "@/lib/risk/accuracy";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -29,6 +34,16 @@ export const Route = createFileRoute("/api/public/risk/evaluate-pr")({
   server: {
     handlers: {
       OPTIONS: () => new Response(null, { status: 204, headers: cors }),
+      GET: async ({ request }) => {
+        // Accuracy summary — for the calibration dashboard. Same guard.
+        const secret = process.env.RISK_GATE_SECRET;
+        if (!secret || request.headers.get("x-risk-secret") !== secret) {
+          return unauthorized();
+        }
+        return new Response(JSON.stringify(summarizeAccuracy()), {
+          headers: { ...cors, "Content-Type": "application/json" },
+        });
+      },
       POST: async ({ request }) => {
         const secret = process.env.RISK_GATE_SECRET;
         if (!secret) {
@@ -43,6 +58,12 @@ export const Route = createFileRoute("/api/public/risk/evaluate-pr")({
           prNumber?: number;
           diff?: string;
           outcome?: { prNumber: number; outcome: PROutcome; signals: string[] };
+          accuracy?: {
+            prNumber: number;
+            predictedRisk: number;
+            predictedLevel: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+            actualOutcome: ActualOutcome;
+          };
         };
         try {
           body = await request.json();
@@ -53,9 +74,8 @@ export const Route = createFileRoute("/api/public/risk/evaluate-pr")({
           });
         }
 
-        if (body.outcome) {
-          recordOutcome(body.outcome);
-        }
+        if (body.outcome) recordOutcome(body.outcome);
+        const accuracySample = body.accuracy ? recordPrediction(body.accuracy) : null;
 
         let diff = body.diff;
         if (!diff && typeof body.prNumber === "number") {
@@ -74,6 +94,7 @@ export const Route = createFileRoute("/api/public/risk/evaluate-pr")({
             JSON.stringify({
               ok: true,
               learnedOnly: Boolean(body.outcome),
+              accuracySample,
               message: "no diff supplied",
             }),
             { headers: { ...cors, "Content-Type": "application/json" } },
@@ -81,9 +102,10 @@ export const Route = createFileRoute("/api/public/risk/evaluate-pr")({
         }
 
         const result = await evaluatePR(diff);
-        return new Response(JSON.stringify(result), {
-          headers: { ...cors, "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify({ ...result, accuracySample }),
+          { headers: { ...cors, "Content-Type": "application/json" } },
+        );
       },
     },
   },
