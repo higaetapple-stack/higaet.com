@@ -1,0 +1,129 @@
+name: CI Integrity Guard
+
+# P10 stabilization layer. Enforces the "build once, reuse everywhere"
+# contract defined in docs/infrastructure/p10-stabilization-spec.md.
+#
+# Rules:
+#   1. Only _ci-kernel.yml is allowed to run `bun run build` /
+#      `npm run build`. Any other workflow that rebuilds triggers a HIGH
+#      finding.
+#   2. Any workflow that BOTH downloads the ci-build artifact AND rebuilds
+#      is a CRITICAL finding (double-build = artifact drift).
+#   3. `dist/` or `.output/` committed to the repo is a HIGH finding.
+#
+# This workflow observes only; it does not modify anything. It fails the
+# job on any HIGH or CRITICAL finding and uploads integrity-report.md.
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".gitignore"
+  push:
+    branches: [main, staging]
+    paths:
+      - ".github/workflows/**"
+      - ".gitignore"
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-integrity-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Enforce build-once contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan workflows
+        id: scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPORT=integrity-report.md
+          echo "# CI Integrity Report" > "$REPORT"
+          echo "" >> "$REPORT"
+          echo "_Generated $(date -u +%Y-%m-%dT%H:%M:%SZ)_" >> "$REPORT"
+          echo "" >> "$REPORT"
+
+          FINDINGS=0
+          CRITICAL=0
+          HIGH=0
+
+          # Rule 3: no built output committed.
+          if [ -d dist ] || [ -d .output ]; then
+            echo "- **HIGH** build output committed to repo (dist/ or .output/)" >> "$REPORT"
+            HIGH=$((HIGH+1))
+            FINDINGS=$((FINDINGS+1))
+          fi
+
+          # Rule 1 + 2: scan workflows other than _ci-kernel.yml.
+          for f in $(find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) | sort); do
+            base=$(basename "$f")
+            # _ci-kernel.yml is the ONLY allowed builder.
+            [ "$base" = "_ci-kernel.yml" ] && continue
+            # ci-integrity-guard.yml is allowed to mention the strings in comments.
+            [ "$base" = "ci-integrity-guard.yml" ] && continue
+
+            # Strip comments before grepping so runbook-style comments don't false-positive.
+            stripped=$(sed 's/#.*$//' "$f")
+
+            builds=false
+            downloads=false
+            if echo "$stripped" | grep -Eq '(bun|npm|pnpm|yarn)[[:space:]]+run[[:space:]]+build'; then
+              builds=true
+            fi
+            if echo "$stripped" | grep -Eq 'actions/download-artifact@'; then
+              downloads=true
+            fi
+
+            if $builds && $downloads; then
+              echo "- **CRITICAL** \`$f\` downloads an artifact AND rebuilds — double-build drift risk" >> "$REPORT"
+              CRITICAL=$((CRITICAL+1))
+              FINDINGS=$((FINDINGS+1))
+            elif $builds; then
+              echo "- **HIGH** \`$f\` runs a build step outside \`_ci-kernel.yml\` — should download the ci-build artifact instead" >> "$REPORT"
+              HIGH=$((HIGH+1))
+              FINDINGS=$((FINDINGS+1))
+            fi
+          done
+
+          echo "" >> "$REPORT"
+          echo "## Summary" >> "$REPORT"
+          echo "" >> "$REPORT"
+          echo "- Critical: $CRITICAL" >> "$REPORT"
+          echo "- High: $HIGH" >> "$REPORT"
+          echo "- Total: $FINDINGS" >> "$REPORT"
+
+          {
+            echo "critical=$CRITICAL"
+            echo "high=$HIGH"
+            echo "findings=$FINDINGS"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## CI Integrity Guard"
+            echo ""
+            cat "$REPORT"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "::error::CI Integrity Guard failed — $CRITICAL critical, $HIGH high findings"
+            exit 1
+          fi
+          echo "::notice::CI Integrity Guard clean"
+
+      - name: Upload integrity report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-integrity-report
+          path: integrity-report.md
+          retention-days: 14
+          if-no-files-found: warn
