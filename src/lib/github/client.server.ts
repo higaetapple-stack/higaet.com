@@ -175,3 +175,69 @@ export async function addLabels(prNumber: number, labels: string[]): Promise<voi
     expected: [200, 201],
   });
 }
+
+export interface GhCheckRun {
+  name: string;
+  status: "queued" | "in_progress" | "completed" | string;
+  conclusion:
+    | "success"
+    | "failure"
+    | "neutral"
+    | "cancelled"
+    | "timed_out"
+    | "action_required"
+    | "skipped"
+    | null;
+  details_url?: string | null;
+  external_id?: string | null;
+  started_at?: string | null;
+  completed_at?: string | null;
+}
+
+/** Look up head SHA + state for a PR (needed before polling checks). */
+export async function getPullRequest(prNumber: number): Promise<{
+  head_sha: string;
+  state: string;
+  merged: boolean;
+}> {
+  const { owner, repo } = env();
+  const pr = await gh<{ head: { sha: string }; state: string; merged: boolean }>(
+    `/repos/${owner}/${repo}/pulls/${prNumber}`,
+    { expected: [200] },
+  );
+  return { head_sha: pr.head.sha, state: pr.state, merged: pr.merged };
+}
+
+/** List check runs for a commit SHA (GitHub Actions + third-party checks). */
+export async function listCheckRunsForRef(sha: string): Promise<GhCheckRun[]> {
+  const { owner, repo } = env();
+  const res = await gh<{ check_runs: GhCheckRun[] }>(
+    `/repos/${owner}/${repo}/commits/${encodeURIComponent(sha)}/check-runs?per_page=100`,
+    { expected: [200] },
+  );
+  return res.check_runs ?? [];
+}
+
+/**
+ * Aggregate a list of check runs into a single pipeline verdict.
+ *  - failure  → any check concluded failure/cancelled/timed_out/action_required
+ *  - pending  → any check still queued/in_progress
+ *  - success  → every check completed with success/neutral/skipped
+ */
+export function aggregateCheckConclusion(
+  checks: GhCheckRun[],
+): "success" | "failure" | "pending" | "unknown" {
+  if (checks.length === 0) return "unknown";
+  const bad = new Set(["failure", "cancelled", "timed_out", "action_required"]);
+  const ok = new Set(["success", "neutral", "skipped"]);
+  let anyPending = false;
+  for (const c of checks) {
+    if (c.status !== "completed") {
+      anyPending = true;
+      continue;
+    }
+    if (c.conclusion && bad.has(c.conclusion)) return "failure";
+    if (!c.conclusion || !ok.has(c.conclusion)) return "failure";
+  }
+  return anyPending ? "pending" : "success";
+}

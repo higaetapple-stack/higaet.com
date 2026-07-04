@@ -257,10 +257,12 @@ import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
 import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
+import { Route as ApiPublicSreE2eTriggerRouteImport } from './routes/api/public/sre/e2e-trigger'
 import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
 import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
 import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
+import { Route as ApiPublicHooksPollPrCiRouteImport } from './routes/api/public/hooks/poll-pr-ci'
 import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
 import { Route as ApiPublicGovernanceDecisionsRouteImport } from './routes/api/public/governance.decisions'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
@@ -1728,6 +1730,11 @@ const ApiPublicWebhooksProcessRoute =
     path: '/api/public/webhooks/process',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicSreE2eTriggerRoute = ApiPublicSreE2eTriggerRouteImport.update({
+  id: '/api/public/sre/e2e-trigger',
+  path: '/api/public/sre/e2e-trigger',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
   id: '/api/public/sentry/webhook',
   path: '/api/public/sentry/webhook',
@@ -1749,6 +1756,11 @@ const ApiPublicLaunchReadinessIngestRoute =
     path: '/api/public/launch-readiness/ingest',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksPollPrCiRoute = ApiPublicHooksPollPrCiRouteImport.update({
+  id: '/api/public/hooks/poll-pr-ci',
+  path: '/api/public/hooks/poll-pr-ci',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicGovernanceKnowledgeRoute =
   ApiPublicGovernanceKnowledgeRouteImport.update({
     id: '/knowledge',
@@ -2672,10 +2684,12 @@ export interface FileRoutesByFullPath {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3010,10 +3024,12 @@ export interface FileRoutesByTo {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3366,10 +3382,12 @@ export interface FileRoutesById {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3722,10 +3740,12 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-trigger'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
@@ -4060,10 +4080,12 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-trigger'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
@@ -4415,10 +4437,12 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-trigger'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
@@ -4529,10 +4553,12 @@ export interface RootRouteChildren {
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
   ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
+  ApiPublicHooksPollPrCiRoute: typeof ApiPublicHooksPollPrCiRoute
   ApiPublicLaunchReadinessIngestRoute: typeof ApiPublicLaunchReadinessIngestRoute
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
   ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
   ApiPublicSentryWebhookRoute: typeof ApiPublicSentryWebhookRoute
+  ApiPublicSreE2eTriggerRoute: typeof ApiPublicSreE2eTriggerRoute
   ApiPublicWebhooksProcessRoute: typeof ApiPublicWebhooksProcessRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
@@ -6275,6 +6301,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebhooksProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/sre/e2e-trigger': {
+      id: '/api/public/sre/e2e-trigger'
+      path: '/api/public/sre/e2e-trigger'
+      fullPath: '/api/public/sre/e2e-trigger'
+      preLoaderRoute: typeof ApiPublicSreE2eTriggerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/sentry/webhook': {
       id: '/api/public/sentry/webhook'
       path: '/api/public/sentry/webhook'
@@ -6301,6 +6334,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/launch-readiness/ingest'
       fullPath: '/api/public/launch-readiness/ingest'
       preLoaderRoute: typeof ApiPublicLaunchReadinessIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/poll-pr-ci': {
+      id: '/api/public/hooks/poll-pr-ci'
+      path: '/api/public/hooks/poll-pr-ci'
+      fullPath: '/api/public/hooks/poll-pr-ci'
+      preLoaderRoute: typeof ApiPublicHooksPollPrCiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/governance/knowledge': {
@@ -8195,10 +8235,12 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
   ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
+  ApiPublicHooksPollPrCiRoute: ApiPublicHooksPollPrCiRoute,
   ApiPublicLaunchReadinessIngestRoute: ApiPublicLaunchReadinessIngestRoute,
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
   ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
   ApiPublicSentryWebhookRoute: ApiPublicSentryWebhookRoute,
+  ApiPublicSreE2eTriggerRoute: ApiPublicSreE2eTriggerRoute,
   ApiPublicWebhooksProcessRoute: ApiPublicWebhooksProcessRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }

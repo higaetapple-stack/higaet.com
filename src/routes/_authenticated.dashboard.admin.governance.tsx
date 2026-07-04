@@ -34,6 +34,9 @@ import {
   listSentryPullRequests,
   listWebhookDeadLetter,
   retryDeadLetterEvent,
+  runSreE2ETest,
+  listSreE2ERuns,
+  getSreE2ERun,
 } from "@/lib/sre/sre-admin.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -141,6 +144,7 @@ function GovernancePage() {
           <TabsTrigger value="sre">AI SRE</TabsTrigger>
           <TabsTrigger value="prs">AI PRs</TabsTrigger>
           <TabsTrigger value="dlq">Webhook DLQ</TabsTrigger>
+          <TabsTrigger value="e2e">Pipeline E2E</TabsTrigger>
           <TabsTrigger value="incidents">Incidents</TabsTrigger>
           <TabsTrigger value="releases">Releases</TabsTrigger>
         </TabsList>
@@ -152,9 +156,166 @@ function GovernancePage() {
         <TabsContent value="sre"><SentryAnalyses /></TabsContent>
         <TabsContent value="prs"><SentryPullRequests /></TabsContent>
         <TabsContent value="dlq"><WebhookDeadLetter /></TabsContent>
+        <TabsContent value="e2e"><PipelineE2E /></TabsContent>
         <TabsContent value="incidents"><IncidentClusters /></TabsContent>
         <TabsContent value="releases"><ReleaseRegressions /></TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+function ciBadgeVariant(status?: string): "default" | "secondary" | "destructive" | "outline" {
+  if (status === "success") return "secondary";
+  if (status === "failure") return "destructive";
+  if (status === "pending") return "default";
+  return "outline";
+}
+
+function PipelineE2E() {
+  const qc = useQueryClient();
+  const runFn = useServerFn(runSreE2ETest);
+  const listFn = useServerFn(listSreE2ERuns);
+  const getFn = useServerFn(getSreE2ERun);
+  const [selected, setSelected] = useState<string | null>(null);
+
+  const list = useQuery({
+    queryKey: ["sre-e2e-runs"],
+    queryFn: () => listFn({ data: { limit: 25 } }),
+    refetchInterval: 5000,
+  });
+
+  const detail = useQuery({
+    queryKey: ["sre-e2e-run", selected],
+    queryFn: () => getFn({ data: { id: selected! } }),
+    enabled: Boolean(selected),
+    refetchInterval: (q) => {
+      const d = q.state.data as any;
+      return d && d.status === "running" ? 3000 : false;
+    },
+  });
+
+  const trigger = useMutation({
+    mutationFn: () => runFn({ data: {} }),
+    onSuccess: (res: any) => {
+      toast.success(`E2E run ${res.status}: ${res.runId.slice(0, 8)}`);
+      setSelected(res.runId);
+      qc.invalidateQueries({ queryKey: ["sre-e2e-runs"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const rows = (list.data as any)?.rows ?? [];
+  const active = detail.data as any;
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+      <Card>
+        <CardHeader>
+          <CardTitle>End-to-end pipeline test</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex gap-2 items-center">
+            <Button size="sm" onClick={() => trigger.mutate()} disabled={trigger.isPending}>
+              {trigger.isPending ? "Running…" : "Run smoke test"}
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Synthetic Sentry issue → AI analysis → GitHub PR → CI poll → deployment verdict.
+            </p>
+          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Started</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>CI</TableHead>
+                <TableHead>Deploy</TableHead>
+                <TableHead>PR</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((r: any) => (
+                <TableRow
+                  key={r.id}
+                  className={`cursor-pointer ${selected === r.id ? "bg-muted" : ""}`}
+                  onClick={() => setSelected(r.id)}
+                >
+                  <TableCell className="text-xs">{new Date(r.started_at).toLocaleString()}</TableCell>
+                  <TableCell>
+                    <Badge variant={r.status === "passed" ? "secondary" : r.status === "failed" ? "destructive" : "outline"}>
+                      {r.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={ciBadgeVariant(r.ci_conclusion)}>{r.ci_conclusion ?? "—"}</Badge>
+                  </TableCell>
+                  <TableCell className="text-xs">
+                    {r.ready_for_deploy === null || r.ready_for_deploy === undefined
+                      ? "—"
+                      : r.ready_for_deploy ? "ready" : "blocked"}
+                  </TableCell>
+                  <TableCell className="text-xs">
+                    {r.pr_url ? (
+                      <a className="underline" href={r.pr_url} target="_blank" rel="noreferrer">open</a>
+                    ) : "—"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Run details</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-xs">
+          {!active && <p className="text-muted-foreground">Select a run to view phase logs.</p>}
+          {active && (
+            <>
+              <div className="flex flex-wrap gap-2 items-center">
+                <Badge variant={active.status === "passed" ? "secondary" : active.status === "failed" ? "destructive" : "outline"}>
+                  {active.status}
+                </Badge>
+                <span className="font-mono">{active.id}</span>
+                {active.pr_url && (
+                  <a className="underline" href={active.pr_url} target="_blank" rel="noreferrer">PR</a>
+                )}
+              </div>
+              {active.error && (
+                <div className="rounded border border-destructive/40 bg-destructive/5 p-2 text-destructive">
+                  {active.error}
+                </div>
+              )}
+              <div className="rounded border bg-muted/40 p-2 font-mono space-y-1 max-h-[420px] overflow-auto">
+                {(active.phases ?? []).map((p: any, i: number) => (
+                  <div key={i} className="flex gap-2">
+                    <span className="text-muted-foreground shrink-0">
+                      {new Date(p.at).toLocaleTimeString()}
+                    </span>
+                    <span
+                      className={
+                        p.status === "failed"
+                          ? "text-destructive shrink-0"
+                          : p.status === "warn"
+                          ? "text-amber-600 shrink-0"
+                          : p.status === "skipped"
+                          ? "text-muted-foreground shrink-0"
+                          : "text-emerald-600 shrink-0"
+                      }
+                    >
+                      [{p.phase}]
+                    </span>
+                    <span className="break-all">{p.message}</span>
+                  </div>
+                ))}
+                {(!active.phases || active.phases.length === 0) && (
+                  <div className="text-muted-foreground">No phases recorded yet.</div>
+                )}
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -220,6 +381,7 @@ function SentryPullRequests() {
               <TableHead>Confidence</TableHead>
               <TableHead>Review</TableHead>
               <TableHead>State</TableHead>
+              <TableHead>CI</TableHead>
               <TableHead>PR</TableHead>
             </TableRow>
           </TableHeader>
@@ -239,6 +401,9 @@ function SentryPullRequests() {
                   <Badge variant={r.pr_state === "failed" ? "destructive" : r.pr_state === "merged" ? "secondary" : "outline"}>
                     {r.pr_state}
                   </Badge>
+                </TableCell>
+                <TableCell className="text-xs" title={r.ci_last_checked_at ? `Last checked ${new Date(r.ci_last_checked_at).toLocaleString()}` : undefined}>
+                  <Badge variant={ciBadgeVariant(r.ci_status)}>{r.ci_status ?? "unknown"}</Badge>
                 </TableCell>
                 <TableCell className="text-xs">
                   {r.pr_url ? (
