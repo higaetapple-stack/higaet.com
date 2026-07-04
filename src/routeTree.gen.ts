@@ -258,6 +258,8 @@ import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
 import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
+import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
+import { Route as ApiPublicGovernanceDecisionsRouteImport } from './routes/api/public/governance.decisions'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
 import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
 import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
@@ -322,6 +324,7 @@ import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './
 import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
 import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
+import { Route as AuthenticatedDashboardAdminGovernanceRouteImport } from './routes/_authenticated.dashboard.admin.governance'
 import { Route as AuthenticatedDashboardAdminFeatureFlagsRouteImport } from './routes/_authenticated.dashboard.admin.feature-flags'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
@@ -1727,6 +1730,18 @@ const ApiPublicLaunchReadinessIngestRoute =
     path: '/api/public/launch-readiness/ingest',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicGovernanceKnowledgeRoute =
+  ApiPublicGovernanceKnowledgeRouteImport.update({
+    id: '/knowledge',
+    path: '/knowledge',
+    getParentRoute: () => ApiPublicGovernanceRoute,
+  } as any)
+const ApiPublicGovernanceDecisionsRoute =
+  ApiPublicGovernanceDecisionsRouteImport.update({
+    id: '/decisions',
+    path: '/decisions',
+    getParentRoute: () => ApiPublicGovernanceRoute,
+  } as any)
 const ApiPublicCronWebhookDispatchRoute =
   ApiPublicCronWebhookDispatchRouteImport.update({
     id: '/api/public/cron/webhook-dispatch',
@@ -2109,6 +2124,12 @@ const AuthenticatedDashboardAdminIdentityProvidersRoute =
     path: '/identity-providers',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminGovernanceRoute =
+  AuthenticatedDashboardAdminGovernanceRouteImport.update({
+    id: '/governance',
+    path: '/governance',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminFeatureFlagsRoute =
   AuthenticatedDashboardAdminFeatureFlagsRouteImport.update({
     id: '/feature-flags',
@@ -2466,7 +2487,7 @@ export interface FileRoutesByFullPath {
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/email-verify': typeof ApiPublicEmailVerifyRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
-  '/api/public/governance': typeof ApiPublicGovernanceRoute
+  '/api/public/governance': typeof ApiPublicGovernanceRouteWithChildren
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/replay': typeof ApiPublicReplayRoute
@@ -2565,6 +2586,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/feature-flags': typeof AuthenticatedDashboardAdminFeatureFlagsRoute
+  '/dashboard/admin/governance': typeof AuthenticatedDashboardAdminGovernanceRoute
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -2629,6 +2651,8 @@ export interface FileRoutesByFullPath {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
+  '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
@@ -2802,7 +2826,7 @@ export interface FileRoutesByTo {
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/email-verify': typeof ApiPublicEmailVerifyRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
-  '/api/public/governance': typeof ApiPublicGovernanceRoute
+  '/api/public/governance': typeof ApiPublicGovernanceRouteWithChildren
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/replay': typeof ApiPublicReplayRoute
@@ -2899,6 +2923,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/feature-flags': typeof AuthenticatedDashboardAdminFeatureFlagsRoute
+  '/dashboard/admin/governance': typeof AuthenticatedDashboardAdminGovernanceRoute
   '/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -2961,6 +2986,8 @@ export interface FileRoutesByTo {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
+  '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
@@ -3148,7 +3175,7 @@ export interface FileRoutesById {
   '/api/public/decisions': typeof ApiPublicDecisionsRoute
   '/api/public/email-verify': typeof ApiPublicEmailVerifyRoute
   '/api/public/goals': typeof ApiPublicGoalsRoute
-  '/api/public/governance': typeof ApiPublicGovernanceRoute
+  '/api/public/governance': typeof ApiPublicGovernanceRouteWithChildren
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/memory-graph': typeof ApiPublicMemoryGraphRoute
   '/api/public/replay': typeof ApiPublicReplayRoute
@@ -3247,6 +3274,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/feature-flags': typeof AuthenticatedDashboardAdminFeatureFlagsRoute
+  '/_authenticated/dashboard/admin/governance': typeof AuthenticatedDashboardAdminGovernanceRoute
   '/_authenticated/dashboard/admin/identity-providers': typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -3311,6 +3339,8 @@ export interface FileRoutesById {
   '/api/public/constitution/status': typeof ApiPublicConstitutionStatusRoute
   '/api/public/cron/embeddings': typeof ApiPublicCronEmbeddingsRoute
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
+  '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
+  '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
@@ -3597,6 +3627,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/feature-flags'
+    | '/dashboard/admin/governance'
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/launch-readiness'
@@ -3661,6 +3692,8 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/api/public/governance/decisions'
+    | '/api/public/governance/knowledge'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/global-education/knowledge-base/universities/$slug'
@@ -3931,6 +3964,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/feature-flags'
+    | '/dashboard/admin/governance'
     | '/dashboard/admin/identity-providers'
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/launch-readiness'
@@ -3993,6 +4027,8 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/api/public/governance/decisions'
+    | '/api/public/governance/knowledge'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/global-education/knowledge-base/universities/$slug'
@@ -4278,6 +4314,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/feature-flags'
+    | '/_authenticated/dashboard/admin/governance'
     | '/_authenticated/dashboard/admin/identity-providers'
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/launch-readiness'
@@ -4342,6 +4379,8 @@ export interface FileRouteTypes {
     | '/api/public/constitution/status'
     | '/api/public/cron/embeddings'
     | '/api/public/cron/webhook-dispatch'
+    | '/api/public/governance/decisions'
+    | '/api/public/governance/knowledge'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/global-education/knowledge-base/universities/$slug'
@@ -4431,7 +4470,7 @@ export interface RootRouteChildren {
   ApiPublicDecisionsRoute: typeof ApiPublicDecisionsRoute
   ApiPublicEmailVerifyRoute: typeof ApiPublicEmailVerifyRoute
   ApiPublicGoalsRoute: typeof ApiPublicGoalsRoute
-  ApiPublicGovernanceRoute: typeof ApiPublicGovernanceRoute
+  ApiPublicGovernanceRoute: typeof ApiPublicGovernanceRouteWithChildren
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicMemoryGraphRoute: typeof ApiPublicMemoryGraphRoute
   ApiPublicReplayRoute: typeof ApiPublicReplayRoute
@@ -6203,6 +6242,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLaunchReadinessIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/governance/knowledge': {
+      id: '/api/public/governance/knowledge'
+      path: '/knowledge'
+      fullPath: '/api/public/governance/knowledge'
+      preLoaderRoute: typeof ApiPublicGovernanceKnowledgeRouteImport
+      parentRoute: typeof ApiPublicGovernanceRoute
+    }
+    '/api/public/governance/decisions': {
+      id: '/api/public/governance/decisions'
+      path: '/decisions'
+      fullPath: '/api/public/governance/decisions'
+      preLoaderRoute: typeof ApiPublicGovernanceDecisionsRouteImport
+      parentRoute: typeof ApiPublicGovernanceRoute
+    }
     '/api/public/cron/webhook-dispatch': {
       id: '/api/public/cron/webhook-dispatch'
       path: '/api/public/cron/webhook-dispatch'
@@ -6651,6 +6704,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/governance': {
+      id: '/_authenticated/dashboard/admin/governance'
+      path: '/governance'
+      fullPath: '/dashboard/admin/governance'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminGovernanceRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/feature-flags': {
       id: '/_authenticated/dashboard/admin/feature-flags'
       path: '/feature-flags'
@@ -7019,6 +7079,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminFeatureFlagsRoute: typeof AuthenticatedDashboardAdminFeatureFlagsRoute
+  AuthenticatedDashboardAdminGovernanceRoute: typeof AuthenticatedDashboardAdminGovernanceRoute
   AuthenticatedDashboardAdminIdentityProvidersRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRoute
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminLaunchReadinessRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRoute
@@ -7074,6 +7135,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminEnrollmentsRoute,
     AuthenticatedDashboardAdminFeatureFlagsRoute:
       AuthenticatedDashboardAdminFeatureFlagsRoute,
+    AuthenticatedDashboardAdminGovernanceRoute:
+      AuthenticatedDashboardAdminGovernanceRoute,
     AuthenticatedDashboardAdminIdentityProvidersRoute:
       AuthenticatedDashboardAdminIdentityProvidersRoute,
     AuthenticatedDashboardAdminJobsRoute: AuthenticatedDashboardAdminJobsRoute,
@@ -7980,6 +8043,19 @@ const TechnologiesRouteWithChildren = TechnologiesRoute._addFileChildren(
   TechnologiesRouteChildren,
 )
 
+interface ApiPublicGovernanceRouteChildren {
+  ApiPublicGovernanceDecisionsRoute: typeof ApiPublicGovernanceDecisionsRoute
+  ApiPublicGovernanceKnowledgeRoute: typeof ApiPublicGovernanceKnowledgeRoute
+}
+
+const ApiPublicGovernanceRouteChildren: ApiPublicGovernanceRouteChildren = {
+  ApiPublicGovernanceDecisionsRoute: ApiPublicGovernanceDecisionsRoute,
+  ApiPublicGovernanceKnowledgeRoute: ApiPublicGovernanceKnowledgeRoute,
+}
+
+const ApiPublicGovernanceRouteWithChildren =
+  ApiPublicGovernanceRoute._addFileChildren(ApiPublicGovernanceRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R403Route: R403Route,
@@ -8036,7 +8112,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicDecisionsRoute: ApiPublicDecisionsRoute,
   ApiPublicEmailVerifyRoute: ApiPublicEmailVerifyRoute,
   ApiPublicGoalsRoute: ApiPublicGoalsRoute,
-  ApiPublicGovernanceRoute: ApiPublicGovernanceRoute,
+  ApiPublicGovernanceRoute: ApiPublicGovernanceRouteWithChildren,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicMemoryGraphRoute: ApiPublicMemoryGraphRoute,
   ApiPublicReplayRoute: ApiPublicReplayRoute,
