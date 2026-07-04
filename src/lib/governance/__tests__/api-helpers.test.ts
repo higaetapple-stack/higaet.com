@@ -218,12 +218,13 @@ describe("composite cursor pagination", () => {
       .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
       .limit(4);
-    const res = await paginateList<Row>(q, { cursor: null, limit: 4 });
+    const res = await paginateList<Row & { created_at: string; id: string }>(q, {
+      cursor: null,
+      limit: 4,
+    });
     expect(res.rows).toHaveLength(4);
     expect(res.total).toBe(25);
-    expect(res.nextCursor).toBe(
-      `${res.rows[res.rows.length - 1].created_at}|${res.rows[res.rows.length - 1].id}`,
-    );
+    expect(res.nextCursor).toBe(encodeCursor(res.rows[res.rows.length - 1]));
   });
 });
 
