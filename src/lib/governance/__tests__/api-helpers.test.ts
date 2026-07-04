@@ -198,8 +198,10 @@ describe("governance api helpers — pagination, counts, CSV", () => {
       [{ a: 'hello, "world"', b: "line\nbreak", c: 42, d: null }],
       ["a", "b", "c", "d"],
     );
-    const lines = csv.split("\n");
-    expect(lines[0]).toBe("a,b,c,d");
-    expect(lines[1]).toBe('"hello, ""world""","line\nbreak",42,');
+    // Header is on its own line; the quoted cell containing \n makes the row span two lines.
+    expect(csv.startsWith("a,b,c,d\n")).toBe(true);
+    expect(csv).toContain('"hello, ""world"""');
+    expect(csv).toContain('"line\nbreak"');
+    expect(csv.trim().endsWith(",42,")).toBe(true);
   });
 });
