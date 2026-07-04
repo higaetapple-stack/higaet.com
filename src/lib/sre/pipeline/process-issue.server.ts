@@ -92,8 +92,23 @@ export async function processSentryIssue(
     const incident = hydrateIncident(issue, event);
     const analysis = runAISRELoop(incident);
     const hash = computeAnalysisHash(analysis);
-    const prDraft = analysis.autoPRRecommended ? buildPRDraft(analysis, issue) : null;
     const risk = computeRiskScore(analysis);
+
+    // Clustering: dedup near-identical issues into a single incident and let
+    // the cluster decide whether AI SRE + PR draft should re-fire.
+    const { upsertIncidentCluster } = await import("@/lib/incidents/upsert.server");
+    const clusterResult = await upsertIncidentCluster({
+      incident,
+      analysis,
+      analysisHash: hash,
+      issue,
+      force,
+    });
+
+    const prDraft =
+      analysis.autoPRRecommended && clusterResult.decision.shouldSuggestPR
+        ? buildPRDraft(analysis, issue)
+        : null;
 
     const { data: upserted, error } = await admin
       .from("sentry_issue_analyses" as never)
@@ -109,11 +124,13 @@ export async function processSentryIssue(
           root_cause: analysis.rootCause as never,
           fix_plan: analysis.fixPlan as never,
           pr_suggestion: prDraft as never,
-          auto_pr_recommended: analysis.autoPRRecommended,
+          auto_pr_recommended: analysis.autoPRRecommended && clusterResult.decision.shouldSuggestPR,
           analysis_hash: hash,
           status: "processed",
           error: null,
           trigger,
+          cluster_id: clusterResult.clusterId,
+          signature: clusterResult.signature,
           analyzed_at: new Date().toISOString(),
         } as never,
         { onConflict: "issue_id" },
