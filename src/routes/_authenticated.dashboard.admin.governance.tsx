@@ -1,14 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   listGovernanceDecisions,
   getPendingApprovals,
   decideGovernanceApproval,
   listKnowledgePackages,
   listKnowledgeIngestionEvents,
+  listSignatureFailures,
   decideKnowledgePackage,
+  exportGovernanceDecisionsCsv,
+  exportKnowledgePackagesCsv,
+  exportSignatureFailuresCsv,
 } from "@/lib/governance.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,6 +52,54 @@ const DECISION_TONE: Record<string, "default" | "secondary" | "destructive" | "o
   BLOCK: "destructive",
 };
 
+const FAILURE_REASONS = [
+  "untrusted_key",
+  "expired",
+  "missing_signature",
+  "hash_mismatch",
+  "signature_mismatch",
+  "malformed_signature",
+  "validation_failed",
+];
+
+function downloadCsv(filename: string, csv: string) {
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function PageMeta({
+  total,
+  loaded,
+  onLoadMore,
+  hasMore,
+  isFetching,
+}: {
+  total: number | null;
+  loaded: number;
+  hasMore: boolean;
+  onLoadMore: () => void;
+  isFetching: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
+      <span>
+        Showing {loaded}
+        {total !== null && ` of ${total}`}
+      </span>
+      <Button size="sm" variant="outline" disabled={!hasMore || isFetching} onClick={onLoadMore}>
+        {isFetching ? "Loading…" : hasMore ? "Load more" : "End of results"}
+      </Button>
+    </div>
+  );
+}
+
 function GovernancePage() {
   return (
     <div className="space-y-6">
@@ -64,11 +116,13 @@ function GovernancePage() {
           <TabsTrigger value="decisions">Decision log</TabsTrigger>
           <TabsTrigger value="knowledge">Knowledge packages</TabsTrigger>
           <TabsTrigger value="ingestion">Ingestion events</TabsTrigger>
+          <TabsTrigger value="failures">Signature failures</TabsTrigger>
         </TabsList>
         <TabsContent value="pending"><PendingApprovals /></TabsContent>
         <TabsContent value="decisions"><DecisionLog /></TabsContent>
         <TabsContent value="knowledge"><KnowledgePackages /></TabsContent>
         <TabsContent value="ingestion"><IngestionEvents /></TabsContent>
+        <TabsContent value="failures"><SignatureFailures /></TabsContent>
       </Tabs>
     </div>
   );
@@ -141,28 +195,56 @@ function PendingApprovals() {
   );
 }
 
+const PAGE_LIMIT = 100;
+
 function DecisionLog() {
   const fn = useServerFn(listGovernanceDecisions);
+  const exportFn = useServerFn(exportGovernanceDecisionsCsv);
   const [tenant, setTenant] = useState("");
   const [decision, setDecision] = useState<string>("all");
   const [approval, setApproval] = useState<string>("all");
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
 
-  const q = useQuery({
-    queryKey: ["gov", "log", tenant, decision, approval],
-    queryFn: () =>
-      fn({
-        data: {
-          tenantId: tenant || undefined,
-          decision: decision === "all" ? undefined : (decision as any),
-          approvalStatus: approval === "all" ? undefined : (approval as any),
-          limit: 200,
-        },
-      }),
+  const filters = () => ({
+    tenantId: tenant || undefined,
+    decision: decision === "all" ? undefined : (decision as any),
+    approvalStatus: approval === "all" ? undefined : (approval as any),
+    limit: PAGE_LIMIT,
   });
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await fn({ data: { ...filters(), cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  async function onExport() {
+    try {
+      const { csv } = await exportFn({ data: filters() });
+      downloadCsv(`governance-decisions-${Date.now()}.csv`, csv);
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  }
 
   return (
     <Card>
-      <CardHeader><CardTitle>Decision log</CardTitle></CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Decision log</CardTitle>
+        <Button variant="outline" size="sm" onClick={onExport}>Download CSV</Button>
+      </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex flex-wrap gap-2">
           <Input
@@ -192,6 +274,7 @@ function DecisionLog() {
               <SelectItem value="blocked">Blocked</SelectItem>
             </SelectContent>
           </Select>
+          <Button size="sm" onClick={() => load(true)} disabled={loading}>Apply filters</Button>
         </div>
         <Table>
           <TableHeader>
@@ -205,7 +288,7 @@ function DecisionLog() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {q.data?.rows.map((r: any) => (
+            {rows.map((r: any) => (
               <TableRow key={r.id}>
                 <TableCell className="text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
                 <TableCell className="text-xs">{r.tenant_id ?? "—"}</TableCell>
@@ -219,6 +302,7 @@ function DecisionLog() {
             ))}
           </TableBody>
         </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
       </CardContent>
     </Card>
   );
@@ -228,20 +312,83 @@ function KnowledgePackages() {
   const qc = useQueryClient();
   const fn = useServerFn(listKnowledgePackages);
   const decideFn = useServerFn(decideKnowledgePackage);
-  const q = useQuery({ queryKey: ["kp"], queryFn: () => fn() });
+  const exportFn = useServerFn(exportKnowledgePackagesCsv);
+  const [status, setStatus] = useState("all");
+  const [trust, setTrust] = useState("all");
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
+
+  const filters = () => ({
+    status: status === "all" ? undefined : status,
+    trust: trust === "all" ? undefined : trust,
+    limit: PAGE_LIMIT,
+  });
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await fn({ data: { ...filters(), cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const mutate = useMutation({
     mutationFn: (v: { id: string; action: "approve" | "reject" }) => decideFn({ data: v }),
     onSuccess: () => {
       toast.success("Package updated");
       qc.invalidateQueries({ queryKey: ["kp"] });
+      load(true);
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  async function onExport() {
+    try {
+      const { csv } = await exportFn({ data: filters() });
+      downloadCsv(`knowledge-packages-${Date.now()}.csv`, csv);
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  }
+
   return (
     <Card>
-      <CardHeader><CardTitle>Cross-organization knowledge packages</CardTitle></CardHeader>
-      <CardContent>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Cross-organization knowledge packages</CardTitle>
+        <Button variant="outline" size="sm" onClick={onExport}>Download CSV</Button>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2">
+          <Select value={status} onValueChange={setStatus}>
+            <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={trust} onValueChange={setTrust}>
+            <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All trust levels</SelectItem>
+              <SelectItem value="internal">internal</SelectItem>
+              <SelectItem value="staging">staging</SelectItem>
+              <SelectItem value="partner">partner</SelectItem>
+              <SelectItem value="experimental">experimental</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button size="sm" onClick={() => load(true)} disabled={loading}>Apply filters</Button>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -255,7 +402,7 @@ function KnowledgePackages() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {q.data?.rows.map((r: any) => (
+            {rows.map((r: any) => (
               <TableRow key={r.id}>
                 <TableCell className="text-xs">{r.source_label}</TableCell>
                 <TableCell><Badge variant="outline">{r.trust_level}</Badge></TableCell>
@@ -295,6 +442,7 @@ function KnowledgePackages() {
             ))}
           </TableBody>
         </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
       </CardContent>
     </Card>
   );
@@ -302,7 +450,7 @@ function KnowledgePackages() {
 
 function IngestionEvents() {
   const fn = useServerFn(listKnowledgeIngestionEvents);
-  const q = useQuery({ queryKey: ["kie"], queryFn: () => fn() });
+  const q = useQuery({ queryKey: ["kie"], queryFn: () => fn({ data: { limit: PAGE_LIMIT } }) });
   return (
     <Card>
       <CardHeader><CardTitle>Ingestion events</CardTitle></CardHeader>
@@ -333,6 +481,125 @@ function IngestionEvents() {
             ))}
           </TableBody>
         </Table>
+        {q.data && (
+          <p className="text-xs text-muted-foreground pt-2">
+            Showing {q.data.rows.length}
+            {q.data.total !== null && ` of ${q.data.total}`}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function SignatureFailures() {
+  const fn = useServerFn(listSignatureFailures);
+  const exportFn = useServerFn(exportSignatureFailuresCsv);
+  const [tenant, setTenant] = useState("");
+  const [reason, setReason] = useState("all");
+  const [since, setSince] = useState("");
+  const [until, setUntil] = useState("");
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
+
+  const filters = () => ({
+    tenantId: tenant || undefined,
+    reason: reason === "all" ? undefined : reason,
+    since: since ? new Date(since).toISOString() : undefined,
+    until: until ? new Date(until).toISOString() : undefined,
+    limit: PAGE_LIMIT,
+  });
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await fn({ data: { ...filters(), cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onExport() {
+    try {
+      const { csv } = await exportFn({ data: filters() });
+      downloadCsv(`signature-failures-${Date.now()}.csv`, csv);
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  }
+
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Signature verification failures</CardTitle>
+        <Button variant="outline" size="sm" onClick={onExport}>Download CSV</Button>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2">
+          <Input
+            placeholder="Filter by tenant"
+            value={tenant}
+            onChange={(e) => setTenant(e.target.value)}
+            className="max-w-xs"
+          />
+          <Select value={reason} onValueChange={setReason}>
+            <SelectTrigger className="w-52"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All reasons</SelectItem>
+              {FAILURE_REASONS.map((r) => (
+                <SelectItem key={r} value={r}>{r}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Input
+            type="datetime-local"
+            value={since}
+            onChange={(e) => setSince(e.target.value)}
+            className="max-w-[14rem]"
+            aria-label="From"
+          />
+          <Input
+            type="datetime-local"
+            value={until}
+            onChange={(e) => setUntil(e.target.value)}
+            className="max-w-[14rem]"
+            aria-label="To"
+          />
+          <Button size="sm" onClick={() => load(true)} disabled={loading}>Apply filters</Button>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>When</TableHead>
+              <TableHead>Tenant</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead>Reason</TableHead>
+              <TableHead>Key</TableHead>
+              <TableHead>Version</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
+                <TableCell className="text-xs">{r.tenant_id ?? "—"}</TableCell>
+                <TableCell className="text-xs">{r.source_label}</TableCell>
+                <TableCell><Badge variant="destructive">{r.reason}</Badge></TableCell>
+                <TableCell className="text-xs font-mono">{r.key_id ?? "—"}</TableCell>
+                <TableCell className="text-xs">{r.schema_version ?? "—"}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
       </CardContent>
     </Card>
   );

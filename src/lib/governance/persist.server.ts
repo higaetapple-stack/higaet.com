@@ -112,3 +112,38 @@ export async function persistIngestionEvent(input: {
   });
   if (error) throw new Error(error.message);
 }
+
+/**
+ * Records a structured audit event for a signature verification failure.
+ * Reasons include: untrusted_key, expired, missing_signature, hash_mismatch,
+ * signature_mismatch, malformed_signature, validation_failed.
+ */
+export async function persistSignatureFailure(input: {
+  sourceLabel: string;
+  trust: TrustLevel | null;
+  reason: string;
+  keyId?: string | null;
+  tenantId?: string | null;
+  packageHash?: string | null;
+  schemaVersion?: string | null;
+  generatedAt?: string | null;
+  expiresAt?: string | null;
+  issues?: string[];
+  metadata?: Record<string, unknown>;
+}): Promise<void> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { error } = await (supabaseAdmin as any).from("knowledge_signature_failures").insert({
+    source_label: input.sourceLabel,
+    trust_level: input.trust ?? null,
+    reason: input.reason,
+    key_id: input.keyId ?? null,
+    tenant_id: input.tenantId ?? null,
+    package_hash: input.packageHash ?? null,
+    schema_version: input.schemaVersion ?? null,
+    generated_at: input.generatedAt ?? null,
+    expires_at: input.expiresAt ?? null,
+    issues: input.issues ?? [],
+    metadata: input.metadata ?? {},
+  });
+  if (error) throw new Error(error.message);
+}
