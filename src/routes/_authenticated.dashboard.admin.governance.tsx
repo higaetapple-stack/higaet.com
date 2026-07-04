@@ -34,6 +34,9 @@ import {
   listSentryPullRequests,
   listWebhookDeadLetter,
   retryDeadLetterEvent,
+  runSreE2ETest,
+  listSreE2ERuns,
+  getSreE2ERun,
 } from "@/lib/sre/sre-admin.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
