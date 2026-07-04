@@ -67,10 +67,10 @@ export async function signKnowledgePackage(
   const keys = trustedKeys();
   const secret = keys.get(keyId);
   if (!secret) throw new Error(`Unknown signing key: ${keyId}`);
-  const withHash: KnowledgePackage = { ...pkg, hash: "", signature: undefined };
-  withHash.hash = await sha256(canonicalize(withHash));
-  withHash.signature = `${keyId}:${await hmac(secret, canonicalize(withHash))}`;
-  return withHash;
+  const canon = canonicalize(pkg);
+  const hash = await sha256(canon);
+  const signature = `${keyId}:${await hmac(secret, `${hash}.${canon}`)}`;
+  return { ...pkg, hash, signature };
 }
 
 export type VerifyResult = {
