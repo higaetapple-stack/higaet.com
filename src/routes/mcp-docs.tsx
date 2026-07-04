@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const SITE = "https://higaet-core-engine.lovable.app";
+const SITE = "https://higaet.lovable.app";
 
 export const Route = createFileRoute("/mcp-docs")({
   head: () => ({
