@@ -19,6 +19,11 @@ import {
   reprocessSentryIssue,
   exportSentryAnalysesCsv,
 } from "@/lib/sre/sre.functions";
+import {
+  listIncidentClusters,
+  exportIncidentClustersCsv,
+  setClusterStatus,
+} from "@/lib/incidents/incidents.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -123,6 +128,7 @@ function GovernancePage() {
           <TabsTrigger value="ingestion">Ingestion events</TabsTrigger>
           <TabsTrigger value="failures">Signature failures</TabsTrigger>
           <TabsTrigger value="sre">AI SRE</TabsTrigger>
+          <TabsTrigger value="incidents">Incidents</TabsTrigger>
         </TabsList>
         <TabsContent value="pending"><PendingApprovals /></TabsContent>
         <TabsContent value="decisions"><DecisionLog /></TabsContent>
@@ -130,6 +136,7 @@ function GovernancePage() {
         <TabsContent value="ingestion"><IngestionEvents /></TabsContent>
         <TabsContent value="failures"><SignatureFailures /></TabsContent>
         <TabsContent value="sre"><SentryAnalyses /></TabsContent>
+        <TabsContent value="incidents"><IncidentClusters /></TabsContent>
       </Tabs>
     </div>
   );
@@ -788,6 +795,161 @@ function SentryAnalyses() {
                             <pre className="whitespace-pre-wrap rounded bg-background p-2">{r.pr_suggestion.body}</pre>
                           </div>
                         )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </Fragment>
+            ))}
+          </TableBody>
+        </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
+      </CardContent>
+    </Card>
+  );
+}
+
+function IncidentClusters() {
+  const listFn = useServerFn(listIncidentClusters);
+  const exportFn = useServerFn(exportIncidentClustersCsv);
+  const statusFn = useServerFn(setClusterStatus);
+  const qc = useQueryClient();
+  const [status, setStatus] = useState<string>("active");
+  const [minSev, setMinSev] = useState<string>("0");
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  const filters = () => ({
+    status: status === "all" ? undefined : (status as any),
+    minSeverity: Number(minSev) || undefined,
+    limit: 50,
+  });
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await listFn({ data: { ...filters(), cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { setPages([]); load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [status, minSev]);
+
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  async function onExport() {
+    try {
+      const { csv } = await exportFn({ data: filters() });
+      downloadCsv(`incident-clusters-${Date.now()}.csv`, csv);
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  }
+
+  const setStat = useMutation({
+    mutationFn: (p: { clusterId: string; status: "active" | "resolved" | "muted" }) => statusFn({ data: p }),
+    onSuccess: () => {
+      toast.success("Status updated");
+      qc.invalidateQueries({ queryKey: ["incidents"] });
+      setPages([]);
+      load(true);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Active incident clusters</CardTitle>
+        <Button variant="outline" size="sm" onClick={onExport}>Download CSV</Button>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2">
+          <Select value={status} onValueChange={setStatus}>
+            <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="active">active</SelectItem>
+              <SelectItem value="resolved">resolved</SelectItem>
+              <SelectItem value="muted">muted</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={minSev} onValueChange={setMinSev}>
+            <SelectTrigger className="w-44"><SelectValue placeholder="Min severity" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0">Any severity</SelectItem>
+              <SelectItem value="25">Severity ≥ 25</SelectItem>
+              <SelectItem value="50">Severity ≥ 50</SelectItem>
+              <SelectItem value="75">Severity ≥ 75</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Last seen</TableHead>
+              <TableHead>Signature / title</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Severity</TableHead>
+              <TableHead>Issues</TableHead>
+              <TableHead>Events</TableHead>
+              <TableHead>Users</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((r: any) => (
+              <Fragment key={r.id}>
+                <TableRow>
+                  <TableCell className="text-xs">{new Date(r.last_seen).toLocaleString()}</TableCell>
+                  <TableCell className="text-xs">
+                    <div className="font-mono">{r.signature}</div>
+                    <div className="text-muted-foreground truncate max-w-md">{r.title}</div>
+                  </TableCell>
+                  <TableCell><Badge variant="outline">{r.top_category ?? "—"}</Badge></TableCell>
+                  <TableCell className="text-xs font-mono">{r.severity_score}</TableCell>
+                  <TableCell className="text-xs">{r.issue_count}</TableCell>
+                  <TableCell className="text-xs">{r.event_count}</TableCell>
+                  <TableCell className="text-xs">{r.user_count}</TableCell>
+                  <TableCell>
+                    <Badge variant={r.status === "resolved" ? "secondary" : r.status === "muted" ? "outline" : "default"}>
+                      {r.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="flex gap-1">
+                    <Button size="sm" variant="ghost" onClick={() => setExpanded((s) => ({ ...s, [r.id]: !s[r.id] }))}>
+                      {expanded[r.id] ? "Hide" : "View"}
+                    </Button>
+                    {r.status !== "resolved" && (
+                      <Button size="sm" variant="outline" disabled={setStat.isPending}
+                        onClick={() => setStat.mutate({ clusterId: r.id, status: "resolved" })}>
+                        Resolve
+                      </Button>
+                    )}
+                    {r.status !== "muted" && (
+                      <Button size="sm" variant="ghost" disabled={setStat.isPending}
+                        onClick={() => setStat.mutate({ clusterId: r.id, status: "muted" })}>
+                        Mute
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+                {expanded[r.id] && (
+                  <TableRow key={`${r.id}-detail`}>
+                    <TableCell colSpan={9} className="bg-muted/30">
+                      <div className="space-y-1 p-2 text-xs">
+                        <div>First seen: <span className="font-mono">{new Date(r.first_seen).toLocaleString()}</span></div>
+                        <div>Representative issue: <span className="font-mono">{r.representative_issue_id ?? "—"}</span></div>
+                        <div>Last analysis hash: <span className="font-mono">{r.last_analysis_hash ?? "—"}</span></div>
+                        <div>Last analyzed: <span className="font-mono">{r.last_analyzed_at ? new Date(r.last_analyzed_at).toLocaleString() : "—"}</span></div>
                       </div>
                     </TableCell>
                   </TableRow>
