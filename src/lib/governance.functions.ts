@@ -56,6 +56,7 @@ const ListInput = z.object({
   decision: z.enum(["ALLOW", "WARN", "BLOCK", "REVIEW_REQUIRED"]).optional(),
   approvalStatus: z.enum(["auto", "pending", "approved", "rejected", "blocked"]).optional(),
   since: z.string().datetime().optional(),
+  cursor: z.string().datetime().optional(),
   limit: z.number().int().min(1).max(500).default(100),
 });
 
@@ -66,16 +67,19 @@ export const listGovernanceDecisions = createServerFn({ method: "POST" })
     await assertAdmin(context);
     let q = context.supabase
       .from("governance_audit_events")
-      .select("*")
+      .select("*", data.cursor ? undefined : { count: "exact" })
       .order("created_at", { ascending: false })
       .limit(data.limit);
     if (data.tenantId) q = q.eq("tenant_id", data.tenantId);
     if (data.decision) q = q.eq("decision", data.decision);
     if (data.approvalStatus) q = q.eq("approval_status", data.approvalStatus);
     if (data.since) q = q.gte("created_at", data.since);
-    const { data: rows, error } = await q;
+    if (data.cursor) q = q.lt("created_at", data.cursor);
+    const { data: rows, error, count } = await q;
     if (error) throw new Error(error.message);
-    return { rows: rows ?? [] };
+    const list = rows ?? [];
+    const nextCursor = list.length === data.limit ? list[list.length - 1].created_at : null;
+    return { rows: list, nextCursor, total: count ?? null };
   });
 
 export const getPendingApprovals = createServerFn({ method: "GET" })
