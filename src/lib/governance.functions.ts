@@ -7,13 +7,12 @@ import type { KnowledgePackage, TrustLevel } from "@/lib/knowledge/types";
 import { validateKnowledgePackage } from "@/lib/knowledge/validate";
 import { mergeRecommendations } from "@/lib/knowledge/merge";
 
+// Every admin-facing governance endpoint (list, decide, export) MUST call
+// this before returning any data. Centralized so a future policy change
+// (extra roles, org scoping, MFA) is a one-line update.
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase.rpc("has_any_role", {
-    _user_id: ctx.userId,
-    _roles: ["admin", "super_admin"],
-  });
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden");
+  const { assertGovernanceAdmin } = await import("@/lib/governance/rbac.server");
+  await assertGovernanceAdmin(ctx);
 }
 
 // ── Record a governance decision (called by internal services) ────────────
