@@ -303,7 +303,9 @@ import { Route as AuthenticatedDashboardAdminUniprogramsRouteImport } from './ro
 import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './routes/_authenticated.dashboard.admin.tech-leads'
 import { Route as AuthenticatedDashboardAdminSystemRouteImport } from './routes/_authenticated.dashboard.admin.system'
 import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
+import { Route as AuthenticatedDashboardAdminSreMetricsRouteImport } from './routes/_authenticated.dashboard.admin.sre-metrics'
 import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
+import { Route as AuthenticatedDashboardAdminSentryReleasesRouteImport } from './routes/_authenticated.dashboard.admin.sentry-releases'
 import { Route as AuthenticatedDashboardAdminSentryRouteImport } from './routes/_authenticated.dashboard.admin.sentry'
 import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
 import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
@@ -1993,10 +1995,22 @@ const AuthenticatedDashboardAdminStoriesRoute =
     path: '/stories',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminSreMetricsRoute =
+  AuthenticatedDashboardAdminSreMetricsRouteImport.update({
+    id: '/sre-metrics',
+    path: '/sre-metrics',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminSettingsRoute =
   AuthenticatedDashboardAdminSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSentryReleasesRoute =
+  AuthenticatedDashboardAdminSentryReleasesRouteImport.update({
+    id: '/sentry-releases',
+    path: '/sentry-releases',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminSentryRoute =
@@ -2559,7 +2573,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/sentry': typeof AuthenticatedDashboardAdminSentryRoute
+  '/dashboard/admin/sentry-releases': typeof AuthenticatedDashboardAdminSentryReleasesRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
+  '/dashboard/admin/sre-metrics': typeof AuthenticatedDashboardAdminSreMetricsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
   '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
@@ -2890,7 +2906,9 @@ export interface FileRoutesByTo {
   '/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/dashboard/admin/sentry': typeof AuthenticatedDashboardAdminSentryRoute
+  '/dashboard/admin/sentry-releases': typeof AuthenticatedDashboardAdminSentryReleasesRoute
   '/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
+  '/dashboard/admin/sre-metrics': typeof AuthenticatedDashboardAdminSreMetricsRoute
   '/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
   '/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
@@ -3235,7 +3253,9 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/sa-leads': typeof AuthenticatedDashboardAdminSaLeadsRoute
   '/_authenticated/dashboard/admin/scholarships': typeof AuthenticatedDashboardAdminScholarshipsRoute
   '/_authenticated/dashboard/admin/sentry': typeof AuthenticatedDashboardAdminSentryRoute
+  '/_authenticated/dashboard/admin/sentry-releases': typeof AuthenticatedDashboardAdminSentryReleasesRoute
   '/_authenticated/dashboard/admin/settings': typeof AuthenticatedDashboardAdminSettingsRoute
+  '/_authenticated/dashboard/admin/sre-metrics': typeof AuthenticatedDashboardAdminSreMetricsRoute
   '/_authenticated/dashboard/admin/stories': typeof AuthenticatedDashboardAdminStoriesRoute
   '/_authenticated/dashboard/admin/system': typeof AuthenticatedDashboardAdminSystemRoute
   '/_authenticated/dashboard/admin/tech-leads': typeof AuthenticatedDashboardAdminTechLeadsRoute
@@ -3582,7 +3602,9 @@ export interface FileRouteTypes {
     | '/dashboard/admin/sa-leads'
     | '/dashboard/admin/scholarships'
     | '/dashboard/admin/sentry'
+    | '/dashboard/admin/sentry-releases'
     | '/dashboard/admin/settings'
+    | '/dashboard/admin/sre-metrics'
     | '/dashboard/admin/stories'
     | '/dashboard/admin/system'
     | '/dashboard/admin/tech-leads'
@@ -3913,7 +3935,9 @@ export interface FileRouteTypes {
     | '/dashboard/admin/sa-leads'
     | '/dashboard/admin/scholarships'
     | '/dashboard/admin/sentry'
+    | '/dashboard/admin/sentry-releases'
     | '/dashboard/admin/settings'
+    | '/dashboard/admin/sre-metrics'
     | '/dashboard/admin/stories'
     | '/dashboard/admin/system'
     | '/dashboard/admin/tech-leads'
@@ -4257,7 +4281,9 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/sa-leads'
     | '/_authenticated/dashboard/admin/scholarships'
     | '/_authenticated/dashboard/admin/sentry'
+    | '/_authenticated/dashboard/admin/sentry-releases'
     | '/_authenticated/dashboard/admin/settings'
+    | '/_authenticated/dashboard/admin/sre-metrics'
     | '/_authenticated/dashboard/admin/stories'
     | '/_authenticated/dashboard/admin/system'
     | '/_authenticated/dashboard/admin/tech-leads'
@@ -6479,11 +6505,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminStoriesRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/sre-metrics': {
+      id: '/_authenticated/dashboard/admin/sre-metrics'
+      path: '/sre-metrics'
+      fullPath: '/dashboard/admin/sre-metrics'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSreMetricsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/settings': {
       id: '/_authenticated/dashboard/admin/settings'
       path: '/settings'
       fullPath: '/dashboard/admin/settings'
       preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sentry-releases': {
+      id: '/_authenticated/dashboard/admin/sentry-releases'
+      path: '/sentry-releases'
+      fullPath: '/dashboard/admin/sentry-releases'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSentryReleasesRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/sentry': {
@@ -6974,7 +7014,9 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminSaLeadsRoute: typeof AuthenticatedDashboardAdminSaLeadsRoute
   AuthenticatedDashboardAdminScholarshipsRoute: typeof AuthenticatedDashboardAdminScholarshipsRoute
   AuthenticatedDashboardAdminSentryRoute: typeof AuthenticatedDashboardAdminSentryRoute
+  AuthenticatedDashboardAdminSentryReleasesRoute: typeof AuthenticatedDashboardAdminSentryReleasesRoute
   AuthenticatedDashboardAdminSettingsRoute: typeof AuthenticatedDashboardAdminSettingsRoute
+  AuthenticatedDashboardAdminSreMetricsRoute: typeof AuthenticatedDashboardAdminSreMetricsRoute
   AuthenticatedDashboardAdminStoriesRoute: typeof AuthenticatedDashboardAdminStoriesRoute
   AuthenticatedDashboardAdminSystemRoute: typeof AuthenticatedDashboardAdminSystemRoute
   AuthenticatedDashboardAdminTechLeadsRoute: typeof AuthenticatedDashboardAdminTechLeadsRoute
@@ -7040,8 +7082,12 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminScholarshipsRoute,
     AuthenticatedDashboardAdminSentryRoute:
       AuthenticatedDashboardAdminSentryRoute,
+    AuthenticatedDashboardAdminSentryReleasesRoute:
+      AuthenticatedDashboardAdminSentryReleasesRoute,
     AuthenticatedDashboardAdminSettingsRoute:
       AuthenticatedDashboardAdminSettingsRoute,
+    AuthenticatedDashboardAdminSreMetricsRoute:
+      AuthenticatedDashboardAdminSreMetricsRoute,
     AuthenticatedDashboardAdminStoriesRoute:
       AuthenticatedDashboardAdminStoriesRoute,
     AuthenticatedDashboardAdminSystemRoute:
