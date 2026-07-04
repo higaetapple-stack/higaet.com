@@ -58,7 +58,8 @@ export const Route = createFileRoute("/api/public/governance/decisions")({
         const { data, error, count } = await q;
         if (error) return new Response(error.message, { status: 500 });
         const rows = data ?? [];
-        const nextCursor = rows.length === limit ? rows[rows.length - 1].created_at : null;
+        const last = rows[rows.length - 1];
+        const nextCursor = rows.length === limit ? `${last.created_at}|${last.id}` : null;
         return Response.json({ rows, nextCursor, total: count ?? null });
       },
     },
