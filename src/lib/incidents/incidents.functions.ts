@@ -27,16 +27,12 @@ export const listIncidentClusters = createServerFn({ method: "POST" })
     let q = (context.supabase as any)
       .from("incident_clusters")
       .select("*", data.cursor ? undefined : { count: "exact" })
-      .order("last_seen", { ascending: false })
+      .order("created_at", { ascending: false })
       .limit(data.limit);
     if (data.status) q = q.eq("status", data.status);
     if (data.category) q = q.eq("top_category", data.category);
     if (typeof data.minSeverity === "number") q = q.gte("severity_score", data.minSeverity);
-    return paginateList(q, {
-      cursor: decodeCursor(data.cursor),
-      limit: data.limit,
-      timestampColumn: "last_seen",
-    });
+    return paginateList(q, { cursor: decodeCursor(data.cursor), limit: data.limit });
   });
 
 const GetInput = z.object({ clusterId: z.string().uuid() });
