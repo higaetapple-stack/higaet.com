@@ -3,51 +3,63 @@
  *
  * Auth: header `x-governance-api-key` must match GOVERNANCE_CI_API_KEY.
  * Returns 401 if missing/invalid. Never exposes user PII.
+ *
+ * Query params:
+ *   view=recent|pending     filter by approval status
+ *   tenant=<id>             filter by tenant_id
+ *   decision=<ALLOW|WARN|BLOCK|REVIEW_REQUIRED>
+ *   limit=<n>               page size (default 100, max 500)
+ *   cursor=<ISO timestamp>  cursor-based pagination (created_at < cursor)
+ *   format=json|csv         response format (default json)
  */
 import { createFileRoute } from "@tanstack/react-router";
-
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let d = 0;
-  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return d === 0;
-}
-
-function authorized(request: Request): boolean {
-  const presented = request.headers.get("x-governance-api-key") ?? "";
-  const expected = process.env.GOVERNANCE_CI_API_KEY ?? "";
-  return expected.length > 0 && timingSafeEqual(presented, expected);
-}
+import { authorizedGovernanceRequest, toCsv, buildDecisionsQuery } from "@/lib/governance/api-helpers.server";
 
 export const Route = createFileRoute("/api/public/governance/decisions")({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        if (!authorized(request)) {
+        if (!authorizedGovernanceRequest(request)) {
           return new Response("Unauthorized", { status: 401 });
         }
         const url = new URL(request.url);
-        const view = url.searchParams.get("view") ?? "recent";
-        const tenant = url.searchParams.get("tenant");
-        const decision = url.searchParams.get("decision");
-        const limit = Math.min(Number(url.searchParams.get("limit") ?? "100"), 500);
+        const format = url.searchParams.get("format") ?? "json";
+        const limit = Math.min(Math.max(Number(url.searchParams.get("limit") ?? "100"), 1), 500);
+        const cursor = url.searchParams.get("cursor");
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        let q = supabaseAdmin
-          .from("governance_audit_events")
-          .select(
-            "id,created_at,tenant_id,source,decision,risk_score,confidence,explanation,requires_human_approval,approval_status",
-          )
-          .order("created_at", { ascending: false })
-          .limit(limit);
 
-        if (view === "pending") q = q.eq("approval_status", "pending");
-        if (tenant) q = q.eq("tenant_id", tenant);
-        if (decision) q = q.eq("decision", decision);
+        if (format === "csv") {
+          // Stream all matching rows up to a hard export cap, ignoring cursor.
+          const q = buildDecisionsQuery(supabaseAdmin, url, { withCount: false, limit: 10_000 });
+          const { data, error } = await q;
+          if (error) return new Response(error.message, { status: 500 });
+          const csv = toCsv(data ?? [], [
+            "id",
+            "created_at",
+            "tenant_id",
+            "source",
+            "decision",
+            "risk_score",
+            "confidence",
+            "requires_human_approval",
+            "approval_status",
+          ]);
+          return new Response(csv, {
+            status: 200,
+            headers: {
+              "content-type": "text/csv; charset=utf-8",
+              "content-disposition": `attachment; filename="governance-decisions-${Date.now()}.csv"`,
+            },
+          });
+        }
 
-        const { data, error } = await q;
+        const q = buildDecisionsQuery(supabaseAdmin, url, { withCount: !cursor, limit, cursor });
+        const { data, error, count } = await q;
         if (error) return new Response(error.message, { status: 500 });
-        return Response.json({ rows: data ?? [] });
+        const rows = data ?? [];
+        const nextCursor = rows.length === limit ? rows[rows.length - 1].created_at : null;
+        return Response.json({ rows, nextCursor, total: count ?? null });
       },
     },
   },

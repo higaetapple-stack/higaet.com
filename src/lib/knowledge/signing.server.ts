@@ -8,12 +8,11 @@ import type { KnowledgePackage } from "@/lib/knowledge/types";
 
 const enc = new TextEncoder();
 
-function canonicalize(pkg: Omit<KnowledgePackage, "signature">): string {
+function canonicalize(pkg: Omit<KnowledgePackage, "hash" | "signature">): string {
   const ordered = {
     version: pkg.version,
     generatedAt: pkg.generatedAt,
     expiresAt: pkg.expiresAt,
-    hash: pkg.hash,
     categories: pkg.categories,
     recommendations: pkg.recommendations,
     calibration: pkg.calibration,
@@ -68,10 +67,10 @@ export async function signKnowledgePackage(
   const keys = trustedKeys();
   const secret = keys.get(keyId);
   if (!secret) throw new Error(`Unknown signing key: ${keyId}`);
-  const withHash: KnowledgePackage = { ...pkg, hash: "", signature: undefined };
-  withHash.hash = await sha256(canonicalize(withHash));
-  withHash.signature = `${keyId}:${await hmac(secret, canonicalize(withHash))}`;
-  return withHash;
+  const canon = canonicalize(pkg);
+  const hash = await sha256(canon);
+  const signature = `${keyId}:${await hmac(secret, `${hash}.${canon}`)}`;
+  return { ...pkg, hash, signature };
 }
 
 export type VerifyResult = {
@@ -88,11 +87,12 @@ export async function verifyKnowledgePackage(pkg: KnowledgePackage): Promise<Ver
   const secret = keys.get(keyId);
   if (!secret) return { valid: false, keyId, reason: "untrusted_key" };
 
-  const expectedHash = await sha256(canonicalize({ ...pkg, signature: undefined } as KnowledgePackage));
+  const canon = canonicalize(pkg);
+  const expectedHash = await sha256(canon);
   if (!timingSafeEqual(expectedHash, pkg.hash)) {
     return { valid: false, keyId, reason: "hash_mismatch" };
   }
-  const expectedMac = await hmac(secret, canonicalize({ ...pkg, signature: undefined } as KnowledgePackage));
+  const expectedMac = await hmac(secret, `${pkg.hash}.${canon}`);
   if (!timingSafeEqual(expectedMac, mac)) {
     return { valid: false, keyId, reason: "signature_mismatch" };
   }
