@@ -3822,12 +3822,72 @@ export type Database = {
           },
         ]
       }
+      sentry_pr_check_runs: {
+        Row: {
+          check_name: string
+          completed_at: string | null
+          conclusion: string | null
+          created_at: string
+          details_url: string | null
+          external_id: string | null
+          head_sha: string | null
+          id: string
+          observed_at: string
+          pull_request_id: string
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          check_name: string
+          completed_at?: string | null
+          conclusion?: string | null
+          created_at?: string
+          details_url?: string | null
+          external_id?: string | null
+          head_sha?: string | null
+          id?: string
+          observed_at?: string
+          pull_request_id: string
+          started_at?: string | null
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          check_name?: string
+          completed_at?: string | null
+          conclusion?: string | null
+          created_at?: string
+          details_url?: string | null
+          external_id?: string | null
+          head_sha?: string | null
+          id?: string
+          observed_at?: string
+          pull_request_id?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sentry_pr_check_runs_pull_request_id_fkey"
+            columns: ["pull_request_id"]
+            isOneToOne: false
+            referencedRelation: "sentry_pull_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sentry_pull_requests: {
         Row: {
           analysis_hash: string | null
           base_branch: string
           body: string | null
           branch_name: string
+          ci_conclusion: string | null
+          ci_head_sha: string | null
+          ci_last_checked_at: string | null
+          ci_status: string
           commit_sha: string | null
           confidence_score: number
           created_at: string
@@ -3849,6 +3909,10 @@ export type Database = {
           base_branch?: string
           body?: string | null
           branch_name: string
+          ci_conclusion?: string | null
+          ci_head_sha?: string | null
+          ci_last_checked_at?: string | null
+          ci_status?: string
           commit_sha?: string | null
           confidence_score?: number
           created_at?: string
@@ -3870,6 +3934,10 @@ export type Database = {
           base_branch?: string
           body?: string | null
           branch_name?: string
+          ci_conclusion?: string | null
+          ci_head_sha?: string | null
+          ci_last_checked_at?: string | null
+          ci_status?: string
           commit_sha?: string | null
           confidence_score?: number
           created_at?: string
@@ -3941,6 +4009,68 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      sre_e2e_test_runs: {
+        Row: {
+          ci_conclusion: string | null
+          created_at: string
+          current_phase: string | null
+          error: string | null
+          finished_at: string | null
+          id: string
+          phases: Json
+          pr_url: string | null
+          pull_request_id: string | null
+          ready_for_deploy: boolean | null
+          sample_issue_id: string | null
+          started_at: string
+          status: string
+          triggered_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          ci_conclusion?: string | null
+          created_at?: string
+          current_phase?: string | null
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          phases?: Json
+          pr_url?: string | null
+          pull_request_id?: string | null
+          ready_for_deploy?: boolean | null
+          sample_issue_id?: string | null
+          started_at?: string
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ci_conclusion?: string | null
+          created_at?: string
+          current_phase?: string | null
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          phases?: Json
+          pr_url?: string | null
+          pull_request_id?: string | null
+          ready_for_deploy?: boolean | null
+          sample_issue_id?: string | null
+          started_at?: string
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sre_e2e_test_runs_pull_request_id_fkey"
+            columns: ["pull_request_id"]
+            isOneToOne: false
+            referencedRelation: "sentry_pull_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sso_domains: {
         Row: {
