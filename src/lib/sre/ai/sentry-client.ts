@@ -133,6 +133,44 @@ export class SentryClient {
     events.sort((a, b) => a.timestamp - b.timestamp);
     return events;
   }
+  /**
+   * List recent releases for the org (Sentry scopes releases at org level).
+   * Read-only; used by the admin Sentry Releases panel.
+   */
+  async listReleases(opts: { limit?: number } = {}): Promise<SentryRelease[]> {
+    const limit = Math.min(opts.limit ?? 10, 50);
+    const params = new URLSearchParams({ per_page: String(limit) });
+    const raw = await this.request<any[]>(
+      `/organizations/${this.orgSlug}/releases/?${params}`,
+    );
+    return (raw ?? []).map((r) => ({
+      version: String(r.version ?? ""),
+      shortVersion: r.shortVersion ?? undefined,
+      dateCreated: r.dateCreated ?? undefined,
+      dateReleased: r.dateReleased ?? undefined,
+      lastCommit: r.lastCommit ? { id: r.lastCommit.id, message: r.lastCommit.message } : null,
+      newGroups: typeof r.newGroups === "number" ? r.newGroups : undefined,
+      commitCount: typeof r.commitCount === "number" ? r.commitCount : 0,
+      projects: (r.projects ?? []).map((p: any) => p.slug).filter(Boolean),
+      url: r.url ?? undefined,
+      permalink: `https://sentry.io/organizations/${this.orgSlug}/releases/${encodeURIComponent(
+        String(r.version ?? ""),
+      )}/`,
+    }));
+  }
+}
+
+export interface SentryRelease {
+  version: string;
+  shortVersion?: string;
+  dateCreated?: string;
+  dateReleased?: string;
+  lastCommit: { id: string; message?: string } | null;
+  newGroups?: number;
+  commitCount: number;
+  projects: string[];
+  url?: string;
+  permalink: string;
 }
 
 function flattenEvent(raw: any): SentryEventDetail | null {
