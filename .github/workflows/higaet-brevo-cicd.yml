@@ -6,6 +6,20 @@ on:
     branches:
       - main
       - staging
+    # Path filter: skip runs on docs / metadata-only changes.
+    paths:
+      - "src/**"
+      - "public/**"
+      - "supabase/**"
+      - "app.js"
+      - "vite.config.ts"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "scripts/**"
+      - ".github/actions/setup-node-bun/**"
+      - ".github/workflows/higaet-brevo-cicd.yml"
+
 
 concurrency:
   group: brevo-ci-${{ github.ref }}
