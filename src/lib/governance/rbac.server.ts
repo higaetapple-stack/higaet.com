@@ -56,7 +56,7 @@ export function applyCompositeCursor<T>(query: T, cursor: CompositeCursor | null
  */
 export async function paginateList<Row extends { created_at: string; id: string }>(
   builder: any,
-  opts: { cursor: CompositeCursor | null; limit: number; withCount: boolean },
+  opts: { cursor: CompositeCursor | null; limit: number },
 ): Promise<{ rows: Row[]; nextCursor: string | null; total: number | null }> {
   applyCompositeCursor(builder, opts.cursor);
   const { data, error, count } = await builder;
