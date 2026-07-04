@@ -22,7 +22,7 @@ export const Route = createFileRoute("/about")({
         content:
           "HIGAET unites AI education, international university pathways, and enterprise engineering under one institution.",
       },
-      { property: "og:url", content: "https://higaet.com/about" },
+      { property: "og:url", content: "https://www.higaet.com/about" },
     ],
   }),
   component: AboutPage,

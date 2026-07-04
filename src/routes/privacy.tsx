@@ -8,7 +8,7 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy — HIGAET" },
       { name: "description", content: "How HIGAET collects, uses, and protects your information." },
-      { property: "og:url", content: "https://higaet.com/privacy" },
+      { property: "og:url", content: "https://www.higaet.com/privacy" },
     ],
   }),
   component: PrivacyPage,

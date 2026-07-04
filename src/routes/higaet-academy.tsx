@@ -7,7 +7,7 @@ import { FAQ, faqJsonLd, type QA } from "@/components/site/FAQ";
 import { HIGAET_KNOWLEDGE_GRAPH } from "@/lib/knowledge-graph";
 
 const PATH = "/higaet-academy";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "HIGAET Academy — AI Engineering Education & Certifications";
 const DESC =
   "HIGAET Academy delivers AI engineering programs, certifications, learning paths, internships, and placements taught by practicing engineers.";

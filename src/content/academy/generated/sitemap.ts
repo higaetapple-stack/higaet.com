@@ -39,7 +39,7 @@ import {
  * Public base URL for HIGAET Academy sitemap entries.
  * Canonical production domain — single source of truth (Workstream B.2 · Step 7).
  */
-export const ACADEMY_SITEMAP_BASE_URL = "https://higaet.com" as const;
+export const ACADEMY_SITEMAP_BASE_URL = "https://www.higaet.com" as const;
 
 function isPublicPublished(entry: {
   status: string;

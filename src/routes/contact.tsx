@@ -16,7 +16,7 @@ export const Route = createFileRoute("/contact")({
       },
       { property: "og:title", content: "Contact HIGAET" },
       { property: "og:description", content: "Get in touch with the HIGAET team." },
-      { property: "og:url", content: "https://higaet.com/contact" },
+      { property: "og:url", content: "https://www.higaet.com/contact" },
     ],
   }),
   component: ContactPage,

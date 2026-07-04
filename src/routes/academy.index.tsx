@@ -111,7 +111,7 @@ export const Route = createFileRoute("/academy/")({
     return {
       meta: [
         ...meta.meta,
-        { property: "og:image", content: "https://higaet.com/og-higaet.png" },
+        { property: "og:image", content: "https://www.higaet.com/og-higaet.png" },
       ],
       links: meta.links,
       scripts: [

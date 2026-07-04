@@ -1,6 +1,6 @@
 import { buildBreadcrumbJsonLd } from "@/lib/seo/course-schema";
 
-const BASE = "https://higaet.com";
+const BASE = "https://www.higaet.com";
 
 const PROVIDER = {
   "@type": "Organization",

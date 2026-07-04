@@ -1,5 +1,5 @@
 # HIGAET — production robots policy
-# https://higaet.com
+# https://www.higaet.com
 
 User-agent: *
 Allow: /
@@ -77,4 +77,4 @@ Disallow: /dashboard
 Disallow: /admin
 Disallow: /crm
 
-Sitemap: https://higaet.com/sitemap.xml
+Sitemap: https://www.higaet.com/sitemap.xml

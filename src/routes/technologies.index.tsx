@@ -91,9 +91,9 @@ export const Route = createFileRoute("/technologies/")({
         content:
           "Intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Software development, AI, cloud, automation, and digital transformation.",
       },
-      { property: "og:url", content: "https://higaet.com/technologies" },
+      { property: "og:url", content: "https://www.higaet.com/technologies" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://higaet.com/og-higaet.png" },
+      { property: "og:image", content: "https://www.higaet.com/og-higaet.png" },
     ],
     scripts: [
       jsonLdScript({

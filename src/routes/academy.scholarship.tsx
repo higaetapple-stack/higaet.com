@@ -35,7 +35,7 @@ export const Route = createFileRoute("/academy/scholarship")({
       { name: "description", content: "Take the free HIGAET Aptitude Test (HAT) for scholarships up to 100% across HIGAET Academy programs and campus diplomas." },
       { property: "og:title", content: "HIGAET Aptitude Test (HAT)" },
       { property: "og:description", content: "Free entrance test for HIGAET scholarships up to 100%." },
-      { property: "og:url", content: "https://higaet.com/academy/scholarship" },
+      { property: "og:url", content: "https://www.higaet.com/academy/scholarship" },
     ],
     scripts: [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) }],
   }),

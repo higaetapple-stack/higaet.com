@@ -16,7 +16,7 @@ interface Check {
 }
 
 const PREVIEW_BASE = "https://id-preview--a5499f07-de61-442e-81aa-fd1dbb361ba7.lovable.app";
-const PROD_BASE = "https://higaet.com";
+const PROD_BASE = "https://www.higaet.com";
 
 const INITIAL: Check[] = [
   { id: "local", label: "Current origin · /api/public/health", url: "/api/public/health", state: "idle" },
@@ -163,7 +163,7 @@ export const Route = createFileRoute("/status")({
       { name: "description", content: "Live health checks for HIGAET production and preview endpoints." },
       { name: "robots", content: "noindex" },
       { property: "og:title", content: "System status — HIGAET" },
-      { property: "og:url", content: "https://higaet.com/status" },
+      { property: "og:url", content: "https://www.higaet.com/status" },
     ],
   }),
 });

@@ -3,7 +3,7 @@ import { PeoplePage } from "@/components/site/PeoplePage";
 import { FACULTY, profilePageJsonLd } from "@/content/people";
 
 const PATH = "/faculty";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "Faculty — HIGAET Academy";
 const DESC = "Lead faculty across Generative AI, RAG, Agentic AI, and Data Science programs at HIGAET Academy.";
 
