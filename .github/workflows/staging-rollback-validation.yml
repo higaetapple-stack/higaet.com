@@ -47,9 +47,11 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
-      - name: Build
-        run: bun run build
+      - name: Build (Node target for MilesWeb Passenger)
+        run: bun run build:node
         env:
+          BUILD_TARGET: node
+          NODE_OPTIONS: "--max-old-space-size=6144"
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
 

@@ -41,14 +41,17 @@ jobs:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
 
-      - name: Build
-        run: bun run build
+      - name: Build (Node target for MilesWeb Passenger)
+        run: bun run build:node
         env:
+          BUILD_TARGET: node
+          NODE_OPTIONS: "--max-old-space-size=6144"
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
           GA4_MEASUREMENT_ID: ${{ secrets.GA4_MEASUREMENT_ID }}
           GSC_VERIFICATION: ${{ secrets.GSC_VERIFICATION }}
+
 
       - name: Boot probe
         run: node -e "import('./.output/server/index.mjs').then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); })"
@@ -87,7 +90,7 @@ jobs:
 
       - name: Smoke probe
         run: |
-          URL="https://${{ github.event.inputs.environment == 'production' && 'higaet.com' || 'staging.higaet.com' }}/healthz"
+          URL="https://${{ github.event.inputs.environment == 'production' && 'higaet.com' || 'staging.higaet.com' }}/api/public/health"
           for i in 1 2 3 4 5; do
             if curl -fsS "$URL" > /dev/null; then echo "ok"; exit 0; fi
             sleep 5

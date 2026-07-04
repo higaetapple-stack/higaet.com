@@ -18,28 +18,40 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      - name: Build with sourcemaps
+      # Build the Node target so uploaded sourcemaps match the bundle actually
+      # running on MilesWeb Passenger (staging.higaet.com / higaet.com).
+      # The Lovable Cloudflare Workers deployment is built and uploaded
+      # server-side by Lovable and has its own sourcemap pipeline; this
+      # workflow exists specifically for the MilesWeb Node build.
+      - name: Build with sourcemaps (Node target)
         env:
+          BUILD_TARGET: node
+          NODE_OPTIONS: "--max-old-space-size=6144"
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
           SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
           VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
           VITE_GIT_COMMIT_SHA: ${{ github.sha }}
           GIT_COMMIT_SHA: ${{ github.sha }}
-        run: bun run build
+        run: bun run build:node
 
       # sentryVitePlugin uploads sourcemaps during the build when
       # SENTRY_AUTH_TOKEN + GIT_COMMIT_SHA are present. This step is a
-      # safety net for build outputs that skip the plugin's own upload path.
+      # safety net covering both the client (./dist) and server (./.output)
+      # bundles emitted by the Node target.
       - name: Sourcemaps safety upload
-        if: ${{ env.SENTRY_AUTH_TOKEN != '' }}
+        if: ${{ secrets.SENTRY_AUTH_TOKEN != '' }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
           SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
+          VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
         run: |
           RELEASE="${VITE_SENTRY_ENV:-production}-${{ github.sha }}"
           npx --yes @sentry/cli releases new "$RELEASE" || true
           npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./dist || true
+          if [ -d ./.output ]; then
+            npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./.output || true
+          fi
           npx --yes @sentry/cli releases set-commits "$RELEASE" --auto || true
           npx --yes @sentry/cli releases finalize "$RELEASE" || true

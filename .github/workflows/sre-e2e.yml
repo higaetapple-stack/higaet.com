@@ -24,7 +24,7 @@ jobs:
       - name: Check required secrets
         run: |
           if [ -z "${{ secrets.SRE_E2E_BEARER }}" ]; then
-            echo "::error::SRE_E2E_BEARER not set — add an admin Supabase access token to repo secrets."
+            echo "::error::SRE_E2E_BEARER not set. It is a shared secret whose value MUST equal the server-side SRE_E2E_TRIGGER_SECRET env var configured in the Lovable Cloud environment."
             exit 1
           fi
 
