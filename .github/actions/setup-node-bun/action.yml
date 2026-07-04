@@ -46,11 +46,28 @@ runs:
         restore-keys: |
           bun-${{ runner.os }}-
 
+    # HARD GATE: lockfile MUST exist. No fallback installs, no npm/yarn.
+    # A missing lockfile means non-deterministic dependency resolution;
+    # abort loudly so an engineer commits bun.lock rather than let CI drift.
+    - name: Lockfile safety gate
+      if: ${{ inputs.install == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        if [ ! -f bun.lock ] && [ ! -f bun.lockb ]; then
+          echo "::error::Missing bun lockfile (bun.lock or bun.lockb)."
+          echo "CI aborted to prevent partial dependency resolution."
+          echo "Run: bun install locally and commit bun.lock."
+          exit 1
+        fi
+        echo "lockfile: $(ls -1 bun.lock bun.lockb 2>/dev/null | head -1)"
+
     - name: Install dependencies (frozen lockfile)
       if: ${{ inputs.install == 'true' }}
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: bun install --frozen-lockfile
+
 
     - name: Toolchain summary
       shell: bash

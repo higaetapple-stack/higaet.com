@@ -1,0 +1,107 @@
+name: _Security Kernel (reusable)
+
+# Reusable security pipeline. Combines dependency vulnerability audit and
+# license audit into a single execution unit, so wrapper workflows are thin
+# and setup logic is not duplicated per file.
+
+on:
+  workflow_call:
+    inputs:
+      run-dependency-audit:
+        type: boolean
+        required: false
+        default: true
+      run-license-audit:
+        type: boolean
+        required: false
+        default: true
+      severity-threshold:
+        type: string
+        required: false
+        default: "high"
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-audit:
+    if: ${{ inputs.run-dependency-audit }}
+    name: Dependency Vulnerability Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fork-guard
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Skipping audit on fork PR"
+          exit 0
+
+      - uses: actions/checkout@v4
+
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node-bun
+
+      - name: Generate package-lock.json for audit
+        # bun audit coverage is limited; use npm audit against a generated
+        # lockfile for full GitHub Advisory Database coverage.
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: npm audit (${{ inputs.severity-threshold }}+ severity)
+        run: npm audit --audit-level=${{ inputs.severity-threshold }}
+
+  license-audit:
+    if: ${{ inputs.run-license-audit }}
+    name: License Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fork-guard
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Skipping audit on fork PR"
+          exit 0
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Node (license-checker walks node_modules)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install production dependencies
+        run: npm install --omit=dev --ignore-scripts --no-audit --no-fund --package-lock-only=false
+        env:
+          npm_config_legacy_peer_deps: "true"
+
+      - name: Run license audit
+        run: |
+          set -e
+          DENY="GPL;GPL-1.0;GPL-2.0;GPL-3.0;AGPL;AGPL-1.0;AGPL-3.0;LGPL;LGPL-2.0;LGPL-2.1;LGPL-3.0;SSPL;SSPL-1.0;CC-BY-NC;CC-BY-NC-SA;CC-BY-NC-ND;BUSL;BUSL-1.1;EUPL;EUPL-1.1;EUPL-1.2;OSL;OSL-3.0;EPL;EPL-1.0;EPL-2.0;MPL-1.0;MPL-1.1;CDDL;CDDL-1.0;CDDL-1.1;CPAL;CPAL-1.0;Elastic-2.0;Commons-Clause"
+          npx --yes license-checker-rseidelsohn@4.4.2 \
+            --production --json --excludePrivatePackages --out licenses.json
+          {
+            echo "## License Audit"
+            echo "| Package | License |"
+            echo "|---|---|"
+            jq -r 'to_entries | .[] | "| \(.key) | \(.value.licenses // "UNKNOWN") |"' licenses.json | head -n 200
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          set +e
+          npx --yes license-checker-rseidelsohn@4.4.2 \
+            --production --excludePrivatePackages --failOn "$DENY" > deny-check.log 2>&1
+          DENY_EXIT=$?
+          set -e
+
+          UNKNOWN_COUNT=$(jq '[to_entries[] | select((.value.licenses // "UNKNOWN") | test("UNKNOWN|UNLICENSED"))] | length' licenses.json)
+          if [ "$DENY_EXIT" -ne 0 ] || [ "$UNKNOWN_COUNT" -gt 0 ]; then
+            cat deny-check.log
+            echo "::error::License audit failed"
+            exit 1
+          fi
+          echo "License audit passed."
+
+      - name: Upload license report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: licenses.json
+          retention-days: 30

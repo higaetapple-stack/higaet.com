@@ -1,0 +1,111 @@
+name: _CI Kernel (reusable)
+
+# Reusable CI execution unit. Callers pass build inputs and this kernel runs
+# lint / typecheck / build with the shared setup-node-bun action. Uploads
+# the build output as an artifact so downstream jobs (deploy, lighthouse,
+# SEO) can `download-artifact` instead of rebuilding.
+#
+# CALLER SHAPE:
+#   jobs:
+#     ci:
+#       uses: ./.github/workflows/_ci-kernel.yml
+#       with:
+#         node-version: "22"
+#         run-lint: true
+#         run-typecheck: true
+#         run-build: true
+#         upload-artifact: true
+#       secrets: inherit
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        required: false
+        default: "22"
+      run-lint:
+        type: boolean
+        required: false
+        default: true
+      run-typecheck:
+        type: boolean
+        required: false
+        default: true
+      run-build:
+        type: boolean
+        required: false
+        default: true
+      upload-artifact:
+        type: boolean
+        required: false
+        default: true
+      artifact-name:
+        type: string
+        required: false
+        default: "ci-build"
+      build-command:
+        type: string
+        required: false
+        default: "bun run build"
+
+jobs:
+  ci:
+    name: Lint · Typecheck · Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node-bun
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Lint
+        if: ${{ inputs.run-lint }}
+        run: bun run lint 2>&1 | tee lint.log
+
+      - name: Typecheck
+        if: ${{ inputs.run-typecheck && always() }}
+        run: bun run typecheck 2>&1 | tee typecheck.log
+
+      - name: Build
+        if: ${{ inputs.run-build && always() }}
+        env:
+          NODE_OPTIONS: "--max-old-space-size=6144"
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+        run: ${{ inputs.build-command }} 2>&1 | tee build.log
+
+      - name: Artifact check
+        if: ${{ inputs.run-build && always() }}
+        run: |
+          if [ ! -d dist ] && [ ! -d .output ]; then
+            echo "::error::Build produced neither dist/ nor .output/"
+            exit 1
+          fi
+
+      - name: Upload build artifact
+        if: ${{ inputs.upload-artifact && inputs.run-build && success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: |
+            dist
+            .output
+          retention-days: 3
+          if-no-files-found: warn
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}-logs
+          path: |
+            lint.log
+            typecheck.log
+            build.log
+          retention-days: 14
+          if-no-files-found: warn
