@@ -20,7 +20,7 @@ export type PersistedGovernanceEvent = {
   approval_status: string;
   approved_by: string | null;
   approved_at: string | null;
-  metadata: Record<string, unknown>;
+  metadata: unknown;
 };
 
 export async function persistGovernanceDecision(
