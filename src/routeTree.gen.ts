@@ -256,6 +256,8 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
+import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
+import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
 import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
 import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
@@ -1719,6 +1721,16 @@ const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
     path: '/knowledge-base/universities/$slug',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
+const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
+  id: '/api/public/sentry/webhook',
+  path: '/api/public/sentry/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicSentrySyncRoute = ApiPublicSentrySyncRouteImport.update({
+  id: '/api/public/sentry/sync',
+  path: '/api/public/sentry/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicRiskEvaluatePrRoute = ApiPublicRiskEvaluatePrRouteImport.update({
   id: '/api/public/risk/evaluate-pr',
   path: '/api/public/risk/evaluate-pr',
@@ -2655,6 +2667,8 @@ export interface FileRoutesByFullPath {
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
+  '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
+  '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -2990,6 +3004,8 @@ export interface FileRoutesByTo {
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
+  '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
+  '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3343,6 +3359,8 @@ export interface FileRoutesById {
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
+  '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
+  '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3696,6 +3714,8 @@ export interface FileRouteTypes {
     | '/api/public/governance/knowledge'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
+    | '/api/public/sentry/sync'
+    | '/api/public/sentry/webhook'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -4031,6 +4051,8 @@ export interface FileRouteTypes {
     | '/api/public/governance/knowledge'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
+    | '/api/public/sentry/sync'
+    | '/api/public/sentry/webhook'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -4383,6 +4405,8 @@ export interface FileRouteTypes {
     | '/api/public/governance/knowledge'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
+    | '/api/public/sentry/sync'
+    | '/api/public/sentry/webhook'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -4494,6 +4518,8 @@ export interface RootRouteChildren {
   ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
   ApiPublicLaunchReadinessIngestRoute: typeof ApiPublicLaunchReadinessIngestRoute
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
+  ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
+  ApiPublicSentryWebhookRoute: typeof ApiPublicSentryWebhookRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
@@ -6227,6 +6253,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/knowledge-base/universities/$slug'
       preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport
       parentRoute: typeof GlobalEducationRoute
+    }
+    '/api/public/sentry/webhook': {
+      id: '/api/public/sentry/webhook'
+      path: '/api/public/sentry/webhook'
+      fullPath: '/api/public/sentry/webhook'
+      preLoaderRoute: typeof ApiPublicSentryWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/sentry/sync': {
+      id: '/api/public/sentry/sync'
+      path: '/api/public/sentry/sync'
+      fullPath: '/api/public/sentry/sync'
+      preLoaderRoute: typeof ApiPublicSentrySyncRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/risk/evaluate-pr': {
       id: '/api/public/risk/evaluate-pr'
@@ -8136,6 +8176,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
   ApiPublicLaunchReadinessIngestRoute: ApiPublicLaunchReadinessIngestRoute,
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
+  ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
+  ApiPublicSentryWebhookRoute: ApiPublicSentryWebhookRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport
