@@ -4,6 +4,7 @@
  */
 
 import { getCommitInfo, type CommitInfo } from "./git";
+import { extractShaFromRelease } from "@/lib/observability/release";
 
 export interface AttributionResult {
   confidence: number;
@@ -26,12 +27,6 @@ function pickRelease(issue: IssueLike): string | null {
     return t?.value ?? null;
   }
   return tags.release ?? null;
-}
-
-/** Release convention: `${env}-${sha}` (see sentry-browser.ts). */
-function extractSha(release: string): string {
-  const dash = release.lastIndexOf("-");
-  return dash >= 0 ? release.slice(dash + 1) : release;
 }
 
 export async function mapIssueToCommit(issue: IssueLike): Promise<AttributionResult> {
