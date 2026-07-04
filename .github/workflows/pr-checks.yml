@@ -1,117 +1,58 @@
 name: PR Checks
 
-# Runs on every PR to main or staging. Enforces the same quality gates as
-# production builds and always uploads logs (even on failure) so regressions
-# are diagnosable from the PR page.
+# Thin wrapper — delegates to _ci-kernel.yml (lint · typecheck · build) and
+# _security-kernel.yml (dependency + license audit). Lighthouse consumes the
+# ci-kernel build artifact instead of rebuilding.
 #
-# BRANCH PROTECTION (manual, one-time setup — GitHub UI):
-#   Settings → Branches → Add branch protection rule for `main` and again for `staging`.
-#   Enable "Require status checks to pass before merging" and select:
-#     - Lint · Typecheck · Build
-#     - Lighthouse
-#   Also enable "Require branches to be up to date before merging" and
-#   "Do not allow bypassing the above settings". This is what actually blocks
-#   merging when any job (including artifact upload steps) fails.
+# BRANCH PROTECTION (manual, one-time):
+#   Settings → Branches → Add rule for `main` and `staging`.
+#   Require checks: "Lint · Typecheck · Build" and "Lighthouse".
+#   Enable "Require branches to be up to date" and "Do not allow bypassing".
 
 on:
   pull_request:
     branches: [main, staging]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
+      - "vite.config.ts"
+      - "tsconfig.json"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "eslint.config.js"
+      - "lighthouserc.json"
+      - ".github/workflows/pr-checks.yml"
+      - ".github/workflows/_ci-kernel.yml"
+      - ".github/actions/setup-node-bun/**"
 
 concurrency:
   group: pr-checks-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  quality-gates:
-    name: Lint · Typecheck · Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-
-    steps:
-      - name: Checkout PR
-        uses: actions/checkout@v4
-
-      - name: Setup Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Cache Vite build output
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules/.vite
-            .output
-            dist
-          key: ${{ runner.os }}-vite-${{ hashFiles('package-lock.json', 'vite.config.ts') }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-vite-${{ hashFiles('package-lock.json', 'vite.config.ts') }}-
-            ${{ runner.os }}-vite-
-
-      - name: Install dependencies
-        run: npm ci 2>&1 | tee install.log
-
-      - name: Lint
-        id: lint
-        run: npm run lint 2>&1 | tee lint.log
-
-      - name: Typecheck
-        id: typecheck
-        if: always()
-        run: npm run typecheck 2>&1 | tee typecheck.log
-
-      - name: Build
-        id: build
-        if: always()
-        env:
-          NODE_OPTIONS: "--max-old-space-size=6144"
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-        run: npm run build 2>&1 | tee build.log
-
-      - name: Persist build output for Lighthouse job
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-${{ github.event.pull_request.number }}-build
-          path: |
-            dist
-            .output
-          retention-days: 3
-          if-no-files-found: warn
-
-      - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-${{ github.event.pull_request.number }}-logs
-          path: |
-            install.log
-            lint.log
-            typecheck.log
-            build.log
-          retention-days: 14
-          if-no-files-found: warn
+  ci:
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      node-version: "22"
+      artifact-name: pr-${{ github.event.pull_request.number }}-build
+    secrets: inherit
 
   lighthouse:
     name: Lighthouse
-    needs: quality-gates
+    needs: ci
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
-      - name: Checkout PR
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node 20
-        uses: actions/setup-node@v4
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node-bun
         with:
-          node-version: "20"
-          cache: "npm"
+          install: "false"
 
-      - name: Download build output
+      - name: Download build artifact (from ci-kernel)
         uses: actions/download-artifact@v4
         with:
           name: pr-${{ github.event.pull_request.number }}-build
@@ -121,10 +62,7 @@ jobs:
         run: npm install --no-save @lhci/cli@0.14.x
 
       - name: Run Lighthouse CI
-        id: lhci
         env:
-          # If dist/ isn't a static SPA (SSR-only), LHCI's built-in static server
-          # will still serve index.html when present. Falls back to .output/public.
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
         run: npx lhci autorun --config=./lighthouserc.json 2>&1 | tee lighthouse.log
 
