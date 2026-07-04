@@ -87,11 +87,12 @@ export async function verifyKnowledgePackage(pkg: KnowledgePackage): Promise<Ver
   const secret = keys.get(keyId);
   if (!secret) return { valid: false, keyId, reason: "untrusted_key" };
 
-  const expectedHash = await sha256(canonicalize({ ...pkg, signature: undefined } as KnowledgePackage));
+  const canon = canonicalize(pkg);
+  const expectedHash = await sha256(canon);
   if (!timingSafeEqual(expectedHash, pkg.hash)) {
     return { valid: false, keyId, reason: "hash_mismatch" };
   }
-  const expectedMac = await hmac(secret, canonicalize({ ...pkg, signature: undefined } as KnowledgePackage));
+  const expectedMac = await hmac(secret, `${pkg.hash}.${canon}`);
   if (!timingSafeEqual(expectedMac, mac)) {
     return { valid: false, keyId, reason: "signature_mismatch" };
   }
