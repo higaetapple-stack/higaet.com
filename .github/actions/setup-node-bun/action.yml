@@ -1,0 +1,59 @@
+name: "Setup Node + Bun (HIGAET canonical)"
+description: >-
+  Single source of truth for CI toolchain: Node 22, Bun latest, frozen-lockfile
+  install, and cache. Every workflow that installs deps MUST use this action to
+  eliminate CI drift (mixed Node versions, npm-vs-bun installs, missing cache).
+
+inputs:
+  node-version:
+    description: "Node.js version"
+    required: false
+    default: "22"
+  bun-version:
+    description: "Bun version"
+    required: false
+    default: "latest"
+  install:
+    description: "Run `bun install --frozen-lockfile` after setup"
+    required: false
+    default: "true"
+  working-directory:
+    description: "Directory to install in"
+    required: false
+    default: "."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: ${{ inputs.bun-version }}
+
+    # Bun's built-in global cache — keyed by bun.lock so a lockfile change
+    # busts the cache automatically. Falls back to any prior cache on miss.
+    - name: Restore Bun cache
+      if: ${{ inputs.install == 'true' }}
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: bun-${{ runner.os }}-${{ hashFiles('**/bun.lock', '**/bun.lockb') }}
+        restore-keys: |
+          bun-${{ runner.os }}-
+
+    - name: Install dependencies (frozen lockfile)
+      if: ${{ inputs.install == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: bun install --frozen-lockfile
+
+    - name: Toolchain summary
+      shell: bash
+      run: |
+        echo "node: $(node -v)"
+        echo "bun:  $(bun -v)"

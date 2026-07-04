@@ -1,25 +1,47 @@
 name: Upload Sentry Sourcemaps
 
+# Repeat-offender hardening (P0.5):
+#   - Uses the canonical setup-node-bun composite action (Node 22 + frozen install + cache)
+#   - Skips the entire job cleanly when SENTRY_AUTH_TOKEN is absent (no red X on forks/preview branches)
+#   - Verifies build artifacts exist before invoking sentry-cli, so a failed build
+#     surfaces as a build failure — not a confusing "sourcemap upload failed"
+#   - Fails only on real upload errors (removed the `|| true` swallows that hid regressions)
+
 on:
   push:
     branches: [main, staging]
 
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        env:
+          TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          if [ -n "$TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::SENTRY_AUTH_TOKEN not set — skipping sourcemap upload."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
   upload:
+    needs: guard
+    if: needs.guard.outputs.enabled == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - run: bun install --frozen-lockfile
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node-bun
 
       # Build the Node target so uploaded sourcemaps match the bundle actually
-      # running on MilesWeb Passenger (staging.higaet.com / higaet.com).
+      # running on MilesWeb Passenger (staging.higaet.com / www.higaet.com).
       # The Lovable Cloudflare Workers deployment is built and uploaded
       # server-side by Lovable and has its own sourcemap pipeline; this
       # workflow exists specifically for the MilesWeb Node build.
@@ -35,23 +57,42 @@ jobs:
           GIT_COMMIT_SHA: ${{ github.sha }}
         run: bun run build:node
 
-      # sentryVitePlugin uploads sourcemaps during the build when
-      # SENTRY_AUTH_TOKEN + GIT_COMMIT_SHA are present. This step is a
-      # safety net covering both the client (./dist) and server (./.output)
-      # bundles emitted by the Node target.
-      - name: Sourcemaps safety upload
-        if: ${{ secrets.SENTRY_AUTH_TOKEN != '' }}
+      # Hard artifact guard: if the build didn't produce dist/ we must NOT
+      # continue to sentry-cli — that would silently upload nothing and
+      # succeed. Fail loudly with a diagnostic instead.
+      - name: Verify build artifacts exist
+        run: |
+          set -e
+          if [ ! -d ./dist ] || [ -z "$(ls -A ./dist 2>/dev/null)" ]; then
+            echo "::error::Expected ./dist to exist and be non-empty after build:node. Aborting sourcemap upload."
+            exit 1
+          fi
+          echo "dist/ OK ($(find ./dist -type f | wc -l) files)"
+          if [ -d ./.output ]; then
+            echo ".output/ present ($(find ./.output -type f | wc -l) files)"
+          else
+            echo "::notice::.output/ missing — Node SSR bundle not emitted; skipping .output upload."
+          fi
+
+      # Safety-net upload. sentryVitePlugin uploads during the build when
+      # SENTRY_AUTH_TOKEN + GIT_COMMIT_SHA are present; this step covers
+      # gaps and finalizes the release. Real failures propagate (no `|| true`).
+      - name: Upload sourcemaps and finalize release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
           SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
           VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
         run: |
+          set -e
           RELEASE="${VITE_SENTRY_ENV:-production}-${{ github.sha }}"
-          npx --yes @sentry/cli releases new "$RELEASE" || true
-          npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./dist || true
+          npx --yes @sentry/cli releases new "$RELEASE"
+          npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./dist
           if [ -d ./.output ]; then
-            npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./.output || true
+            npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./.output
           fi
-          npx --yes @sentry/cli releases set-commits "$RELEASE" --auto || true
-          npx --yes @sentry/cli releases finalize "$RELEASE" || true
+          # set-commits --auto tolerates first-release / shallow-clone edge cases;
+          # keep the soft-fail here only (not on uploads).
+          npx --yes @sentry/cli releases set-commits "$RELEASE" --auto || \
+            echo "::warning::set-commits --auto failed (likely first release or shallow clone) — continuing."
+          npx --yes @sentry/cli releases finalize "$RELEASE"
