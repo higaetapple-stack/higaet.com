@@ -22,7 +22,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
-          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'higaet-frontend' }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
           VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
           VITE_GIT_COMMIT_SHA: ${{ github.sha }}
           GIT_COMMIT_SHA: ${{ github.sha }}
@@ -36,7 +36,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
-          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'higaet-frontend' }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
         run: |
           RELEASE="${VITE_SENTRY_ENV:-production}-${{ github.sha }}"
           npx --yes @sentry/cli releases new "$RELEASE" || true
