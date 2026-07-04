@@ -261,6 +261,7 @@ import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/
 import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
 import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
+import { Route as ApiPublicHooksPollPrCiRouteImport } from './routes/api/public/hooks/poll-pr-ci'
 import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
 import { Route as ApiPublicGovernanceDecisionsRouteImport } from './routes/api/public/governance.decisions'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
@@ -1749,6 +1750,11 @@ const ApiPublicLaunchReadinessIngestRoute =
     path: '/api/public/launch-readiness/ingest',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksPollPrCiRoute = ApiPublicHooksPollPrCiRouteImport.update({
+  id: '/api/public/hooks/poll-pr-ci',
+  path: '/api/public/hooks/poll-pr-ci',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicGovernanceKnowledgeRoute =
   ApiPublicGovernanceKnowledgeRouteImport.update({
     id: '/knowledge',
@@ -2672,6 +2678,7 @@ export interface FileRoutesByFullPath {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
@@ -3010,6 +3017,7 @@ export interface FileRoutesByTo {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
@@ -3366,6 +3374,7 @@ export interface FileRoutesById {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
@@ -3722,6 +3731,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
@@ -4060,6 +4070,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
@@ -4415,6 +4426,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
@@ -4529,6 +4541,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
   ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
+  ApiPublicHooksPollPrCiRoute: typeof ApiPublicHooksPollPrCiRoute
   ApiPublicLaunchReadinessIngestRoute: typeof ApiPublicLaunchReadinessIngestRoute
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
   ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
@@ -6301,6 +6314,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/launch-readiness/ingest'
       fullPath: '/api/public/launch-readiness/ingest'
       preLoaderRoute: typeof ApiPublicLaunchReadinessIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/poll-pr-ci': {
+      id: '/api/public/hooks/poll-pr-ci'
+      path: '/api/public/hooks/poll-pr-ci'
+      fullPath: '/api/public/hooks/poll-pr-ci'
+      preLoaderRoute: typeof ApiPublicHooksPollPrCiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/governance/knowledge': {
@@ -8195,6 +8215,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
   ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
+  ApiPublicHooksPollPrCiRoute: ApiPublicHooksPollPrCiRoute,
   ApiPublicLaunchReadinessIngestRoute: ApiPublicLaunchReadinessIngestRoute,
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
   ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
