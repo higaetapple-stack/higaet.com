@@ -172,7 +172,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
     if (pr.status === "skipped") throw new Error(`skipped: ${pr.reason}`);
     prUrl = pr.url;
     prNumber = pr.number;
-    prRowId = pr.id;
+    prRowId = pr.status === "created" || pr.status === "reused" ? pr.id : undefined;
     await appendPhase(runId, {
       phase: "open_pr",
       status: "ok",
