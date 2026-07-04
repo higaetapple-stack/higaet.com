@@ -6,7 +6,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { PARTNERS } from "@/content/people";
 
 const PATH = "/partners";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "Partners — HIGAET";
 const DESC = "HIGAET's university, enterprise, cloud, and AI partner ecosystem.";
 
@@ -25,16 +25,16 @@ const JSONLD = {
       "@type": "BreadcrumbList",
       "@id": `${URL}#breadcrumb`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://higaet.com/" },
-        { "@type": "ListItem", position: 2, name: "About HIGAET", item: "https://higaet.com/about-higaet" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.higaet.com/" },
+        { "@type": "ListItem", position: 2, name: "About HIGAET", item: "https://www.higaet.com/about-higaet" },
         { "@type": "ListItem", position: 3, name: "Partners", item: URL },
       ],
     },
     {
       "@type": "Organization",
-      "@id": "https://higaet.com/about-higaet#org",
+      "@id": "https://www.higaet.com/about-higaet#org",
       name: "HIGAET",
-      url: "https://higaet.com/about-higaet",
+      url: "https://www.higaet.com/about-higaet",
     },
   ],
 };

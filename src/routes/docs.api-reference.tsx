@@ -10,7 +10,7 @@ export const Route = createFileRoute("/docs/api-reference")({
   component: () => (
     <>
       <h1>API reference</h1>
-      <p>Base URL: <code>https://higaet.com/api/v1</code></p>
+      <p>Base URL: <code>https://www.higaet.com/api/v1</code></p>
 
       <h2>GET /programs</h2>
       <p>Scope: <code>read:programs</code>. Returns published programs.</p>

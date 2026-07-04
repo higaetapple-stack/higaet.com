@@ -9,7 +9,7 @@ export const SITE = {
   tagline: "Advancing human capability with Gen AI",
   description:
     "HIGAET is a global institute spanning AI education, international university pathways, and enterprise software engineering.",
-  url: import.meta.env.VITE_SITE_URL ?? "https://higaet.com",
+  url: import.meta.env.VITE_SITE_URL ?? "https://www.higaet.com",
   twitter: "@higaet",
 } as const;
 

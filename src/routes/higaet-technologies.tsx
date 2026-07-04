@@ -7,7 +7,7 @@ import { FAQ, faqJsonLd, type QA } from "@/components/site/FAQ";
 import { HIGAET_KNOWLEDGE_GRAPH } from "@/lib/knowledge-graph";
 
 const PATH = "/higaet-technologies";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "HIGAET Technologies — Enterprise AI & Software Engineering";
 const DESC =
   "HIGAET Technologies delivers enterprise AI solutions, custom software, cloud, data engineering, and digital transformation services for global clients.";

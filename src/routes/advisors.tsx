@@ -3,7 +3,7 @@ import { PeoplePage } from "@/components/site/PeoplePage";
 import { ADVISORS, profilePageJsonLd } from "@/content/people";
 
 const PATH = "/advisors";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "Advisors — HIGAET";
 const DESC = "HIGAET's academic, industry, and global education advisors.";
 

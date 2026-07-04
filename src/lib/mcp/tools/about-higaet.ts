@@ -7,7 +7,7 @@ Three divisions:
 - HIGAET Global Education Hub: study-abroad guidance, university partnerships, admissions & counseling.
 - HIGAET Technologies: enterprise software, AI, cloud, and product engineering services.
 
-Website: https://higaet.lovable.app`;
+Website: https://www.higaet.com`;
 
 export default defineTool({
   name: "about_higaet",
@@ -22,7 +22,7 @@ export default defineTool({
       name: "HIGAET",
       full_name: "Helen Institute of Gen AI Engineering & Technology",
       divisions: ["Academy", "Global Education Hub", "Technologies"],
-      website: "https://higaet.lovable.app",
+      website: "https://www.higaet.com",
     },
   }),
 });

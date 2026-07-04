@@ -3,7 +3,7 @@ import { PeoplePage } from "@/components/site/PeoplePage";
 import { FOUNDER, profilePageJsonLd } from "@/content/people";
 
 const PATH = "/founder";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "Founder — HIGAET";
 const DESC = "Meet the founder of HIGAET (Helen Institute of Gen AI Engineering & Technology).";
 

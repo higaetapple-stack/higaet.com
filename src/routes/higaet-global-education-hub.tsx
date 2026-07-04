@@ -7,7 +7,7 @@ import { FAQ, faqJsonLd, type QA } from "@/components/site/FAQ";
 import { HIGAET_KNOWLEDGE_GRAPH } from "@/lib/knowledge-graph";
 
 const PATH = "/higaet-global-education-hub";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "HIGAET Global Education Hub — Study Abroad & University Admissions";
 const DESC =
   "HIGAET Global Education Hub helps students secure international university admissions with visa guidance, scholarships, and end-to-end counselling.";

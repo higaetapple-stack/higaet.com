@@ -11,7 +11,7 @@ export const Route = createFileRoute("/global-education/countries")({
       { title: "Study Destinations — HIGAET Global Education Hub" },
       { name: "description", content: "Compare top study-abroad destinations: USA, Canada, UK, Australia, Germany, Ireland, New Zealand, Singapore." },
       { property: "og:title", content: "Top Study-Abroad Destinations | HIGAET" },
-      { property: "og:url", content: "https://higaet.com/global-education/countries" },
+      { property: "og:url", content: "https://www.higaet.com/global-education/countries" },
     ],
   }),
   component: CountriesPage,

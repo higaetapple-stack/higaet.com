@@ -7,7 +7,7 @@ import { FAQ, faqJsonLd, type QA } from "@/components/site/FAQ";
 import { HIGAET_KNOWLEDGE_GRAPH } from "@/lib/knowledge-graph";
 
 const PATH = "/higaet-ai-platform";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "HIGAET AI Platform — RAG, Agents, and Multi-Model Orchestration";
 const DESC =
   "HIGAET AI Platform powers AI tutors, advisors, and copilots across the HIGAET ecosystem with RAG, agentic workflows, multi-model orchestration, and observability.";

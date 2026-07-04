@@ -6,7 +6,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { getCategory, type DocCategory } from "@/content/docs";
 import { buildBreadcrumbJsonLd } from "@/lib/seo/course-schema";
 
-const BASE = "https://higaet.com";
+const BASE = "https://www.higaet.com";
 
 export const Route = createFileRoute("/docs/$category")({
   loader: ({ params }): { category: DocCategory } => {

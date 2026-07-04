@@ -3,12 +3,12 @@ import { CATEGORY_LABELS, type ProgramCategory } from "@/lib/academy-programs";
 
 const PROVIDER = {
   "@type": "EducationalOrganization",
-  "@id": "https://higaet.com/higaet-academy#org",
+  "@id": "https://www.higaet.com/higaet-academy#org",
   name: "HIGAET Academy",
-  url: "https://higaet.com/higaet-academy",
+  url: "https://www.higaet.com/higaet-academy",
   sameAs: [
-    "https://higaet.com/about-higaet",
-    "https://higaet.com/higaet-academy",
+    "https://www.higaet.com/about-higaet",
+    "https://www.higaet.com/higaet-academy",
   ],
 } as const;
 
@@ -25,7 +25,7 @@ function parseDurationToISO(duration: string): string | undefined {
 }
 
 export function buildCourseJsonLd(program: Program, slug: string) {
-  const url = `https://higaet.com/academy/programs/${slug}`;
+  const url = `https://www.higaet.com/academy/programs/${slug}`;
   const iso = parseDurationToISO(program.duration);
 
   return {
@@ -85,7 +85,7 @@ export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
       "@type": "ListItem",
       position: i + 1,
       name: it.name,
-      item: it.url.startsWith("http") ? it.url : `https://higaet.com${it.url}`,
+      item: it.url.startsWith("http") ? it.url : `https://www.higaet.com${it.url}`,
     })),
   };
 }

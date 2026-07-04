@@ -3,7 +3,7 @@ import { PeoplePage } from "@/components/site/PeoplePage";
 import { LEADERSHIP, profilePageJsonLd } from "@/content/people";
 
 const PATH = "/leadership";
-const URL = `https://higaet.com${PATH}`;
+const URL = `https://www.higaet.com${PATH}`;
 const TITLE = "Leadership — HIGAET";
 const DESC = "HIGAET's leadership across Academy, Global Education Hub, Technologies, and the AI Platform.";
 

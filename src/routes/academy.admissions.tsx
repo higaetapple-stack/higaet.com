@@ -20,7 +20,7 @@ export const Route = createFileRoute("/academy/admissions")({
       { name: "description", content: "Apply to HIGAET Academy, book a counselling session, or download a program brochure. Structured admissions in 6 steps." },
       { property: "og:title", content: "Admissions — HIGAET Academy" },
       { property: "og:description", content: "Apply, talk to an advisor, or request a brochure." },
-      { property: "og:url", content: "https://higaet.com/academy/admissions" },
+      { property: "og:url", content: "https://www.higaet.com/academy/admissions" },
     ],
   }),
   component: AdmissionsPage,

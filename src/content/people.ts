@@ -49,7 +49,7 @@ export const PARTNERS = [
   { slug: "partner-cloud", name: "Cloud & AI Partners", description: "Cloud and model-provider ecosystems integrated through the HIGAET AI Platform." },
 ];
 
-const BASE = "https://higaet.com";
+const BASE = "https://www.higaet.com";
 
 const ORG_REF = {
   HIGAET: { "@id": `${BASE}/about-higaet#org` },

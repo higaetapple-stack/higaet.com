@@ -14,7 +14,7 @@ import { getCurrentHost, resolveTenantShell } from "@/lib/tenant-shell";
  * At request time the sitemap is host-aware (Phase 10A · item 3): each
  * tenant shell only advertises the paths it actually serves.
  */
-const DEFAULT_BASE_URL = "https://higaet.com";
+const DEFAULT_BASE_URL = "https://www.higaet.com";
 
 interface SitemapEntry {
   path: string;

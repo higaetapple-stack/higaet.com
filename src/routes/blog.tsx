@@ -38,7 +38,7 @@ export const Route = createFileRoute("/blog")({
       { name: "description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
       { property: "og:title", content: "Blog — HIGAET" },
       { property: "og:description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
-      { property: "og:url", content: "https://higaet.com/blog" },
+      { property: "og:url", content: "https://www.higaet.com/blog" },
     ],
   }),
   component: BlogIndex,

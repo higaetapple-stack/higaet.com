@@ -25,7 +25,7 @@ export default defineTool({
         slug,
         title: (svc as { title?: string; hero?: { title?: string } }).title ??
           (svc as { hero?: { title?: string } }).hero?.title ?? slug,
-        url: `https://higaet.lovable.app/services/${slug}`,
+        url: `https://www.higaet.com/services/${slug}`,
       }));
     return {
       content: [{ type: "text", text: JSON.stringify(rows, null, 2) }],
