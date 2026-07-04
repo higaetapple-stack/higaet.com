@@ -3574,6 +3574,72 @@ export type Database = {
         }
         Relationships: []
       }
+      sentry_issue_analyses: {
+        Row: {
+          analysis_hash: string | null
+          analyzed_at: string
+          auto_pr_recommended: boolean
+          category: string | null
+          confidence: number | null
+          created_at: string
+          error: string | null
+          fix_plan: Json | null
+          id: string
+          issue_id: string
+          pr_suggestion: Json | null
+          risk_score: number | null
+          root_cause: Json | null
+          sentry_permalink: string | null
+          short_id: string | null
+          status: string
+          title: string
+          trigger: string
+          updated_at: string
+        }
+        Insert: {
+          analysis_hash?: string | null
+          analyzed_at?: string
+          auto_pr_recommended?: boolean
+          category?: string | null
+          confidence?: number | null
+          created_at?: string
+          error?: string | null
+          fix_plan?: Json | null
+          id?: string
+          issue_id: string
+          pr_suggestion?: Json | null
+          risk_score?: number | null
+          root_cause?: Json | null
+          sentry_permalink?: string | null
+          short_id?: string | null
+          status?: string
+          title: string
+          trigger?: string
+          updated_at?: string
+        }
+        Update: {
+          analysis_hash?: string | null
+          analyzed_at?: string
+          auto_pr_recommended?: boolean
+          category?: string | null
+          confidence?: number | null
+          created_at?: string
+          error?: string | null
+          fix_plan?: Json | null
+          id?: string
+          issue_id?: string
+          pr_suggestion?: Json | null
+          risk_score?: number | null
+          root_cause?: Json | null
+          sentry_permalink?: string | null
+          short_id?: string | null
+          status?: string
+          title?: string
+          trigger?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sso_domains: {
         Row: {
           created_at: string
