@@ -1,10 +1,15 @@
 /**
  * Shared server-only helpers for the governance CI-gate endpoints:
  * - constant-time API key auth
- * - filter/cursor query builders for decisions + knowledge tables
+ * - filter/composite-cursor builders for decisions + knowledge tables
  * - CSV serialization with proper RFC 4180 escaping
+ *
+ * Cursors are composite `${created_at}|${id}` strings so that pages remain
+ * deterministic when multiple rows share the same second-precision
+ * timestamp — critical on high-volume audit tables.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { decodeCursor, applyCompositeCursor } from "./rbac.server";
 
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -42,7 +47,7 @@ export function buildDecisionsQuery(
   if (view === "pending") q = q.eq("approval_status", "pending");
   if (tenant) q = q.eq("tenant_id", tenant);
   if (decision) q = q.eq("decision", decision);
-  if (opts.cursor) q = q.lt("created_at", opts.cursor);
+  applyCompositeCursor(q, decodeCursor(opts.cursor ?? null));
   return q;
 }
 
@@ -70,7 +75,7 @@ export function buildKnowledgeQueries(
     .limit(opts.limit);
   if (status) pkgsQ = pkgsQ.eq("status", status);
   if (trust) pkgsQ = pkgsQ.eq("trust_level", trust);
-  if (opts.cursor) pkgsQ = pkgsQ.lt("created_at", opts.cursor);
+  applyCompositeCursor(pkgsQ, decodeCursor(opts.cursor ?? null));
 
   let eventsQ = supabase
     .from("knowledge_ingestion_events")
@@ -82,7 +87,7 @@ export function buildKnowledgeQueries(
     .limit(opts.limit);
   if (trust) eventsQ = eventsQ.eq("trust_level", trust);
   if (tenant) eventsQ = eventsQ.eq("source_label", tenant);
-  if (opts.eventsCursor) eventsQ = eventsQ.lt("created_at", opts.eventsCursor);
+  applyCompositeCursor(eventsQ, decodeCursor(opts.eventsCursor ?? null));
 
   return { pkgs: pkgsQ, events: eventsQ };
 }
@@ -99,3 +104,4 @@ export function toCsv<T extends Record<string, unknown>>(rows: T[], columns: (ke
   const body = rows.map((r) => columns.map((c) => csvCell(r[c])).join(",")).join("\n");
   return `${header}\n${body}\n`;
 }
+
