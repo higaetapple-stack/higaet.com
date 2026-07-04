@@ -1,5 +1,9 @@
 name: SEO Graph Integrity Check
 
+# P1: uses the shared setup-node-bun composite action for a single toolchain
+# source (Node 22 + Bun + cached, frozen-lockfile install). No inline install
+# steps — drift belongs to the composite action, not this workflow.
+
 on:
   push:
     branches: [main, staging]
@@ -18,19 +22,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+
+      - name: Setup toolchain (Node 22 + Bun, frozen install)
+        uses: ./.github/actions/setup-node-bun
+
       - name: Backlink architecture validation (P5.3 — hard gate)
         run: bun run lint:backlinks
+
       - name: Generate SEO graph report
         run: bun run seo:graph:report
+
+      - name: Verify SEO report artifacts exist
+        run: |
+          set -e
+          test -f dist/reports/SEO_GRAPH_STATUS.json || {
+            echo "::error::seo:graph:report did not produce dist/reports/SEO_GRAPH_STATUS.json"
+            ls -la dist/reports 2>/dev/null || true
+            exit 1
+          }
+          test -f dist/reports/SEO_GRAPH_STATUS.md || {
+            echo "::error::seo:graph:report did not produce dist/reports/SEO_GRAPH_STATUS.md"
+            exit 1
+          }
+
       - name: Save SEO Score State (P5.1)
         run: |
           mkdir -p .seo
           cp dist/reports/SEO_GRAPH_STATUS.json .seo/last-seo-score.json
+
       - name: Upload SEO Graph Report
         uses: actions/upload-artifact@v4
         with:

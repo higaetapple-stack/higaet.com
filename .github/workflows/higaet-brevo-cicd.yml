@@ -29,15 +29,16 @@ jobs:
       # ----------------------------
       # NODE / DEPENDENCIES
       # ----------------------------
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
+      # P1: unified toolchain via composite action (Node 22 + Bun,
+      # cached, frozen-lockfile install). Replaces the previous inline
+      # setup-node + `npm ci` block. Bun is now the single installer
+      # across CI; bun.lock is the canonical lockfile.
+      - name: Setup toolchain (Node 22 + Bun, frozen install)
+        uses: ./.github/actions/setup-node-bun
 
-      # Pin Node major to guarantee reproducible builds — GitHub runners
-      # occasionally shift the default toolcache between 20/22/24 which
-      # silently breaks CI. Fail loudly on drift.
+      # Belt-and-braces: composite action already pins Node 22, but keep
+      # the explicit drift guard — GitHub runners have historically
+      # shifted the default toolcache between 20/22/24.
       - name: Verify Node version
         run: |
           set -eu
@@ -51,12 +52,6 @@ jobs:
               exit 1
               ;;
           esac
-
-      - name: Install dependencies (deterministic, lockfile-only)
-        # --prefer-offline uses the setup-node npm cache; --no-audit/--no-fund keep logs clean.
-        # `npm ci` already refuses to run if package.json and package-lock.json disagree,
-        # and fails hard if the lockfile is missing — so an out-of-sync lockfile aborts the build.
-        run: npm ci --prefer-offline --no-audit --no-fund
 
       # ----------------------------
       # ENV PREFLIGHT (FAIL LOUD)

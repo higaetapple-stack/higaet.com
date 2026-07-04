@@ -1,5 +1,8 @@
 name: SEO Cluster Integrity
 
+# P1: uses the shared setup-node-bun composite action for a single toolchain
+# source (Node 22 + Bun + cached, frozen-lockfile install).
+
 on:
   push:
     branches: [main, staging]
@@ -18,10 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+
+      - name: Setup toolchain (Node 22 + Bun, frozen install)
+        uses: ./.github/actions/setup-node-bun
+
       - name: Lint SEO topic graph
         run: bun run lint:seo-orphans
