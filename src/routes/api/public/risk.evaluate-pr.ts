@@ -11,6 +11,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getPRDiff } from "@/lib/risk/github-diff";
 import { evaluatePR } from "@/lib/risk/gate";
 import { recordOutcome, type PROutcome } from "@/lib/risk/learning";
+import {
+  recordPrediction,
+  summarizeAccuracy,
+  type ActualOutcome,
+} from "@/lib/risk/accuracy";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
