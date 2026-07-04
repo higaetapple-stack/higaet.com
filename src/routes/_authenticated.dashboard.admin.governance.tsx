@@ -792,7 +792,7 @@ function SentryAnalyses() {
                     </TableCell>
                   </TableRow>
                 )}
-              </>
+              </Fragment>
             ))}
           </TableBody>
         </Table>
