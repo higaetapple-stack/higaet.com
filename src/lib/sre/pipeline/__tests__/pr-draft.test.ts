@@ -14,7 +14,7 @@ const analysis: AISREAnalysis = {
     topCategory: "auth",
   },
   fixPlan: [
-    { action: "Refresh JWT before request", risk: "low", targetHint: "src/lib/auth.ts", testHint: "auth.spec.ts" },
+    { category: "auth", action: "Refresh JWT before request", risk: "low", targetHint: "src/lib/auth.ts", testHint: "auth.spec.ts" },
   ],
   prSuggestion: {
     title: "fix(sre): Token expiry",
