@@ -128,6 +128,7 @@ function GovernancePage() {
           <TabsTrigger value="ingestion">Ingestion events</TabsTrigger>
           <TabsTrigger value="failures">Signature failures</TabsTrigger>
           <TabsTrigger value="sre">AI SRE</TabsTrigger>
+          <TabsTrigger value="incidents">Incidents</TabsTrigger>
         </TabsList>
         <TabsContent value="pending"><PendingApprovals /></TabsContent>
         <TabsContent value="decisions"><DecisionLog /></TabsContent>
@@ -135,6 +136,7 @@ function GovernancePage() {
         <TabsContent value="ingestion"><IngestionEvents /></TabsContent>
         <TabsContent value="failures"><SignatureFailures /></TabsContent>
         <TabsContent value="sre"><SentryAnalyses /></TabsContent>
+        <TabsContent value="incidents"><IncidentClusters /></TabsContent>
       </Tabs>
     </div>
   );
