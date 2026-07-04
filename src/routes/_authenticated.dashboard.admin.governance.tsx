@@ -30,6 +30,11 @@ import {
   setCorrelationStatus,
   syncReleases,
 } from "@/lib/releases/releases.functions";
+import {
+  listSentryPullRequests,
+  listWebhookDeadLetter,
+  retryDeadLetterEvent,
+} from "@/lib/sre/sre-admin.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -127,13 +132,15 @@ function GovernancePage() {
         </p>
       </header>
       <Tabs defaultValue="pending">
-        <TabsList>
+        <TabsList className="flex flex-wrap h-auto">
           <TabsTrigger value="pending">Pending approvals</TabsTrigger>
           <TabsTrigger value="decisions">Decision log</TabsTrigger>
           <TabsTrigger value="knowledge">Knowledge packages</TabsTrigger>
           <TabsTrigger value="ingestion">Ingestion events</TabsTrigger>
           <TabsTrigger value="failures">Signature failures</TabsTrigger>
           <TabsTrigger value="sre">AI SRE</TabsTrigger>
+          <TabsTrigger value="prs">AI PRs</TabsTrigger>
+          <TabsTrigger value="dlq">Webhook DLQ</TabsTrigger>
           <TabsTrigger value="incidents">Incidents</TabsTrigger>
           <TabsTrigger value="releases">Releases</TabsTrigger>
         </TabsList>
@@ -143,10 +150,203 @@ function GovernancePage() {
         <TabsContent value="ingestion"><IngestionEvents /></TabsContent>
         <TabsContent value="failures"><SignatureFailures /></TabsContent>
         <TabsContent value="sre"><SentryAnalyses /></TabsContent>
+        <TabsContent value="prs"><SentryPullRequests /></TabsContent>
+        <TabsContent value="dlq"><WebhookDeadLetter /></TabsContent>
         <TabsContent value="incidents"><IncidentClusters /></TabsContent>
         <TabsContent value="releases"><ReleaseRegressions /></TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function SentryPullRequests() {
+  const fn = useServerFn(listSentryPullRequests);
+  const [state, setState] = useState("all");
+  const [reviewOnly, setReviewOnly] = useState(false);
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
+
+  const filters = () => ({
+    state: state === "all" ? undefined : (state as any),
+    reviewOnly: reviewOnly || undefined,
+    limit: PAGE_LIMIT,
+  });
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await fn({ data: { ...filters(), cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  return (
+    <Card>
+      <CardHeader><CardTitle>AI-generated pull requests</CardTitle></CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2 items-center">
+          <Select value={state} onValueChange={setState}>
+            <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All states</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="open">Open</SelectItem>
+              <SelectItem value="closed">Closed</SelectItem>
+              <SelectItem value="merged">Merged</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
+            </SelectContent>
+          </Select>
+          <label className="flex items-center gap-2 text-xs">
+            <input type="checkbox" checked={reviewOnly} onChange={(e) => setReviewOnly(e.target.checked)} />
+            Review required only
+          </label>
+          <Button size="sm" onClick={() => { setPages([]); load(true); }} disabled={loading}>Apply</Button>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>When</TableHead>
+              <TableHead>Issue</TableHead>
+              <TableHead>Branch</TableHead>
+              <TableHead>Confidence</TableHead>
+              <TableHead>Review</TableHead>
+              <TableHead>State</TableHead>
+              <TableHead>PR</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
+                <TableCell className="text-xs font-mono">{r.issue_id}</TableCell>
+                <TableCell className="text-xs font-mono">{r.branch_name}</TableCell>
+                <TableCell className="text-xs">{(Number(r.confidence_score) * 100).toFixed(1)}%</TableCell>
+                <TableCell>
+                  <Badge variant={r.requires_human_review ? "outline" : "secondary"}>
+                    {r.requires_human_review ? "required" : "auto-ok"}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge variant={r.pr_state === "failed" ? "destructive" : r.pr_state === "merged" ? "secondary" : "outline"}>
+                    {r.pr_state}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-xs">
+                  {r.pr_url ? (
+                    <a className="underline" href={r.pr_url} target="_blank" rel="noreferrer">
+                      #{r.pr_number}
+                    </a>
+                  ) : r.last_error ? (
+                    <span className="text-destructive" title={r.last_error}>error</span>
+                  ) : "—"}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
+      </CardContent>
+    </Card>
+  );
+}
+
+function WebhookDeadLetter() {
+  const qc = useQueryClient();
+  const fn = useServerFn(listWebhookDeadLetter);
+  const retryFn = useServerFn(retryDeadLetterEvent);
+  const [includeAll, setIncludeAll] = useState(false);
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await fn({ data: { includeAll: includeAll || undefined, limit: PAGE_LIMIT, cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const retry = useMutation({
+    mutationFn: (id: string) => retryFn({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Requeued for processing");
+      qc.invalidateQueries({ queryKey: ["dlq"] });
+      setPages([]); load(true);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  useEffect(() => { if (pages.length === 0) load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  return (
+    <Card>
+      <CardHeader><CardTitle>Dead-lettered webhook events</CardTitle></CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2 items-center">
+          <label className="flex items-center gap-2 text-xs">
+            <input type="checkbox" checked={includeAll} onChange={(e) => setIncludeAll(e.target.checked)} />
+            Show all statuses (not just failures)
+          </label>
+          <Button size="sm" onClick={() => { setPages([]); load(true); }} disabled={loading}>Apply</Button>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Received</TableHead>
+              <TableHead>Event</TableHead>
+              <TableHead>Issue</TableHead>
+              <TableHead>Attempts</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Last error</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
+                <TableCell className="text-xs font-mono">{r.event_type}</TableCell>
+                <TableCell className="text-xs font-mono">{r.issue_id ?? "—"}</TableCell>
+                <TableCell className="text-xs">{r.attempt_count}</TableCell>
+                <TableCell>
+                  <Badge variant={r.status === "failed_permanent" ? "destructive" : r.status === "failed" ? "outline" : "secondary"}>
+                    {r.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-xs max-w-md truncate" title={r.last_error ?? ""}>
+                  {r.last_error ?? "—"}
+                </TableCell>
+                <TableCell className="text-right">
+                  {(r.status === "failed" || r.status === "failed_permanent") && (
+                    <Button size="sm" variant="outline" disabled={retry.isPending}
+                      onClick={() => retry.mutate(r.id)}>
+                      Retry
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
+      </CardContent>
+    </Card>
   );
 }
 
