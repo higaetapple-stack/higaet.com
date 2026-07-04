@@ -2054,6 +2054,54 @@ export type Database = {
           },
         ]
       }
+      governance_audit_events: {
+        Row: {
+          approval_status: string
+          approved_at: string | null
+          approved_by: string | null
+          confidence: number
+          created_at: string
+          decision: string
+          explanation: Json
+          id: string
+          metadata: Json
+          requires_human_approval: boolean
+          risk_score: number
+          source: string
+          tenant_id: string | null
+        }
+        Insert: {
+          approval_status?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence?: number
+          created_at?: string
+          decision: string
+          explanation?: Json
+          id?: string
+          metadata?: Json
+          requires_human_approval?: boolean
+          risk_score?: number
+          source: string
+          tenant_id?: string | null
+        }
+        Update: {
+          approval_status?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence?: number
+          created_at?: string
+          decision?: string
+          explanation?: Json
+          id?: string
+          metadata?: Json
+          requires_human_approval?: boolean
+          risk_score?: number
+          source?: string
+          tenant_id?: string | null
+        }
+        Relationships: []
+      }
       identity_providers: {
         Row: {
           created_at: string
@@ -2253,6 +2301,107 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      knowledge_ingestion_events: {
+        Row: {
+          created_at: string
+          id: string
+          issues: Json
+          outcome: string
+          package_id: string | null
+          reason: string | null
+          source_label: string
+          trust_level: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          issues?: Json
+          outcome: string
+          package_id?: string | null
+          reason?: string | null
+          source_label: string
+          trust_level: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          issues?: Json
+          outcome?: string
+          package_id?: string | null
+          reason?: string | null
+          source_label?: string
+          trust_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_ingestion_events_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_packages: {
+        Row: {
+          categories: Json
+          created_at: string
+          expires_at: string
+          generated_at: string
+          hash: string
+          id: string
+          payload: Json
+          recommendations: Json
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          schema_version: string
+          signature_valid: boolean
+          source_label: string
+          status: string
+          trust_level: string
+          updated_at: string
+        }
+        Insert: {
+          categories?: Json
+          created_at?: string
+          expires_at: string
+          generated_at: string
+          hash: string
+          id?: string
+          payload: Json
+          recommendations?: Json
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          schema_version: string
+          signature_valid?: boolean
+          source_label: string
+          status?: string
+          trust_level: string
+          updated_at?: string
+        }
+        Update: {
+          categories?: Json
+          created_at?: string
+          expires_at?: string
+          generated_at?: string
+          hash?: string
+          id?: string
+          payload?: Json
+          recommendations?: Json
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          schema_version?: string
+          signature_valid?: boolean
+          source_label?: string
+          status?: string
+          trust_level?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       knowledge_sources: {
         Row: {
