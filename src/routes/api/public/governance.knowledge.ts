@@ -90,8 +90,14 @@ export const Route = createFileRoute("/api/public/governance/knowledge")({
         return Response.json({
           packages: pkgRows,
           events: eventRows,
-          nextCursor: pkgRows.length === limit ? pkgRows[pkgRows.length - 1].created_at : null,
-          nextEventsCursor: eventRows.length === limit ? eventRows[eventRows.length - 1].created_at : null,
+          nextCursor:
+            pkgRows.length === limit
+              ? `${pkgRows[pkgRows.length - 1].created_at}|${pkgRows[pkgRows.length - 1].id}`
+              : null,
+          nextEventsCursor:
+            eventRows.length === limit
+              ? `${eventRows[eventRows.length - 1].created_at}|${eventRows[eventRows.length - 1].id}`
+              : null,
           totals: {
             packages: pkgsRes.count ?? null,
             events: eventsRes.count ?? null,

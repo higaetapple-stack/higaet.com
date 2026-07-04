@@ -7,13 +7,12 @@ import type { KnowledgePackage, TrustLevel } from "@/lib/knowledge/types";
 import { validateKnowledgePackage } from "@/lib/knowledge/validate";
 import { mergeRecommendations } from "@/lib/knowledge/merge";
 
+// Every admin-facing governance endpoint (list, decide, export) MUST call
+// this before returning any data. Centralized so a future policy change
+// (extra roles, org scoping, MFA) is a one-line update.
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase.rpc("has_any_role", {
-    _user_id: ctx.userId,
-    _roles: ["admin", "super_admin"],
-  });
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden");
+  const { assertGovernanceAdmin } = await import("@/lib/governance/rbac.server");
+  await assertGovernanceAdmin(ctx);
 }
 
 // ── Record a governance decision (called by internal services) ────────────
@@ -56,7 +55,7 @@ const ListInput = z.object({
   decision: z.enum(["ALLOW", "WARN", "BLOCK", "REVIEW_REQUIRED"]).optional(),
   approvalStatus: z.enum(["auto", "pending", "approved", "rejected", "blocked"]).optional(),
   since: z.string().datetime().optional(),
-  cursor: z.string().datetime().optional(),
+  cursor: z.string().max(200).optional(),  // composite "created_at|id"
   limit: z.number().int().min(1).max(500).default(100),
 });
 
@@ -74,12 +73,8 @@ export const listGovernanceDecisions = createServerFn({ method: "POST" })
     if (data.decision) q = q.eq("decision", data.decision);
     if (data.approvalStatus) q = q.eq("approval_status", data.approvalStatus);
     if (data.since) q = q.gte("created_at", data.since);
-    if (data.cursor) q = q.lt("created_at", data.cursor);
-    const { data: rows, error, count } = await q;
-    if (error) throw new Error(error.message);
-    const list = rows ?? [];
-    const nextCursor = list.length === data.limit ? list[list.length - 1].created_at : null;
-    return { rows: list, nextCursor, total: count ?? null };
+    const { decodeCursor, paginateList } = await import("@/lib/governance/rbac.server");
+    return paginateList(q, { cursor: decodeCursor(data.cursor), limit: data.limit });
   });
 
 export const getPendingApprovals = createServerFn({ method: "GET" })
@@ -217,7 +212,7 @@ export const ingestKnowledgePackageFn = createServerFn({ method: "POST" })
 const KpListInput = z.object({
   status: z.string().optional(),
   trust: z.string().optional(),
-  cursor: z.string().datetime().optional(),
+  cursor: z.string().max(200).optional(),  // composite "created_at|id"
   limit: z.number().int().min(1).max(500).default(100),
 });
 
@@ -233,19 +228,15 @@ export const listKnowledgePackages = createServerFn({ method: "POST" })
       .limit(data.limit);
     if (data.status) q = q.eq("status", data.status);
     if (data.trust) q = q.eq("trust_level", data.trust);
-    if (data.cursor) q = q.lt("created_at", data.cursor);
-    const { data: rows, error, count } = await q;
-    if (error) throw new Error(error.message);
-    const list = rows ?? [];
-    const nextCursor = list.length === data.limit ? list[list.length - 1].created_at : null;
-    return { rows: list, nextCursor, total: count ?? null };
+    const { decodeCursor, paginateList } = await import("@/lib/governance/rbac.server");
+    return paginateList(q, { cursor: decodeCursor(data.cursor), limit: data.limit });
   });
 
 const KieListInput = z.object({
   trust: z.string().optional(),
   sourceLabel: z.string().optional(),
   outcome: z.enum(["accepted", "rejected"]).optional(),
-  cursor: z.string().datetime().optional(),
+  cursor: z.string().max(200).optional(),  // composite "created_at|id"
   limit: z.number().int().min(1).max(500).default(100),
 });
 
@@ -262,12 +253,8 @@ export const listKnowledgeIngestionEvents = createServerFn({ method: "POST" })
     if (data.trust) q = q.eq("trust_level", data.trust);
     if (data.sourceLabel) q = q.eq("source_label", data.sourceLabel);
     if (data.outcome) q = q.eq("outcome", data.outcome);
-    if (data.cursor) q = q.lt("created_at", data.cursor);
-    const { data: rows, error, count } = await q;
-    if (error) throw new Error(error.message);
-    const list = rows ?? [];
-    const nextCursor = list.length === data.limit ? list[list.length - 1].created_at : null;
-    return { rows: list, nextCursor, total: count ?? null };
+    const { decodeCursor, paginateList } = await import("@/lib/governance/rbac.server");
+    return paginateList(q, { cursor: decodeCursor(data.cursor), limit: data.limit });
   });
 
 // ── Signature failure audit log (dashboard-facing) ────────────────────────
@@ -276,7 +263,7 @@ const KsfListInput = z.object({
   reason: z.string().optional(),
   since: z.string().datetime().optional(),
   until: z.string().datetime().optional(),
-  cursor: z.string().datetime().optional(),
+  cursor: z.string().max(200).optional(),  // composite "created_at|id"
   limit: z.number().int().min(1).max(500).default(100),
 });
 
@@ -294,12 +281,8 @@ export const listSignatureFailures = createServerFn({ method: "POST" })
     if (data.reason) q = q.eq("reason", data.reason);
     if (data.since) q = q.gte("created_at", data.since);
     if (data.until) q = q.lte("created_at", data.until);
-    if (data.cursor) q = q.lt("created_at", data.cursor);
-    const { data: rows, error, count } = await q;
-    if (error) throw new Error(error.message);
-    const list = (rows ?? []) as any[];
-    const nextCursor = list.length === data.limit ? list[list.length - 1].created_at : null;
-    return { rows: list, nextCursor, total: count ?? null };
+    const { decodeCursor, paginateList } = await import("@/lib/governance/rbac.server");
+    return paginateList(q, { cursor: decodeCursor(data.cursor), limit: data.limit });
   });
 
 const KpDecideInput = z.object({
