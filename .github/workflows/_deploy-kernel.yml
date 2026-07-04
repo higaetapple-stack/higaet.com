@@ -1,15 +1,21 @@
-name: _Deploy Kernel (reusable, STUB)
+name: _Deploy Kernel (MilesWeb)
 
-# STUB — this kernel exists so deploy.yml parses and can be dispatched in
-# dry-run mode during the shadow cutover. It intentionally does NOT deploy
-# anything yet.
+# Artifact-based SSH release deploy for MilesWeb (Passenger).
+# Contract:
+#   - Consumes a prebuilt dist/ artifact — NEVER rebuilds on the server.
+#   - Uploads to ~/apps/higaet/releases/<release-id>/ via rsync.
+#   - Runs predeploy validation on the release folder BEFORE swinging the
+#     symlink.
+#   - Atomic switch: current -> releases/<release-id>.
+#   - Passenger restart: touch tmp/restart.txt.
+#   - Post-deploy smoke tests against the live release.
 #
-# The real implementation will absorb the deploy logic from:
-#   - deploy-milesweb.yml
-#   - deploy-milesweb-staging.yml
-#   - higaet-brevo-cicd.yml
-# in a later slice, once shadow-mode parity is confirmed. See
-# docs/runbooks/ci-shadow-cutover.md.
+# What this kernel does NOT do yet (future work — do not add here without
+# first updating docs/infrastructure/deploy-reality-map.md):
+#   - Automatic rollback on smoke failure (previous release is preserved on
+#     disk, but symlink is not restored automatically).
+#   - Multi-region / load-balancer coordination.
+#   - Brevo target (kept for compat; currently a no-op guarded stub).
 
 on:
   workflow_call:
@@ -18,24 +24,160 @@ on:
         description: "staging | production | brevo"
         type: string
         required: true
+      artifact_name:
+        description: "Name of the prebuilt dist artifact to download"
+        type: string
+        required: false
+        default: dist
 
 permissions:
   contents: read
 
 jobs:
-  dry-run:
-    name: Deploy dry-run (${{ inputs.target }})
+  deploy:
+    name: Deploy (${{ inputs.target }})
     runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
     steps:
-      - name: Guard
+      - name: Guard target
         run: |
           case "${{ inputs.target }}" in
-            staging|production|brevo)
-              echo "::notice::_deploy-kernel stub invoked for target=${{ inputs.target }}"
-              echo "No deploy performed. This kernel is a placeholder."
+            staging|production)
+              echo "::notice::deploying target=${{ inputs.target }}"
+              ;;
+            brevo)
+              echo "::notice::brevo target is a stub in the deploy kernel — skipping SSH deploy"
+              echo "SKIP_DEPLOY=1" >> "$GITHUB_ENV"
               ;;
             *)
               echo "::error::Unknown deploy target: ${{ inputs.target }}"
               exit 1
               ;;
           esac
+
+      - name: Validate required secrets
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          MISSING=0
+          for v in SSH_HOST SSH_USER SSH_PORT DEPLOY_DIR; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Missing required secret/env: $v"
+              MISSING=1
+            fi
+          done
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "::error::Missing required secret: SSH_PRIVATE_KEY"
+            MISSING=1
+          fi
+          if [ "$MISSING" -eq 1 ]; then
+            echo "::error::Deploy aborted due to missing configuration"
+            exit 1
+          fi
+
+      - name: Download build artifact
+        if: env.SKIP_DEPLOY != '1'
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: dist
+
+      - name: Verify artifact
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
+            echo "::error::Deploy aborted: dist artifact missing or empty"
+            exit 1
+          fi
+          echo "dist artifact OK ($(find dist -type f | wc -l) files)"
+
+      - name: Setup SSH
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Compute release id
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          RELEASE="release-$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}"
+          echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
+          echo "::notice::release id: $RELEASE"
+
+      - name: Create remote release directory
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "mkdir -p '$DEPLOY_DIR/releases/$RELEASE' '$DEPLOY_DIR/tmp'"
+
+      - name: Record previous release (for manual rollback)
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            PREV=\$(readlink '$DEPLOY_DIR/current' || true)
+            echo \"\$PREV\" > '$DEPLOY_DIR/.previous-release'
+          "
+
+      - name: Upload artifact (rsync)
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          rsync -az --delete \
+            -e "ssh -p $SSH_PORT" \
+            dist/ \
+            "$SSH_USER@$SSH_HOST:$DEPLOY_DIR/releases/$RELEASE/"
+
+      - name: Predeploy validation (server-side)
+        if: env.SKIP_DEPLOY != '1'
+        continue-on-error: true
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            cd '$DEPLOY_DIR/releases/$RELEASE'
+            if [ -f scripts/predeploy-schema-validation.ts ]; then
+              node --experimental-strip-types scripts/predeploy-schema-validation.ts
+            else
+              echo '::notice::no predeploy-schema-validation.ts in artifact — skipping'
+            fi
+          "
+
+      - name: Activate release (atomic symlink)
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "ln -sfn '$DEPLOY_DIR/releases/$RELEASE' '$DEPLOY_DIR/current'"
+
+      - name: Trigger Passenger restart
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "touch '$DEPLOY_DIR/tmp/restart.txt'"
+
+      - name: Smoke tests (post-deploy)
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            cd '$DEPLOY_DIR/current'
+            if [ -f scripts/run-smoke-tests.ts ]; then
+              node --experimental-strip-types scripts/run-smoke-tests.ts || exit 1
+            else
+              echo '::notice::no run-smoke-tests.ts in artifact — skipping'
+            fi
+          "
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_rsa
+
+      - name: Notify failure
+        if: failure()
+        run: |
+          echo "::error::Deploy failed for target=${{ inputs.target }} release=${RELEASE:-unknown}"
+          echo "Previous release symlink target recorded at $DEPLOY_DIR/.previous-release on host."
+          echo "Manual rollback: ssh in, then: ln -sfn \"\$(cat $DEPLOY_DIR/.previous-release)\" $DEPLOY_DIR/current && touch $DEPLOY_DIR/tmp/restart.txt"
