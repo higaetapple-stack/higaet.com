@@ -20,7 +20,7 @@ export function initSentryClient() {
     import.meta.env.MODE;
   const sha = import.meta.env.VITE_GIT_COMMIT_SHA as string | undefined;
   // env-aware release name: `${env}-${sha}` gives clean staging vs prod separation
-  const release = sha ? `${env}-${sha}` : undefined;
+  const release = sha ? buildRelease(env ?? "development", sha) : undefined;
 
   Sentry.init({
     dsn,
