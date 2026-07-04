@@ -122,12 +122,14 @@ function GovernancePage() {
           <TabsTrigger value="knowledge">Knowledge packages</TabsTrigger>
           <TabsTrigger value="ingestion">Ingestion events</TabsTrigger>
           <TabsTrigger value="failures">Signature failures</TabsTrigger>
+          <TabsTrigger value="sre">AI SRE</TabsTrigger>
         </TabsList>
         <TabsContent value="pending"><PendingApprovals /></TabsContent>
         <TabsContent value="decisions"><DecisionLog /></TabsContent>
         <TabsContent value="knowledge"><KnowledgePackages /></TabsContent>
         <TabsContent value="ingestion"><IngestionEvents /></TabsContent>
         <TabsContent value="failures"><SignatureFailures /></TabsContent>
+        <TabsContent value="sre"><SentryAnalyses /></TabsContent>
       </Tabs>
     </div>
   );
