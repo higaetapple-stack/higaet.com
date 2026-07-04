@@ -36,10 +36,10 @@ export async function persistGovernanceDecision(
       decision: output.decision,
       risk_score: output.riskScore,
       confidence: output.confidence,
-      explanation: output.explanation,
+      explanation: output.explanation as unknown as never,
       requires_human_approval: output.requiresHumanApproval,
       approval_status: output.requiresHumanApproval ? "pending" : output.decision === "BLOCK" ? "blocked" : "auto",
-      metadata: opts.metadata ?? {},
+      metadata: (opts.metadata ?? {}) as unknown as never,
     })
     .select("*")
     .single();
