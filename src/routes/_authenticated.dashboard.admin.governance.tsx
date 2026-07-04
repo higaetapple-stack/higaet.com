@@ -381,6 +381,7 @@ function SentryPullRequests() {
               <TableHead>Confidence</TableHead>
               <TableHead>Review</TableHead>
               <TableHead>State</TableHead>
+              <TableHead>CI</TableHead>
               <TableHead>PR</TableHead>
             </TableRow>
           </TableHeader>
@@ -400,6 +401,9 @@ function SentryPullRequests() {
                   <Badge variant={r.pr_state === "failed" ? "destructive" : r.pr_state === "merged" ? "secondary" : "outline"}>
                     {r.pr_state}
                   </Badge>
+                </TableCell>
+                <TableCell className="text-xs" title={r.ci_last_checked_at ? `Last checked ${new Date(r.ci_last_checked_at).toLocaleString()}` : undefined}>
+                  <Badge variant={ciBadgeVariant(r.ci_status)}>{r.ci_status ?? "unknown"}</Badge>
                 </TableCell>
                 <TableCell className="text-xs">
                   {r.pr_url ? (
