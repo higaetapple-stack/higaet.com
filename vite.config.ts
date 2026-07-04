@@ -48,7 +48,7 @@ export default defineConfig({
         ? [
             sentryVitePlugin({
               org: process.env.SENTRY_ORG ?? "higaet-5y",
-              project: process.env.SENTRY_PROJECT ?? "higaet-frontend",
+              project: process.env.SENTRY_PROJECT ?? "javascript-react",
               authToken: sentryAuthToken,
               release: { name: `${sentryEnv}-${gitSha}` },
               sourcemaps: { assets: "./dist/**" },
