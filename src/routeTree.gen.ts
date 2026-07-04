@@ -257,6 +257,7 @@ import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
 import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
+import { Route as ApiPublicSreVerifyBearerRouteImport } from './routes/api/public/sre/verify-bearer'
 import { Route as ApiPublicSreE2eTriggerRouteImport } from './routes/api/public/sre/e2e-trigger'
 import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
 import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
@@ -1730,6 +1731,12 @@ const ApiPublicWebhooksProcessRoute =
     path: '/api/public/webhooks/process',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicSreVerifyBearerRoute =
+  ApiPublicSreVerifyBearerRouteImport.update({
+    id: '/api/public/sre/verify-bearer',
+    path: '/api/public/sre/verify-bearer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicSreE2eTriggerRoute = ApiPublicSreE2eTriggerRouteImport.update({
   id: '/api/public/sre/e2e-trigger',
   path: '/api/public/sre/e2e-trigger',
@@ -2690,6 +2697,7 @@ export interface FileRoutesByFullPath {
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
   '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
+  '/api/public/sre/verify-bearer': typeof ApiPublicSreVerifyBearerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3030,6 +3038,7 @@ export interface FileRoutesByTo {
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
   '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
+  '/api/public/sre/verify-bearer': typeof ApiPublicSreVerifyBearerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3388,6 +3397,7 @@ export interface FileRoutesById {
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
   '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
+  '/api/public/sre/verify-bearer': typeof ApiPublicSreVerifyBearerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3746,6 +3756,7 @@ export interface FileRouteTypes {
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
     | '/api/public/sre/e2e-trigger'
+    | '/api/public/sre/verify-bearer'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
@@ -4086,6 +4097,7 @@ export interface FileRouteTypes {
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
     | '/api/public/sre/e2e-trigger'
+    | '/api/public/sre/verify-bearer'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
@@ -4443,6 +4455,7 @@ export interface FileRouteTypes {
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
     | '/api/public/sre/e2e-trigger'
+    | '/api/public/sre/verify-bearer'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
@@ -4559,6 +4572,7 @@ export interface RootRouteChildren {
   ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
   ApiPublicSentryWebhookRoute: typeof ApiPublicSentryWebhookRoute
   ApiPublicSreE2eTriggerRoute: typeof ApiPublicSreE2eTriggerRoute
+  ApiPublicSreVerifyBearerRoute: typeof ApiPublicSreVerifyBearerRoute
   ApiPublicWebhooksProcessRoute: typeof ApiPublicWebhooksProcessRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
@@ -6299,6 +6313,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/webhooks/process'
       fullPath: '/api/public/webhooks/process'
       preLoaderRoute: typeof ApiPublicWebhooksProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/sre/verify-bearer': {
+      id: '/api/public/sre/verify-bearer'
+      path: '/api/public/sre/verify-bearer'
+      fullPath: '/api/public/sre/verify-bearer'
+      preLoaderRoute: typeof ApiPublicSreVerifyBearerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/sre/e2e-trigger': {
@@ -8241,6 +8262,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
   ApiPublicSentryWebhookRoute: ApiPublicSentryWebhookRoute,
   ApiPublicSreE2eTriggerRoute: ApiPublicSreE2eTriggerRoute,
+  ApiPublicSreVerifyBearerRoute: ApiPublicSreVerifyBearerRoute,
   ApiPublicWebhooksProcessRoute: ApiPublicWebhooksProcessRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
