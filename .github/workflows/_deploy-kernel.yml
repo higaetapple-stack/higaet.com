@@ -159,7 +159,9 @@ jobs:
             "touch '$DEPLOY_DIR/tmp/restart.txt'"
 
       - name: Smoke tests (post-deploy)
+        id: smoke
         if: env.SKIP_DEPLOY != '1'
+        continue-on-error: true
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
@@ -170,6 +172,33 @@ jobs:
               echo '::notice::no run-smoke-tests.ts in artifact — skipping'
             fi
           "
+
+      # P10: automatic symlink revert on smoke failure.
+      # Rolls current -> previous release and re-triggers Passenger. The
+      # failed release folder is kept on disk for forensic inspection.
+      - name: Automatic rollback on smoke failure
+        id: rollback
+        if: env.SKIP_DEPLOY != '1' && steps.smoke.outcome == 'failure'
+        run: |
+          echo "::warning::Smoke tests failed — attempting automatic rollback"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            PREV=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null || true)
+            if [ -z \"\$PREV\" ] || [ ! -d \"\$PREV\" ]; then
+              echo '::error::No previous release recorded — manual intervention required'
+              exit 1
+            fi
+            echo \"Reverting current -> \$PREV\"
+            ln -sfn \"\$PREV\" '$DEPLOY_DIR/current'
+            touch '$DEPLOY_DIR/tmp/restart.txt'
+            echo \"::notice::Rollback complete. Failed release preserved at $DEPLOY_DIR/releases/$RELEASE\"
+          "
+
+      - name: Fail job if smoke failed
+        if: env.SKIP_DEPLOY != '1' && steps.smoke.outcome == 'failure'
+        run: |
+          echo "::error::Deploy failed smoke tests. Rollback status: ${{ steps.rollback.outcome }}"
+          exit 1
 
       - name: Cleanup SSH key
         if: always()
