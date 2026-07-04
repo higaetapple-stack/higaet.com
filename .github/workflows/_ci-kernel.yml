@@ -64,6 +64,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Mode
+        run: echo "CI kernel mode=${{ inputs.mode }}"
+
+
+
       - name: Setup toolchain
         uses: ./.github/actions/setup-node-bun
         with:
