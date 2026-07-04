@@ -1,0 +1,67 @@
+name: CI (shadow)
+
+# P4 shadow-mode matrix router. Runs alongside existing per-domain workflows
+# (pr-checks, seo-cluster-lint, seo-graph-report, dependency-audit,
+# license-audit) so results can be compared before any legacy workflow is
+# deleted. See docs/runbooks/ci-shadow-cutover.md.
+#
+# This workflow only OBSERVES. It never blocks merges (not a required check)
+# and does not deploy or publish anything.
+
+on:
+  push:
+    branches: [main, staging]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - ".lovable/**"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - ".lovable/**"
+  workflow_dispatch: {}
+
+concurrency:
+  # P6: one shadow CI run per ref. Cancel superseded runs on the same branch.
+  group: ci-shadow-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    name: CI Kernel · core
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: core
+      run-lint: true
+      run-typecheck: true
+      run-build: true
+      upload-artifact: true
+      artifact-name: ci-shadow-core
+    secrets: inherit
+
+  seo:
+    name: CI Kernel · seo
+    # SEO shadow run reuses the kernel but skips lint/typecheck (core already
+    # covers those) and keeps build ON so SEO scripts have dist/ to inspect.
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: seo
+      run-lint: false
+      run-typecheck: false
+      run-build: true
+      upload-artifact: true
+      artifact-name: ci-shadow-seo
+    secrets: inherit
+
+  security:
+    name: Security Kernel · shadow
+    uses: ./.github/workflows/_security-kernel.yml
+    with:
+      run-dependency-audit: true
+      run-license-audit: true
+      severity-threshold: "high"
+    secrets: inherit
