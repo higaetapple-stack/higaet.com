@@ -60,8 +60,8 @@ export type PersistedKnowledgePackage = {
   hash: string;
   signature_valid: boolean;
   status: string;
-  categories: unknown;
-  recommendations: unknown;
+  categories: JsonValue;
+  recommendations: JsonValue;
 };
 
 export async function persistKnowledgePackage(
