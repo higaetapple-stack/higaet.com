@@ -24,6 +24,12 @@ import {
   exportIncidentClustersCsv,
   setClusterStatus,
 } from "@/lib/incidents/incidents.functions";
+import {
+  listReleases,
+  getReleaseWithCorrelations,
+  setCorrelationStatus,
+  syncReleases,
+} from "@/lib/releases/releases.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
