@@ -2138,6 +2138,63 @@ export type Database = {
         }
         Relationships: []
       }
+      incident_clusters: {
+        Row: {
+          created_at: string
+          event_count: number
+          first_seen: string
+          id: string
+          issue_count: number
+          last_analysis_hash: string | null
+          last_analyzed_at: string | null
+          last_seen: string
+          representative_issue_id: string | null
+          severity_score: number
+          signature: string
+          status: string
+          title: string
+          top_category: string | null
+          updated_at: string
+          user_count: number
+        }
+        Insert: {
+          created_at?: string
+          event_count?: number
+          first_seen?: string
+          id?: string
+          issue_count?: number
+          last_analysis_hash?: string | null
+          last_analyzed_at?: string | null
+          last_seen?: string
+          representative_issue_id?: string | null
+          severity_score?: number
+          signature: string
+          status?: string
+          title: string
+          top_category?: string | null
+          updated_at?: string
+          user_count?: number
+        }
+        Update: {
+          created_at?: string
+          event_count?: number
+          first_seen?: string
+          id?: string
+          issue_count?: number
+          last_analysis_hash?: string | null
+          last_analyzed_at?: string | null
+          last_seen?: string
+          representative_issue_id?: string | null
+          severity_score?: number
+          signature?: string
+          status?: string
+          title?: string
+          top_category?: string | null
+          updated_at?: string
+          user_count?: number
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           applied_at: string
@@ -3580,6 +3637,7 @@ export type Database = {
           analyzed_at: string
           auto_pr_recommended: boolean
           category: string | null
+          cluster_id: string | null
           confidence: number | null
           created_at: string
           error: string | null
@@ -3591,6 +3649,7 @@ export type Database = {
           root_cause: Json | null
           sentry_permalink: string | null
           short_id: string | null
+          signature: string | null
           status: string
           title: string
           trigger: string
@@ -3601,6 +3660,7 @@ export type Database = {
           analyzed_at?: string
           auto_pr_recommended?: boolean
           category?: string | null
+          cluster_id?: string | null
           confidence?: number | null
           created_at?: string
           error?: string | null
@@ -3612,6 +3672,7 @@ export type Database = {
           root_cause?: Json | null
           sentry_permalink?: string | null
           short_id?: string | null
+          signature?: string | null
           status?: string
           title: string
           trigger?: string
@@ -3622,6 +3683,7 @@ export type Database = {
           analyzed_at?: string
           auto_pr_recommended?: boolean
           category?: string | null
+          cluster_id?: string | null
           confidence?: number | null
           created_at?: string
           error?: string | null
@@ -3633,12 +3695,21 @@ export type Database = {
           root_cause?: Json | null
           sentry_permalink?: string | null
           short_id?: string | null
+          signature?: string | null
           status?: string
           title?: string
           trigger?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sentry_issue_analyses_cluster_id_fkey"
+            columns: ["cluster_id"]
+            isOneToOne: false
+            referencedRelation: "incident_clusters"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sso_domains: {
         Row: {
