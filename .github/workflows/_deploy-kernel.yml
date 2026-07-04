@@ -1,0 +1,41 @@
+name: _Deploy Kernel (reusable, STUB)
+
+# STUB — this kernel exists so deploy.yml parses and can be dispatched in
+# dry-run mode during the shadow cutover. It intentionally does NOT deploy
+# anything yet.
+#
+# The real implementation will absorb the deploy logic from:
+#   - deploy-milesweb.yml
+#   - deploy-milesweb-staging.yml
+#   - higaet-brevo-cicd.yml
+# in a later slice, once shadow-mode parity is confirmed. See
+# docs/runbooks/ci-shadow-cutover.md.
+
+on:
+  workflow_call:
+    inputs:
+      target:
+        description: "staging | production | brevo"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  dry-run:
+    name: Deploy dry-run (${{ inputs.target }})
+    runs-on: ubuntu-latest
+    steps:
+      - name: Guard
+        run: |
+          case "${{ inputs.target }}" in
+            staging|production|brevo)
+              echo "::notice::_deploy-kernel stub invoked for target=${{ inputs.target }}"
+              echo "No deploy performed. This kernel is a placeholder."
+              ;;
+            *)
+              echo "::error::Unknown deploy target: ${{ inputs.target }}"
+              exit 1
+              ;;
+          esac

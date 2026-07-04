@@ -1,0 +1,44 @@
+name: Scheduled Kernel Jobs
+
+# P4 shadow-mode scheduled runner. Runs SEO + Security kernels on a cron so
+# drift is caught between code pushes. Does NOT trigger on push/pull_request —
+# push-triggered runs are handled by ci.yml (shadow) and the legacy
+# per-domain workflows during the shadow-mode cutover window.
+
+on:
+  schedule:
+    # 06:00 UTC daily — same time as the existing weekly audits, but daily.
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: scheduled-${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    name: Security Kernel (scheduled)
+    uses: ./.github/workflows/_security-kernel.yml
+    with:
+      run-dependency-audit: true
+      run-license-audit: true
+      severity-threshold: "high"
+    secrets: inherit
+
+  seo:
+    name: SEO shadow build (scheduled)
+    # No _seo-kernel.yml exists yet; run the SEO scripts through the CI
+    # kernel in "seo" mode so we get a build + artifact for the SEO scanners.
+    # When _seo-kernel.yml is introduced, swap this `uses:` line.
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: seo
+      run-lint: false
+      run-typecheck: false
+      run-build: true
+      upload-artifact: true
+      artifact-name: scheduled-seo-build
+    secrets: inherit

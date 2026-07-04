@@ -48,6 +48,13 @@ on:
         type: string
         required: false
         default: "bun run build"
+      # P4 shadow-mode routing hint. Callers (ci.yml matrix) pass
+      # "core" | "seo" | "security". Default "core" preserves existing
+      # behavior for every existing caller — no behavior change.
+      mode:
+        type: string
+        required: false
+        default: "core"
 
 jobs:
   ci:
@@ -56,6 +63,11 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+
+      - name: Mode
+        run: echo "CI kernel mode=${{ inputs.mode }}"
+
+
 
       - name: Setup toolchain
         uses: ./.github/actions/setup-node-bun
