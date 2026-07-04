@@ -2403,6 +2403,54 @@ export type Database = {
         }
         Relationships: []
       }
+      knowledge_signature_failures: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          generated_at: string | null
+          id: string
+          issues: Json
+          key_id: string | null
+          metadata: Json
+          package_hash: string | null
+          reason: string
+          schema_version: string | null
+          source_label: string
+          tenant_id: string | null
+          trust_level: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          generated_at?: string | null
+          id?: string
+          issues?: Json
+          key_id?: string | null
+          metadata?: Json
+          package_hash?: string | null
+          reason: string
+          schema_version?: string | null
+          source_label: string
+          tenant_id?: string | null
+          trust_level?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          generated_at?: string | null
+          id?: string
+          issues?: Json
+          key_id?: string | null
+          metadata?: Json
+          package_hash?: string | null
+          reason?: string
+          schema_version?: string | null
+          source_label?: string
+          tenant_id?: string | null
+          trust_level?: string | null
+        }
+        Relationships: []
+      }
       knowledge_sources: {
         Row: {
           active: boolean
