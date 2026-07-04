@@ -19,6 +19,11 @@ import {
   reprocessSentryIssue,
   exportSentryAnalysesCsv,
 } from "@/lib/sre/sre.functions";
+import {
+  listIncidentClusters,
+  exportIncidentClustersCsv,
+  setClusterStatus,
+} from "@/lib/incidents/incidents.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
