@@ -1286,6 +1286,63 @@ export type Database = {
         }
         Relationships: []
       }
+      cluster_release_correlations: {
+        Row: {
+          cluster_id: string
+          created_at: string
+          event_count_delta: number
+          first_seen_after_release: boolean
+          id: string
+          reason: string | null
+          regression_score: number
+          release_id: string
+          status: string
+          time_delta_seconds: number
+          updated_at: string
+        }
+        Insert: {
+          cluster_id: string
+          created_at?: string
+          event_count_delta?: number
+          first_seen_after_release?: boolean
+          id?: string
+          reason?: string | null
+          regression_score?: number
+          release_id: string
+          status?: string
+          time_delta_seconds?: number
+          updated_at?: string
+        }
+        Update: {
+          cluster_id?: string
+          created_at?: string
+          event_count_delta?: number
+          first_seen_after_release?: boolean
+          id?: string
+          reason?: string | null
+          regression_score?: number
+          release_id?: string
+          status?: string
+          time_delta_seconds?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cluster_release_correlations_cluster_id_fkey"
+            columns: ["cluster_id"]
+            isOneToOne: false
+            referencedRelation: "incident_clusters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cluster_release_correlations_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "releases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       communities: {
         Row: {
           cover_url: string | null
@@ -3444,6 +3501,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      releases: {
+        Row: {
+          author: string | null
+          commit_count: number
+          commit_message: string | null
+          commit_sha: string | null
+          created_at: string
+          deployed_at: string
+          environment: string | null
+          id: string
+          new_groups: number | null
+          notes: string | null
+          permalink: string | null
+          short_version: string | null
+          source: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          author?: string | null
+          commit_count?: number
+          commit_message?: string | null
+          commit_sha?: string | null
+          created_at?: string
+          deployed_at: string
+          environment?: string | null
+          id?: string
+          new_groups?: number | null
+          notes?: string | null
+          permalink?: string | null
+          short_version?: string | null
+          source?: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          author?: string | null
+          commit_count?: number
+          commit_message?: string | null
+          commit_sha?: string | null
+          created_at?: string
+          deployed_at?: string
+          environment?: string | null
+          id?: string
+          new_groups?: number | null
+          notes?: string | null
+          permalink?: string | null
+          short_version?: string | null
+          source?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
       }
       replies: {
         Row: {

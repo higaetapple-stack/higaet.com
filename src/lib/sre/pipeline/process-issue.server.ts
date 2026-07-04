@@ -139,6 +139,23 @@ export async function processSentryIssue(
       .single();
     if (error) throw new Error(error.message);
     const id = (upserted as { id: string } | null)?.id;
+
+    // Release regression correlation — only when this is a new cluster or a
+    // drift event. Non-blocking: correlation failure never fails the pipeline.
+    if (clusterResult.decision.isNew || clusterResult.decision.drift) {
+      try {
+        const { correlateCluster } = await import("@/lib/releases/sync.server");
+        await correlateCluster({
+          clusterId: clusterResult.clusterId,
+          firstSeen: issue.firstSeen ?? new Date().toISOString(),
+          severityScore: clusterResult.severity,
+          eventCount: incident.frequency,
+        });
+      } catch {
+        // Correlation is advisory — do not surface as a pipeline failure.
+      }
+    }
+
     return { status: "processed", analysisId: id, prSuggested: !!prDraft };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

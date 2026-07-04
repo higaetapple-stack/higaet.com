@@ -24,6 +24,12 @@ import {
   exportIncidentClustersCsv,
   setClusterStatus,
 } from "@/lib/incidents/incidents.functions";
+import {
+  listReleases,
+  getReleaseWithCorrelations,
+  setCorrelationStatus,
+  syncReleases,
+} from "@/lib/releases/releases.functions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -129,6 +135,7 @@ function GovernancePage() {
           <TabsTrigger value="failures">Signature failures</TabsTrigger>
           <TabsTrigger value="sre">AI SRE</TabsTrigger>
           <TabsTrigger value="incidents">Incidents</TabsTrigger>
+          <TabsTrigger value="releases">Releases</TabsTrigger>
         </TabsList>
         <TabsContent value="pending"><PendingApprovals /></TabsContent>
         <TabsContent value="decisions"><DecisionLog /></TabsContent>
@@ -137,6 +144,7 @@ function GovernancePage() {
         <TabsContent value="failures"><SignatureFailures /></TabsContent>
         <TabsContent value="sre"><SentryAnalyses /></TabsContent>
         <TabsContent value="incidents"><IncidentClusters /></TabsContent>
+        <TabsContent value="releases"><ReleaseRegressions /></TabsContent>
       </Tabs>
     </div>
   );
@@ -950,6 +958,171 @@ function IncidentClusters() {
                         <div>Representative issue: <span className="font-mono">{r.representative_issue_id ?? "—"}</span></div>
                         <div>Last analysis hash: <span className="font-mono">{r.last_analysis_hash ?? "—"}</span></div>
                         <div>Last analyzed: <span className="font-mono">{r.last_analyzed_at ? new Date(r.last_analyzed_at).toLocaleString() : "—"}</span></div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </Fragment>
+            ))}
+          </TableBody>
+        </Table>
+        <PageMeta total={total} loaded={rows.length} hasMore={hasMore} isFetching={loading} onLoadMore={() => load(false)} />
+      </CardContent>
+    </Card>
+  );
+}
+
+function ReleaseRegressions() {
+  const listFn = useServerFn(listReleases);
+  const detailFn = useServerFn(getReleaseWithCorrelations);
+  const statusFn = useServerFn(setCorrelationStatus);
+  const syncFn = useServerFn(syncReleases);
+  const qc = useQueryClient();
+  const [pages, setPages] = useState<Array<{ rows: any[]; nextCursor: string | null; total: number | null }>>([]);
+  const [loading, setLoading] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [details, setDetails] = useState<Record<string, { release: any; correlations: any[] }>>({});
+
+  async function load(reset: boolean) {
+    setLoading(true);
+    try {
+      const cursor = reset ? undefined : pages[pages.length - 1]?.nextCursor ?? undefined;
+      if (!reset && !cursor) return;
+      const res = await listFn({ data: { limit: 50, cursor } });
+      setPages((prev) => (reset ? [res] : [...prev, res]));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { setPages([]); load(true); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+
+  async function toggle(id: string) {
+    if (openId === id) { setOpenId(null); return; }
+    setOpenId(id);
+    if (!details[id]) {
+      try {
+        const res = await detailFn({ data: { releaseId: id } });
+        setDetails((s) => ({ ...s, [id]: res as any }));
+      } catch (e) {
+        toast.error((e as Error).message);
+      }
+    }
+  }
+
+  const sync = useMutation({
+    mutationFn: () => syncFn({}),
+    onSuccess: (r: any) => {
+      toast.success(`Synced ${r?.upserted ?? 0} of ${r?.fetched ?? 0} releases`);
+      qc.invalidateQueries({ queryKey: ["releases"] });
+      setPages([]); setDetails({}); setOpenId(null);
+      load(true);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const setStatus = useMutation({
+    mutationFn: (p: { correlationId: string; status: "suspected" | "confirmed" | "dismissed" }) => statusFn({ data: p }),
+    onSuccess: () => {
+      toast.success("Status updated");
+      // refresh open detail
+      if (openId) {
+        detailFn({ data: { releaseId: openId } }).then((res: any) =>
+          setDetails((s) => ({ ...s, [openId]: res })),
+        );
+      }
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const rows = pages.flatMap((p) => p.rows);
+  const total = pages[0]?.total ?? null;
+  const hasMore = Boolean(pages[pages.length - 1]?.nextCursor);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Releases & regression correlations</CardTitle>
+        <Button variant="outline" size="sm" disabled={sync.isPending} onClick={() => sync.mutate()}>
+          {sync.isPending ? "Syncing…" : "Sync from Sentry"}
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Deployed</TableHead>
+              <TableHead>Version</TableHead>
+              <TableHead>Commit</TableHead>
+              <TableHead>Commits</TableHead>
+              <TableHead>New groups</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((r: any) => (
+              <Fragment key={r.id}>
+                <TableRow>
+                  <TableCell className="text-xs">{new Date(r.deployed_at).toLocaleString()}</TableCell>
+                  <TableCell className="text-xs font-mono">
+                    {r.permalink ? (
+                      <a className="underline" href={r.permalink} target="_blank" rel="noreferrer">
+                        {r.short_version ?? r.version}
+                      </a>
+                    ) : (r.short_version ?? r.version)}
+                  </TableCell>
+                  <TableCell className="text-xs font-mono">{(r.commit_sha ?? "—").slice(0, 8)}</TableCell>
+                  <TableCell className="text-xs">{r.commit_count ?? 0}</TableCell>
+                  <TableCell className="text-xs">{r.new_groups ?? "—"}</TableCell>
+                  <TableCell className="text-xs"><Badge variant="outline">{r.source}</Badge></TableCell>
+                  <TableCell>
+                    <Button size="sm" variant="ghost" onClick={() => toggle(r.id)}>
+                      {openId === r.id ? "Hide" : "Correlations"}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                {openId === r.id && (
+                  <TableRow key={`${r.id}-detail`}>
+                    <TableCell colSpan={7} className="bg-muted/30">
+                      <div className="space-y-2 p-2 text-xs">
+                        {r.commit_message && (
+                          <div className="text-muted-foreground italic">"{r.commit_message}"</div>
+                        )}
+                        <div className="font-semibold">Suspected regressions</div>
+                        {!details[r.id] && <div className="text-muted-foreground">Loading…</div>}
+                        {details[r.id] && details[r.id].correlations.length === 0 && (
+                          <div className="text-muted-foreground">No cluster spikes correlated with this release.</div>
+                        )}
+                        {details[r.id]?.correlations.map((c: any) => (
+                          <div key={c.id} className="flex items-center justify-between rounded border p-2">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <Badge variant={c.regression_score >= 60 ? "destructive" : "outline"}>
+                                  score {c.regression_score}
+                                </Badge>
+                                <Badge variant="secondary">{c.status}</Badge>
+                                <span className="font-mono">{c.incident_clusters?.signature}</span>
+                              </div>
+                              <div className="truncate">{c.incident_clusters?.title}</div>
+                              <div className="text-muted-foreground">{c.reason}</div>
+                            </div>
+                            <div className="flex gap-1">
+                              {c.status !== "confirmed" && (
+                                <Button size="sm" variant="outline" disabled={setStatus.isPending}
+                                  onClick={() => setStatus.mutate({ correlationId: c.id, status: "confirmed" })}>
+                                  Confirm
+                                </Button>
+                              )}
+                              {c.status !== "dismissed" && (
+                                <Button size="sm" variant="ghost" disabled={setStatus.isPending}
+                                  onClick={() => setStatus.mutate({ correlationId: c.id, status: "dismissed" })}>
+                                  Dismiss
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </TableCell>
                   </TableRow>

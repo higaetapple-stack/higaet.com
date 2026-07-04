@@ -60,6 +60,17 @@ export const Route = createFileRoute("/api/public/sentry/sync")({
           const r = await processSentryIssue({ issueId: iss.id, trigger: "cron" });
           results.push({ issueId: iss.id, status: r.status, prSuggested: r.prSuggested });
         }
+
+        // Piggyback release sync on the same cron pass — cheap and keeps
+        // the releases table warm for the correlation engine.
+        let releaseSync: { fetched: number; upserted: number; skipped: number } | null = null;
+        try {
+          const { syncReleasesFromSentry } = await import("@/lib/releases/sync.server");
+          releaseSync = await syncReleasesFromSentry({ client, limit: 25 });
+        } catch {
+          releaseSync = null;
+        }
+
         return json(200, {
           ok: true,
           scanned: issues.length,
@@ -67,6 +78,7 @@ export const Route = createFileRoute("/api/public/sentry/sync")({
           skipped: results.filter((r) => r.status === "skipped").length,
           failed: results.filter((r) => r.status === "failed").length,
           suggestedPRs: results.filter((r) => r.prSuggested).length,
+          releaseSync,
           results,
         });
       },
