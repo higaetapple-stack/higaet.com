@@ -1,63 +1,98 @@
-# Quality Gates, Staging Pipeline & PR CI
 
-Three coordinated changes to lock in release quality before production deploys.
+# Unified Sentry → AI SRE Pipeline
 
-## 1. `npm run test` as a unified quality gate
+One brain, two inputs (webhook + cron backfill), one persisted analysis, optional PR draft. No duplicate paths.
 
-Update `package.json` scripts so a single `npm test` invocation runs the same gates CI and production builds enforce.
+## Architecture
 
-- `lint` — existing ESLint config (`eslint .`)
-- `typecheck` — `tsgo --noEmit` (already validated cleanly today)
-- `build` — `npm run build` (Vite + Nitro Cloudflare preset)
-- `test:unit` — existing vitest suite (if present; otherwise skipped)
-- `test` — runs `lint` → `typecheck` → `test:unit` → `build` sequentially, failing fast
+```text
+Sentry webhook  ─┐
+                 ├─► processSentryIssue(issueId)  ──►  runAISRELoop()  ──►  persist analysis  ──►  (optional) PR draft
+pg_cron backfill ─┘        (dedupe by issueId)
+```
 
-Rationale: today `npm test` doesn't gate lint/typecheck/build together, so regressions can land silently.
+Single entrypoint: `processSentryIssue(issueId, { trigger })`. Both webhook and cron call it. It:
+1. Loads issue + latest event via existing `SentryClient`.
+2. Skips if `sentry_issue_analyses` already has a fresh row for that `issueId` (status = processed, updated within TTL) unless `force=true`.
+3. Runs `runAISRELoop()` (already built).
+4. Upserts result into `sentry_issue_analyses`.
+5. If `autoPRRecommended` and PR not yet created for this analysis version, generates a PR draft record (no external Git call in this pass — stored as `pr_suggestion` JSON so admin dashboard can review/copy).
 
-## 2. Staging deployment pipeline (MilesWeb / VPS)
+## What gets built
 
-Add a `deploy-milesweb-staging` GitHub Actions workflow (companion to the existing `deploy-milesweb.yml` production one) that:
+### 1. Persistence
+New migration: `sentry_issue_analyses`
+- `id uuid pk`, `issue_id text unique`, `short_id text`, `title text`
+- `root_cause jsonb`, `fix_plan jsonb`, `risk_score numeric`, `confidence numeric`, `category text`
+- `pr_suggestion jsonb null`, `auto_pr_recommended bool`
+- `status text` (`processed`|`failed`|`skipped`), `error text null`
+- `trigger text` (`webhook`|`cron`|`manual`), `sentry_permalink text`
+- `analyzed_at timestamptz`, `created_at`, `updated_at`
+- Full GRANTs + RLS: admin/super_admin SELECT via `has_role`; service_role ALL. No anon.
 
-- Triggers on push to `staging` branch and on manual `workflow_dispatch`
-- Runs the full quality gate (`npm ci` + `npm test`)
-- Builds with `BUILD_TARGET=node` (already supported in `vite.config.ts`) to emit `.output/server/index.mjs` for Passenger/`app.js`
-- Uploads `.output/` as an artifact
-- Rsyncs `.output/`, `app.js`, `package.json`, and `public/` to the staging VPS via SSH
-- Writes `/home/<user>/staging/.env` from GitHub Environment secrets (staging-scoped) before restarting Passenger
-- Restarts the Node app via `touch tmp/restart.txt` (Passenger convention)
-- Runs a smoke check against the staging URL
+### 2. Orchestrator (single entrypoint)
+`src/lib/sre/pipeline/process-issue.server.ts`
+- `processSentryIssue({ issueId, trigger, force? })`
+- Dedup check → hydrate → `runAISRELoop` → upsert → PR draft generation
+- Returns `{ status, analysisId, prSuggested }`
 
-Required GitHub Environment (`staging`) secrets you'll add manually:
-`MILESWEB_STAGING_HOST`, `MILESWEB_STAGING_USER`, `MILESWEB_STAGING_SSH_KEY`, `MILESWEB_STAGING_PATH`, `STAGING_URL`, plus the runtime env vars (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, any others production uses).
+`src/lib/sre/pipeline/pr-draft.ts` (pure)
+- Turns `AISREAnalysis` into a structured PR suggestion `{ title, branch, body, patches: [...] }`.
+- No external calls; deterministic from analysis.
 
-Promotion flow: merge to `staging` → auto-deploy to staging VPS → validate → merge `staging` → `main` → existing production workflow deploys.
+### 3. Webhook entrypoint
+`src/routes/api/public/sentry.webhook.ts`
+- POST only, `OPTIONS` for CORS.
+- Verifies `sentry-hook-signature` (HMAC SHA256 of raw body using `SENTRY_WEBHOOK_SECRET`) with `timingSafeEqual`.
+- Only handles `issue.created` / `issue.reopened` / `issue.assigned` resource actions.
+- Extracts issue id, calls `processSentryIssue({ issueId, trigger: 'webhook' })`.
+- Returns 200 quickly; failures logged but never 5xx to Sentry retry storm on validation errors.
 
-## 3. PR CI workflow
+Requires new secret: `SENTRY_WEBHOOK_SECRET` (via `add_secret`).
 
-Add `.github/workflows/pr-checks.yml` that on every `pull_request` to `main` or `staging`:
+### 4. Cron backfill entrypoint
+`src/routes/api/public/sentry.sync.ts`
+- POST, authenticated with anon `apikey` header (pg_cron pattern).
+- Calls existing `processSentryIssues({ limit: 25 })` list, then routes each through `processSentryIssue` (skips already-processed).
+- pg_cron schedule (every 10 min) added via `supabase--insert`, targeting stable published URL.
 
-- Checks out the PR
-- Sets up Node 20 with npm cache
-- Runs `npm ci`
-- Runs `npm run build` (captures stdout+stderr to `build.log`)
-- Runs `npm run lint` and `npm run typecheck` (captures logs)
-- Always uploads `build.log`, `lint.log`, `typecheck.log` as workflow artifacts (retention: 14 days) — even on failure — so regressions are diagnosable from the PR page
-- Posts a status check that blocks merge on failure (via branch protection, which you configure in GitHub Settings)
+### 5. Admin server functions + dashboard tab
+- `listSentryAnalyses` (admin-gated via existing `assertGovernanceAdmin`) with composite cursor pagination + `total`.
+- `getSentryAnalysis(issueId)` for detail drawer.
+- `reprocessSentryIssue(issueId)` (admin) → calls orchestrator with `force: true`.
+- CSV export via existing `toCsv` helper.
+- New tab in `_authenticated.dashboard.admin.governance.tsx` → "AI SRE" with list, filters (status, trigger, category), detail view showing root cause / fix plan / PR suggestion, and "Reprocess" button.
 
-## Technical notes
+### 6. Tests
+- Unit: `pr-draft.test.ts` — deterministic output from fixture analysis.
+- Unit: `process-issue.test.ts` — dedup logic, force flag, trigger tagging (mock SentryClient + supabase).
+- Unit: `sentry-webhook-signature.test.ts` — valid, tampered, missing, wrong secret.
 
-- Node 20 pinned across workflows for parity with existing `deploy-milesweb.yml`.
-- Staging workflow uses `webfactory/ssh-agent` + `rsync` (same pattern as your production deploy) to avoid introducing a new deploy mechanism.
-- Build logs uploaded with `if: always()` so failed builds still produce artifacts.
-- `npm test` runs sequentially, not in parallel, so the first failing gate short-circuits and the log is easy to read.
-- No changes to `vite.config.ts`, Supabase integration files, or existing production deploy workflow.
+## Guardrails (matches user's rules)
 
-## Files touched
+- Webhook and cron both go through `processSentryIssue` — never call `runAISRELoop` or PR generator directly.
+- PR draft creation is idempotent per `(issueId, analysis hash)`; re-runs don't create duplicates.
+- No external GitHub API call in this pass — PR suggestion is a stored artifact for admin review. (GitHub push is a follow-up once the user connects a repo token.)
+- All secrets read inside handlers, never at module scope.
+- Admin-only reads; RLS enforced; service_role only inside server helpers.
 
-- `package.json` — add/adjust `lint`, `typecheck`, `test:unit`, `test` scripts
-- `.github/workflows/pr-checks.yml` — new
-- `.github/workflows/deploy-milesweb-staging.yml` — new (or replace the existing stub if it's empty)
+## Files
 
-## Out of scope
+New:
+- `supabase/migrations/<ts>_sentry_issue_analyses.sql`
+- `src/lib/sre/pipeline/process-issue.server.ts`
+- `src/lib/sre/pipeline/pr-draft.ts`
+- `src/lib/sre/pipeline/__tests__/pr-draft.test.ts`
+- `src/lib/sre/pipeline/__tests__/process-issue.test.ts`
+- `src/lib/sre/pipeline/__tests__/webhook-signature.test.ts`
+- `src/lib/sre/sre.functions.ts` (list/get/reprocess/export server fns)
+- `src/routes/api/public/sentry.webhook.ts`
+- `src/routes/api/public/sentry.sync.ts`
 
-- Configuring MilesWeb SSH access, DNS for staging subdomain, and GitHub branch-protection rules — these are account-level actions only you can do. I'll document the exact secrets/settings needed in the workflow file comments.
+Edited:
+- `src/routes/_authenticated.dashboard.admin.governance.tsx` (new "AI SRE" tab)
+- `src/integrations/supabase/types.ts` (regen for new table)
+
+## After approval
+
+I will (a) add `SENTRY_WEBHOOK_SECRET` via `add_secret`, (b) run the migration, (c) implement the files above in parallel batches, (d) schedule the cron via `supabase--insert` pointing at the stable published URL, (e) run the vitest suite, (f) tell you the Sentry webhook URL to paste into Sentry's Internal Integration settings.
