@@ -106,3 +106,15 @@ export function _resetAccuracy() {
   samples.length = 0;
   listeners.length = 0;
 }
+
+/** Read-only snapshot of all retained samples (oldest → newest). */
+export function getAccuracySamples(): readonly AccuracySample[] {
+  return samples.slice();
+}
+
+/** Rolling MAE over the last `n` samples (default 20). */
+export function rollingMAE(n = 20): number {
+  const slice = samples.slice(-n);
+  if (slice.length === 0) return 0;
+  return slice.reduce((s, x) => s + Math.abs(x.delta), 0) / slice.length;
+}
