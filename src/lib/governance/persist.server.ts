@@ -7,6 +7,8 @@ import type { GovernorOutput } from "@/lib/security/governance/orchestrator";
 import type { KnowledgePackage, TrustLevel } from "@/lib/knowledge/types";
 import type { VerifyResult } from "@/lib/knowledge/signing.server";
 
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
+
 export type PersistedGovernanceEvent = {
   id: string;
   created_at: string;
@@ -15,12 +17,12 @@ export type PersistedGovernanceEvent = {
   decision: string;
   risk_score: number;
   confidence: number;
-  explanation: string[];
+  explanation: JsonValue;
   requires_human_approval: boolean;
   approval_status: string;
   approved_by: string | null;
   approved_at: string | null;
-  metadata: unknown;
+  metadata: JsonValue;
 };
 
 export async function persistGovernanceDecision(
