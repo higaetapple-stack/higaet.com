@@ -257,6 +257,7 @@ import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
 import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
+import { Route as ApiPublicSreE2eTriggerRouteImport } from './routes/api/public/sre/e2e-trigger'
 import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
 import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
@@ -1729,6 +1730,11 @@ const ApiPublicWebhooksProcessRoute =
     path: '/api/public/webhooks/process',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicSreE2eTriggerRoute = ApiPublicSreE2eTriggerRouteImport.update({
+  id: '/api/public/sre/e2e-trigger',
+  path: '/api/public/sre/e2e-trigger',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
   id: '/api/public/sentry/webhook',
   path: '/api/public/sentry/webhook',
@@ -2683,6 +2689,7 @@ export interface FileRoutesByFullPath {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3022,6 +3029,7 @@ export interface FileRoutesByTo {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3379,6 +3387,7 @@ export interface FileRoutesById {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
@@ -3736,6 +3745,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-trigger'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
@@ -4075,6 +4085,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-trigger'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
@@ -4431,6 +4442,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-trigger'
     | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
@@ -4546,6 +4558,7 @@ export interface RootRouteChildren {
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
   ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
   ApiPublicSentryWebhookRoute: typeof ApiPublicSentryWebhookRoute
+  ApiPublicSreE2eTriggerRoute: typeof ApiPublicSreE2eTriggerRoute
   ApiPublicWebhooksProcessRoute: typeof ApiPublicWebhooksProcessRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
@@ -6286,6 +6299,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/webhooks/process'
       fullPath: '/api/public/webhooks/process'
       preLoaderRoute: typeof ApiPublicWebhooksProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/sre/e2e-trigger': {
+      id: '/api/public/sre/e2e-trigger'
+      path: '/api/public/sre/e2e-trigger'
+      fullPath: '/api/public/sre/e2e-trigger'
+      preLoaderRoute: typeof ApiPublicSreE2eTriggerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/sentry/webhook': {
@@ -8220,6 +8240,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
   ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
   ApiPublicSentryWebhookRoute: ApiPublicSentryWebhookRoute,
+  ApiPublicSreE2eTriggerRoute: ApiPublicSreE2eTriggerRoute,
   ApiPublicWebhooksProcessRoute: ApiPublicWebhooksProcessRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
