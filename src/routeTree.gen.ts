@@ -20,6 +20,7 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as McpDocsRouteImport } from './routes/mcp-docs'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as KernelRouteImport } from './routes/kernel'
@@ -409,6 +410,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpDocsRoute = McpDocsRouteImport.update({
+  id: '/mcp-docs',
+  path: '/mcp-docs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -2336,6 +2342,7 @@ export interface FileRoutesByFullPath {
   '/kernel': typeof KernelRoute
   '/leadership': typeof LeadershipRoute
   '/mcp': typeof McpRoute
+  '/mcp-docs': typeof McpDocsRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -2679,6 +2686,7 @@ export interface FileRoutesByTo {
   '/kernel': typeof KernelRoute
   '/leadership': typeof LeadershipRoute
   '/mcp': typeof McpRoute
+  '/mcp-docs': typeof McpDocsRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -3016,6 +3024,7 @@ export interface FileRoutesById {
   '/kernel': typeof KernelRoute
   '/leadership': typeof LeadershipRoute
   '/mcp': typeof McpRoute
+  '/mcp-docs': typeof McpDocsRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
   '/replay': typeof ReplayRoute
@@ -3365,6 +3374,7 @@ export interface FileRouteTypes {
     | '/kernel'
     | '/leadership'
     | '/mcp'
+    | '/mcp-docs'
     | '/partners'
     | '/privacy'
     | '/replay'
@@ -3708,6 +3718,7 @@ export interface FileRouteTypes {
     | '/kernel'
     | '/leadership'
     | '/mcp'
+    | '/mcp-docs'
     | '/partners'
     | '/privacy'
     | '/replay'
@@ -4044,6 +4055,7 @@ export interface FileRouteTypes {
     | '/kernel'
     | '/leadership'
     | '/mcp'
+    | '/mcp-docs'
     | '/partners'
     | '/privacy'
     | '/replay'
@@ -4393,6 +4405,7 @@ export interface RootRouteChildren {
   KernelRoute: typeof KernelRoute
   LeadershipRoute: typeof LeadershipRoute
   McpRoute: typeof McpRoute
+  McpDocsRoute: typeof McpDocsRoute
   PartnersRoute: typeof PartnersRoute
   PrivacyRoute: typeof PrivacyRoute
   ReplayRoute: typeof ReplayRoute
@@ -4522,6 +4535,13 @@ declare module '@tanstack/react-router' {
       path: '/partners'
       fullPath: '/partners'
       preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp-docs': {
+      id: '/mcp-docs'
+      path: '/mcp-docs'
+      fullPath: '/mcp-docs'
+      preLoaderRoute: typeof McpDocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -7989,6 +8009,7 @@ const rootRouteChildren: RootRouteChildren = {
   KernelRoute: KernelRoute,
   LeadershipRoute: LeadershipRoute,
   McpRoute: McpRoute,
+  McpDocsRoute: McpDocsRoute,
   PartnersRoute: PartnersRoute,
   PrivacyRoute: PrivacyRoute,
   ReplayRoute: ReplayRoute,

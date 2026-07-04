@@ -8,7 +8,7 @@
   "mcp": {
     "server": {
       "name": "higaet-mcp",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "title": "HIGAET"
     },
     "tools": [
@@ -73,6 +73,38 @@
               "type": "string"
             }
           }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_system_health_overview",
+        "title": "System health overview",
+        "description": "Return an aggregated, read-only system health snapshot: overall risk level, calibration state, recent prediction accuracy, and observability signals. No incident details or PII.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_sre_snapshot",
+        "title": "AI SRE snapshot",
+        "description": "Return the current AI SRE risk thresholds, calibration mode, prediction-accuracy summary, and top learned root-cause signal categories. Aggregated only — no incident or PR detail.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
         },
         "outputSchema": null
       }
