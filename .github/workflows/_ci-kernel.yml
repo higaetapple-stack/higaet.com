@@ -48,6 +48,13 @@ on:
         type: string
         required: false
         default: "bun run build"
+      # P4 shadow-mode routing hint. Callers (ci.yml matrix) pass
+      # "core" | "seo" | "security". Default "core" preserves existing
+      # behavior for every existing caller — no behavior change.
+      mode:
+        type: string
+        required: false
+        default: "core"
 
 jobs:
   ci:
