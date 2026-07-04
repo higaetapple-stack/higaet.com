@@ -7,6 +7,20 @@ on:
     # Release-candidate tags (e.g. rc-2026-01-15, rc-1.2.3) auto-deploy to
     # staging so QA can validate a tagged build before promotion to prod.
     tags: ["rc-*"]
+    # Path filter: skip deploys for docs-only / metadata-only pushes.
+    paths:
+      - "src/**"
+      - "public/**"
+      - "supabase/**"
+      - "app.js"
+      - "vite.config.ts"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "scripts/**"
+      - ".github/actions/setup-node-bun/**"
+      - ".github/workflows/deploy-milesweb-staging.yml"
+
 
 
 concurrency:
