@@ -256,6 +256,7 @@ import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './ro
 import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
 import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
+import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
 import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
 import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
@@ -1721,6 +1722,12 @@ const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
     path: '/knowledge-base/universities/$slug',
     getParentRoute: () => GlobalEducationRoute,
   } as any)
+const ApiPublicWebhooksProcessRoute =
+  ApiPublicWebhooksProcessRouteImport.update({
+    id: '/api/public/webhooks/process',
+    path: '/api/public/webhooks/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
   id: '/api/public/sentry/webhook',
   path: '/api/public/sentry/webhook',
@@ -2669,6 +2676,7 @@ export interface FileRoutesByFullPath {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3006,6 +3014,7 @@ export interface FileRoutesByTo {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/dashboard/admin': typeof AuthenticatedDashboardAdminIndexRoute
   '/dashboard/applications': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3361,6 +3370,7 @@ export interface FileRoutesById {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
   '/global-education/knowledge-base/universities/$slug': typeof GlobalEducationKnowledgeBaseUniversitiesSlugRoute
   '/_authenticated/dashboard/admin/': typeof AuthenticatedDashboardAdminIndexRoute
   '/_authenticated/dashboard/applications/': typeof AuthenticatedDashboardApplicationsIndexRoute
@@ -3716,6 +3726,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin/'
     | '/dashboard/applications/'
@@ -4053,6 +4064,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/dashboard/admin'
     | '/dashboard/applications'
@@ -4407,6 +4419,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/webhooks/process'
     | '/global-education/knowledge-base/universities/$slug'
     | '/_authenticated/dashboard/admin/'
     | '/_authenticated/dashboard/applications/'
@@ -4520,6 +4533,7 @@ export interface RootRouteChildren {
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
   ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
   ApiPublicSentryWebhookRoute: typeof ApiPublicSentryWebhookRoute
+  ApiPublicWebhooksProcessRoute: typeof ApiPublicWebhooksProcessRoute
   ApiV1CertificatesVerifyIdRoute: typeof ApiV1CertificatesVerifyIdRoute
 }
 
@@ -6253,6 +6267,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/global-education/knowledge-base/universities/$slug'
       preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport
       parentRoute: typeof GlobalEducationRoute
+    }
+    '/api/public/webhooks/process': {
+      id: '/api/public/webhooks/process'
+      path: '/api/public/webhooks/process'
+      fullPath: '/api/public/webhooks/process'
+      preLoaderRoute: typeof ApiPublicWebhooksProcessRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/sentry/webhook': {
       id: '/api/public/sentry/webhook'
@@ -8178,6 +8199,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
   ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
   ApiPublicSentryWebhookRoute: ApiPublicSentryWebhookRoute,
+  ApiPublicWebhooksProcessRoute: ApiPublicWebhooksProcessRoute,
   ApiV1CertificatesVerifyIdRoute: ApiV1CertificatesVerifyIdRoute,
 }
 export const routeTree = rootRouteImport

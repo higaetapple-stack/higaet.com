@@ -1,16 +1,14 @@
 /**
- * Sentry webhook → AI SRE pipeline (real-time entry point).
+ * Sentry webhook → durable queue (real-time entry point).
  *
  * Public route (auth-bypassed at the edge) — signature-verified in-handler.
- * Only `issue.*` resource events trigger analysis; everything else is a
- * silent 200 so Sentry doesn't retry.
- *
- * Never calls runAISRELoop or the PR generator directly — every path funnels
- * through processSentryIssue so we can never double-analyze or double-suggest.
+ * The handler ONLY verifies + enqueues; the AI SRE pipeline runs from the
+ * queue worker (`processSentryWebhookQueue`) so no event is lost on crash
+ * and Sentry never times out waiting for analysis.
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { verifySentryWebhook } from "@/lib/sre/pipeline/verify-webhook";
-import { processSentryIssue } from "@/lib/sre/pipeline/process-issue.server";
+import { enqueueSentryWebhook, processSentryWebhookQueue } from "@/lib/webhooks/queue.server";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -37,8 +35,6 @@ export const Route = createFileRoute("/api/public/sentry/webhook")({
 
         const verified = verifySentryWebhook(raw, signature, secret);
         if (!verified.ok) {
-          // 401 on real signature failure; 500-shape avoided on config gaps so
-          // Sentry doesn't retry-flood on a misconfigured secret.
           const status = verified.reason === "no-secret" ? 503 : 401;
           return json(status, { ok: false, reason: verified.reason });
         }
@@ -58,18 +54,50 @@ export const Route = createFileRoute("/api/public/sentry/webhook")({
         const issueId: string | undefined =
           payload?.data?.issue?.id ?? payload?.data?.issue_id ?? payload?.data?.event?.issue?.id;
 
-        if (!issueId) {
-          return json(200, { ok: true, skipped: true, reason: "no-issue-id" });
-        }
-        const okActions = new Set(["created", "resolved", "unresolved", "assigned", "ignored", "triggered"]);
+        const okActions = new Set([
+          "created",
+          "resolved",
+          "unresolved",
+          "assigned",
+          "ignored",
+          "triggered",
+        ]);
         if (action && !okActions.has(action)) {
           return json(200, { ok: true, skipped: true, reason: `unsupported-action:${action}` });
         }
 
-        // Fire the orchestrator. On any failure inside, we still return 200
-        // (the analysis row records the failure) so Sentry does not retry.
-        const result = await processSentryIssue({ issueId: String(issueId), trigger: "webhook" });
-        return json(200, { ok: true, result });
+        try {
+          const enq = await enqueueSentryWebhook({
+            rawBody: raw,
+            eventType: `${resource}.${action || "unknown"}`,
+            issueId: issueId ? String(issueId) : null,
+            parsed: payload,
+          });
+          // Kick the worker opportunistically (non-blocking). If it fails,
+          // the cron worker picks it up on next tick.
+          queueMicrotask(() => {
+            void processSentryWebhookQueue({ batchSize: 3 }).catch(() => undefined);
+          });
+          console.log(
+            JSON.stringify({
+              evt: "webhook_queued",
+              type: `${resource}.${action}`,
+              issue: issueId,
+              duplicate: enq.duplicate,
+            }),
+          );
+          return json(200, { ok: true, queued: enq.queued, duplicate: enq.duplicate });
+        } catch (err) {
+          // Persist failure — return 500 so Sentry retries later.
+          console.error(
+            JSON.stringify({
+              evt: "webhook_enqueue_failed",
+              type: `${resource}.${action}`,
+              issue: issueId,
+            }),
+          );
+          return json(500, { ok: false, reason: "enqueue-failed" });
+        }
       },
     },
   },
