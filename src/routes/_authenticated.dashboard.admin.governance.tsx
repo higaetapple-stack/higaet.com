@@ -719,8 +719,8 @@ function SentryAnalyses() {
           </TableHeader>
           <TableBody>
             {rows.map((r: any) => (
-              <>
-                <TableRow key={r.id}>
+              <Fragment key={r.id}>
+                <TableRow>
                   <TableCell className="text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
                   <TableCell className="text-xs">
                     {r.sentry_permalink ? (
