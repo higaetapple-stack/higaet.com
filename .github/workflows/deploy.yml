@@ -1,0 +1,37 @@
+name: Unified Deploy
+
+# P4 unified deploy orchestrator. workflow_dispatch ONLY — never triggers on
+# push, so it cannot race with the existing deploy-milesweb / brevo
+# workflows during shadow-mode cutover.
+#
+# Delegates to _deploy-kernel.yml (currently a dry-run stub — see that file).
+# Once the kernel absorbs real deploy logic, this orchestrator does not need
+# to change.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Deploy target"
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+          - brevo
+
+concurrency:
+  # P6: strong per-target lock. Never cancel a deploy in-flight; queue instead.
+  group: deploy-${{ inputs.target }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy (${{ inputs.target }})
+    uses: ./.github/workflows/_deploy-kernel.yml
+    with:
+      target: ${{ inputs.target }}
+    secrets: inherit
