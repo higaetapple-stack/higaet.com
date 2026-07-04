@@ -31,6 +31,8 @@ export interface ProcessSentryIssueResult {
   status: "processed" | "skipped" | "failed" | "not-configured";
   analysisId?: string;
   prSuggested?: boolean;
+  prUrl?: string;
+  prNumber?: number;
   reason?: string;
   error?: string;
 }
@@ -156,7 +158,32 @@ export async function processSentryIssue(
       }
     }
 
-    return { status: "processed", analysisId: id, prSuggested: !!prDraft };
+    // GitHub PR generation — idempotent per (issue_id, analysis_hash).
+    // Non-blocking: PR creation failures never fail the pipeline.
+    let prCreated: { url?: string; number?: number; confidence?: number } | null = null;
+    if (prDraft) {
+      try {
+        const { createPRForAnalysis } = await import("./create-pr.server");
+        const pr = await createPRForAnalysis({
+          issueId,
+          analysisHash: hash,
+          analysis,
+          draft: prDraft,
+        });
+        if (pr.status === "created" || pr.status === "reused") {
+          prCreated = { url: pr.url, number: pr.number, confidence: pr.confidence };
+        }
+      } catch {
+        // Advisory — dashboard shows the failed row via last_error.
+      }
+    }
+
+    return {
+      status: "processed",
+      analysisId: id,
+      prSuggested: !!prDraft,
+      ...(prCreated ? { prUrl: prCreated.url, prNumber: prCreated.number } : {}),
+    };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     try {

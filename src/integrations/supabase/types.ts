@@ -3822,6 +3822,72 @@ export type Database = {
           },
         ]
       }
+      sentry_pull_requests: {
+        Row: {
+          analysis_hash: string | null
+          base_branch: string
+          body: string | null
+          branch_name: string
+          commit_sha: string | null
+          confidence_score: number
+          created_at: string
+          created_by: string | null
+          id: string
+          issue_id: string
+          labels: string[]
+          last_error: string | null
+          pr_number: number | null
+          pr_state: string
+          pr_url: string | null
+          repo: string
+          requires_human_review: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          analysis_hash?: string | null
+          base_branch?: string
+          body?: string | null
+          branch_name: string
+          commit_sha?: string | null
+          confidence_score?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          issue_id: string
+          labels?: string[]
+          last_error?: string | null
+          pr_number?: number | null
+          pr_state?: string
+          pr_url?: string | null
+          repo: string
+          requires_human_review?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          analysis_hash?: string | null
+          base_branch?: string
+          body?: string | null
+          branch_name?: string
+          commit_sha?: string | null
+          confidence_score?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          issue_id?: string
+          labels?: string[]
+          last_error?: string | null
+          pr_number?: number | null
+          pr_state?: string
+          pr_url?: string | null
+          repo?: string
+          requires_human_review?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sentry_webhook_queue: {
         Row: {
           attempt_count: number
