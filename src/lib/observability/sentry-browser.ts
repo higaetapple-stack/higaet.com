@@ -6,6 +6,7 @@
  * in env to enable env-aware release tagging.
  */
 import * as Sentry from "@sentry/react";
+import { buildRelease } from "./release";
 
 let initialized = false;
 
