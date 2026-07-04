@@ -8,12 +8,11 @@ import type { KnowledgePackage } from "@/lib/knowledge/types";
 
 const enc = new TextEncoder();
 
-function canonicalize(pkg: Omit<KnowledgePackage, "signature">): string {
+function canonicalize(pkg: Omit<KnowledgePackage, "hash" | "signature">): string {
   const ordered = {
     version: pkg.version,
     generatedAt: pkg.generatedAt,
     expiresAt: pkg.expiresAt,
-    hash: pkg.hash,
     categories: pkg.categories,
     recommendations: pkg.recommendations,
     calibration: pkg.calibration,
