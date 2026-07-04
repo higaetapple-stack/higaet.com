@@ -80,9 +80,9 @@ export async function persistKnowledgePackage(
       expires_at: pkg.expiresAt,
       hash: pkg.hash,
       signature_valid: verification.valid,
-      payload: pkg as unknown as Record<string, unknown>,
-      categories: pkg.categories,
-      recommendations: pkg.recommendations,
+      payload: pkg as unknown as never,
+      categories: pkg.categories as unknown as never,
+      recommendations: pkg.recommendations as unknown as never,
       status,
     })
     .select("*")
