@@ -64,7 +64,7 @@ jobs:
       - name: Setup Node (license-checker walks node_modules)
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install production dependencies
         run: npm install --omit=dev --ignore-scripts --no-audit --no-fund --package-lock-only=false

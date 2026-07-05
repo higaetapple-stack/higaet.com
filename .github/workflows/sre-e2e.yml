@@ -7,10 +7,18 @@ name: SRE E2E Smoke
 on:
   workflow_dispatch:
     inputs:
-      base_url:
-        description: "Base URL (defaults to stable preview)"
+      environment:
+        description: "Target environment"
         required: false
-        default: "https://project--019358d1-d5d3-491a-8f03-bd2f647a26b3.lovable.app"
+        default: "preview"
+        type: choice
+        options:
+          - preview
+          - production
+      base_url:
+        description: "Optional explicit Base URL (overrides environment mapping)"
+        required: false
+        default: ""
   schedule:
     # Every 6 hours — cheap, but keeps token health + pipeline integrity visible.
     - cron: "0 */6 * * *"
@@ -24,18 +32,37 @@ jobs:
       - name: Check required secrets
         run: |
           if [ -z "${{ secrets.SRE_E2E_BEARER }}" ]; then
-            echo "::error::SRE_E2E_BEARER not set. It is a shared secret whose value MUST equal the server-side SRE_E2E_TRIGGER_SECRET env var configured in the Lovable Cloud environment."
+            echo "::error::SRE_E2E_BEARER not set. Its value MUST equal the server-side SRE_E2E_TRIGGER_SECRET env var configured on the target deployment."
             exit 1
           fi
+
+      - name: Resolve target BASE_URL
+        id: resolve
+        env:
+          INPUT_URL: ${{ github.event.inputs.base_url }}
+          ENVIRONMENT: ${{ github.event.inputs.environment }}
+        run: |
+          set -euo pipefail
+          PREVIEW_URL="https://project--019358d1-d5d3-491a-8f03-bd2f647a26b3.lovable.app"
+          PRODUCTION_URL="https://staging.higaet.com"
+          if [ -n "${INPUT_URL:-}" ]; then
+            RESOLVED="$INPUT_URL"
+          elif [ "${ENVIRONMENT:-preview}" = "production" ]; then
+            RESOLVED="$PRODUCTION_URL"
+          else
+            RESOLVED="$PREVIEW_URL"
+          fi
+          echo "base_url=$RESOLVED" >> "$GITHUB_OUTPUT"
+          echo "Resolved BASE_URL=$RESOLVED"
 
       - name: Trigger E2E smoke test
         id: run
         env:
-          BASE_URL: ${{ github.event.inputs.base_url || 'https://project--019358d1-d5d3-491a-8f03-bd2f647a26b3.lovable.app' }}
+          BASE_URL: ${{ steps.resolve.outputs.base_url }}
           BEARER: ${{ secrets.SRE_E2E_BEARER }}
         run: |
           set -euo pipefail
-          echo "Invoking $BASE_URL /_serverFn (runSreE2ETest)"
+          echo "Invoking $BASE_URL/api/public/sre/e2e-trigger"
           RESP=$(curl -sS -w "\n%{http_code}" -X POST \
             "$BASE_URL/api/public/sre/e2e-trigger" \
             -H "Authorization: Bearer $BEARER" \

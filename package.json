@@ -3,6 +3,9 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "vite dev",
     "prebuild": "node scripts/production-lock-check.mjs",
@@ -16,10 +19,10 @@
     "test:unit": "vitest run --passWithNoTests",
     "test": "npm run lint && npm run typecheck && npm run test:unit && npm run build",
     "typecheck": "tsc --noEmit",
-    "lock:check": "bun scripts/production-lock-check.mjs",
-    "lint:seo-orphans": "bun scripts/lint-seo-clusters.ts",
-    "lint:backlinks": "bun scripts/lint-backlink-architecture.ts",
-    "seo:graph:report": "bun scripts/seo-graph-report.ts"
+    "lock:check": "node scripts/production-lock-check.mjs",
+    "lint:seo-orphans": "node --experimental-strip-types scripts/lint-seo-clusters.ts",
+    "lint:backlinks": "node --experimental-strip-types scripts/lint-backlink-architecture.ts",
+    "seo:graph:report": "node --experimental-strip-types scripts/seo-graph-report.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.83",
