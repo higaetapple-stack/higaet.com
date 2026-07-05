@@ -40,21 +40,22 @@ jobs:
       run-typecheck: true
       run-build: true
       upload-artifact: true
-      artifact-name: ci-shadow-core
+      artifact-name: dist
     secrets: inherit
 
   seo:
     name: CI Kernel · seo
     # SEO shadow run reuses the kernel but skips lint/typecheck (core already
     # covers those) and keeps build ON so SEO scripts have dist/ to inspect.
+    # Does not upload an artifact — the canonical build artifact is "dist"
+    # produced by the core job and consumed by the deploy kernel.
     uses: ./.github/workflows/_ci-kernel.yml
     with:
       mode: seo
       run-lint: false
       run-typecheck: false
       run-build: true
-      upload-artifact: true
-      artifact-name: ci-shadow-seo
+      upload-artifact: false
     secrets: inherit
 
   security:
