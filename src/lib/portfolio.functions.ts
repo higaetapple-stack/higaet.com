@@ -35,7 +35,7 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
         ? supabase
             .from("certificates")
             .select("id,certificate_number,issued_at,programs(title,category)")
-            .eq("student_id", profile.id)
+            .eq("student_id", profileId)
             .eq("revoked", false)
             .order("issued_at", { ascending: false })
         : Promise.resolve({ data: [] as any[] }),
@@ -43,9 +43,10 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
         ? supabase
             .from("project_submissions")
             .select("id,repo_url,demo_url,summary,projects(title,brief)")
-            .eq("student_id", profile.id)
+            .eq("student_id", profileId)
             .in("status", ["passed", "reviewed"])
         : Promise.resolve({ data: [] as any[] }),
+
     ]);
 
     return {
