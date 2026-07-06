@@ -25,7 +25,9 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
       .maybeSingle();
 
     if (error) throw new Error(error.message);
-    if (!profile) return null;
+    if (!profile || !profile.id) return null;
+    const profileId = profile.id;
+
 
 
     const [certs, projects] = await Promise.all([
