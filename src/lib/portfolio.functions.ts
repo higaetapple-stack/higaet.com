@@ -17,7 +17,7 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const supabase = getServerPublicClient();
     const { data: profile, error } = await supabase
-      .from("profiles")
+      .from("public_profiles")
       .select(
         "id,full_name,email,phone,avatar_url,headline,bio,location,github_url,linkedin_url,website_url,skills,career_goals,education,experience,portfolio_slug,portfolio_visibility,show_email,show_phone,show_resume,show_certificates,show_projects",
       )
@@ -25,7 +25,8 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
       .maybeSingle();
 
     if (error) throw new Error(error.message);
-    if (!profile || profile.portfolio_visibility === "private") return null;
+    if (!profile) return null;
+
 
     const [certs, projects] = await Promise.all([
       profile.show_certificates
