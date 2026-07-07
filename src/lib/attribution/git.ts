@@ -3,7 +3,7 @@
  *
  * Env:
  *   GITHUB_TOKEN     — required for authenticated calls
- *   GITHUB_REPO      — "owner/repo" (default: higaetapple-stack/higaet-core-engine)
+ *   GITHUB_REPO      — "owner/repo" (default: higaetapple-stack/higaet)
  */
 
 export interface CommitInfo {
@@ -14,7 +14,7 @@ export interface CommitInfo {
   url?: string;
 }
 
-const DEFAULT_REPO = "higaetapple-stack/higaet-core-engine";
+const DEFAULT_REPO = "higaetapple-stack/higaet";
 
 export async function getCommitInfo(sha: string): Promise<CommitInfo | null> {
   const token = process.env.GITHUB_TOKEN;
