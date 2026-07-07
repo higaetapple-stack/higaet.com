@@ -373,6 +373,20 @@ export const setApplicationWorkflowStatus = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertCounselor(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Non-admins may only touch applications assigned to them.
+    if (!(await isAdmin(context))) {
+      const { data: row, error: chkErr } = await (supabaseAdmin as any)
+        .from("applications")
+        .select("assigned_to_counselor")
+        .eq("id", data.id)
+        .maybeSingle();
+      if (chkErr) throw new Error(chkErr.message);
+      if (!row || row.assigned_to_counselor !== context.userId) {
+        throw new Error("Forbidden");
+      }
+    }
+
     const { error } = await (supabaseAdmin as any)
       .from("applications")
       .update({ workflow_status: data.to_status, updated_at: new Date().toISOString() })
@@ -483,6 +497,18 @@ export const studentTimeline = createServerFn({ method: "GET" })
       .eq("id", data.application_id)
       .single();
     if (appErr) throw new Error(appErr.message);
+
+    // Non-admins may only view timelines for applications assigned to them.
+    if (!(await isAdmin(context)) && app?.student_id) {
+      const { data: assignedRow } = await (supabaseAdmin as any)
+        .from("applications")
+        .select("assigned_to_counselor")
+        .eq("id", data.application_id)
+        .maybeSingle();
+      if (!assignedRow || assignedRow.assigned_to_counselor !== context.userId) {
+        throw new Error("Forbidden");
+      }
+    }
 
     const [history, notes, tasks, docs, visa] = await Promise.all([
       (supabaseAdmin as any)
