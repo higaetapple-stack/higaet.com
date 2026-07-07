@@ -3,7 +3,7 @@
  *
  * Env:
  *   GITHUB_TOKEN     — required for authenticated calls
- *   GITHUB_REPO      — "owner/repo" (default: higaetapple-stack/higaet-core-engine)
+ *   GITHUB_REPO      — "owner/repo" (default: higaetapple-stack/higaet)
  */
 
 export interface CommitInfo {
