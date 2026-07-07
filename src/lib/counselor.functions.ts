@@ -498,6 +498,18 @@ export const studentTimeline = createServerFn({ method: "GET" })
       .single();
     if (appErr) throw new Error(appErr.message);
 
+    // Non-admins may only view timelines for applications assigned to them.
+    if (!(await isAdmin(context)) && app?.student_id) {
+      const { data: assignedRow } = await (supabaseAdmin as any)
+        .from("applications")
+        .select("assigned_to_counselor")
+        .eq("id", data.application_id)
+        .maybeSingle();
+      if (!assignedRow || assignedRow.assigned_to_counselor !== context.userId) {
+        throw new Error("Forbidden");
+      }
+    }
+
     const [history, notes, tasks, docs, visa] = await Promise.all([
       (supabaseAdmin as any)
         .from("application_status_history")
