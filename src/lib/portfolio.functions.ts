@@ -16,15 +16,12 @@ export const getPublicPortfolio = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => z.object({ slug: z.string().min(1).max(60) }).parse(input))
   .handler(async ({ data }) => {
     const supabase = getServerPublicClient();
-    const { data: profile, error } = await supabase
-      .from("public_profiles")
-      .select(
-        "id,full_name,email,phone,avatar_url,headline,bio,location,github_url,linkedin_url,website_url,skills,career_goals,education,experience,portfolio_slug,portfolio_visibility,show_email,show_phone,show_resume,show_certificates,show_projects",
-      )
-      .eq("portfolio_slug", data.slug)
-      .maybeSingle();
+    const { data: rows, error } = await supabase.rpc("get_public_portfolio_profile", {
+      _slug: data.slug,
+    });
 
     if (error) throw new Error(error.message);
+    const profile = Array.isArray(rows) ? rows[0] : null;
     if (!profile || !profile.id) return null;
     const profileId = profile.id;
 
