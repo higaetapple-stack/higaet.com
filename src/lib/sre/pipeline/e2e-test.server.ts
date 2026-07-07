@@ -55,9 +55,16 @@ function syntheticIncident(runId: string): { incident: AISREIncident; issueId: s
       frequency: 42,
       userCount: 7,
       frames: [
-        { filename: "src/lib/e2e/synthetic.ts", function: "loadUser" },
-        { filename: "src/lib/e2e/synthetic.ts", function: "renderProfile" },
+        {
+          filename: "src/lib/sre/pipeline/process-issue.server.ts",
+          function: "processSentryIssue",
+        },
+        {
+          filename: "src/lib/sre/pipeline/create-pr.server.ts",
+          function: "createPRForAnalysis",
+        },
       ],
+
     },
   };
 }
@@ -187,8 +194,9 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
   }
 
   // 3. Poll CI checks — best-effort, bounded.
-  const attempts = Math.max(1, Math.min(opts.ciPollAttempts ?? 6, 20));
-  const intervalMs = Math.max(500, Math.min(opts.ciPollIntervalMs ?? 5000, 30000));
+  const attempts = Math.max(1, Math.min(opts.ciPollAttempts ?? 40, 60));
+  const intervalMs = Math.max(5000, Math.min(opts.ciPollIntervalMs ?? 10000, 30000));
+
   let ciVerdict: "success" | "failure" | "pending" | "unknown" = "unknown";
   if (prNumber) {
     for (let i = 0; i < attempts; i++) {
