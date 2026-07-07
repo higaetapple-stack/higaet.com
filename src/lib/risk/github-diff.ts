@@ -1,6 +1,6 @@
 /** Fetch a PR unified diff from GitHub. Worker-safe. */
 
-const DEFAULT_REPO = "higaetapple-stack/higaet-core-engine";
+const DEFAULT_REPO = "higaetapple-stack/higaet";
 
 export async function getPRDiff(prNumber: number): Promise<string> {
   const token = process.env.GITHUB_TOKEN;
