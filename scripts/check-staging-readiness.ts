@@ -70,11 +70,12 @@ async function run(
       maxBuffer: 1024 * 1024,
     });
     return { ok: true, stdout, stderr };
-  } catch (err: any) {
+  } catch (err) {
+    const e = err as { stdout?: { toString?: () => string }; stderr?: { toString?: () => string }; message?: string };
     return {
       ok: false,
-      stdout: err.stdout?.toString?.() ?? "",
-      stderr: err.stderr?.toString?.() ?? String(err?.message ?? err),
+      stdout: e.stdout?.toString?.() ?? "",
+      stderr: e.stderr?.toString?.() ?? String(e?.message ?? err),
     };
   }
 }
