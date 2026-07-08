@@ -1,18 +1,18 @@
 # Phase 2.2 — Prerequisite Report
 
-- **Generated:** 2026-07-07T09:24:13.476Z
-- **Workflow / Run:** 28855712092
+- **Generated:** 2026-07-08T08:08:27.843Z
+- **Workflow / Run:** 28927572978
 - **Overall status:** STAGING BLOCKED
-- **Evidence artifacts:** `/home/runner/work/higaet/higaet/test-results/readiness/2026-07-07T09-24-13-476Z`
+- **Evidence artifacts:** `/home/runner/work/higaet/higaet/test-results/readiness/2026-07-08T08-08-27-843Z`
 
 ## Evidence Matrix
 
 | Category | Check | Status | Evidence |
 | --- | --- | --- | --- |
-| DNS | staging.higaet.com via 1.1.1.1 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet/higaet/test-results/readiness/2026-07-07T09-24-13-476Z/dns-1.1.1.1.txt |
-| DNS | staging.higaet.com via 8.8.8.8 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet/higaet/test-results/readiness/2026-07-07T09-24-13-476Z/dns-8.8.8.8.txt |
+| DNS | staging.higaet.com via 1.1.1.1 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet/higaet/test-results/readiness/2026-07-08T08-08-27-843Z/dns-1.1.1.1.txt |
+| DNS | staging.higaet.com via 8.8.8.8 | **PASS** | Resolved: 103.102.234.161 — see /home/runner/work/higaet/higaet/test-results/readiness/2026-07-08T08-08-27-843Z/dns-8.8.8.8.txt |
 | DNS | Matches STAGING_EXPECTED_IP (103.102.234.161) | **PASS** | Resolved IPs: 103.102.234.161, 103.102.234.161 |
-| SSL | Cert for staging.higaet.com valid ≥30d & CN matches | **PASS** | notAfter=Jun 24 03:42:13 2027 GMT, daysLeft=351, CN match=true — see /home/runner/work/higaet/higaet/test-results/readiness/2026-07-07T09-24-13-476Z/ssl.txt |
+| SSL | Cert for staging.higaet.com valid ≥30d & CN matches | **PASS** | notAfter=Jun 24 03:42:13 2027 GMT, daysLeft=350, CN match=true — see /home/runner/work/higaet/higaet/test-results/readiness/2026-07-08T08-08-27-843Z/ssl.txt |
 | SSH | Auth to wnwpopno@103.102.234.161:22999 | **FAIL** | Error: Warning: Permanently added '[103.102.234.161]:22999' (ED25519) to the list of known hosts.
 wnwpopno@103.102.234.161: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
  |
