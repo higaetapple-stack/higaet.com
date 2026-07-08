@@ -114,15 +114,17 @@ export interface RunE2ETestOptions {
   triggeredBy?: string | null;
   ciPollAttempts?: number;
   ciPollIntervalMs?: number;
+  ciInitialDelayMs?: number;
 }
 
 export interface RunE2ETestResult {
   runId: string;
-  status: "passed" | "failed";
+  status: "passed" | "failed" | "pending";
   prUrl?: string;
   ciConclusion?: string;
-  readyForDeploy: boolean;
+  readyForDeploy: boolean | null;
 }
+
 
 export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2ETestResult> {
   const triggeredBy = opts.triggeredBy ?? null;
