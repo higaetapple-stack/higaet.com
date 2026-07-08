@@ -344,6 +344,7 @@ import { Route as AuthenticatedDashboardAdminDomainStatusRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
 import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
+import { Route as AuthenticatedDashboardAdminAuditLogsRouteImport } from './routes/_authenticated.dashboard.admin.audit-logs'
 import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
 import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
 import { Route as AuthenticatedDashboardAdminApiRouteImport } from './routes/_authenticated.dashboard.admin.api'
@@ -2252,6 +2253,12 @@ const AuthenticatedDashboardAdminCertificatesRoute =
     path: '/certificates',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminAuditLogsRoute =
+  AuthenticatedDashboardAdminAuditLogsRouteImport.update({
+    id: '/audit-logs',
+    path: '/audit-logs',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminAssignmentsRoute =
   AuthenticatedDashboardAdminAssignmentsRouteImport.update({
     id: '/assignments',
@@ -2666,6 +2673,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/api': typeof AuthenticatedDashboardAdminApiRoute
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
+  '/dashboard/admin/audit-logs': typeof AuthenticatedDashboardAdminAuditLogsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
@@ -3017,6 +3025,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/api': typeof AuthenticatedDashboardAdminApiRoute
   '/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
+  '/dashboard/admin/audit-logs': typeof AuthenticatedDashboardAdminAuditLogsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/domain-status': typeof AuthenticatedDashboardAdminDomainStatusRoute
@@ -3380,6 +3389,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/api': typeof AuthenticatedDashboardAdminApiRoute
   '/_authenticated/dashboard/admin/applications': typeof AuthenticatedDashboardAdminApplicationsRoute
   '/_authenticated/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
+  '/_authenticated/dashboard/admin/audit-logs': typeof AuthenticatedDashboardAdminAuditLogsRoute
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/_authenticated/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/_authenticated/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
@@ -3746,6 +3756,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/api'
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
+    | '/dashboard/admin/audit-logs'
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/countries'
     | '/dashboard/admin/crm'
@@ -4097,6 +4108,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/api'
     | '/dashboard/admin/applications'
     | '/dashboard/admin/assignments'
+    | '/dashboard/admin/audit-logs'
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/countries'
     | '/dashboard/admin/domain-status'
@@ -4459,6 +4471,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/api'
     | '/_authenticated/dashboard/admin/applications'
     | '/_authenticated/dashboard/admin/assignments'
+    | '/_authenticated/dashboard/admin/audit-logs'
     | '/_authenticated/dashboard/admin/certificates'
     | '/_authenticated/dashboard/admin/countries'
     | '/_authenticated/dashboard/admin/crm'
@@ -7016,6 +7029,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminCertificatesRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/audit-logs': {
+      id: '/_authenticated/dashboard/admin/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/dashboard/admin/audit-logs'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAuditLogsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/assignments': {
       id: '/_authenticated/dashboard/admin/assignments'
       path: '/assignments'
@@ -7336,6 +7356,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminApiRoute: typeof AuthenticatedDashboardAdminApiRoute
   AuthenticatedDashboardAdminApplicationsRoute: typeof AuthenticatedDashboardAdminApplicationsRoute
   AuthenticatedDashboardAdminAssignmentsRoute: typeof AuthenticatedDashboardAdminAssignmentsRoute
+  AuthenticatedDashboardAdminAuditLogsRoute: typeof AuthenticatedDashboardAdminAuditLogsRoute
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
   AuthenticatedDashboardAdminCountriesRoute: typeof AuthenticatedDashboardAdminCountriesRoute
   AuthenticatedDashboardAdminCrmRoute: typeof AuthenticatedDashboardAdminCrmRouteWithChildren
@@ -7391,6 +7412,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminApplicationsRoute,
     AuthenticatedDashboardAdminAssignmentsRoute:
       AuthenticatedDashboardAdminAssignmentsRoute,
+    AuthenticatedDashboardAdminAuditLogsRoute:
+      AuthenticatedDashboardAdminAuditLogsRoute,
     AuthenticatedDashboardAdminCertificatesRoute:
       AuthenticatedDashboardAdminCertificatesRoute,
     AuthenticatedDashboardAdminCountriesRoute:
