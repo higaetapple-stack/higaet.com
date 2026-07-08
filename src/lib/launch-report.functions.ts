@@ -273,7 +273,7 @@ export const upsertChecklistItem = createServerFn({ method: "POST" })
   )
   .handler(async ({ context, data }): Promise<ChecklistItem> => {
     await assertAdmin(context);
-    const patch: Record<string, unknown> = {
+    const patch = {
       status: data.status,
       notes: data.notes ?? null,
       evidence_url: data.evidence_url ?? null,
