@@ -28,6 +28,7 @@ import {
 import {
   buildLaunchReport,
   getMonitoringVerification,
+  probeAndUpdateChecklist,
   probeSreHealth,
   type HealthProbeResult,
   type LaunchReportBundle,
@@ -166,6 +167,7 @@ function openPrintableReport(bundle: LaunchReportBundle) {
 function LaunchReportPage() {
   const buildFn = useServerFn(buildLaunchReport);
   const probeFn = useServerFn(probeSreHealth);
+  const probeUpdateFn = useServerFn(probeAndUpdateChecklist);
   const monFn = useServerFn(getMonitoringVerification);
   const qc = useQueryClient();
 
@@ -186,6 +188,31 @@ function LaunchReportPage() {
       setBundle(b);
       qc.invalidateQueries({ queryKey: ["admin", "sre-health-probe"] });
       qc.invalidateQueries({ queryKey: ["admin", "monitoring-verification"] });
+    },
+  });
+
+  // Download handlers ALWAYS regenerate a fresh bundle before writing the file
+  // so operators can never save a stale readiness snapshot.
+  const [downloading, setDownloading] = useState<null | "json" | "pdf">(null);
+  async function handleDownload(kind: "json" | "pdf") {
+    setDownloading(kind);
+    try {
+      const fresh = await buildFn({});
+      setBundle(fresh);
+      qc.invalidateQueries({ queryKey: ["admin", "sre-health-probe"] });
+      qc.invalidateQueries({ queryKey: ["admin", "monitoring-verification"] });
+      if (kind === "json") downloadJson(fresh);
+      else openPrintableReport(fresh);
+    } finally {
+      setDownloading(null);
+    }
+  }
+
+  const rerunMut = useMutation({
+    mutationFn: () => probeUpdateFn({}),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "sre-health-probe"] });
+      qc.invalidateQueries({ queryKey: ["admin", "operator-checklist"] });
     },
   });
 
@@ -214,20 +241,57 @@ function LaunchReportPage() {
           </Button>
           <Button
             variant="secondary"
-            disabled={!bundle}
-            onClick={() => bundle && downloadJson(bundle)}
+            disabled={downloading !== null}
+            onClick={() => handleDownload("json")}
           >
-            <Download className="mr-2 size-4" /> JSON
+            {downloading === "json" ? (
+              <Loader2 className="mr-2 size-4 animate-spin" />
+            ) : (
+              <Download className="mr-2 size-4" />
+            )}
+            JSON
           </Button>
           <Button
             variant="secondary"
-            disabled={!bundle}
-            onClick={() => bundle && openPrintableReport(bundle)}
+            disabled={downloading !== null}
+            onClick={() => handleDownload("pdf")}
           >
-            <FileText className="mr-2 size-4" /> PDF (print)
+            {downloading === "pdf" ? (
+              <Loader2 className="mr-2 size-4 animate-spin" />
+            ) : (
+              <FileText className="mr-2 size-4" />
+            )}
+            PDF (print)
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => rerunMut.mutate()}
+            disabled={rerunMut.isPending}
+          >
+            {rerunMut.isPending ? (
+              <Loader2 className="mr-2 size-4 animate-spin" />
+            ) : (
+              <Signal className="mr-2 size-4" />
+            )}
+            Re-run SRE health & update checklist
           </Button>
         </div>
       </div>
+
+      {rerunMut.data && (
+        <Card className="border-l-4 border-l-sky-500">
+          <CardContent className="py-3 text-sm">
+            <div className="font-medium">Checklist updated from live probes:</div>
+            <ul className="mt-1 list-disc pl-5 text-muted-foreground">
+              {rerunMut.data.updated.map((u) => (
+                <li key={u.item_key}>
+                  <span className="font-mono text-xs">{u.item_key}</span> → <b>{u.status}</b>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
 
       {bundle && (
         <Card className="border-l-4" style={{ borderLeftColor: bundle.overallDecision === "READY" ? "#059669" : "#e11d48" }}>

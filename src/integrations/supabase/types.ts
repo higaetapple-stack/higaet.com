@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_integration_secrets: {
+        Row: {
+          created_at: string
+          key: string
+          last_verified_at: string | null
+          last_verified_detail: string | null
+          last_verified_ok: boolean | null
+          updated_at: string
+          updated_by: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          key: string
+          last_verified_at?: string | null
+          last_verified_detail?: string | null
+          last_verified_ok?: boolean | null
+          updated_at?: string
+          updated_by?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string
+          key?: string
+          last_verified_at?: string | null
+          last_verified_detail?: string | null
+          last_verified_ok?: boolean | null
+          updated_at?: string
+          updated_by?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
       ai_agent_configs: {
         Row: {
           collection_ids: string[]

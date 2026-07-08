@@ -330,6 +330,7 @@ import { Route as AuthenticatedDashboardAdminPaymentsRouteImport } from './route
 import { Route as AuthenticatedDashboardAdminOperatorChecklistRouteImport } from './routes/_authenticated.dashboard.admin.operator-checklist'
 import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
 import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
+import { Route as AuthenticatedDashboardAdminMonitoringSecretsRouteImport } from './routes/_authenticated.dashboard.admin.monitoring-secrets'
 import { Route as AuthenticatedDashboardAdminLaunchReportRouteImport } from './routes/_authenticated.dashboard.admin.launch-report'
 import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
 import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
@@ -339,6 +340,7 @@ import { Route as AuthenticatedDashboardAdminFeatureFlagsRouteImport } from './r
 import { Route as AuthenticatedDashboardAdminEnvReadinessRouteImport } from './routes/_authenticated.dashboard.admin.env-readiness'
 import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
 import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
+import { Route as AuthenticatedDashboardAdminDomainStatusRouteImport } from './routes/_authenticated.dashboard.admin.domain-status'
 import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
 import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
 import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
@@ -2166,6 +2168,12 @@ const AuthenticatedDashboardAdminNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
+const AuthenticatedDashboardAdminMonitoringSecretsRoute =
+  AuthenticatedDashboardAdminMonitoringSecretsRouteImport.update({
+    id: '/monitoring-secrets',
+    path: '/monitoring-secrets',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
 const AuthenticatedDashboardAdminLaunchReportRoute =
   AuthenticatedDashboardAdminLaunchReportRouteImport.update({
     id: '/launch-report',
@@ -2218,6 +2226,12 @@ const AuthenticatedDashboardAdminEmployersRoute =
   AuthenticatedDashboardAdminEmployersRouteImport.update({
     id: '/employers',
     path: '/employers',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminDomainStatusRoute =
+  AuthenticatedDashboardAdminDomainStatusRouteImport.update({
+    id: '/domain-status',
+    path: '/domain-status',
     getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
 const AuthenticatedDashboardAdminCrmRoute =
@@ -2655,6 +2669,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
+  '/dashboard/admin/domain-status': typeof AuthenticatedDashboardAdminDomainStatusRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/env-readiness': typeof AuthenticatedDashboardAdminEnvReadinessRoute
@@ -2664,6 +2679,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/launch-report': typeof AuthenticatedDashboardAdminLaunchReportRoute
+  '/dashboard/admin/monitoring-secrets': typeof AuthenticatedDashboardAdminMonitoringSecretsRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/operator-checklist': typeof AuthenticatedDashboardAdminOperatorChecklistRoute
@@ -3003,6 +3019,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/assignments': typeof AuthenticatedDashboardAdminAssignmentsRoute
   '/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
+  '/dashboard/admin/domain-status': typeof AuthenticatedDashboardAdminDomainStatusRoute
   '/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/dashboard/admin/env-readiness': typeof AuthenticatedDashboardAdminEnvReadinessRoute
@@ -3012,6 +3029,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/dashboard/admin/launch-report': typeof AuthenticatedDashboardAdminLaunchReportRoute
+  '/dashboard/admin/monitoring-secrets': typeof AuthenticatedDashboardAdminMonitoringSecretsRoute
   '/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/dashboard/admin/operator-checklist': typeof AuthenticatedDashboardAdminOperatorChecklistRoute
@@ -3365,6 +3383,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/certificates': typeof AuthenticatedDashboardAdminCertificatesRoute
   '/_authenticated/dashboard/admin/countries': typeof AuthenticatedDashboardAdminCountriesRoute
   '/_authenticated/dashboard/admin/crm': typeof AuthenticatedDashboardAdminCrmRouteWithChildren
+  '/_authenticated/dashboard/admin/domain-status': typeof AuthenticatedDashboardAdminDomainStatusRoute
   '/_authenticated/dashboard/admin/employers': typeof AuthenticatedDashboardAdminEmployersRoute
   '/_authenticated/dashboard/admin/enrollments': typeof AuthenticatedDashboardAdminEnrollmentsRoute
   '/_authenticated/dashboard/admin/env-readiness': typeof AuthenticatedDashboardAdminEnvReadinessRoute
@@ -3374,6 +3393,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/admin/jobs': typeof AuthenticatedDashboardAdminJobsRoute
   '/_authenticated/dashboard/admin/launch-readiness': typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   '/_authenticated/dashboard/admin/launch-report': typeof AuthenticatedDashboardAdminLaunchReportRoute
+  '/_authenticated/dashboard/admin/monitoring-secrets': typeof AuthenticatedDashboardAdminMonitoringSecretsRoute
   '/_authenticated/dashboard/admin/notifications': typeof AuthenticatedDashboardAdminNotificationsRoute
   '/_authenticated/dashboard/admin/observability': typeof AuthenticatedDashboardAdminObservabilityRoute
   '/_authenticated/dashboard/admin/operator-checklist': typeof AuthenticatedDashboardAdminOperatorChecklistRoute
@@ -3729,6 +3749,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/countries'
     | '/dashboard/admin/crm'
+    | '/dashboard/admin/domain-status'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/env-readiness'
@@ -3738,6 +3759,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/launch-report'
+    | '/dashboard/admin/monitoring-secrets'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
     | '/dashboard/admin/operator-checklist'
@@ -4077,6 +4099,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/assignments'
     | '/dashboard/admin/certificates'
     | '/dashboard/admin/countries'
+    | '/dashboard/admin/domain-status'
     | '/dashboard/admin/employers'
     | '/dashboard/admin/enrollments'
     | '/dashboard/admin/env-readiness'
@@ -4086,6 +4109,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin/jobs'
     | '/dashboard/admin/launch-readiness'
     | '/dashboard/admin/launch-report'
+    | '/dashboard/admin/monitoring-secrets'
     | '/dashboard/admin/notifications'
     | '/dashboard/admin/observability'
     | '/dashboard/admin/operator-checklist'
@@ -4438,6 +4462,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/certificates'
     | '/_authenticated/dashboard/admin/countries'
     | '/_authenticated/dashboard/admin/crm'
+    | '/_authenticated/dashboard/admin/domain-status'
     | '/_authenticated/dashboard/admin/employers'
     | '/_authenticated/dashboard/admin/enrollments'
     | '/_authenticated/dashboard/admin/env-readiness'
@@ -4447,6 +4472,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/admin/jobs'
     | '/_authenticated/dashboard/admin/launch-readiness'
     | '/_authenticated/dashboard/admin/launch-report'
+    | '/_authenticated/dashboard/admin/monitoring-secrets'
     | '/_authenticated/dashboard/admin/notifications'
     | '/_authenticated/dashboard/admin/observability'
     | '/_authenticated/dashboard/admin/operator-checklist'
@@ -6892,6 +6918,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAdminNotificationsRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
+    '/_authenticated/dashboard/admin/monitoring-secrets': {
+      id: '/_authenticated/dashboard/admin/monitoring-secrets'
+      path: '/monitoring-secrets'
+      fullPath: '/dashboard/admin/monitoring-secrets'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminMonitoringSecretsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/_authenticated/dashboard/admin/launch-report': {
       id: '/_authenticated/dashboard/admin/launch-report'
       path: '/launch-report'
@@ -6953,6 +6986,13 @@ declare module '@tanstack/react-router' {
       path: '/employers'
       fullPath: '/dashboard/admin/employers'
       preLoaderRoute: typeof AuthenticatedDashboardAdminEmployersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/domain-status': {
+      id: '/_authenticated/dashboard/admin/domain-status'
+      path: '/domain-status'
+      fullPath: '/dashboard/admin/domain-status'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminDomainStatusRouteImport
       parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
     '/_authenticated/dashboard/admin/crm': {
@@ -7299,6 +7339,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminCertificatesRoute: typeof AuthenticatedDashboardAdminCertificatesRoute
   AuthenticatedDashboardAdminCountriesRoute: typeof AuthenticatedDashboardAdminCountriesRoute
   AuthenticatedDashboardAdminCrmRoute: typeof AuthenticatedDashboardAdminCrmRouteWithChildren
+  AuthenticatedDashboardAdminDomainStatusRoute: typeof AuthenticatedDashboardAdminDomainStatusRoute
   AuthenticatedDashboardAdminEmployersRoute: typeof AuthenticatedDashboardAdminEmployersRoute
   AuthenticatedDashboardAdminEnrollmentsRoute: typeof AuthenticatedDashboardAdminEnrollmentsRoute
   AuthenticatedDashboardAdminEnvReadinessRoute: typeof AuthenticatedDashboardAdminEnvReadinessRoute
@@ -7308,6 +7349,7 @@ interface AuthenticatedDashboardAdminRouteChildren {
   AuthenticatedDashboardAdminJobsRoute: typeof AuthenticatedDashboardAdminJobsRoute
   AuthenticatedDashboardAdminLaunchReadinessRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRoute
   AuthenticatedDashboardAdminLaunchReportRoute: typeof AuthenticatedDashboardAdminLaunchReportRoute
+  AuthenticatedDashboardAdminMonitoringSecretsRoute: typeof AuthenticatedDashboardAdminMonitoringSecretsRoute
   AuthenticatedDashboardAdminNotificationsRoute: typeof AuthenticatedDashboardAdminNotificationsRoute
   AuthenticatedDashboardAdminObservabilityRoute: typeof AuthenticatedDashboardAdminObservabilityRoute
   AuthenticatedDashboardAdminOperatorChecklistRoute: typeof AuthenticatedDashboardAdminOperatorChecklistRoute
@@ -7355,6 +7397,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminCountriesRoute,
     AuthenticatedDashboardAdminCrmRoute:
       AuthenticatedDashboardAdminCrmRouteWithChildren,
+    AuthenticatedDashboardAdminDomainStatusRoute:
+      AuthenticatedDashboardAdminDomainStatusRoute,
     AuthenticatedDashboardAdminEmployersRoute:
       AuthenticatedDashboardAdminEmployersRoute,
     AuthenticatedDashboardAdminEnrollmentsRoute:
@@ -7372,6 +7416,8 @@ const AuthenticatedDashboardAdminRouteChildren: AuthenticatedDashboardAdminRoute
       AuthenticatedDashboardAdminLaunchReadinessRoute,
     AuthenticatedDashboardAdminLaunchReportRoute:
       AuthenticatedDashboardAdminLaunchReportRoute,
+    AuthenticatedDashboardAdminMonitoringSecretsRoute:
+      AuthenticatedDashboardAdminMonitoringSecretsRoute,
     AuthenticatedDashboardAdminNotificationsRoute:
       AuthenticatedDashboardAdminNotificationsRoute,
     AuthenticatedDashboardAdminObservabilityRoute:
