@@ -241,3 +241,150 @@ export function aggregateCheckConclusion(
   }
   return anyPending ? "pending" : "success";
 }
+
+/**
+ * Legacy commit-status API — many repos publish parity/CI signals as
+ * commit statuses rather than check runs. Combined endpoint returns the
+ * rolled-up state ("success" | "failure" | "pending" | "error").
+ */
+export interface GhCombinedStatus {
+  state: "success" | "failure" | "pending" | "error";
+  total_count: number;
+  statuses: Array<{
+    context: string;
+    state: "success" | "failure" | "pending" | "error";
+    target_url?: string | null;
+    description?: string | null;
+  }>;
+}
+
+export async function listCombinedStatusForRef(sha: string): Promise<GhCombinedStatus> {
+  const { owner, repo } = env();
+  return gh<GhCombinedStatus>(
+    `/repos/${owner}/${repo}/commits/${encodeURIComponent(sha)}/status?per_page=100`,
+    { expected: [200] },
+  );
+}
+
+/**
+ * List GitHub Actions workflow runs targeting a specific commit SHA.
+ * Useful when workflows have started but check runs / statuses haven't
+ * been indexed yet.
+ */
+export interface GhWorkflowRun {
+  name: string;
+  status: "queued" | "in_progress" | "completed" | string;
+  conclusion:
+    | "success"
+    | "failure"
+    | "neutral"
+    | "cancelled"
+    | "skipped"
+    | "timed_out"
+    | "action_required"
+    | "startup_failure"
+    | null;
+  html_url: string;
+  head_sha: string;
+}
+
+export async function listWorkflowRunsForRef(sha: string): Promise<GhWorkflowRun[]> {
+  const { owner, repo } = env();
+  const res = await gh<{ workflow_runs: GhWorkflowRun[] }>(
+    `/repos/${owner}/${repo}/actions/runs?head_sha=${encodeURIComponent(sha)}&per_page=100`,
+    { expected: [200] },
+  );
+  return res.workflow_runs ?? [];
+}
+
+export interface AggregatedCiSignals {
+  verdict: "success" | "failure" | "pending" | "unknown";
+  checkRuns: GhCheckRun[];
+  workflowRuns: GhWorkflowRun[];
+  combinedStatus: GhCombinedStatus | null;
+  reasons: string[];
+}
+
+/**
+ * Combined CI verdict across check-runs + commit statuses + workflow runs.
+ * Any failure signal wins; else any pending signal → pending; else if we
+ * saw ≥1 successful signal → success; else unknown (no signals visible yet).
+ */
+export function aggregateAllCiSignals(input: {
+  checkRuns: GhCheckRun[];
+  combinedStatus: GhCombinedStatus | null;
+  workflowRuns: GhWorkflowRun[];
+}): AggregatedCiSignals {
+  const reasons: string[] = [];
+  const badConclusion = new Set([
+    "failure",
+    "cancelled",
+    "timed_out",
+    "action_required",
+    "startup_failure",
+  ]);
+  const okConclusion = new Set(["success", "neutral", "skipped"]);
+
+  let anyFailure = false;
+  let anyPending = false;
+  let anySuccess = false;
+
+  for (const c of input.checkRuns) {
+    if (c.status !== "completed") {
+      anyPending = true;
+      reasons.push(`check "${c.name}" ${c.status}`);
+      continue;
+    }
+    if (c.conclusion && badConclusion.has(c.conclusion)) {
+      anyFailure = true;
+      reasons.push(`check "${c.name}" ${c.conclusion}`);
+    } else if (c.conclusion && okConclusion.has(c.conclusion)) {
+      anySuccess = true;
+    } else {
+      anyFailure = true;
+      reasons.push(`check "${c.name}" unknown conclusion`);
+    }
+  }
+
+  if (input.combinedStatus && input.combinedStatus.total_count > 0) {
+    for (const s of input.combinedStatus.statuses) {
+      if (s.state === "failure" || s.state === "error") {
+        anyFailure = true;
+        reasons.push(`status "${s.context}" ${s.state}`);
+      } else if (s.state === "pending") {
+        anyPending = true;
+        reasons.push(`status "${s.context}" pending`);
+      } else if (s.state === "success") {
+        anySuccess = true;
+      }
+    }
+  }
+
+  for (const w of input.workflowRuns) {
+    if (w.status !== "completed") {
+      anyPending = true;
+      reasons.push(`workflow "${w.name}" ${w.status}`);
+      continue;
+    }
+    if (w.conclusion && badConclusion.has(w.conclusion)) {
+      anyFailure = true;
+      reasons.push(`workflow "${w.name}" ${w.conclusion}`);
+    } else if (w.conclusion && okConclusion.has(w.conclusion)) {
+      anySuccess = true;
+    }
+  }
+
+  let verdict: "success" | "failure" | "pending" | "unknown";
+  if (anyFailure) verdict = "failure";
+  else if (anyPending) verdict = "pending";
+  else if (anySuccess) verdict = "success";
+  else verdict = "unknown";
+
+  return {
+    verdict,
+    checkRuns: input.checkRuns,
+    workflowRuns: input.workflowRuns,
+    combinedStatus: input.combinedStatus,
+    reasons,
+  };
+}
