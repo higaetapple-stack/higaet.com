@@ -320,7 +320,7 @@ async function checkGithub() {
   );
   const repoSecretsBody = await repoSecretsRes.json().catch(() => ({}));
   writeArtifact("gh-secrets-repo.json", JSON.stringify(repoSecretsBody, null, 2));
-  const repoNames: string[] = (repoSecretsBody?.secrets ?? []).map((s: any) => s.name);
+  const repoNames: string[] = (repoSecretsBody?.secrets ?? []).map((s: { name: string }) => s.name);
 
   for (const s of required) {
     const inEnv = envNames.includes(s);
