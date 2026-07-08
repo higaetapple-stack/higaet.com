@@ -326,6 +326,7 @@ export const upsertChecklistItem = createServerFn({ method: "POST" })
     },
   )
   .handler(async ({ context, data }): Promise<ChecklistItem> => {
+    assertSameOrigin();
     await assertAdmin(context);
     const patch = {
       status: data.status,
