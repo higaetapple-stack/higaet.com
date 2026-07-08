@@ -148,7 +148,11 @@ function InsightsHub() {
           >
             Apply
           </button>
-          <Link to={PATH} search={{}} className="text-xs text-muted-foreground hover:text-ink">
+          <Link
+            to={PATH}
+            search={{ category: undefined, tag: undefined, q: undefined }}
+            className="text-xs text-muted-foreground hover:text-ink"
+          >
             Reset
           </Link>
         </form>

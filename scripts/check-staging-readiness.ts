@@ -70,11 +70,12 @@ async function run(
       maxBuffer: 1024 * 1024,
     });
     return { ok: true, stdout, stderr };
-  } catch (err: any) {
+  } catch (err) {
+    const e = err as { stdout?: { toString?: () => string }; stderr?: { toString?: () => string }; message?: string };
     return {
       ok: false,
-      stdout: err.stdout?.toString?.() ?? "",
-      stderr: err.stderr?.toString?.() ?? String(err?.message ?? err),
+      stdout: e.stdout?.toString?.() ?? "",
+      stderr: e.stderr?.toString?.() ?? String(e?.message ?? err),
     };
   }
 }
@@ -309,7 +310,7 @@ async function checkGithub() {
   );
   const secretsBody = await secretsRes.json().catch(() => ({}));
   writeArtifact("gh-secrets.json", JSON.stringify(secretsBody, null, 2));
-  const envNames: string[] = (secretsBody?.secrets ?? []).map((s: any) => s.name);
+  const envNames: string[] = (secretsBody?.secrets ?? []).map((s: { name: string }) => s.name);
 
   // Also list repo-scoped secrets — env-scope secrets can inherit / override, and
   // some teams keep the SSH_* set at repo scope only. Either scope satisfies the check.
@@ -319,7 +320,7 @@ async function checkGithub() {
   );
   const repoSecretsBody = await repoSecretsRes.json().catch(() => ({}));
   writeArtifact("gh-secrets-repo.json", JSON.stringify(repoSecretsBody, null, 2));
-  const repoNames: string[] = (repoSecretsBody?.secrets ?? []).map((s: any) => s.name);
+  const repoNames: string[] = (repoSecretsBody?.secrets ?? []).map((s: { name: string }) => s.name);
 
   for (const s of required) {
     const inEnv = envNames.includes(s);

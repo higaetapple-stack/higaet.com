@@ -104,9 +104,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact-name }}
+          # TanStack Start + Nitro emits `.output/` (server + public). We
+          # keep `dist` as a fallback for callers that still produce it.
           path: |
-            dist
             .output
+            dist
           retention-days: 3
           if-no-files-found: warn
 
