@@ -195,26 +195,56 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
     return { runId, status: "failed", readyForDeploy: false };
   }
 
-  // 3. Poll CI checks — best-effort, bounded.
+  // 3. Poll CI checks — bounded, but keep going while checks are pending or
+  //    haven't registered yet (verdict "unknown" == zero checks visible).
   const attempts = Math.max(1, Math.min(opts.ciPollAttempts ?? 40, 60));
   const intervalMs = Math.max(5000, Math.min(opts.ciPollIntervalMs ?? 10000, 30000));
+  const initialDelayMs = Math.max(0, Math.min(opts.ciInitialDelayMs ?? 15000, 60000));
 
   let ciVerdict: "success" | "failure" | "pending" | "unknown" = "unknown";
+  let lastCheckCount = 0;
   if (prNumber) {
+    if (initialDelayMs > 0) {
+      await appendPhase(runId, {
+        phase: "poll_ci",
+        status: "warn",
+        message: `Waiting ${Math.round(initialDelayMs / 1000)}s for GitHub to register check runs`,
+        data: { initialDelayMs },
+      });
+      await new Promise((r) => setTimeout(r, initialDelayMs));
+    }
+
     for (let i = 0; i < attempts; i++) {
       try {
         // Reuse the shared batch poller so results land in sentry_pr_check_runs.
         await pollOpenPRChecks({ batchSize: 5 });
         const pr = await getPullRequest(prNumber);
         const checks = await listCheckRunsForRef(pr.head_sha);
+        lastCheckCount = checks.length;
         ciVerdict = aggregateCheckConclusion(checks);
+        // Treat zero-checks ("unknown") as pending — the check-suite may not
+        // have registered yet. Do not exit the poll loop on unknown/pending.
+        const effective: "success" | "failure" | "pending" =
+          ciVerdict === "success"
+            ? "success"
+            : ciVerdict === "failure"
+            ? "failure"
+            : "pending";
         await appendPhase(runId, {
           phase: "poll_ci",
-          status: ciVerdict === "failure" ? "failed" : ciVerdict === "success" ? "ok" : "warn",
-          message: `Attempt ${i + 1}/${attempts}: ${checks.length} check(s), verdict=${ciVerdict}`,
-          data: { attempt: i + 1, checks: checks.length, verdict: ciVerdict },
+          status:
+            effective === "failure" ? "failed" : effective === "success" ? "ok" : "warn",
+          message: `Attempt ${i + 1}/${attempts}: ${checks.length} check(s), verdict=${effective}${
+            ciVerdict === "unknown" ? " (no checks registered yet)" : ""
+          }`,
+          data: {
+            attempt: i + 1,
+            checks: checks.length,
+            verdict: effective,
+            rawVerdict: ciVerdict,
+          },
         });
-        if (ciVerdict === "success" || ciVerdict === "failure") break;
+        if (effective === "success" || effective === "failure") break;
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         await appendPhase(runId, {
@@ -228,25 +258,54 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
   }
 
   // 4. Deployment readiness verdict.
-  const readyForDeploy = ciVerdict === "success";
-  const overallStatus: "passed" | "failed" = ciVerdict === "failure" ? "failed" : "passed";
+  //    success  → ready to deploy         (status=passed, ready=true)
+  //    failure  → CI blocked              (status=failed, ready=false)
+  //    pending  → still waiting on checks (status=pending, ready=null)
+  const effectiveVerdict: "success" | "failure" | "pending" =
+    ciVerdict === "success"
+      ? "success"
+      : ciVerdict === "failure"
+      ? "failure"
+      : "pending";
+
+  const readyForDeploy: boolean | null =
+    effectiveVerdict === "success"
+      ? true
+      : effectiveVerdict === "failure"
+      ? false
+      : null;
+
+  const overallStatus: "passed" | "failed" | "pending" =
+    effectiveVerdict === "success"
+      ? "passed"
+      : effectiveVerdict === "failure"
+      ? "failed"
+      : "pending";
+
   await appendPhase(runId, {
     phase: "deployment_readiness",
-    status: readyForDeploy ? "ok" : ciVerdict === "failure" ? "failed" : "warn",
-    message: readyForDeploy
-      ? "All required CI checks passed — safe to deploy"
-      : ciVerdict === "failure"
-      ? "CI reported failure — deployment blocked"
-      : `CI still ${ciVerdict} after ${attempts} polls — human review required`,
-    data: { ciVerdict },
+    status:
+      effectiveVerdict === "success"
+        ? "ok"
+        : effectiveVerdict === "failure"
+        ? "failed"
+        : "warn",
+    message:
+      effectiveVerdict === "success"
+        ? "All required CI checks passed — safe to deploy"
+        : effectiveVerdict === "failure"
+        ? "CI reported failure — deployment blocked"
+        : `CI still pending after ${attempts} polls (${lastCheckCount} check(s) seen) — human review required`,
+    data: { ciVerdict: effectiveVerdict, rawVerdict: ciVerdict, checks: lastCheckCount },
   });
 
   await finalize(runId, {
     status: overallStatus,
-    ci_conclusion: ciVerdict,
+    ci_conclusion: effectiveVerdict,
     ready_for_deploy: readyForDeploy,
     error: null,
   });
 
-  return { runId, status: overallStatus, prUrl, ciConclusion: ciVerdict, readyForDeploy };
+  return { runId, status: overallStatus, prUrl, ciConclusion: effectiveVerdict, readyForDeploy };
 }
+
