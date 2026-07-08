@@ -164,6 +164,51 @@ export const probeSreHealth = createServerFn({ method: "POST" })
     return [staging, prod];
   });
 
+/**
+ * Re-run both health probes AND update the two operator checklist items
+ * (staging.health, prod.health) based on the results.
+ */
+export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<{
+    probes: HealthProbeResult[];
+    updated: { item_key: string; status: ChecklistItem["status"] }[];
+  }> => {
+    await assertAdmin(context);
+    const [staging, prod] = await Promise.all([
+      probeOne("staging", STAGING_URL),
+      probeOne("production", PROD_URL),
+    ]);
+    const nowIso = new Date().toISOString();
+    const rows = [
+      {
+        item_key: "staging.health",
+        status: (staging.ok && staging.body?.healthy === true ? "done" : "blocked") as ChecklistItem["status"],
+        note: `Auto-probe ${nowIso} · HTTP ${staging.status ?? "n/a"} · healthy=${String(staging.body?.healthy)}${staging.error ? ` · ${staging.error}` : ""}`,
+      },
+      {
+        item_key: "prod.health",
+        status: (prod.ok && prod.body?.healthy === true ? "done" : "blocked") as ChecklistItem["status"],
+        note: `Auto-probe ${nowIso} · HTTP ${prod.status ?? "n/a"} · healthy=${String(prod.body?.healthy)}${prod.error ? ` · ${prod.error}` : ""}`,
+      },
+    ];
+    const updated: { item_key: string; status: ChecklistItem["status"] }[] = [];
+    for (const r of rows) {
+      const patch = {
+        status: r.status,
+        notes: r.note,
+        completed_at: r.status === "done" ? nowIso : null,
+        completed_by: r.status === "done" ? context.userId : null,
+      };
+      const { error } = await context.supabase
+        .from("operator_checklist_items")
+        .update(patch)
+        .eq("item_key", r.item_key);
+      if (!error) updated.push({ item_key: r.item_key, status: r.status });
+    }
+    return { probes: [staging, prod], updated };
+  });
+
 function checkPresent(name: string): boolean {
   const v = process.env[name];
   return typeof v === "string" && v.trim().length > 0;
