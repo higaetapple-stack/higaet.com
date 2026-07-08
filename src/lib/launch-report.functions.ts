@@ -97,12 +97,7 @@ const STAGING_URL = "https://staging.higaet.com";
 const HEALTH_PATH = "/api/public/sre/e2e-health";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data: allowed, error } = await ctx.supabase.rpc("has_any_role", {
-    _user_id: ctx.userId,
-    _roles: ["admin", "super_admin"],
-  });
-  if (error) throw new Error(error.message);
-  if (!allowed) throw new Error("Forbidden");
+  await guardAssertAdmin(ctx);
 }
 
 async function probeOne(target: string, base: string): Promise<HealthProbeResult> {
