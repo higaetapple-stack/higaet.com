@@ -310,7 +310,7 @@ async function checkGithub() {
   );
   const secretsBody = await secretsRes.json().catch(() => ({}));
   writeArtifact("gh-secrets.json", JSON.stringify(secretsBody, null, 2));
-  const envNames: string[] = (secretsBody?.secrets ?? []).map((s: any) => s.name);
+  const envNames: string[] = (secretsBody?.secrets ?? []).map((s: { name: string }) => s.name);
 
   // Also list repo-scoped secrets — env-scope secrets can inherit / override, and
   // some teams keep the SSH_* set at repo scope only. Either scope satisfies the check.
