@@ -13,6 +13,7 @@ const listInput = z.object({
   limit: z.number().int().min(1).max(500).optional(),
 });
 
+type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
 export type AuditLogRow = {
   id: string;
   actor_id: string | null;
@@ -20,7 +21,7 @@ export type AuditLogRow = {
   action: string;
   resource_type: string | null;
   resource_id: string | null;
-  metadata: Record<string, unknown> | null;
+  metadata: JsonValue | null;
   created_at: string;
 };
 
