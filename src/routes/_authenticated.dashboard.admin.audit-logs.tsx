@@ -168,7 +168,7 @@ function AuditLogsPage() {
                 </TableHeader>
                 <TableBody>
                   {rows.map((r) => {
-                    const md = (r.metadata ?? {}) as Record<string, unknown>;
+                    const md = (r.metadata && typeof r.metadata === "object" && !Array.isArray(r.metadata) ? r.metadata : {}) as Record<string, unknown>;
                     const dom = typeof md.domain === "string" ? (md.domain as string) : null;
                     return (
                       <TableRow key={r.id}>
