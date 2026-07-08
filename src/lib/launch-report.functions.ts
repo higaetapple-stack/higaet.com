@@ -344,13 +344,20 @@ export const upsertChecklistItem = createServerFn({ method: "POST" })
       )
       .single();
     if (error) throw new Error(error.message);
+    await writeAudit(context.supabase, context.userId, "checklist.upsert", "operator_checklist", data.id, {
+      status: data.status,
+      has_notes: !!data.notes,
+      has_evidence: !!data.evidence_url,
+    });
     return updated as ChecklistItem;
   });
 
 export const buildLaunchReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<LaunchReportBundle> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("launch-report.build", context.userId, 3_000);
 
     // Fresh env readiness compute (source of truth at export time)
     const envReadiness = computeEnvReadiness();
