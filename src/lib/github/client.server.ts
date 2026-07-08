@@ -36,27 +36,59 @@ export function isGithubConfigured(): boolean {
 
 async function gh<T = unknown>(
   path: string,
-  init: RequestInit & { expected?: number[] } = {},
+  init: RequestInit & { expected?: number[]; timeoutMs?: number; retries?: number } = {},
 ): Promise<T> {
   const { token } = env();
-  const res = await fetch(`${API}${path}`, {
-    ...init,
-    headers: {
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "User-Agent": UA,
-      Authorization: `Bearer ${token}`,
-      ...(init.body ? { "Content-Type": "application/json" } : {}),
-      ...(init.headers ?? {}),
-    },
-  });
   const expected = init.expected ?? [200, 201];
-  const text = await res.text();
-  if (!expected.includes(res.status)) {
-    throw new Error(`github ${res.status} ${path}: ${text.slice(0, 400)}`);
+  const timeoutMs = init.timeoutMs ?? 15000;
+  const method = (init.method ?? "GET").toUpperCase();
+  const isIdempotent = method === "GET" || method === "HEAD";
+  const maxAttempts = Math.max(1, init.retries ?? (isIdempotent ? 3 : 1));
+
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(`${API}${path}`, {
+        ...init,
+        signal: controller.signal,
+        headers: {
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": UA,
+          Authorization: `Bearer ${token}`,
+          ...(init.body ? { "Content-Type": "application/json" } : {}),
+          ...(init.headers ?? {}),
+        },
+      });
+      const text = await res.text();
+      if (!expected.includes(res.status)) {
+        // Retry transient 5xx and 429 on idempotent calls; surface 401/403/404 immediately.
+        const transient = res.status >= 500 || res.status === 429;
+        if (transient && isIdempotent && attempt < maxAttempts) {
+          const retryAfter = Number(res.headers.get("retry-after")) || attempt;
+          await new Promise((r) => setTimeout(r, Math.min(retryAfter * 1000, 5000)));
+          continue;
+        }
+        throw new Error(`github ${res.status} ${path}: ${text.slice(0, 400)}`);
+      }
+      return (text ? JSON.parse(text) : {}) as T;
+    } catch (e) {
+      lastErr = e;
+      const isAbort = (e as { name?: string })?.name === "AbortError";
+      if (isIdempotent && attempt < maxAttempts && (isAbort || !(e instanceof Error && e.message.startsWith("github ")))) {
+        await new Promise((r) => setTimeout(r, 500 * attempt));
+        continue;
+      }
+      throw e;
+    } finally {
+      clearTimeout(timer);
+    }
   }
-  return (text ? JSON.parse(text) : {}) as T;
+  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
 }
+
 
 export async function getDefaultBranch(): Promise<string> {
   const { owner, repo } = env();
