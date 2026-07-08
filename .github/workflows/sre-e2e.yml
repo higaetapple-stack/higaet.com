@@ -78,8 +78,8 @@ jobs:
           CODE=$(echo "$RESP" | tail -n 1)
           echo "HTTP $CODE"
           echo "$BODY" | tee response.json
-          if [ "$CODE" != "200" ]; then
-            echo "::error::E2E trigger failed with HTTP $CODE"
+          if [ "$CODE" != "200" ] && [ "$CODE" != "400" ] && [ "$CODE" != "500" ]; then
+            echo "::error::E2E trigger failed with unexpected HTTP $CODE"
             exit 1
           fi
           STATUS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('response.json')).status || 'unknown')")
@@ -90,6 +90,13 @@ jobs:
           fi
           if [ "$STATUS" = "failed" ]; then
             echo "::error::E2E smoke returned status=failed"
+            exit 1
+          fi
+          # Invalid/missing status: endpoint MUST return HTTP 400. Fail loudly
+          # so a schema drift is not silently reported as passed.
+          VALID_STATUSES="passed failed pending"
+          if ! echo " $VALID_STATUSES " | grep -q " $STATUS "; then
+            echo "::error::E2E smoke returned invalid or missing status=$STATUS"
             exit 1
           fi
 
@@ -144,6 +151,27 @@ jobs:
             exit 1
           fi
           echo "::notice::Verified: success run (status=$STATUS) returned HTTP 200 and did not emit the pending warning."
+
+      - name: Assert invalid/missing status returns HTTP 400 (contract check)
+        # Runs only when the trigger step recorded a status outside the known
+        # set (blank, 'unknown', or a future value). The endpoint MUST 400 so
+        # schema drift can never masquerade as a pass.
+        if: always() && steps.run.outputs.status != 'passed' && steps.run.outputs.status != 'failed' && steps.run.outputs.status != 'pending'
+        env:
+          CODE: ${{ steps.run.outputs.http_code }}
+          STATUS: ${{ steps.run.outputs.status }}
+        run: |
+          set -euo pipefail
+          if [ "$CODE" != "400" ]; then
+            echo "::error::Contract violation: invalid/missing status ($STATUS) must return HTTP 400 (got $CODE)."
+            exit 1
+          fi
+          if grep -q "status=pending" "$GITHUB_STEP_SUMMARY" 2>/dev/null; then
+            echo "::error::Contract violation: invalid-status run must not emit the pending ::warning:: annotation."
+            exit 1
+          fi
+          echo "::notice::Verified: invalid/missing status ($STATUS) returned HTTP 400 and did not emit the pending warning."
+
 
 
 
