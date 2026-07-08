@@ -86,7 +86,9 @@ export const upsertIntegrationSecret = createServerFn({ method: "POST" })
     return input;
   })
   .handler(async ({ context, data }) => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("integration-secret.upsert", context.userId, 2_000);
     const { error } = await context.supabase
       .from("admin_integration_secrets")
       .upsert(
@@ -101,6 +103,10 @@ export const upsertIntegrationSecret = createServerFn({ method: "POST" })
         { onConflict: "key" },
       );
     if (error) throw new Error(error.message);
+    await writeAudit(context.supabase, context.userId, "integration_secret.save", "integration_secret", null, {
+      key: data.key,
+      value_len: data.value.length,
+    });
     return { ok: true };
   });
 
