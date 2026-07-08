@@ -140,6 +140,22 @@ jobs:
             dist/ \
             "$SSH_USER@$SSH_HOST:$DEPLOY_DIR/releases/$RELEASE/"
 
+      - name: Verify remote release layout
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            REL='$DEPLOY_DIR/releases/$RELEASE'
+            for f in .output/server/index.mjs app.js package.json; do
+              if [ ! -f \"\$REL/\$f\" ]; then
+                echo \"::error::Missing after rsync: \$REL/\$f\"
+                exit 1
+              fi
+            done
+            echo \"Remote release layout OK\"
+            ls -la \"\$REL/.output/server/index.mjs\"
+          "
+
       - name: Predeploy validation (server-side)
         if: env.SKIP_DEPLOY != '1'
         continue-on-error: true
