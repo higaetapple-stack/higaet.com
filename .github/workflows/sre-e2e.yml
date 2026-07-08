@@ -85,12 +85,12 @@ jobs:
           STATUS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('response.json')).status || 'unknown')")
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
           echo "http_code=$CODE" >> "$GITHUB_OUTPUT"
+          if [ "$STATUS" = "pending" ]; then
+            echo "::warning::E2E smoke returned status=pending — CI checks did not complete in the polling window"
+          fi
           if [ "$STATUS" = "failed" ]; then
             echo "::error::E2E smoke returned status=failed"
             exit 1
-          fi
-          if [ "$STATUS" = "pending" ]; then
-            echo "::warning::E2E smoke returned status=pending — CI checks did not complete in the polling window"
           fi
 
       - name: Assert pending returns HTTP 200 (contract check)
@@ -104,6 +104,27 @@ jobs:
             exit 1
           fi
           echo "::notice::Verified: pending run returned HTTP 200 and emitted ::warning:: annotation as expected."
+
+      - name: Assert failed returns HTTP 500 (contract check)
+        if: always() && steps.run.outputs.status == 'failed'
+        env:
+          CODE: ${{ steps.run.outputs.http_code }}
+        run: |
+          set -euo pipefail
+          if [ "$CODE" != "500" ]; then
+            echo "::error::Contract violation: failed status must return HTTP 500 (got $CODE)."
+            exit 1
+          fi
+          # Guard against pending-warning leaking into failed responses.
+          # The pending ::warning:: annotation is only emitted inside the 'pending' branch
+          # of the trigger step, so a failed run must never carry it. This grep is a
+          # defense-in-depth check against future edits reordering the branches.
+          if grep -q "status=pending" "$GITHUB_STEP_SUMMARY" 2>/dev/null; then
+            echo "::error::Contract violation: failed run must not emit the pending ::warning:: annotation."
+            exit 1
+          fi
+          echo "::notice::Verified: failed run returned HTTP 500 and did not emit the pending warning."
+
 
 
 
