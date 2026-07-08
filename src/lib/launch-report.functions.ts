@@ -436,6 +436,15 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
 
     const overallDecision: "READY" | "BLOCKED" = reasons.length === 0 ? "READY" : "BLOCKED";
 
+    await writeAudit(context.supabase, context.userId, "launch_report.export", "launch_report", null, {
+      overall: overallDecision,
+      reasons,
+      env_overall: envReadiness.overall,
+      monitoring_overall: monitoring.overall,
+      checklist: { done, pending, blocked, requiredOutstanding },
+    });
+
+
     return {
       kind: "higaet.production-launch-report",
       version: 1,
