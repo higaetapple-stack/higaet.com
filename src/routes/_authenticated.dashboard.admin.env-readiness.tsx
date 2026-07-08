@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, CheckCircle2, RefreshCw, ShieldAlert, XCircle } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Download,
+  History,
+  RefreshCw,
+  ShieldAlert,
+  XCircle,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,7 +21,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getEnvReadiness, type SecretCheck } from "@/lib/env-readiness.functions";
+import {
+  getEnvReadiness,
+  getEnvReadinessActivity,
+  recheckEnvReadinessNow,
+  type EnvReadinessReport,
+  type SecretCheck,
+} from "@/lib/env-readiness.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin/env-readiness")({
   component: EnvReadinessPage,
@@ -47,12 +61,52 @@ function StatusPill({ check }: { check: SecretCheck }) {
   );
 }
 
+function downloadReport(report: EnvReadinessReport) {
+  const payload = {
+    kind: "higaet.env-readiness.report",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    ...report,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const ts = new Date().toISOString().replace(/[:.]/g, "-");
+  a.download = `env-readiness-${report.overall}-${ts}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 function EnvReadinessPage() {
   const fetchReport = useServerFn(getEnvReadiness);
-  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
+  const fetchActivity = useServerFn(getEnvReadinessActivity);
+  const forceRecheck = useServerFn(recheckEnvReadinessNow);
+  const qc = useQueryClient();
+
+  const { data, isLoading, isError, error, isFetching } = useQuery({
     queryKey: ["admin", "env-readiness"],
     queryFn: () => fetchReport(),
     refetchOnWindowFocus: false,
+    // Cached snapshot refreshes every 15 minutes via cron; poll every 60s so the
+    // dashboard picks it up without hammering the server.
+    refetchInterval: 60_000,
+  });
+
+  const activityQuery = useQuery({
+    queryKey: ["admin", "env-readiness", "activity"],
+    queryFn: () => fetchActivity(),
+    refetchOnWindowFocus: false,
+    refetchInterval: 60_000,
+  });
+
+  const recheckMutation = useMutation({
+    mutationFn: () => forceRecheck(),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "env-readiness"] });
+    },
   });
 
   if (isError) {
@@ -86,12 +140,33 @@ function EnvReadinessPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Environment Readiness</h1>
           <p className="text-sm text-muted-foreground">
             Presence-only audit of production runtime secrets. Values are never returned to the browser.
+            Snapshot refreshed automatically every 15 minutes.
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-          <RefreshCw className={`mr-2 size-4 ${isFetching ? "animate-spin" : ""}`} />
-          Recheck
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => data && downloadReport(data)}
+            disabled={!data}
+          >
+            <Download className="mr-2 size-4" />
+            Download report
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => recheckMutation.mutate()}
+            disabled={recheckMutation.isPending || isFetching}
+          >
+            <RefreshCw
+              className={`mr-2 size-4 ${
+                recheckMutation.isPending || isFetching ? "animate-spin" : ""
+              }`}
+            />
+            Recheck now
+          </Button>
+        </div>
       </div>
 
       {isLoading || !data ? (
@@ -220,8 +295,6 @@ function EnvReadinessPage() {
             );
           })()}
 
-
-
           {data.groups.map((g) => (
             <Card key={g.category}>
               <CardHeader>
@@ -269,8 +342,61 @@ function EnvReadinessPage() {
             </Card>
           ))}
 
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <History className="size-4" />
+                Activity log
+              </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                Latest 50 events. Views and verdict changes only — no secret values.
+              </p>
+            </CardHeader>
+            <CardContent>
+              {activityQuery.isLoading ? (
+                <p className="text-sm text-muted-foreground">Loading activity…</p>
+              ) : (activityQuery.data ?? []).length === 0 ? (
+                <p className="text-sm text-muted-foreground">No activity yet.</p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>When</TableHead>
+                      <TableHead>Event</TableHead>
+                      <TableHead>Previous</TableHead>
+                      <TableHead>Next</TableHead>
+                      <TableHead>Actor</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {(activityQuery.data ?? []).map((e) => (
+                      <TableRow key={e.id}>
+                        <TableCell className="text-xs text-muted-foreground">
+                          {new Date(e.created_at).toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={e.event_type === "state_changed" ? "destructive" : "secondary"}
+                          >
+                            {e.event_type.replace("_", " ")}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-xs">{e.previous_overall ?? "—"}</TableCell>
+                        <TableCell className="text-xs">{e.next_overall ?? "—"}</TableCell>
+                        <TableCell className="font-mono text-[11px] text-muted-foreground">
+                          {e.user_id ? e.user_id.slice(0, 8) : "system"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </CardContent>
+          </Card>
+
           <p className="text-xs text-muted-foreground">
-            Generated {new Date(data.generatedAt).toLocaleString()} · env {data.environment}
+            Snapshot from {data.cachedAt ? new Date(data.cachedAt).toLocaleString() : "just now"}
+            {data.source ? ` · source: ${data.source}` : ""} · env {data.environment}
           </p>
         </>
       )}
