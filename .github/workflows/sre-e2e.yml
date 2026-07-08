@@ -125,6 +125,27 @@ jobs:
           fi
           echo "::notice::Verified: failed run returned HTTP 500 and did not emit the pending warning."
 
+      - name: Assert success returns HTTP 200 (contract check)
+        # runSreE2ETest emits status ∈ {passed,failed,pending}; treat anything
+        # that isn't failed/pending as a success case (covers 'passed' today
+        # and defensively covers a future 'success' rename).
+        if: always() && steps.run.outputs.status != 'failed' && steps.run.outputs.status != 'pending' && steps.run.outputs.status != ''
+        env:
+          CODE: ${{ steps.run.outputs.http_code }}
+          STATUS: ${{ steps.run.outputs.status }}
+        run: |
+          set -euo pipefail
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Contract violation: success status ($STATUS) must return HTTP 200 (got $CODE)."
+            exit 1
+          fi
+          if grep -q "status=pending" "$GITHUB_STEP_SUMMARY" 2>/dev/null; then
+            echo "::error::Contract violation: success run must not emit the pending ::warning:: annotation."
+            exit 1
+          fi
+          echo "::notice::Verified: success run (status=$STATUS) returned HTTP 200 and did not emit the pending warning."
+
+
 
 
 
