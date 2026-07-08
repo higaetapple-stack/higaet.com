@@ -345,6 +345,20 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
     error: null,
   });
 
+  console.log(
+    JSON.stringify({
+      evt: "sre_e2e_decision",
+      runId,
+      prNumber,
+      prUrl,
+      ciVerdict: effectiveVerdict,
+      rawVerdict: ciVerdict,
+      readyForDeploy,
+      overallStatus,
+      signalsSeen: lastCheckCount,
+    }),
+  );
+
   return { runId, status: overallStatus, prUrl, ciConclusion: effectiveVerdict, readyForDeploy };
 }
 
