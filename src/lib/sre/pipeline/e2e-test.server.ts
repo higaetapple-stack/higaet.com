@@ -221,34 +221,71 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
         // Reuse the shared batch poller so results land in sentry_pr_check_runs.
         await pollOpenPRChecks({ batchSize: 5 });
         const pr = await getPullRequest(prNumber);
-        const checks = await listCheckRunsForRef(pr.head_sha);
-        lastCheckCount = checks.length;
-        ciVerdict = aggregateCheckConclusion(checks);
-        // Treat zero-checks ("unknown") as pending — the check-suite may not
-        // have registered yet. Do not exit the poll loop on unknown/pending.
+        const [checks, combined, workflows] = await Promise.all([
+          listCheckRunsForRef(pr.head_sha),
+          listCombinedStatusForRef(pr.head_sha).catch((err) => {
+            console.warn(`[sre-e2e] combined-status fetch failed: ${(err as Error).message}`);
+            return null;
+          }),
+          listWorkflowRunsForRef(pr.head_sha).catch((err) => {
+            console.warn(`[sre-e2e] workflow-runs fetch failed: ${(err as Error).message}`);
+            return [];
+          }),
+        ]);
+        const agg = aggregateAllCiSignals({
+          checkRuns: checks,
+          combinedStatus: combined,
+          workflowRuns: workflows,
+        });
+        ciVerdict = agg.verdict;
+        lastCheckCount = checks.length + workflows.length + (combined?.total_count ?? 0);
+
+        // Structured log for observability (parsed by log pipeline).
+        console.log(
+          JSON.stringify({
+            evt: "sre_e2e_poll",
+            runId,
+            prNumber,
+            headSha: pr.head_sha,
+            attempt: i + 1,
+            checkRuns: checks.map((c) => ({ name: c.name, status: c.status, conclusion: c.conclusion })),
+            statuses: combined?.statuses.map((s) => ({ context: s.context, state: s.state })) ?? [],
+            workflowRuns: workflows.map((w) => ({ name: w.name, status: w.status, conclusion: w.conclusion })),
+            verdict: agg.verdict,
+            reasons: agg.reasons,
+          }),
+        );
+
         const effective: "success" | "failure" | "pending" =
-          ciVerdict === "success"
+          agg.verdict === "success"
             ? "success"
-            : ciVerdict === "failure"
+            : agg.verdict === "failure"
             ? "failure"
             : "pending";
         await appendPhase(runId, {
           phase: "poll_ci",
           status:
             effective === "failure" ? "failed" : effective === "success" ? "ok" : "warn",
-          message: `Attempt ${i + 1}/${attempts}: ${checks.length} check(s), verdict=${effective}${
-            ciVerdict === "unknown" ? " (no checks registered yet)" : ""
+          message: `Attempt ${i + 1}/${attempts}: ${checks.length} check-run(s), ${workflows.length} workflow-run(s), ${
+            combined?.total_count ?? 0
+          } status(es) — verdict=${effective}${
+            agg.verdict === "unknown" ? " (no CI signals visible yet)" : ""
           }`,
           data: {
             attempt: i + 1,
-            checks: checks.length,
+            headSha: pr.head_sha,
+            checkRuns: checks.length,
+            workflowRuns: workflows.length,
+            statuses: combined?.total_count ?? 0,
             verdict: effective,
-            rawVerdict: ciVerdict,
+            rawVerdict: agg.verdict,
+            reasons: agg.reasons.slice(0, 10),
           },
         });
         if (effective === "success" || effective === "failure") break;
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`[sre-e2e] poll attempt ${i + 1} error: ${msg}`);
         await appendPhase(runId, {
           phase: "poll_ci",
           status: "warn",
