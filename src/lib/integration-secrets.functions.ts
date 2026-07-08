@@ -47,9 +47,13 @@ export interface IntegrationSecretRow {
 }
 
 function mask(value: string): string {
+  // Never leak any raw characters of the secret to the client. The admin
+  // UI only needs to know a value is configured; a length bucket gives
+  // enough context to spot obviously-wrong pastes without exposing bytes.
   if (!value) return "";
-  if (value.length <= 6) return "•".repeat(value.length);
-  return `${value.slice(0, 3)}${"•".repeat(Math.min(12, value.length - 6))}${value.slice(-3)}`;
+  const len = value.length;
+  const bucket = len < 16 ? "short" : len < 40 ? "medium" : "long";
+  return `configured (${bucket})`;
 }
 
 export const listIntegrationSecrets = createServerFn({ method: "GET" })
