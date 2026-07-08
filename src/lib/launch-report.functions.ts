@@ -152,11 +152,17 @@ async function probeOne(target: string, base: string): Promise<HealthProbeResult
 export const probeSreHealth = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<HealthProbeResult[]> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("sre.health.probe", context.userId, 10_000);
     const [staging, prod] = await Promise.all([
       probeOne("staging", STAGING_URL),
       probeOne("production", PROD_URL),
     ]);
+    await writeAudit(context.supabase, context.userId, "sre.health.probe", "sre_health", null, {
+      staging: { ok: staging.ok, status: staging.status, healthy: staging.body?.healthy },
+      production: { ok: prod.ok, status: prod.status, healthy: prod.body?.healthy },
+    });
     return [staging, prod];
   });
 
@@ -170,7 +176,9 @@ export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
     probes: HealthProbeResult[];
     updated: { item_key: string; status: ChecklistItem["status"] }[];
   }> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("sre.health.probe_and_update", context.userId, 10_000);
     const [staging, prod] = await Promise.all([
       probeOne("staging", STAGING_URL),
       probeOne("production", PROD_URL),
@@ -202,6 +210,11 @@ export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
         .eq("item_key", r.item_key);
       if (!error) updated.push({ item_key: r.item_key, status: r.status });
     }
+    await writeAudit(context.supabase, context.userId, "sre.health.probe_and_update", "operator_checklist", null, {
+      staging: { ok: staging.ok, status: staging.status, healthy: staging.body?.healthy },
+      production: { ok: prod.ok, status: prod.status, healthy: prod.body?.healthy },
+      updated,
+    });
     return { probes: [staging, prod], updated };
   });
 
