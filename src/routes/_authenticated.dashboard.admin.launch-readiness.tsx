@@ -40,6 +40,8 @@ import type {
   LaunchReadinessRun,
   OverallStatus,
 } from "@/lib/launch-readiness.types";
+import { EnvReadinessBanner } from "@/components/admin/EnvReadinessBanner";
+
 
 export const Route = createFileRoute(
   "/_authenticated/dashboard/admin/launch-readiness",
@@ -437,6 +439,9 @@ function LaunchReadinessPage() {
           Live deployment readiness — last CI run and full history.
         </p>
       </header>
+
+      <EnvReadinessBanner />
+
 
       {q.isLoading ? (
         <Card>
