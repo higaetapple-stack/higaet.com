@@ -199,9 +199,33 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
 
   // 3. Poll CI checks — bounded, but keep going while checks are pending or
   //    haven't registered yet (verdict "unknown" == zero checks visible).
-  const attempts = Math.max(1, Math.min(opts.ciPollAttempts ?? 40, 60));
-  const intervalMs = Math.max(5000, Math.min(opts.ciPollIntervalMs ?? 10000, 30000));
-  const initialDelayMs = Math.max(0, Math.min(opts.ciInitialDelayMs ?? 15000, 60000));
+  //    Bounds also enforced by scripts/check-sre-production-readiness.ts.
+  const envAttempts = Number(process.env.SRE_CI_POLL_ATTEMPTS);
+  const envInterval = Number(process.env.SRE_CI_POLL_INTERVAL_MS);
+  const envInitial = Number(process.env.SRE_CI_INITIAL_DELAY_MS);
+  const attempts = Math.max(
+    1,
+    Math.min(opts.ciPollAttempts ?? (Number.isFinite(envAttempts) ? envAttempts : 40), 120),
+  );
+  const intervalMs = Math.max(
+    1000,
+    Math.min(opts.ciPollIntervalMs ?? (Number.isFinite(envInterval) ? envInterval : 10000), 60000),
+  );
+  const initialDelayMs = Math.max(
+    0,
+    Math.min(opts.ciInitialDelayMs ?? (Number.isFinite(envInitial) ? envInitial : 15000), 60000),
+  );
+
+  console.log(
+    JSON.stringify({
+      evt: "sre_e2e_poll_config",
+      runId,
+      attempts,
+      intervalMs,
+      initialDelayMs,
+      maxWaitMs: initialDelayMs + attempts * intervalMs,
+    }),
+  );
 
   let ciVerdict: "success" | "failure" | "pending" | "unknown" = "unknown";
   let lastCheckCount = 0;
@@ -215,6 +239,8 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
       });
       await new Promise((r) => setTimeout(r, initialDelayMs));
     }
+
+
 
     for (let i = 0; i < attempts; i++) {
       try {
