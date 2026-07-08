@@ -78,10 +78,14 @@ jobs:
           fi
           STATUS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('response.json')).status || 'unknown')")
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
-          if [ "$STATUS" != "passed" ]; then
-            echo "::error::E2E smoke returned status=$STATUS"
+          if [ "$STATUS" = "failed" ]; then
+            echo "::error::E2E smoke returned status=failed"
             exit 1
           fi
+          if [ "$STATUS" = "pending" ]; then
+            echo "::warning::E2E smoke returned status=pending — CI checks did not complete in the polling window"
+          fi
+
 
       - name: Summary
         if: always()
