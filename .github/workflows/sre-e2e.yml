@@ -23,6 +23,12 @@ on:
     # Every 6 hours — cheap, but keeps token health + pipeline integrity visible.
     - cron: "0 */6 * * *"
 
+# Least-privilege token: this workflow only invokes an external HTTPS endpoint
+# and reads its response. It never writes to the repo, PRs, checks, or actions.
+permissions:
+  contents: read
+
+
 jobs:
   sre-e2e:
     name: Sentry → AI → PR → CI → Deploy readiness
