@@ -92,6 +92,13 @@ jobs:
             echo "::error::E2E smoke returned status=failed"
             exit 1
           fi
+          # Invalid/missing status: endpoint MUST return HTTP 400. Fail loudly
+          # so a schema drift is not silently reported as passed.
+          VALID_STATUSES="passed failed pending"
+          if ! echo " $VALID_STATUSES " | grep -q " $STATUS "; then
+            echo "::error::E2E smoke returned invalid or missing status=$STATUS"
+            exit 1
+          fi
 
       - name: Assert pending returns HTTP 200 (contract check)
         if: always() && steps.run.outputs.status == 'pending'
