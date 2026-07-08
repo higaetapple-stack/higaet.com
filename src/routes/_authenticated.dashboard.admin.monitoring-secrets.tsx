@@ -39,11 +39,11 @@ function MonitoringSecretsPage() {
   const saveMut = useMutation({
     mutationFn: (v: { key: IntegrationKey; value: string }) => saveFn({ data: v }),
     onSuccess: (_r, v) => {
-      toast({ title: "Saved", description: `${v.key} updated.` });
+      toast.success(`${v.key} saved.`);
       setDrafts((d) => ({ ...d, [v.key]: "" }));
       qc.invalidateQueries({ queryKey: ["admin", "integration-secrets"] });
     },
-    onError: (e: any) => toast({ title: "Save failed", description: e?.message, variant: "destructive" }),
+    onError: (e: any) => toast.error(`Save failed: ${e?.message ?? "unknown"}`),
   });
 
   const verifyMut = useMutation({
@@ -52,10 +52,8 @@ function MonitoringSecretsPage() {
       setVerifyResults(r);
       qc.invalidateQueries({ queryKey: ["admin", "integration-secrets"] });
       const bad = r.filter((v) => !v.ok).length;
-      toast({
-        title: bad === 0 ? "All providers verified" : `${bad} provider(s) failed`,
-        variant: bad === 0 ? undefined : "destructive",
-      });
+      if (bad === 0) toast.success("All providers verified");
+      else toast.error(`${bad} provider(s) failed`);
     },
   });
 
