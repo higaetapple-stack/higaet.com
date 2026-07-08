@@ -152,7 +152,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
       message: `AI produced ${analysis.fixPlan.length} fix step(s), category=${analysis.rootCause.topCategory}, confidence=${analysis.rootCause.confidence.toFixed(2)}`,
     });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = sanitizeGithubError(err);
     await appendPhase(runId, { phase: "ai_analysis", status: "failed", message: msg });
     await finalize(runId, { status: "failed", error: msg, ready_for_deploy: false });
     return { runId, status: "failed", readyForDeploy: false };
@@ -193,7 +193,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
       data: { url: pr.url, number: pr.number, confidence: pr.confidence },
     }, { pull_request_id: prRowId, pr_url: prUrl ?? null });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = sanitizeGithubError(err);
     await appendPhase(runId, { phase: "open_pr", status: "failed", message: msg });
     await finalize(runId, { status: "failed", error: msg, ready_for_deploy: false });
     return { runId, status: "failed", readyForDeploy: false };
@@ -252,11 +252,11 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
         const [checks, combined, workflows] = await Promise.all([
           listCheckRunsForRef(pr.head_sha),
           listCombinedStatusForRef(pr.head_sha).catch((err) => {
-            console.warn(`[sre-e2e] combined-status fetch failed: ${(err as Error).message}`);
+            console.warn(`[sre-e2e] combined-status fetch failed: ${sanitizeGithubError(err)}`);
             return null;
           }),
           listWorkflowRunsForRef(pr.head_sha).catch((err) => {
-            console.warn(`[sre-e2e] workflow-runs fetch failed: ${(err as Error).message}`);
+            console.warn(`[sre-e2e] workflow-runs fetch failed: ${sanitizeGithubError(err)}`);
             return [];
           }),
         ]);
@@ -312,7 +312,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
         });
         if (effective === "success" || effective === "failure") break;
       } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
+        const msg = sanitizeGithubError(err);
         console.warn(`[sre-e2e] poll attempt ${i + 1} error: ${msg}`);
         await appendPhase(runId, {
           phase: "poll_ci",
