@@ -19,6 +19,8 @@ import {
   listCombinedStatusForRef,
   listWorkflowRunsForRef,
 } from "@/lib/github/client.server";
+import { sanitizeGithubError } from "@/lib/github/sanitize";
+
 
 type Phase =
   | "seed_issue"
@@ -150,7 +152,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
       message: `AI produced ${analysis.fixPlan.length} fix step(s), category=${analysis.rootCause.topCategory}, confidence=${analysis.rootCause.confidence.toFixed(2)}`,
     });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = sanitizeGithubError(err);
     await appendPhase(runId, { phase: "ai_analysis", status: "failed", message: msg });
     await finalize(runId, { status: "failed", error: msg, ready_for_deploy: false });
     return { runId, status: "failed", readyForDeploy: false };
@@ -191,7 +193,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
       data: { url: pr.url, number: pr.number, confidence: pr.confidence },
     }, { pull_request_id: prRowId, pr_url: prUrl ?? null });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = sanitizeGithubError(err);
     await appendPhase(runId, { phase: "open_pr", status: "failed", message: msg });
     await finalize(runId, { status: "failed", error: msg, ready_for_deploy: false });
     return { runId, status: "failed", readyForDeploy: false };
@@ -199,9 +201,33 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
 
   // 3. Poll CI checks — bounded, but keep going while checks are pending or
   //    haven't registered yet (verdict "unknown" == zero checks visible).
-  const attempts = Math.max(1, Math.min(opts.ciPollAttempts ?? 40, 60));
-  const intervalMs = Math.max(5000, Math.min(opts.ciPollIntervalMs ?? 10000, 30000));
-  const initialDelayMs = Math.max(0, Math.min(opts.ciInitialDelayMs ?? 15000, 60000));
+  //    Bounds also enforced by scripts/check-sre-production-readiness.ts.
+  const envAttempts = Number(process.env.SRE_CI_POLL_ATTEMPTS);
+  const envInterval = Number(process.env.SRE_CI_POLL_INTERVAL_MS);
+  const envInitial = Number(process.env.SRE_CI_INITIAL_DELAY_MS);
+  const attempts = Math.max(
+    1,
+    Math.min(opts.ciPollAttempts ?? (Number.isFinite(envAttempts) ? envAttempts : 40), 120),
+  );
+  const intervalMs = Math.max(
+    1000,
+    Math.min(opts.ciPollIntervalMs ?? (Number.isFinite(envInterval) ? envInterval : 10000), 60000),
+  );
+  const initialDelayMs = Math.max(
+    0,
+    Math.min(opts.ciInitialDelayMs ?? (Number.isFinite(envInitial) ? envInitial : 15000), 60000),
+  );
+
+  console.log(
+    JSON.stringify({
+      evt: "sre_e2e_poll_config",
+      runId,
+      attempts,
+      intervalMs,
+      initialDelayMs,
+      maxWaitMs: initialDelayMs + attempts * intervalMs,
+    }),
+  );
 
   let ciVerdict: "success" | "failure" | "pending" | "unknown" = "unknown";
   let lastCheckCount = 0;
@@ -216,6 +242,8 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
       await new Promise((r) => setTimeout(r, initialDelayMs));
     }
 
+
+
     for (let i = 0; i < attempts; i++) {
       try {
         // Reuse the shared batch poller so results land in sentry_pr_check_runs.
@@ -224,11 +252,11 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
         const [checks, combined, workflows] = await Promise.all([
           listCheckRunsForRef(pr.head_sha),
           listCombinedStatusForRef(pr.head_sha).catch((err) => {
-            console.warn(`[sre-e2e] combined-status fetch failed: ${(err as Error).message}`);
+            console.warn(`[sre-e2e] combined-status fetch failed: ${sanitizeGithubError(err)}`);
             return null;
           }),
           listWorkflowRunsForRef(pr.head_sha).catch((err) => {
-            console.warn(`[sre-e2e] workflow-runs fetch failed: ${(err as Error).message}`);
+            console.warn(`[sre-e2e] workflow-runs fetch failed: ${sanitizeGithubError(err)}`);
             return [];
           }),
         ]);
@@ -284,7 +312,7 @@ export async function runSreE2ETest(opts: RunE2ETestOptions = {}): Promise<RunE2
         });
         if (effective === "success" || effective === "failure") break;
       } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
+        const msg = sanitizeGithubError(err);
         console.warn(`[sre-e2e] poll attempt ${i + 1} error: ${msg}`);
         await appendPhase(runId, {
           phase: "poll_ci",

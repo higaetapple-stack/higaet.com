@@ -259,6 +259,7 @@ import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from
 import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
 import { Route as ApiPublicSreVerifyBearerRouteImport } from './routes/api/public/sre/verify-bearer'
 import { Route as ApiPublicSreE2eTriggerRouteImport } from './routes/api/public/sre/e2e-trigger'
+import { Route as ApiPublicSreE2eHealthRouteImport } from './routes/api/public/sre/e2e-health'
 import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
 import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
@@ -1742,6 +1743,11 @@ const ApiPublicSreE2eTriggerRoute = ApiPublicSreE2eTriggerRouteImport.update({
   path: '/api/public/sre/e2e-trigger',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSreE2eHealthRoute = ApiPublicSreE2eHealthRouteImport.update({
+  id: '/api/public/sre/e2e-health',
+  path: '/api/public/sre/e2e-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
   id: '/api/public/sentry/webhook',
   path: '/api/public/sentry/webhook',
@@ -2696,6 +2702,7 @@ export interface FileRoutesByFullPath {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-health': typeof ApiPublicSreE2eHealthRoute
   '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/sre/verify-bearer': typeof ApiPublicSreVerifyBearerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
@@ -3037,6 +3044,7 @@ export interface FileRoutesByTo {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-health': typeof ApiPublicSreE2eHealthRoute
   '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/sre/verify-bearer': typeof ApiPublicSreVerifyBearerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
@@ -3396,6 +3404,7 @@ export interface FileRoutesById {
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
   '/api/public/sentry/sync': typeof ApiPublicSentrySyncRoute
   '/api/public/sentry/webhook': typeof ApiPublicSentryWebhookRoute
+  '/api/public/sre/e2e-health': typeof ApiPublicSreE2eHealthRoute
   '/api/public/sre/e2e-trigger': typeof ApiPublicSreE2eTriggerRoute
   '/api/public/sre/verify-bearer': typeof ApiPublicSreVerifyBearerRoute
   '/api/public/webhooks/process': typeof ApiPublicWebhooksProcessRoute
@@ -3755,6 +3764,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-health'
     | '/api/public/sre/e2e-trigger'
     | '/api/public/sre/verify-bearer'
     | '/api/public/webhooks/process'
@@ -4096,6 +4106,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-health'
     | '/api/public/sre/e2e-trigger'
     | '/api/public/sre/verify-bearer'
     | '/api/public/webhooks/process'
@@ -4454,6 +4465,7 @@ export interface FileRouteTypes {
     | '/api/public/risk/evaluate-pr'
     | '/api/public/sentry/sync'
     | '/api/public/sentry/webhook'
+    | '/api/public/sre/e2e-health'
     | '/api/public/sre/e2e-trigger'
     | '/api/public/sre/verify-bearer'
     | '/api/public/webhooks/process'
@@ -4571,6 +4583,7 @@ export interface RootRouteChildren {
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
   ApiPublicSentrySyncRoute: typeof ApiPublicSentrySyncRoute
   ApiPublicSentryWebhookRoute: typeof ApiPublicSentryWebhookRoute
+  ApiPublicSreE2eHealthRoute: typeof ApiPublicSreE2eHealthRoute
   ApiPublicSreE2eTriggerRoute: typeof ApiPublicSreE2eTriggerRoute
   ApiPublicSreVerifyBearerRoute: typeof ApiPublicSreVerifyBearerRoute
   ApiPublicWebhooksProcessRoute: typeof ApiPublicWebhooksProcessRoute
@@ -6327,6 +6340,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/sre/e2e-trigger'
       fullPath: '/api/public/sre/e2e-trigger'
       preLoaderRoute: typeof ApiPublicSreE2eTriggerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/sre/e2e-health': {
+      id: '/api/public/sre/e2e-health'
+      path: '/api/public/sre/e2e-health'
+      fullPath: '/api/public/sre/e2e-health'
+      preLoaderRoute: typeof ApiPublicSreE2eHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/sentry/webhook': {
@@ -8261,6 +8281,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
   ApiPublicSentrySyncRoute: ApiPublicSentrySyncRoute,
   ApiPublicSentryWebhookRoute: ApiPublicSentryWebhookRoute,
+  ApiPublicSreE2eHealthRoute: ApiPublicSreE2eHealthRoute,
   ApiPublicSreE2eTriggerRoute: ApiPublicSreE2eTriggerRoute,
   ApiPublicSreVerifyBearerRoute: ApiPublicSreVerifyBearerRoute,
   ApiPublicWebhooksProcessRoute: ApiPublicWebhooksProcessRoute,
