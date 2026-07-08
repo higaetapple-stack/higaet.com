@@ -20,6 +20,9 @@ env:
   STAGING_HOST: ${{ secrets.STAGING_HOST }}
   STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
 
+permissions:
+  contents: read
+
 jobs:
   deploy-and-validate:
     runs-on: ubuntu-latest
