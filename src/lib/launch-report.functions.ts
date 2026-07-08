@@ -4,6 +4,7 @@ import {
   computeEnvReadiness,
   type EnvReadinessReport,
 } from "@/lib/env-readiness.functions";
+import { assertAdmin as guardAssertAdmin, assertSameOrigin, throttle, writeAudit } from "@/lib/admin-guard";
 
 /**
  * Production launch report helpers.
@@ -96,12 +97,7 @@ const STAGING_URL = "https://staging.higaet.com";
 const HEALTH_PATH = "/api/public/sre/e2e-health";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data: allowed, error } = await ctx.supabase.rpc("has_any_role", {
-    _user_id: ctx.userId,
-    _roles: ["admin", "super_admin"],
-  });
-  if (error) throw new Error(error.message);
-  if (!allowed) throw new Error("Forbidden");
+  await guardAssertAdmin(ctx);
 }
 
 async function probeOne(target: string, base: string): Promise<HealthProbeResult> {
@@ -156,11 +152,17 @@ async function probeOne(target: string, base: string): Promise<HealthProbeResult
 export const probeSreHealth = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<HealthProbeResult[]> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("sre.health.probe", context.userId, 10_000);
     const [staging, prod] = await Promise.all([
       probeOne("staging", STAGING_URL),
       probeOne("production", PROD_URL),
     ]);
+    await writeAudit(context.supabase, context.userId, "sre.health.probe", "sre_health", null, {
+      staging: { ok: staging.ok, status: staging.status, healthy: staging.body?.healthy },
+      production: { ok: prod.ok, status: prod.status, healthy: prod.body?.healthy },
+    });
     return [staging, prod];
   });
 
@@ -174,7 +176,9 @@ export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
     probes: HealthProbeResult[];
     updated: { item_key: string; status: ChecklistItem["status"] }[];
   }> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("sre.health.probe_and_update", context.userId, 10_000);
     const [staging, prod] = await Promise.all([
       probeOne("staging", STAGING_URL),
       probeOne("production", PROD_URL),
@@ -206,6 +210,11 @@ export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
         .eq("item_key", r.item_key);
       if (!error) updated.push({ item_key: r.item_key, status: r.status });
     }
+    await writeAudit(context.supabase, context.userId, "sre.health.probe_and_update", "operator_checklist", null, {
+      staging: { ok: staging.ok, status: staging.status, healthy: staging.body?.healthy },
+      production: { ok: prod.ok, status: prod.status, healthy: prod.body?.healthy },
+      updated,
+    });
     return { probes: [staging, prod], updated };
   });
 
@@ -317,6 +326,7 @@ export const upsertChecklistItem = createServerFn({ method: "POST" })
     },
   )
   .handler(async ({ context, data }): Promise<ChecklistItem> => {
+    assertSameOrigin();
     await assertAdmin(context);
     const patch = {
       status: data.status,
@@ -334,13 +344,20 @@ export const upsertChecklistItem = createServerFn({ method: "POST" })
       )
       .single();
     if (error) throw new Error(error.message);
+    await writeAudit(context.supabase, context.userId, "checklist.upsert", "operator_checklist", data.id, {
+      status: data.status,
+      has_notes: !!data.notes,
+      has_evidence: !!data.evidence_url,
+    });
     return updated as ChecklistItem;
   });
 
 export const buildLaunchReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<LaunchReportBundle> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("launch-report.build", context.userId, 3_000);
 
     // Fresh env readiness compute (source of truth at export time)
     const envReadiness = computeEnvReadiness();
@@ -418,6 +435,15 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
       reasons.push(`${requiredOutstanding} required checklist item(s) outstanding`);
 
     const overallDecision: "READY" | "BLOCKED" = reasons.length === 0 ? "READY" : "BLOCKED";
+
+    await writeAudit(context.supabase, context.userId, "launch_report.export", "launch_report", null, {
+      overall: overallDecision,
+      reasons,
+      env_overall: envReadiness.overall,
+      monitoring_overall: monitoring.overall,
+      checklist: { done, pending, blocked, requiredOutstanding },
+    });
+
 
     return {
       kind: "higaet.production-launch-report",

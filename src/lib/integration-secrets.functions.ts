@@ -1,11 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertAdmin, assertSameOrigin, throttle, writeAudit } from "@/lib/admin-guard";
 
 /**
  * Admin-managed integration credentials for Sentry, Datadog, and the
  * uptime monitor. Values are stored in admin_integration_secrets (RLS
  * admin-only). Reads to the client are always masked; the raw value never
- * leaves the server after being written.
+ * leaves the server after being written. Every state change is audited.
  */
 
 export type IntegrationKey =
@@ -43,15 +44,6 @@ export interface IntegrationSecretRow {
   last_verified_ok: boolean | null;
   last_verified_detail: string | null;
   updated_at: string | null;
-}
-
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data: allowed, error } = await ctx.supabase.rpc("has_any_role", {
-    _user_id: ctx.userId,
-    _roles: ["admin", "super_admin"],
-  });
-  if (error) throw new Error(error.message);
-  if (!allowed) throw new Error("Forbidden");
 }
 
 function mask(value: string): string {
@@ -94,7 +86,9 @@ export const upsertIntegrationSecret = createServerFn({ method: "POST" })
     return input;
   })
   .handler(async ({ context, data }) => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("integration-secret.upsert", context.userId, 2_000);
     const { error } = await context.supabase
       .from("admin_integration_secrets")
       .upsert(
@@ -109,6 +103,10 @@ export const upsertIntegrationSecret = createServerFn({ method: "POST" })
         { onConflict: "key" },
       );
     if (error) throw new Error(error.message);
+    await writeAudit(context.supabase, context.userId, "integration_secret.save", "integration_secret", null, {
+      key: data.key,
+      value_len: data.value.length,
+    });
     return { ok: true };
   });
 
@@ -207,7 +205,9 @@ export interface IntegrationVerification {
 export const verifyIntegrations = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<IntegrationVerification[]> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("integration-secret.verify", context.userId, 5_000);
     const supabase = context.supabase;
     const [sentry, dd, up] = await Promise.all([
       verifySentry(supabase),
@@ -220,6 +220,9 @@ export const verifyIntegrations = createServerFn({ method: "POST" })
       persistVerify(supabase, "DATADOG_API_KEY", dd.ok, dd.detail),
       persistVerify(supabase, "UPTIME_MONITOR_API_KEY", up.ok, up.detail),
     ]);
+    await writeAudit(supabase, context.userId, "integration_secret.verify", "integration_secret", null, {
+      results: { sentry: sentry.ok, datadog: dd.ok, uptime: up.ok },
+    });
     return [
       { provider: "sentry", ok: sentry.ok, detail: sentry.detail, proof: sentry.proof, verifiedAt: now },
       { provider: "datadog", ok: dd.ok, detail: dd.detail, proof: dd.proof, verifiedAt: now },

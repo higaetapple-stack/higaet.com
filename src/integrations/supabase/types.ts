@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_domain_status_history: {
+        Row: {
+          cert_issuer: string | null
+          cert_not_after: string | null
+          cert_not_before: string | null
+          checked_at: string
+          detail: string | null
+          dns_ok: boolean
+          host: string
+          hsts_include_subdomains: boolean
+          hsts_max_age: number | null
+          hsts_present: boolean
+          http_status: number | null
+          id: string
+          overall: string
+          ssl_ok: boolean
+        }
+        Insert: {
+          cert_issuer?: string | null
+          cert_not_after?: string | null
+          cert_not_before?: string | null
+          checked_at?: string
+          detail?: string | null
+          dns_ok: boolean
+          host: string
+          hsts_include_subdomains?: boolean
+          hsts_max_age?: number | null
+          hsts_present?: boolean
+          http_status?: number | null
+          id?: string
+          overall: string
+          ssl_ok: boolean
+        }
+        Update: {
+          cert_issuer?: string | null
+          cert_not_after?: string | null
+          cert_not_before?: string | null
+          checked_at?: string
+          detail?: string | null
+          dns_ok?: boolean
+          host?: string
+          hsts_include_subdomains?: boolean
+          hsts_max_age?: number | null
+          hsts_present?: boolean
+          http_status?: number | null
+          id?: string
+          overall?: string
+          ssl_ok?: boolean
+        }
+        Relationships: []
+      }
       admin_integration_secrets: {
         Row: {
           created_at: string
