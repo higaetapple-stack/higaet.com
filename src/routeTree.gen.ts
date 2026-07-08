@@ -265,6 +265,7 @@ import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sen
 import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
 import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
 import { Route as ApiPublicHooksPollPrCiRouteImport } from './routes/api/public/hooks/poll-pr-ci'
+import { Route as ApiPublicHooksEnvReadinessRecheckRouteImport } from './routes/api/public/hooks/env-readiness-recheck'
 import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
 import { Route as ApiPublicGovernanceDecisionsRouteImport } from './routes/api/public/governance.decisions'
 import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
@@ -1775,6 +1776,12 @@ const ApiPublicHooksPollPrCiRoute = ApiPublicHooksPollPrCiRouteImport.update({
   path: '/api/public/hooks/poll-pr-ci',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksEnvReadinessRecheckRoute =
+  ApiPublicHooksEnvReadinessRecheckRouteImport.update({
+    id: '/api/public/hooks/env-readiness-recheck',
+    path: '/api/public/hooks/env-readiness-recheck',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicGovernanceKnowledgeRoute =
   ApiPublicGovernanceKnowledgeRouteImport.update({
     id: '/knowledge',
@@ -2705,6 +2712,7 @@ export interface FileRoutesByFullPath {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/env-readiness-recheck': typeof ApiPublicHooksEnvReadinessRecheckRoute
   '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
@@ -3048,6 +3056,7 @@ export interface FileRoutesByTo {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/env-readiness-recheck': typeof ApiPublicHooksEnvReadinessRecheckRoute
   '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
@@ -3409,6 +3418,7 @@ export interface FileRoutesById {
   '/api/public/cron/webhook-dispatch': typeof ApiPublicCronWebhookDispatchRoute
   '/api/public/governance/decisions': typeof ApiPublicGovernanceDecisionsRoute
   '/api/public/governance/knowledge': typeof ApiPublicGovernanceKnowledgeRoute
+  '/api/public/hooks/env-readiness-recheck': typeof ApiPublicHooksEnvReadinessRecheckRoute
   '/api/public/hooks/poll-pr-ci': typeof ApiPublicHooksPollPrCiRoute
   '/api/public/launch-readiness/ingest': typeof ApiPublicLaunchReadinessIngestRoute
   '/api/public/risk/evaluate-pr': typeof ApiPublicRiskEvaluatePrRoute
@@ -3770,6 +3780,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/env-readiness-recheck'
     | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
@@ -4113,6 +4124,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/env-readiness-recheck'
     | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
@@ -4473,6 +4485,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/webhook-dispatch'
     | '/api/public/governance/decisions'
     | '/api/public/governance/knowledge'
+    | '/api/public/hooks/env-readiness-recheck'
     | '/api/public/hooks/poll-pr-ci'
     | '/api/public/launch-readiness/ingest'
     | '/api/public/risk/evaluate-pr'
@@ -4591,6 +4604,7 @@ export interface RootRouteChildren {
   ApiPublicConstitutionStatusRoute: typeof ApiPublicConstitutionStatusRoute
   ApiPublicCronEmbeddingsRoute: typeof ApiPublicCronEmbeddingsRoute
   ApiPublicCronWebhookDispatchRoute: typeof ApiPublicCronWebhookDispatchRoute
+  ApiPublicHooksEnvReadinessRecheckRoute: typeof ApiPublicHooksEnvReadinessRecheckRoute
   ApiPublicHooksPollPrCiRoute: typeof ApiPublicHooksPollPrCiRoute
   ApiPublicLaunchReadinessIngestRoute: typeof ApiPublicLaunchReadinessIngestRoute
   ApiPublicRiskEvaluatePrRoute: typeof ApiPublicRiskEvaluatePrRoute
@@ -6395,6 +6409,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/hooks/poll-pr-ci'
       fullPath: '/api/public/hooks/poll-pr-ci'
       preLoaderRoute: typeof ApiPublicHooksPollPrCiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/env-readiness-recheck': {
+      id: '/api/public/hooks/env-readiness-recheck'
+      path: '/api/public/hooks/env-readiness-recheck'
+      fullPath: '/api/public/hooks/env-readiness-recheck'
+      preLoaderRoute: typeof ApiPublicHooksEnvReadinessRecheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/governance/knowledge': {
@@ -8299,6 +8320,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicConstitutionStatusRoute: ApiPublicConstitutionStatusRoute,
   ApiPublicCronEmbeddingsRoute: ApiPublicCronEmbeddingsRoute,
   ApiPublicCronWebhookDispatchRoute: ApiPublicCronWebhookDispatchRoute,
+  ApiPublicHooksEnvReadinessRecheckRoute:
+    ApiPublicHooksEnvReadinessRecheckRoute,
   ApiPublicHooksPollPrCiRoute: ApiPublicHooksPollPrCiRoute,
   ApiPublicLaunchReadinessIngestRoute: ApiPublicLaunchReadinessIngestRoute,
   ApiPublicRiskEvaluatePrRoute: ApiPublicRiskEvaluatePrRoute,
