@@ -48,13 +48,14 @@ export const Route = createFileRoute("/api/public/hooks/env-readiness-recheck")(
             missing_count: report.totals.missing,
             malformed_count: report.totals.malformed,
             blocking_missing_count: report.totals.blockingMissing,
-            totals: report.totals,
-            groups: report.groups,
+            totals: report.totals as any,
+            groups: report.groups as any,
             source: "cron",
           });
         if (insertErr) {
           return Response.json({ ok: false, error: insertErr.message }, { status: 500 });
         }
+
 
         let stateChanged = false;
         if (prev?.overall && prev.overall !== report.overall) {

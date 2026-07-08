@@ -49,8 +49,10 @@ export interface EnvReadinessActivityEvent {
   event_type: "viewed" | "state_changed" | "recheck_forced";
   previous_overall: string | null;
   next_overall: string | null;
-  detail: Record<string, unknown>;
+  // Loosely typed to satisfy TanStack Start serializer; only JSON-safe values are ever stored.
+  detail: any;
 }
+
 
 interface Spec {
   name: string;
@@ -252,10 +254,11 @@ export const getEnvReadiness = createServerFn({ method: "GET" })
         missing_count: report.totals.missing,
         malformed_count: report.totals.malformed,
         blocking_missing_count: report.totals.blockingMissing,
-        totals: report.totals,
-        groups: report.groups,
+        totals: report.totals as any,
+        groups: report.groups as any,
         source: "on_demand",
       });
+
       report.cachedAt = report.generatedAt;
       report.source = "on_demand";
     }
@@ -303,10 +306,11 @@ export const recheckEnvReadinessNow = createServerFn({ method: "POST" })
       missing_count: report.totals.missing,
       malformed_count: report.totals.malformed,
       blocking_missing_count: report.totals.blockingMissing,
-      totals: report.totals,
-      groups: report.groups,
+      totals: report.totals as any,
+      groups: report.groups as any,
       source: "manual",
     });
+
 
     await supabaseAdmin.from("env_readiness_activity").insert({
       user_id: context.userId,
@@ -367,10 +371,11 @@ export const getEnvReadinessSummary = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     if (!data) return null;
     return {
-      overall: data.overall,
+      overall: data.overall as EnvReadinessReport["overall"],
       blockingMissing: data.blocking_missing_count,
       missing: data.missing_count,
       malformed: data.malformed_count,
       cachedAt: data.created_at,
     };
   });
+
