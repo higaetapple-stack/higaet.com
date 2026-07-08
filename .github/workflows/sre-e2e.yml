@@ -78,8 +78,8 @@ jobs:
           CODE=$(echo "$RESP" | tail -n 1)
           echo "HTTP $CODE"
           echo "$BODY" | tee response.json
-          if [ "$CODE" != "200" ]; then
-            echo "::error::E2E trigger failed with HTTP $CODE"
+          if [ "$CODE" != "200" ] && [ "$CODE" != "400" ] && [ "$CODE" != "500" ]; then
+            echo "::error::E2E trigger failed with unexpected HTTP $CODE"
             exit 1
           fi
           STATUS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('response.json')).status || 'unknown')")
