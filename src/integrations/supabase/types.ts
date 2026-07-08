@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       admin_domain_status_history: {
@@ -1048,13 +1023,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "applications_assigned_to_counselor_fkey"
-            columns: ["assigned_to_counselor"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "applications_program_id_fkey"
             columns: ["program_id"]
             isOneToOne: false
@@ -1249,13 +1217,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "certificates_issued_by_fkey"
-            columns: ["issued_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "certificates_program_id_fkey"
             columns: ["program_id"]
             isOneToOne: false
@@ -1267,13 +1228,6 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "certificates_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1587,24 +1541,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "counselor_assignments_assigned_by_fkey"
-            columns: ["assigned_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "counselor_assignments_counselor_id_fkey"
             columns: ["counselor_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "counselor_assignments_counselor_id_fkey"
-            columns: ["counselor_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1787,13 +1727,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "crm_activity_log_actor_id_fkey"
-            columns: ["actor_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       crm_follow_ups: {
@@ -1841,13 +1774,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "crm_follow_ups_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       crm_notes: {
@@ -1884,13 +1810,6 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "crm_notes_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1947,24 +1866,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "crm_tasks_assigned_to_fkey"
-            columns: ["assigned_to"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "crm_tasks_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "crm_tasks_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2065,13 +1970,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "employers_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       enrollments: {
@@ -2115,13 +2013,6 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "enrollments_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2491,13 +2382,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "job_applications_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       job_postings: {
@@ -2579,13 +2463,6 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "job_postings_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
           {
@@ -3324,13 +3201,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "placements_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       profiles: {
@@ -3517,13 +3387,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "progress_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       project_submissions: {
@@ -3584,13 +3447,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "project_submissions_graded_by_fkey"
-            columns: ["graded_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "project_submissions_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
@@ -3602,13 +3458,6 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "project_submissions_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -3864,13 +3713,6 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "saved_jobs_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -4399,13 +4241,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "study_abroad_leads_assigned_to_counselor_fkey"
-            columns: ["assigned_to_counselor"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       submissions: {
@@ -4476,24 +4311,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "submissions_graded_by_fkey"
-            columns: ["graded_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "submissions_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "submissions_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -4712,24 +4533,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "tech_clients_owner_fkey"
-            columns: ["owner"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "tech_clients_portal_user_fkey"
             columns: ["portal_user"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tech_clients_portal_user_fkey"
-            columns: ["portal_user"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -5163,13 +4970,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "tech_project_documents_uploaded_by_fkey"
-            columns: ["uploaded_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       tech_project_members: {
@@ -5209,13 +5009,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "tech_project_members_added_by_fkey"
-            columns: ["added_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "tech_project_members_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
@@ -5227,13 +5020,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tech_project_members_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -5344,13 +5130,6 @@ export type Database = {
             columns: ["project_manager"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tech_projects_project_manager_fkey"
-            columns: ["project_manager"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -5749,13 +5528,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "technologies_leads_assigned_to_fkey"
-            columns: ["assigned_to"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       threads: {
@@ -6085,13 +5857,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "visa_cases_assigned_counselor_fkey"
-            columns: ["assigned_counselor"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "visa_cases_country_id_fkey"
             columns: ["country_id"]
             isOneToOne: false
@@ -6103,13 +5868,6 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "visa_cases_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -6172,24 +5930,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "visa_documents_uploaded_by_fkey"
-            columns: ["uploaded_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "visa_documents_verified_by_fkey"
             columns: ["verified_by"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "visa_documents_verified_by_fkey"
-            columns: ["verified_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
           {
@@ -6235,13 +5979,6 @@ export type Database = {
             columns: ["changed_by"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "visa_status_history_changed_by_fkey"
-            columns: ["changed_by"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
           {
@@ -6294,102 +6031,7 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          avatar_url: string | null
-          bio: string | null
-          career_goals: string | null
-          created_at: string | null
-          education: Json | null
-          email: string | null
-          experience: Json | null
-          featured_success_story: boolean | null
-          full_name: string | null
-          github_url: string | null
-          headline: string | null
-          id: string | null
-          linkedin_url: string | null
-          location: string | null
-          phone: string | null
-          portfolio_slug: string | null
-          portfolio_visibility:
-            | Database["public"]["Enums"]["portfolio_visibility"]
-            | null
-          show_certificates: boolean | null
-          show_email: boolean | null
-          show_phone: boolean | null
-          show_projects: boolean | null
-          show_resume: boolean | null
-          skills: string[] | null
-          success_story_priority: number | null
-          success_story_summary: string | null
-          updated_at: string | null
-          website_url: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          career_goals?: string | null
-          created_at?: string | null
-          education?: Json | null
-          email?: never
-          experience?: Json | null
-          featured_success_story?: boolean | null
-          full_name?: string | null
-          github_url?: string | null
-          headline?: string | null
-          id?: string | null
-          linkedin_url?: string | null
-          location?: string | null
-          phone?: never
-          portfolio_slug?: string | null
-          portfolio_visibility?:
-            | Database["public"]["Enums"]["portfolio_visibility"]
-            | null
-          show_certificates?: boolean | null
-          show_email?: boolean | null
-          show_phone?: boolean | null
-          show_projects?: boolean | null
-          show_resume?: boolean | null
-          skills?: string[] | null
-          success_story_priority?: number | null
-          success_story_summary?: string | null
-          updated_at?: string | null
-          website_url?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          career_goals?: string | null
-          created_at?: string | null
-          education?: Json | null
-          email?: never
-          experience?: Json | null
-          featured_success_story?: boolean | null
-          full_name?: string | null
-          github_url?: string | null
-          headline?: string | null
-          id?: string | null
-          linkedin_url?: string | null
-          location?: string | null
-          phone?: never
-          portfolio_slug?: string | null
-          portfolio_visibility?:
-            | Database["public"]["Enums"]["portfolio_visibility"]
-            | null
-          show_certificates?: boolean | null
-          show_email?: boolean | null
-          show_phone?: boolean | null
-          show_projects?: boolean | null
-          show_resume?: boolean | null
-          skills?: string[] | null
-          success_story_priority?: number | null
-          success_story_summary?: string | null
-          updated_at?: string | null
-          website_url?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       ai_delete_document: {
@@ -6436,6 +6078,33 @@ export type Database = {
       generate_portfolio_slug: {
         Args: { _full_name: string; _id: string }
         Returns: string
+      }
+      get_public_portfolio_profile: {
+        Args: { _slug: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          career_goals: string
+          education: Json
+          email: string
+          experience: Json
+          full_name: string
+          github_url: string
+          headline: string
+          id: string
+          linkedin_url: string
+          location: string
+          phone: string
+          portfolio_slug: string
+          portfolio_visibility: string
+          show_certificates: boolean
+          show_email: boolean
+          show_phone: boolean
+          show_projects: boolean
+          show_resume: boolean
+          skills: string[]
+          website_url: string
+        }[]
       }
       get_webhook_signing_secret: {
         Args: { _subscription_id: string }
@@ -6852,9 +6521,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       ai_context_type: ["lesson", "community", "general"],
