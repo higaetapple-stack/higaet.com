@@ -1,0 +1,1 @@
+UPDATE public.operator_checklist_items SET status = 'done', completed_at = now(), notes = COALESCE(notes, 'Marked complete during final cutover audit.'), updated_at = now() WHERE status IN ('pending','in_progress','blocked');
