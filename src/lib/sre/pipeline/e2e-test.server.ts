@@ -12,10 +12,12 @@ import { buildPRDraft, computeAnalysisHash } from "@/lib/sre/pipeline/pr-draft";
 import { createPRForAnalysis } from "@/lib/sre/pipeline/create-pr.server";
 import { pollOpenPRChecks } from "@/lib/sre/pipeline/poll-ci.server";
 import {
-  aggregateCheckConclusion,
+  aggregateAllCiSignals,
   getPullRequest,
   isGithubConfigured,
   listCheckRunsForRef,
+  listCombinedStatusForRef,
+  listWorkflowRunsForRef,
 } from "@/lib/github/client.server";
 
 type Phase =
