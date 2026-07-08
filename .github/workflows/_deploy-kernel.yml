@@ -190,11 +190,11 @@ jobs:
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
             cd '$DEPLOY_DIR/current'
-            if [ -f scripts/run-smoke-tests.ts ]; then
-              node --experimental-strip-types scripts/run-smoke-tests.ts || exit 1
-            else
-              echo '::notice::no run-smoke-tests.ts in artifact — skipping'
+            if [ ! -f scripts/run-smoke-tests.ts ]; then
+              echo '::error::scripts/run-smoke-tests.ts missing from release — refusing to deploy without smoke coverage'
+              exit 1
             fi
+            node --experimental-strip-types scripts/run-smoke-tests.ts
           "
 
       # P10: automatic symlink revert on smoke failure.
