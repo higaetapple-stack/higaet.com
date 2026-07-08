@@ -24,7 +24,7 @@ export interface HealthProbeResult {
   body: {
     healthy?: boolean;
     version?: string | null;
-    checks?: Record<string, unknown>;
+    checks?: any;
     raw?: string;
   } | null;
   error?: string;
