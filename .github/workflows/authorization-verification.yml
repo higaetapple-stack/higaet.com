@@ -12,6 +12,9 @@ on:
       - ".github/workflows/phase-2-2-authorization.yml"
       - ".github/workflows/authorization-verification.yml"
 
+permissions:
+  contents: read
+
 jobs:
   fixture:
     runs-on: ubuntu-latest
