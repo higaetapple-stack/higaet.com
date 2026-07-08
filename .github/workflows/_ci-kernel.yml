@@ -94,6 +94,7 @@ jobs:
         if: ${{ inputs.run-build && always() }}
         env:
           NODE_OPTIONS: "--max-old-space-size=6144"
+          BUILD_TARGET: ${{ inputs.build-target }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
@@ -106,6 +107,13 @@ jobs:
             echo "::error::Build produced neither dist/ nor .output/"
             exit 1
           fi
+          if [ "${{ inputs.build-target }}" = "node" ]; then
+            if [ ! -f .output/server/index.mjs ]; then
+              echo "::error::Node build target selected but .output/server/index.mjs is missing"
+              exit 1
+            fi
+            echo "Node server bundle OK: $(ls -la .output/server/index.mjs)"
+          fi
 
       - name: Upload build artifact
         if: ${{ inputs.upload-artifact && inputs.run-build && success() }}
@@ -114,9 +122,16 @@ jobs:
           name: ${{ inputs.artifact-name }}
           # TanStack Start + Nitro emits `.output/` (server + public). We
           # keep `dist` as a fallback for callers that still produce it.
+          # Passenger release also needs app.js + package manifests +
+          # scripts/ (predeploy validation, smoke tests) at release root.
           path: |
             .output
             dist
+            app.js
+            package.json
+            package-lock.json
+            bun.lock
+            scripts
           retention-days: 3
           if-no-files-found: warn
 
