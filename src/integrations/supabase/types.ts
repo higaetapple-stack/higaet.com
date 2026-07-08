@@ -1933,6 +1933,78 @@ export type Database = {
           },
         ]
       }
+      env_readiness_activity: {
+        Row: {
+          created_at: string
+          detail: Json
+          event_type: string
+          id: string
+          next_overall: string | null
+          previous_overall: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          detail?: Json
+          event_type: string
+          id?: string
+          next_overall?: string | null
+          previous_overall?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          detail?: Json
+          event_type?: string
+          id?: string
+          next_overall?: string | null
+          previous_overall?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      env_readiness_snapshots: {
+        Row: {
+          blocking_missing_count: number
+          created_at: string
+          environment: string
+          groups: Json
+          id: string
+          malformed_count: number
+          missing_count: number
+          overall: string
+          present_count: number
+          source: string
+          totals: Json
+        }
+        Insert: {
+          blocking_missing_count?: number
+          created_at?: string
+          environment: string
+          groups: Json
+          id?: string
+          malformed_count?: number
+          missing_count?: number
+          overall: string
+          present_count?: number
+          source?: string
+          totals: Json
+        }
+        Update: {
+          blocking_missing_count?: number
+          created_at?: string
+          environment?: string
+          groups?: Json
+          id?: string
+          malformed_count?: number
+          missing_count?: number
+          overall?: string
+          present_count?: number
+          source?: string
+          totals?: Json
+        }
+        Relationships: []
+      }
       event_rsvps: {
         Row: {
           created_at: string
