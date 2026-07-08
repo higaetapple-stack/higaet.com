@@ -136,6 +136,92 @@ function EnvReadinessPage() {
             </Card>
           </div>
 
+          {(() => {
+            const issues = data.groups.flatMap((g) =>
+              g.checks
+                .filter((c) => c.status !== "present")
+                .map((c) => ({ ...c, category: g.category })),
+            );
+            if (issues.length === 0) {
+              return (
+                <Card className="border-emerald-500/30 bg-emerald-500/5">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-emerald-700 text-base">
+                      <CheckCircle2 className="size-5" /> No issues detected
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    All configured secrets are present and well-formed.
+                  </CardContent>
+                </Card>
+              );
+            }
+            const blocking = issues.filter((i) => i.blocking);
+            const nonBlocking = issues.filter((i) => !i.blocking);
+            return (
+              <Card className="border-rose-500/30 bg-rose-500/5">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-rose-700 text-base">
+                    <ShieldAlert className="size-5" />
+                    {issues.length} issue{issues.length === 1 ? "" : "s"} detected
+                    {blocking.length > 0 ? (
+                      <Badge variant="destructive" className="ml-2">
+                        {blocking.length} blocking
+                      </Badge>
+                    ) : null}
+                  </CardTitle>
+                  <p className="text-xs text-muted-foreground">
+                    Secret names only — values are never sent to the browser.
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Secret</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Problem</TableHead>
+                        <TableHead>Blocking</TableHead>
+                        <TableHead>Fix</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {[...blocking, ...nonBlocking].map((i) => (
+                        <TableRow key={`${i.category}:${i.name}`}>
+                          <TableCell className="font-mono text-xs">{i.name}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground">
+                            {i.category}
+                          </TableCell>
+                          <TableCell>
+                            <StatusPill check={i} />
+                          </TableCell>
+                          <TableCell>
+                            {i.blocking ? (
+                              <Badge variant="destructive">Blocking</Badge>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">no</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-xs text-muted-foreground">
+                            {i.detail ? (
+                              <span className="text-amber-700">{i.detail}. </span>
+                            ) : null}
+                            {i.hint ??
+                              (i.status === "missing"
+                                ? "Set this secret in Lovable Cloud."
+                                : "Reformat and re-save this secret.")}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            );
+          })()}
+
+
+
           {data.groups.map((g) => (
             <Card key={g.category}>
               <CardHeader>
