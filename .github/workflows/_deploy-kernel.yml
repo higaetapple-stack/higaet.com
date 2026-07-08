@@ -93,6 +93,14 @@ jobs:
             echo "::error::Deploy aborted: dist artifact missing or empty"
             exit 1
           fi
+          if [ ! -f "dist/.output/server/index.mjs" ]; then
+            echo "::error::Deploy aborted: dist/.output/server/index.mjs missing — CI did not build the Nitro node-server preset"
+            exit 1
+          fi
+          if [ ! -f "dist/app.js" ]; then
+            echo "::error::Deploy aborted: dist/app.js missing — Passenger entry not packaged"
+            exit 1
+          fi
           echo "dist artifact OK ($(find dist -type f | wc -l) files)"
 
       - name: Setup SSH
@@ -132,6 +140,22 @@ jobs:
             dist/ \
             "$SSH_USER@$SSH_HOST:$DEPLOY_DIR/releases/$RELEASE/"
 
+      - name: Verify remote release layout
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            REL='$DEPLOY_DIR/releases/$RELEASE'
+            for f in .output/server/index.mjs app.js package.json; do
+              if [ ! -f \"\$REL/\$f\" ]; then
+                echo \"::error::Missing after rsync: \$REL/\$f\"
+                exit 1
+              fi
+            done
+            echo \"Remote release layout OK\"
+            ls -la \"\$REL/.output/server/index.mjs\"
+          "
+
       - name: Predeploy validation (server-side)
         if: env.SKIP_DEPLOY != '1'
         continue-on-error: true
@@ -166,11 +190,11 @@ jobs:
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
             cd '$DEPLOY_DIR/current'
-            if [ -f scripts/run-smoke-tests.ts ]; then
-              node --experimental-strip-types scripts/run-smoke-tests.ts || exit 1
-            else
-              echo '::notice::no run-smoke-tests.ts in artifact — skipping'
+            if [ ! -f scripts/run-smoke-tests.ts ]; then
+              echo '::error::scripts/run-smoke-tests.ts missing from release — refusing to deploy without smoke coverage'
+              exit 1
             fi
+            node --experimental-strip-types scripts/run-smoke-tests.ts
           "
 
       # P10: automatic symlink revert on smoke failure.
