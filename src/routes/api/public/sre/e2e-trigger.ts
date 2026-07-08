@@ -64,7 +64,8 @@ export const Route = createFileRoute("/api/public/sre/e2e-trigger")({
 
         try {
           const result = await runSreE2ETest({ triggeredBy: null });
-          const httpStatus = result.status === "passed" ? 200 : 500;
+          // passed → 200, pending → 200 (workflow warns), failed → 500
+          const httpStatus = result.status === "failed" ? 500 : 200;
           return Response.json(result, { status: httpStatus });
         } catch (err) {
           const msg = sanitizeGithubError(err);
