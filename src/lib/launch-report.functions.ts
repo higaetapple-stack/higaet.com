@@ -4,6 +4,7 @@ import {
   computeEnvReadiness,
   type EnvReadinessReport,
 } from "@/lib/env-readiness.functions";
+import { assertAdmin as guardAssertAdmin, assertSameOrigin, throttle, writeAudit } from "@/lib/admin-guard";
 
 /**
  * Production launch report helpers.
