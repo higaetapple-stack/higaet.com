@@ -133,10 +133,10 @@ jobs:
           echo "::notice::Verified: failed run returned HTTP 500 and did not emit the pending warning."
 
       - name: Assert success returns HTTP 200 (contract check)
-        # runSreE2ETest emits status ∈ {passed,failed,pending}; treat anything
-        # that isn't failed/pending as a success case (covers 'passed' today
-        # and defensively covers a future 'success' rename).
-        if: always() && steps.run.outputs.status != 'failed' && steps.run.outputs.status != 'pending' && steps.run.outputs.status != ''
+        # Only runs on the exact 'passed' status. Any other value (including
+        # blank, 'unknown', or a bogus payload that produced HTTP 400) is
+        # covered by the dedicated invalid-status assertion below.
+        if: always() && steps.run.outputs.status == 'passed'
         env:
           CODE: ${{ steps.run.outputs.http_code }}
           STATUS: ${{ steps.run.outputs.status }}
