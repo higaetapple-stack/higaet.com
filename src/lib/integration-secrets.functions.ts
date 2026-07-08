@@ -205,7 +205,9 @@ export interface IntegrationVerification {
 export const verifyIntegrations = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<IntegrationVerification[]> => {
+    assertSameOrigin();
     await assertAdmin(context);
+    throttle("integration-secret.verify", context.userId, 5_000);
     const supabase = context.supabase;
     const [sentry, dd, up] = await Promise.all([
       verifySentry(supabase),
@@ -218,6 +220,9 @@ export const verifyIntegrations = createServerFn({ method: "POST" })
       persistVerify(supabase, "DATADOG_API_KEY", dd.ok, dd.detail),
       persistVerify(supabase, "UPTIME_MONITOR_API_KEY", up.ok, up.detail),
     ]);
+    await writeAudit(supabase, context.userId, "integration_secret.verify", "integration_secret", null, {
+      results: { sentry: sentry.ok, datadog: dd.ok, uptime: up.ok },
+    });
     return [
       { provider: "sentry", ok: sentry.ok, detail: sentry.detail, proof: sentry.proof, verifiedAt: now },
       { provider: "datadog", ok: dd.ok, detail: dd.detail, proof: dd.proof, verifiedAt: now },
