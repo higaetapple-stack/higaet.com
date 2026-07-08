@@ -31,7 +31,7 @@ export function MfaCard() {
   const regenCodes = useServerFn(regenerateRecoveryCodes);
   const codeStatus = useServerFn(getRecoveryCodeStatus);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase.auth.mfa.listFactors();
     if (error) toast.error(error.message);
@@ -41,8 +41,8 @@ export function MfaCard() {
       setRecoveryStatus({ total: s.total, unused: s.unused });
     } catch { /* ignore */ }
     setLoading(false);
-  }
-  useEffect(() => { refresh(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  }, [codeStatus]);
+  useEffect(() => { refresh(); }, [refresh]);
 
   const verified = factors.find((f) => f.status === "verified");
 
