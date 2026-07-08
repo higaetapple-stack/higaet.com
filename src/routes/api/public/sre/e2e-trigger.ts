@@ -64,6 +64,16 @@ export const Route = createFileRoute("/api/public/sre/e2e-trigger")({
 
         try {
           const result = await runSreE2ETest({ triggeredBy: null });
+          // Contract: status must be one of the known values. Anything else
+          // (missing, misspelled, future value we don't understand) → 400 so
+          // callers surface a schema violation instead of a false pass/fail.
+          const VALID = new Set(["passed", "failed", "pending"]);
+          if (!result || typeof result.status !== "string" || !VALID.has(result.status)) {
+            return Response.json(
+              { ok: false, error: "invalid_status", status: result?.status ?? null, result },
+              { status: 400 },
+            );
+          }
           // passed → 200, pending → 200 (workflow warns), failed → 500
           const httpStatus = result.status === "failed" ? 500 : 200;
           return Response.json(result, { status: httpStatus });
