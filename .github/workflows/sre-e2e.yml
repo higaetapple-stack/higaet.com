@@ -84,6 +84,7 @@ jobs:
           fi
           STATUS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('response.json')).status || 'unknown')")
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          echo "http_code=$CODE" >> "$GITHUB_OUTPUT"
           if [ "$STATUS" = "failed" ]; then
             echo "::error::E2E smoke returned status=failed"
             exit 1
@@ -91,6 +92,19 @@ jobs:
           if [ "$STATUS" = "pending" ]; then
             echo "::warning::E2E smoke returned status=pending — CI checks did not complete in the polling window"
           fi
+
+      - name: Assert pending returns HTTP 200 (contract check)
+        if: always() && steps.run.outputs.status == 'pending'
+        env:
+          CODE: ${{ steps.run.outputs.http_code }}
+        run: |
+          set -euo pipefail
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Contract violation: pending status must return HTTP 200 (got $CODE). The workflow relies on 200-for-pending to emit a warning instead of failing."
+            exit 1
+          fi
+          echo "::notice::Verified: pending run returned HTTP 200 and emitted ::warning:: annotation as expected."
+
 
 
       - name: Summary
