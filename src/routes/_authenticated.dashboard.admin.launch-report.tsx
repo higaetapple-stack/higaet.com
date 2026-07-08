@@ -28,6 +28,7 @@ import {
 import {
   buildLaunchReport,
   getMonitoringVerification,
+  probeAndUpdateChecklist,
   probeSreHealth,
   type HealthProbeResult,
   type LaunchReportBundle,
