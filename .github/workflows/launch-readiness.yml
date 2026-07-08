@@ -24,6 +24,9 @@ env:
   TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
   GENERIC_WEBHOOK_URL: ${{ secrets.GENERIC_WEBHOOK_URL }}
 
+permissions:
+  contents: read
+
 jobs:
   security-audit:
     runs-on: ubuntu-latest
