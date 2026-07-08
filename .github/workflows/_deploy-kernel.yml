@@ -93,6 +93,14 @@ jobs:
             echo "::error::Deploy aborted: dist artifact missing or empty"
             exit 1
           fi
+          if [ ! -f "dist/.output/server/index.mjs" ]; then
+            echo "::error::Deploy aborted: dist/.output/server/index.mjs missing — CI did not build the Nitro node-server preset"
+            exit 1
+          fi
+          if [ ! -f "dist/app.js" ]; then
+            echo "::error::Deploy aborted: dist/app.js missing — Passenger entry not packaged"
+            exit 1
+          fi
           echo "dist artifact OK ($(find dist -type f | wc -l) files)"
 
       - name: Setup SSH
