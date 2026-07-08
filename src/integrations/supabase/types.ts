@@ -2895,6 +2895,57 @@ export type Database = {
           },
         ]
       }
+      operator_checklist_items: {
+        Row: {
+          category: string
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string
+          description: string | null
+          evidence_url: string | null
+          id: string
+          is_required: boolean
+          item_key: string
+          notes: string | null
+          sort_order: number
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          description?: string | null
+          evidence_url?: string | null
+          id?: string
+          is_required?: boolean
+          item_key: string
+          notes?: string | null
+          sort_order?: number
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          description?: string | null
+          evidence_url?: string | null
+          id?: string
+          is_required?: boolean
+          item_key?: string
+          notes?: string | null
+          sort_order?: number
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount_minor: number
