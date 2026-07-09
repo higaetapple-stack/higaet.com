@@ -41,7 +41,7 @@ describe("SRE E2E synthetic incident", () => {
     expect(incident.id).toBeDefined();
     expect(incident.shortId).toBeDefined();
     expect(Array.isArray(incident.frames)).toBe(true);
-    for (const f of incident.frames) {
+    for (const f of incident.frames ?? []) {
       expect(typeof f.filename).toBe("string");
       expect(typeof f.function).toBe("string");
     }
