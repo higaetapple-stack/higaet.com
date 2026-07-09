@@ -44,20 +44,29 @@ async function admin() {
   return supabaseAdmin;
 }
 
-function syntheticIncident(runId: string): { incident: AISREIncident; issueId: string } {
-  const issueId = `e2e-${runId.slice(0, 8)}`;
+// Stable canary id so PR dedup on (issue_id, analysis_hash) collapses
+// repeated smoke runs into a single draft PR instead of spamming one per run.
+// runId still keys sre_e2e_test_runs; only the synthetic Sentry issue id is fixed.
+export const E2E_SYNTHETIC_ISSUE_ID = "e2e-smoke-canary";
+export const E2E_SYNTHETIC_SHORT_ID = "E2E-CANARY";
+
+function syntheticIncident(_runId: string): { incident: AISREIncident; issueId: string } {
+  const issueId = E2E_SYNTHETIC_ISSUE_ID;
   return {
     issueId,
     incident: {
       id: issueId,
-      shortId: `E2E-${runId.slice(0, 6).toUpperCase()}`,
+      shortId: E2E_SYNTHETIC_SHORT_ID,
       permalink: undefined,
-      title: "E2E smoke: TypeError: Cannot read properties of undefined (reading 'id')",
-      culprit: "src/lib/e2e/synthetic.ts in loadUser",
-      errorType: "TypeError",
-      errorValue: "Cannot read properties of undefined (reading 'id')",
-      frequency: 42,
-      userCount: 7,
+      // Synthetic, human-readable title. Intentionally NOT a real stack-trace
+      // string — the previous "TypeError: Cannot read properties of undefined"
+      // wording made every draft PR look like a genuine incident.
+      title: "E2E smoke canary: synthetic SRE pipeline health check",
+      culprit: "src/lib/sre/pipeline/e2e-test.server.ts in syntheticIncident",
+      errorType: "SyntheticCanary",
+      errorValue: "SRE E2E smoke run (not a real incident)",
+      frequency: 1,
+      userCount: 0,
       frames: [
         {
           filename: "src/lib/sre/pipeline/process-issue.server.ts",
@@ -68,9 +77,14 @@ function syntheticIncident(runId: string): { incident: AISREIncident; issueId: s
           function: "createPRForAnalysis",
         },
       ],
-
     },
   };
+}
+
+// Test-only accessor so the canary shape can be asserted without re-running the
+// full pipeline. Not part of the public runtime API.
+export function __getSyntheticIncidentForTest(runId: string) {
+  return syntheticIncident(runId);
 }
 
 async function appendPhase(runId: string, event: Omit<PhaseEvent, "at">, patch: Record<string, unknown> = {}) {
