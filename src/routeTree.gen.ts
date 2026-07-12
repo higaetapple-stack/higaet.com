@@ -18,6 +18,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimulateRouteImport } from './routes/simulate'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReplayRouteImport } from './routes/replay'
+import { Route as ReadyzRouteImport } from './routes/readyz'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as McpDocsRouteImport } from './routes/mcp-docs'
@@ -28,6 +29,7 @@ import { Route as HigaetTechnologiesRouteImport } from './routes/higaet-technolo
 import { Route as HigaetGlobalEducationHubRouteImport } from './routes/higaet-global-education-hub'
 import { Route as HigaetAiPlatformRouteImport } from './routes/higaet-ai-platform'
 import { Route as HigaetAcademyRouteImport } from './routes/higaet-academy'
+import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as FounderRouteImport } from './routes/founder'
@@ -420,6 +422,11 @@ const ReplayRoute = ReplayRouteImport.update({
   path: '/replay',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadyzRoute = ReadyzRouteImport.update({
+  id: '/readyz',
+  path: '/readyz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -469,6 +476,11 @@ const HigaetAiPlatformRoute = HigaetAiPlatformRouteImport.update({
 const HigaetAcademyRoute = HigaetAcademyRouteImport.update({
   id: '/higaet-academy',
   path: '/higaet-academy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthzRoute = HealthzRouteImport.update({
+  id: '/healthz',
+  path: '/healthz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GovernanceRoute = GovernanceRouteImport.update({
@@ -2455,6 +2467,7 @@ export interface FileRoutesByFullPath {
   '/founder': typeof FounderRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
+  '/healthz': typeof HealthzRoute
   '/higaet-academy': typeof HigaetAcademyRoute
   '/higaet-ai-platform': typeof HigaetAiPlatformRoute
   '/higaet-global-education-hub': typeof HigaetGlobalEducationHubRoute
@@ -2465,6 +2478,7 @@ export interface FileRoutesByFullPath {
   '/mcp-docs': typeof McpDocsRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
+  '/readyz': typeof ReadyzRoute
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
@@ -2817,6 +2831,7 @@ export interface FileRoutesByTo {
   '/faculty': typeof FacultyRoute
   '/founder': typeof FounderRoute
   '/governance': typeof GovernanceRoute
+  '/healthz': typeof HealthzRoute
   '/higaet-academy': typeof HigaetAcademyRoute
   '/higaet-ai-platform': typeof HigaetAiPlatformRoute
   '/higaet-global-education-hub': typeof HigaetGlobalEducationHubRoute
@@ -2827,6 +2842,7 @@ export interface FileRoutesByTo {
   '/mcp-docs': typeof McpDocsRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
+  '/readyz': typeof ReadyzRoute
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
@@ -3173,6 +3189,7 @@ export interface FileRoutesById {
   '/founder': typeof FounderRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
+  '/healthz': typeof HealthzRoute
   '/higaet-academy': typeof HigaetAcademyRoute
   '/higaet-ai-platform': typeof HigaetAiPlatformRoute
   '/higaet-global-education-hub': typeof HigaetGlobalEducationHubRoute
@@ -3183,6 +3200,7 @@ export interface FileRoutesById {
   '/mcp-docs': typeof McpDocsRoute
   '/partners': typeof PartnersRoute
   '/privacy': typeof PrivacyRoute
+  '/readyz': typeof ReadyzRoute
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
@@ -3541,6 +3559,7 @@ export interface FileRouteTypes {
     | '/founder'
     | '/global-education'
     | '/governance'
+    | '/healthz'
     | '/higaet-academy'
     | '/higaet-ai-platform'
     | '/higaet-global-education-hub'
@@ -3551,6 +3570,7 @@ export interface FileRouteTypes {
     | '/mcp-docs'
     | '/partners'
     | '/privacy'
+    | '/readyz'
     | '/replay'
     | '/robots.txt'
     | '/simulate'
@@ -3903,6 +3923,7 @@ export interface FileRouteTypes {
     | '/faculty'
     | '/founder'
     | '/governance'
+    | '/healthz'
     | '/higaet-academy'
     | '/higaet-ai-platform'
     | '/higaet-global-education-hub'
@@ -3913,6 +3934,7 @@ export interface FileRouteTypes {
     | '/mcp-docs'
     | '/partners'
     | '/privacy'
+    | '/readyz'
     | '/replay'
     | '/robots.txt'
     | '/simulate'
@@ -4258,6 +4280,7 @@ export interface FileRouteTypes {
     | '/founder'
     | '/global-education'
     | '/governance'
+    | '/healthz'
     | '/higaet-academy'
     | '/higaet-ai-platform'
     | '/higaet-global-education-hub'
@@ -4268,6 +4291,7 @@ export interface FileRouteTypes {
     | '/mcp-docs'
     | '/partners'
     | '/privacy'
+    | '/readyz'
     | '/replay'
     | '/robots.txt'
     | '/simulate'
@@ -4626,6 +4650,7 @@ export interface RootRouteChildren {
   FounderRoute: typeof FounderRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   GovernanceRoute: typeof GovernanceRoute
+  HealthzRoute: typeof HealthzRoute
   HigaetAcademyRoute: typeof HigaetAcademyRoute
   HigaetAiPlatformRoute: typeof HigaetAiPlatformRoute
   HigaetGlobalEducationHubRoute: typeof HigaetGlobalEducationHubRoute
@@ -4636,6 +4661,7 @@ export interface RootRouteChildren {
   McpDocsRoute: typeof McpDocsRoute
   PartnersRoute: typeof PartnersRoute
   PrivacyRoute: typeof PrivacyRoute
+  ReadyzRoute: typeof ReadyzRoute
   ReplayRoute: typeof ReplayRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SimulateRoute: typeof SimulateRoute
@@ -4760,6 +4786,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReplayRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/readyz': {
+      id: '/readyz'
+      path: '/readyz'
+      fullPath: '/readyz'
+      preLoaderRoute: typeof ReadyzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -4828,6 +4861,13 @@ declare module '@tanstack/react-router' {
       path: '/higaet-academy'
       fullPath: '/higaet-academy'
       preLoaderRoute: typeof HigaetAcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/governance': {
@@ -8399,6 +8439,7 @@ const rootRouteChildren: RootRouteChildren = {
   FounderRoute: FounderRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   GovernanceRoute: GovernanceRoute,
+  HealthzRoute: HealthzRoute,
   HigaetAcademyRoute: HigaetAcademyRoute,
   HigaetAiPlatformRoute: HigaetAiPlatformRoute,
   HigaetGlobalEducationHubRoute: HigaetGlobalEducationHubRoute,
@@ -8409,6 +8450,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpDocsRoute: McpDocsRoute,
   PartnersRoute: PartnersRoute,
   PrivacyRoute: PrivacyRoute,
+  ReadyzRoute: ReadyzRoute,
   ReplayRoute: ReplayRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SimulateRoute: SimulateRoute,
