@@ -24,8 +24,24 @@ permissions:
   contents: read
 
 jobs:
+  ts-syntax-gate:
+    # Fail-fast pre-flight. Coverage + a11y both require this to pass so
+    # we never spend minutes rebuilding / running Playwright on a PR that
+    # cannot even parse. See scripts/check-ts-syntax.mjs.
+    name: TS syntax gate (TS1xxx)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-bun
+        with:
+          node-version: "22"
+      - name: Check TS syntax
+        run: node scripts/check-ts-syntax.mjs
+
   build:
     # Reuse the canonical builder — Build-Once contract.
+    needs: ts-syntax-gate
     uses: ./.github/workflows/_ci-kernel.yml
     with:
       node-version: "22"
@@ -35,6 +51,7 @@ jobs:
       upload-artifact: true
       artifact-name: quality-gates-build
     secrets: inherit
+
 
   coverage:
     name: Unit test coverage (c8)
