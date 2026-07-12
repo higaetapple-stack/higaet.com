@@ -1,11 +1,10 @@
 name: Upload Sentry Sourcemaps
 
-# Repeat-offender hardening (P0.5):
-#   - Uses the canonical setup-node-bun composite action (Node 22 + frozen install + cache)
-#   - Skips the entire job cleanly when SENTRY_AUTH_TOKEN is absent (no red X on forks/preview branches)
-#   - Verifies build artifacts exist before invoking sentry-cli, so a failed build
-#     surfaces as a build failure — not a confusing "sourcemap upload failed"
-#   - Fails only on real upload errors (removed the `|| true` swallows that hid regressions)
+# Build-Once compliant (P10):
+#   - Delegates the Node-target build to _ci-kernel.yml (the only allowed builder).
+#   - Downloads the kernel-produced artifact and runs sentry-cli against it.
+#   - Skips the entire workflow cleanly when SENTRY_AUTH_TOKEN is absent.
+#   - Verifies dist/ exists in the downloaded artifact before uploading sourcemaps.
 
 on:
   push:
@@ -31,8 +30,26 @@ jobs:
             echo "enabled=false" >> "$GITHUB_OUTPUT"
           fi
 
-  upload:
+  # Build via the canonical kernel. Any Node-target rebuild MUST happen here,
+  # not in a bespoke run: step, to satisfy the Build-Once contract enforced
+  # by ci-integrity-guard.yml.
+  build:
     needs: guard
+    if: needs.guard.outputs.enabled == 'true'
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: core
+      run-lint: false
+      run-typecheck: false
+      run-build: true
+      build-command: "bun run build:node"
+      build-target: "node"
+      upload-artifact: true
+      artifact-name: sentry-node-build
+    secrets: inherit
+
+  upload:
+    needs: [guard, build]
     if: needs.guard.outputs.enabled == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -43,31 +60,20 @@ jobs:
       - name: Setup toolchain
         uses: ./.github/actions/setup-node-bun
 
-      # Build the Node target so uploaded sourcemaps match the bundle actually
-      # running on MilesWeb Passenger (staging.higaet.com / www.higaet.com).
-      # The Lovable Cloudflare Workers deployment is built and uploaded
-      # server-side by Lovable and has its own sourcemap pipeline; this
-      # workflow exists specifically for the MilesWeb Node build.
-      - name: Build with sourcemaps (Node target)
-        env:
-          BUILD_TARGET: node
-          NODE_OPTIONS: "--max-old-space-size=6144"
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
-          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
-          VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
-          VITE_GIT_COMMIT_SHA: ${{ github.sha }}
-          GIT_COMMIT_SHA: ${{ github.sha }}
-        run: bun run build:node
+      - name: Download kernel build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sentry-node-build
+          path: .
 
-      # Hard artifact guard: if the build didn't produce dist/ we must NOT
-      # continue to sentry-cli — that would silently upload nothing and
+      # Hard artifact guard: if the downloaded artifact is missing dist/ we must
+      # NOT continue to sentry-cli — that would silently upload nothing and
       # succeed. Fail loudly with a diagnostic instead.
       - name: Verify build artifacts exist
         run: |
           set -e
           if [ ! -d ./dist ] || [ -z "$(ls -A ./dist 2>/dev/null)" ]; then
-            echo "::error::Expected ./dist to exist and be non-empty after build:node. Aborting sourcemap upload."
+            echo "::error::Expected ./dist to exist and be non-empty in the downloaded artifact. Aborting sourcemap upload."
             exit 1
           fi
           echo "dist/ OK ($(find ./dist -type f | wc -l) files)"
@@ -77,9 +83,10 @@ jobs:
             echo "::notice::.output/ missing — Node SSR bundle not emitted; skipping .output upload."
           fi
 
-      # Safety-net upload. sentryVitePlugin uploads during the build when
-      # SENTRY_AUTH_TOKEN + GIT_COMMIT_SHA are present; this step covers
-      # gaps and finalizes the release. Real failures propagate (no `|| true`).
+      # NOTE: sentryVitePlugin uploads during the kernel build only if the
+      # Sentry env vars are present in the kernel's build step env. This
+      # step is the canonical uploader — it uploads the sourcemaps that
+      # were emitted next to the compiled JS in the downloaded artifact.
       - name: Upload sourcemaps and finalize release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
