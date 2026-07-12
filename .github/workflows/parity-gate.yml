@@ -56,7 +56,13 @@ jobs:
         if: always()
         run: bun run typecheck 2>&1 | tee legacy-typecheck.log
 
-      - name: Build
+      # NOTE (Build-Once contract): This build is INTENTIONAL and EXEMPT from
+      # ci-integrity-guard.yml. parity-gate exists specifically to compare a
+      # legacy `bun run build` invocation against the kernel-produced output;
+      # removing it would defeat the parity comparison. If the parity design
+      # ever changes to compare against a stored legacy artifact, remove the
+      # `parity-gate.yml` entry from the guard's allowlist at the same time.
+      - name: Build (legacy baseline — exempt from Build-Once guard)
         id: build
         if: always()
         env:

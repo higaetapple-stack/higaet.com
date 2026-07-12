@@ -64,19 +64,36 @@ jobs:
           fi
 
           # Rule 1 + 2: scan workflows other than _ci-kernel.yml.
+          #
+          # Allowlisted builders (may run a project build):
+          #   - _ci-kernel.yml          — the canonical builder
+          #   - parity-gate.yml         — legacy baseline lane; MUST rebuild by design
+          #                               (compares kernel output vs legacy `bun run build`).
+          #                               Do not remove this exemption without redesigning
+          #                               parity-gate to consume a stored legacy artifact.
+          #
+          # Regex notes:
+          #   The trailing `([[:space:]]|$)` boundary means `bun run build:node`
+          #   and `"bun run build"` (a YAML value used as an INPUT to the kernel,
+          #   e.g. ci.yml `build-command:`) do NOT match — only genuine
+          #   `bun run build` / `bun run build ARGS` shell invocations do.
+          BUILD_RE='(bun|npm|pnpm|yarn)[[:space:]]+run[[:space:]]+build([[:space:]]|$)'
+
           for f in $(find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) | sort); do
             base=$(basename "$f")
-            # _ci-kernel.yml is the ONLY allowed builder.
-            [ "$base" = "_ci-kernel.yml" ] && continue
-            # ci-integrity-guard.yml is allowed to mention the strings in comments.
-            [ "$base" = "ci-integrity-guard.yml" ] && continue
+            # Allowlist: kernel is the canonical builder; guard itself references
+            # the strings in comments; parity-gate legitimately rebuilds legacy.
+            case "$base" in
+              _ci-kernel.yml|ci-integrity-guard.yml|parity-gate.yml) continue ;;
+            esac
 
             # Strip comments before grepping so runbook-style comments don't false-positive.
             stripped=$(sed 's/#.*$//' "$f")
 
             builds=false
             downloads=false
-            if echo "$stripped" | grep -Eq '(bun|npm|pnpm|yarn)[[:space:]]+run[[:space:]]+build'; then
+            build_hits=$(echo "$stripped" | grep -nE "$BUILD_RE" || true)
+            if [ -n "$build_hits" ]; then
               builds=true
             fi
             if echo "$stripped" | grep -Eq 'actions/download-artifact@'; then
@@ -85,10 +102,12 @@ jobs:
 
             if $builds && $downloads; then
               echo "- **CRITICAL** \`$f\` downloads an artifact AND rebuilds — double-build drift risk" >> "$REPORT"
+              echo "$build_hits" | sed 's/^/    - /' >> "$REPORT"
               CRITICAL=$((CRITICAL+1))
               FINDINGS=$((FINDINGS+1))
             elif $builds; then
               echo "- **HIGH** \`$f\` runs a build step outside \`_ci-kernel.yml\` — should download the ci-build artifact instead" >> "$REPORT"
+              echo "$build_hits" | sed 's/^/    - /' >> "$REPORT"
               HIGH=$((HIGH+1))
               FINDINGS=$((FINDINGS+1))
             fi
