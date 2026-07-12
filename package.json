@@ -17,9 +17,12 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test:unit": "vitest run --passWithNoTests",
+    "test:coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary --report-dir=coverage vitest run --passWithNoTests",
+    "test:a11y": "playwright test tests/e2e/a11y",
     "test": "npm run lint && npm run typecheck && npm run test:unit && npm run build",
     "typecheck": "tsc --noEmit",
     "lock:check": "node scripts/production-lock-check.mjs",
+    "lock:sync-check": "node scripts/check-lockfile-sync.mjs",
     "lint:seo-orphans": "node --experimental-strip-types scripts/lint-seo-clusters.ts",
     "lint:backlinks": "node --experimental-strip-types scripts/lint-backlink-architecture.ts",
     "seo:graph:report": "node --experimental-strip-types scripts/seo-graph-report.ts"
