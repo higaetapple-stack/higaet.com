@@ -95,9 +95,24 @@ jobs:
           EOF
           node scripts/notify-failure.mjs || true
 
+  # Canonical build for the E2E preview server. All rebuilds must live in
+  # the kernel (Build-Once). Emits a `launch-readiness-build` artifact
+  # containing dist/, .output/, and release manifests.
+  build:
+    needs: security-audit
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: core
+      run-lint: false
+      run-typecheck: false
+      run-build: true
+      upload-artifact: true
+      artifact-name: launch-readiness-build
+    secrets: inherit
+
   e2e:
     runs-on: ubuntu-latest
-    needs: security-audit
+    needs: [security-audit, build]
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -113,17 +128,33 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TEST_FIXTURE_PASSWORD: ${{ secrets.TEST_FIXTURE_PASSWORD }}
         run: node scripts/seed-test-users.mjs
-      - name: Start preview build
+      - name: Download kernel build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: launch-readiness-build
+          path: .
+      - name: Verify downloaded artifact
+        run: |
+          set -e
+          if [ ! -d dist ] && [ ! -d .output ]; then
+            echo "::error::Downloaded artifact missing both dist/ and .output/"
+            exit 1
+          fi
+          echo "artifact OK (dist=$( [ -d dist ] && echo y || echo n ), .output=$( [ -d .output ] && echo y || echo n ))"
+      - name: Start preview server from downloaded artifact
         env:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
-          bun run build
+          # `bun run preview` serves the already-built output. We must NOT
+          # rebuild here — the kernel artifact above is the single source
+          # of truth (Build-Once contract enforced by ci-integrity-guard.yml).
           bun run preview --host 127.0.0.1 --port 8080 &
           for i in $(seq 1 30); do
             curl -sf http://127.0.0.1:8080 && break
             sleep 2
           done
+
       - name: Phase C — Playwright E2E
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:8080
