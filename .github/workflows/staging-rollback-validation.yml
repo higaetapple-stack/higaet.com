@@ -3,6 +3,9 @@ name: Staging Deploy + Rollback Validation (Phase 2.0.2)
 # Deploys a candidate build to MilesWeb staging, runs the smoke suite against
 # the live host, and automatically rolls back to the previous release if any
 # post-deploy check fails. Manual-only until staging is fully validated.
+#
+# Build-Once compliant (P10): the Node build is produced by _ci-kernel.yml
+# and this workflow only consumes the artifact — no local `bun run build:node`.
 
 on:
   workflow_dispatch:
@@ -16,17 +19,31 @@ concurrency:
   group: staging-rollback-validation
   cancel-in-progress: false
 
-env:
-  STAGING_HOST: ${{ secrets.STAGING_HOST }}
-  STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
-
 permissions:
   contents: read
 
 jobs:
+  # Canonical Node-target build via the kernel. All rebuilds MUST live here.
+  build:
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: core
+      run-lint: false
+      run-typecheck: true
+      run-build: true
+      build-command: "bun run build:node"
+      build-target: "node"
+      upload-artifact: true
+      artifact-name: rollback-node-build
+    secrets: inherit
+
   deploy-and-validate:
+    needs: build
     runs-on: ubuntu-latest
     environment: staging
+    env:
+      STAGING_HOST: ${{ secrets.STAGING_HOST }}
+      STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,11 +53,8 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install
+      - name: Install (needed for env-validation script + smoke runner)
         run: bun install --frozen-lockfile
-
-      - name: Pre-deploy — typecheck
-        run: bunx tsc --noEmit
 
       - name: Pre-deploy — env validation
         run: node scripts/validate-env.mjs --strict
@@ -50,13 +64,26 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
-      - name: Build (Node target for MilesWeb Passenger)
-        run: bun run build:node
-        env:
-          BUILD_TARGET: node
-          NODE_OPTIONS: "--max-old-space-size=6144"
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      - name: Download kernel Node build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rollback-node-build
+          path: .
+
+      - name: Verify downloaded artifact
+        run: |
+          set -e
+          if [ ! -f .output/server/index.mjs ]; then
+            echo "::error::Downloaded artifact missing .output/server/index.mjs — kernel build did not emit Node SSR bundle."
+            exit 1
+          fi
+          for f in app.js package.json bun.lock; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Downloaded artifact missing required file: $f"
+              exit 1
+            fi
+          done
+          echo "Artifact OK — .output/server/index.mjs + release manifests present."
 
       - name: Package release
         id: pkg
