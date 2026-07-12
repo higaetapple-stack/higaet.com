@@ -1,98 +1,84 @@
+# Remediation Plan — HIGAET Audit Follow-ups
 
-# Unified Sentry → AI SRE Pipeline
+The five requests touch production-critical surfaces (CI, package manager, server runtime, RLS, MCP auth). ADR-0004 workstream freeze is active, so I want your go-ahead on scope before editing. Each item below is independent and can be shipped separately — reply with the numbers you want me to execute (e.g. "1, 4, 5" or "all").
 
-One brain, two inputs (webhook + cron backfill), one persisted analysis, optional PR draft. No duplicate paths.
+## 1. CI: coverage (c8) + accessibility (axe)
 
-## Architecture
+Scope
+- Add devDeps: `c8`, `@axe-core/playwright`.
+- New scripts: `test:coverage` (`c8 --reporter=lcov --reporter=text vitest run --passWithNoTests`), `test:a11y` (Playwright project that runs `axe` against a small route list).
+- Add `tests/e2e/a11y/*.spec.ts` running `AxeBuilder` against `/`, `/academy`, `/global-education`, `/technologies`, `/contact` (only WCAG 2.1 A/AA violations fail).
+- Extend `.github/workflows/ci.yml` (kernel caller) with two new jobs after the kernel: `coverage` and `a11y`. Both consume the existing `ci-build` artifact — no rebuild (respects Build-Once guard).
+- Coverage threshold starts at "report only" (no gate) until baseline is known; a11y fails on any `serious`/`critical` violation.
 
-```text
-Sentry webhook  ─┐
-                 ├─► processSentryIssue(issueId)  ──►  runAISRELoop()  ──►  persist analysis  ──►  (optional) PR draft
-pg_cron backfill ─┘        (dedupe by issueId)
-```
+Risk: Low. New jobs only. No existing behavior changes.
 
-Single entrypoint: `processSentryIssue(issueId, { trigger })`. Both webhook and cron call it. It:
-1. Loads issue + latest event via existing `SentryClient`.
-2. Skips if `sentry_issue_analyses` already has a fresh row for that `issueId` (status = processed, updated within TTL) unless `force=true`.
-3. Runs `runAISRELoop()` (already built).
-4. Upserts result into `sentry_issue_analyses`.
-5. If `autoPRRecommended` and PR not yet created for this analysis version, generates a PR draft record (no external Git call in this pass — stored as `pr_suggestion` JSON so admin dashboard can review/copy).
+## 2. Consolidate package manager (bun vs npm)
 
-## What gets built
+Recommendation: **keep `bun` in CI, keep `package-lock.json` for deployment.**
 
-### 1. Persistence
-New migration: `sentry_issue_analyses`
-- `id uuid pk`, `issue_id text unique`, `short_id text`, `title text`
-- `root_cause jsonb`, `fix_plan jsonb`, `risk_score numeric`, `confidence numeric`, `category text`
-- `pr_suggestion jsonb null`, `auto_pr_recommended bool`
-- `status text` (`processed`|`failed`|`skipped`), `error text null`
-- `trigger text` (`webhook`|`cron`|`manual`), `sentry_permalink text`
-- `analyzed_at timestamptz`, `created_at`, `updated_at`
-- Full GRANTs + RLS: admin/super_admin SELECT via `has_role`; service_role ALL. No anon.
+Evidence: `_ci-kernel.yml` and every kernel-caller uses `bun run …`; `scripts/production-lock-check.mjs` hashes `package-lock.json`; MilesWeb Passenger boot (`app.js`) requires npm-installable output. Dropping `bun.lock` would break CI; dropping `package-lock.json` would break MilesWeb deploy.
 
-### 2. Orchestrator (single entrypoint)
-`src/lib/sre/pipeline/process-issue.server.ts`
-- `processSentryIssue({ issueId, trigger, force? })`
-- Dedup check → hydrate → `runAISRELoop` → upsert → PR draft generation
-- Returns `{ status, analysisId, prSuggested }`
+Proposed action
+- Document the two-lockfile contract explicitly in `docs/DEVELOPMENT.md` (bun for CI speed, npm lock for deploy determinism).
+- Add `scripts/check-lockfile-sync.mjs` that fails CI if `package.json` dependency versions drift between `bun.lock` and `package-lock.json`.
+- Add a `pr-checks.yml` step invoking it.
 
-`src/lib/sre/pipeline/pr-draft.ts` (pure)
-- Turns `AISREAnalysis` into a structured PR suggestion `{ title, branch, body, patches: [...] }`.
-- No external calls; deterministic from analysis.
+Alternative (destructive): fully switch to bun by removing `package-lock.json`, migrating `app.js` install workflow to `bun install --production` on MilesWeb. This requires validating MilesWeb Passenger with bun and re-testing deploy. **Not recommended without a staged rollout.**
 
-### 3. Webhook entrypoint
-`src/routes/api/public/sentry.webhook.ts`
-- POST only, `OPTIONS` for CORS.
-- Verifies `sentry-hook-signature` (HMAC SHA256 of raw body using `SENTRY_WEBHOOK_SECRET`) with `timingSafeEqual`.
-- Only handles `issue.created` / `issue.reopened` / `issue.assigned` resource actions.
-- Extracts issue id, calls `processSentryIssue({ issueId, trigger: 'webhook' })`.
-- Returns 200 quickly; failures logged but never 5xx to Sentry retry storm on validation errors.
+Risk: Low for documented approach; Medium if you want the destructive migration — needs a separate deploy dry-run.
 
-Requires new secret: `SENTRY_WEBHOOK_SECRET` (via `add_secret`).
+## 3. Pin Nitro to a stable release
 
-### 4. Cron backfill entrypoint
-`src/routes/api/public/sentry.sync.ts`
-- POST, authenticated with anon `apikey` header (pg_cron pattern).
-- Calls existing `processSentryIssues({ limit: 25 })` list, then routes each through `processSentryIssue` (skips already-processed).
-- pg_cron schedule (every 10 min) added via `supabase--insert`, targeting stable published URL.
+Reality check
+- `nitro@3.0.260603-beta` is the version pinned by `@lovable.dev/vite-tanstack-config@2.7.1`. Nitro 3 has **no stable release** yet on npm — the tag `latest` is still the 2.x line, which is not API-compatible with TanStack Start's v1 Nitro-3 integration.
+- Downgrading Nitro to 2.x will break Start's SSR entry and the `.output/server/index.mjs` shape that `app.js` boots.
 
-### 5. Admin server functions + dashboard tab
-- `listSentryAnalyses` (admin-gated via existing `assertGovernanceAdmin`) with composite cursor pagination + `total`.
-- `getSentryAnalysis(issueId)` for detail drawer.
-- `reprocessSentryIssue(issueId)` (admin) → calls orchestrator with `force: true`.
-- CSV export via existing `toCsv` helper.
-- New tab in `_authenticated.dashboard.admin.governance.tsx` → "AI SRE" with list, filters (status, trigger, category), detail view showing root cause / fix plan / PR suggestion, and "Reprocess" button.
+Proposed action
+- Do **not** downgrade Nitro.
+- Add a `renovate.json` config (or a scheduled workflow) to auto-open a PR when Nitro publishes a non-beta 3.x tag.
+- Add a runtime-lock note in `docs/ARCHITECTURE.md` explaining why the beta pin is intentional and tied to the Lovable preset.
 
-### 6. Tests
-- Unit: `pr-draft.test.ts` — deterministic output from fixture analysis.
-- Unit: `process-issue.test.ts` — dedup logic, force flag, trigger tagging (mock SentryClient + supabase).
-- Unit: `sentry-webhook-signature.test.ts` — valid, tampered, missing, wrong secret.
+Risk: Very low (documentation + optional Renovate). If you insist on a stable pin today, I need to know first whether you want to move off `@lovable.dev/vite-tanstack-config`, which is a much larger migration.
 
-## Guardrails (matches user's rules)
+## 4. Tighten community-roster RLS
 
-- Webhook and cron both go through `processSentryIssue` — never call `runAISRELoop` or PR generator directly.
-- PR draft creation is idempotent per `(issueId, analysis hash)`; re-runs don't create duplicates.
-- No external GitHub API call in this pass — PR suggestion is a stored artifact for admin review. (GitHub push is a follow-up once the user connects a repo token.)
-- All secrets read inside handlers, never at module scope.
-- Admin-only reads; RLS enforced; service_role only inside server helpers.
+Scope (migration, not code):
+- Tables: `communities`, `community_members`.
+- Current gap (per scanner): rosters visible to all authenticated users regardless of membership.
+- New policy shape (security-definer function to avoid recursion):
+  - `has_community_role(_user_id, _community_id, _role)` — stable, SECURITY DEFINER, `SET search_path = public`.
+  - `is_community_member(_user_id, _community_id)` — same shape.
+- `community_members` SELECT policy: user can read a row only if they are themselves a member of that community, OR are an admin (`has_role(auth.uid(),'admin')`), OR are the community owner/moderator.
+- `communities` metadata (name, description) stays readable by any authenticated user — only member lists tighten. Confirm this matches your intent before I write the migration.
+- Preserve INSERT/UPDATE/DELETE policies; only SELECT is rewritten.
+- GRANTs re-issued in the same migration for correctness.
 
-## Files
+Risk: Medium. Any client code that currently lists non-member rosters will now return empty. I'll grep `src/lib/community.functions.ts`, `src/components/community/*`, and `src/routes/_authenticated.community.*` to enumerate call sites in the same PR and either accept the tighter behavior or add a member-scoped fetcher.
 
-New:
-- `supabase/migrations/<ts>_sentry_issue_analyses.sql`
-- `src/lib/sre/pipeline/process-issue.server.ts`
-- `src/lib/sre/pipeline/pr-draft.ts`
-- `src/lib/sre/pipeline/__tests__/pr-draft.test.ts`
-- `src/lib/sre/pipeline/__tests__/process-issue.test.ts`
-- `src/lib/sre/pipeline/__tests__/webhook-signature.test.ts`
-- `src/lib/sre/sre.functions.ts` (list/get/reprocess/export server fns)
-- `src/routes/api/public/sentry.webhook.ts`
-- `src/routes/api/public/sentry.sync.ts`
+## 5. Protect the MCP endpoints with OAuth
 
-Edited:
-- `src/routes/_authenticated.dashboard.admin.governance.tsx` (new "AI SRE" tab)
-- `src/integrations/supabase/types.ts` (regen for new table)
+Scope (follows `app-mcp-server-authoring` + `cloud-auth-oauth-server`):
+- Call `supabase--configure_oauth_server` to enable the managed OAuth 2.1 server + DCR.
+- Add `src/routes/[.]lovable.oauth.consent.tsx` (SSR-off consent route with approve/deny, using existing `supabase` browser client) — includes the `next` preservation guidance so redirects survive password/social sign-in.
+- Update `src/lib/mcp/index.ts` to add `auth: auth.oauth.issuer({ issuer: \`https://${projectRef}.supabase.co/auth/v1\`, acceptedAudiences: "authenticated" })`, driven by `import.meta.env.VITE_SUPABASE_PROJECT_ID`.
+- Rewrite each tool in `src/lib/mcp/tools/*` to derive user identity from `ToolContext` (`ctx.getUserId()`, `ctx.getToken()`) and use a per-request Supabase client with the forwarded bearer so RLS runs as the user.
+- Regenerate `.lovable/mcp/manifest.json` via `app_mcp_server--extract_mcp_manifest`.
+- Update the auth/login routes to consume the `next` search param on password + Google sign-in and in `emailRedirectTo` so consent survives sign-in.
 
-## After approval
+Blockers I need confirmed
+- Which tools should stay available under OAuth? I'll enumerate `src/lib/mcp/tools/` before the edit and flag any that currently touch admin/service-role data — those must either move to `has_role` gating or be removed from the MCP surface.
+- The scanner flagged this as `warn`; are you OK gating even read-only tools behind OAuth, or do you want a mixed public+OAuth server (public tools listed explicitly)?
 
-I will (a) add `SENTRY_WEBHOOK_SECRET` via `add_secret`, (b) run the migration, (c) implement the files above in parallel batches, (d) schedule the cron via `supabase--insert` pointing at the stable published URL, (e) run the vitest suite, (f) tell you the Sentry webhook URL to paste into Sentry's Internal Integration settings.
+Risk: Medium-high. New route + tool refactor + provider activation. Requires a manifest re-extract after edits.
+
+## Suggested execution order
+
+1 → 4 → 2 → 5 → 3 (CI first because it's zero-risk and gives us a safety net; then RLS which is one migration; then lockfile doc; then MCP OAuth which is the biggest change; Nitro last because it's a doc-only note).
+
+## Confirm before I proceed
+
+- Which items (1–5) do you want me to execute now?
+- For **#2**, keep both lockfiles (documented) or fully migrate to bun?
+- For **#4**, confirm "community metadata public to authed users, roster private to members" is the intended policy.
+- For **#5**, confirm all existing MCP tools should be OAuth-gated (no mixed public surface).
