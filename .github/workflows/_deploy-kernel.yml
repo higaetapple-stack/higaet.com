@@ -42,7 +42,7 @@ jobs:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
-      DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
+      DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
     steps:
       - name: Guard target
         run: |
@@ -70,8 +70,8 @@ jobs:
               MISSING=1
             fi
           done
-          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
-            echo "::error::Missing required secret: SSH_PRIVATE_KEY"
+          if [ -z "${{ secrets.SSH_KEY }}" ]; then
+            echo "::error::Missing required secret: SSH_KEY"
             MISSING=1
           fi
           if [ "$MISSING" -eq 1 ]; then
@@ -107,7 +107,7 @@ jobs:
         if: env.SKIP_DEPLOY != '1'
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
