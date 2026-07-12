@@ -66,9 +66,13 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
     }
     const { data } = await supabase.auth.getSession();
     if (!data.session) {
+      // Send unauthenticated users straight to /auth/login (a leaf route
+      // that validates `next`) rather than the /auth layout which strips
+      // unknown search params. Every auth entry point (password sign-in,
+      // Google, Apple, signup email confirmation) honors `next` — see
+      // src/routes/auth.login.tsx and src/routes/auth.register.tsx.
       const next = location.pathname + location.searchStr;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      throw redirect({ to: "/auth", search: { next } as any });
+      throw redirect({ to: "/auth/login", search: { next } });
     }
   },
   loader: async ({ location }) => {

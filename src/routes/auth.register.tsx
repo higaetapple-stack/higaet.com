@@ -10,6 +10,7 @@ import { lovable } from "@/integrations/lovable";
 import { AuthCard } from "./auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { safeRedirectPath } from "@/lib/role-routing";
 import { authEvents } from "@/lib/analytics-events";
 
 const Schema = z.object({
@@ -19,7 +20,10 @@ const Schema = z.object({
 });
 type Values = z.infer<typeof Schema>;
 
+const SearchSchema = z.object({ next: z.string().optional() });
+
 export const Route = createFileRoute("/auth/register")({
+  validateSearch: (s) => SearchSchema.parse(s),
   head: () => ({
     meta: [
       { title: "Create an account — HIGAET" },
@@ -31,12 +35,18 @@ export const Route = createFileRoute("/auth/register")({
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const form = useForm<Values>({
     resolver: zodResolver(Schema),
     defaultValues: { name: "", email: "", password: "" },
   });
+
+  // Same-origin, sanitized destination that survives the email-confirmation
+  // and OAuth round-trips. Falls back to `/dashboard`.
+  const safeNext = safeRedirectPath(search.next);
+  const postAuthPath = safeNext ?? "/dashboard";
 
   const onSubmit = async (values: Values) => {
     setLoading(true);
@@ -46,14 +56,17 @@ function RegisterPage() {
         email: values.email,
         password: values.password,
         options: {
-          emailRedirectTo: window.location.origin + "/dashboard",
+          // Preserve `next` through the email-confirmation click.
+          emailRedirectTo: window.location.origin + postAuthPath,
           data: { full_name: values.name },
         },
       });
       if (error) throw error;
       authEvents.signupCompleted({ method: "email", source: "register_page" });
       toast.success("Account created. Check your email to confirm.");
-      navigate({ to: "/auth/login" });
+      // Send them to /auth/login with the same `next` so they return to
+      // the intended destination after sign-in.
+      navigate({ to: "/auth/login", search: { next: search.next } });
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Sign-up failed";
       toast.error(msg);
@@ -66,8 +79,10 @@ function RegisterPage() {
     setGoogleLoading(true);
     authEvents.signupStarted("register_page_google");
     try {
+      // redirect_uri must be a same-origin full URL. `postAuthPath` is
+      // safeRedirectPath-sanitized so this is always same-origin.
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/dashboard",
+        redirect_uri: window.location.origin + postAuthPath,
       });
       if (result.error) {
         toast.error(result.error.message ?? "Google sign-in failed");
@@ -76,7 +91,7 @@ function RegisterPage() {
       }
       authEvents.signupCompleted({ method: "google", source: "register_page" });
       if (result.redirected) return;
-      navigate({ to: "/dashboard" });
+      navigate({ to: postAuthPath });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Google sign-in failed");
       setGoogleLoading(false);
@@ -90,7 +105,11 @@ function RegisterPage() {
       footer={
         <>
           Already have an account?{" "}
-          <Link to="/auth/login" className="text-ink underline">
+          <Link
+            to="/auth/login"
+            search={{ next: search.next }}
+            className="text-ink underline"
+          >
             Sign in
           </Link>
         </>

@@ -42,6 +42,23 @@ jobs:
       artifact-name: pr-${{ github.event.pull_request.number }}-build
     secrets: inherit
 
+  ts-syntax-gate:
+    # Fast pre-flight: fail the PR IMMEDIATELY on any TS parse-level error
+    # (TS1109 "Expression expected", TS1128 "Declaration or statement
+    # expected", TS1005 "';' expected", etc.). Runs before coverage/a11y
+    # so we never burn minutes on unparseable code.
+    name: TS syntax gate (TS1xxx)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node-bun
+        with:
+          node-version: "22"
+      - name: Check TS syntax
+        run: node scripts/check-ts-syntax.mjs
+
   lockfile-sync:
     name: Lockfile sync (bun.lock ↔ package-lock.json)
     runs-on: ubuntu-latest
@@ -50,6 +67,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify lockfiles resolve to the same top-level versions
         run: node scripts/check-lockfile-sync.mjs
+
+
+
+
 
 
 
