@@ -4,9 +4,14 @@ name: Unified Deploy
 # push, so it cannot race with the existing deploy-milesweb / brevo
 # workflows during shadow-mode cutover.
 #
-# Delegates to _deploy-kernel.yml (currently a dry-run stub — see that file).
-# Once the kernel absorbs real deploy logic, this orchestrator does not need
-# to change.
+# Delegates to _deploy-kernel.yml. Before delegating, the `preflight` job:
+#   1. Verifies the kernel contract at the SELECTED SHA
+#      (scripts/check-deploy-kernel.mjs — SSH_KEY, vars.DEPLOY_DIR, no
+#      SSH_PRIVATE_KEY, with file:line evidence in the job log).
+#   2. Verifies the required secrets and vars are actually present in the
+#      target environment (staging/production). This catches "kernel is
+#      correct, but SSH_KEY hasn't been added to this environment yet"
+#      before the deploy job SSHes anywhere.
 
 on:
   workflow_dispatch:
@@ -29,56 +34,92 @@ permissions:
   contents: read
 
 jobs:
-  preflight:
-    name: Preflight (kernel contract check)
+  preflight-kernel:
+    name: Preflight — kernel contract @ selected SHA
     runs-on: ubuntu-latest
     steps:
       - name: Checkout selected ref
         uses: actions/checkout@v4
 
-      - name: Verify _deploy-kernel.yml contract at selected SHA
+      - name: Report selected SHA
+        run: |
+          echo "::notice::Preflight running against $(git rev-parse HEAD)"
+          echo "::notice::Ref: ${GITHUB_REF} (event=${GITHUB_EVENT_NAME})"
+
+      - name: Validate _deploy-kernel.yml contract
+        run: node scripts/check-deploy-kernel.mjs
+
+  preflight-context:
+    name: Preflight — secrets/vars present in ${{ inputs.target }}
+    needs: [preflight-kernel]
+    if: inputs.target != 'brevo'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    env:
+      HAS_SSH_KEY: ${{ secrets.SSH_KEY != '' }}
+      HAS_SSH_HOST: ${{ secrets.SSH_HOST != '' }}
+      HAS_SSH_USER: ${{ secrets.SSH_USER != '' }}
+      HAS_SSH_PORT: ${{ secrets.SSH_PORT != '' }}
+      HAS_DEPLOY_DIR: ${{ vars.DEPLOY_DIR != '' }}
+      # Diagnostic only — the presence of this secret indicates leftover legacy
+      # configuration in the environment. It is NEVER used by the kernel.
+      HAS_LEGACY_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY != '' }}
+    steps:
+      - name: Verify deploy environment context
         run: |
           set -e
-          KERNEL=".github/workflows/_deploy-kernel.yml"
-          SHA="$(git rev-parse HEAD)"
-          echo "::notice::Preflight validating kernel at ${SHA}"
+          echo "Environment: ${{ inputs.target }}"
+          echo ""
+          echo "Required secrets:"
+          echo "  SSH_KEY   present : ${HAS_SSH_KEY}"
+          echo "  SSH_HOST  present : ${HAS_SSH_HOST}"
+          echo "  SSH_USER  present : ${HAS_SSH_USER}"
+          echo "  SSH_PORT  present : ${HAS_SSH_PORT}"
+          echo ""
+          echo "Required vars:"
+          echo "  DEPLOY_DIR present : ${HAS_DEPLOY_DIR}"
+          echo ""
+          echo "Diagnostics:"
+          echo "  Legacy SSH_PRIVATE_KEY secret present : ${HAS_LEGACY_SSH_PRIVATE_KEY}"
 
-          if [ ! -f "$KERNEL" ]; then
-            echo "::error::$KERNEL missing at selected ref ${SHA}"
+          MISSING=0
+          for v in HAS_SSH_KEY HAS_SSH_HOST HAS_SSH_USER HAS_SSH_PORT HAS_DEPLOY_DIR; do
+            if [ "${!v}" != "true" ]; then
+              name="${v#HAS_}"
+              case "$v" in
+                HAS_DEPLOY_DIR)
+                  echo "::error::Missing repository variable vars.${name} in environment '${{ inputs.target }}'. Add it under Settings → Environments → ${{ inputs.target }} → Variables."
+                  ;;
+                *)
+                  echo "::error::Missing secret secrets.${name} in environment '${{ inputs.target }}'. Add it under Settings → Environments → ${{ inputs.target }} → Secrets."
+                  ;;
+              esac
+              MISSING=1
+            fi
+          done
+
+          if [ "${HAS_LEGACY_SSH_PRIVATE_KEY}" = "true" ]; then
+            echo "::warning::Environment '${{ inputs.target }}' still stores a legacy secret named SSH_PRIVATE_KEY. The current deploy kernel does not use it — safe to remove to avoid confusion."
+          fi
+
+          if [ "$MISSING" -eq 1 ]; then
+            echo "::error::Preflight aborted — configure the missing secret(s)/var(s) in the '${{ inputs.target }}' environment and re-run."
             exit 1
           fi
 
-          # Hard fail: legacy SSH_PRIVATE_KEY contract must be gone.
-          if grep -n "SSH_PRIVATE_KEY" "$KERNEL"; then
-            echo "::error::Selected SHA ${SHA} still references the legacy secret SSH_PRIVATE_KEY."
-            echo "::error::Re-dispatch Unified Deploy from a branch/SHA that uses secrets.SSH_KEY."
-            exit 1
-          fi
-
-          # Must use SSH_KEY.
-          SSH_KEY_HITS=$(grep -c "secrets\.SSH_KEY" "$KERNEL" || true)
-          if [ "${SSH_KEY_HITS:-0}" -lt 1 ]; then
-            echo "::error::Selected SHA ${SHA} does not reference secrets.SSH_KEY in $KERNEL."
-            exit 1
-          fi
-
-          # Must source DEPLOY_DIR from vars, not secrets.
-          if ! grep -q "vars\.DEPLOY_DIR" "$KERNEL"; then
-            echo "::error::Selected SHA ${SHA} does not source DEPLOY_DIR from vars.DEPLOY_DIR."
-            exit 1
-          fi
-          if grep -n "secrets\.DEPLOY_DIR" "$KERNEL"; then
-            echo "::error::Selected SHA ${SHA} still references secrets.DEPLOY_DIR — must be vars.DEPLOY_DIR."
-            exit 1
-          fi
-
-          echo "::notice::Preflight OK — SSH_KEY=${SSH_KEY_HITS} refs, vars.DEPLOY_DIR present, no SSH_PRIVATE_KEY."
+          echo "::notice::Preflight context OK for '${{ inputs.target }}'."
 
   deploy:
     name: Deploy (${{ inputs.target }})
-    needs: [preflight]
+    # brevo skips context preflight (kernel guards it as a stub), so require
+    # only the kernel check for that target; staging/production require both.
+    needs: [preflight-kernel, preflight-context]
+    if: |
+      always() &&
+      needs.preflight-kernel.result == 'success' &&
+      (needs.preflight-context.result == 'success' ||
+       (inputs.target == 'brevo' && needs.preflight-context.result == 'skipped'))
     uses: ./.github/workflows/_deploy-kernel.yml
     with:
       target: ${{ inputs.target }}
     secrets: inherit
-

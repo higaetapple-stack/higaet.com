@@ -1,0 +1,33 @@
+name: Deploy Kernel Contract Guard
+
+# Repo-wide guard: every commit that touches the deploy kernel (or PRs into
+# main) must satisfy the SSH_KEY + vars.DEPLOY_DIR contract enforced by
+# scripts/check-deploy-kernel.mjs. This is the "belt" — the Unified Deploy
+# preflight is the "suspenders" that also protects against dispatching against
+# an older SHA where the kernel is still legacy.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/_deploy-kernel.yml"
+      - "scripts/check-deploy-kernel.mjs"
+      - ".github/workflows/deploy-kernel-guard.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/_deploy-kernel.yml"
+      - "scripts/check-deploy-kernel.mjs"
+      - ".github/workflows/deploy-kernel-guard.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: Validate deploy kernel contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run deploy-kernel contract check
+        run: node scripts/check-deploy-kernel.mjs
