@@ -29,9 +29,56 @@ permissions:
   contents: read
 
 jobs:
+  preflight:
+    name: Preflight (kernel contract check)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected ref
+        uses: actions/checkout@v4
+
+      - name: Verify _deploy-kernel.yml contract at selected SHA
+        run: |
+          set -e
+          KERNEL=".github/workflows/_deploy-kernel.yml"
+          SHA="$(git rev-parse HEAD)"
+          echo "::notice::Preflight validating kernel at ${SHA}"
+
+          if [ ! -f "$KERNEL" ]; then
+            echo "::error::$KERNEL missing at selected ref ${SHA}"
+            exit 1
+          fi
+
+          # Hard fail: legacy SSH_PRIVATE_KEY contract must be gone.
+          if grep -n "SSH_PRIVATE_KEY" "$KERNEL"; then
+            echo "::error::Selected SHA ${SHA} still references the legacy secret SSH_PRIVATE_KEY."
+            echo "::error::Re-dispatch Unified Deploy from a branch/SHA that uses secrets.SSH_KEY."
+            exit 1
+          fi
+
+          # Must use SSH_KEY.
+          SSH_KEY_HITS=$(grep -c "secrets\.SSH_KEY" "$KERNEL" || true)
+          if [ "${SSH_KEY_HITS:-0}" -lt 1 ]; then
+            echo "::error::Selected SHA ${SHA} does not reference secrets.SSH_KEY in $KERNEL."
+            exit 1
+          fi
+
+          # Must source DEPLOY_DIR from vars, not secrets.
+          if ! grep -q "vars\.DEPLOY_DIR" "$KERNEL"; then
+            echo "::error::Selected SHA ${SHA} does not source DEPLOY_DIR from vars.DEPLOY_DIR."
+            exit 1
+          fi
+          if grep -n "secrets\.DEPLOY_DIR" "$KERNEL"; then
+            echo "::error::Selected SHA ${SHA} still references secrets.DEPLOY_DIR — must be vars.DEPLOY_DIR."
+            exit 1
+          fi
+
+          echo "::notice::Preflight OK — SSH_KEY=${SSH_KEY_HITS} refs, vars.DEPLOY_DIR present, no SSH_PRIVATE_KEY."
+
   deploy:
     name: Deploy (${{ inputs.target }})
+    needs: [preflight]
     uses: ./.github/workflows/_deploy-kernel.yml
     with:
       target: ${{ inputs.target }}
     secrets: inherit
+
