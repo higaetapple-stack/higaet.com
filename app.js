@@ -43,6 +43,46 @@ process.env.NODE_ENV ||= "production";
 process.env.HOST ||= "0.0.0.0";
 const dotEnvLoaded = loadDotEnvFile(envPath);
 
+// Strict runtime validation of required environment variables.
+// Passenger swallows silent boot crashes into an opaque 504 — fail loudly
+// with an actionable, cPanel-visible message instead. Set STRICT_ENV=0 only
+// for temporary local debugging; production must keep it on.
+const REQUIRED_ENV = [
+  {
+    name: "SUPABASE_URL",
+    hint: "Set in cPanel → Setup Node.js App → Environment variables. Must match VITE_SUPABASE_URL.",
+  },
+  {
+    name: "SUPABASE_PUBLISHABLE_KEY",
+    hint: "Publishable (anon) key from Lovable Cloud. NOT the service role key.",
+  },
+  {
+    name: "SUPABASE_SERVICE_ROLE_KEY",
+    hint: "Server-only. Required for admin/webhook code paths. Never expose to the client.",
+  },
+  {
+    name: "SESSION_SECRET",
+    hint: "Random 32+ char string. Generate with: openssl rand -hex 32",
+  },
+];
+
+const strictEnv = process.env.STRICT_ENV !== "0" && process.env.NODE_ENV === "production";
+const missingEnv = REQUIRED_ENV.filter((v) => !process.env[v.name]);
+if (missingEnv.length > 0) {
+  console.error("[passenger] FATAL: missing required environment variables:");
+  for (const v of missingEnv) {
+    console.error(`  - ${v.name}: ${v.hint}`);
+  }
+  console.error(
+    "[passenger] Configure them in cPanel → Setup Node.js App → Environment variables, then restart the app (touch tmp/restart.txt).",
+  );
+  if (strictEnv) {
+    process.exit(1);
+  } else {
+    console.error("[passenger] STRICT_ENV=0 — continuing boot with degraded config (NOT SAFE for production).");
+  }
+}
+
 // Boot diagnostics — surface in cPanel stderr.log so 504s are debuggable.
 console.log("[passenger] booting HIGAET node server");
 console.log("[passenger] node:", process.version);
