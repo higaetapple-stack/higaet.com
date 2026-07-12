@@ -33,11 +33,3 @@ export default defineMcp({
     getSreSnapshot,
   ],
 });
-  tools: [
-    aboutHigaet,
-    listAcademyCourses,
-    listServices,
-    getSystemHealthOverview,
-    getSreSnapshot,
-  ],
-});
