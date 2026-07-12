@@ -20,7 +20,13 @@ const Schema = z.object({
 });
 type Values = z.infer<typeof Schema>;
 
-const SearchSchema = z.object({ redirect: z.string().optional() });
+// Accept BOTH `next` (canonical, used by the OAuth consent route + other
+// deep-link redirects) and legacy `redirect`. `next` wins when both are
+// present — it is the parameter the consent route emits.
+const SearchSchema = z.object({
+  next: z.string().optional(),
+  redirect: z.string().optional(),
+});
 
 export const Route = createFileRoute("/auth/login")({
   validateSearch: (s) => SearchSchema.parse(s),
@@ -33,8 +39,15 @@ export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
 });
 
-async function resolvePostLoginDestination(redirectParam: string | undefined): Promise<string> {
-  const safe = safeRedirectPath(redirectParam);
+function pickNext(next: string | undefined, redirect: string | undefined): string | null {
+  return safeRedirectPath(next) ?? safeRedirectPath(redirect);
+}
+
+async function resolvePostLoginDestination(
+  next: string | undefined,
+  redirect: string | undefined,
+): Promise<string> {
+  const safe = pickNext(next, redirect);
   if (safe) return safe;
   try {
     const roles = await getMyRoles();
@@ -59,7 +72,7 @@ function LoginPage() {
       if (error) throw error;
       authEvents.login("email");
       toast.success("Welcome back");
-      const to = await resolvePostLoginDestination(search.redirect);
+      const to = await resolvePostLoginDestination(search.next, search.redirect);
       navigate({ to, replace: true });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Sign-in failed");
@@ -72,9 +85,14 @@ function LoginPage() {
     const setBusy = provider === "google" ? setGoogleLoading : setAppleLoading;
     setBusy(true);
     try {
-      const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: window.location.origin + "/dashboard",
-      });
+      // Honor `next` on the OAuth round-trip. The redirect_uri MUST be a
+      // full same-origin URL — a safe next (starts with `/`, not `//`) is
+      // guaranteed same-origin by safeRedirectPath. This is critical for
+      // the MCP consent flow: without it Google sign-in drops the user on
+      // `/` instead of returning to the consent route.
+      const safeNext = pickNext(search.next, search.redirect);
+      const redirect_uri = window.location.origin + (safeNext ?? "/dashboard");
+      const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri });
       if (result.error) {
         toast.error(result.error.message ?? `${provider} sign-in failed`);
         setBusy(false);
@@ -82,7 +100,7 @@ function LoginPage() {
       }
       authEvents.login(provider);
       if (result.redirected) return;
-      navigate({ to: "/dashboard" });
+      navigate({ to: safeNext ?? "/dashboard" });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : `${provider} sign-in failed`);
       setBusy(false);
@@ -96,7 +114,11 @@ function LoginPage() {
       footer={
         <>
           New to HIGAET?{" "}
-          <Link to="/auth/register" className="text-ink underline">
+          <Link
+            to="/auth/register"
+            search={{ next: search.next }}
+            className="text-ink underline"
+          >
             Create an account
           </Link>
         </>
@@ -116,7 +138,7 @@ function LoginPage() {
           type="button"
           onClick={() => signInWithProvider("apple")}
           disabled={googleLoading || appleLoading}
-          className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border bg-ink text-surface text-sm font-medium px-4 py-2.5 rounded-md hover:bg-ink/90 transition-colors disabled:opacity-60"
+          className="w-full inline-flex justify-center items-center gap-2 ring-1 ring-border bg-ink text-surface text-sm font-medium px-4 py-2.5 rounded-md hover:bg-muted transition-colors disabled:opacity-60"
         >
           {appleLoading ? <Loader2 className="size-4 animate-spin" /> : <AppleMark />}
           Continue with Apple
@@ -151,7 +173,11 @@ function LoginPage() {
           Sign in
         </button>
         <div className="text-right">
-          <Link to="/auth/forgot-password" className="text-xs text-muted-foreground hover:text-ink">
+          <Link
+            to="/auth/forgot-password"
+            search={{ next: search.next }}
+            className="text-xs text-muted-foreground hover:text-ink"
+          >
             Forgot password?
           </Link>
         </div>
