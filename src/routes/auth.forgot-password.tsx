@@ -16,7 +16,10 @@ const Schema = z.object({
 });
 type Values = z.infer<typeof Schema>;
 
+const SearchSchema = z.object({ next: z.string().optional() });
+
 export const Route = createFileRoute("/auth/forgot-password")({
+  validateSearch: (s) => SearchSchema.parse(s),
   head: () => ({
     meta: [
       { title: "Reset password — HIGAET" },
@@ -27,6 +30,7 @@ export const Route = createFileRoute("/auth/forgot-password")({
 });
 
 function ForgotPage() {
+  const search = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const form = useForm<Values>({ resolver: zodResolver(Schema), defaultValues: { email: "" } });
@@ -35,8 +39,13 @@ function ForgotPage() {
     setLoading(true);
     authEvents.passwordReset("requested");
     try {
+      // Preserve `next` through the password-reset round-trip so an OAuth
+      // consent flow that landed here returns to the original destination.
+      const nextParam = search.next
+        ? `?next=${encodeURIComponent(search.next)}`
+        : "";
       const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: `${window.location.origin}/auth/reset-password${nextParam}`,
       });
       if (error) throw error;
       setSent(true);
