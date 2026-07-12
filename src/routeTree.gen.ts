@@ -246,6 +246,7 @@ import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_auth
 import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
 import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport } from './routes/global-education.knowledge-base.universities.index'
 import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
 import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
@@ -1673,6 +1674,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlobalEducationKnowledgeBaseUniversitiesIndexRoute =
   GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport.update({
     id: '/knowledge-base/universities/',
@@ -2553,6 +2559,7 @@ export interface FileRoutesByFullPath {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
@@ -2910,6 +2917,7 @@ export interface FileRoutesByTo {
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
   '/technologies': typeof TechnologiesIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
@@ -3269,6 +3277,7 @@ export interface FileRoutesById {
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/technologies/': typeof TechnologiesIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/assistant/$conversationId': typeof AuthenticatedAssistantConversationIdRoute
   '/_authenticated/community/$slug': typeof AuthenticatedCommunitySlugRouteWithChildren
@@ -3636,6 +3645,7 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/assistant/$conversationId'
     | '/community/$slug'
@@ -3993,6 +4003,7 @@ export interface FileRouteTypes {
     | '/global-education'
     | '/jobs'
     | '/technologies'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/assistant/$conversationId'
     | '/community/$slug'
@@ -4351,6 +4362,7 @@ export interface FileRouteTypes {
     | '/global-education/'
     | '/jobs/'
     | '/technologies/'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/assistant/$conversationId'
     | '/_authenticated/community/$slug'
@@ -4641,6 +4653,7 @@ export interface RootRouteChildren {
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
   JobsIndexRoute: typeof JobsIndexRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicAiModeRoute: typeof ApiPublicAiModeRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
@@ -6341,6 +6354,13 @@ declare module '@tanstack/react-router' {
       path: '/.mcp/invoke-tool/$tool'
       fullPath: '/.mcp/invoke-tool/$tool'
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/global-education/knowledge-base/universities/': {
@@ -8407,6 +8427,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   VerifyTokenRoute: VerifyTokenRoute,
   JobsIndexRoute: JobsIndexRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiPublicAiModeRoute: ApiPublicAiModeRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,

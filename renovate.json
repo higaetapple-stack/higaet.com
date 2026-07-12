@@ -1,0 +1,45 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "timezone": "UTC",
+  "schedule": ["before 6am on monday"],
+  "prConcurrentLimit": 3,
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Nitro is pinned to a v3 beta by @lovable.dev/vite-tanstack-config. Open a PR only when a non-beta v3 tag ships.",
+      "matchPackageNames": ["nitro"],
+      "allowedVersions": "!/beta/",
+      "prPriority": 10,
+      "labels": ["dependencies", "runtime-lock"]
+    },
+    {
+      "description": "Lovable-scoped packages release often; group and auto-merge patch/minor.",
+      "matchPackagePatterns": ["^@lovable\\.dev/"],
+      "groupName": "lovable packages",
+      "automerge": false
+    },
+    {
+      "description": "Group TanStack updates.",
+      "matchPackagePatterns": ["^@tanstack/"],
+      "groupName": "tanstack",
+      "automerge": false
+    },
+    {
+      "description": "Group Radix UI primitives.",
+      "matchPackagePatterns": ["^@radix-ui/"],
+      "groupName": "radix-ui"
+    },
+    {
+      "description": "Security-only updates for production deps.",
+      "matchDepTypes": ["dependencies"],
+      "vulnerabilityAlerts": {
+        "labels": ["security"],
+        "automerge": false
+      }
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
+}

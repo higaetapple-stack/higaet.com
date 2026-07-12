@@ -3,12 +3,16 @@
   "sdk_version": "0.20.0",
   "path": "/mcp",
   "auth": {
-    "type": "none"
+    "type": "oauth",
+    "issuer": "https://xbdwfekhnghrwrteqtvm.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
   },
   "mcp": {
     "server": {
       "name": "higaet-mcp",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "title": "HIGAET"
     },
     "tools": [

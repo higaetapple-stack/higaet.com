@@ -42,6 +42,17 @@ jobs:
       artifact-name: pr-${{ github.event.pull_request.number }}-build
     secrets: inherit
 
+  lockfile-sync:
+    name: Lockfile sync (bun.lock ↔ package-lock.json)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify lockfiles resolve to the same top-level versions
+        run: node scripts/check-lockfile-sync.mjs
+
+
+
   lighthouse:
     name: Lighthouse
     needs: ci
