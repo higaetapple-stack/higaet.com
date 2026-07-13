@@ -30,3 +30,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Defense-in-depth: local env overrides and credential files
+# (Lovable-managed .env and .env.example remain tracked.)
+.env.production
+*.pem
+*.key
+.cache/
