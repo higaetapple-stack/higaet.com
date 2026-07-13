@@ -214,6 +214,48 @@ jobs:
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
             "touch '$DEPLOY_DIR/tmp/restart.txt'"
 
+      # Prune old releases to keep ~/apps/higaet/releases/ bounded.
+      # Retains the newest KEEP_RELEASES directories (default 5), always
+      # preserving whatever `current` and `.previous-release` point at even
+      # if they'd otherwise fall off the list. Failed pruning does not fail
+      # the deploy — the release is already live.
+      - name: Prune old releases
+        if: env.SKIP_DEPLOY != '1'
+        continue-on-error: true
+        env:
+          KEEP_RELEASES: ${{ vars.KEEP_RELEASES || '5' }}
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" bash -s <<REMOTE
+          set -euo pipefail
+          RELEASES_DIR='$DEPLOY_DIR/releases'
+          KEEP='${KEEP_RELEASES}'
+          [ -d "\$RELEASES_DIR" ] || { echo "no releases dir — skipping"; exit 0; }
+
+          CURRENT=\$(readlink '$DEPLOY_DIR/current' 2>/dev/null | xargs -n1 basename || true)
+          PREVIOUS=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null | xargs -n1 basename || true)
+
+          cd "\$RELEASES_DIR"
+          # newest-first list of release dirs
+          ALL=\$(ls -1t 2>/dev/null | grep -E '^release-' || true)
+          KEPT=0
+          echo "[prune] keeping newest \$KEEP release(s); protecting current=\$CURRENT previous=\$PREVIOUS"
+          for r in \$ALL; do
+            if [ "\$r" = "\$CURRENT" ] || [ "\$r" = "\$PREVIOUS" ]; then
+              echo "[prune] protect \$r"
+              continue
+            fi
+            KEPT=\$((KEPT + 1))
+            if [ "\$KEPT" -le "\$KEEP" ]; then
+              echo "[prune] keep    \$r"
+            else
+              echo "[prune] remove  \$r"
+              rm -rf -- "\$r"
+            fi
+          done
+          echo "[prune] done. remaining:"
+          ls -1t | head -20
+REMOTE
+
       - name: Smoke tests (post-deploy)
         id: smoke
         if: env.SKIP_DEPLOY != '1'
