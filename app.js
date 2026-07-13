@@ -84,35 +84,48 @@ if (missingEnv.length > 0) {
 }
 
 // Boot diagnostics — surface in cPanel stderr.log so 504s are debuggable.
-console.log("[passenger] booting HIGAET node server");
-console.log("[passenger] node:", process.version);
-console.log("[passenger] cwd:", process.cwd());
-console.log("[passenger] entry:", import.meta.url);
-console.log("[passenger] env:", {
-  NODE_ENV: process.env.NODE_ENV,
-  PORT: process.env.PORT,
-  HOST: process.env.HOST,
-});
-console.log("[passenger] dotenv loaded:", dotEnvLoaded);
-console.log("[passenger] runtime config:", {
+// Everything below is printed BEFORE the server bundle is imported so the
+// operator can see the resolved application root, Node version, env, and
+// artifact path even if bundle import fails.
+let supabaseHost = "unset";
+try {
+  supabaseHost = process.env.SUPABASE_URL
+    ? new URL(process.env.SUPABASE_URL).host
+    : "unset";
+} catch {
+  supabaseHost = "invalid-url";
+}
+
+console.log("[passenger] ============================================");
+console.log("[passenger]  HIGAET node server — startup diagnostics");
+console.log("[passenger] ============================================");
+console.log("[passenger] application root :", here);
+console.log("[passenger] cwd              :", process.cwd());
+console.log("[passenger] entry            :", fileURLToPath(import.meta.url));
+console.log("[passenger] server bundle    :", serverPath);
+console.log("[passenger] bundle exists    :", existsSync(serverPath));
+console.log("[passenger] node version     :", process.version);
+console.log("[passenger] NODE_ENV         :", process.env.NODE_ENV);
+console.log("[passenger] PORT             :", process.env.PORT ?? "(unset)");
+console.log("[passenger] HOST             :", process.env.HOST);
+console.log("[passenger] SUPABASE_URL host:", supabaseHost);
+console.log("[passenger] dotenv loaded    :", dotEnvLoaded);
+console.log("[passenger] runtime config   :", {
   SUPABASE_URL: process.env.SUPABASE_URL ? "set" : "missing",
   SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? "set" : "missing",
+  SESSION_SECRET: process.env.SESSION_SECRET ? "set" : "missing",
   VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL ? "set" : "missing",
   VITE_SUPABASE_PUBLISHABLE_KEY: process.env.VITE_SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
   BREVO_API_KEY: process.env.BREVO_API_KEY ? "set" : "missing",
 });
 
 try {
-  console.log("[passenger] resolved server bundle:", serverPath);
-  console.log("[passenger] bundle exists:", existsSync(serverPath));
-  try {
-    console.log("[passenger] .output -> ", readlinkSync(resolve(here, ".output")));
-  } catch {
-    /* not a symlink — fine */
-  }
-} catch (err) {
-  console.error("[passenger] pre-boot check failed:", err);
+  console.log("[passenger] .output -> ", readlinkSync(resolve(here, ".output")));
+} catch {
+  /* not a symlink — fine */
 }
+console.log("[passenger] ============================================");
 
 if (!existsSync(serverPath)) {
   console.error(
