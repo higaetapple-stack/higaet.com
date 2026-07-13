@@ -23,17 +23,44 @@ export const Route = createFileRoute("/api/public/health")({
         const correlationId =
           request.headers.get("x-correlation-id") ?? crypto.randomUUID();
 
+        // Deep health when ?deep=1 — reports per-dependency status
+        // (artifact, env, supabase, port binding). Default keeps the
+        // liveness contract (fast, no outbound calls) so uptime probes
+        // don't hammer Supabase.
+        const url = new URL(request.url);
+        const deep = url.searchParams.get("deep") === "1";
+
+        let dependencyStatus: "ok" | "degraded" = "ok";
+        let checks: Awaited<
+          ReturnType<
+            typeof import("@/lib/server/deployment-health.server").buildHealthReport
+          >
+        >["checks"] | undefined;
+
+        if (deep) {
+          const { buildHealthReport } = await import(
+            "@/lib/server/deployment-health.server"
+          );
+          const skipSupabase = process.env.READYZ_SKIP_SUPABASE === "1";
+          const report = await buildHealthReport({
+            checkSupabaseConnectivity: !skipSupabase,
+          });
+          checks = report.checks;
+          dependencyStatus = report.ready ? "ok" : "degraded";
+        }
+
         const body = {
-          status: "ok" as const,
+          status: dependencyStatus,
           service: "higaet-frontend",
           environment: import.meta.env.MODE,
           version: import.meta.env.VITE_APP_VERSION ?? "1.0.0",
           uptimeMs: Date.now() - STARTED_AT,
           timestamp: new Date().toISOString(),
           correlationId,
+          ...(checks ? { checks } : {}),
         };
         return new Response(JSON.stringify(body), {
-          status: 200,
+          status: dependencyStatus === "ok" ? 200 : 503,
           headers: {
             "content-type": "application/json",
             "cache-control": "no-store",
