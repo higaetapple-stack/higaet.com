@@ -7,6 +7,7 @@ name: _Deploy Kernel (MilesWeb)
 # Configuration sources:
 #   - secrets.SSH_KEY, secrets.SSH_HOST, secrets.SSH_USER, secrets.SSH_PORT
 #   - vars.DEPLOY_DIR  (non-sensitive GitHub Actions repository variable)
+# Sync verification: active SSH authentication intentionally reads secrets.SSH_KEY only.
 #
 # Contract:
 #   - Consumes a prebuilt dist/ artifact — NEVER rebuilds on the server.
