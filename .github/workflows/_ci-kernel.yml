@@ -112,8 +112,44 @@ jobs:
               echo "::error::Node build target selected but .output/server/index.mjs is missing"
               exit 1
             fi
-            echo "Node server bundle OK: $(ls -la .output/server/index.mjs)"
+            SIZE=$(wc -c < .output/server/index.mjs | tr -d ' ')
+            if [ "$SIZE" -lt "1024" ]; then
+              echo "::error::.output/server/index.mjs is present but suspiciously small (${SIZE} bytes) — Nitro build likely failed"
+              exit 1
+            fi
+            echo "Node server bundle OK: $(ls -la .output/server/index.mjs) (${SIZE} bytes)"
           fi
+
+      - name: Generate artifact manifest
+        if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
+        run: |
+          MANIFEST=".output/manifest.json"
+          {
+            echo "{"
+            echo "  \"generatedAt\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\","
+            echo "  \"gitSha\": \"${GITHUB_SHA}\","
+            echo "  \"gitRef\": \"${GITHUB_REF}\","
+            echo "  \"runId\": \"${GITHUB_RUN_ID}\","
+            echo "  \"buildTarget\": \"${{ inputs.build-target }}\","
+            echo "  \"nodeVersion\": \"$(node -v)\","
+            echo "  \"serverEntry\": {"
+            echo "    \"path\": \".output/server/index.mjs\","
+            echo "    \"exists\": $( [ -f .output/server/index.mjs ] && echo true || echo false ),"
+            echo "    \"sizeBytes\": $( [ -f .output/server/index.mjs ] && wc -c < .output/server/index.mjs | tr -d ' ' || echo 0 ),"
+            echo "    \"sha256\": \"$( [ -f .output/server/index.mjs ] && sha256sum .output/server/index.mjs | cut -d' ' -f1 || echo missing )\""
+            echo "  },"
+            echo "  \"publicAssets\": $( [ -d .output/public ] && find .output/public -type f | wc -l | tr -d ' ' || echo 0 ),"
+            echo "  \"totalFiles\": $(find .output -type f | wc -l | tr -d ' ')"
+            echo "}"
+          } > "$MANIFEST"
+          echo "::notice::Artifact manifest:"
+          cat "$MANIFEST"
+          # Hard gate — abort if server entry missing or empty
+          if [ ! -s .output/server/index.mjs ]; then
+            echo "::error::Manifest check failed — .output/server/index.mjs missing or empty"
+            exit 1
+          fi
+
 
       - name: Upload build artifact
         if: ${{ inputs.upload-artifact && inputs.run-build && success() }}
