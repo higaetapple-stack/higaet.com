@@ -6,7 +6,7 @@
  * dataLayer) triggered by a real user flow, not a mocked track() call.
  *
  * Configure with env vars (all optional — tests self-skip if missing):
- *   PLAYWRIGHT_BASE_URL         e.g. https://staging.higaet.com
+ *   PLAYWRIGHT_BASE_URL         e.g. https://higaet.com
  *   HIGAET_TEST_USER_EMAIL      seeded end-user account (see docs/testing/e2e-test-users.md)
  *   HIGAET_TEST_USER_PASSWORD
  *   HIGAET_TEST_ADMIN_EMAIL     seeded admin (for visa + refund admin flows)

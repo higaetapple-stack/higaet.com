@@ -68,7 +68,6 @@ export interface LaunchReportBundle {
   generatedAt: string;
   deploymentTargets: {
     production: string;
-    staging: string;
   };
   envReadiness: EnvReadinessReport;
   monitoring: MonitoringVerificationReport;
@@ -93,7 +92,6 @@ export interface LaunchReportBundle {
 }
 
 const PROD_URL = "https://higaet.com";
-const STAGING_URL = "https://staging.higaet.com";
 const HEALTH_PATH = "/api/public/sre/e2e-health";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
@@ -155,20 +153,16 @@ export const probeSreHealth = createServerFn({ method: "POST" })
     assertSameOrigin();
     await assertAdmin(context);
     throttle("sre.health.probe", context.userId, 10_000);
-    const [staging, prod] = await Promise.all([
-      probeOne("staging", STAGING_URL),
-      probeOne("production", PROD_URL),
-    ]);
+    const prod = await probeOne("production", PROD_URL);
     await writeAudit(context.supabase, context.userId, "sre.health.probe", "sre_health", null, {
-      staging: { ok: staging.ok, status: staging.status, healthy: staging.body?.healthy },
       production: { ok: prod.ok, status: prod.status, healthy: prod.body?.healthy },
     });
-    return [staging, prod];
+    return [prod];
   });
 
 /**
- * Re-run both health probes AND update the two operator checklist items
- * (staging.health, prod.health) based on the results.
+ * Re-run the production health probe AND update the prod.health operator
+ * checklist item based on the result.
  */
 export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -179,17 +173,9 @@ export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
     assertSameOrigin();
     await assertAdmin(context);
     throttle("sre.health.probe_and_update", context.userId, 10_000);
-    const [staging, prod] = await Promise.all([
-      probeOne("staging", STAGING_URL),
-      probeOne("production", PROD_URL),
-    ]);
+    const prod = await probeOne("production", PROD_URL);
     const nowIso = new Date().toISOString();
     const rows = [
-      {
-        item_key: "staging.health",
-        status: (staging.ok && staging.body?.healthy === true ? "done" : "blocked") as ChecklistItem["status"],
-        note: `Auto-probe ${nowIso} · HTTP ${staging.status ?? "n/a"} · healthy=${String(staging.body?.healthy)}${staging.error ? ` · ${staging.error}` : ""}`,
-      },
       {
         item_key: "prod.health",
         status: (prod.ok && prod.body?.healthy === true ? "done" : "blocked") as ChecklistItem["status"],
@@ -211,11 +197,10 @@ export const probeAndUpdateChecklist = createServerFn({ method: "POST" })
       if (!error) updated.push({ item_key: r.item_key, status: r.status });
     }
     await writeAudit(context.supabase, context.userId, "sre.health.probe_and_update", "operator_checklist", null, {
-      staging: { ok: staging.ok, status: staging.status, healthy: staging.body?.healthy },
       production: { ok: prod.ok, status: prod.status, healthy: prod.body?.healthy },
       updated,
     });
-    return { probes: [staging, prod], updated };
+    return { probes: [prod], updated };
   });
 
 function checkPresent(name: string): boolean {
@@ -400,11 +385,8 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
     };
 
     // Health probes (fresh)
-    const [staging, prod] = await Promise.all([
-      probeOne("staging", STAGING_URL),
-      probeOne("production", PROD_URL),
-    ]);
-    const healthProbes = [staging, prod];
+    const prod = await probeOne("production", PROD_URL);
+    const healthProbes = [prod];
 
     // Checklist snapshot
     const { data: itemsRaw, error: chkErr } = await context.supabase
@@ -427,9 +409,7 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
     const reasons: string[] = [];
     if (envReadiness.overall === "blocked")
       reasons.push(`Env readiness = blocked (${envReadiness.totals.blockingMissing} blocking secret(s) missing/malformed)`);
-    if (!staging.ok) reasons.push(`Staging health probe failed (${staging.status ?? "network"})`);
     if (!prod.ok) reasons.push(`Production health probe failed (${prod.status ?? "network"})`);
-    if (staging.body?.healthy === false) reasons.push("Staging health payload healthy=false");
     if (prod.body?.healthy === false) reasons.push("Production health payload healthy=false");
     if (requiredOutstanding > 0)
       reasons.push(`${requiredOutstanding} required checklist item(s) outstanding`);
@@ -449,7 +429,7 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
       kind: "higaet.production-launch-report",
       version: 1,
       generatedAt: new Date().toISOString(),
-      deploymentTargets: { production: PROD_URL, staging: STAGING_URL },
+      deploymentTargets: { production: PROD_URL },
       envReadiness,
       monitoring,
       healthProbes,

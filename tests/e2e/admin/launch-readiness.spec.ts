@@ -14,7 +14,7 @@ test.describe("Admin · Launch Readiness", () => {
     await signInAs(page, "admin");
     await page.goto("/dashboard/admin/launch-readiness");
     await page.getByRole("combobox").first().click();
-    await page.getByRole("option", { name: /staging/i }).click();
+    await page.getByRole("option", { name: /production/i }).click();
     // Table heading still visible after filter applies
     await expect(page.getByText(/historical runs/i)).toBeVisible();
   });

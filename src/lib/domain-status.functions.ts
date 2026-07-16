@@ -18,7 +18,6 @@ const EXPECTED_IP = "185.158.133.1";
 const DOMAINS = [
   { host: "higaet.com", role: "apex", requireHsts: true },
   { host: "www.higaet.com", role: "www", requireHsts: true },
-  { host: "staging.higaet.com", role: "staging", requireHsts: false },
 ] as const;
 
 export interface DomainStatus {

@@ -1,7 +1,11 @@
-# HIGAET — MilesWeb cPanel Deployment Guide
+# HIGAET — MilesWeb cPanel Production Deployment Guide
 
 Concise operator runbook for deploying the TanStack Start + Nitro `node-server`
 build to MilesWeb cPanel's **Setup Node.js App** feature.
+
+The only active deployment target is production: **https://higaet.com** (with
+`https://www.higaet.com` as the primary marketing URL). No staging environment
+is provisioned.
 
 ---
 
@@ -11,17 +15,16 @@ Open **cPanel → Software → Setup Node.js App → Create Application**:
 
 | Field                       | Value                                              |
 | --------------------------- | -------------------------------------------------- |
-| Node.js version             | **22.x** (must match `.nvmrc` / `engines.node`)    |
+| Node.js version             | **22.22.3** (must match `.nvmrc` / `engines.node`) |
 | Application mode            | Production                                         |
-| Application root            | `apps/higaet/current`                              |
-| Application URL             | Your domain (e.g. `higaet.com`)                    |
+| Application root            | `/home/wnwpopno/higaet.com`                        |
+| Application URL             | `https://higaet.com`                               |
 | Application startup file    | `app.js`                                           |
-| Passenger log file          | `apps/higaet/tmp/passenger.log` (optional)         |
+| Passenger log file          | `/home/wnwpopno/higaet.com/tmp/passenger.log`      |
 
-The deploy workflow (`.github/workflows/_deploy-kernel.yml`) uploads each
-release into `apps/higaet/releases/<release-id>/` and atomically points
-`apps/higaet/current` at the newest release. **Application root must be the
-`current` symlink, not a specific release folder.**
+The deploy workflow uploads each release directly into
+`/home/wnwpopno/higaet.com/` and Passenger boots `app.js`, which dynamically
+imports `.output/server/index.mjs` (the Nitro `node-server` bundle).
 
 ---
 
@@ -47,7 +50,6 @@ Optional (enable feature flags):
 - `BREVO_API_KEY` — transactional email
 - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` — payments
 - `OPENAI_API_KEY`, `GEMINI_API_KEY` — AI providers
-- `HIGAET_STAGE` — `staging` enables extra abuse-protection on public endpoints
 
 `app.js` validates all **required** vars at boot and refuses to start with a
 clear stderr message if any are missing (see `scripts/validate-env.mjs` for the
@@ -62,7 +64,7 @@ below installs `dependencies` (skipping `devDependencies`) using the pinned
 `package-lock.json` that ships in the artifact:
 
 ```bash
-cd ~/apps/higaet/current
+cd /home/wnwpopno/higaet.com
 npm ci --omit=dev --prefer-offline --no-audit --no-fund
 ```
 
@@ -78,29 +80,31 @@ Point Passenger / uptime monitors at:
 - `GET /healthz` — liveness (200 if the SSR worker is up; no side effects)
 - `GET /readyz` — readiness (200 when required env is present; 503 otherwise)
 - `GET /api/public/health` — richer JSON (service name, correlation ID)
+- `GET /api/public/sre/e2e-health` — end-to-end health incl. Supabase reachability
 
 ---
 
 ## 5. Restart Passenger after a release
 
 The deploy workflow triggers a restart automatically via
-`touch ~/apps/higaet/tmp/restart.txt`. To restart manually:
+`touch /home/wnwpopno/higaet.com/tmp/restart.txt`. To restart manually:
 
 ```bash
-touch ~/apps/higaet/tmp/restart.txt
+touch /home/wnwpopno/higaet.com/tmp/restart.txt
 ```
 
-Passenger picks up the new symlink target on the next request.
+Passenger picks up the new bundle on the next request.
 
 ---
 
-## 6. Rollback
+## 6. Post-deploy verification
+
+Run `scripts/postdeploy-verify.sh` from the deployment host, or curl the
+production URL:
 
 ```bash
-PREV=$(cat ~/apps/higaet/.previous-release)
-ln -sfn "$PREV" ~/apps/higaet/current
-touch ~/apps/higaet/tmp/restart.txt
+curl -fsS https://higaet.com/readyz | jq .
+curl -fsS https://higaet.com/api/public/health | jq .
 ```
 
-The deploy kernel records `.previous-release` before each swap and performs
-this rollback automatically if smoke tests fail.
+Both must return `HTTP 200` with `status: "ready"` / `status: "ok"`.

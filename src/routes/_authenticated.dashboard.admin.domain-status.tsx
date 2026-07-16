@@ -49,7 +49,7 @@ function DomainStatusPage() {
             <Globe className="size-6" /> Domain, SSL & HSTS status
           </h1>
           <p className="text-sm text-muted-foreground">
-            Live DNS lookup (Cloudflare DoH), HTTPS reachability, HSTS inspection, and cert issuer/expiry from Certificate Transparency logs for higaet.com, www.higaet.com, and staging.higaet.com.
+            Live DNS lookup (Cloudflare DoH), HTTPS reachability, HSTS inspection, and cert issuer/expiry from Certificate Transparency logs for higaet.com and www.higaet.com.
           </p>
         </div>
         <Button onClick={() => q.refetch()} disabled={q.isFetching}>

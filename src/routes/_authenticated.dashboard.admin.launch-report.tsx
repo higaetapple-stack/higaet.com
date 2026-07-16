@@ -140,7 +140,7 @@ function openPrintableReport(bundle: LaunchReportBundle) {
     @media print { body{padding:0} }
   </style></head><body>
     <h1>HIGAET Production Launch Report</h1>
-    <p class="muted">Generated ${esc(bundle.generatedAt)} · Production ${esc(bundle.deploymentTargets.production)} · Staging ${esc(bundle.deploymentTargets.staging)}</p>
+    <p class="muted">Generated ${esc(bundle.generatedAt)} · Production ${esc(bundle.deploymentTargets.production)}</p>
     <div class="verdict">DECISION: ${esc(bundle.overallDecision)}</div>
     <h2>Blockers</h2>${reasons}
     <h2>Env Readiness (${esc(bundle.envReadiness.overall)})</h2>

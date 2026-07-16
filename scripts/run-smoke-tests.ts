@@ -6,7 +6,7 @@
  * JSON summary alongside human-friendly console output.
  *
  * Usage:
- *   SMOKE_BASE_URL=https://staging.higaet.com bun scripts/run-smoke-tests.ts
+ *   SMOKE_BASE_URL=https://higaet.com bun scripts/run-smoke-tests.ts
  *
  * Exit codes:
  *   0  all suites passed
