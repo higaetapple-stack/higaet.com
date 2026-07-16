@@ -128,10 +128,37 @@ try {
 console.log("[passenger] ============================================");
 
 if (!existsSync(serverPath)) {
-  console.error(
-    "[passenger] FATAL: .output/server/index.mjs is missing. " +
-      "Run `BUILD_TARGET=node bun run build:node` and re-deploy.",
-  );
+  console.error("[passenger] ============================================");
+  console.error("[passenger]  FATAL: SSR entry not found");
+  console.error("[passenger] ============================================");
+  console.error("[passenger] expected: " + serverPath);
+  try {
+    const { readdirSync, statSync } = await import("node:fs");
+    const outputDir = resolve(here, ".output");
+    if (existsSync(outputDir)) {
+      console.error("[passenger] .output/ contents:");
+      for (const entry of readdirSync(outputDir)) {
+        const p = resolve(outputDir, entry);
+        const kind = statSync(p).isDirectory() ? "dir " : "file";
+        console.error(`[passenger]   ${kind} ${entry}`);
+      }
+    } else {
+      console.error("[passenger] .output/ directory does NOT exist at " + outputDir);
+    }
+    console.error("[passenger] release root contents:");
+    for (const entry of readdirSync(here)) {
+      console.error(`[passenger]   - ${entry}`);
+    }
+  } catch (err) {
+    console.error("[passenger] (failed to list release dir: " + err + ")");
+  }
+  console.error("[passenger] --------------------------------------------");
+  console.error("[passenger] Fix: re-run Unified Deploy in GitHub Actions.");
+  console.error("[passenger] CI must build with BUILD_TARGET=node and rsync");
+  console.error("[passenger] .output/ into this release folder. Do NOT run");
+  console.error("[passenger] vite build on the host — CloudLinux LVE limits");
+  console.error("[passenger] will crash Rayon threads.");
+  console.error("[passenger] ============================================");
   process.exit(1);
 }
 
