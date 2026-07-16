@@ -3,6 +3,11 @@ name: _Deploy Kernel (MilesWeb)
 
 
 # Artifact-based SSH release deploy for MilesWeb (Passenger).
+#
+# Configuration sources:
+#   - secrets.SSH_KEY, secrets.SSH_HOST, secrets.SSH_USER, secrets.SSH_PORT
+#   - vars.DEPLOY_DIR  (non-sensitive GitHub Actions repository variable)
+#
 # Contract:
 #   - Consumes a prebuilt dist/ artifact — NEVER rebuilds on the server.
 #   - Uploads to ~/apps/higaet/releases/<release-id>/ via rsync.
