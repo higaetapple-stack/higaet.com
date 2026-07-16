@@ -1,0 +1,83 @@
+name: Deploy & Verify (one-click)
+
+# Single-button build → deploy → post-deploy verify pipeline.
+# Use this instead of chaining CI + Unified Deploy manually when you want
+# a fresh artifact rebuilt from the selected ref and pushed to MilesWeb,
+# with healthz/readyz + SSR meta-tag verification against the live URL.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Deploy target"
+        required: true
+        type: choice
+        default: production
+        options:
+          - production
+          - staging
+      public_url:
+        description: "Public URL to verify after deploy (e.g. https://higaet.com)"
+        required: true
+        type: string
+        default: "https://higaet.com"
+
+concurrency:
+  group: deploy-and-verify-${{ inputs.target }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build artifact (Nitro node-server)
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      mode: core
+      run-lint: false
+      run-typecheck: true
+      run-build: true
+      build-command: "bun run build:node"
+      build-target: "node"
+      upload-artifact: true
+      artifact-name: dist
+    secrets: inherit
+
+  deploy:
+    name: Deploy to ${{ inputs.target }}
+    needs: [build]
+    uses: ./.github/workflows/_deploy-kernel.yml
+    with:
+      target: ${{ inputs.target }}
+      artifact_name: dist
+    secrets: inherit
+
+  verify:
+    name: Post-deploy verification
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node-bun
+        with:
+          node-version: "22"
+
+      - name: Run post-deploy smoke (healthz + readyz + SSR meta)
+        env:
+          SMOKE_BASE_URL: ${{ inputs.public_url }}
+          SMOKE_TIMEOUT_MS: "180000"
+        run: bun scripts/postdeploy-smoke.ts
+
+      - name: Summarize
+        if: always()
+        run: |
+          echo "### Deploy & Verify — ${{ inputs.target }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Target URL: ${{ inputs.public_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Build: ${{ needs.build.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Deploy: ${{ needs.deploy.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Verify: ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"
