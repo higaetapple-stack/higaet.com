@@ -2,7 +2,7 @@
 
 Last reviewed: 2026-07-08
 Owner: Platform / SRE
-Scope: Production and staging runtime + GitHub Actions
+Scope: Production runtime + GitHub Actions
 
 This document tracks the operational verification of runtime secrets. Values
 are never recorded here — only presence, provenance, and rotation status.
@@ -26,10 +26,10 @@ The live source of truth is the Environment Readiness dashboard at
 
 | Secret                          | Category            | Blocking | Environment          | Notes / format check                       |
 | ------------------------------- | ------------------- | -------- | -------------------- | ------------------------------------------ |
-| `SUPABASE_URL`                  | Supabase / Backend  | Yes      | prod + staging + CI  | Must be `https://` URL                     |
-| `SUPABASE_PUBLISHABLE_KEY`      | Supabase / Backend  | Yes      | prod + staging + CI  | Publishable — safe in client bundles       |
+| `SUPABASE_URL`                  | Supabase / Backend  | Yes      | prod + CI            | Must be `https://` URL                     |
+| `SUPABASE_PUBLISHABLE_KEY`      | Supabase / Backend  | Yes      | prod + CI            | Publishable — safe in client bundles       |
 | `SUPABASE_SERVICE_ROLE_KEY`     | Supabase / Backend  | Yes      | server runtime only  | Never referenced from `src/` client code   |
-| `SESSION_SECRET`                | Session             | Yes      | prod + staging       | ≥ 32 chars, random                         |
+| `SESSION_SECRET`                | Session             | Yes      | prod                 | ≥ 32 chars, random                         |
 | `GITHUB_TOKEN`                  | SRE Pipeline        | Yes      | CI + server          | Fine-grained PAT, `higaetapple-stack/higaet` only |
 | `GITHUB_REPO`                   | SRE Pipeline        | Yes      | CI + server          | Must equal `higaetapple-stack/higaet`      |
 | `SRE_E2E_TRIGGER_SECRET`        | SRE Pipeline        | Yes      | server + Actions     | Random, ≥ 32 chars, shared with workflow   |
@@ -37,7 +37,7 @@ The live source of truth is the Environment Readiness dashboard at
 | `SENTRY_AUTH_TOKEN`             | Sentry              | Yes      | CI (sourcemaps)      | Scoped to `project:releases`               |
 | `SENTRY_ORG_SLUG`               | Sentry              | Yes      | CI + server          | Slug only                                  |
 | `SENTRY_PROJECT_SLUG`           | Sentry              | Yes      | CI + server          | Slug only                                  |
-| `STRIPE_SECRET_KEY`             | Payments            | Yes      | server runtime       | Starts `sk_live_` in prod, `sk_test_` in staging |
+| `STRIPE_SECRET_KEY`             | Payments            | Yes      | server runtime       | Starts `sk_live_` in production            |
 | `STRIPE_WEBHOOK_SECRET`         | Payments            | Yes      | server runtime       | Starts `whsec_`                            |
 | `BREVO_API_KEY`                 | Transactional email | Yes      | server runtime       | Prefix `xkeysib-`                          |
 | `DATADOG_API_KEY`               | Observability       | No       | CI (synthetics)      | Absence disables synthetics only           |
@@ -58,14 +58,14 @@ The live source of truth is the Environment Readiness dashboard at
 
 ## 4. Environment separation
 
-- Production and staging use distinct Supabase projects; the publishable and
-  service-role keys are unique per environment.
-- Stripe: production uses `sk_live_` / `pk_live_`, staging uses `sk_test_` /
-  `pk_test_`. `STRIPE_WEBHOOK_SECRET` is issued per environment endpoint.
-- GitHub Actions: `production` and `staging` environments each have their own
-  secret store; workflows reference `environment: production` for gated jobs.
-- No secret is shared between environments except the Sentry auth token,
-  which is scoped to `project:releases` and cannot mutate runtime data.
+- The production Supabase project has its own publishable and service-role
+  keys, distinct from any local development project.
+- Stripe: production uses `sk_live_` / `pk_live_`. `STRIPE_WEBHOOK_SECRET` is
+  issued per production endpoint.
+- GitHub Actions: the `production` environment holds the runtime secret
+  store; workflows reference `environment: production` for gated jobs.
+- The Sentry auth token is scoped to `project:releases` and cannot mutate
+  runtime data.
 
 ## 5. Log hygiene
 
@@ -78,10 +78,10 @@ The live source of truth is the Environment Readiness dashboard at
 
 | Runtime secret            | GitHub Actions secret     | Environment gate |
 | ------------------------- | ------------------------- | ---------------- |
-| `SRE_E2E_TRIGGER_SECRET`  | `SRE_E2E_TRIGGER_SECRET`  | production, staging |
-| `SRE_E2E_BEARER`          | `SRE_E2E_BEARER`          | production, staging |
+| `SRE_E2E_TRIGGER_SECRET`  | `SRE_E2E_TRIGGER_SECRET`  | production       |
+| `SRE_E2E_BEARER`          | `SRE_E2E_BEARER`          | production       |
 | `SENTRY_AUTH_TOKEN`       | `SENTRY_AUTH_TOKEN`       | production       |
-| `SUPABASE_SERVICE_ROLE_KEY` | `SUPABASE_SERVICE_ROLE_KEY` | production, staging |
+| `SUPABASE_SERVICE_ROLE_KEY` | `SUPABASE_SERVICE_ROLE_KEY` | production   |
 | `DATADOG_API_KEY`         | `DATADOG_API_KEY`         | production       |
 | `DATADOG_APP_KEY`         | `DATADOG_APP_KEY`         | production       |
 

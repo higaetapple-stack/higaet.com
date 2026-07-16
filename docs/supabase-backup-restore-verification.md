@@ -74,13 +74,14 @@ database. To recover a deleted object:
 
 ## 6. Restore drill verification
 
-A restore drill is executed quarterly against staging:
+A restore drill is executed quarterly using a dedicated point-in-time
+recovery clone of the production project (never against live production):
 
 - [ ] 2026-Q3 drill scheduled (owner: Platform SRE)
-- [ ] Drill script: create a marker row in `env_readiness_activity`, restore
-      staging to a timestamp before the marker, confirm the row is absent.
-- [ ] Drill outcome and duration recorded in
-      `docs/HIGAET-production-launch-report.md`.
+- [ ] Drill script: create a marker row in `env_readiness_activity` on the
+      clone, restore the clone to a timestamp before the marker, confirm the
+      row is absent.
+- [ ] Drill outcome and duration recorded in the current launch report.
 
 ## 7. Related runbooks
 
