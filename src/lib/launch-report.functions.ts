@@ -385,11 +385,8 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
     };
 
     // Health probes (fresh)
-    const [staging, prod] = await Promise.all([
-      probeOne("staging", STAGING_URL),
-      probeOne("production", PROD_URL),
-    ]);
-    const healthProbes = [staging, prod];
+    const prod = await probeOne("production", PROD_URL);
+    const healthProbes = [prod];
 
     // Checklist snapshot
     const { data: itemsRaw, error: chkErr } = await context.supabase
@@ -412,9 +409,7 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
     const reasons: string[] = [];
     if (envReadiness.overall === "blocked")
       reasons.push(`Env readiness = blocked (${envReadiness.totals.blockingMissing} blocking secret(s) missing/malformed)`);
-    if (!staging.ok) reasons.push(`Staging health probe failed (${staging.status ?? "network"})`);
     if (!prod.ok) reasons.push(`Production health probe failed (${prod.status ?? "network"})`);
-    if (staging.body?.healthy === false) reasons.push("Staging health payload healthy=false");
     if (prod.body?.healthy === false) reasons.push("Production health payload healthy=false");
     if (requiredOutstanding > 0)
       reasons.push(`${requiredOutstanding} required checklist item(s) outstanding`);
@@ -434,7 +429,7 @@ export const buildLaunchReport = createServerFn({ method: "POST" })
       kind: "higaet.production-launch-report",
       version: 1,
       generatedAt: new Date().toISOString(),
-      deploymentTargets: { production: PROD_URL, staging: STAGING_URL },
+      deploymentTargets: { production: PROD_URL },
       envReadiness,
       monitoring,
       healthProbes,
