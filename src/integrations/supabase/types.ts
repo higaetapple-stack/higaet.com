@@ -4173,6 +4173,13 @@ export type Database = {
             referencedRelation: "identity_providers"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "sso_domains_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "identity_providers_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       study_abroad_leads: {
@@ -6031,7 +6038,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      identity_providers_public: {
+        Row: {
+          display_name: string | null
+          enabled: boolean | null
+          id: string | null
+          protocol: string | null
+          slug: string | null
+        }
+        Insert: {
+          display_name?: string | null
+          enabled?: boolean | null
+          id?: string | null
+          protocol?: string | null
+          slug?: string | null
+        }
+        Update: {
+          display_name?: string | null
+          enabled?: boolean | null
+          id?: string | null
+          protocol?: string | null
+          slug?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       ai_delete_document: {
