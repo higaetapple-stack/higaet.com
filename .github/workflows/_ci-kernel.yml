@@ -168,6 +168,10 @@ jobs:
             package-lock.json
             bun.lock
             scripts
+          # actions/upload-artifact v4 excludes dot-prefixed paths by default.
+          # Nitro's complete Node server bundle lives under `.output/`, so this
+          # must be enabled or the uploaded artifact silently omits index.mjs.
+          include-hidden-files: true
           retention-days: 3
           if-no-files-found: warn
 
