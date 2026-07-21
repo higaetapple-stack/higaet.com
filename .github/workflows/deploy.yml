@@ -109,17 +109,43 @@ jobs:
 
           echo "::notice::Preflight context OK for '${{ inputs.target }}'."
 
-  deploy:
-    name: Deploy (${{ inputs.target }})
-    # brevo skips context preflight (kernel guards it as a stub), so require
-    # only the kernel check for that target; staging/production require both.
+  build:
+    name: Build Nitro node-server artifact
+    # Produces the `dist` artifact (containing .output/server/index.mjs, app.js,
+    # package.json, package-lock.json, scripts/) that _deploy-kernel.yml
+    # downloads in the same workflow run. Without this job the kernel's
+    # download-artifact step resolves to nothing because it is scoped to the
+    # current run — see Unified Deploy audit (Patch A).
     needs: [preflight-kernel, preflight-context]
     if: |
       always() &&
       needs.preflight-kernel.result == 'success' &&
       (needs.preflight-context.result == 'success' ||
        (inputs.target == 'brevo' && needs.preflight-context.result == 'skipped'))
+    uses: ./.github/workflows/_ci-kernel.yml
+    with:
+      run-lint: false
+      run-typecheck: false
+      run-build: true
+      build-command: "bun run build:node"
+      build-target: "node"
+      upload-artifact: true
+      artifact-name: dist
+    secrets: inherit
+
+  deploy:
+    name: Deploy (${{ inputs.target }})
+    # brevo skips context preflight (kernel guards it as a stub), so require
+    # only the kernel check for that target; staging/production require both.
+    needs: [preflight-kernel, preflight-context, build]
+    if: |
+      always() &&
+      needs.preflight-kernel.result == 'success' &&
+      needs.build.result == 'success' &&
+      (needs.preflight-context.result == 'success' ||
+       (inputs.target == 'brevo' && needs.preflight-context.result == 'skipped'))
     uses: ./.github/workflows/_deploy-kernel.yml
     with:
       target: ${{ inputs.target }}
     secrets: inherit
+
