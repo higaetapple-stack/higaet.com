@@ -101,7 +101,12 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-        run: ${{ inputs.build-command }} 2>&1 | tee build.log
+        run: |
+          BUILD_STARTED_AT=$(date -u +%s)
+          ${{ inputs.build-command }} 2>&1 | tee build.log
+          STATUS=${PIPESTATUS[0]}
+          echo "BUILD_DURATION_MS=$(( ( $(date -u +%s) - BUILD_STARTED_AT ) * 1000 ))" >> "$GITHUB_ENV"
+          exit "$STATUS"
 
       - name: Artifact check
         if: ${{ inputs.run-build && always() }}
@@ -123,6 +128,39 @@ jobs:
             fi
             echo "Node server bundle OK: $(ls -la .output/server/index.mjs) (${SIZE} bytes)"
           fi
+
+      - name: Build summary
+        if: ${{ inputs.run-build && always() }}
+        run: |
+          {
+            echo "### Build — ${{ inputs.build-target }}"
+            echo ""
+            echo "- Build duration: ${BUILD_DURATION_MS:-unknown} ms"
+            if [ -f .output/server/index.mjs ]; then
+              echo "- Server bundle: $(wc -c < .output/server/index.mjs | tr -d ' ') bytes"
+            fi
+            if [ -f .output/build-manifest.json ]; then
+              echo ""
+              echo '```json'
+              cat .output/build-manifest.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify build manifest
+        if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
+        run: |
+          if [ ! -f .output/build-manifest.json ]; then
+            echo "::error::.output/build-manifest.json missing — postbuild:node did not run scripts/generate-build-manifest.mjs"
+            exit 1
+          fi
+          PRESET=$(node -p "require('./.output/build-manifest.json').build.nitroPreset")
+          if [ "$PRESET" != "node-server" ]; then
+            echo "::error::Build manifest reports nitro preset '$PRESET' — production requires 'node-server'"
+            exit 1
+          fi
+          echo "::notice::Build manifest verified (preset=$PRESET)"
+          cat .output/build-manifest.json
 
       - name: Generate artifact manifest
         if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
