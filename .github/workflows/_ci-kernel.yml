@@ -126,7 +126,7 @@ jobs:
           exit "$STATUS"
 
       - name: Artifact check
-        if: ${{ inputs.run-build && always() }}
+        if: ${{ inputs.run-build }}
         run: |
           if [ ! -d .output ]; then
             echo "::error::Build produced no .output/ — Nitro did not run with the node-server preset"
@@ -147,7 +147,7 @@ jobs:
           fi
 
       - name: Build summary
-        if: ${{ inputs.run-build && always() }}
+        if: ${{ inputs.run-build }}
         run: |
           {
             echo "### Build — ${{ inputs.build-target }}"
@@ -165,7 +165,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify build manifest
-        if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
+        if: ${{ inputs.run-build && inputs.build-target == 'node' }}
         run: |
           if [ ! -f .output/build-manifest.json ]; then
             echo "::error::.output/build-manifest.json missing — postbuild:node did not run scripts/generate-build-manifest.mjs"
@@ -180,7 +180,7 @@ jobs:
           cat .output/build-manifest.json
 
       - name: Generate artifact manifest
-        if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
+        if: ${{ inputs.run-build && inputs.build-target == 'node' }}
         run: |
           MANIFEST=".output/manifest.json"
           {
