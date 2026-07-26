@@ -106,11 +106,12 @@ jobs:
       - name: Artifact check
         if: ${{ inputs.run-build && always() }}
         run: |
-          if [ ! -d dist ] && [ ! -d .output ]; then
-            echo "::error::Build produced neither dist/ nor .output/"
+          if [ ! -d .output ]; then
+            echo "::error::Build produced no .output/ — Nitro did not run with the node-server preset"
             exit 1
           fi
           if [ "${{ inputs.build-target }}" = "node" ]; then
+            node scripts/verify-node-build.mjs
             if [ ! -f .output/server/index.mjs ]; then
               echo "::error::Node build target selected but .output/server/index.mjs is missing"
               exit 1
@@ -159,17 +160,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact-name }}
-          # TanStack Start + Nitro emits `.output/` (server + public). We
-          # keep `dist` as a fallback for callers that still produce it.
-          # Passenger release also needs app.js + package manifests +
-          # scripts/ (predeploy validation, smoke tests) at release root.
+          # Canonical Node SSR release payload. Nitro emits `.output/`
+          # (server + public); Passenger additionally needs app.js, the npm
+          # manifests (`npm ci --omit=dev` on the host) and scripts/.
+          # `dist/` (Cloudflare/browser-only output) and bun.lock are
+          # deliberately NOT shipped to production.
           path: |
             .output
-            dist
             app.js
             package.json
             package-lock.json
-            bun.lock
             scripts
           # actions/upload-artifact v4 excludes dot-prefixed paths by default.
           # Nitro's complete Node server bundle lives under `.output/`, so this
