@@ -26,7 +26,7 @@
     "test:unit": "vitest run --passWithNoTests",
     "test:coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary --report-dir=coverage vitest run --passWithNoTests",
     "test:a11y": "playwright test tests/e2e/a11y",
-    "test": "npm run lint && npm run typecheck && npm run test:unit && npm run build",
+    "test": "npm run lint && npm run typecheck && npm run test:unit && npm run build:node",
     "typecheck": "tsc --noEmit",
     "lock:check": "node scripts/production-lock-check.mjs",
     "lock:sync-check": "node scripts/check-lockfile-sync.mjs",

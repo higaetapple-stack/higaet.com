@@ -48,7 +48,7 @@ jobs:
   seo:
     name: CI Kernel · seo
     # SEO shadow run reuses the kernel but skips lint/typecheck (core already
-    # covers those) and keeps build ON so SEO scripts have dist/ to inspect.
+    # covers those) and keeps build ON so SEO scripts have .output/ to inspect.
     # Does not upload an artifact — the canonical build artifact is "dist"
     # produced by the core job and consumed by the deploy kernel.
     uses: ./.github/workflows/_ci-kernel.yml
