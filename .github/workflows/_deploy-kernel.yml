@@ -37,6 +37,16 @@ on:
         type: string
         required: false
         default: dist
+      public_url:
+        description: "Public base URL polled for /healthz after the Passenger restart"
+        type: string
+        required: false
+        default: "https://higaet.com"
+      health_timeout_ms:
+        description: "Give up on /healthz after this many milliseconds"
+        type: string
+        required: false
+        default: "180000"
 
 permissions:
   contents: read
@@ -117,7 +127,20 @@ jobs:
             echo "::error::Deploy aborted: Cloudflare Workers artifacts found in the release payload. Production is Node SSR only."
             exit 1
           fi
-          echo "dist artifact OK ($(find dist -type f | wc -l) files)"
+          if [ ! -f "dist/.output/build-manifest.json" ]; then
+            echo "::error::Deploy aborted: dist/.output/build-manifest.json missing — CI did not generate the build manifest"
+            exit 1
+          fi
+          PRESET=$(node -e "process.stdout.write(String(require('./dist/.output/build-manifest.json').build.nitroPreset))")
+          if [ "$PRESET" != "node-server" ]; then
+            echo "::error::Deploy aborted: build manifest reports nitro preset '$PRESET' — production requires 'node-server'"
+            exit 1
+          fi
+          BUNDLE_BYTES=$(wc -c < dist/.output/server/index.mjs | tr -d ' ')
+          echo "BUNDLE_BYTES=$BUNDLE_BYTES" >> "$GITHUB_ENV"
+          echo "dist artifact OK ($(find dist -type f | wc -l) files, server bundle ${BUNDLE_BYTES} bytes, preset ${PRESET})"
+          echo "── build manifest ──"
+          cat dist/.output/build-manifest.json
 
       - name: Generate production install plan
         if: env.SKIP_DEPLOY != '1'
@@ -157,6 +180,7 @@ jobs:
           RELEASE="release-$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}"
           echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
           echo "::notice::release id: $RELEASE"
+          echo "DEPLOY_STARTED_AT=$(date -u +%s)" >> "$GITHUB_ENV"
 
       - name: Create remote release directory
         if: env.SKIP_DEPLOY != '1'
@@ -235,6 +259,43 @@ jobs:
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
             "touch '$DEPLOY_DIR/tmp/restart.txt'"
+          echo "DEPLOY_DURATION_MS=$(( ( $(date -u +%s) - DEPLOY_STARTED_AT ) * 1000 ))" >> "$GITHUB_ENV"
+
+      # Hard health gate. Passenger has been restarted; the release is only
+      # considered deployed once /healthz answers 200. Failure here rolls the
+      # symlink back to the previous release and fails the workflow.
+      - name: Post-deploy health check (/healthz)
+        id: health
+        if: env.SKIP_DEPLOY != '1'
+        continue-on-error: true
+        env:
+          HEALTH_URL: "${{ inputs.public_url }}/healthz"
+          HEALTH_TIMEOUT_MS: ${{ inputs.health_timeout_ms }}
+          HEALTH_INTERVAL_MS: "5000"
+        run: |
+          node scripts/wait-for-healthz.mjs 2>&1 | tee health.log
+          STATUS=${PIPESTATUS[0]}
+          DUR=$(grep -o 'HEALTH_CHECK_DURATION_MS=[0-9]*' health.log | tail -1 | cut -d= -f2)
+          echo "HEALTH_DURATION_MS=${DUR:-unknown}" >> "$GITHUB_ENV"
+          exit "$STATUS"
+
+      - name: Rollback on failed health check
+        if: env.SKIP_DEPLOY != '1' && steps.health.outcome == 'failure'
+        run: |
+          echo "::warning::/healthz never returned 200 — rolling back"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            PREV=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null || true)
+            if [ -z \"\$PREV\" ] || [ ! -d \"\$PREV\" ]; then
+              echo '::error::No previous release recorded — manual intervention required'
+              exit 1
+            fi
+            ln -sfn \"\$PREV\" '$DEPLOY_DIR/current'
+            touch '$DEPLOY_DIR/tmp/restart.txt'
+            echo \"::notice::Rolled back to \$PREV\"
+          "
+          echo "::error::Deployment failed: application never became healthy."
+          exit 1
 
       # Prune old releases to keep ~/apps/higaet/releases/ bounded.
       # Retains the newest KEEP_RELEASES directories (default 5), always
@@ -318,6 +379,34 @@ jobs:
         run: |
           echo "::error::Deploy failed smoke tests. Rollback status: ${{ steps.rollback.outcome }}"
           exit 1
+
+      - name: Deployment summary
+        if: always()
+        run: |
+          {
+            echo "### Production deploy — MilesWeb Passenger (Node SSR)"
+            echo ""
+            echo "| Metric | Value |"
+            echo "| --- | --- |"
+            echo "| Release id | \`${RELEASE:-unknown}\` |"
+            echo "| Commit | \`${GITHUB_SHA}\` |"
+            echo "| Server bundle size | ${BUNDLE_BYTES:-unknown} bytes |"
+            echo "| Deployment duration | ${DEPLOY_DURATION_MS:-unknown} ms |"
+            echo "| Health-check duration | ${HEALTH_DURATION_MS:-unknown} ms |"
+            echo "| Health check | ${{ steps.health.outcome }} |"
+            echo "| Smoke tests | ${{ steps.smoke.outcome }} |"
+            echo ""
+            if [ -f dist/.output/build-manifest.json ]; then
+              echo "<details><summary>Build manifest</summary>"
+              echo ""
+              echo '```json'
+              cat dist/.output/build-manifest.json
+              echo '```'
+              echo ""
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "release=${RELEASE:-unknown} bundleBytes=${BUNDLE_BYTES:-unknown} deployMs=${DEPLOY_DURATION_MS:-unknown} healthMs=${HEALTH_DURATION_MS:-unknown}"
 
       - name: Cleanup SSH key
         if: always()
