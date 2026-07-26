@@ -137,11 +137,14 @@ jobs:
       - name: Verify downloaded artifact
         run: |
           set -e
-          if [ ! -d dist ] && [ ! -d .output ]; then
-            echo "::error::Downloaded artifact missing both dist/ and .output/"
+          # Node SSR is the only artifact shape produced by the kernel.
+          # `dist/` (Cloudflare/browser-only output) is never accepted.
+          if [ ! -f .output/server/index.mjs ]; then
+            echo "::error::Downloaded artifact missing .output/server/index.mjs — kernel did not produce a Node SSR build"
             exit 1
           fi
-          echo "artifact OK (dist=$( [ -d dist ] && echo y || echo n ), .output=$( [ -d .output ] && echo y || echo n ))"
+          echo "artifact OK (.output/server/index.mjs = $(wc -c < .output/server/index.mjs | tr -d ' ') bytes)"
+
       - name: Start preview server from downloaded artifact
         env:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
