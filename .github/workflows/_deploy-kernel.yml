@@ -273,7 +273,7 @@ jobs:
           HEALTH_TIMEOUT_MS: ${{ inputs.health_timeout_ms }}
           HEALTH_INTERVAL_MS: "5000"
         run: |
-          node scripts/wait-for-healthz.mjs 2>&1 | tee health.log
+          node dist/scripts/wait-for-healthz.mjs 2>&1 | tee health.log
           STATUS=${PIPESTATUS[0]}
           DUR=$(grep -o 'HEALTH_CHECK_DURATION_MS=[0-9]*' health.log | tail -1 | cut -d= -f2)
           echo "HEALTH_DURATION_MS=${DUR:-unknown}" >> "$GITHUB_ENV"
