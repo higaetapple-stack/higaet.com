@@ -29,7 +29,7 @@ on:
   workflow_call:
     inputs:
       target:
-        description: "staging | production | brevo"
+        description: "production (only supported target — Node SSR → MilesWeb/Passenger)"
         type: string
         required: true
       artifact_name:
@@ -55,15 +55,11 @@ jobs:
       - name: Guard target
         run: |
           case "${{ inputs.target }}" in
-            staging|production)
-              echo "::notice::deploying target=${{ inputs.target }}"
-              ;;
-            brevo)
-              echo "::notice::brevo target is a stub in the deploy kernel — skipping SSH deploy"
-              echo "SKIP_DEPLOY=1" >> "$GITHUB_ENV"
+            production)
+              echo "::notice::deploying target=production (Node SSR → MilesWeb/Passenger)"
               ;;
             *)
-              echo "::error::Unknown deploy target: ${{ inputs.target }}"
+              echo "::error::Unsupported deploy target: '${{ inputs.target }}'. Production is the only deploy target for this repository."
               exit 1
               ;;
           esac
@@ -115,6 +111,10 @@ jobs:
           fi
           if [ ! -f "dist/package-lock.json" ]; then
             echo "::error::Deploy aborted: dist/package-lock.json missing — npm ci --omit=dev requires a lockfile. CI must include package-lock.json in the artifact."
+            exit 1
+          fi
+          if [ -f "dist/.output/wrangler.json" ] || [ -f "dist/.output/_worker.js" ]; then
+            echo "::error::Deploy aborted: Cloudflare Workers artifacts found in the release payload. Production is Node SSR only."
             exit 1
           fi
           echo "dist artifact OK ($(find dist -type f | wc -l) files)"
