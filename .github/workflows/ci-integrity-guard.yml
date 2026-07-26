@@ -66,11 +66,8 @@ jobs:
           # Rule 1 + 2: scan workflows other than _ci-kernel.yml.
           #
           # Allowlisted builders (may run a project build):
-          #   - _ci-kernel.yml          — the canonical builder
-          #   - parity-gate.yml         — legacy baseline lane; MUST rebuild by design
-          #                               (compares kernel output vs legacy `npm run build`).
-          #                               Do not remove this exemption without redesigning
-          #                               parity-gate to consume a stored legacy artifact.
+          #   - _ci-kernel.yml          — the ONLY canonical builder. Every other
+          #                               workflow must download the `dist` artifact.
           #
           # Regex notes:
           #   The trailing `([[:space:]]|$)` boundary means `npm run build:node`
@@ -81,10 +78,10 @@ jobs:
 
           for f in $(find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) | sort); do
             base=$(basename "$f")
-            # Allowlist: kernel is the canonical builder; guard itself references
-            # the strings in comments; parity-gate legitimately rebuilds legacy.
+            # Allowlist: kernel is the canonical builder; the guard itself
+            # references the build strings inside comments.
             case "$base" in
-              _ci-kernel.yml|ci-integrity-guard.yml|parity-gate.yml) continue ;;
+              _ci-kernel.yml|ci-integrity-guard.yml) continue ;;
             esac
 
             # Strip comments before grepping so runbook-style comments don't false-positive.
