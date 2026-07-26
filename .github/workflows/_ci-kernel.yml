@@ -214,7 +214,7 @@ jobs:
       # build so they can be downloaded/inspected without pulling the full
       # multi-MB release payload below.
       - name: Upload Node SSR artifacts (server bundle + manifest)
-        if: ${{ inputs.run-build && success() }}
+        if: ${{ inputs.run-build && inputs.build-target == 'node' && success() }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact-name }}-node-ssr
