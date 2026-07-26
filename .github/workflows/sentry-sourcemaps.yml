@@ -66,22 +66,17 @@ jobs:
           name: sentry-node-build
           path: .
 
-      # Hard artifact guard: if the downloaded artifact is missing dist/ we must
-      # NOT continue to sentry-cli — that would silently upload nothing and
-      # succeed. Fail loudly with a diagnostic instead.
+      # Hard artifact guard: the canonical Node SSR build emits .output/. If it
+      # is missing we must NOT continue to sentry-cli — that would silently
+      # upload nothing and succeed. Fail loudly with a diagnostic instead.
       - name: Verify build artifacts exist
         run: |
           set -e
-          if [ ! -d ./dist ] || [ -z "$(ls -A ./dist 2>/dev/null)" ]; then
-            echo "::error::Expected ./dist to exist and be non-empty in the downloaded artifact. Aborting sourcemap upload."
+          if [ ! -d ./.output ] || [ -z "$(ls -A ./.output 2>/dev/null)" ]; then
+            echo "::error::Expected ./.output to exist and be non-empty in the downloaded artifact. Aborting sourcemap upload."
             exit 1
           fi
-          echo "dist/ OK ($(find ./dist -type f | wc -l) files)"
-          if [ -d ./.output ]; then
-            echo ".output/ present ($(find ./.output -type f | wc -l) files)"
-          else
-            echo "::notice::.output/ missing — Node SSR bundle not emitted; skipping .output upload."
-          fi
+          echo ".output/ OK ($(find ./.output -type f | wc -l) files)"
 
       # NOTE: sentryVitePlugin uploads during the kernel build only if the
       # Sentry env vars are present in the kernel's build step env. This
@@ -92,15 +87,12 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG || 'higaet-5y' }}
           SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || 'javascript-react' }}
-          VITE_SENTRY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+          VITE_SENTRY_ENV: production
         run: |
           set -e
           RELEASE="${VITE_SENTRY_ENV:-production}-${{ github.sha }}"
           npx --yes @sentry/cli releases new "$RELEASE"
-          npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./dist
-          if [ -d ./.output ]; then
-            npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./.output
-          fi
+          npx --yes @sentry/cli sourcemaps upload --release "$RELEASE" ./.output
           # set-commits --auto tolerates first-release / shallow-clone edge cases;
           # keep the soft-fail here only (not on uploads).
           npx --yes @sentry/cli releases set-commits "$RELEASE" --auto || \

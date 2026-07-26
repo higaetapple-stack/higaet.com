@@ -91,7 +91,7 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
       - name: Start preview
-        run: npm run preview --port 8080 &
+        run: npx vite preview --port 8080 --host 127.0.0.1 &
       - name: Wait for preview
         run: for i in {1..30}; do curl -sf http://localhost:8080/ >/dev/null && exit 0; sleep 1; done; exit 1
       - name: Run axe accessibility spec
