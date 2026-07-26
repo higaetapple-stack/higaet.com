@@ -136,7 +136,10 @@ jobs:
     with:
       target: production
       artifact_name: dist
+      public_url: ${{ inputs.public_url }}
+      health_timeout_ms: "180000"
     secrets: inherit
+
 
   verify:
     name: Post-deploy verification
