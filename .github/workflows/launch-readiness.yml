@@ -97,7 +97,8 @@ jobs:
 
   # Canonical build for the E2E preview server. All rebuilds must live in
   # the kernel (Build-Once). Emits a `launch-readiness-build` artifact
-  # containing dist/, .output/, and release manifests.
+  # containing the Node SSR `.output/` tree and release manifests.
+
   build:
     needs: security-audit
     uses: ./.github/workflows/_ci-kernel.yml
