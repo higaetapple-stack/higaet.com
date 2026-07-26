@@ -4,7 +4,7 @@ name: CI Integrity Guard
 # contract defined in docs/infrastructure/p10-stabilization-spec.md.
 #
 # Rules:
-#   1. Only _ci-kernel.yml is allowed to run `bun run build` /
+#   1. Only _ci-kernel.yml is allowed to run `npm run build` /
 #      `npm run build`. Any other workflow that rebuilds triggers a HIGH
 #      finding.
 #   2. Any workflow that BOTH downloads the ci-build artifact AND rebuilds
@@ -66,25 +66,22 @@ jobs:
           # Rule 1 + 2: scan workflows other than _ci-kernel.yml.
           #
           # Allowlisted builders (may run a project build):
-          #   - _ci-kernel.yml          — the canonical builder
-          #   - parity-gate.yml         — legacy baseline lane; MUST rebuild by design
-          #                               (compares kernel output vs legacy `bun run build`).
-          #                               Do not remove this exemption without redesigning
-          #                               parity-gate to consume a stored legacy artifact.
+          #   - _ci-kernel.yml          — the ONLY canonical builder. Every other
+          #                               workflow must download the `dist` artifact.
           #
           # Regex notes:
-          #   The trailing `([[:space:]]|$)` boundary means `bun run build:node`
-          #   and `"bun run build"` (a YAML value used as an INPUT to the kernel,
+          #   The trailing `([[:space:]]|$)` boundary means `npm run build:node`
+          #   and `"npm run build"` (a YAML value used as an INPUT to the kernel,
           #   e.g. ci.yml `build-command:`) do NOT match — only genuine
-          #   `bun run build` / `bun run build ARGS` shell invocations do.
+          #   `npm run build` / `npm run build ARGS` shell invocations do.
           BUILD_RE='(bun|npm|pnpm|yarn)[[:space:]]+run[[:space:]]+build([[:space:]]|$)'
 
           for f in $(find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) | sort); do
             base=$(basename "$f")
-            # Allowlist: kernel is the canonical builder; guard itself references
-            # the strings in comments; parity-gate legitimately rebuilds legacy.
+            # Allowlist: kernel is the canonical builder; the guard itself
+            # references the build strings inside comments.
             case "$base" in
-              _ci-kernel.yml|ci-integrity-guard.yml|parity-gate.yml) continue ;;
+              _ci-kernel.yml|ci-integrity-guard.yml) continue ;;
             esac
 
             # Strip comments before grepping so runbook-style comments don't false-positive.

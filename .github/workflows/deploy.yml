@@ -1,33 +1,38 @@
-name: Unified Deploy
+name: Deploy (Production — Node SSR → MilesWeb)
 
-# P4 unified deploy orchestrator. workflow_dispatch ONLY — never triggers on
-# push, so it cannot race with the existing deploy-milesweb / brevo
-# workflows during shadow-mode cutover.
+# CANONICAL AND ONLY DEPLOYMENT PIPELINE.
 #
-# Delegates to _deploy-kernel.yml. Before delegating, the `preflight` job:
-#   1. Verifies the kernel contract at the SELECTED SHA
-#      (scripts/check-deploy-kernel.mjs — SSH_KEY, vars.DEPLOY_DIR, no
-#      SSH_PRIVATE_KEY, with file:line evidence in the job log).
-#   2. Verifies the required secrets and vars are actually present in the
-#      target environment (staging/production). This catches "kernel is
-#      correct, but SSH_KEY hasn't been added to this environment yet"
-#      before the deploy job SSHes anywhere.
+#   Lovable → GitHub → [this workflow] → MilesWeb cPanel + Passenger
+#
+# One runtime (Node.js 22 SSR / Nitro node-server), one build
+# (`npm run build:node`), one package manager (npm), one deploy path
+# (_deploy-kernel.yml). Cloudflare Workers output is never built, never
+# uploaded and never deployed.
+#
+# Stage order:
+#   preflight-kernel  → kernel contract validated at the selected SHA
+#   preflight-context → required secrets/vars exist in the environment
+#   build             → npm ci + npm run build:node + artifact verification
+#   deploy            → rsync release, symlink swap, Passenger restart
+#   verify            → healthz / readyz / SSR smoke against the live URL
 
 on:
   workflow_dispatch:
     inputs:
-      target:
-        description: "Deploy target"
+      public_url:
+        description: "Public URL to verify after deploy"
         required: true
-        type: choice
-        options:
-          - staging
-          - production
-          - brevo
+        type: string
+        default: "https://higaet.com"
+      skip_verify:
+        description: "Skip post-deploy verification (not recommended)"
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
-  # P6: strong per-target lock. Never cancel a deploy in-flight; queue instead.
-  group: deploy-${{ inputs.target }}
+  # Strong lock. Never cancel a deploy in-flight; queue instead.
+  group: deploy-production
   cancel-in-progress: false
 
 permissions:
@@ -50,25 +55,23 @@ jobs:
         run: node scripts/check-deploy-kernel.mjs
 
   preflight-context:
-    name: Preflight — secrets/vars present in ${{ inputs.target }}
+    name: Preflight — secrets/vars present in production
     needs: [preflight-kernel]
-    if: inputs.target != 'brevo'
     runs-on: ubuntu-latest
-    environment: ${{ inputs.target }}
+    environment: production
     env:
       HAS_SSH_KEY: ${{ secrets.SSH_KEY != '' }}
       HAS_SSH_HOST: ${{ secrets.SSH_HOST != '' }}
       HAS_SSH_USER: ${{ secrets.SSH_USER != '' }}
       HAS_SSH_PORT: ${{ secrets.SSH_PORT != '' }}
       HAS_DEPLOY_DIR: ${{ vars.DEPLOY_DIR != '' }}
-      # Diagnostic only — the presence of this secret indicates leftover legacy
-      # configuration in the environment. It is NEVER used by the kernel.
+      # Diagnostic only — presence indicates leftover legacy configuration.
       HAS_LEGACY_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY != '' }}
     steps:
       - name: Verify deploy environment context
         run: |
           set -e
-          echo "Environment: ${{ inputs.target }}"
+          echo "Environment: production"
           echo ""
           echo "Required secrets:"
           echo "  SSH_KEY   present : ${HAS_SSH_KEY}"
@@ -88,10 +91,10 @@ jobs:
               name="${v#HAS_}"
               case "$v" in
                 HAS_DEPLOY_DIR)
-                  echo "::error::Missing repository variable vars.${name} in environment '${{ inputs.target }}'. Add it under Settings → Environments → ${{ inputs.target }} → Variables."
+                  echo "::error::Missing repository variable vars.${name} in environment 'production'. Add it under Settings → Environments → production → Variables."
                   ;;
                 *)
-                  echo "::error::Missing secret secrets.${name} in environment '${{ inputs.target }}'. Add it under Settings → Environments → ${{ inputs.target }} → Secrets."
+                  echo "::error::Missing secret secrets.${name} in environment 'production'. Add it under Settings → Environments → production → Secrets."
                   ;;
               esac
               MISSING=1
@@ -99,53 +102,70 @@ jobs:
           done
 
           if [ "${HAS_LEGACY_SSH_PRIVATE_KEY}" = "true" ]; then
-            echo "::warning::Environment '${{ inputs.target }}' still stores a legacy secret named SSH_PRIVATE_KEY. The current deploy kernel does not use it — safe to remove to avoid confusion."
+            echo "::warning::Environment 'production' still stores a legacy secret named SSH_PRIVATE_KEY. The current deploy kernel does not use it — safe to remove."
           fi
 
           if [ "$MISSING" -eq 1 ]; then
-            echo "::error::Preflight aborted — configure the missing secret(s)/var(s) in the '${{ inputs.target }}' environment and re-run."
+            echo "::error::Preflight aborted — configure the missing secret(s)/var(s) and re-run."
             exit 1
           fi
 
-          echo "::notice::Preflight context OK for '${{ inputs.target }}'."
+          echo "::notice::Preflight context OK for 'production'."
 
   build:
-    name: Build Nitro node-server artifact
-    # Produces the `dist` artifact (containing .output/server/index.mjs, app.js,
-    # package.json, package-lock.json, scripts/) that _deploy-kernel.yml
-    # downloads in the same workflow run. Without this job the kernel's
-    # download-artifact step resolves to nothing because it is scoped to the
-    # current run — see Unified Deploy audit (Patch A).
+    name: Build Node SSR artifact (Nitro node-server)
     needs: [preflight-kernel, preflight-context]
-    if: |
-      always() &&
-      needs.preflight-kernel.result == 'success' &&
-      (needs.preflight-context.result == 'success' ||
-       (inputs.target == 'brevo' && needs.preflight-context.result == 'skipped'))
+    # Produces the `dist` artifact containing .output/server/index.mjs, app.js,
+    # package.json, package-lock.json and scripts/. The deploy kernel downloads
+    # it from THIS run — the build job must never be skipped.
     uses: ./.github/workflows/_ci-kernel.yml
     with:
       run-lint: false
-      run-typecheck: false
+      run-typecheck: true
       run-build: true
-      build-command: "bun run build:node"
+      build-command: "npm run build:node"
       build-target: "node"
       upload-artifact: true
       artifact-name: dist
     secrets: inherit
 
   deploy:
-    name: Deploy (${{ inputs.target }})
-    # brevo skips context preflight (kernel guards it as a stub), so require
-    # only the kernel check for that target; staging/production require both.
+    name: Deploy to MilesWeb (Passenger)
     needs: [preflight-kernel, preflight-context, build]
-    if: |
-      always() &&
-      needs.preflight-kernel.result == 'success' &&
-      needs.build.result == 'success' &&
-      (needs.preflight-context.result == 'success' ||
-       (inputs.target == 'brevo' && needs.preflight-context.result == 'skipped'))
     uses: ./.github/workflows/_deploy-kernel.yml
     with:
-      target: ${{ inputs.target }}
+      target: production
+      artifact_name: dist
     secrets: inherit
 
+  verify:
+    name: Post-deploy verification
+    needs: [build, deploy]
+    if: ${{ !inputs.skip_verify }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: "22"
+
+      - name: Run post-deploy smoke (healthz + readyz + SSR meta)
+        env:
+          SMOKE_BASE_URL: ${{ inputs.public_url }}
+          SMOKE_TIMEOUT_MS: "180000"
+        run: node --experimental-strip-types scripts/postdeploy-smoke.ts
+
+      - name: Summarize
+        if: always()
+        run: |
+          {
+            echo "### Production deploy — Node SSR"
+            echo ""
+            echo "- Target URL: ${{ inputs.public_url }}"
+            echo "- Build: ${{ needs.build.result }}"
+            echo "- Deploy: ${{ needs.deploy.result }}"
+            echo "- Verify: ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"

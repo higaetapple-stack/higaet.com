@@ -33,7 +33,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-node-bun
+      - uses: ./.github/actions/setup-node
         with:
           node-version: "22"
       - name: Check TS syntax
@@ -60,9 +60,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-node-bun
+      - uses: ./.github/actions/setup-node
       - name: Run coverage
-        run: bun run test:coverage 2>&1 | tee coverage.log
+        run: npm run test:coverage 2>&1 | tee coverage.log
         continue-on-error: true
       - name: Upload coverage report
         if: always()
@@ -82,22 +82,22 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-node-bun
+      - uses: ./.github/actions/setup-node
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: quality-gates-build
           path: .
       - name: Install Playwright browsers
-        run: bunx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium
       - name: Start preview
-        run: bun run preview --port 8080 &
+        run: npx vite preview --port 8080 --host 127.0.0.1 &
       - name: Wait for preview
         run: for i in {1..30}; do curl -sf http://localhost:8080/ >/dev/null && exit 0; sleep 1; done; exit 1
       - name: Run axe accessibility spec
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:8080
-        run: bunx playwright test tests/e2e/a11y --reporter=list 2>&1 | tee a11y.log
+        run: npx playwright test tests/e2e/a11y --reporter=list 2>&1 | tee a11y.log
       - name: Upload a11y report
         if: always()
         uses: actions/upload-artifact@v4

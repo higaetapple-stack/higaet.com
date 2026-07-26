@@ -32,10 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node
         with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
+          node-version: "22"
       - name: Phase A — static security audit (STRICT)
         env:
           STRICT: "1"
@@ -52,7 +52,7 @@ jobs:
           PGUSER: ${{ secrets.SUPABASE_DB_USER }}
           PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
           PGDATABASE: ${{ secrets.SUPABASE_DB_NAME }}
-        run: bunx tsx scripts/predeploy-schema-validation.ts
+        run: npx tsx scripts/predeploy-schema-validation.ts
       - name: Permission validation (code-only)
         run: node tests/integration/permission-validation.test.mjs
       - name: Role validation (code vs DB)
@@ -115,12 +115,12 @@ jobs:
     needs: [security-audit, build]
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node
         with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
+          node-version: "22"
       - name: Install Playwright
-        run: bunx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium
       - name: Seed test users (dev backend)
         env:
           ENVIRONMENT: staging
@@ -146,10 +146,10 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
-          # `bun run preview` serves the already-built output. We must NOT
+          # `npm run preview` serves the already-built output. We must NOT
           # rebuild here — the kernel artifact above is the single source
           # of truth (Build-Once contract enforced by ci-integrity-guard.yml).
-          bun run preview --host 127.0.0.1 --port 8080 &
+          npm run preview --host 127.0.0.1 --port 8080 &
           for i in $(seq 1 30); do
             curl -sf http://127.0.0.1:8080 && break
             sleep 2
@@ -159,7 +159,7 @@ jobs:
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:8080
           TEST_FIXTURE_PASSWORD: ${{ secrets.TEST_FIXTURE_PASSWORD }}
-        run: bunx playwright test
+        run: npx playwright test
       - name: RLS integration matrix
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

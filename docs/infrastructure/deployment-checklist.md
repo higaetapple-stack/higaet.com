@@ -7,7 +7,7 @@ Canonical flow. **Never build on MilesWeb.**
 | Stage       | Where            | What                                                                 |
 | ----------- | ---------------- | -------------------------------------------------------------------- |
 | Source      | GitHub (`src/`)  | TanStack Start routes, server entry, config                          |
-| Build       | GitHub Actions   | `bun run build:node` → `.output/server/index.mjs` + `.output/public` |
+| Build       | GitHub Actions   | `npm run build:node` → `.output/server/index.mjs` + `.output/public` |
 | Artifact    | Actions upload   | `.output/`, `app.js`, `package.json`, `package-lock.json`, `scripts/`|
 | Deploy      | `_deploy-kernel` | rsync artifact → `/home/wnwpopno/higaet.com/releases/<id>/`          |
 | Install     | MilesWeb SSH     | `npm ci --omit=dev --prefer-offline --no-audit --no-fund`            |
