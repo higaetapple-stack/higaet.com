@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup toolchain
-        uses: ./.github/actions/setup-node-bun
+        uses: ./.github/actions/setup-node
 
       - name: Generate package-lock.json for audit
         # bun audit coverage is limited; use npm audit against a generated

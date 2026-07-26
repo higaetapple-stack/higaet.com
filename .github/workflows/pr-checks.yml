@@ -25,7 +25,7 @@ on:
       - "lighthouserc.json"
       - ".github/workflows/pr-checks.yml"
       - ".github/workflows/_ci-kernel.yml"
-      - ".github/actions/setup-node-bun/**"
+      - ".github/actions/setup-node/**"
 
 concurrency:
   group: pr-checks-${{ github.event.pull_request.number }}
@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup toolchain
-        uses: ./.github/actions/setup-node-bun
+        uses: ./.github/actions/setup-node
         with:
           node-version: "22"
       - name: Check TS syntax
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup toolchain
-        uses: ./.github/actions/setup-node-bun
+        uses: ./.github/actions/setup-node
         with:
           install: "false"
 

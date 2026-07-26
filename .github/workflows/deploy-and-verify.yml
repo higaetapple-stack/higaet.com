@@ -38,7 +38,7 @@ jobs:
       run-lint: false
       run-typecheck: true
       run-build: true
-      build-command: "bun run build:node"
+      build-command: "npm run build:node"
       build-target: "node"
       upload-artifact: true
       artifact-name: dist
@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup toolchain
-        uses: ./.github/actions/setup-node-bun
+        uses: ./.github/actions/setup-node
         with:
           node-version: "22"
 
@@ -70,7 +70,7 @@ jobs:
         env:
           SMOKE_BASE_URL: ${{ inputs.public_url }}
           SMOKE_TIMEOUT_MS: "180000"
-        run: bun scripts/postdeploy-smoke.ts
+        run: node --experimental-strip-types scripts/postdeploy-smoke.ts
 
       - name: Summarize
         if: always()

@@ -42,7 +42,7 @@ jobs:
       run-lint: false
       run-typecheck: false
       run-build: true
-      build-command: "bun run build:node"
+      build-command: "npm run build:node"
       build-target: "node"
       upload-artifact: true
       artifact-name: sentry-node-build
@@ -58,7 +58,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup toolchain
-        uses: ./.github/actions/setup-node-bun
+        uses: ./.github/actions/setup-node
 
       - name: Download kernel build artifact
         uses: actions/download-artifact@v4

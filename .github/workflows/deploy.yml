@@ -127,7 +127,7 @@ jobs:
       run-lint: false
       run-typecheck: false
       run-build: true
-      build-command: "bun run build:node"
+      build-command: "npm run build:node"
       build-target: "node"
       upload-artifact: true
       artifact-name: dist

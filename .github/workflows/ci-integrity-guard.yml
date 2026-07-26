@@ -4,7 +4,7 @@ name: CI Integrity Guard
 # contract defined in docs/infrastructure/p10-stabilization-spec.md.
 #
 # Rules:
-#   1. Only _ci-kernel.yml is allowed to run `bun run build` /
+#   1. Only _ci-kernel.yml is allowed to run `npm run build` /
 #      `npm run build`. Any other workflow that rebuilds triggers a HIGH
 #      finding.
 #   2. Any workflow that BOTH downloads the ci-build artifact AND rebuilds
@@ -68,15 +68,15 @@ jobs:
           # Allowlisted builders (may run a project build):
           #   - _ci-kernel.yml          — the canonical builder
           #   - parity-gate.yml         — legacy baseline lane; MUST rebuild by design
-          #                               (compares kernel output vs legacy `bun run build`).
+          #                               (compares kernel output vs legacy `npm run build`).
           #                               Do not remove this exemption without redesigning
           #                               parity-gate to consume a stored legacy artifact.
           #
           # Regex notes:
-          #   The trailing `([[:space:]]|$)` boundary means `bun run build:node`
-          #   and `"bun run build"` (a YAML value used as an INPUT to the kernel,
+          #   The trailing `([[:space:]]|$)` boundary means `npm run build:node`
+          #   and `"npm run build"` (a YAML value used as an INPUT to the kernel,
           #   e.g. ci.yml `build-command:`) do NOT match — only genuine
-          #   `bun run build` / `bun run build ARGS` shell invocations do.
+          #   `npm run build` / `npm run build ARGS` shell invocations do.
           BUILD_RE='(bun|npm|pnpm|yarn)[[:space:]]+run[[:space:]]+build([[:space:]]|$)'
 
           for f in $(find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) | sort); do

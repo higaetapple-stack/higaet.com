@@ -43,22 +43,22 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup toolchain
-        uses: ./.github/actions/setup-node-bun
+        uses: ./.github/actions/setup-node
         with:
           node-version: "22"
 
       - name: Lint
         id: lint
-        run: bun run lint 2>&1 | tee legacy-lint.log
+        run: npm run lint 2>&1 | tee legacy-lint.log
 
       - name: Typecheck
         id: typecheck
         if: always()
-        run: bun run typecheck 2>&1 | tee legacy-typecheck.log
+        run: npm run typecheck 2>&1 | tee legacy-typecheck.log
 
       # NOTE (Build-Once contract): This build is INTENTIONAL and EXEMPT from
       # ci-integrity-guard.yml. parity-gate exists specifically to compare a
-      # legacy `bun run build` invocation against the kernel-produced output;
+      # legacy `npm run build` invocation against the kernel-produced output;
       # removing it would defeat the parity comparison. If the parity design
       # ever changes to compare against a stored legacy artifact, remove the
       # `parity-gate.yml` entry from the guard's allowlist at the same time.
@@ -70,7 +70,7 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-        run: bun run build 2>&1 | tee legacy-build.log
+        run: npm run build 2>&1 | tee legacy-build.log
 
       - name: Upload legacy logs
         if: always()

@@ -24,10 +24,7 @@ jobs:
         fixture: ["NO-GO", "GO"]
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
+      - run: npm ci --no-audit --no-fund
 
       - name: Run checker (fixture=${{ matrix.fixture }})
         id: run
@@ -35,7 +32,7 @@ jobs:
         env:
           READINESS_FIXTURE_STATUS: ${{ matrix.fixture }}
           GITHUB_RUN_ID: ${{ github.run_id }}
-        run: bun scripts/check-staging-readiness.ts
+        run: node --experimental-strip-types scripts/check-staging-readiness.ts
 
       - name: Assert exit code matches fixture
         env:
