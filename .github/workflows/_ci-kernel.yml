@@ -45,14 +45,17 @@ on:
         required: false
         default: "ci-build"
       build-command:
+        # Canonical production build. Node SSR (Nitro node-server) is the ONLY
+        # supported production runtime — never override this with a plain
+        # `npm run build`, which can emit a Cloudflare Workers bundle.
         type: string
         required: false
-        default: "npm run build"
+        default: "npm run build:node"
       build-target:
-        description: "Passed as BUILD_TARGET env to the build step (e.g. 'node' for Nitro node-server preset)."
+        description: "Passed as BUILD_TARGET env to the build step. 'node' selects the Nitro node-server preset (canonical production target)."
         type: string
         required: false
-        default: ""
+        default: "node"
       # P4 shadow-mode routing hint. Callers (ci.yml matrix) pass
       # "core" | "seo" | "security". Default "core" preserves existing
       # behavior for every existing caller — no behavior change.
