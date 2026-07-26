@@ -2,10 +2,11 @@
 
 ## Local development
 ```bash
-bun install
-bun run dev        # http://localhost:8080
+npm install
+npm run dev        # http://localhost:8080
 ```
-Lovable runs build/typecheck automatically; locally use `bun run build` only when verifying production output.
+Lovable runs build/typecheck automatically; locally use `npm run build:node`
+only when verifying production output.
 
 ## Environment variables
 Copy `.env.example` to `.env.local` and fill values.
@@ -25,9 +26,9 @@ Copy `.env.example` to `.env.local` and fill values.
 `VITE_SUPABASE_*` are managed automatically — do not edit.
 
 ## Build & deploy
-- `bun run build` → static + SSR bundle in `.output/`.
-- Lovable preview deploys every commit; published deploys via the Publish button.
-- Future external hosting: GitHub → MilesWeb / Hostinger via FTP or GitHub Actions.
+- `npm run build:node` → Node SSR bundle in `.output/` (`.output/server/index.mjs` + `.output/public`).
+- Production runtime is **Node SSR only** (MilesWeb cPanel + Passenger, Node 22) — see `docs/infrastructure/milesweb-deployment-guide.md`.
+- Lovable preview deploys every commit; production deploys via the `deploy.yml` GitHub Actions pipeline.
 
 ## Adding content
 

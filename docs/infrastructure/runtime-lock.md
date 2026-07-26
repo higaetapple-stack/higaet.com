@@ -30,11 +30,11 @@ Nitro 3 has not shipped a stable non-beta tag on npm at time of writing.
 When Renovate raises that PR, verify both build targets before merging:
 
 ```bash
-bun run build            # Cloudflare Workers (default Lovable Cloud)
-BUILD_TARGET=node bun run build   # node-server preset for MilesWeb
+npm run build:node   # canonical production build (node-server preset)
 ```
 
-Both must succeed and emit `.output/server/index.mjs` for the Node target.
+It must succeed and emit `.output/server/index.mjs`. Node SSR is the only
+supported production runtime — never validate against a Cloudflare build.
 
 ## Two-lockfile contract
 
@@ -42,8 +42,8 @@ HIGAET intentionally keeps BOTH `bun.lock` and `package-lock.json`.
 
 | Lockfile | Used by | Why |
 |---|---|---|
-| `bun.lock` | GitHub Actions `_ci-kernel.yml` and every kernel caller | CI install speed |
-| `package-lock.json` | MilesWeb Passenger deploy (`app.js` cold start) | Deterministic prod install without requiring Bun on the shared host |
+| `package-lock.json` | **Canonical.** GitHub Actions (`npm ci`) and the MilesWeb Passenger deploy | One package manager for CI and production |
+| `bun.lock` | Lovable sandbox dev server only | Local iteration speed inside Lovable; never used by CI or production |
 
 The `scripts/production-lock-check.mjs` script (invoked by `npm run prebuild`)
 hashes `package-lock.json` — that is the deploy source of truth.
@@ -54,15 +54,9 @@ lockfiles resolve the same **top-level** dependency versions declared in
 `package.json`, run BOTH package managers:
 
 ```bash
-bun install
-npm install
+npm install     # canonical — regenerates package-lock.json
+bun install     # optional, keeps the Lovable sandbox lockfile in sync
 ```
 
-A single-lockfile future is possible but requires:
-
-1. Validating MilesWeb Passenger with `bun install --production` on the
-   cPanel Node.js app.
-2. Updating `app.js` install docs and the deploy runbook.
-3. Removing `package-lock.json` from `scripts/production-lock-check.mjs`.
-
-Do not attempt that migration without a staged rollout and rollback plan.
+`bun.lock` may be deleted once the Lovable sandbox is switched to npm; nothing
+in CI, `_deploy-kernel.yml`, or MilesWeb reads it.
