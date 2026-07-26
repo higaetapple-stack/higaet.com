@@ -1,0 +1,59 @@
+name: "Setup Node (HIGAET canonical)"
+description: >-
+  Single source of truth for the CI toolchain: Node 22 + npm, deterministic
+  `npm ci` install from package-lock.json, and npm cache. npm is the ONLY
+  package manager used in CI and in production (MilesWeb runs
+  `npm ci --omit=dev`), so CI installs exactly what production installs.
+  Bun is used only inside the Lovable preview sandbox and never in CI.
+
+inputs:
+  node-version:
+    description: "Node.js version"
+    required: false
+    default: "22"
+  install:
+    description: "Run `npm ci` after setup"
+    required: false
+    default: "true"
+  working-directory:
+    description: "Directory to install in"
+    required: false
+    default: "."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+        cache-dependency-path: package-lock.json
+
+    # HARD GATE: package-lock.json MUST exist. `npm ci` refuses to run
+    # without it, and production installs depend on the very same file, so a
+    # missing lockfile means CI and production can drift.
+    - name: Lockfile safety gate
+      if: ${{ inputs.install == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        if [ ! -f package-lock.json ]; then
+          echo "::error::Missing package-lock.json — npm ci cannot run."
+          echo "CI aborted to prevent non-deterministic dependency resolution."
+          echo "Run: npm install locally and commit package-lock.json."
+          exit 1
+        fi
+        echo "lockfile: package-lock.json"
+
+    - name: Install dependencies (npm ci)
+      if: ${{ inputs.install == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: npm ci --no-audit --no-fund
+
+    - name: Toolchain summary
+      shell: bash
+      run: |
+        echo "node: $(node -v)"
+        echo "npm:  $(npm -v)"
