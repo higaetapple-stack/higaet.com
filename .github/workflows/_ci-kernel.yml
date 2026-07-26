@@ -85,16 +85,33 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
 
+      # HARD GATE: if `npm ci` failed (e.g. package-lock.json out of sync with
+      # package.json), node_modules/.bin is empty and every later step dies
+      # with exit 127 ("vite: command not found"), masking the real cause.
+      - name: Verify install
+        run: |
+          if [ ! -x node_modules/.bin/vite ]; then
+            echo "::error::Dependencies are not installed (node_modules/.bin/vite missing)."
+            echo "This usually means 'npm ci' failed because package-lock.json is out of"
+            echo "sync with package.json. Run 'npm install --package-lock-only' and commit."
+            exit 1
+          fi
+          echo "vite: $(node_modules/.bin/vite --version)"
+
+      - name: Lockfile sync check
+        run: node scripts/check-lockfile-sync.mjs || true
+
       - name: Lint
         if: ${{ inputs.run-lint }}
         run: npm run lint 2>&1 | tee lint.log
 
       - name: Typecheck
-        if: ${{ inputs.run-typecheck && always() }}
+        if: ${{ inputs.run-typecheck }}
         run: npm run typecheck 2>&1 | tee typecheck.log
 
       - name: Build
-        if: ${{ inputs.run-build && always() }}
+        if: ${{ inputs.run-build }}
+
         env:
           NODE_OPTIONS: "--max-old-space-size=6144"
           BUILD_TARGET: ${{ inputs.build-target }}
@@ -109,7 +126,7 @@ jobs:
           exit "$STATUS"
 
       - name: Artifact check
-        if: ${{ inputs.run-build && always() }}
+        if: ${{ inputs.run-build }}
         run: |
           if [ ! -d .output ]; then
             echo "::error::Build produced no .output/ — Nitro did not run with the node-server preset"
@@ -130,7 +147,7 @@ jobs:
           fi
 
       - name: Build summary
-        if: ${{ inputs.run-build && always() }}
+        if: ${{ inputs.run-build }}
         run: |
           {
             echo "### Build — ${{ inputs.build-target }}"
@@ -148,7 +165,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify build manifest
-        if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
+        if: ${{ inputs.run-build && inputs.build-target == 'node' }}
         run: |
           if [ ! -f .output/build-manifest.json ]; then
             echo "::error::.output/build-manifest.json missing — postbuild:node did not run scripts/generate-build-manifest.mjs"
@@ -163,7 +180,7 @@ jobs:
           cat .output/build-manifest.json
 
       - name: Generate artifact manifest
-        if: ${{ inputs.run-build && inputs.build-target == 'node' && always() }}
+        if: ${{ inputs.run-build && inputs.build-target == 'node' }}
         run: |
           MANIFEST=".output/manifest.json"
           {
