@@ -55,6 +55,13 @@ if (fs.existsSync(NITRO_META)) {
           `    The Lovable sandbox forces cloudflare-module when LOVABLE_SANDBOX or\n` +
           `    DEV_SERVER__PROJECT_PATH is set. Use 'npm run build:node'.`,
       );
+    } else if (preset !== "node-server") {
+      // Strict gate: MilesWeb/Passenger boots .output/server/index.mjs produced
+      // by the node-server preset only. Any other preset is a deploy hazard.
+      errors.push(
+        `Nitro preset is '${preset}' — production requires exactly 'node-server'.\n` +
+          `    Check nitro.preset in vite.config.ts and run 'npm run build:node'.`,
+      );
     }
   } catch {
     notes.push("nitro.json present but unparseable — skipping preset assertion");
@@ -62,6 +69,7 @@ if (fs.existsSync(NITRO_META)) {
 } else {
   notes.push("nitro.json absent — skipping preset assertion");
 }
+
 
 for (const cloudflareArtifact of ["wrangler.json", "_worker.js", "worker.js"]) {
   if (fs.existsSync(path.join(OUTPUT_DIR, cloudflareArtifact))) {
