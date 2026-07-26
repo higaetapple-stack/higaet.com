@@ -196,6 +196,20 @@ jobs:
             ls -la \"\$REL/.output/server/index.mjs\"
           "
 
+      - name: Install production dependencies on host (npm ci --omit=dev)
+        if: env.SKIP_DEPLOY != '1'
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            cd '$DEPLOY_DIR/releases/$RELEASE'
+            export PATH=\"\$HOME/nodevenv/bin:\$PATH\"
+            command -v node >/dev/null 2>&1 || { echo '::error::node not found on host PATH — check cPanel Node.js app environment'; exit 1; }
+            echo \"[install] node: \$(node -v)\"
+            echo \"[install] npm:  \$(npm -v)\"
+            npm ci --omit=dev --prefer-offline --no-audit --no-fund
+            echo '[install] production dependencies installed'
+          "
+
       - name: Predeploy validation (server-side)
         if: env.SKIP_DEPLOY != '1'
         continue-on-error: true
