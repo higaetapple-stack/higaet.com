@@ -32,7 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci --no-audit --no-fund
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: "22"
       - name: Phase A — static security audit (STRICT)
         env:
           STRICT: "1"
@@ -112,7 +115,10 @@ jobs:
     needs: [security-audit, build]
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci --no-audit --no-fund
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: "22"
       - name: Install Playwright
         run: npx playwright install --with-deps chromium
       - name: Seed test users (dev backend)

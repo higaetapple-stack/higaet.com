@@ -24,7 +24,10 @@ jobs:
         fixture: ["NO-GO", "GO"]
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci --no-audit --no-fund
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: "22"
 
       - name: Run checker (fixture=${{ matrix.fixture }})
         id: run
