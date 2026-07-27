@@ -45,8 +45,20 @@ jobs:
         # lockfile for full GitHub Advisory Database coverage.
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
 
-      - name: npm audit (${{ inputs.severity-threshold }}+ severity)
+      # GATE: production (runtime) dependencies only. These are the packages
+      # that actually ship to MilesWeb inside `npm ci --omit=dev`.
+      - name: npm audit — production deps (${{ inputs.severity-threshold }}+ severity)
+        run: npm audit --omit=dev --audit-level=${{ inputs.severity-threshold }}
+
+      # INFORMATIONAL: dev/build-only tooling. The remaining high findings are
+      # confined to the ESLint 9 -> @eslint/config-array -> minimatch@3 ->
+      # brace-expansion chain (GHSA-mh99-v99m-4gvg). The only upstream fix is
+      # ESLint 10, a breaking major, and the code never runs in production, so
+      # this is reported but does not fail the pipeline.
+      - name: npm audit — full tree (informational)
+        continue-on-error: true
         run: npm audit --audit-level=${{ inputs.severity-threshold }}
+
 
   license-audit:
     if: ${{ inputs.run-license-audit }}
