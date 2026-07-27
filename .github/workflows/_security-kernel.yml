@@ -45,6 +45,33 @@ jobs:
         # lockfile for full GitHub Advisory Database coverage.
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
 
+      # Capture machine-readable reports BEFORE the gating steps so the
+      # artifact is always available, including on failing runs.
+      - name: Capture npm audit JSON reports
+        if: always()
+        run: |
+          mkdir -p audit-reports
+          npm audit --omit=dev --json > audit-reports/npm-audit-production.json || true
+          npm audit --json > audit-reports/npm-audit-full.json || true
+          {
+            echo "## npm audit (production deps)"
+            jq -r '.metadata.vulnerabilities | to_entries | map("\(.key): \(.value)") | join(", ")' \
+              audit-reports/npm-audit-production.json
+            echo ""
+            echo "## npm audit (full tree)"
+            jq -r '.metadata.vulnerabilities | to_entries | map("\(.key): \(.value)") | join(", ")' \
+              audit-reports/npm-audit-full.json
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload npm audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: audit-reports/
+          if-no-files-found: error
+          retention-days: 30
+
       # GATE: production (runtime) dependencies only. These are the packages
       # that actually ship to MilesWeb inside `npm ci --omit=dev`.
       - name: npm audit — production deps (${{ inputs.severity-threshold }}+ severity)
@@ -58,6 +85,7 @@ jobs:
       - name: npm audit — full tree (informational)
         continue-on-error: true
         run: npm audit --audit-level=${{ inputs.severity-threshold }}
+
 
 
   license-audit:
