@@ -9,7 +9,7 @@
  * `.server.ts` extension keeps it out of client bundles.
  */
 import { existsSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export type CheckStatus = "ok" | "fail" | "skip";
@@ -39,9 +39,7 @@ function resolveServerBundlePath(): string {
   // From inside the running bundle, __filename === .output/server/index.mjs,
   // so its own path IS the artifact path when we're actually running.
   try {
-    const here = dirname(fileURLToPath(import.meta.url));
-    // walk up until we find `.output/server` or give up
-    return resolve(here, "..", "server", "index.mjs");
+    return fileURLToPath(import.meta.url);
   } catch {
     return resolve(process.cwd(), ".output/server/index.mjs");
   }
