@@ -242,6 +242,7 @@ jobs:
             app.js
             package.json
             package-lock.json
+            .npmrc
             scripts
           # actions/upload-artifact v4 excludes dot-prefixed paths by default.
           # Nitro's complete Node server bundle lives under `.output/`, so this
