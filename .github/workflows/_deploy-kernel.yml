@@ -123,6 +123,10 @@ jobs:
             echo "::error::Deploy aborted: dist/package-lock.json missing — npm ci --omit=dev requires a lockfile. CI must include package-lock.json in the artifact."
             exit 1
           fi
+          if [ ! -f "dist/.npmrc" ]; then
+            echo "::error::Deploy aborted: dist/.npmrc missing — host-side npm ci requires the repo install policy. CI must include .npmrc in the artifact (upload-artifact needs include-hidden-files: true)."
+            exit 1
+          fi
           if [ -f "dist/.output/wrangler.json" ] || [ -f "dist/.output/_worker.js" ]; then
             echo "::error::Deploy aborted: Cloudflare Workers artifacts found in the release payload. Production is Node SSR only."
             exit 1
