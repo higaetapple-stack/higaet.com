@@ -214,7 +214,7 @@ jobs:
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
             REL='$DEPLOY_DIR/releases/$RELEASE'
-            for f in .output/server/index.mjs app.js package.json; do
+            for f in .output/server/index.mjs app.js package.json package-lock.json .npmrc; do
               if [ ! -f \"\$REL/\$f\" ]; then
                 echo \"::error::Missing after rsync: \$REL/\$f\"
                 exit 1
