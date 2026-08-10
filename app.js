@@ -101,24 +101,21 @@ console.log("[passenger]  HIGAET node server — startup diagnostics");
 console.log("[passenger] ============================================");
 console.log("[passenger] application root :", here);
 console.log("[passenger] cwd              :", process.cwd());
-console.log("[passenger] entry            :", fileURLToPath(import.meta.url));
-console.log("[passenger] server bundle    :", serverPath);
-console.log("[passenger] bundle exists    :", existsSync(serverPath));
 console.log("[passenger] node version     :", process.version);
 console.log("[passenger] NODE_ENV         :", process.env.NODE_ENV);
+console.log("[passenger] server bundle    :", serverPath);
+console.log("[passenger] bundle exists    :", existsSync(serverPath));
 console.log("[passenger] PORT             :", process.env.PORT ?? "(unset)");
 console.log("[passenger] HOST             :", process.env.HOST);
 console.log("[passenger] SUPABASE_URL host:", supabaseHost);
 console.log("[passenger] dotenv loaded    :", dotEnvLoaded);
-console.log("[passenger] runtime config   :", {
-  SUPABASE_URL: process.env.SUPABASE_URL ? "set" : "missing",
-  SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
-  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? "set" : "missing",
-  SESSION_SECRET: process.env.SESSION_SECRET ? "set" : "missing",
-  VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL ? "set" : "missing",
-  VITE_SUPABASE_PUBLISHABLE_KEY: process.env.VITE_SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
-  BREVO_API_KEY: process.env.BREVO_API_KEY ? "set" : "missing",
+console.log("[passenger] env check        :", {
+  SUPABASE_URL: process.env.SUPABASE_URL ? "PRESENT" : "MISSING",
+  SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY ? "PRESENT" : "MISSING",
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? "PRESENT" : "MISSING",
+  SESSION_SECRET: process.env.SESSION_SECRET ? "PRESENT" : "MISSING",
 });
+
 
 try {
   console.log("[passenger] .output -> ", readlinkSync(resolve(here, ".output")));
