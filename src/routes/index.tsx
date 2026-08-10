@@ -1,8 +1,8 @@
 /**
  * HELEN INSTITUTE OF GEN AI ENGINEERING & TECHNOLOGY (HIGAET)
  * ──────────────────────────────────────────────────────────
- * 🟢 PRODUCTION LIVE
- * Status: Audit COMPLETE | Build STABILIZED | Deploy VERIFIED
+ * 🟡 DEPLOYED — READINESS ISSUE
+ * Status: Audit COMPLETE | Build STABILIZED | Deploy ATTEMPTED
  * Environment: Node.js 22 (Nitro node-server) @ MilesWeb
  * Last Audit: 2026-08-10 (Senior DevOps/DevSecOps)
  * 
@@ -14,9 +14,9 @@
  * 
  * Deployment Verification:
  * - Build: PASS (Nitro preset: node-server)
- * - Artifact: .output/server/index.mjs verified (121KB)
- * - Runtime: /healthz (200), /readyz (SSR PASS)
- * - Hosting: MilesWeb Passenger Compatibility CONFIRMED
+ * - Artifact: .output/server/index.mjs verified locally (121KB)
+ * - Live URL: https://higaet.com (DNS OK | Connection Timeout)
+ * - Readiness: DEGRADED (External verification pending cutover)
  * ──────────────────────────────────────────────────────────
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
