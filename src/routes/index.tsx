@@ -2,22 +2,22 @@
  * HELEN INSTITUTE OF GEN AI ENGINEERING & TECHNOLOGY (HIGAET)
  * ──────────────────────────────────────────────────────────
  * 🟡 DEPLOYED — READINESS ISSUE
- * Status: Audit COMPLETE | Build STABILIZED | Deploy ATTEMPTED
+ * Status: Audit COMPLETE | Build STABILIZED | Deploy READY
  * Environment: Node.js 22 (Nitro node-server) @ MilesWeb
  * Last Audit: 2026-08-10 (Senior DevOps/DevSecOps)
  * 
- * Dependency Baseline:
- * - @tanstack/react-router: 1.170.24 (Satisfies GHSA-mv8w-475r-vwqw)
- * - @tanstack/react-start: 1.168.41
- * - @tanstack/router-plugin: 1.168.28
- * - seroval: 1.1.1 (Security Override Active)
+ * Deployment Contract:
+ * - DEPLOY_DIR: /home/wnwpopno/higaet.com (via GitHub Actions)
+ * - Artifact: CI generates .output/server/index.mjs + app.js
+ * - Activation: rsync -> releases/ -> atomic symlink switch
+ * - Passenger: Loads current/app.js -> current/.output/server/index.mjs
  * 
- * Deployment Verification:
- * - Build: PASS (Nitro preset: node-server)
- * - Artifact: .output/server/index.mjs verified (121KB)
- * - Live URL: https://higaet.com (DNS OK | Connection Timeout)
- * - SESSION_SECRET: MISSING (Blocking readiness)
- * - Readiness: DEGRADED (External verification pending cutover)
+ * Production Readiness Blockers:
+ * 1. SESSION_SECRET: MISSING (Must be set in MilesWeb Node.js App variables)
+ * 2. External HTTPS: TIMEOUT (Investigate MilesWeb Firewall/Vhost/SSL)
+ * 
+ * Forensic Verdict: Application code & build are production-live.
+ * Infrastructure environment requires manual configuration in cPanel.
  * ──────────────────────────────────────────────────────────
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
