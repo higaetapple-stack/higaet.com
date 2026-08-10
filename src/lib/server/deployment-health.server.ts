@@ -63,7 +63,7 @@ function checkEnv(): HealthCheck {
     detail:
       missing.length === 0
         ? `all ${REQUIRED_ENV.length} required vars present`
-        : `missing: ${missing.join(", ")}`,
+        : `missing: ${missing.join(", ")} (Action: Set in cPanel Node.js App)`,
   };
 }
 
