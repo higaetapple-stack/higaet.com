@@ -9,491 +9,457 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as R403RouteImport } from './routes/403'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AboutHigaetRouteImport } from './routes/about-higaet'
-import { Route as AcademyRouteImport } from './routes/academy'
-import { Route as AdvisorsRouteImport } from './routes/advisors'
-import { Route as AiRouteImport } from './routes/ai'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as ConstitutionRouteImport } from './routes/constitution'
-import { Route as ConstitutionAmendmentsRouteImport } from './routes/constitution-amendments'
-import { Route as ConstitutionVersionsRouteImport } from './routes/constitution-versions'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CookiesRouteImport } from './routes/cookies'
-import { Route as DocsRouteImport } from './routes/docs'
-import { Route as FacultyRouteImport } from './routes/faculty'
-import { Route as FounderRouteImport } from './routes/founder'
-import { Route as GlobalEducationRouteImport } from './routes/global-education'
-import { Route as GovernanceRouteImport } from './routes/governance'
-import { Route as HealthzRouteImport } from './routes/healthz'
-import { Route as HigaetAcademyRouteImport } from './routes/higaet-academy'
-import { Route as HigaetAiPlatformRouteImport } from './routes/higaet-ai-platform'
-import { Route as HigaetGlobalEducationHubRouteImport } from './routes/higaet-global-education-hub'
-import { Route as HigaetTechnologiesRouteImport } from './routes/higaet-technologies'
-import { Route as KernelRouteImport } from './routes/kernel'
-import { Route as LeadershipRouteImport } from './routes/leadership'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as McpDocsRouteImport } from './routes/mcp-docs'
-import { Route as PartnersRouteImport } from './routes/partners'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ReadyzRouteImport } from './routes/readyz'
-import { Route as ReplayRouteImport } from './routes/replay'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as SimulateRouteImport } from './routes/simulate'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as StatusRouteImport } from './routes/status'
-import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
-import { Route as SystemDashboardRouteImport } from './routes/system-dashboard'
-import { Route as TechnologiesRouteImport } from './routes/technologies'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
-import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
-import { Route as AuthenticatedEducationRouteImport } from './routes/_authenticated.education'
-import { Route as AuthenticatedOpsRouteImport } from './routes/_authenticated.ops'
-import { Route as AcademyIndexRouteImport } from './routes/academy.index'
-import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
-import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
-import { Route as AcademyContactRouteImport } from './routes/academy.contact'
-import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
-import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
-import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
-import { Route as AcademyLearningPathsRouteImport } from './routes/academy.learning-paths'
-import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
-import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
-import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
-import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholarship'
-import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
-import { Route as AiIndexRouteImport } from './routes/ai.index'
-import { Route as AiChatRouteImport } from './routes/ai.chat'
-import { Route as AiCollectionsRouteImport } from './routes/ai.collections'
-import { Route as AiHistoryRouteImport } from './routes/ai.history'
-import { Route as AiPromptsRouteImport } from './routes/ai.prompts'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
-import { Route as AuthLoginRouteImport } from './routes/auth.login'
-import { Route as AuthRegisterRouteImport } from './routes/auth.register'
-import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
-import { Route as DocsIndexRouteImport } from './routes/docs.index'
-import { Route as DocsCategoryRouteImport } from './routes/docs.$category'
-import { Route as DocsApiReferenceRouteImport } from './routes/docs.api-reference'
-import { Route as DocsAuthenticationRouteImport } from './routes/docs.authentication'
-import { Route as DocsWebhooksRouteImport } from './routes/docs.webhooks'
-import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
-import { Route as GlobalEducationAdmissionProcessRouteImport } from './routes/global-education.admission-process'
-import { Route as GlobalEducationContactRouteImport } from './routes/global-education.contact'
-import { Route as GlobalEducationCountriesRouteImport } from './routes/global-education.countries'
-import { Route as GlobalEducationFaqRouteImport } from './routes/global-education.faq'
-import { Route as GlobalEducationScholarshipsRouteImport } from './routes/global-education.scholarships'
-import { Route as GlobalEducationStudentServicesRouteImport } from './routes/global-education.student-services'
-import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
-import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
-import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global-education.visa-guidance'
-import { Route as JobsIndexRouteImport } from './routes/jobs.index'
-import { Route as JobsSlugRouteImport } from './routes/jobs.$slug'
-import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as TechnologiesRouteImport } from './routes/technologies'
+import { Route as SystemDashboardRouteImport } from './routes/system-dashboard'
+import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
+import { Route as StatusRouteImport } from './routes/status'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SimulateRouteImport } from './routes/simulate'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as ReplayRouteImport } from './routes/replay'
+import { Route as ReadyzRouteImport } from './routes/readyz'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as McpDocsRouteImport } from './routes/mcp-docs'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as LeadershipRouteImport } from './routes/leadership'
+import { Route as KernelRouteImport } from './routes/kernel'
+import { Route as HigaetTechnologiesRouteImport } from './routes/higaet-technologies'
+import { Route as HigaetGlobalEducationHubRouteImport } from './routes/higaet-global-education-hub'
+import { Route as HigaetAiPlatformRouteImport } from './routes/higaet-ai-platform'
+import { Route as HigaetAcademyRouteImport } from './routes/higaet-academy'
+import { Route as HealthzRouteImport } from './routes/healthz'
+import { Route as GovernanceRouteImport } from './routes/governance'
+import { Route as GlobalEducationRouteImport } from './routes/global-education'
+import { Route as FounderRouteImport } from './routes/founder'
+import { Route as FacultyRouteImport } from './routes/faculty'
+import { Route as DocsRouteImport } from './routes/docs'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConstitutionVersionsRouteImport } from './routes/constitution-versions'
+import { Route as ConstitutionAmendmentsRouteImport } from './routes/constitution-amendments'
+import { Route as ConstitutionRouteImport } from './routes/constitution'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AiRouteImport } from './routes/ai'
+import { Route as AdvisorsRouteImport } from './routes/advisors'
+import { Route as AcademyRouteImport } from './routes/academy'
+import { Route as AboutHigaetRouteImport } from './routes/about-higaet'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as R403RouteImport } from './routes/403'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
-import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
-import { Route as TechnologiesApiDevelopmentRouteImport } from './routes/technologies.api-development'
-import { Route as TechnologiesBusinessIntelligenceRouteImport } from './routes/technologies.business-intelligence'
-import { Route as TechnologiesCareersRouteImport } from './routes/technologies.careers'
-import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
-import { Route as TechnologiesCloudMigrationRouteImport } from './routes/technologies.cloud-migration'
-import { Route as TechnologiesCloudSolutionsRouteImport } from './routes/technologies.cloud-solutions'
-import { Route as TechnologiesCompanyRouteImport } from './routes/technologies.company'
-import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
-import { Route as TechnologiesCustomSoftwareDevelopmentRouteImport } from './routes/technologies.custom-software-development'
-import { Route as TechnologiesDataEngineeringRouteImport } from './routes/technologies.data-engineering'
-import { Route as TechnologiesDedicatedTeamRouteImport } from './routes/technologies.dedicated-team'
-import { Route as TechnologiesDevopsRouteImport } from './routes/technologies.devops'
-import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
-import { Route as TechnologiesDigitalTransformationRouteImport } from './routes/technologies.digital-transformation'
-import { Route as TechnologiesEngagementRouteImport } from './routes/technologies.engagement'
-import { Route as TechnologiesEnterpriseSoftwareRouteImport } from './routes/technologies.enterprise-software'
-import { Route as TechnologiesExpertiseRouteImport } from './routes/technologies.expertise'
-import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
-import { Route as TechnologiesInsightsRouteImport } from './routes/technologies.insights'
-import { Route as TechnologiesItConsultingRouteImport } from './routes/technologies.it-consulting'
-import { Route as TechnologiesLegacyModernizationRouteImport } from './routes/technologies.legacy-modernization'
-import { Route as TechnologiesMobileDevelopmentRouteImport } from './routes/technologies.mobile-development'
-import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/technologies.product-development'
-import { Route as TechnologiesQaTestingRouteImport } from './routes/technologies.qa-testing'
-import { Route as TechnologiesSaasProductsRouteImport } from './routes/technologies.saas-products'
-import { Route as TechnologiesSoftwareDevelopmentRouteImport } from './routes/technologies.software-development'
-import { Route as TechnologiesSoftwareMaintenanceRouteImport } from './routes/technologies.software-maintenance'
-import { Route as TechnologiesStaffAugmentationRouteImport } from './routes/technologies.staff-augmentation'
-import { Route as TechnologiesSystemIntegrationRouteImport } from './routes/technologies.system-integration'
-import { Route as TechnologiesUiUxDesignRouteImport } from './routes/technologies.ui-ux-design'
-import { Route as TechnologiesWebDevelopmentRouteImport } from './routes/technologies.web-development'
-import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
+import { Route as JobsIndexRouteImport } from './routes/jobs.index'
+import { Route as GlobalEducationIndexRouteImport } from './routes/global-education.index'
+import { Route as DocsIndexRouteImport } from './routes/docs.index'
+import { Route as AiIndexRouteImport } from './routes/ai.index'
+import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
-import { Route as AuthenticatedAssistantIndexRouteImport } from './routes/_authenticated.assistant.index'
-import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
-import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
-import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
-import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
-import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated.dashboard.admin'
-import { Route as AuthenticatedDashboardCareerRouteImport } from './routes/_authenticated.dashboard.career'
-import { Route as AuthenticatedDashboardCounselorRouteImport } from './routes/_authenticated.dashboard.counselor'
-import { Route as AuthenticatedDashboardFacultyRouteImport } from './routes/_authenticated.dashboard.faculty'
-import { Route as AuthenticatedDashboardNotificationsRouteImport } from './routes/_authenticated.dashboard.notifications'
-import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated.dashboard.profile'
-import { Route as AuthenticatedDashboardProgramsRouteImport } from './routes/_authenticated.dashboard.programs'
-import { Route as AuthenticatedDashboardSecurityRouteImport } from './routes/_authenticated.dashboard.security'
-import { Route as AuthenticatedDashboardTechnologiesRouteImport } from './routes/_authenticated.dashboard.technologies'
-import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
-import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated.education.index'
-import { Route as AuthenticatedEducationApplicationsRouteImport } from './routes/_authenticated.education.applications'
-import { Route as AuthenticatedEducationDocumentsRouteImport } from './routes/_authenticated.education.documents'
-import { Route as AuthenticatedEducationProfileRouteImport } from './routes/_authenticated.education.profile'
-import { Route as AuthenticatedOpsReliabilityRouteImport } from './routes/_authenticated.ops.reliability'
-import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
-import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
-import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
+import { Route as VerifyCertificateIdRouteImport } from './routes/verify-certificate.$id'
+import { Route as TechnologiesWebDevelopmentRouteImport } from './routes/technologies.web-development'
+import { Route as TechnologiesUiUxDesignRouteImport } from './routes/technologies.ui-ux-design'
+import { Route as TechnologiesSystemIntegrationRouteImport } from './routes/technologies.system-integration'
+import { Route as TechnologiesStaffAugmentationRouteImport } from './routes/technologies.staff-augmentation'
+import { Route as TechnologiesSoftwareMaintenanceRouteImport } from './routes/technologies.software-maintenance'
+import { Route as TechnologiesSoftwareDevelopmentRouteImport } from './routes/technologies.software-development'
+import { Route as TechnologiesSaasProductsRouteImport } from './routes/technologies.saas-products'
+import { Route as TechnologiesQaTestingRouteImport } from './routes/technologies.qa-testing'
+import { Route as TechnologiesProductDevelopmentRouteImport } from './routes/technologies.product-development'
+import { Route as TechnologiesMobileDevelopmentRouteImport } from './routes/technologies.mobile-development'
+import { Route as TechnologiesLegacyModernizationRouteImport } from './routes/technologies.legacy-modernization'
+import { Route as TechnologiesItConsultingRouteImport } from './routes/technologies.it-consulting'
+import { Route as TechnologiesInsightsRouteImport } from './routes/technologies.insights'
+import { Route as TechnologiesIndustriesRouteImport } from './routes/technologies.industries'
+import { Route as TechnologiesExpertiseRouteImport } from './routes/technologies.expertise'
+import { Route as TechnologiesEnterpriseSoftwareRouteImport } from './routes/technologies.enterprise-software'
+import { Route as TechnologiesEngagementRouteImport } from './routes/technologies.engagement'
+import { Route as TechnologiesDigitalTransformationRouteImport } from './routes/technologies.digital-transformation'
+import { Route as TechnologiesDigitalMarketingRouteImport } from './routes/technologies.digital-marketing'
+import { Route as TechnologiesDevopsRouteImport } from './routes/technologies.devops'
+import { Route as TechnologiesDedicatedTeamRouteImport } from './routes/technologies.dedicated-team'
+import { Route as TechnologiesDataEngineeringRouteImport } from './routes/technologies.data-engineering'
+import { Route as TechnologiesCustomSoftwareDevelopmentRouteImport } from './routes/technologies.custom-software-development'
+import { Route as TechnologiesContactRouteImport } from './routes/technologies.contact'
+import { Route as TechnologiesCompanyRouteImport } from './routes/technologies.company'
+import { Route as TechnologiesCloudSolutionsRouteImport } from './routes/technologies.cloud-solutions'
+import { Route as TechnologiesCloudMigrationRouteImport } from './routes/technologies.cloud-migration'
+import { Route as TechnologiesCaseStudiesRouteImport } from './routes/technologies.case-studies'
+import { Route as TechnologiesCareersRouteImport } from './routes/technologies.careers'
+import { Route as TechnologiesBusinessIntelligenceRouteImport } from './routes/technologies.business-intelligence'
+import { Route as TechnologiesApiDevelopmentRouteImport } from './routes/technologies.api-development'
+import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
+import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as JobsSlugRouteImport } from './routes/jobs.$slug'
+import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global-education.visa-guidance'
+import { Route as GlobalEducationUniversitiesRouteImport } from './routes/global-education.universities'
+import { Route as GlobalEducationStudyAbroadRouteImport } from './routes/global-education.study-abroad'
+import { Route as GlobalEducationStudentServicesRouteImport } from './routes/global-education.student-services'
+import { Route as GlobalEducationScholarshipsRouteImport } from './routes/global-education.scholarships'
+import { Route as GlobalEducationFaqRouteImport } from './routes/global-education.faq'
+import { Route as GlobalEducationCountriesRouteImport } from './routes/global-education.countries'
+import { Route as GlobalEducationContactRouteImport } from './routes/global-education.contact'
+import { Route as GlobalEducationAdmissionProcessRouteImport } from './routes/global-education.admission-process'
+import { Route as DocsWebhooksRouteImport } from './routes/docs.webhooks'
+import { Route as DocsAuthenticationRouteImport } from './routes/docs.authentication'
+import { Route as DocsApiReferenceRouteImport } from './routes/docs.api-reference'
+import { Route as DocsCategoryRouteImport } from './routes/docs.$category'
+import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AuthRegisterRouteImport } from './routes/auth.register'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AiPromptsRouteImport } from './routes/ai.prompts'
+import { Route as AiHistoryRouteImport } from './routes/ai.history'
+import { Route as AiCollectionsRouteImport } from './routes/ai.collections'
+import { Route as AiChatRouteImport } from './routes/ai.chat'
+import { Route as AcademySuccessStoriesRouteImport } from './routes/academy.success-stories'
+import { Route as AcademyScholarshipRouteImport } from './routes/academy.scholarship'
+import { Route as AcademyPlacementsRouteImport } from './routes/academy.placements'
+import { Route as AcademyOnlineCoursesRouteImport } from './routes/academy.online-courses'
+import { Route as AcademyOfflineTrainingRouteImport } from './routes/academy.offline-training'
+import { Route as AcademyLearningPathsRouteImport } from './routes/academy.learning-paths'
+import { Route as AcademyInternshipsRouteImport } from './routes/academy.internships'
+import { Route as AcademyFaqRouteImport } from './routes/academy.faq'
+import { Route as AcademyCorporateTrainingRouteImport } from './routes/academy.corporate-training'
+import { Route as AcademyContactRouteImport } from './routes/academy.contact'
+import { Route as AcademyCertificationsRouteImport } from './routes/academy.certifications'
+import { Route as AcademyAdmissionsRouteImport } from './routes/academy.admissions'
+import { Route as AuthenticatedOpsRouteImport } from './routes/_authenticated.ops'
+import { Route as AuthenticatedEducationRouteImport } from './routes/_authenticated.education'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedCommunityRouteImport } from './routes/_authenticated.community'
+import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated.assistant'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
-import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
-import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$slug'
-import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
-import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
-import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
-import { Route as ApiPublicEmailVerifyRouteImport } from './routes/api/public/email-verify'
-import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
-import { Route as ApiPublicGovernanceRouteImport } from './routes/api/public/governance'
-import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
-import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
-import { Route as ApiPublicReplayRouteImport } from './routes/api/public/replay'
-import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
-import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
-import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
-import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
-import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
-import { Route as ApiPublicSystemHealthRouteImport } from './routes/api/public/system-health'
-import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
-import { Route as ApiV1CoursesRouteImport } from './routes/api/v1/courses'
-import { Route as ApiV1JobsRouteImport } from './routes/api/v1/jobs'
-import { Route as ApiV1ProgramsRouteImport } from './routes/api/v1/programs'
-import { Route as ApiV1UniversitiesRouteImport } from './routes/api/v1/universities'
-import { Route as DocsCategorySlugRouteImport } from './routes/docs.$category.$slug'
-import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
-import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
-import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
-import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologies.company.$slug'
-import { Route as TechnologiesEngagementBuildOperateTransferRouteImport } from './routes/technologies.engagement.build-operate-transfer'
-import { Route as TechnologiesEngagementDedicatedDevelopmentTeamRouteImport } from './routes/technologies.engagement.dedicated-development-team'
-import { Route as TechnologiesEngagementFixedPriceProjectsRouteImport } from './routes/technologies.engagement.fixed-price-projects'
-import { Route as TechnologiesEngagementOffshoreDevelopmentCenterRouteImport } from './routes/technologies.engagement.offshore-development-center'
-import { Route as TechnologiesEngagementStaffAugmentationRouteImport } from './routes/technologies.engagement.staff-augmentation'
-import { Route as TechnologiesEngagementTimeAndMaterialsRouteImport } from './routes/technologies.engagement.time-and-materials'
-import { Route as TechnologiesExpertiseAiAutomationRouteImport } from './routes/technologies.expertise.ai-automation'
-import { Route as TechnologiesExpertiseAndroidRouteImport } from './routes/technologies.expertise.android'
-import { Route as TechnologiesExpertiseAngularRouteImport } from './routes/technologies.expertise.angular'
-import { Route as TechnologiesExpertiseAwsRouteImport } from './routes/technologies.expertise.aws'
-import { Route as TechnologiesExpertiseAzureRouteImport } from './routes/technologies.expertise.azure'
-import { Route as TechnologiesExpertiseBusinessIntelligenceTechRouteImport } from './routes/technologies.expertise.business-intelligence-tech'
-import { Route as TechnologiesExpertiseComputerVisionRouteImport } from './routes/technologies.expertise.computer-vision'
-import { Route as TechnologiesExpertiseCss3RouteImport } from './routes/technologies.expertise.css3'
-import { Route as TechnologiesExpertiseDataEngineeringTechRouteImport } from './routes/technologies.expertise.data-engineering-tech'
-import { Route as TechnologiesExpertiseDockerRouteImport } from './routes/technologies.expertise.docker'
-import { Route as TechnologiesExpertiseDotnetRouteImport } from './routes/technologies.expertise.dotnet'
-import { Route as TechnologiesExpertiseExpressRouteImport } from './routes/technologies.expertise.express'
-import { Route as TechnologiesExpertiseFlutterRouteImport } from './routes/technologies.expertise.flutter'
-import { Route as TechnologiesExpertiseGcpRouteImport } from './routes/technologies.expertise.gcp'
-import { Route as TechnologiesExpertiseGenerativeAiRouteImport } from './routes/technologies.expertise.generative-ai'
-import { Route as TechnologiesExpertiseGoRouteImport } from './routes/technologies.expertise.go'
-import { Route as TechnologiesExpertiseHtml5RouteImport } from './routes/technologies.expertise.html5'
-import { Route as TechnologiesExpertiseIosRouteImport } from './routes/technologies.expertise.ios'
-import { Route as TechnologiesExpertiseJavaRouteImport } from './routes/technologies.expertise.java'
-import { Route as TechnologiesExpertiseJavascriptRouteImport } from './routes/technologies.expertise.javascript'
-import { Route as TechnologiesExpertiseKubernetesRouteImport } from './routes/technologies.expertise.kubernetes'
-import { Route as TechnologiesExpertiseLaravelRouteImport } from './routes/technologies.expertise.laravel'
-import { Route as TechnologiesExpertiseMachineLearningRouteImport } from './routes/technologies.expertise.machine-learning'
-import { Route as TechnologiesExpertiseMongodbRouteImport } from './routes/technologies.expertise.mongodb'
-import { Route as TechnologiesExpertiseMysqlRouteImport } from './routes/technologies.expertise.mysql'
-import { Route as TechnologiesExpertiseNextjsRouteImport } from './routes/technologies.expertise.nextjs'
-import { Route as TechnologiesExpertiseNlpRouteImport } from './routes/technologies.expertise.nlp'
-import { Route as TechnologiesExpertiseNodejsRouteImport } from './routes/technologies.expertise.nodejs'
-import { Route as TechnologiesExpertiseOpenaiRouteImport } from './routes/technologies.expertise.openai'
-import { Route as TechnologiesExpertisePhpRouteImport } from './routes/technologies.expertise.php'
-import { Route as TechnologiesExpertisePostgresqlRouteImport } from './routes/technologies.expertise.postgresql'
-import { Route as TechnologiesExpertisePythonRouteImport } from './routes/technologies.expertise.python'
-import { Route as TechnologiesExpertiseReactRouteImport } from './routes/technologies.expertise.react'
-import { Route as TechnologiesExpertiseReactNativeRouteImport } from './routes/technologies.expertise.react-native'
-import { Route as TechnologiesExpertiseRedisRouteImport } from './routes/technologies.expertise.redis'
-import { Route as TechnologiesExpertiseSpringBootRouteImport } from './routes/technologies.expertise.spring-boot'
-import { Route as TechnologiesExpertiseTypescriptRouteImport } from './routes/technologies.expertise.typescript'
-import { Route as TechnologiesExpertiseVuejsRouteImport } from './routes/technologies.expertise.vuejs'
-import { Route as TechnologiesIndustriesBankingRouteImport } from './routes/technologies.industries.banking'
-import { Route as TechnologiesIndustriesEcommerceRouteImport } from './routes/technologies.industries.ecommerce'
-import { Route as TechnologiesIndustriesEducationRouteImport } from './routes/technologies.industries.education'
-import { Route as TechnologiesIndustriesEnterpriseRouteImport } from './routes/technologies.industries.enterprise'
-import { Route as TechnologiesIndustriesFinanceRouteImport } from './routes/technologies.industries.finance'
-import { Route as TechnologiesIndustriesFintechRouteImport } from './routes/technologies.industries.fintech'
-import { Route as TechnologiesIndustriesGovernmentRouteImport } from './routes/technologies.industries.government'
-import { Route as TechnologiesIndustriesHealthcareRouteImport } from './routes/technologies.industries.healthcare'
-import { Route as TechnologiesIndustriesHospitalityRouteImport } from './routes/technologies.industries.hospitality'
-import { Route as TechnologiesIndustriesLogisticsRouteImport } from './routes/technologies.industries.logistics'
-import { Route as TechnologiesIndustriesManufacturingRouteImport } from './routes/technologies.industries.manufacturing'
-import { Route as TechnologiesIndustriesRealEstateRouteImport } from './routes/technologies.industries.real-estate'
-import { Route as TechnologiesIndustriesRetailRouteImport } from './routes/technologies.industries.retail'
-import { Route as TechnologiesIndustriesSmeRouteImport } from './routes/technologies.industries.sme'
-import { Route as TechnologiesIndustriesStartupsRouteImport } from './routes/technologies.industries.startups'
+import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
+import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated.education.index'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated.dashboard.index'
+import { Route as AuthenticatedAssistantIndexRouteImport } from './routes/_authenticated.assistant.index'
 import { Route as TechnologiesInsightsSlugRouteImport } from './routes/technologies.insights.$slug'
-import { Route as AuthenticatedCommunitySlugThreadIdRouteImport } from './routes/_authenticated.community.$slug.$threadId'
-import { Route as AuthenticatedCommunityEventsIdRouteImport } from './routes/_authenticated.community.events.$id'
-import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
-import { Route as AuthenticatedDashboardAdminAiRouteImport } from './routes/_authenticated.dashboard.admin.ai'
-import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
-import { Route as AuthenticatedDashboardAdminApiRouteImport } from './routes/_authenticated.dashboard.admin.api'
-import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
-import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
-import { Route as AuthenticatedDashboardAdminAuditLogsRouteImport } from './routes/_authenticated.dashboard.admin.audit-logs'
-import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
-import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
-import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
-import { Route as AuthenticatedDashboardAdminDomainStatusRouteImport } from './routes/_authenticated.dashboard.admin.domain-status'
-import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
-import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
-import { Route as AuthenticatedDashboardAdminEnvReadinessRouteImport } from './routes/_authenticated.dashboard.admin.env-readiness'
-import { Route as AuthenticatedDashboardAdminFeatureFlagsRouteImport } from './routes/_authenticated.dashboard.admin.feature-flags'
-import { Route as AuthenticatedDashboardAdminGovernanceRouteImport } from './routes/_authenticated.dashboard.admin.governance'
-import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
-import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
-import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
-import { Route as AuthenticatedDashboardAdminLaunchReportRouteImport } from './routes/_authenticated.dashboard.admin.launch-report'
-import { Route as AuthenticatedDashboardAdminMonitoringSecretsRouteImport } from './routes/_authenticated.dashboard.admin.monitoring-secrets'
-import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
-import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
-import { Route as AuthenticatedDashboardAdminOperatorChecklistRouteImport } from './routes/_authenticated.dashboard.admin.operator-checklist'
-import { Route as AuthenticatedDashboardAdminPaymentsRouteImport } from './routes/_authenticated.dashboard.admin.payments'
-import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
-import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
-import { Route as AuthenticatedDashboardAdminProviderHealthRouteImport } from './routes/_authenticated.dashboard.admin.provider-health'
-import { Route as AuthenticatedDashboardAdminRagRouteImport } from './routes/_authenticated.dashboard.admin.rag'
-import { Route as AuthenticatedDashboardAdminReleasesRouteImport } from './routes/_authenticated.dashboard.admin.releases'
-import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
-import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
-import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
-import { Route as AuthenticatedDashboardAdminSentryRouteImport } from './routes/_authenticated.dashboard.admin.sentry'
-import { Route as AuthenticatedDashboardAdminSentryReleasesRouteImport } from './routes/_authenticated.dashboard.admin.sentry-releases'
-import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
-import { Route as AuthenticatedDashboardAdminSreMetricsRouteImport } from './routes/_authenticated.dashboard.admin.sre-metrics'
-import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
-import { Route as AuthenticatedDashboardAdminSystemRouteImport } from './routes/_authenticated.dashboard.admin.system'
-import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './routes/_authenticated.dashboard.admin.tech-leads'
-import { Route as AuthenticatedDashboardAdminUniprogramsRouteImport } from './routes/_authenticated.dashboard.admin.uniprograms'
-import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
-import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
-import { Route as AuthenticatedDashboardAdminVisaRouteImport } from './routes/_authenticated.dashboard.admin.visa'
-import { Route as AuthenticatedDashboardAdminWebhooksRouteImport } from './routes/_authenticated.dashboard.admin.webhooks'
-import { Route as AuthenticatedDashboardAiCareerRouteImport } from './routes/_authenticated.dashboard.ai.career'
-import { Route as AuthenticatedDashboardAiGlobalRouteImport } from './routes/_authenticated.dashboard.ai.global'
-import { Route as AuthenticatedDashboardAiTutorRouteImport } from './routes/_authenticated.dashboard.ai.tutor'
-import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
-import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './routes/_authenticated.dashboard.applications.$id'
-import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
-import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } from './routes/_authenticated.dashboard.assignments.$assignmentId'
-import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/_authenticated.dashboard.career.index'
-import { Route as AuthenticatedDashboardCareerApplicationsRouteImport } from './routes/_authenticated.dashboard.career.applications'
-import { Route as AuthenticatedDashboardCareerPortfolioRouteImport } from './routes/_authenticated.dashboard.career.portfolio'
-import { Route as AuthenticatedDashboardCareerProfileRouteImport } from './routes/_authenticated.dashboard.career.profile'
-import { Route as AuthenticatedDashboardCareerResumeRouteImport } from './routes/_authenticated.dashboard.career.resume'
-import { Route as AuthenticatedDashboardCareerSavedRouteImport } from './routes/_authenticated.dashboard.career.saved'
-import { Route as AuthenticatedDashboardCertificatesIndexRouteImport } from './routes/_authenticated.dashboard.certificates.index'
-import { Route as AuthenticatedDashboardCertificatesIdRouteImport } from './routes/_authenticated.dashboard.certificates.$id'
-import { Route as AuthenticatedDashboardCounselorIndexRouteImport } from './routes/_authenticated.dashboard.counselor.index'
-import { Route as AuthenticatedDashboardCounselorAnalyticsRouteImport } from './routes/_authenticated.dashboard.counselor.analytics'
-import { Route as AuthenticatedDashboardCounselorApplicationsRouteImport } from './routes/_authenticated.dashboard.counselor.applications'
-import { Route as AuthenticatedDashboardCounselorFollowUpsRouteImport } from './routes/_authenticated.dashboard.counselor.follow-ups'
-import { Route as AuthenticatedDashboardCounselorLeadsRouteImport } from './routes/_authenticated.dashboard.counselor.leads'
-import { Route as AuthenticatedDashboardCounselorPipelineRouteImport } from './routes/_authenticated.dashboard.counselor.pipeline'
-import { Route as AuthenticatedDashboardCounselorTasksRouteImport } from './routes/_authenticated.dashboard.counselor.tasks'
-import { Route as AuthenticatedDashboardCounselorVisaRouteImport } from './routes/_authenticated.dashboard.counselor.visa'
-import { Route as AuthenticatedDashboardCounselorWorkloadRouteImport } from './routes/_authenticated.dashboard.counselor.workload'
-import { Route as AuthenticatedDashboardCoursesCourseIdRouteImport } from './routes/_authenticated.dashboard.courses.$courseId'
-import { Route as AuthenticatedDashboardFacultySubmissionsRouteImport } from './routes/_authenticated.dashboard.faculty.submissions'
-import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
-import { Route as AuthenticatedDashboardNotificationsPreferencesRouteImport } from './routes/_authenticated.dashboard.notifications.preferences'
-import { Route as AuthenticatedDashboardPaymentsNewRouteImport } from './routes/_authenticated.dashboard.payments.new'
-import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
-import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
-import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
-import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
-import { Route as AuthenticatedDashboardTechnologiesClientRouteRouteImport } from './routes/_authenticated.dashboard.technologies.client/route'
-import { Route as AuthenticatedDashboardTechnologiesContractsRouteImport } from './routes/_authenticated.dashboard.technologies.contracts'
-import { Route as AuthenticatedDashboardTechnologiesFinanceRouteImport } from './routes/_authenticated.dashboard.technologies.finance'
-import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
-import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
-import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
-import { Route as ApiPublicCiAuditIngestRouteImport } from './routes/api/public/ci-audit/ingest'
-import { Route as ApiPublicCiIngestFailuresLogRouteImport } from './routes/api/public/ci-ingest-failures/log'
-import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
-import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
-import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
-import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
-import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
-import { Route as ApiPublicGovernanceDecisionsRouteImport } from './routes/api/public/governance.decisions'
-import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
-import { Route as ApiPublicHooksEnvReadinessRecheckRouteImport } from './routes/api/public/hooks/env-readiness-recheck'
-import { Route as ApiPublicHooksPollPrCiRouteImport } from './routes/api/public/hooks/poll-pr-ci'
-import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
-import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
-import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
-import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
-import { Route as ApiPublicSreE2eHealthRouteImport } from './routes/api/public/sre/e2e-health'
-import { Route as ApiPublicSreE2eTriggerRouteImport } from './routes/api/public/sre/e2e-trigger'
-import { Route as ApiPublicSreVerifyBearerRouteImport } from './routes/api/public/sre/verify-bearer'
-import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
+import { Route as TechnologiesIndustriesStartupsRouteImport } from './routes/technologies.industries.startups'
+import { Route as TechnologiesIndustriesSmeRouteImport } from './routes/technologies.industries.sme'
+import { Route as TechnologiesIndustriesRetailRouteImport } from './routes/technologies.industries.retail'
+import { Route as TechnologiesIndustriesRealEstateRouteImport } from './routes/technologies.industries.real-estate'
+import { Route as TechnologiesIndustriesManufacturingRouteImport } from './routes/technologies.industries.manufacturing'
+import { Route as TechnologiesIndustriesLogisticsRouteImport } from './routes/technologies.industries.logistics'
+import { Route as TechnologiesIndustriesHospitalityRouteImport } from './routes/technologies.industries.hospitality'
+import { Route as TechnologiesIndustriesHealthcareRouteImport } from './routes/technologies.industries.healthcare'
+import { Route as TechnologiesIndustriesGovernmentRouteImport } from './routes/technologies.industries.government'
+import { Route as TechnologiesIndustriesFintechRouteImport } from './routes/technologies.industries.fintech'
+import { Route as TechnologiesIndustriesFinanceRouteImport } from './routes/technologies.industries.finance'
+import { Route as TechnologiesIndustriesEnterpriseRouteImport } from './routes/technologies.industries.enterprise'
+import { Route as TechnologiesIndustriesEducationRouteImport } from './routes/technologies.industries.education'
+import { Route as TechnologiesIndustriesEcommerceRouteImport } from './routes/technologies.industries.ecommerce'
+import { Route as TechnologiesIndustriesBankingRouteImport } from './routes/technologies.industries.banking'
+import { Route as TechnologiesExpertiseVuejsRouteImport } from './routes/technologies.expertise.vuejs'
+import { Route as TechnologiesExpertiseTypescriptRouteImport } from './routes/technologies.expertise.typescript'
+import { Route as TechnologiesExpertiseSpringBootRouteImport } from './routes/technologies.expertise.spring-boot'
+import { Route as TechnologiesExpertiseRedisRouteImport } from './routes/technologies.expertise.redis'
+import { Route as TechnologiesExpertiseReactNativeRouteImport } from './routes/technologies.expertise.react-native'
+import { Route as TechnologiesExpertiseReactRouteImport } from './routes/technologies.expertise.react'
+import { Route as TechnologiesExpertisePythonRouteImport } from './routes/technologies.expertise.python'
+import { Route as TechnologiesExpertisePostgresqlRouteImport } from './routes/technologies.expertise.postgresql'
+import { Route as TechnologiesExpertisePhpRouteImport } from './routes/technologies.expertise.php'
+import { Route as TechnologiesExpertiseOpenaiRouteImport } from './routes/technologies.expertise.openai'
+import { Route as TechnologiesExpertiseNodejsRouteImport } from './routes/technologies.expertise.nodejs'
+import { Route as TechnologiesExpertiseNlpRouteImport } from './routes/technologies.expertise.nlp'
+import { Route as TechnologiesExpertiseNextjsRouteImport } from './routes/technologies.expertise.nextjs'
+import { Route as TechnologiesExpertiseMysqlRouteImport } from './routes/technologies.expertise.mysql'
+import { Route as TechnologiesExpertiseMongodbRouteImport } from './routes/technologies.expertise.mongodb'
+import { Route as TechnologiesExpertiseMachineLearningRouteImport } from './routes/technologies.expertise.machine-learning'
+import { Route as TechnologiesExpertiseLaravelRouteImport } from './routes/technologies.expertise.laravel'
+import { Route as TechnologiesExpertiseKubernetesRouteImport } from './routes/technologies.expertise.kubernetes'
+import { Route as TechnologiesExpertiseJavascriptRouteImport } from './routes/technologies.expertise.javascript'
+import { Route as TechnologiesExpertiseJavaRouteImport } from './routes/technologies.expertise.java'
+import { Route as TechnologiesExpertiseIosRouteImport } from './routes/technologies.expertise.ios'
+import { Route as TechnologiesExpertiseHtml5RouteImport } from './routes/technologies.expertise.html5'
+import { Route as TechnologiesExpertiseGoRouteImport } from './routes/technologies.expertise.go'
+import { Route as TechnologiesExpertiseGenerativeAiRouteImport } from './routes/technologies.expertise.generative-ai'
+import { Route as TechnologiesExpertiseGcpRouteImport } from './routes/technologies.expertise.gcp'
+import { Route as TechnologiesExpertiseFlutterRouteImport } from './routes/technologies.expertise.flutter'
+import { Route as TechnologiesExpertiseExpressRouteImport } from './routes/technologies.expertise.express'
+import { Route as TechnologiesExpertiseDotnetRouteImport } from './routes/technologies.expertise.dotnet'
+import { Route as TechnologiesExpertiseDockerRouteImport } from './routes/technologies.expertise.docker'
+import { Route as TechnologiesExpertiseDataEngineeringTechRouteImport } from './routes/technologies.expertise.data-engineering-tech'
+import { Route as TechnologiesExpertiseCss3RouteImport } from './routes/technologies.expertise.css3'
+import { Route as TechnologiesExpertiseComputerVisionRouteImport } from './routes/technologies.expertise.computer-vision'
+import { Route as TechnologiesExpertiseBusinessIntelligenceTechRouteImport } from './routes/technologies.expertise.business-intelligence-tech'
+import { Route as TechnologiesExpertiseAzureRouteImport } from './routes/technologies.expertise.azure'
+import { Route as TechnologiesExpertiseAwsRouteImport } from './routes/technologies.expertise.aws'
+import { Route as TechnologiesExpertiseAngularRouteImport } from './routes/technologies.expertise.angular'
+import { Route as TechnologiesExpertiseAndroidRouteImport } from './routes/technologies.expertise.android'
+import { Route as TechnologiesExpertiseAiAutomationRouteImport } from './routes/technologies.expertise.ai-automation'
+import { Route as TechnologiesEngagementTimeAndMaterialsRouteImport } from './routes/technologies.engagement.time-and-materials'
+import { Route as TechnologiesEngagementStaffAugmentationRouteImport } from './routes/technologies.engagement.staff-augmentation'
+import { Route as TechnologiesEngagementOffshoreDevelopmentCenterRouteImport } from './routes/technologies.engagement.offshore-development-center'
+import { Route as TechnologiesEngagementFixedPriceProjectsRouteImport } from './routes/technologies.engagement.fixed-price-projects'
+import { Route as TechnologiesEngagementDedicatedDevelopmentTeamRouteImport } from './routes/technologies.engagement.dedicated-development-team'
+import { Route as TechnologiesEngagementBuildOperateTransferRouteImport } from './routes/technologies.engagement.build-operate-transfer'
+import { Route as TechnologiesCompanySlugRouteImport } from './routes/technologies.company.$slug'
+import { Route as TechnologiesCaseStudiesSlugRouteImport } from './routes/technologies.case-studies.$slug'
+import { Route as GlobalEducationUniversitiesSlugRouteImport } from './routes/global-education.universities.$slug'
+import { Route as GlobalEducationCountriesSlugRouteImport } from './routes/global-education.countries.$slug'
+import { Route as DocsCategorySlugRouteImport } from './routes/docs.$category.$slug'
+import { Route as ApiV1UniversitiesRouteImport } from './routes/api/v1/universities'
+import { Route as ApiV1ProgramsRouteImport } from './routes/api/v1/programs'
+import { Route as ApiV1JobsRouteImport } from './routes/api/v1/jobs'
+import { Route as ApiV1CoursesRouteImport } from './routes/api/v1/courses'
+import { Route as ApiPublicVectorSearchRouteImport } from './routes/api/public/vector-search'
+import { Route as ApiPublicSystemHealthRouteImport } from './routes/api/public/system-health'
+import { Route as ApiPublicStrategyRouteImport } from './routes/api/public/strategy'
+import { Route as ApiPublicSharedMemoryRouteImport } from './routes/api/public/shared-memory'
+import { Route as ApiPublicSelfOptimizeRouteImport } from './routes/api/public/self-optimize'
+import { Route as ApiPublicResolveIntentRouteImport } from './routes/api/public/resolve-intent'
+import { Route as ApiPublicResolveHybridRouteImport } from './routes/api/public/resolve-hybrid'
+import { Route as ApiPublicReplayRouteImport } from './routes/api/public/replay'
+import { Route as ApiPublicMemoryGraphRouteImport } from './routes/api/public/memory-graph'
+import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicGovernanceRouteImport } from './routes/api/public/governance'
+import { Route as ApiPublicGoalsRouteImport } from './routes/api/public/goals'
+import { Route as ApiPublicEmailVerifyRouteImport } from './routes/api/public/email-verify'
+import { Route as ApiPublicDecisionsRouteImport } from './routes/api/public/decisions'
+import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
+import { Route as ApiPublicAiModeRouteImport } from './routes/api/public/ai-mode'
+import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$slug'
+import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
+import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
+import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
+import { Route as AuthenticatedOpsReliabilityRouteImport } from './routes/_authenticated.ops.reliability'
+import { Route as AuthenticatedEducationProfileRouteImport } from './routes/_authenticated.education.profile'
+import { Route as AuthenticatedEducationDocumentsRouteImport } from './routes/_authenticated.education.documents'
+import { Route as AuthenticatedEducationApplicationsRouteImport } from './routes/_authenticated.education.applications'
+import { Route as AuthenticatedDashboardVisaRouteImport } from './routes/_authenticated.dashboard.visa'
+import { Route as AuthenticatedDashboardTechnologiesRouteImport } from './routes/_authenticated.dashboard.technologies'
+import { Route as AuthenticatedDashboardSecurityRouteImport } from './routes/_authenticated.dashboard.security'
+import { Route as AuthenticatedDashboardProgramsRouteImport } from './routes/_authenticated.dashboard.programs'
+import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated.dashboard.profile'
+import { Route as AuthenticatedDashboardNotificationsRouteImport } from './routes/_authenticated.dashboard.notifications'
+import { Route as AuthenticatedDashboardFacultyRouteImport } from './routes/_authenticated.dashboard.faculty'
+import { Route as AuthenticatedDashboardCounselorRouteImport } from './routes/_authenticated.dashboard.counselor'
+import { Route as AuthenticatedDashboardCareerRouteImport } from './routes/_authenticated.dashboard.career'
+import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated.dashboard.admin'
+import { Route as AuthenticatedCommunityEventsRouteImport } from './routes/_authenticated.community.events'
+import { Route as AuthenticatedCommunitySlugRouteImport } from './routes/_authenticated.community.$slug'
+import { Route as AuthenticatedAssistantConversationIdRouteImport } from './routes/_authenticated.assistant.$conversationId'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport } from './routes/global-education.knowledge-base.universities.index'
+import { Route as AuthenticatedDashboardTechnologiesIndexRouteImport } from './routes/_authenticated.dashboard.technologies.index'
+import { Route as AuthenticatedDashboardProjectsIndexRouteImport } from './routes/_authenticated.dashboard.projects.index'
+import { Route as AuthenticatedDashboardCounselorIndexRouteImport } from './routes/_authenticated.dashboard.counselor.index'
+import { Route as AuthenticatedDashboardCertificatesIndexRouteImport } from './routes/_authenticated.dashboard.certificates.index'
+import { Route as AuthenticatedDashboardCareerIndexRouteImport } from './routes/_authenticated.dashboard.career.index'
+import { Route as AuthenticatedDashboardAssignmentsIndexRouteImport } from './routes/_authenticated.dashboard.assignments.index'
+import { Route as AuthenticatedDashboardApplicationsIndexRouteImport } from './routes/_authenticated.dashboard.applications.index'
+import { Route as AuthenticatedDashboardAdminIndexRouteImport } from './routes/_authenticated.dashboard.admin.index'
 import { Route as GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport } from './routes/global-education.knowledge-base.universities.$slug'
-import { Route as AuthenticatedDashboardAdminAiCopilotRouteImport } from './routes/_authenticated.dashboard.admin.ai.copilot'
-import { Route as AuthenticatedDashboardAdminAiUsageRouteImport } from './routes/_authenticated.dashboard.admin.ai.usage'
-import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
-import { Route as AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport } from './routes/_authenticated.dashboard.admin.incident-replay.$issueId'
-import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
-import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
-import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
-import { Route as AuthenticatedDashboardCounselorTimelineIdRouteImport } from './routes/_authenticated.dashboard.counselor.timeline.$id'
-import { Route as AuthenticatedDashboardTechnologiesClientIndexRouteImport } from './routes/_authenticated.dashboard.technologies.client/index'
-import { Route as AuthenticatedDashboardTechnologiesClientIdRouteImport } from './routes/_authenticated.dashboard.technologies.client/$id'
-import { Route as AuthenticatedDashboardTechnologiesClientsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.clients.index'
-import { Route as AuthenticatedDashboardTechnologiesClientsIdRouteImport } from './routes/_authenticated.dashboard.technologies.clients.$id'
-import { Route as AuthenticatedDashboardTechnologiesContractsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.contracts.index'
-import { Route as AuthenticatedDashboardTechnologiesContractsIdRouteImport } from './routes/_authenticated.dashboard.technologies.contracts.$id'
-import { Route as AuthenticatedDashboardTechnologiesProjectsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.projects.index'
-import { Route as AuthenticatedDashboardTechnologiesProjectsIdRouteImport } from './routes/_authenticated.dashboard.technologies.projects.$id'
+import { Route as ApiPublicWebhooksProcessRouteImport } from './routes/api/public/webhooks.process'
+import { Route as ApiPublicSreVerifyBearerRouteImport } from './routes/api/public/sre/verify-bearer'
+import { Route as ApiPublicSreE2eTriggerRouteImport } from './routes/api/public/sre/e2e-trigger'
+import { Route as ApiPublicSreE2eHealthRouteImport } from './routes/api/public/sre/e2e-health'
+import { Route as ApiPublicSentryWebhookRouteImport } from './routes/api/public/sentry.webhook'
+import { Route as ApiPublicSentrySyncRouteImport } from './routes/api/public/sentry.sync'
+import { Route as ApiPublicRiskEvaluatePrRouteImport } from './routes/api/public/risk.evaluate-pr'
+import { Route as ApiPublicLaunchReadinessIngestRouteImport } from './routes/api/public/launch-readiness.ingest'
+import { Route as ApiPublicHooksPollPrCiRouteImport } from './routes/api/public/hooks/poll-pr-ci'
+import { Route as ApiPublicHooksEnvReadinessRecheckRouteImport } from './routes/api/public/hooks/env-readiness-recheck'
+import { Route as ApiPublicGovernanceKnowledgeRouteImport } from './routes/api/public/governance.knowledge'
+import { Route as ApiPublicGovernanceDecisionsRouteImport } from './routes/api/public/governance.decisions'
+import { Route as ApiPublicCronWebhookDispatchRouteImport } from './routes/api/public/cron/webhook-dispatch'
+import { Route as ApiPublicCronEmbeddingsRouteImport } from './routes/api/public/cron/embeddings'
+import { Route as ApiPublicConstitutionStatusRouteImport } from './routes/api/public/constitution.status'
+import { Route as ApiPublicConstitutionApplyRouteImport } from './routes/api/public/constitution.apply'
+import { Route as ApiPublicConstitutionAmendmentsRouteImport } from './routes/api/public/constitution.amendments'
+import { Route as ApiPublicCiIngestFailuresLogRouteImport } from './routes/api/public/ci-ingest-failures/log'
+import { Route as ApiPublicCiAuditIngestRouteImport } from './routes/api/public/ci-audit/ingest'
+import { Route as AuthenticatedDashboardTechnologiesSupportRouteImport } from './routes/_authenticated.dashboard.technologies.support'
+import { Route as AuthenticatedDashboardTechnologiesRequestsRouteImport } from './routes/_authenticated.dashboard.technologies.requests'
+import { Route as AuthenticatedDashboardTechnologiesProposalsRouteImport } from './routes/_authenticated.dashboard.technologies.proposals'
+import { Route as AuthenticatedDashboardTechnologiesFinanceRouteImport } from './routes/_authenticated.dashboard.technologies.finance'
+import { Route as AuthenticatedDashboardTechnologiesContractsRouteImport } from './routes/_authenticated.dashboard.technologies.contracts'
+import { Route as AuthenticatedDashboardProjectsIdRouteImport } from './routes/_authenticated.dashboard.projects.$id'
+import { Route as AuthenticatedDashboardProgramsSlugRouteImport } from './routes/_authenticated.dashboard.programs.$slug'
+import { Route as AuthenticatedDashboardPaymentsNewRouteImport } from './routes/_authenticated.dashboard.payments.new'
+import { Route as AuthenticatedDashboardNotificationsPreferencesRouteImport } from './routes/_authenticated.dashboard.notifications.preferences'
+import { Route as AuthenticatedDashboardLessonsLessonIdRouteImport } from './routes/_authenticated.dashboard.lessons.$lessonId'
+import { Route as AuthenticatedDashboardFacultySubmissionsRouteImport } from './routes/_authenticated.dashboard.faculty.submissions'
+import { Route as AuthenticatedDashboardCoursesCourseIdRouteImport } from './routes/_authenticated.dashboard.courses.$courseId'
+import { Route as AuthenticatedDashboardCounselorWorkloadRouteImport } from './routes/_authenticated.dashboard.counselor.workload'
+import { Route as AuthenticatedDashboardCounselorVisaRouteImport } from './routes/_authenticated.dashboard.counselor.visa'
+import { Route as AuthenticatedDashboardCounselorTasksRouteImport } from './routes/_authenticated.dashboard.counselor.tasks'
+import { Route as AuthenticatedDashboardCounselorPipelineRouteImport } from './routes/_authenticated.dashboard.counselor.pipeline'
+import { Route as AuthenticatedDashboardCounselorLeadsRouteImport } from './routes/_authenticated.dashboard.counselor.leads'
+import { Route as AuthenticatedDashboardCounselorFollowUpsRouteImport } from './routes/_authenticated.dashboard.counselor.follow-ups'
+import { Route as AuthenticatedDashboardCounselorApplicationsRouteImport } from './routes/_authenticated.dashboard.counselor.applications'
+import { Route as AuthenticatedDashboardCounselorAnalyticsRouteImport } from './routes/_authenticated.dashboard.counselor.analytics'
+import { Route as AuthenticatedDashboardCertificatesIdRouteImport } from './routes/_authenticated.dashboard.certificates.$id'
+import { Route as AuthenticatedDashboardCareerSavedRouteImport } from './routes/_authenticated.dashboard.career.saved'
+import { Route as AuthenticatedDashboardCareerResumeRouteImport } from './routes/_authenticated.dashboard.career.resume'
+import { Route as AuthenticatedDashboardCareerProfileRouteImport } from './routes/_authenticated.dashboard.career.profile'
+import { Route as AuthenticatedDashboardCareerPortfolioRouteImport } from './routes/_authenticated.dashboard.career.portfolio'
+import { Route as AuthenticatedDashboardCareerApplicationsRouteImport } from './routes/_authenticated.dashboard.career.applications'
+import { Route as AuthenticatedDashboardAssignmentsAssignmentIdRouteImport } from './routes/_authenticated.dashboard.assignments.$assignmentId'
+import { Route as AuthenticatedDashboardApplicationsIdRouteImport } from './routes/_authenticated.dashboard.applications.$id'
+import { Route as AuthenticatedDashboardAiTutorRouteImport } from './routes/_authenticated.dashboard.ai.tutor'
+import { Route as AuthenticatedDashboardAiGlobalRouteImport } from './routes/_authenticated.dashboard.ai.global'
+import { Route as AuthenticatedDashboardAiCareerRouteImport } from './routes/_authenticated.dashboard.ai.career'
+import { Route as AuthenticatedDashboardAdminWebhooksRouteImport } from './routes/_authenticated.dashboard.admin.webhooks'
+import { Route as AuthenticatedDashboardAdminVisaRouteImport } from './routes/_authenticated.dashboard.admin.visa'
+import { Route as AuthenticatedDashboardAdminUsersRouteImport } from './routes/_authenticated.dashboard.admin.users'
+import { Route as AuthenticatedDashboardAdminUniversitiesRouteImport } from './routes/_authenticated.dashboard.admin.universities'
+import { Route as AuthenticatedDashboardAdminUniprogramsRouteImport } from './routes/_authenticated.dashboard.admin.uniprograms'
+import { Route as AuthenticatedDashboardAdminTechLeadsRouteImport } from './routes/_authenticated.dashboard.admin.tech-leads'
+import { Route as AuthenticatedDashboardAdminSystemRouteImport } from './routes/_authenticated.dashboard.admin.system'
+import { Route as AuthenticatedDashboardAdminStoriesRouteImport } from './routes/_authenticated.dashboard.admin.stories'
+import { Route as AuthenticatedDashboardAdminSreMetricsRouteImport } from './routes/_authenticated.dashboard.admin.sre-metrics'
+import { Route as AuthenticatedDashboardAdminSettingsRouteImport } from './routes/_authenticated.dashboard.admin.settings'
+import { Route as AuthenticatedDashboardAdminSentryReleasesRouteImport } from './routes/_authenticated.dashboard.admin.sentry-releases'
+import { Route as AuthenticatedDashboardAdminSentryRouteImport } from './routes/_authenticated.dashboard.admin.sentry'
+import { Route as AuthenticatedDashboardAdminScholarshipsRouteImport } from './routes/_authenticated.dashboard.admin.scholarships'
+import { Route as AuthenticatedDashboardAdminSaLeadsRouteImport } from './routes/_authenticated.dashboard.admin.sa-leads'
+import { Route as AuthenticatedDashboardAdminSaApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.sa-applications'
+import { Route as AuthenticatedDashboardAdminReleasesRouteImport } from './routes/_authenticated.dashboard.admin.releases'
+import { Route as AuthenticatedDashboardAdminRagRouteImport } from './routes/_authenticated.dashboard.admin.rag'
+import { Route as AuthenticatedDashboardAdminProviderHealthRouteImport } from './routes/_authenticated.dashboard.admin.provider-health'
+import { Route as AuthenticatedDashboardAdminProjectsRouteImport } from './routes/_authenticated.dashboard.admin.projects'
+import { Route as AuthenticatedDashboardAdminPlacementsRouteImport } from './routes/_authenticated.dashboard.admin.placements'
+import { Route as AuthenticatedDashboardAdminPaymentsRouteImport } from './routes/_authenticated.dashboard.admin.payments'
+import { Route as AuthenticatedDashboardAdminOperatorChecklistRouteImport } from './routes/_authenticated.dashboard.admin.operator-checklist'
+import { Route as AuthenticatedDashboardAdminObservabilityRouteImport } from './routes/_authenticated.dashboard.admin.observability'
+import { Route as AuthenticatedDashboardAdminNotificationsRouteImport } from './routes/_authenticated.dashboard.admin.notifications'
+import { Route as AuthenticatedDashboardAdminMonitoringSecretsRouteImport } from './routes/_authenticated.dashboard.admin.monitoring-secrets'
+import { Route as AuthenticatedDashboardAdminLaunchReportRouteImport } from './routes/_authenticated.dashboard.admin.launch-report'
+import { Route as AuthenticatedDashboardAdminLaunchReadinessRouteImport } from './routes/_authenticated.dashboard.admin.launch-readiness'
+import { Route as AuthenticatedDashboardAdminJobsRouteImport } from './routes/_authenticated.dashboard.admin.jobs'
+import { Route as AuthenticatedDashboardAdminIdentityProvidersRouteImport } from './routes/_authenticated.dashboard.admin.identity-providers'
+import { Route as AuthenticatedDashboardAdminGovernanceRouteImport } from './routes/_authenticated.dashboard.admin.governance'
+import { Route as AuthenticatedDashboardAdminFeatureFlagsRouteImport } from './routes/_authenticated.dashboard.admin.feature-flags'
+import { Route as AuthenticatedDashboardAdminEnvReadinessRouteImport } from './routes/_authenticated.dashboard.admin.env-readiness'
+import { Route as AuthenticatedDashboardAdminEnrollmentsRouteImport } from './routes/_authenticated.dashboard.admin.enrollments'
+import { Route as AuthenticatedDashboardAdminEmployersRouteImport } from './routes/_authenticated.dashboard.admin.employers'
+import { Route as AuthenticatedDashboardAdminDomainStatusRouteImport } from './routes/_authenticated.dashboard.admin.domain-status'
+import { Route as AuthenticatedDashboardAdminCrmRouteImport } from './routes/_authenticated.dashboard.admin.crm'
+import { Route as AuthenticatedDashboardAdminCountriesRouteImport } from './routes/_authenticated.dashboard.admin.countries'
+import { Route as AuthenticatedDashboardAdminCertificatesRouteImport } from './routes/_authenticated.dashboard.admin.certificates'
+import { Route as AuthenticatedDashboardAdminAuditLogsRouteImport } from './routes/_authenticated.dashboard.admin.audit-logs'
+import { Route as AuthenticatedDashboardAdminAssignmentsRouteImport } from './routes/_authenticated.dashboard.admin.assignments'
+import { Route as AuthenticatedDashboardAdminApplicationsRouteImport } from './routes/_authenticated.dashboard.admin.applications'
+import { Route as AuthenticatedDashboardAdminApiRouteImport } from './routes/_authenticated.dashboard.admin.api'
+import { Route as AuthenticatedDashboardAdminAnalyticsRouteImport } from './routes/_authenticated.dashboard.admin.analytics'
+import { Route as AuthenticatedDashboardAdminAiRouteImport } from './routes/_authenticated.dashboard.admin.ai'
+import { Route as AuthenticatedCommunityEventsIdRouteImport } from './routes/_authenticated.community.events.$id'
+import { Route as AuthenticatedCommunitySlugThreadIdRouteImport } from './routes/_authenticated.community.$slug.$threadId'
+import { Route as AuthenticatedDashboardTechnologiesClientRouteRouteImport } from './routes/_authenticated.dashboard.technologies.client/route'
 import { Route as AuthenticatedDashboardTechnologiesProposalsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.proposals.index'
-import { Route as AuthenticatedDashboardTechnologiesProposalsIdRouteImport } from './routes/_authenticated.dashboard.technologies.proposals.$id'
+import { Route as AuthenticatedDashboardTechnologiesProjectsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.projects.index'
+import { Route as AuthenticatedDashboardTechnologiesContractsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.contracts.index'
+import { Route as AuthenticatedDashboardTechnologiesClientsIndexRouteImport } from './routes/_authenticated.dashboard.technologies.clients.index'
+import { Route as AuthenticatedDashboardTechnologiesClientIndexRouteImport } from './routes/_authenticated.dashboard.technologies.client/index'
+import { Route as AuthenticatedDashboardAdminProgramsIndexRouteImport } from './routes/_authenticated.dashboard.admin.programs.index'
+import { Route as AuthenticatedDashboardAdminCrmIndexRouteImport } from './routes/_authenticated.dashboard.admin.crm.index'
 import { Route as ApiV1CertificatesVerifyIdRouteImport } from './routes/api/v1/certificates.verify.$id'
+import { Route as AuthenticatedDashboardTechnologiesProposalsIdRouteImport } from './routes/_authenticated.dashboard.technologies.proposals.$id'
+import { Route as AuthenticatedDashboardTechnologiesProjectsIdRouteImport } from './routes/_authenticated.dashboard.technologies.projects.$id'
+import { Route as AuthenticatedDashboardTechnologiesContractsIdRouteImport } from './routes/_authenticated.dashboard.technologies.contracts.$id'
+import { Route as AuthenticatedDashboardTechnologiesClientsIdRouteImport } from './routes/_authenticated.dashboard.technologies.clients.$id'
+import { Route as AuthenticatedDashboardTechnologiesClientIdRouteImport } from './routes/_authenticated.dashboard.technologies.client/$id'
+import { Route as AuthenticatedDashboardCounselorTimelineIdRouteImport } from './routes/_authenticated.dashboard.counselor.timeline.$id'
+import { Route as AuthenticatedDashboardAdminVisaIdRouteImport } from './routes/_authenticated.dashboard.admin.visa.$id'
+import { Route as AuthenticatedDashboardAdminProgramsIdRouteImport } from './routes/_authenticated.dashboard.admin.programs.$id'
+import { Route as AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport } from './routes/_authenticated.dashboard.admin.incident-replay.$issueId'
+import { Route as AuthenticatedDashboardAdminAiUsageRouteImport } from './routes/_authenticated.dashboard.admin.ai.usage'
+import { Route as AuthenticatedDashboardAdminAiCopilotRouteImport } from './routes/_authenticated.dashboard.admin.ai.copilot'
 import { Route as AuthenticatedDashboardAdminCrmTypeIdRouteImport } from './routes/_authenticated.dashboard.admin.crm.$type.$id'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const R403Route = R403RouteImport.update({
-  id: '/403',
-  path: '/403',
+const TechnologiesRoute = TechnologiesRouteImport.update({
+  id: '/technologies',
+  path: '/technologies',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const SystemDashboardRoute = SystemDashboardRouteImport.update({
+  id: '/system-dashboard',
+  path: '/system-dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
+  id: '/success-stories',
+  path: '/success-stories',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutHigaetRoute = AboutHigaetRouteImport.update({
-  id: '/about-higaet',
-  path: '/about-higaet',
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AcademyRoute = AcademyRouteImport.update({
-  id: '/academy',
-  path: '/academy',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdvisorsRoute = AdvisorsRouteImport.update({
-  id: '/advisors',
-  path: '/advisors',
+const SimulateRoute = SimulateRouteImport.update({
+  id: '/simulate',
+  path: '/simulate',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AiRoute = AiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const ReplayRoute = ReplayRouteImport.update({
+  id: '/replay',
+  path: '/replay',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const ReadyzRoute = ReadyzRouteImport.update({
+  id: '/readyz',
+  path: '/readyz',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConstitutionRoute = ConstitutionRouteImport.update({
-  id: '/constitution',
-  path: '/constitution',
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConstitutionAmendmentsRoute = ConstitutionAmendmentsRouteImport.update({
-  id: '/constitution-amendments',
-  path: '/constitution-amendments',
+const McpDocsRoute = McpDocsRouteImport.update({
+  id: '/mcp-docs',
+  path: '/mcp-docs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConstitutionVersionsRoute = ConstitutionVersionsRouteImport.update({
-  id: '/constitution-versions',
-  path: '/constitution-versions',
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const LeadershipRoute = LeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CookiesRoute = CookiesRouteImport.update({
-  id: '/cookies',
-  path: '/cookies',
+const KernelRoute = KernelRouteImport.update({
+  id: '/kernel',
+  path: '/kernel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DocsRoute = DocsRouteImport.update({
-  id: '/docs',
-  path: '/docs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FacultyRoute = FacultyRouteImport.update({
-  id: '/faculty',
-  path: '/faculty',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FounderRoute = FounderRouteImport.update({
-  id: '/founder',
-  path: '/founder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GlobalEducationRoute = GlobalEducationRouteImport.update({
-  id: '/global-education',
-  path: '/global-education',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GovernanceRoute = GovernanceRouteImport.update({
-  id: '/governance',
-  path: '/governance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HealthzRoute = HealthzRouteImport.update({
-  id: '/healthz',
-  path: '/healthz',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HigaetAcademyRoute = HigaetAcademyRouteImport.update({
-  id: '/higaet-academy',
-  path: '/higaet-academy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HigaetAiPlatformRoute = HigaetAiPlatformRouteImport.update({
-  id: '/higaet-ai-platform',
-  path: '/higaet-ai-platform',
+const HigaetTechnologiesRoute = HigaetTechnologiesRouteImport.update({
+  id: '/higaet-technologies',
+  path: '/higaet-technologies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HigaetGlobalEducationHubRoute =
@@ -502,349 +468,123 @@ const HigaetGlobalEducationHubRoute =
     path: '/higaet-global-education-hub',
     getParentRoute: () => rootRouteImport,
   } as any)
-const HigaetTechnologiesRoute = HigaetTechnologiesRouteImport.update({
-  id: '/higaet-technologies',
-  path: '/higaet-technologies',
+const HigaetAiPlatformRoute = HigaetAiPlatformRouteImport.update({
+  id: '/higaet-ai-platform',
+  path: '/higaet-ai-platform',
   getParentRoute: () => rootRouteImport,
 } as any)
-const KernelRoute = KernelRouteImport.update({
-  id: '/kernel',
-  path: '/kernel',
+const HigaetAcademyRoute = HigaetAcademyRouteImport.update({
+  id: '/higaet-academy',
+  path: '/higaet-academy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LeadershipRoute = LeadershipRouteImport.update({
-  id: '/leadership',
-  path: '/leadership',
+const HealthzRoute = HealthzRouteImport.update({
+  id: '/healthz',
+  path: '/healthz',
   getParentRoute: () => rootRouteImport,
 } as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
+const GovernanceRoute = GovernanceRouteImport.update({
+  id: '/governance',
+  path: '/governance',
   getParentRoute: () => rootRouteImport,
 } as any)
-const McpDocsRoute = McpDocsRouteImport.update({
-  id: '/mcp-docs',
-  path: '/mcp-docs',
+const GlobalEducationRoute = GlobalEducationRouteImport.update({
+  id: '/global-education',
+  path: '/global-education',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PartnersRoute = PartnersRouteImport.update({
-  id: '/partners',
-  path: '/partners',
+const FounderRoute = FounderRouteImport.update({
+  id: '/founder',
+  path: '/founder',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
+const FacultyRoute = FacultyRouteImport.update({
+  id: '/faculty',
+  path: '/faculty',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReadyzRoute = ReadyzRouteImport.update({
-  id: '/readyz',
-  path: '/readyz',
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReplayRoute = ReplayRouteImport.update({
-  id: '/replay',
-  path: '/replay',
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SimulateRoute = SimulateRouteImport.update({
-  id: '/simulate',
-  path: '/simulate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StatusRoute = StatusRouteImport.update({
-  id: '/status',
-  path: '/status',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
-  id: '/success-stories',
-  path: '/success-stories',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SystemDashboardRoute = SystemDashboardRouteImport.update({
-  id: '/system-dashboard',
-  path: '/system-dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TechnologiesRoute = TechnologiesRouteImport.update({
-  id: '/technologies',
-  path: '/technologies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AuthenticatedAssistantRoute = AuthenticatedAssistantRouteImport.update({
-  id: '/assistant',
-  path: '/assistant',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedCommunityRoute = AuthenticatedCommunityRouteImport.update({
-  id: '/community',
-  path: '/community',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedEducationRoute = AuthenticatedEducationRouteImport.update({
-  id: '/education',
-  path: '/education',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedOpsRoute = AuthenticatedOpsRouteImport.update({
-  id: '/ops',
-  path: '/ops',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AcademyIndexRoute = AcademyIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
-  id: '/admissions',
-  path: '/admissions',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
-  id: '/certifications',
-  path: '/certifications',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyContactRoute = AcademyContactRouteImport.update({
+const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyCorporateTrainingRoute =
-  AcademyCorporateTrainingRouteImport.update({
-    id: '/corporate-training',
-    path: '/corporate-training',
-    getParentRoute: () => AcademyRoute,
-  } as any)
-const AcademyFaqRoute = AcademyFaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
-  id: '/internships',
-  path: '/internships',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyLearningPathsRoute = AcademyLearningPathsRouteImport.update({
-  id: '/learning-paths',
-  path: '/learning-paths',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyOfflineTrainingRoute = AcademyOfflineTrainingRouteImport.update({
-  id: '/offline-training',
-  path: '/offline-training',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyOnlineCoursesRoute = AcademyOnlineCoursesRouteImport.update({
-  id: '/online-courses',
-  path: '/online-courses',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyPlacementsRoute = AcademyPlacementsRouteImport.update({
-  id: '/placements',
-  path: '/placements',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyScholarshipRoute = AcademyScholarshipRouteImport.update({
-  id: '/scholarship',
-  path: '/scholarship',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
-  id: '/success-stories',
-  path: '/success-stories',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AiIndexRoute = AiIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AiRoute,
-} as any)
-const AiChatRoute = AiChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => AiRoute,
-} as any)
-const AiCollectionsRoute = AiCollectionsRouteImport.update({
-  id: '/collections',
-  path: '/collections',
-  getParentRoute: () => AiRoute,
-} as any)
-const AiHistoryRoute = AiHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => AiRoute,
-} as any)
-const AiPromptsRoute = AiPromptsRouteImport.update({
-  id: '/prompts',
-  path: '/prompts',
-  getParentRoute: () => AiRoute,
-} as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AuthRoute,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
-} as any)
-const CareersSlugRoute = CareersSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CareersRoute,
-} as any)
-const DocsIndexRoute = DocsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DocsRoute,
-} as any)
-const DocsCategoryRoute = DocsCategoryRouteImport.update({
-  id: '/$category',
-  path: '/$category',
-  getParentRoute: () => DocsRoute,
-} as any)
-const DocsApiReferenceRoute = DocsApiReferenceRouteImport.update({
-  id: '/api-reference',
-  path: '/api-reference',
-  getParentRoute: () => DocsRoute,
-} as any)
-const DocsAuthenticationRoute = DocsAuthenticationRouteImport.update({
-  id: '/authentication',
-  path: '/authentication',
-  getParentRoute: () => DocsRoute,
-} as any)
-const DocsWebhooksRoute = DocsWebhooksRouteImport.update({
-  id: '/webhooks',
-  path: '/webhooks',
-  getParentRoute: () => DocsRoute,
-} as any)
-const GlobalEducationIndexRoute = GlobalEducationIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => GlobalEducationRoute,
-} as any)
-const GlobalEducationAdmissionProcessRoute =
-  GlobalEducationAdmissionProcessRouteImport.update({
-    id: '/admission-process',
-    path: '/admission-process',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const GlobalEducationContactRoute = GlobalEducationContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => GlobalEducationRoute,
-} as any)
-const GlobalEducationCountriesRoute =
-  GlobalEducationCountriesRouteImport.update({
-    id: '/countries',
-    path: '/countries',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const GlobalEducationFaqRoute = GlobalEducationFaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => GlobalEducationRoute,
-} as any)
-const GlobalEducationScholarshipsRoute =
-  GlobalEducationScholarshipsRouteImport.update({
-    id: '/scholarships',
-    path: '/scholarships',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const GlobalEducationStudentServicesRoute =
-  GlobalEducationStudentServicesRouteImport.update({
-    id: '/student-services',
-    path: '/student-services',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const GlobalEducationStudyAbroadRoute =
-  GlobalEducationStudyAbroadRouteImport.update({
-    id: '/study-abroad',
-    path: '/study-abroad',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const GlobalEducationUniversitiesRoute =
-  GlobalEducationUniversitiesRouteImport.update({
-    id: '/universities',
-    path: '/universities',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const GlobalEducationVisaGuidanceRoute =
-  GlobalEducationVisaGuidanceRouteImport.update({
-    id: '/visa-guidance',
-    path: '/visa-guidance',
-    getParentRoute: () => GlobalEducationRoute,
-  } as any)
-const JobsIndexRoute = JobsIndexRouteImport.update({
-  id: '/jobs/',
-  path: '/jobs/',
+const ConstitutionVersionsRoute = ConstitutionVersionsRouteImport.update({
+  id: '/constitution-versions',
+  path: '/constitution-versions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const JobsSlugRoute = JobsSlugRouteImport.update({
-  id: '/jobs/$slug',
-  path: '/jobs/$slug',
+const ConstitutionAmendmentsRoute = ConstitutionAmendmentsRouteImport.update({
+  id: '/constitution-amendments',
+  path: '/constitution-amendments',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
-  id: '/portfolio/$slug',
-  path: '/portfolio/$slug',
+const ConstitutionRoute = ConstitutionRouteImport.update({
+  id: '/constitution',
+  path: '/constitution',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvisorsRoute = AdvisorsRouteImport.update({
+  id: '/advisors',
+  path: '/advisors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcademyRoute = AcademyRouteImport.update({
+  id: '/academy',
+  path: '/academy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutHigaetRoute = AboutHigaetRouteImport.update({
+  id: '/about-higaet',
+  path: '/about-higaet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const R403Route = R403RouteImport.update({
+  id: '/403',
+  path: '/403',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TechnologiesIndexRoute = TechnologiesIndexRouteImport.update({
@@ -852,161 +592,56 @@ const TechnologiesIndexRoute = TechnologiesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => TechnologiesRoute,
 } as any)
-const TechnologiesAiSolutionsRoute = TechnologiesAiSolutionsRouteImport.update({
-  id: '/ai-solutions',
-  path: '/ai-solutions',
+const JobsIndexRoute = JobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GlobalEducationIndexRoute = GlobalEducationIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DocsRoute,
+} as any)
+const AiIndexRoute = AiIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AiRoute,
+} as any)
+const AcademyIndexRoute = AcademyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const VerifyTokenRoute = VerifyTokenRouteImport.update({
+  id: '/verify/$token',
+  path: '/verify/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyCertificateIdRoute = VerifyCertificateIdRouteImport.update({
+  id: '/verify-certificate/$id',
+  path: '/verify-certificate/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TechnologiesWebDevelopmentRoute =
+  TechnologiesWebDevelopmentRouteImport.update({
+    id: '/web-development',
+    path: '/web-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesUiUxDesignRoute = TechnologiesUiUxDesignRouteImport.update({
+  id: '/ui-ux-design',
+  path: '/ui-ux-design',
   getParentRoute: () => TechnologiesRoute,
 } as any)
-const TechnologiesApiDevelopmentRoute =
-  TechnologiesApiDevelopmentRouteImport.update({
-    id: '/api-development',
-    path: '/api-development',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesBusinessIntelligenceRoute =
-  TechnologiesBusinessIntelligenceRouteImport.update({
-    id: '/business-intelligence',
-    path: '/business-intelligence',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesCareersRoute = TechnologiesCareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesCaseStudiesRoute = TechnologiesCaseStudiesRouteImport.update({
-  id: '/case-studies',
-  path: '/case-studies',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesCloudMigrationRoute =
-  TechnologiesCloudMigrationRouteImport.update({
-    id: '/cloud-migration',
-    path: '/cloud-migration',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesCloudSolutionsRoute =
-  TechnologiesCloudSolutionsRouteImport.update({
-    id: '/cloud-solutions',
-    path: '/cloud-solutions',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesCompanyRoute = TechnologiesCompanyRouteImport.update({
-  id: '/company',
-  path: '/company',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesContactRoute = TechnologiesContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesCustomSoftwareDevelopmentRoute =
-  TechnologiesCustomSoftwareDevelopmentRouteImport.update({
-    id: '/custom-software-development',
-    path: '/custom-software-development',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesDataEngineeringRoute =
-  TechnologiesDataEngineeringRouteImport.update({
-    id: '/data-engineering',
-    path: '/data-engineering',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesDedicatedTeamRoute =
-  TechnologiesDedicatedTeamRouteImport.update({
-    id: '/dedicated-team',
-    path: '/dedicated-team',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesDevopsRoute = TechnologiesDevopsRouteImport.update({
-  id: '/devops',
-  path: '/devops',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesDigitalMarketingRoute =
-  TechnologiesDigitalMarketingRouteImport.update({
-    id: '/digital-marketing',
-    path: '/digital-marketing',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesDigitalTransformationRoute =
-  TechnologiesDigitalTransformationRouteImport.update({
-    id: '/digital-transformation',
-    path: '/digital-transformation',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesEngagementRoute = TechnologiesEngagementRouteImport.update({
-  id: '/engagement',
-  path: '/engagement',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesEnterpriseSoftwareRoute =
-  TechnologiesEnterpriseSoftwareRouteImport.update({
-    id: '/enterprise-software',
-    path: '/enterprise-software',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesExpertiseRoute = TechnologiesExpertiseRouteImport.update({
-  id: '/expertise',
-  path: '/expertise',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
-  id: '/industries',
-  path: '/industries',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesInsightsRoute = TechnologiesInsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesItConsultingRoute =
-  TechnologiesItConsultingRouteImport.update({
-    id: '/it-consulting',
-    path: '/it-consulting',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesLegacyModernizationRoute =
-  TechnologiesLegacyModernizationRouteImport.update({
-    id: '/legacy-modernization',
-    path: '/legacy-modernization',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesMobileDevelopmentRoute =
-  TechnologiesMobileDevelopmentRouteImport.update({
-    id: '/mobile-development',
-    path: '/mobile-development',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesProductDevelopmentRoute =
-  TechnologiesProductDevelopmentRouteImport.update({
-    id: '/product-development',
-    path: '/product-development',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesQaTestingRoute = TechnologiesQaTestingRouteImport.update({
-  id: '/qa-testing',
-  path: '/qa-testing',
-  getParentRoute: () => TechnologiesRoute,
-} as any)
-const TechnologiesSaasProductsRoute =
-  TechnologiesSaasProductsRouteImport.update({
-    id: '/saas-products',
-    path: '/saas-products',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesSoftwareDevelopmentRoute =
-  TechnologiesSoftwareDevelopmentRouteImport.update({
-    id: '/software-development',
-    path: '/software-development',
-    getParentRoute: () => TechnologiesRoute,
-  } as any)
-const TechnologiesSoftwareMaintenanceRoute =
-  TechnologiesSoftwareMaintenanceRouteImport.update({
-    id: '/software-maintenance',
-    path: '/software-maintenance',
+const TechnologiesSystemIntegrationRoute =
+  TechnologiesSystemIntegrationRouteImport.update({
+    id: '/system-integration',
+    path: '/system-integration',
     getParentRoute: () => TechnologiesRoute,
   } as any)
 const TechnologiesStaffAugmentationRoute =
@@ -1015,67 +650,413 @@ const TechnologiesStaffAugmentationRoute =
     path: '/staff-augmentation',
     getParentRoute: () => TechnologiesRoute,
   } as any)
-const TechnologiesSystemIntegrationRoute =
-  TechnologiesSystemIntegrationRouteImport.update({
-    id: '/system-integration',
-    path: '/system-integration',
+const TechnologiesSoftwareMaintenanceRoute =
+  TechnologiesSoftwareMaintenanceRouteImport.update({
+    id: '/software-maintenance',
+    path: '/software-maintenance',
     getParentRoute: () => TechnologiesRoute,
   } as any)
-const TechnologiesUiUxDesignRoute = TechnologiesUiUxDesignRouteImport.update({
-  id: '/ui-ux-design',
-  path: '/ui-ux-design',
+const TechnologiesSoftwareDevelopmentRoute =
+  TechnologiesSoftwareDevelopmentRouteImport.update({
+    id: '/software-development',
+    path: '/software-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesSaasProductsRoute =
+  TechnologiesSaasProductsRouteImport.update({
+    id: '/saas-products',
+    path: '/saas-products',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesQaTestingRoute = TechnologiesQaTestingRouteImport.update({
+  id: '/qa-testing',
+  path: '/qa-testing',
   getParentRoute: () => TechnologiesRoute,
 } as any)
-const TechnologiesWebDevelopmentRoute =
-  TechnologiesWebDevelopmentRouteImport.update({
-    id: '/web-development',
-    path: '/web-development',
+const TechnologiesProductDevelopmentRoute =
+  TechnologiesProductDevelopmentRouteImport.update({
+    id: '/product-development',
+    path: '/product-development',
     getParentRoute: () => TechnologiesRoute,
   } as any)
-const VerifyCertificateIdRoute = VerifyCertificateIdRouteImport.update({
-  id: '/verify-certificate/$id',
-  path: '/verify-certificate/$id',
+const TechnologiesMobileDevelopmentRoute =
+  TechnologiesMobileDevelopmentRouteImport.update({
+    id: '/mobile-development',
+    path: '/mobile-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesLegacyModernizationRoute =
+  TechnologiesLegacyModernizationRouteImport.update({
+    id: '/legacy-modernization',
+    path: '/legacy-modernization',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesItConsultingRoute =
+  TechnologiesItConsultingRouteImport.update({
+    id: '/it-consulting',
+    path: '/it-consulting',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesInsightsRoute = TechnologiesInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesIndustriesRoute = TechnologiesIndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesExpertiseRoute = TechnologiesExpertiseRouteImport.update({
+  id: '/expertise',
+  path: '/expertise',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesEnterpriseSoftwareRoute =
+  TechnologiesEnterpriseSoftwareRouteImport.update({
+    id: '/enterprise-software',
+    path: '/enterprise-software',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesEngagementRoute = TechnologiesEngagementRouteImport.update({
+  id: '/engagement',
+  path: '/engagement',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesDigitalTransformationRoute =
+  TechnologiesDigitalTransformationRouteImport.update({
+    id: '/digital-transformation',
+    path: '/digital-transformation',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesDigitalMarketingRoute =
+  TechnologiesDigitalMarketingRouteImport.update({
+    id: '/digital-marketing',
+    path: '/digital-marketing',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesDevopsRoute = TechnologiesDevopsRouteImport.update({
+  id: '/devops',
+  path: '/devops',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesDedicatedTeamRoute =
+  TechnologiesDedicatedTeamRouteImport.update({
+    id: '/dedicated-team',
+    path: '/dedicated-team',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesDataEngineeringRoute =
+  TechnologiesDataEngineeringRouteImport.update({
+    id: '/data-engineering',
+    path: '/data-engineering',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesCustomSoftwareDevelopmentRoute =
+  TechnologiesCustomSoftwareDevelopmentRouteImport.update({
+    id: '/custom-software-development',
+    path: '/custom-software-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesContactRoute = TechnologiesContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCompanyRoute = TechnologiesCompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCloudSolutionsRoute =
+  TechnologiesCloudSolutionsRouteImport.update({
+    id: '/cloud-solutions',
+    path: '/cloud-solutions',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesCloudMigrationRoute =
+  TechnologiesCloudMigrationRouteImport.update({
+    id: '/cloud-migration',
+    path: '/cloud-migration',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesCaseStudiesRoute = TechnologiesCaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesCareersRoute = TechnologiesCareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const TechnologiesBusinessIntelligenceRoute =
+  TechnologiesBusinessIntelligenceRouteImport.update({
+    id: '/business-intelligence',
+    path: '/business-intelligence',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesApiDevelopmentRoute =
+  TechnologiesApiDevelopmentRouteImport.update({
+    id: '/api-development',
+    path: '/api-development',
+    getParentRoute: () => TechnologiesRoute,
+  } as any)
+const TechnologiesAiSolutionsRoute = TechnologiesAiSolutionsRouteImport.update({
+  id: '/ai-solutions',
+  path: '/ai-solutions',
+  getParentRoute: () => TechnologiesRoute,
+} as any)
+const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
+  id: '/portfolio/$slug',
+  path: '/portfolio/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VerifyTokenRoute = VerifyTokenRouteImport.update({
-  id: '/verify/$token',
-  path: '/verify/$token',
+const JobsSlugRoute = JobsSlugRouteImport.update({
+  id: '/jobs/$slug',
+  path: '/jobs/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
+const GlobalEducationVisaGuidanceRoute =
+  GlobalEducationVisaGuidanceRouteImport.update({
+    id: '/visa-guidance',
+    path: '/visa-guidance',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationUniversitiesRoute =
+  GlobalEducationUniversitiesRouteImport.update({
+    id: '/universities',
+    path: '/universities',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationStudyAbroadRoute =
+  GlobalEducationStudyAbroadRouteImport.update({
+    id: '/study-abroad',
+    path: '/study-abroad',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationStudentServicesRoute =
+  GlobalEducationStudentServicesRouteImport.update({
+    id: '/student-services',
+    path: '/student-services',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationScholarshipsRoute =
+  GlobalEducationScholarshipsRouteImport.update({
+    id: '/scholarships',
+    path: '/scholarships',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationFaqRoute = GlobalEducationFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const GlobalEducationCountriesRoute =
+  GlobalEducationCountriesRouteImport.update({
+    id: '/countries',
+    path: '/countries',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const GlobalEducationContactRoute = GlobalEducationContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => GlobalEducationRoute,
+} as any)
+const GlobalEducationAdmissionProcessRoute =
+  GlobalEducationAdmissionProcessRouteImport.update({
+    id: '/admission-process',
+    path: '/admission-process',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const DocsWebhooksRoute = DocsWebhooksRouteImport.update({
+  id: '/webhooks',
+  path: '/webhooks',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsAuthenticationRoute = DocsAuthenticationRouteImport.update({
+  id: '/authentication',
+  path: '/authentication',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsApiReferenceRoute = DocsApiReferenceRouteImport.update({
+  id: '/api-reference',
+  path: '/api-reference',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsCategoryRoute = DocsCategoryRouteImport.update({
+  id: '/$category',
+  path: '/$category',
+  getParentRoute: () => DocsRoute,
+} as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CareersRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AuthRoute,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93InvokeToolToolRoute =
-  Char91DotmcpChar93InvokeToolToolRouteImport.update({
-    id: '/.mcp/invoke-tool/$tool',
-    path: '/.mcp/invoke-tool/$tool',
+const AiPromptsRoute = AiPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => AiRoute,
+} as any)
+const AiHistoryRoute = AiHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AiRoute,
+} as any)
+const AiCollectionsRoute = AiCollectionsRouteImport.update({
+  id: '/collections',
+  path: '/collections',
+  getParentRoute: () => AiRoute,
+} as any)
+const AiChatRoute = AiChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AiRoute,
+} as any)
+const AcademySuccessStoriesRoute = AcademySuccessStoriesRouteImport.update({
+  id: '/success-stories',
+  path: '/success-stories',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyScholarshipRoute = AcademyScholarshipRouteImport.update({
+  id: '/scholarship',
+  path: '/scholarship',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyPlacementsRoute = AcademyPlacementsRouteImport.update({
+  id: '/placements',
+  path: '/placements',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyOnlineCoursesRoute = AcademyOnlineCoursesRouteImport.update({
+  id: '/online-courses',
+  path: '/online-courses',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyOfflineTrainingRoute = AcademyOfflineTrainingRouteImport.update({
+  id: '/offline-training',
+  path: '/offline-training',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyLearningPathsRoute = AcademyLearningPathsRouteImport.update({
+  id: '/learning-paths',
+  path: '/learning-paths',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyInternshipsRoute = AcademyInternshipsRouteImport.update({
+  id: '/internships',
+  path: '/internships',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyFaqRoute = AcademyFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCorporateTrainingRoute =
+  AcademyCorporateTrainingRouteImport.update({
+    id: '/corporate-training',
+    path: '/corporate-training',
+    getParentRoute: () => AcademyRoute,
+  } as any)
+const AcademyContactRoute = AcademyContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCertificationsRoute = AcademyCertificationsRouteImport.update({
+  id: '/certifications',
+  path: '/certifications',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyAdmissionsRoute = AcademyAdmissionsRouteImport.update({
+  id: '/admissions',
+  path: '/admissions',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AuthenticatedOpsRoute = AuthenticatedOpsRouteImport.update({
+  id: '/ops',
+  path: '/ops',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEducationRoute = AuthenticatedEducationRouteImport.update({
+  id: '/education',
+  path: '/education',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedCommunityRoute = AuthenticatedCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAssistantRoute = AuthenticatedAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedAssistantIndexRoute =
-  AuthenticatedAssistantIndexRouteImport.update({
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
+  id: '/programs/',
+  path: '/programs/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCampusesIndexRoute = AcademyCampusesIndexRouteImport.update({
+  id: '/campuses/',
+  path: '/campuses/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AuthenticatedEducationIndexRoute =
+  AuthenticatedEducationIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedAssistantRoute,
-  } as any)
-const AuthenticatedAssistantConversationIdRoute =
-  AuthenticatedAssistantConversationIdRouteImport.update({
-    id: '/$conversationId',
-    path: '/$conversationId',
-    getParentRoute: () => AuthenticatedAssistantRoute,
-  } as any)
-const AuthenticatedCommunitySlugRoute =
-  AuthenticatedCommunitySlugRouteImport.update({
-    id: '/$slug',
-    path: '/$slug',
-    getParentRoute: () => AuthenticatedCommunityRoute,
-  } as any)
-const AuthenticatedCommunityEventsRoute =
-  AuthenticatedCommunityEventsRouteImport.update({
-    id: '/events',
-    path: '/events',
-    getParentRoute: () => AuthenticatedCommunityRoute,
+    getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
@@ -1083,594 +1064,22 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardAdminRoute =
-  AuthenticatedDashboardAdminRouteImport.update({
-    id: '/admin',
-    path: '/admin',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardCareerRoute =
-  AuthenticatedDashboardCareerRouteImport.update({
-    id: '/career',
-    path: '/career',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardCounselorRoute =
-  AuthenticatedDashboardCounselorRouteImport.update({
-    id: '/counselor',
-    path: '/counselor',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardFacultyRoute =
-  AuthenticatedDashboardFacultyRouteImport.update({
-    id: '/faculty',
-    path: '/faculty',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardNotificationsRoute =
-  AuthenticatedDashboardNotificationsRouteImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardProfileRoute =
-  AuthenticatedDashboardProfileRouteImport.update({
-    id: '/profile',
-    path: '/profile',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardProgramsRoute =
-  AuthenticatedDashboardProgramsRouteImport.update({
-    id: '/programs',
-    path: '/programs',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardSecurityRoute =
-  AuthenticatedDashboardSecurityRouteImport.update({
-    id: '/security',
-    path: '/security',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesRoute =
-  AuthenticatedDashboardTechnologiesRouteImport.update({
-    id: '/technologies',
-    path: '/technologies',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardVisaRoute =
-  AuthenticatedDashboardVisaRouteImport.update({
-    id: '/visa',
-    path: '/visa',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedEducationIndexRoute =
-  AuthenticatedEducationIndexRouteImport.update({
+const AuthenticatedAssistantIndexRoute =
+  AuthenticatedAssistantIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedEducationRoute,
+    getParentRoute: () => AuthenticatedAssistantRoute,
   } as any)
-const AuthenticatedEducationApplicationsRoute =
-  AuthenticatedEducationApplicationsRouteImport.update({
-    id: '/applications',
-    path: '/applications',
-    getParentRoute: () => AuthenticatedEducationRoute,
-  } as any)
-const AuthenticatedEducationDocumentsRoute =
-  AuthenticatedEducationDocumentsRouteImport.update({
-    id: '/documents',
-    path: '/documents',
-    getParentRoute: () => AuthenticatedEducationRoute,
-  } as any)
-const AuthenticatedEducationProfileRoute =
-  AuthenticatedEducationProfileRouteImport.update({
-    id: '/profile',
-    path: '/profile',
-    getParentRoute: () => AuthenticatedEducationRoute,
-  } as any)
-const AuthenticatedOpsReliabilityRoute =
-  AuthenticatedOpsReliabilityRouteImport.update({
-    id: '/reliability',
-    path: '/reliability',
-    getParentRoute: () => AuthenticatedOpsRoute,
-  } as any)
-const AcademyBlogCertificationsComparisonRoute =
-  AcademyBlogCertificationsComparisonRouteImport.update({
-    id: '/blog/certifications-comparison',
-    path: '/blog/certifications-comparison',
-    getParentRoute: () => AcademyRoute,
-  } as any)
-const AcademyCampusesIndexRoute = AcademyCampusesIndexRouteImport.update({
-  id: '/campuses/',
-  path: '/campuses/',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyCampusesSlugRoute = AcademyCampusesSlugRouteImport.update({
-  id: '/campuses/$slug',
-  path: '/campuses/$slug',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
-  id: '/programs/',
-  path: '/programs/',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
-  id: '/programs/$slug',
-  path: '/programs/$slug',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AiCollectionsSlugRoute = AiCollectionsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => AiCollectionsRoute,
-} as any)
-const ApiPublicAiModeRoute = ApiPublicAiModeRouteImport.update({
-  id: '/api/public/ai-mode',
-  path: '/api/public/ai-mode',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicChatRoute = ApiPublicChatRouteImport.update({
-  id: '/api/public/chat',
-  path: '/api/public/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicDecisionsRoute = ApiPublicDecisionsRouteImport.update({
-  id: '/api/public/decisions',
-  path: '/api/public/decisions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicEmailVerifyRoute = ApiPublicEmailVerifyRouteImport.update({
-  id: '/api/public/email-verify',
-  path: '/api/public/email-verify',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicGoalsRoute = ApiPublicGoalsRouteImport.update({
-  id: '/api/public/goals',
-  path: '/api/public/goals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicGovernanceRoute = ApiPublicGovernanceRouteImport.update({
-  id: '/api/public/governance',
-  path: '/api/public/governance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
-  id: '/api/public/health',
-  path: '/api/public/health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicMemoryGraphRoute = ApiPublicMemoryGraphRouteImport.update({
-  id: '/api/public/memory-graph',
-  path: '/api/public/memory-graph',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicReplayRoute = ApiPublicReplayRouteImport.update({
-  id: '/api/public/replay',
-  path: '/api/public/replay',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicResolveHybridRoute = ApiPublicResolveHybridRouteImport.update({
-  id: '/api/public/resolve-hybrid',
-  path: '/api/public/resolve-hybrid',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicResolveIntentRoute = ApiPublicResolveIntentRouteImport.update({
-  id: '/api/public/resolve-intent',
-  path: '/api/public/resolve-intent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSelfOptimizeRoute = ApiPublicSelfOptimizeRouteImport.update({
-  id: '/api/public/self-optimize',
-  path: '/api/public/self-optimize',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSharedMemoryRoute = ApiPublicSharedMemoryRouteImport.update({
-  id: '/api/public/shared-memory',
-  path: '/api/public/shared-memory',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicStrategyRoute = ApiPublicStrategyRouteImport.update({
-  id: '/api/public/strategy',
-  path: '/api/public/strategy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSystemHealthRoute = ApiPublicSystemHealthRouteImport.update({
-  id: '/api/public/system-health',
-  path: '/api/public/system-health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
-  id: '/api/public/vector-search',
-  path: '/api/public/vector-search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiV1CoursesRoute = ApiV1CoursesRouteImport.update({
-  id: '/api/v1/courses',
-  path: '/api/v1/courses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiV1JobsRoute = ApiV1JobsRouteImport.update({
-  id: '/api/v1/jobs',
-  path: '/api/v1/jobs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiV1ProgramsRoute = ApiV1ProgramsRouteImport.update({
-  id: '/api/v1/programs',
-  path: '/api/v1/programs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiV1UniversitiesRoute = ApiV1UniversitiesRouteImport.update({
-  id: '/api/v1/universities',
-  path: '/api/v1/universities',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DocsCategorySlugRoute = DocsCategorySlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => DocsCategoryRoute,
-} as any)
-const GlobalEducationCountriesSlugRoute =
-  GlobalEducationCountriesSlugRouteImport.update({
+const TechnologiesInsightsSlugRoute =
+  TechnologiesInsightsSlugRouteImport.update({
     id: '/$slug',
     path: '/$slug',
-    getParentRoute: () => GlobalEducationCountriesRoute,
+    getParentRoute: () => TechnologiesInsightsRoute,
   } as any)
-const GlobalEducationUniversitiesSlugRoute =
-  GlobalEducationUniversitiesSlugRouteImport.update({
-    id: '/$slug',
-    path: '/$slug',
-    getParentRoute: () => GlobalEducationUniversitiesRoute,
-  } as any)
-const TechnologiesCaseStudiesSlugRoute =
-  TechnologiesCaseStudiesSlugRouteImport.update({
-    id: '/$slug',
-    path: '/$slug',
-    getParentRoute: () => TechnologiesCaseStudiesRoute,
-  } as any)
-const TechnologiesCompanySlugRoute = TechnologiesCompanySlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => TechnologiesCompanyRoute,
-} as any)
-const TechnologiesEngagementBuildOperateTransferRoute =
-  TechnologiesEngagementBuildOperateTransferRouteImport.update({
-    id: '/build-operate-transfer',
-    path: '/build-operate-transfer',
-    getParentRoute: () => TechnologiesEngagementRoute,
-  } as any)
-const TechnologiesEngagementDedicatedDevelopmentTeamRoute =
-  TechnologiesEngagementDedicatedDevelopmentTeamRouteImport.update({
-    id: '/dedicated-development-team',
-    path: '/dedicated-development-team',
-    getParentRoute: () => TechnologiesEngagementRoute,
-  } as any)
-const TechnologiesEngagementFixedPriceProjectsRoute =
-  TechnologiesEngagementFixedPriceProjectsRouteImport.update({
-    id: '/fixed-price-projects',
-    path: '/fixed-price-projects',
-    getParentRoute: () => TechnologiesEngagementRoute,
-  } as any)
-const TechnologiesEngagementOffshoreDevelopmentCenterRoute =
-  TechnologiesEngagementOffshoreDevelopmentCenterRouteImport.update({
-    id: '/offshore-development-center',
-    path: '/offshore-development-center',
-    getParentRoute: () => TechnologiesEngagementRoute,
-  } as any)
-const TechnologiesEngagementStaffAugmentationRoute =
-  TechnologiesEngagementStaffAugmentationRouteImport.update({
-    id: '/staff-augmentation',
-    path: '/staff-augmentation',
-    getParentRoute: () => TechnologiesEngagementRoute,
-  } as any)
-const TechnologiesEngagementTimeAndMaterialsRoute =
-  TechnologiesEngagementTimeAndMaterialsRouteImport.update({
-    id: '/time-and-materials',
-    path: '/time-and-materials',
-    getParentRoute: () => TechnologiesEngagementRoute,
-  } as any)
-const TechnologiesExpertiseAiAutomationRoute =
-  TechnologiesExpertiseAiAutomationRouteImport.update({
-    id: '/ai-automation',
-    path: '/ai-automation',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseAndroidRoute =
-  TechnologiesExpertiseAndroidRouteImport.update({
-    id: '/android',
-    path: '/android',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseAngularRoute =
-  TechnologiesExpertiseAngularRouteImport.update({
-    id: '/angular',
-    path: '/angular',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseAwsRoute =
-  TechnologiesExpertiseAwsRouteImport.update({
-    id: '/aws',
-    path: '/aws',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseAzureRoute =
-  TechnologiesExpertiseAzureRouteImport.update({
-    id: '/azure',
-    path: '/azure',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseBusinessIntelligenceTechRoute =
-  TechnologiesExpertiseBusinessIntelligenceTechRouteImport.update({
-    id: '/business-intelligence-tech',
-    path: '/business-intelligence-tech',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseComputerVisionRoute =
-  TechnologiesExpertiseComputerVisionRouteImport.update({
-    id: '/computer-vision',
-    path: '/computer-vision',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseCss3Route =
-  TechnologiesExpertiseCss3RouteImport.update({
-    id: '/css3',
-    path: '/css3',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseDataEngineeringTechRoute =
-  TechnologiesExpertiseDataEngineeringTechRouteImport.update({
-    id: '/data-engineering-tech',
-    path: '/data-engineering-tech',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseDockerRoute =
-  TechnologiesExpertiseDockerRouteImport.update({
-    id: '/docker',
-    path: '/docker',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseDotnetRoute =
-  TechnologiesExpertiseDotnetRouteImport.update({
-    id: '/dotnet',
-    path: '/dotnet',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseExpressRoute =
-  TechnologiesExpertiseExpressRouteImport.update({
-    id: '/express',
-    path: '/express',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseFlutterRoute =
-  TechnologiesExpertiseFlutterRouteImport.update({
-    id: '/flutter',
-    path: '/flutter',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseGcpRoute =
-  TechnologiesExpertiseGcpRouteImport.update({
-    id: '/gcp',
-    path: '/gcp',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseGenerativeAiRoute =
-  TechnologiesExpertiseGenerativeAiRouteImport.update({
-    id: '/generative-ai',
-    path: '/generative-ai',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseGoRoute = TechnologiesExpertiseGoRouteImport.update({
-  id: '/go',
-  path: '/go',
-  getParentRoute: () => TechnologiesExpertiseRoute,
-} as any)
-const TechnologiesExpertiseHtml5Route =
-  TechnologiesExpertiseHtml5RouteImport.update({
-    id: '/html5',
-    path: '/html5',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseIosRoute =
-  TechnologiesExpertiseIosRouteImport.update({
-    id: '/ios',
-    path: '/ios',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseJavaRoute =
-  TechnologiesExpertiseJavaRouteImport.update({
-    id: '/java',
-    path: '/java',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseJavascriptRoute =
-  TechnologiesExpertiseJavascriptRouteImport.update({
-    id: '/javascript',
-    path: '/javascript',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseKubernetesRoute =
-  TechnologiesExpertiseKubernetesRouteImport.update({
-    id: '/kubernetes',
-    path: '/kubernetes',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseLaravelRoute =
-  TechnologiesExpertiseLaravelRouteImport.update({
-    id: '/laravel',
-    path: '/laravel',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseMachineLearningRoute =
-  TechnologiesExpertiseMachineLearningRouteImport.update({
-    id: '/machine-learning',
-    path: '/machine-learning',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseMongodbRoute =
-  TechnologiesExpertiseMongodbRouteImport.update({
-    id: '/mongodb',
-    path: '/mongodb',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseMysqlRoute =
-  TechnologiesExpertiseMysqlRouteImport.update({
-    id: '/mysql',
-    path: '/mysql',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseNextjsRoute =
-  TechnologiesExpertiseNextjsRouteImport.update({
-    id: '/nextjs',
-    path: '/nextjs',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseNlpRoute =
-  TechnologiesExpertiseNlpRouteImport.update({
-    id: '/nlp',
-    path: '/nlp',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseNodejsRoute =
-  TechnologiesExpertiseNodejsRouteImport.update({
-    id: '/nodejs',
-    path: '/nodejs',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseOpenaiRoute =
-  TechnologiesExpertiseOpenaiRouteImport.update({
-    id: '/openai',
-    path: '/openai',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertisePhpRoute =
-  TechnologiesExpertisePhpRouteImport.update({
-    id: '/php',
-    path: '/php',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertisePostgresqlRoute =
-  TechnologiesExpertisePostgresqlRouteImport.update({
-    id: '/postgresql',
-    path: '/postgresql',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertisePythonRoute =
-  TechnologiesExpertisePythonRouteImport.update({
-    id: '/python',
-    path: '/python',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseReactRoute =
-  TechnologiesExpertiseReactRouteImport.update({
-    id: '/react',
-    path: '/react',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseReactNativeRoute =
-  TechnologiesExpertiseReactNativeRouteImport.update({
-    id: '/react-native',
-    path: '/react-native',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseRedisRoute =
-  TechnologiesExpertiseRedisRouteImport.update({
-    id: '/redis',
-    path: '/redis',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseSpringBootRoute =
-  TechnologiesExpertiseSpringBootRouteImport.update({
-    id: '/spring-boot',
-    path: '/spring-boot',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseTypescriptRoute =
-  TechnologiesExpertiseTypescriptRouteImport.update({
-    id: '/typescript',
-    path: '/typescript',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesExpertiseVuejsRoute =
-  TechnologiesExpertiseVuejsRouteImport.update({
-    id: '/vuejs',
-    path: '/vuejs',
-    getParentRoute: () => TechnologiesExpertiseRoute,
-  } as any)
-const TechnologiesIndustriesBankingRoute =
-  TechnologiesIndustriesBankingRouteImport.update({
-    id: '/banking',
-    path: '/banking',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesEcommerceRoute =
-  TechnologiesIndustriesEcommerceRouteImport.update({
-    id: '/ecommerce',
-    path: '/ecommerce',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesEducationRoute =
-  TechnologiesIndustriesEducationRouteImport.update({
-    id: '/education',
-    path: '/education',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesEnterpriseRoute =
-  TechnologiesIndustriesEnterpriseRouteImport.update({
-    id: '/enterprise',
-    path: '/enterprise',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesFinanceRoute =
-  TechnologiesIndustriesFinanceRouteImport.update({
-    id: '/finance',
-    path: '/finance',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesFintechRoute =
-  TechnologiesIndustriesFintechRouteImport.update({
-    id: '/fintech',
-    path: '/fintech',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesGovernmentRoute =
-  TechnologiesIndustriesGovernmentRouteImport.update({
-    id: '/government',
-    path: '/government',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesHealthcareRoute =
-  TechnologiesIndustriesHealthcareRouteImport.update({
-    id: '/healthcare',
-    path: '/healthcare',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesHospitalityRoute =
-  TechnologiesIndustriesHospitalityRouteImport.update({
-    id: '/hospitality',
-    path: '/hospitality',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesLogisticsRoute =
-  TechnologiesIndustriesLogisticsRouteImport.update({
-    id: '/logistics',
-    path: '/logistics',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesManufacturingRoute =
-  TechnologiesIndustriesManufacturingRouteImport.update({
-    id: '/manufacturing',
-    path: '/manufacturing',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesRealEstateRoute =
-  TechnologiesIndustriesRealEstateRouteImport.update({
-    id: '/real-estate',
-    path: '/real-estate',
-    getParentRoute: () => TechnologiesIndustriesRoute,
-  } as any)
-const TechnologiesIndustriesRetailRoute =
-  TechnologiesIndustriesRetailRouteImport.update({
-    id: '/retail',
-    path: '/retail',
+const TechnologiesIndustriesStartupsRoute =
+  TechnologiesIndustriesStartupsRouteImport.update({
+    id: '/startups',
+    path: '/startups',
     getParentRoute: () => TechnologiesIndustriesRoute,
   } as any)
 const TechnologiesIndustriesSmeRoute =
@@ -1679,388 +1088,625 @@ const TechnologiesIndustriesSmeRoute =
     path: '/sme',
     getParentRoute: () => TechnologiesIndustriesRoute,
   } as any)
-const TechnologiesIndustriesStartupsRoute =
-  TechnologiesIndustriesStartupsRouteImport.update({
-    id: '/startups',
-    path: '/startups',
+const TechnologiesIndustriesRetailRoute =
+  TechnologiesIndustriesRetailRouteImport.update({
+    id: '/retail',
+    path: '/retail',
     getParentRoute: () => TechnologiesIndustriesRoute,
   } as any)
-const TechnologiesInsightsSlugRoute =
-  TechnologiesInsightsSlugRouteImport.update({
+const TechnologiesIndustriesRealEstateRoute =
+  TechnologiesIndustriesRealEstateRouteImport.update({
+    id: '/real-estate',
+    path: '/real-estate',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesManufacturingRoute =
+  TechnologiesIndustriesManufacturingRouteImport.update({
+    id: '/manufacturing',
+    path: '/manufacturing',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesLogisticsRoute =
+  TechnologiesIndustriesLogisticsRouteImport.update({
+    id: '/logistics',
+    path: '/logistics',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesHospitalityRoute =
+  TechnologiesIndustriesHospitalityRouteImport.update({
+    id: '/hospitality',
+    path: '/hospitality',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesHealthcareRoute =
+  TechnologiesIndustriesHealthcareRouteImport.update({
+    id: '/healthcare',
+    path: '/healthcare',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesGovernmentRoute =
+  TechnologiesIndustriesGovernmentRouteImport.update({
+    id: '/government',
+    path: '/government',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesFintechRoute =
+  TechnologiesIndustriesFintechRouteImport.update({
+    id: '/fintech',
+    path: '/fintech',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesFinanceRoute =
+  TechnologiesIndustriesFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesEnterpriseRoute =
+  TechnologiesIndustriesEnterpriseRouteImport.update({
+    id: '/enterprise',
+    path: '/enterprise',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesEducationRoute =
+  TechnologiesIndustriesEducationRouteImport.update({
+    id: '/education',
+    path: '/education',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesEcommerceRoute =
+  TechnologiesIndustriesEcommerceRouteImport.update({
+    id: '/ecommerce',
+    path: '/ecommerce',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesIndustriesBankingRoute =
+  TechnologiesIndustriesBankingRouteImport.update({
+    id: '/banking',
+    path: '/banking',
+    getParentRoute: () => TechnologiesIndustriesRoute,
+  } as any)
+const TechnologiesExpertiseVuejsRoute =
+  TechnologiesExpertiseVuejsRouteImport.update({
+    id: '/vuejs',
+    path: '/vuejs',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseTypescriptRoute =
+  TechnologiesExpertiseTypescriptRouteImport.update({
+    id: '/typescript',
+    path: '/typescript',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseSpringBootRoute =
+  TechnologiesExpertiseSpringBootRouteImport.update({
+    id: '/spring-boot',
+    path: '/spring-boot',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseRedisRoute =
+  TechnologiesExpertiseRedisRouteImport.update({
+    id: '/redis',
+    path: '/redis',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseReactNativeRoute =
+  TechnologiesExpertiseReactNativeRouteImport.update({
+    id: '/react-native',
+    path: '/react-native',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseReactRoute =
+  TechnologiesExpertiseReactRouteImport.update({
+    id: '/react',
+    path: '/react',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertisePythonRoute =
+  TechnologiesExpertisePythonRouteImport.update({
+    id: '/python',
+    path: '/python',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertisePostgresqlRoute =
+  TechnologiesExpertisePostgresqlRouteImport.update({
+    id: '/postgresql',
+    path: '/postgresql',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertisePhpRoute =
+  TechnologiesExpertisePhpRouteImport.update({
+    id: '/php',
+    path: '/php',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseOpenaiRoute =
+  TechnologiesExpertiseOpenaiRouteImport.update({
+    id: '/openai',
+    path: '/openai',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseNodejsRoute =
+  TechnologiesExpertiseNodejsRouteImport.update({
+    id: '/nodejs',
+    path: '/nodejs',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseNlpRoute =
+  TechnologiesExpertiseNlpRouteImport.update({
+    id: '/nlp',
+    path: '/nlp',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseNextjsRoute =
+  TechnologiesExpertiseNextjsRouteImport.update({
+    id: '/nextjs',
+    path: '/nextjs',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseMysqlRoute =
+  TechnologiesExpertiseMysqlRouteImport.update({
+    id: '/mysql',
+    path: '/mysql',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseMongodbRoute =
+  TechnologiesExpertiseMongodbRouteImport.update({
+    id: '/mongodb',
+    path: '/mongodb',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseMachineLearningRoute =
+  TechnologiesExpertiseMachineLearningRouteImport.update({
+    id: '/machine-learning',
+    path: '/machine-learning',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseLaravelRoute =
+  TechnologiesExpertiseLaravelRouteImport.update({
+    id: '/laravel',
+    path: '/laravel',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseKubernetesRoute =
+  TechnologiesExpertiseKubernetesRouteImport.update({
+    id: '/kubernetes',
+    path: '/kubernetes',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseJavascriptRoute =
+  TechnologiesExpertiseJavascriptRouteImport.update({
+    id: '/javascript',
+    path: '/javascript',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseJavaRoute =
+  TechnologiesExpertiseJavaRouteImport.update({
+    id: '/java',
+    path: '/java',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseIosRoute =
+  TechnologiesExpertiseIosRouteImport.update({
+    id: '/ios',
+    path: '/ios',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseHtml5Route =
+  TechnologiesExpertiseHtml5RouteImport.update({
+    id: '/html5',
+    path: '/html5',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseGoRoute = TechnologiesExpertiseGoRouteImport.update({
+  id: '/go',
+  path: '/go',
+  getParentRoute: () => TechnologiesExpertiseRoute,
+} as any)
+const TechnologiesExpertiseGenerativeAiRoute =
+  TechnologiesExpertiseGenerativeAiRouteImport.update({
+    id: '/generative-ai',
+    path: '/generative-ai',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseGcpRoute =
+  TechnologiesExpertiseGcpRouteImport.update({
+    id: '/gcp',
+    path: '/gcp',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseFlutterRoute =
+  TechnologiesExpertiseFlutterRouteImport.update({
+    id: '/flutter',
+    path: '/flutter',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseExpressRoute =
+  TechnologiesExpertiseExpressRouteImport.update({
+    id: '/express',
+    path: '/express',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseDotnetRoute =
+  TechnologiesExpertiseDotnetRouteImport.update({
+    id: '/dotnet',
+    path: '/dotnet',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseDockerRoute =
+  TechnologiesExpertiseDockerRouteImport.update({
+    id: '/docker',
+    path: '/docker',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseDataEngineeringTechRoute =
+  TechnologiesExpertiseDataEngineeringTechRouteImport.update({
+    id: '/data-engineering-tech',
+    path: '/data-engineering-tech',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseCss3Route =
+  TechnologiesExpertiseCss3RouteImport.update({
+    id: '/css3',
+    path: '/css3',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseComputerVisionRoute =
+  TechnologiesExpertiseComputerVisionRouteImport.update({
+    id: '/computer-vision',
+    path: '/computer-vision',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseBusinessIntelligenceTechRoute =
+  TechnologiesExpertiseBusinessIntelligenceTechRouteImport.update({
+    id: '/business-intelligence-tech',
+    path: '/business-intelligence-tech',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseAzureRoute =
+  TechnologiesExpertiseAzureRouteImport.update({
+    id: '/azure',
+    path: '/azure',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseAwsRoute =
+  TechnologiesExpertiseAwsRouteImport.update({
+    id: '/aws',
+    path: '/aws',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseAngularRoute =
+  TechnologiesExpertiseAngularRouteImport.update({
+    id: '/angular',
+    path: '/angular',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseAndroidRoute =
+  TechnologiesExpertiseAndroidRouteImport.update({
+    id: '/android',
+    path: '/android',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesExpertiseAiAutomationRoute =
+  TechnologiesExpertiseAiAutomationRouteImport.update({
+    id: '/ai-automation',
+    path: '/ai-automation',
+    getParentRoute: () => TechnologiesExpertiseRoute,
+  } as any)
+const TechnologiesEngagementTimeAndMaterialsRoute =
+  TechnologiesEngagementTimeAndMaterialsRouteImport.update({
+    id: '/time-and-materials',
+    path: '/time-and-materials',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementStaffAugmentationRoute =
+  TechnologiesEngagementStaffAugmentationRouteImport.update({
+    id: '/staff-augmentation',
+    path: '/staff-augmentation',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementOffshoreDevelopmentCenterRoute =
+  TechnologiesEngagementOffshoreDevelopmentCenterRouteImport.update({
+    id: '/offshore-development-center',
+    path: '/offshore-development-center',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementFixedPriceProjectsRoute =
+  TechnologiesEngagementFixedPriceProjectsRouteImport.update({
+    id: '/fixed-price-projects',
+    path: '/fixed-price-projects',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementDedicatedDevelopmentTeamRoute =
+  TechnologiesEngagementDedicatedDevelopmentTeamRouteImport.update({
+    id: '/dedicated-development-team',
+    path: '/dedicated-development-team',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesEngagementBuildOperateTransferRoute =
+  TechnologiesEngagementBuildOperateTransferRouteImport.update({
+    id: '/build-operate-transfer',
+    path: '/build-operate-transfer',
+    getParentRoute: () => TechnologiesEngagementRoute,
+  } as any)
+const TechnologiesCompanySlugRoute = TechnologiesCompanySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TechnologiesCompanyRoute,
+} as any)
+const TechnologiesCaseStudiesSlugRoute =
+  TechnologiesCaseStudiesSlugRouteImport.update({
     id: '/$slug',
     path: '/$slug',
-    getParentRoute: () => TechnologiesInsightsRoute,
+    getParentRoute: () => TechnologiesCaseStudiesRoute,
   } as any)
-const AuthenticatedCommunitySlugThreadIdRoute =
-  AuthenticatedCommunitySlugThreadIdRouteImport.update({
-    id: '/$threadId',
-    path: '/$threadId',
-    getParentRoute: () => AuthenticatedCommunitySlugRoute,
+const GlobalEducationUniversitiesSlugRoute =
+  GlobalEducationUniversitiesSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => GlobalEducationUniversitiesRoute,
   } as any)
-const AuthenticatedCommunityEventsIdRoute =
-  AuthenticatedCommunityEventsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedCommunityEventsRoute,
+const GlobalEducationCountriesSlugRoute =
+  GlobalEducationCountriesSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => GlobalEducationCountriesRoute,
   } as any)
-const AuthenticatedDashboardAdminIndexRoute =
-  AuthenticatedDashboardAdminIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+const DocsCategorySlugRoute = DocsCategorySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => DocsCategoryRoute,
+} as any)
+const ApiV1UniversitiesRoute = ApiV1UniversitiesRouteImport.update({
+  id: '/api/v1/universities',
+  path: '/api/v1/universities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1ProgramsRoute = ApiV1ProgramsRouteImport.update({
+  id: '/api/v1/programs',
+  path: '/api/v1/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1JobsRoute = ApiV1JobsRouteImport.update({
+  id: '/api/v1/jobs',
+  path: '/api/v1/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1CoursesRoute = ApiV1CoursesRouteImport.update({
+  id: '/api/v1/courses',
+  path: '/api/v1/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicVectorSearchRoute = ApiPublicVectorSearchRouteImport.update({
+  id: '/api/public/vector-search',
+  path: '/api/public/vector-search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicSystemHealthRoute = ApiPublicSystemHealthRouteImport.update({
+  id: '/api/public/system-health',
+  path: '/api/public/system-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicStrategyRoute = ApiPublicStrategyRouteImport.update({
+  id: '/api/public/strategy',
+  path: '/api/public/strategy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicSharedMemoryRoute = ApiPublicSharedMemoryRouteImport.update({
+  id: '/api/public/shared-memory',
+  path: '/api/public/shared-memory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicSelfOptimizeRoute = ApiPublicSelfOptimizeRouteImport.update({
+  id: '/api/public/self-optimize',
+  path: '/api/public/self-optimize',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicResolveIntentRoute = ApiPublicResolveIntentRouteImport.update({
+  id: '/api/public/resolve-intent',
+  path: '/api/public/resolve-intent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicResolveHybridRoute = ApiPublicResolveHybridRouteImport.update({
+  id: '/api/public/resolve-hybrid',
+  path: '/api/public/resolve-hybrid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicReplayRoute = ApiPublicReplayRouteImport.update({
+  id: '/api/public/replay',
+  path: '/api/public/replay',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicMemoryGraphRoute = ApiPublicMemoryGraphRouteImport.update({
+  id: '/api/public/memory-graph',
+  path: '/api/public/memory-graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
+  id: '/api/public/health',
+  path: '/api/public/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGovernanceRoute = ApiPublicGovernanceRouteImport.update({
+  id: '/api/public/governance',
+  path: '/api/public/governance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGoalsRoute = ApiPublicGoalsRouteImport.update({
+  id: '/api/public/goals',
+  path: '/api/public/goals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicEmailVerifyRoute = ApiPublicEmailVerifyRouteImport.update({
+  id: '/api/public/email-verify',
+  path: '/api/public/email-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicDecisionsRoute = ApiPublicDecisionsRouteImport.update({
+  id: '/api/public/decisions',
+  path: '/api/public/decisions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicChatRoute = ApiPublicChatRouteImport.update({
+  id: '/api/public/chat',
+  path: '/api/public/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAiModeRoute = ApiPublicAiModeRouteImport.update({
+  id: '/api/public/ai-mode',
+  path: '/api/public/ai-mode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiCollectionsSlugRoute = AiCollectionsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => AiCollectionsRoute,
+} as any)
+const AcademyProgramsSlugRoute = AcademyProgramsSlugRouteImport.update({
+  id: '/programs/$slug',
+  path: '/programs/$slug',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCampusesSlugRoute = AcademyCampusesSlugRouteImport.update({
+  id: '/campuses/$slug',
+  path: '/campuses/$slug',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyBlogCertificationsComparisonRoute =
+  AcademyBlogCertificationsComparisonRouteImport.update({
+    id: '/blog/certifications-comparison',
+    path: '/blog/certifications-comparison',
+    getParentRoute: () => AcademyRoute,
   } as any)
-const AuthenticatedDashboardAdminAiRoute =
-  AuthenticatedDashboardAdminAiRouteImport.update({
-    id: '/ai',
-    path: '/ai',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+const AuthenticatedOpsReliabilityRoute =
+  AuthenticatedOpsReliabilityRouteImport.update({
+    id: '/reliability',
+    path: '/reliability',
+    getParentRoute: () => AuthenticatedOpsRoute,
   } as any)
-const AuthenticatedDashboardAdminAnalyticsRoute =
-  AuthenticatedDashboardAdminAnalyticsRouteImport.update({
-    id: '/analytics',
-    path: '/analytics',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminApiRoute =
-  AuthenticatedDashboardAdminApiRouteImport.update({
-    id: '/api',
-    path: '/api',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminApplicationsRoute =
-  AuthenticatedDashboardAdminApplicationsRouteImport.update({
-    id: '/applications',
-    path: '/applications',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminAssignmentsRoute =
-  AuthenticatedDashboardAdminAssignmentsRouteImport.update({
-    id: '/assignments',
-    path: '/assignments',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminAuditLogsRoute =
-  AuthenticatedDashboardAdminAuditLogsRouteImport.update({
-    id: '/audit-logs',
-    path: '/audit-logs',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminCertificatesRoute =
-  AuthenticatedDashboardAdminCertificatesRouteImport.update({
-    id: '/certificates',
-    path: '/certificates',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminCountriesRoute =
-  AuthenticatedDashboardAdminCountriesRouteImport.update({
-    id: '/countries',
-    path: '/countries',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminCrmRoute =
-  AuthenticatedDashboardAdminCrmRouteImport.update({
-    id: '/crm',
-    path: '/crm',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminDomainStatusRoute =
-  AuthenticatedDashboardAdminDomainStatusRouteImport.update({
-    id: '/domain-status',
-    path: '/domain-status',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminEmployersRoute =
-  AuthenticatedDashboardAdminEmployersRouteImport.update({
-    id: '/employers',
-    path: '/employers',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminEnrollmentsRoute =
-  AuthenticatedDashboardAdminEnrollmentsRouteImport.update({
-    id: '/enrollments',
-    path: '/enrollments',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminEnvReadinessRoute =
-  AuthenticatedDashboardAdminEnvReadinessRouteImport.update({
-    id: '/env-readiness',
-    path: '/env-readiness',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminFeatureFlagsRoute =
-  AuthenticatedDashboardAdminFeatureFlagsRouteImport.update({
-    id: '/feature-flags',
-    path: '/feature-flags',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminGovernanceRoute =
-  AuthenticatedDashboardAdminGovernanceRouteImport.update({
-    id: '/governance',
-    path: '/governance',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminIdentityProvidersRoute =
-  AuthenticatedDashboardAdminIdentityProvidersRouteImport.update({
-    id: '/identity-providers',
-    path: '/identity-providers',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminJobsRoute =
-  AuthenticatedDashboardAdminJobsRouteImport.update({
-    id: '/jobs',
-    path: '/jobs',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminLaunchReadinessRoute =
-  AuthenticatedDashboardAdminLaunchReadinessRouteImport.update({
-    id: '/launch-readiness',
-    path: '/launch-readiness',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminLaunchReportRoute =
-  AuthenticatedDashboardAdminLaunchReportRouteImport.update({
-    id: '/launch-report',
-    path: '/launch-report',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminMonitoringSecretsRoute =
-  AuthenticatedDashboardAdminMonitoringSecretsRouteImport.update({
-    id: '/monitoring-secrets',
-    path: '/monitoring-secrets',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminNotificationsRoute =
-  AuthenticatedDashboardAdminNotificationsRouteImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminObservabilityRoute =
-  AuthenticatedDashboardAdminObservabilityRouteImport.update({
-    id: '/observability',
-    path: '/observability',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminOperatorChecklistRoute =
-  AuthenticatedDashboardAdminOperatorChecklistRouteImport.update({
-    id: '/operator-checklist',
-    path: '/operator-checklist',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminPaymentsRoute =
-  AuthenticatedDashboardAdminPaymentsRouteImport.update({
-    id: '/payments',
-    path: '/payments',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminPlacementsRoute =
-  AuthenticatedDashboardAdminPlacementsRouteImport.update({
-    id: '/placements',
-    path: '/placements',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminProjectsRoute =
-  AuthenticatedDashboardAdminProjectsRouteImport.update({
-    id: '/projects',
-    path: '/projects',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminProviderHealthRoute =
-  AuthenticatedDashboardAdminProviderHealthRouteImport.update({
-    id: '/provider-health',
-    path: '/provider-health',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminRagRoute =
-  AuthenticatedDashboardAdminRagRouteImport.update({
-    id: '/rag',
-    path: '/rag',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminReleasesRoute =
-  AuthenticatedDashboardAdminReleasesRouteImport.update({
-    id: '/releases',
-    path: '/releases',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSaApplicationsRoute =
-  AuthenticatedDashboardAdminSaApplicationsRouteImport.update({
-    id: '/sa-applications',
-    path: '/sa-applications',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSaLeadsRoute =
-  AuthenticatedDashboardAdminSaLeadsRouteImport.update({
-    id: '/sa-leads',
-    path: '/sa-leads',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminScholarshipsRoute =
-  AuthenticatedDashboardAdminScholarshipsRouteImport.update({
-    id: '/scholarships',
-    path: '/scholarships',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSentryRoute =
-  AuthenticatedDashboardAdminSentryRouteImport.update({
-    id: '/sentry',
-    path: '/sentry',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSentryReleasesRoute =
-  AuthenticatedDashboardAdminSentryReleasesRouteImport.update({
-    id: '/sentry-releases',
-    path: '/sentry-releases',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSettingsRoute =
-  AuthenticatedDashboardAdminSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSreMetricsRoute =
-  AuthenticatedDashboardAdminSreMetricsRouteImport.update({
-    id: '/sre-metrics',
-    path: '/sre-metrics',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminStoriesRoute =
-  AuthenticatedDashboardAdminStoriesRouteImport.update({
-    id: '/stories',
-    path: '/stories',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminSystemRoute =
-  AuthenticatedDashboardAdminSystemRouteImport.update({
-    id: '/system',
-    path: '/system',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminTechLeadsRoute =
-  AuthenticatedDashboardAdminTechLeadsRouteImport.update({
-    id: '/tech-leads',
-    path: '/tech-leads',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminUniprogramsRoute =
-  AuthenticatedDashboardAdminUniprogramsRouteImport.update({
-    id: '/uniprograms',
-    path: '/uniprograms',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminUniversitiesRoute =
-  AuthenticatedDashboardAdminUniversitiesRouteImport.update({
-    id: '/universities',
-    path: '/universities',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminUsersRoute =
-  AuthenticatedDashboardAdminUsersRouteImport.update({
-    id: '/users',
-    path: '/users',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminVisaRoute =
-  AuthenticatedDashboardAdminVisaRouteImport.update({
-    id: '/visa',
-    path: '/visa',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminWebhooksRoute =
-  AuthenticatedDashboardAdminWebhooksRouteImport.update({
-    id: '/webhooks',
-    path: '/webhooks',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAiCareerRoute =
-  AuthenticatedDashboardAiCareerRouteImport.update({
-    id: '/ai/career',
-    path: '/ai/career',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAiGlobalRoute =
-  AuthenticatedDashboardAiGlobalRouteImport.update({
-    id: '/ai/global',
-    path: '/ai/global',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAiTutorRoute =
-  AuthenticatedDashboardAiTutorRouteImport.update({
-    id: '/ai/tutor',
-    path: '/ai/tutor',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardApplicationsIndexRoute =
-  AuthenticatedDashboardApplicationsIndexRouteImport.update({
-    id: '/applications/',
-    path: '/applications/',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardApplicationsIdRoute =
-  AuthenticatedDashboardApplicationsIdRouteImport.update({
-    id: '/applications/$id',
-    path: '/applications/$id',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAssignmentsIndexRoute =
-  AuthenticatedDashboardAssignmentsIndexRouteImport.update({
-    id: '/assignments/',
-    path: '/assignments/',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAssignmentsAssignmentIdRoute =
-  AuthenticatedDashboardAssignmentsAssignmentIdRouteImport.update({
-    id: '/assignments/$assignmentId',
-    path: '/assignments/$assignmentId',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardCareerIndexRoute =
-  AuthenticatedDashboardCareerIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedDashboardCareerRoute,
-  } as any)
-const AuthenticatedDashboardCareerApplicationsRoute =
-  AuthenticatedDashboardCareerApplicationsRouteImport.update({
-    id: '/applications',
-    path: '/applications',
-    getParentRoute: () => AuthenticatedDashboardCareerRoute,
-  } as any)
-const AuthenticatedDashboardCareerPortfolioRoute =
-  AuthenticatedDashboardCareerPortfolioRouteImport.update({
-    id: '/portfolio',
-    path: '/portfolio',
-    getParentRoute: () => AuthenticatedDashboardCareerRoute,
-  } as any)
-const AuthenticatedDashboardCareerProfileRoute =
-  AuthenticatedDashboardCareerProfileRouteImport.update({
+const AuthenticatedEducationProfileRoute =
+  AuthenticatedEducationProfileRouteImport.update({
     id: '/profile',
     path: '/profile',
-    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+    getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
-const AuthenticatedDashboardCareerResumeRoute =
-  AuthenticatedDashboardCareerResumeRouteImport.update({
-    id: '/resume',
-    path: '/resume',
-    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+const AuthenticatedEducationDocumentsRoute =
+  AuthenticatedEducationDocumentsRouteImport.update({
+    id: '/documents',
+    path: '/documents',
+    getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
-const AuthenticatedDashboardCareerSavedRoute =
-  AuthenticatedDashboardCareerSavedRouteImport.update({
-    id: '/saved',
-    path: '/saved',
-    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+const AuthenticatedEducationApplicationsRoute =
+  AuthenticatedEducationApplicationsRouteImport.update({
+    id: '/applications',
+    path: '/applications',
+    getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
-const AuthenticatedDashboardCertificatesIndexRoute =
-  AuthenticatedDashboardCertificatesIndexRouteImport.update({
-    id: '/certificates/',
-    path: '/certificates/',
+const AuthenticatedDashboardVisaRoute =
+  AuthenticatedDashboardVisaRouteImport.update({
+    id: '/visa',
+    path: '/visa',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardCertificatesIdRoute =
-  AuthenticatedDashboardCertificatesIdRouteImport.update({
-    id: '/certificates/$id',
-    path: '/certificates/$id',
+const AuthenticatedDashboardTechnologiesRoute =
+  AuthenticatedDashboardTechnologiesRouteImport.update({
+    id: '/technologies',
+    path: '/technologies',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSecurityRoute =
+  AuthenticatedDashboardSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardProgramsRoute =
+  AuthenticatedDashboardProgramsRouteImport.update({
+    id: '/programs',
+    path: '/programs',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardProfileRoute =
+  AuthenticatedDashboardProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardNotificationsRoute =
+  AuthenticatedDashboardNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardFacultyRoute =
+  AuthenticatedDashboardFacultyRouteImport.update({
+    id: '/faculty',
+    path: '/faculty',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardCounselorRoute =
+  AuthenticatedDashboardCounselorRouteImport.update({
+    id: '/counselor',
+    path: '/counselor',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardCareerRoute =
+  AuthenticatedDashboardCareerRouteImport.update({
+    id: '/career',
+    path: '/career',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAdminRoute =
+  AuthenticatedDashboardAdminRouteImport.update({
+    id: '/admin',
+    path: '/admin',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedCommunityEventsRoute =
+  AuthenticatedCommunityEventsRouteImport.update({
+    id: '/events',
+    path: '/events',
+    getParentRoute: () => AuthenticatedCommunityRoute,
+  } as any)
+const AuthenticatedCommunitySlugRoute =
+  AuthenticatedCommunitySlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => AuthenticatedCommunityRoute,
+  } as any)
+const AuthenticatedAssistantConversationIdRoute =
+  AuthenticatedAssistantConversationIdRouteImport.update({
+    id: '/$conversationId',
+    path: '/$conversationId',
+    getParentRoute: () => AuthenticatedAssistantRoute,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GlobalEducationKnowledgeBaseUniversitiesIndexRoute =
+  GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport.update({
+    id: '/knowledge-base/universities/',
+    path: '/knowledge-base/universities/',
+    getParentRoute: () => GlobalEducationRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesIndexRoute =
+  AuthenticatedDashboardTechnologiesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardProjectsIndexRoute =
+  AuthenticatedDashboardProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 const AuthenticatedDashboardCounselorIndexRoute =
@@ -2069,205 +1715,77 @@ const AuthenticatedDashboardCounselorIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardCounselorRoute,
   } as any)
-const AuthenticatedDashboardCounselorAnalyticsRoute =
-  AuthenticatedDashboardCounselorAnalyticsRouteImport.update({
-    id: '/analytics',
-    path: '/analytics',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorApplicationsRoute =
-  AuthenticatedDashboardCounselorApplicationsRouteImport.update({
-    id: '/applications',
-    path: '/applications',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorFollowUpsRoute =
-  AuthenticatedDashboardCounselorFollowUpsRouteImport.update({
-    id: '/follow-ups',
-    path: '/follow-ups',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorLeadsRoute =
-  AuthenticatedDashboardCounselorLeadsRouteImport.update({
-    id: '/leads',
-    path: '/leads',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorPipelineRoute =
-  AuthenticatedDashboardCounselorPipelineRouteImport.update({
-    id: '/pipeline',
-    path: '/pipeline',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorTasksRoute =
-  AuthenticatedDashboardCounselorTasksRouteImport.update({
-    id: '/tasks',
-    path: '/tasks',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorVisaRoute =
-  AuthenticatedDashboardCounselorVisaRouteImport.update({
-    id: '/visa',
-    path: '/visa',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCounselorWorkloadRoute =
-  AuthenticatedDashboardCounselorWorkloadRouteImport.update({
-    id: '/workload',
-    path: '/workload',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardCoursesCourseIdRoute =
-  AuthenticatedDashboardCoursesCourseIdRouteImport.update({
-    id: '/courses/$courseId',
-    path: '/courses/$courseId',
+const AuthenticatedDashboardCertificatesIndexRoute =
+  AuthenticatedDashboardCertificatesIndexRouteImport.update({
+    id: '/certificates/',
+    path: '/certificates/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardFacultySubmissionsRoute =
-  AuthenticatedDashboardFacultySubmissionsRouteImport.update({
-    id: '/submissions',
-    path: '/submissions',
-    getParentRoute: () => AuthenticatedDashboardFacultyRoute,
-  } as any)
-const AuthenticatedDashboardLessonsLessonIdRoute =
-  AuthenticatedDashboardLessonsLessonIdRouteImport.update({
-    id: '/lessons/$lessonId',
-    path: '/lessons/$lessonId',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardNotificationsPreferencesRoute =
-  AuthenticatedDashboardNotificationsPreferencesRouteImport.update({
-    id: '/preferences',
-    path: '/preferences',
-    getParentRoute: () => AuthenticatedDashboardNotificationsRoute,
-  } as any)
-const AuthenticatedDashboardPaymentsNewRoute =
-  AuthenticatedDashboardPaymentsNewRouteImport.update({
-    id: '/payments/new',
-    path: '/payments/new',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardProgramsSlugRoute =
-  AuthenticatedDashboardProgramsSlugRouteImport.update({
-    id: '/$slug',
-    path: '/$slug',
-    getParentRoute: () => AuthenticatedDashboardProgramsRoute,
-  } as any)
-const AuthenticatedDashboardProjectsIndexRoute =
-  AuthenticatedDashboardProjectsIndexRouteImport.update({
-    id: '/projects/',
-    path: '/projects/',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardProjectsIdRoute =
-  AuthenticatedDashboardProjectsIdRouteImport.update({
-    id: '/projects/$id',
-    path: '/projects/$id',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesIndexRoute =
-  AuthenticatedDashboardTechnologiesIndexRouteImport.update({
+const AuthenticatedDashboardCareerIndexRoute =
+  AuthenticatedDashboardCareerIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+    getParentRoute: () => AuthenticatedDashboardCareerRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesClientRouteRoute =
-  AuthenticatedDashboardTechnologiesClientRouteRouteImport.update({
-    id: '/client',
-    path: '/client',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+const AuthenticatedDashboardAssignmentsIndexRoute =
+  AuthenticatedDashboardAssignmentsIndexRouteImport.update({
+    id: '/assignments/',
+    path: '/assignments/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesContractsRoute =
-  AuthenticatedDashboardTechnologiesContractsRouteImport.update({
-    id: '/contracts',
-    path: '/contracts',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+const AuthenticatedDashboardApplicationsIndexRoute =
+  AuthenticatedDashboardApplicationsIndexRouteImport.update({
+    id: '/applications/',
+    path: '/applications/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesFinanceRoute =
-  AuthenticatedDashboardTechnologiesFinanceRouteImport.update({
-    id: '/finance',
-    path: '/finance',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+const AuthenticatedDashboardAdminIndexRoute =
+  AuthenticatedDashboardAdminIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesProposalsRoute =
-  AuthenticatedDashboardTechnologiesProposalsRouteImport.update({
-    id: '/proposals',
-    path: '/proposals',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
+  GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport.update({
+    id: '/knowledge-base/universities/$slug',
+    path: '/knowledge-base/universities/$slug',
+    getParentRoute: () => GlobalEducationRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesRequestsRoute =
-  AuthenticatedDashboardTechnologiesRequestsRouteImport.update({
-    id: '/requests',
-    path: '/requests',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+const ApiPublicWebhooksProcessRoute =
+  ApiPublicWebhooksProcessRouteImport.update({
+    id: '/api/public/webhooks/process',
+    path: '/api/public/webhooks/process',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedDashboardTechnologiesSupportRoute =
-  AuthenticatedDashboardTechnologiesSupportRouteImport.update({
-    id: '/support',
-    path: '/support',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+const ApiPublicSreVerifyBearerRoute =
+  ApiPublicSreVerifyBearerRouteImport.update({
+    id: '/api/public/sre/verify-bearer',
+    path: '/api/public/sre/verify-bearer',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicCiAuditIngestRoute = ApiPublicCiAuditIngestRouteImport.update({
-  id: '/api/public/ci-audit/ingest',
-  path: '/api/public/ci-audit/ingest',
+const ApiPublicSreE2eTriggerRoute = ApiPublicSreE2eTriggerRouteImport.update({
+  id: '/api/public/sre/e2e-trigger',
+  path: '/api/public/sre/e2e-trigger',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicCiIngestFailuresLogRoute =
-  ApiPublicCiIngestFailuresLogRouteImport.update({
-    id: '/api/public/ci-ingest-failures/log',
-    path: '/api/public/ci-ingest-failures/log',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicConstitutionAmendmentsRoute =
-  ApiPublicConstitutionAmendmentsRouteImport.update({
-    id: '/api/public/constitution/amendments',
-    path: '/api/public/constitution/amendments',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicConstitutionApplyRoute =
-  ApiPublicConstitutionApplyRouteImport.update({
-    id: '/api/public/constitution/apply',
-    path: '/api/public/constitution/apply',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicConstitutionStatusRoute =
-  ApiPublicConstitutionStatusRouteImport.update({
-    id: '/api/public/constitution/status',
-    path: '/api/public/constitution/status',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicCronEmbeddingsRoute = ApiPublicCronEmbeddingsRouteImport.update({
-  id: '/api/public/cron/embeddings',
-  path: '/api/public/cron/embeddings',
+const ApiPublicSreE2eHealthRoute = ApiPublicSreE2eHealthRouteImport.update({
+  id: '/api/public/sre/e2e-health',
+  path: '/api/public/sre/e2e-health',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicCronWebhookDispatchRoute =
-  ApiPublicCronWebhookDispatchRouteImport.update({
-    id: '/api/public/cron/webhook-dispatch',
-    path: '/api/public/cron/webhook-dispatch',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicGovernanceDecisionsRoute =
-  ApiPublicGovernanceDecisionsRouteImport.update({
-    id: '/decisions',
-    path: '/decisions',
-    getParentRoute: () => ApiPublicGovernanceRoute,
-  } as any)
-const ApiPublicGovernanceKnowledgeRoute =
-  ApiPublicGovernanceKnowledgeRouteImport.update({
-    id: '/knowledge',
-    path: '/knowledge',
-    getParentRoute: () => ApiPublicGovernanceRoute,
-  } as any)
-const ApiPublicHooksEnvReadinessRecheckRoute =
-  ApiPublicHooksEnvReadinessRecheckRouteImport.update({
-    id: '/api/public/hooks/env-readiness-recheck',
-    path: '/api/public/hooks/env-readiness-recheck',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksPollPrCiRoute = ApiPublicHooksPollPrCiRouteImport.update({
-  id: '/api/public/hooks/poll-pr-ci',
-  path: '/api/public/hooks/poll-pr-ci',
+const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
+  id: '/api/public/sentry/webhook',
+  path: '/api/public/sentry/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicSentrySyncRoute = ApiPublicSentrySyncRouteImport.update({
+  id: '/api/public/sentry/sync',
+  path: '/api/public/sentry/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicRiskEvaluatePrRoute = ApiPublicRiskEvaluatePrRouteImport.update({
+  id: '/api/public/risk/evaluate-pr',
+  path: '/api/public/risk/evaluate-pr',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicLaunchReadinessIngestRoute =
@@ -2276,149 +1794,535 @@ const ApiPublicLaunchReadinessIngestRoute =
     path: '/api/public/launch-readiness/ingest',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicRiskEvaluatePrRoute = ApiPublicRiskEvaluatePrRouteImport.update({
-  id: '/api/public/risk/evaluate-pr',
-  path: '/api/public/risk/evaluate-pr',
+const ApiPublicHooksPollPrCiRoute = ApiPublicHooksPollPrCiRouteImport.update({
+  id: '/api/public/hooks/poll-pr-ci',
+  path: '/api/public/hooks/poll-pr-ci',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicSentrySyncRoute = ApiPublicSentrySyncRouteImport.update({
-  id: '/api/public/sentry/sync',
-  path: '/api/public/sentry/sync',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSentryWebhookRoute = ApiPublicSentryWebhookRouteImport.update({
-  id: '/api/public/sentry/webhook',
-  path: '/api/public/sentry/webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSreE2eHealthRoute = ApiPublicSreE2eHealthRouteImport.update({
-  id: '/api/public/sre/e2e-health',
-  path: '/api/public/sre/e2e-health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSreE2eTriggerRoute = ApiPublicSreE2eTriggerRouteImport.update({
-  id: '/api/public/sre/e2e-trigger',
-  path: '/api/public/sre/e2e-trigger',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicSreVerifyBearerRoute =
-  ApiPublicSreVerifyBearerRouteImport.update({
-    id: '/api/public/sre/verify-bearer',
-    path: '/api/public/sre/verify-bearer',
+const ApiPublicHooksEnvReadinessRecheckRoute =
+  ApiPublicHooksEnvReadinessRecheckRouteImport.update({
+    id: '/api/public/hooks/env-readiness-recheck',
+    path: '/api/public/hooks/env-readiness-recheck',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicWebhooksProcessRoute =
-  ApiPublicWebhooksProcessRouteImport.update({
-    id: '/api/public/webhooks/process',
-    path: '/api/public/webhooks/process',
+const ApiPublicGovernanceKnowledgeRoute =
+  ApiPublicGovernanceKnowledgeRouteImport.update({
+    id: '/knowledge',
+    path: '/knowledge',
+    getParentRoute: () => ApiPublicGovernanceRoute,
+  } as any)
+const ApiPublicGovernanceDecisionsRoute =
+  ApiPublicGovernanceDecisionsRouteImport.update({
+    id: '/decisions',
+    path: '/decisions',
+    getParentRoute: () => ApiPublicGovernanceRoute,
+  } as any)
+const ApiPublicCronWebhookDispatchRoute =
+  ApiPublicCronWebhookDispatchRouteImport.update({
+    id: '/api/public/cron/webhook-dispatch',
+    path: '/api/public/cron/webhook-dispatch',
     getParentRoute: () => rootRouteImport,
   } as any)
-const GlobalEducationKnowledgeBaseUniversitiesIndexRoute =
-  GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport.update({
-    id: '/knowledge-base/universities/',
-    path: '/knowledge-base/universities/',
-    getParentRoute: () => GlobalEducationRoute,
+const ApiPublicCronEmbeddingsRoute = ApiPublicCronEmbeddingsRouteImport.update({
+  id: '/api/public/cron/embeddings',
+  path: '/api/public/cron/embeddings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicConstitutionStatusRoute =
+  ApiPublicConstitutionStatusRouteImport.update({
+    id: '/api/public/constitution/status',
+    path: '/api/public/constitution/status',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const GlobalEducationKnowledgeBaseUniversitiesSlugRoute =
-  GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport.update({
-    id: '/knowledge-base/universities/$slug',
-    path: '/knowledge-base/universities/$slug',
-    getParentRoute: () => GlobalEducationRoute,
+const ApiPublicConstitutionApplyRoute =
+  ApiPublicConstitutionApplyRouteImport.update({
+    id: '/api/public/constitution/apply',
+    path: '/api/public/constitution/apply',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedDashboardAdminAiCopilotRoute =
-  AuthenticatedDashboardAdminAiCopilotRouteImport.update({
-    id: '/copilot',
-    path: '/copilot',
-    getParentRoute: () => AuthenticatedDashboardAdminAiRoute,
+const ApiPublicConstitutionAmendmentsRoute =
+  ApiPublicConstitutionAmendmentsRouteImport.update({
+    id: '/api/public/constitution/amendments',
+    path: '/api/public/constitution/amendments',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedDashboardAdminAiUsageRoute =
-  AuthenticatedDashboardAdminAiUsageRouteImport.update({
-    id: '/usage',
-    path: '/usage',
-    getParentRoute: () => AuthenticatedDashboardAdminAiRoute,
+const ApiPublicCiIngestFailuresLogRoute =
+  ApiPublicCiIngestFailuresLogRouteImport.update({
+    id: '/api/public/ci-ingest-failures/log',
+    path: '/api/public/ci-ingest-failures/log',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedDashboardAdminCrmIndexRoute =
-  AuthenticatedDashboardAdminCrmIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedDashboardAdminCrmRoute,
-  } as any)
-const AuthenticatedDashboardAdminIncidentReplayIssueIdRoute =
-  AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport.update({
-    id: '/incident-replay/$issueId',
-    path: '/incident-replay/$issueId',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminProgramsIndexRoute =
-  AuthenticatedDashboardAdminProgramsIndexRouteImport.update({
-    id: '/programs/',
-    path: '/programs/',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminProgramsIdRoute =
-  AuthenticatedDashboardAdminProgramsIdRouteImport.update({
-    id: '/programs/$id',
-    path: '/programs/$id',
-    getParentRoute: () => AuthenticatedDashboardAdminRoute,
-  } as any)
-const AuthenticatedDashboardAdminVisaIdRoute =
-  AuthenticatedDashboardAdminVisaIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDashboardAdminVisaRoute,
-  } as any)
-const AuthenticatedDashboardCounselorTimelineIdRoute =
-  AuthenticatedDashboardCounselorTimelineIdRouteImport.update({
-    id: '/timeline/$id',
-    path: '/timeline/$id',
-    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesClientIndexRoute =
-  AuthenticatedDashboardTechnologiesClientIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesClientRouteRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesClientIdRoute =
-  AuthenticatedDashboardTechnologiesClientIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesClientRouteRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesClientsIndexRoute =
-  AuthenticatedDashboardTechnologiesClientsIndexRouteImport.update({
-    id: '/clients/',
-    path: '/clients/',
+const ApiPublicCiAuditIngestRoute = ApiPublicCiAuditIngestRouteImport.update({
+  id: '/api/public/ci-audit/ingest',
+  path: '/api/public/ci-audit/ingest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardTechnologiesSupportRoute =
+  AuthenticatedDashboardTechnologiesSupportRouteImport.update({
+    id: '/support',
+    path: '/support',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesClientsIdRoute =
-  AuthenticatedDashboardTechnologiesClientsIdRouteImport.update({
-    id: '/clients/$id',
-    path: '/clients/$id',
+const AuthenticatedDashboardTechnologiesRequestsRoute =
+  AuthenticatedDashboardTechnologiesRequestsRouteImport.update({
+    id: '/requests',
+    path: '/requests',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesContractsIndexRoute =
-  AuthenticatedDashboardTechnologiesContractsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesContractsRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesContractsIdRoute =
-  AuthenticatedDashboardTechnologiesContractsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesContractsRoute,
-  } as any)
-const AuthenticatedDashboardTechnologiesProjectsIndexRoute =
-  AuthenticatedDashboardTechnologiesProjectsIndexRouteImport.update({
-    id: '/projects/',
-    path: '/projects/',
+const AuthenticatedDashboardTechnologiesProposalsRoute =
+  AuthenticatedDashboardTechnologiesProposalsRouteImport.update({
+    id: '/proposals',
+    path: '/proposals',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesProjectsIdRoute =
-  AuthenticatedDashboardTechnologiesProjectsIdRouteImport.update({
+const AuthenticatedDashboardTechnologiesFinanceRoute =
+  AuthenticatedDashboardTechnologiesFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesContractsRoute =
+  AuthenticatedDashboardTechnologiesContractsRouteImport.update({
+    id: '/contracts',
+    path: '/contracts',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardProjectsIdRoute =
+  AuthenticatedDashboardProjectsIdRouteImport.update({
     id: '/projects/$id',
     path: '/projects/$id',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardProgramsSlugRoute =
+  AuthenticatedDashboardProgramsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => AuthenticatedDashboardProgramsRoute,
+  } as any)
+const AuthenticatedDashboardPaymentsNewRoute =
+  AuthenticatedDashboardPaymentsNewRouteImport.update({
+    id: '/payments/new',
+    path: '/payments/new',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardNotificationsPreferencesRoute =
+  AuthenticatedDashboardNotificationsPreferencesRouteImport.update({
+    id: '/preferences',
+    path: '/preferences',
+    getParentRoute: () => AuthenticatedDashboardNotificationsRoute,
+  } as any)
+const AuthenticatedDashboardLessonsLessonIdRoute =
+  AuthenticatedDashboardLessonsLessonIdRouteImport.update({
+    id: '/lessons/$lessonId',
+    path: '/lessons/$lessonId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardFacultySubmissionsRoute =
+  AuthenticatedDashboardFacultySubmissionsRouteImport.update({
+    id: '/submissions',
+    path: '/submissions',
+    getParentRoute: () => AuthenticatedDashboardFacultyRoute,
+  } as any)
+const AuthenticatedDashboardCoursesCourseIdRoute =
+  AuthenticatedDashboardCoursesCourseIdRouteImport.update({
+    id: '/courses/$courseId',
+    path: '/courses/$courseId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardCounselorWorkloadRoute =
+  AuthenticatedDashboardCounselorWorkloadRouteImport.update({
+    id: '/workload',
+    path: '/workload',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorVisaRoute =
+  AuthenticatedDashboardCounselorVisaRouteImport.update({
+    id: '/visa',
+    path: '/visa',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorTasksRoute =
+  AuthenticatedDashboardCounselorTasksRouteImport.update({
+    id: '/tasks',
+    path: '/tasks',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorPipelineRoute =
+  AuthenticatedDashboardCounselorPipelineRouteImport.update({
+    id: '/pipeline',
+    path: '/pipeline',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorLeadsRoute =
+  AuthenticatedDashboardCounselorLeadsRouteImport.update({
+    id: '/leads',
+    path: '/leads',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorFollowUpsRoute =
+  AuthenticatedDashboardCounselorFollowUpsRouteImport.update({
+    id: '/follow-ups',
+    path: '/follow-ups',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorApplicationsRoute =
+  AuthenticatedDashboardCounselorApplicationsRouteImport.update({
+    id: '/applications',
+    path: '/applications',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCounselorAnalyticsRoute =
+  AuthenticatedDashboardCounselorAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardCertificatesIdRoute =
+  AuthenticatedDashboardCertificatesIdRouteImport.update({
+    id: '/certificates/$id',
+    path: '/certificates/$id',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardCareerSavedRoute =
+  AuthenticatedDashboardCareerSavedRouteImport.update({
+    id: '/saved',
+    path: '/saved',
+    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+  } as any)
+const AuthenticatedDashboardCareerResumeRoute =
+  AuthenticatedDashboardCareerResumeRouteImport.update({
+    id: '/resume',
+    path: '/resume',
+    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+  } as any)
+const AuthenticatedDashboardCareerProfileRoute =
+  AuthenticatedDashboardCareerProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+  } as any)
+const AuthenticatedDashboardCareerPortfolioRoute =
+  AuthenticatedDashboardCareerPortfolioRouteImport.update({
+    id: '/portfolio',
+    path: '/portfolio',
+    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+  } as any)
+const AuthenticatedDashboardCareerApplicationsRoute =
+  AuthenticatedDashboardCareerApplicationsRouteImport.update({
+    id: '/applications',
+    path: '/applications',
+    getParentRoute: () => AuthenticatedDashboardCareerRoute,
+  } as any)
+const AuthenticatedDashboardAssignmentsAssignmentIdRoute =
+  AuthenticatedDashboardAssignmentsAssignmentIdRouteImport.update({
+    id: '/assignments/$assignmentId',
+    path: '/assignments/$assignmentId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardApplicationsIdRoute =
+  AuthenticatedDashboardApplicationsIdRouteImport.update({
+    id: '/applications/$id',
+    path: '/applications/$id',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAiTutorRoute =
+  AuthenticatedDashboardAiTutorRouteImport.update({
+    id: '/ai/tutor',
+    path: '/ai/tutor',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAiGlobalRoute =
+  AuthenticatedDashboardAiGlobalRouteImport.update({
+    id: '/ai/global',
+    path: '/ai/global',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAiCareerRoute =
+  AuthenticatedDashboardAiCareerRouteImport.update({
+    id: '/ai/career',
+    path: '/ai/career',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAdminWebhooksRoute =
+  AuthenticatedDashboardAdminWebhooksRouteImport.update({
+    id: '/webhooks',
+    path: '/webhooks',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminVisaRoute =
+  AuthenticatedDashboardAdminVisaRouteImport.update({
+    id: '/visa',
+    path: '/visa',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminUsersRoute =
+  AuthenticatedDashboardAdminUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminUniversitiesRoute =
+  AuthenticatedDashboardAdminUniversitiesRouteImport.update({
+    id: '/universities',
+    path: '/universities',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminUniprogramsRoute =
+  AuthenticatedDashboardAdminUniprogramsRouteImport.update({
+    id: '/uniprograms',
+    path: '/uniprograms',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminTechLeadsRoute =
+  AuthenticatedDashboardAdminTechLeadsRouteImport.update({
+    id: '/tech-leads',
+    path: '/tech-leads',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSystemRoute =
+  AuthenticatedDashboardAdminSystemRouteImport.update({
+    id: '/system',
+    path: '/system',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminStoriesRoute =
+  AuthenticatedDashboardAdminStoriesRouteImport.update({
+    id: '/stories',
+    path: '/stories',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSreMetricsRoute =
+  AuthenticatedDashboardAdminSreMetricsRouteImport.update({
+    id: '/sre-metrics',
+    path: '/sre-metrics',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSettingsRoute =
+  AuthenticatedDashboardAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSentryReleasesRoute =
+  AuthenticatedDashboardAdminSentryReleasesRouteImport.update({
+    id: '/sentry-releases',
+    path: '/sentry-releases',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSentryRoute =
+  AuthenticatedDashboardAdminSentryRouteImport.update({
+    id: '/sentry',
+    path: '/sentry',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminScholarshipsRoute =
+  AuthenticatedDashboardAdminScholarshipsRouteImport.update({
+    id: '/scholarships',
+    path: '/scholarships',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSaLeadsRoute =
+  AuthenticatedDashboardAdminSaLeadsRouteImport.update({
+    id: '/sa-leads',
+    path: '/sa-leads',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminSaApplicationsRoute =
+  AuthenticatedDashboardAdminSaApplicationsRouteImport.update({
+    id: '/sa-applications',
+    path: '/sa-applications',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminReleasesRoute =
+  AuthenticatedDashboardAdminReleasesRouteImport.update({
+    id: '/releases',
+    path: '/releases',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminRagRoute =
+  AuthenticatedDashboardAdminRagRouteImport.update({
+    id: '/rag',
+    path: '/rag',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminProviderHealthRoute =
+  AuthenticatedDashboardAdminProviderHealthRouteImport.update({
+    id: '/provider-health',
+    path: '/provider-health',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminProjectsRoute =
+  AuthenticatedDashboardAdminProjectsRouteImport.update({
+    id: '/projects',
+    path: '/projects',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminPlacementsRoute =
+  AuthenticatedDashboardAdminPlacementsRouteImport.update({
+    id: '/placements',
+    path: '/placements',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminPaymentsRoute =
+  AuthenticatedDashboardAdminPaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminOperatorChecklistRoute =
+  AuthenticatedDashboardAdminOperatorChecklistRouteImport.update({
+    id: '/operator-checklist',
+    path: '/operator-checklist',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminObservabilityRoute =
+  AuthenticatedDashboardAdminObservabilityRouteImport.update({
+    id: '/observability',
+    path: '/observability',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminNotificationsRoute =
+  AuthenticatedDashboardAdminNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminMonitoringSecretsRoute =
+  AuthenticatedDashboardAdminMonitoringSecretsRouteImport.update({
+    id: '/monitoring-secrets',
+    path: '/monitoring-secrets',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminLaunchReportRoute =
+  AuthenticatedDashboardAdminLaunchReportRouteImport.update({
+    id: '/launch-report',
+    path: '/launch-report',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminLaunchReadinessRoute =
+  AuthenticatedDashboardAdminLaunchReadinessRouteImport.update({
+    id: '/launch-readiness',
+    path: '/launch-readiness',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminJobsRoute =
+  AuthenticatedDashboardAdminJobsRouteImport.update({
+    id: '/jobs',
+    path: '/jobs',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminIdentityProvidersRoute =
+  AuthenticatedDashboardAdminIdentityProvidersRouteImport.update({
+    id: '/identity-providers',
+    path: '/identity-providers',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminGovernanceRoute =
+  AuthenticatedDashboardAdminGovernanceRouteImport.update({
+    id: '/governance',
+    path: '/governance',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminFeatureFlagsRoute =
+  AuthenticatedDashboardAdminFeatureFlagsRouteImport.update({
+    id: '/feature-flags',
+    path: '/feature-flags',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminEnvReadinessRoute =
+  AuthenticatedDashboardAdminEnvReadinessRouteImport.update({
+    id: '/env-readiness',
+    path: '/env-readiness',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminEnrollmentsRoute =
+  AuthenticatedDashboardAdminEnrollmentsRouteImport.update({
+    id: '/enrollments',
+    path: '/enrollments',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminEmployersRoute =
+  AuthenticatedDashboardAdminEmployersRouteImport.update({
+    id: '/employers',
+    path: '/employers',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminDomainStatusRoute =
+  AuthenticatedDashboardAdminDomainStatusRouteImport.update({
+    id: '/domain-status',
+    path: '/domain-status',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCrmRoute =
+  AuthenticatedDashboardAdminCrmRouteImport.update({
+    id: '/crm',
+    path: '/crm',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCountriesRoute =
+  AuthenticatedDashboardAdminCountriesRouteImport.update({
+    id: '/countries',
+    path: '/countries',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCertificatesRoute =
+  AuthenticatedDashboardAdminCertificatesRouteImport.update({
+    id: '/certificates',
+    path: '/certificates',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminAuditLogsRoute =
+  AuthenticatedDashboardAdminAuditLogsRouteImport.update({
+    id: '/audit-logs',
+    path: '/audit-logs',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminAssignmentsRoute =
+  AuthenticatedDashboardAdminAssignmentsRouteImport.update({
+    id: '/assignments',
+    path: '/assignments',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminApplicationsRoute =
+  AuthenticatedDashboardAdminApplicationsRouteImport.update({
+    id: '/applications',
+    path: '/applications',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminApiRoute =
+  AuthenticatedDashboardAdminApiRouteImport.update({
+    id: '/api',
+    path: '/api',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminAnalyticsRoute =
+  AuthenticatedDashboardAdminAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminAiRoute =
+  AuthenticatedDashboardAdminAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedCommunityEventsIdRoute =
+  AuthenticatedCommunityEventsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedCommunityEventsRoute,
+  } as any)
+const AuthenticatedCommunitySlugThreadIdRoute =
+  AuthenticatedCommunitySlugThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedCommunitySlugRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesClientRouteRoute =
+  AuthenticatedDashboardTechnologiesClientRouteRouteImport.update({
+    id: '/client',
+    path: '/client',
     getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
   } as any)
 const AuthenticatedDashboardTechnologiesProposalsIndexRoute =
@@ -2427,17 +2331,113 @@ const AuthenticatedDashboardTechnologiesProposalsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardTechnologiesProposalsRoute,
   } as any)
-const AuthenticatedDashboardTechnologiesProposalsIdRoute =
-  AuthenticatedDashboardTechnologiesProposalsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDashboardTechnologiesProposalsRoute,
+const AuthenticatedDashboardTechnologiesProjectsIndexRoute =
+  AuthenticatedDashboardTechnologiesProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesContractsIndexRoute =
+  AuthenticatedDashboardTechnologiesContractsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesContractsRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesClientsIndexRoute =
+  AuthenticatedDashboardTechnologiesClientsIndexRouteImport.update({
+    id: '/clients/',
+    path: '/clients/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesClientIndexRoute =
+  AuthenticatedDashboardTechnologiesClientIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesClientRouteRoute,
+  } as any)
+const AuthenticatedDashboardAdminProgramsIndexRoute =
+  AuthenticatedDashboardAdminProgramsIndexRouteImport.update({
+    id: '/programs/',
+    path: '/programs/',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminCrmIndexRoute =
+  AuthenticatedDashboardAdminCrmIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardAdminCrmRoute,
   } as any)
 const ApiV1CertificatesVerifyIdRoute =
   ApiV1CertificatesVerifyIdRouteImport.update({
     id: '/api/v1/certificates/verify/$id',
     path: '/api/v1/certificates/verify/$id',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedDashboardTechnologiesProposalsIdRoute =
+  AuthenticatedDashboardTechnologiesProposalsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesProposalsRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesProjectsIdRoute =
+  AuthenticatedDashboardTechnologiesProjectsIdRouteImport.update({
+    id: '/projects/$id',
+    path: '/projects/$id',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesContractsIdRoute =
+  AuthenticatedDashboardTechnologiesContractsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesContractsRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesClientsIdRoute =
+  AuthenticatedDashboardTechnologiesClientsIdRouteImport.update({
+    id: '/clients/$id',
+    path: '/clients/$id',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesRoute,
+  } as any)
+const AuthenticatedDashboardTechnologiesClientIdRoute =
+  AuthenticatedDashboardTechnologiesClientIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDashboardTechnologiesClientRouteRoute,
+  } as any)
+const AuthenticatedDashboardCounselorTimelineIdRoute =
+  AuthenticatedDashboardCounselorTimelineIdRouteImport.update({
+    id: '/timeline/$id',
+    path: '/timeline/$id',
+    getParentRoute: () => AuthenticatedDashboardCounselorRoute,
+  } as any)
+const AuthenticatedDashboardAdminVisaIdRoute =
+  AuthenticatedDashboardAdminVisaIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDashboardAdminVisaRoute,
+  } as any)
+const AuthenticatedDashboardAdminProgramsIdRoute =
+  AuthenticatedDashboardAdminProgramsIdRouteImport.update({
+    id: '/programs/$id',
+    path: '/programs/$id',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminIncidentReplayIssueIdRoute =
+  AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport.update({
+    id: '/incident-replay/$issueId',
+    path: '/incident-replay/$issueId',
+    getParentRoute: () => AuthenticatedDashboardAdminRoute,
+  } as any)
+const AuthenticatedDashboardAdminAiUsageRoute =
+  AuthenticatedDashboardAdminAiUsageRouteImport.update({
+    id: '/usage',
+    path: '/usage',
+    getParentRoute: () => AuthenticatedDashboardAdminAiRoute,
+  } as any)
+const AuthenticatedDashboardAdminAiCopilotRoute =
+  AuthenticatedDashboardAdminAiCopilotRouteImport.update({
+    id: '/copilot',
+    path: '/copilot',
+    getParentRoute: () => AuthenticatedDashboardAdminAiRoute,
   } as any)
 const AuthenticatedDashboardAdminCrmTypeIdRoute =
   AuthenticatedDashboardAdminCrmTypeIdRouteImport.update({
@@ -4723,284 +4723,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/403': {
-      id: '/403'
-      path: '/403'
-      fullPath: '/403'
-      preLoaderRoute: typeof R403RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about-higaet': {
-      id: '/about-higaet'
-      path: '/about-higaet'
-      fullPath: '/about-higaet'
-      preLoaderRoute: typeof AboutHigaetRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/academy': {
-      id: '/academy'
-      path: '/academy'
-      fullPath: '/academy'
-      preLoaderRoute: typeof AcademyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/advisors': {
-      id: '/advisors'
-      path: '/advisors'
-      fullPath: '/advisors'
-      preLoaderRoute: typeof AdvisorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai': {
-      id: '/ai'
-      path: '/ai'
-      fullPath: '/ai'
-      preLoaderRoute: typeof AiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/constitution': {
-      id: '/constitution'
-      path: '/constitution'
-      fullPath: '/constitution'
-      preLoaderRoute: typeof ConstitutionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/constitution-amendments': {
-      id: '/constitution-amendments'
-      path: '/constitution-amendments'
-      fullPath: '/constitution-amendments'
-      preLoaderRoute: typeof ConstitutionAmendmentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/constitution-versions': {
-      id: '/constitution-versions'
-      path: '/constitution-versions'
-      fullPath: '/constitution-versions'
-      preLoaderRoute: typeof ConstitutionVersionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookies': {
-      id: '/cookies'
-      path: '/cookies'
-      fullPath: '/cookies'
-      preLoaderRoute: typeof CookiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs': {
-      id: '/docs'
-      path: '/docs'
-      fullPath: '/docs'
-      preLoaderRoute: typeof DocsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faculty': {
-      id: '/faculty'
-      path: '/faculty'
-      fullPath: '/faculty'
-      preLoaderRoute: typeof FacultyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/founder': {
-      id: '/founder'
-      path: '/founder'
-      fullPath: '/founder'
-      preLoaderRoute: typeof FounderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/global-education': {
-      id: '/global-education'
-      path: '/global-education'
-      fullPath: '/global-education'
-      preLoaderRoute: typeof GlobalEducationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/governance': {
-      id: '/governance'
-      path: '/governance'
-      fullPath: '/governance'
-      preLoaderRoute: typeof GovernanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/healthz': {
-      id: '/healthz'
-      path: '/healthz'
-      fullPath: '/healthz'
-      preLoaderRoute: typeof HealthzRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/higaet-academy': {
-      id: '/higaet-academy'
-      path: '/higaet-academy'
-      fullPath: '/higaet-academy'
-      preLoaderRoute: typeof HigaetAcademyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/higaet-ai-platform': {
-      id: '/higaet-ai-platform'
-      path: '/higaet-ai-platform'
-      fullPath: '/higaet-ai-platform'
-      preLoaderRoute: typeof HigaetAiPlatformRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/higaet-global-education-hub': {
-      id: '/higaet-global-education-hub'
-      path: '/higaet-global-education-hub'
-      fullPath: '/higaet-global-education-hub'
-      preLoaderRoute: typeof HigaetGlobalEducationHubRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/higaet-technologies': {
-      id: '/higaet-technologies'
-      path: '/higaet-technologies'
-      fullPath: '/higaet-technologies'
-      preLoaderRoute: typeof HigaetTechnologiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/kernel': {
-      id: '/kernel'
-      path: '/kernel'
-      fullPath: '/kernel'
-      preLoaderRoute: typeof KernelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leadership': {
-      id: '/leadership'
-      path: '/leadership'
-      fullPath: '/leadership'
-      preLoaderRoute: typeof LeadershipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp-docs': {
-      id: '/mcp-docs'
-      path: '/mcp-docs'
-      fullPath: '/mcp-docs'
-      preLoaderRoute: typeof McpDocsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/partners': {
-      id: '/partners'
-      path: '/partners'
-      fullPath: '/partners'
-      preLoaderRoute: typeof PartnersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/readyz': {
-      id: '/readyz'
-      path: '/readyz'
-      fullPath: '/readyz'
-      preLoaderRoute: typeof ReadyzRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/replay': {
-      id: '/replay'
-      path: '/replay'
-      fullPath: '/replay'
-      preLoaderRoute: typeof ReplayRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/simulate': {
-      id: '/simulate'
-      path: '/simulate'
-      fullPath: '/simulate'
-      preLoaderRoute: typeof SimulateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/status': {
-      id: '/status'
-      path: '/status'
-      fullPath: '/status'
-      preLoaderRoute: typeof StatusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/success-stories': {
-      id: '/success-stories'
-      path: '/success-stories'
-      fullPath: '/success-stories'
-      preLoaderRoute: typeof SuccessStoriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/system-dashboard': {
-      id: '/system-dashboard'
-      path: '/system-dashboard'
-      fullPath: '/system-dashboard'
-      preLoaderRoute: typeof SystemDashboardRouteImport
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/technologies': {
@@ -5010,361 +4737,284 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
+    '/system-dashboard': {
+      id: '/system-dashboard'
+      path: '/system-dashboard'
+      fullPath: '/system-dashboard'
+      preLoaderRoute: typeof SystemDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/assistant': {
-      id: '/_authenticated/assistant'
-      path: '/assistant'
-      fullPath: '/assistant'
-      preLoaderRoute: typeof AuthenticatedAssistantRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/community': {
-      id: '/_authenticated/community'
-      path: '/community'
-      fullPath: '/community'
-      preLoaderRoute: typeof AuthenticatedCommunityRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/education': {
-      id: '/_authenticated/education'
-      path: '/education'
-      fullPath: '/education'
-      preLoaderRoute: typeof AuthenticatedEducationRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/ops': {
-      id: '/_authenticated/ops'
-      path: '/ops'
-      fullPath: '/ops'
-      preLoaderRoute: typeof AuthenticatedOpsRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/academy/': {
-      id: '/academy/'
-      path: '/'
-      fullPath: '/academy/'
-      preLoaderRoute: typeof AcademyIndexRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/admissions': {
-      id: '/academy/admissions'
-      path: '/admissions'
-      fullPath: '/academy/admissions'
-      preLoaderRoute: typeof AcademyAdmissionsRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/certifications': {
-      id: '/academy/certifications'
-      path: '/certifications'
-      fullPath: '/academy/certifications'
-      preLoaderRoute: typeof AcademyCertificationsRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/contact': {
-      id: '/academy/contact'
-      path: '/contact'
-      fullPath: '/academy/contact'
-      preLoaderRoute: typeof AcademyContactRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/corporate-training': {
-      id: '/academy/corporate-training'
-      path: '/corporate-training'
-      fullPath: '/academy/corporate-training'
-      preLoaderRoute: typeof AcademyCorporateTrainingRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/faq': {
-      id: '/academy/faq'
-      path: '/faq'
-      fullPath: '/academy/faq'
-      preLoaderRoute: typeof AcademyFaqRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/internships': {
-      id: '/academy/internships'
-      path: '/internships'
-      fullPath: '/academy/internships'
-      preLoaderRoute: typeof AcademyInternshipsRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/learning-paths': {
-      id: '/academy/learning-paths'
-      path: '/learning-paths'
-      fullPath: '/academy/learning-paths'
-      preLoaderRoute: typeof AcademyLearningPathsRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/offline-training': {
-      id: '/academy/offline-training'
-      path: '/offline-training'
-      fullPath: '/academy/offline-training'
-      preLoaderRoute: typeof AcademyOfflineTrainingRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/online-courses': {
-      id: '/academy/online-courses'
-      path: '/online-courses'
-      fullPath: '/academy/online-courses'
-      preLoaderRoute: typeof AcademyOnlineCoursesRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/placements': {
-      id: '/academy/placements'
-      path: '/placements'
-      fullPath: '/academy/placements'
-      preLoaderRoute: typeof AcademyPlacementsRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/scholarship': {
-      id: '/academy/scholarship'
-      path: '/scholarship'
-      fullPath: '/academy/scholarship'
-      preLoaderRoute: typeof AcademyScholarshipRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/academy/success-stories': {
-      id: '/academy/success-stories'
+    '/success-stories': {
+      id: '/success-stories'
       path: '/success-stories'
-      fullPath: '/academy/success-stories'
-      preLoaderRoute: typeof AcademySuccessStoriesRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/ai/': {
-      id: '/ai/'
-      path: '/'
-      fullPath: '/ai/'
-      preLoaderRoute: typeof AiIndexRouteImport
-      parentRoute: typeof AiRoute
-    }
-    '/ai/chat': {
-      id: '/ai/chat'
-      path: '/chat'
-      fullPath: '/ai/chat'
-      preLoaderRoute: typeof AiChatRouteImport
-      parentRoute: typeof AiRoute
-    }
-    '/ai/collections': {
-      id: '/ai/collections'
-      path: '/collections'
-      fullPath: '/ai/collections'
-      preLoaderRoute: typeof AiCollectionsRouteImport
-      parentRoute: typeof AiRoute
-    }
-    '/ai/history': {
-      id: '/ai/history'
-      path: '/history'
-      fullPath: '/ai/history'
-      preLoaderRoute: typeof AiHistoryRouteImport
-      parentRoute: typeof AiRoute
-    }
-    '/ai/prompts': {
-      id: '/ai/prompts'
-      path: '/prompts'
-      fullPath: '/ai/prompts'
-      preLoaderRoute: typeof AiPromptsRouteImport
-      parentRoute: typeof AiRoute
-    }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
+      fullPath: '/success-stories'
+      preLoaderRoute: typeof SuccessStoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/forgot-password': {
-      id: '/auth/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/auth/forgot-password'
-      preLoaderRoute: typeof AuthForgotPasswordRouteImport
-      parentRoute: typeof AuthRoute
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRoute
+    '/simulate': {
+      id: '/simulate'
+      path: '/simulate'
+      fullPath: '/simulate'
+      preLoaderRoute: typeof SimulateRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/auth/reset-password': {
-      id: '/auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/auth/reset-password'
-      preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRoute
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
+    '/replay': {
+      id: '/replay'
+      path: '/replay'
+      fullPath: '/replay'
+      preLoaderRoute: typeof ReplayRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/careers/$slug': {
-      id: '/careers/$slug'
-      path: '/$slug'
-      fullPath: '/careers/$slug'
-      preLoaderRoute: typeof CareersSlugRouteImport
-      parentRoute: typeof CareersRoute
+    '/readyz': {
+      id: '/readyz'
+      path: '/readyz'
+      fullPath: '/readyz'
+      preLoaderRoute: typeof ReadyzRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/docs/': {
-      id: '/docs/'
-      path: '/'
-      fullPath: '/docs/'
-      preLoaderRoute: typeof DocsIndexRouteImport
-      parentRoute: typeof DocsRoute
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/docs/$category': {
-      id: '/docs/$category'
-      path: '/$category'
-      fullPath: '/docs/$category'
-      preLoaderRoute: typeof DocsCategoryRouteImport
-      parentRoute: typeof DocsRoute
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/docs/api-reference': {
-      id: '/docs/api-reference'
-      path: '/api-reference'
-      fullPath: '/docs/api-reference'
-      preLoaderRoute: typeof DocsApiReferenceRouteImport
-      parentRoute: typeof DocsRoute
+    '/mcp-docs': {
+      id: '/mcp-docs'
+      path: '/mcp-docs'
+      fullPath: '/mcp-docs'
+      preLoaderRoute: typeof McpDocsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/docs/authentication': {
-      id: '/docs/authentication'
-      path: '/authentication'
-      fullPath: '/docs/authentication'
-      preLoaderRoute: typeof DocsAuthenticationRouteImport
-      parentRoute: typeof DocsRoute
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/docs/webhooks': {
-      id: '/docs/webhooks'
-      path: '/webhooks'
-      fullPath: '/docs/webhooks'
-      preLoaderRoute: typeof DocsWebhooksRouteImport
-      parentRoute: typeof DocsRoute
+    '/leadership': {
+      id: '/leadership'
+      path: '/leadership'
+      fullPath: '/leadership'
+      preLoaderRoute: typeof LeadershipRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/global-education/': {
-      id: '/global-education/'
-      path: '/'
-      fullPath: '/global-education/'
-      preLoaderRoute: typeof GlobalEducationIndexRouteImport
-      parentRoute: typeof GlobalEducationRoute
+    '/kernel': {
+      id: '/kernel'
+      path: '/kernel'
+      fullPath: '/kernel'
+      preLoaderRoute: typeof KernelRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/global-education/admission-process': {
-      id: '/global-education/admission-process'
-      path: '/admission-process'
-      fullPath: '/global-education/admission-process'
-      preLoaderRoute: typeof GlobalEducationAdmissionProcessRouteImport
-      parentRoute: typeof GlobalEducationRoute
+    '/higaet-technologies': {
+      id: '/higaet-technologies'
+      path: '/higaet-technologies'
+      fullPath: '/higaet-technologies'
+      preLoaderRoute: typeof HigaetTechnologiesRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/global-education/contact': {
-      id: '/global-education/contact'
+    '/higaet-global-education-hub': {
+      id: '/higaet-global-education-hub'
+      path: '/higaet-global-education-hub'
+      fullPath: '/higaet-global-education-hub'
+      preLoaderRoute: typeof HigaetGlobalEducationHubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/higaet-ai-platform': {
+      id: '/higaet-ai-platform'
+      path: '/higaet-ai-platform'
+      fullPath: '/higaet-ai-platform'
+      preLoaderRoute: typeof HigaetAiPlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/higaet-academy': {
+      id: '/higaet-academy'
+      path: '/higaet-academy'
+      fullPath: '/higaet-academy'
+      preLoaderRoute: typeof HigaetAcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/governance': {
+      id: '/governance'
+      path: '/governance'
+      fullPath: '/governance'
+      preLoaderRoute: typeof GovernanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/global-education': {
+      id: '/global-education'
+      path: '/global-education'
+      fullPath: '/global-education'
+      preLoaderRoute: typeof GlobalEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founder': {
+      id: '/founder'
+      path: '/founder'
+      fullPath: '/founder'
+      preLoaderRoute: typeof FounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faculty': {
+      id: '/faculty'
+      path: '/faculty'
+      fullPath: '/faculty'
+      preLoaderRoute: typeof FacultyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
       path: '/contact'
-      fullPath: '/global-education/contact'
-      preLoaderRoute: typeof GlobalEducationContactRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/countries': {
-      id: '/global-education/countries'
-      path: '/countries'
-      fullPath: '/global-education/countries'
-      preLoaderRoute: typeof GlobalEducationCountriesRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/faq': {
-      id: '/global-education/faq'
-      path: '/faq'
-      fullPath: '/global-education/faq'
-      preLoaderRoute: typeof GlobalEducationFaqRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/scholarships': {
-      id: '/global-education/scholarships'
-      path: '/scholarships'
-      fullPath: '/global-education/scholarships'
-      preLoaderRoute: typeof GlobalEducationScholarshipsRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/student-services': {
-      id: '/global-education/student-services'
-      path: '/student-services'
-      fullPath: '/global-education/student-services'
-      preLoaderRoute: typeof GlobalEducationStudentServicesRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/study-abroad': {
-      id: '/global-education/study-abroad'
-      path: '/study-abroad'
-      fullPath: '/global-education/study-abroad'
-      preLoaderRoute: typeof GlobalEducationStudyAbroadRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/universities': {
-      id: '/global-education/universities'
-      path: '/universities'
-      fullPath: '/global-education/universities'
-      preLoaderRoute: typeof GlobalEducationUniversitiesRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/global-education/visa-guidance': {
-      id: '/global-education/visa-guidance'
-      path: '/visa-guidance'
-      fullPath: '/global-education/visa-guidance'
-      preLoaderRoute: typeof GlobalEducationVisaGuidanceRouteImport
-      parentRoute: typeof GlobalEducationRoute
-    }
-    '/jobs/': {
-      id: '/jobs/'
-      path: '/jobs'
-      fullPath: '/jobs/'
-      preLoaderRoute: typeof JobsIndexRouteImport
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/jobs/$slug': {
-      id: '/jobs/$slug'
-      path: '/jobs/$slug'
-      fullPath: '/jobs/$slug'
-      preLoaderRoute: typeof JobsSlugRouteImport
+    '/constitution-versions': {
+      id: '/constitution-versions'
+      path: '/constitution-versions'
+      fullPath: '/constitution-versions'
+      preLoaderRoute: typeof ConstitutionVersionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portfolio/$slug': {
-      id: '/portfolio/$slug'
-      path: '/portfolio/$slug'
-      fullPath: '/portfolio/$slug'
-      preLoaderRoute: typeof PortfolioSlugRouteImport
+    '/constitution-amendments': {
+      id: '/constitution-amendments'
+      path: '/constitution-amendments'
+      fullPath: '/constitution-amendments'
+      preLoaderRoute: typeof ConstitutionAmendmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/constitution': {
+      id: '/constitution'
+      path: '/constitution'
+      fullPath: '/constitution'
+      preLoaderRoute: typeof ConstitutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advisors': {
+      id: '/advisors'
+      path: '/advisors'
+      fullPath: '/advisors'
+      preLoaderRoute: typeof AdvisorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academy': {
+      id: '/academy'
+      path: '/academy'
+      fullPath: '/academy'
+      preLoaderRoute: typeof AcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about-higaet': {
+      id: '/about-higaet'
+      path: '/about-higaet'
+      fullPath: '/about-higaet'
+      preLoaderRoute: typeof AboutHigaetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/403': {
+      id: '/403'
+      path: '/403'
+      fullPath: '/403'
+      preLoaderRoute: typeof R403RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/technologies/': {
@@ -5374,214 +5024,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesIndexRouteImport
       parentRoute: typeof TechnologiesRoute
     }
-    '/technologies/ai-solutions': {
-      id: '/technologies/ai-solutions'
-      path: '/ai-solutions'
-      fullPath: '/technologies/ai-solutions'
-      preLoaderRoute: typeof TechnologiesAiSolutionsRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/jobs/': {
+      id: '/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof JobsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/technologies/api-development': {
-      id: '/technologies/api-development'
-      path: '/api-development'
-      fullPath: '/technologies/api-development'
-      preLoaderRoute: typeof TechnologiesApiDevelopmentRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/global-education/': {
+      id: '/global-education/'
+      path: '/'
+      fullPath: '/global-education/'
+      preLoaderRoute: typeof GlobalEducationIndexRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
-    '/technologies/business-intelligence': {
-      id: '/technologies/business-intelligence'
-      path: '/business-intelligence'
-      fullPath: '/technologies/business-intelligence'
-      preLoaderRoute: typeof TechnologiesBusinessIntelligenceRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/docs/': {
+      id: '/docs/'
+      path: '/'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsIndexRouteImport
+      parentRoute: typeof DocsRoute
     }
-    '/technologies/careers': {
-      id: '/technologies/careers'
-      path: '/careers'
-      fullPath: '/technologies/careers'
-      preLoaderRoute: typeof TechnologiesCareersRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/ai/': {
+      id: '/ai/'
+      path: '/'
+      fullPath: '/ai/'
+      preLoaderRoute: typeof AiIndexRouteImport
+      parentRoute: typeof AiRoute
     }
-    '/technologies/case-studies': {
-      id: '/technologies/case-studies'
-      path: '/case-studies'
-      fullPath: '/technologies/case-studies'
-      preLoaderRoute: typeof TechnologiesCaseStudiesRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/academy/': {
+      id: '/academy/'
+      path: '/'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexRouteImport
+      parentRoute: typeof AcademyRoute
     }
-    '/technologies/cloud-migration': {
-      id: '/technologies/cloud-migration'
-      path: '/cloud-migration'
-      fullPath: '/technologies/cloud-migration'
-      preLoaderRoute: typeof TechnologiesCloudMigrationRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/verify/$token': {
+      id: '/verify/$token'
+      path: '/verify/$token'
+      fullPath: '/verify/$token'
+      preLoaderRoute: typeof VerifyTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/technologies/cloud-solutions': {
-      id: '/technologies/cloud-solutions'
-      path: '/cloud-solutions'
-      fullPath: '/technologies/cloud-solutions'
-      preLoaderRoute: typeof TechnologiesCloudSolutionsRouteImport
-      parentRoute: typeof TechnologiesRoute
+    '/verify-certificate/$id': {
+      id: '/verify-certificate/$id'
+      path: '/verify-certificate/$id'
+      fullPath: '/verify-certificate/$id'
+      preLoaderRoute: typeof VerifyCertificateIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/technologies/company': {
-      id: '/technologies/company'
-      path: '/company'
-      fullPath: '/technologies/company'
-      preLoaderRoute: typeof TechnologiesCompanyRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/contact': {
-      id: '/technologies/contact'
-      path: '/contact'
-      fullPath: '/technologies/contact'
-      preLoaderRoute: typeof TechnologiesContactRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/custom-software-development': {
-      id: '/technologies/custom-software-development'
-      path: '/custom-software-development'
-      fullPath: '/technologies/custom-software-development'
-      preLoaderRoute: typeof TechnologiesCustomSoftwareDevelopmentRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/data-engineering': {
-      id: '/technologies/data-engineering'
-      path: '/data-engineering'
-      fullPath: '/technologies/data-engineering'
-      preLoaderRoute: typeof TechnologiesDataEngineeringRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/dedicated-team': {
-      id: '/technologies/dedicated-team'
-      path: '/dedicated-team'
-      fullPath: '/technologies/dedicated-team'
-      preLoaderRoute: typeof TechnologiesDedicatedTeamRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/devops': {
-      id: '/technologies/devops'
-      path: '/devops'
-      fullPath: '/technologies/devops'
-      preLoaderRoute: typeof TechnologiesDevopsRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/digital-marketing': {
-      id: '/technologies/digital-marketing'
-      path: '/digital-marketing'
-      fullPath: '/technologies/digital-marketing'
-      preLoaderRoute: typeof TechnologiesDigitalMarketingRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/digital-transformation': {
-      id: '/technologies/digital-transformation'
-      path: '/digital-transformation'
-      fullPath: '/technologies/digital-transformation'
-      preLoaderRoute: typeof TechnologiesDigitalTransformationRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/engagement': {
-      id: '/technologies/engagement'
-      path: '/engagement'
-      fullPath: '/technologies/engagement'
-      preLoaderRoute: typeof TechnologiesEngagementRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/enterprise-software': {
-      id: '/technologies/enterprise-software'
-      path: '/enterprise-software'
-      fullPath: '/technologies/enterprise-software'
-      preLoaderRoute: typeof TechnologiesEnterpriseSoftwareRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/expertise': {
-      id: '/technologies/expertise'
-      path: '/expertise'
-      fullPath: '/technologies/expertise'
-      preLoaderRoute: typeof TechnologiesExpertiseRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/industries': {
-      id: '/technologies/industries'
-      path: '/industries'
-      fullPath: '/technologies/industries'
-      preLoaderRoute: typeof TechnologiesIndustriesRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/insights': {
-      id: '/technologies/insights'
-      path: '/insights'
-      fullPath: '/technologies/insights'
-      preLoaderRoute: typeof TechnologiesInsightsRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/it-consulting': {
-      id: '/technologies/it-consulting'
-      path: '/it-consulting'
-      fullPath: '/technologies/it-consulting'
-      preLoaderRoute: typeof TechnologiesItConsultingRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/legacy-modernization': {
-      id: '/technologies/legacy-modernization'
-      path: '/legacy-modernization'
-      fullPath: '/technologies/legacy-modernization'
-      preLoaderRoute: typeof TechnologiesLegacyModernizationRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/mobile-development': {
-      id: '/technologies/mobile-development'
-      path: '/mobile-development'
-      fullPath: '/technologies/mobile-development'
-      preLoaderRoute: typeof TechnologiesMobileDevelopmentRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/product-development': {
-      id: '/technologies/product-development'
-      path: '/product-development'
-      fullPath: '/technologies/product-development'
-      preLoaderRoute: typeof TechnologiesProductDevelopmentRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/qa-testing': {
-      id: '/technologies/qa-testing'
-      path: '/qa-testing'
-      fullPath: '/technologies/qa-testing'
-      preLoaderRoute: typeof TechnologiesQaTestingRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/saas-products': {
-      id: '/technologies/saas-products'
-      path: '/saas-products'
-      fullPath: '/technologies/saas-products'
-      preLoaderRoute: typeof TechnologiesSaasProductsRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/software-development': {
-      id: '/technologies/software-development'
-      path: '/software-development'
-      fullPath: '/technologies/software-development'
-      preLoaderRoute: typeof TechnologiesSoftwareDevelopmentRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/software-maintenance': {
-      id: '/technologies/software-maintenance'
-      path: '/software-maintenance'
-      fullPath: '/technologies/software-maintenance'
-      preLoaderRoute: typeof TechnologiesSoftwareMaintenanceRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/staff-augmentation': {
-      id: '/technologies/staff-augmentation'
-      path: '/staff-augmentation'
-      fullPath: '/technologies/staff-augmentation'
-      preLoaderRoute: typeof TechnologiesStaffAugmentationRouteImport
-      parentRoute: typeof TechnologiesRoute
-    }
-    '/technologies/system-integration': {
-      id: '/technologies/system-integration'
-      path: '/system-integration'
-      fullPath: '/technologies/system-integration'
-      preLoaderRoute: typeof TechnologiesSystemIntegrationRouteImport
+    '/technologies/web-development': {
+      id: '/technologies/web-development'
+      path: '/web-development'
+      fullPath: '/technologies/web-development'
+      preLoaderRoute: typeof TechnologiesWebDevelopmentRouteImport
       parentRoute: typeof TechnologiesRoute
     }
     '/technologies/ui-ux-design': {
@@ -5591,186 +5087,536 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesUiUxDesignRouteImport
       parentRoute: typeof TechnologiesRoute
     }
-    '/technologies/web-development': {
-      id: '/technologies/web-development'
-      path: '/web-development'
-      fullPath: '/technologies/web-development'
-      preLoaderRoute: typeof TechnologiesWebDevelopmentRouteImport
+    '/technologies/system-integration': {
+      id: '/technologies/system-integration'
+      path: '/system-integration'
+      fullPath: '/technologies/system-integration'
+      preLoaderRoute: typeof TechnologiesSystemIntegrationRouteImport
       parentRoute: typeof TechnologiesRoute
     }
-    '/verify-certificate/$id': {
-      id: '/verify-certificate/$id'
-      path: '/verify-certificate/$id'
-      fullPath: '/verify-certificate/$id'
-      preLoaderRoute: typeof VerifyCertificateIdRouteImport
+    '/technologies/staff-augmentation': {
+      id: '/technologies/staff-augmentation'
+      path: '/staff-augmentation'
+      fullPath: '/technologies/staff-augmentation'
+      preLoaderRoute: typeof TechnologiesStaffAugmentationRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/software-maintenance': {
+      id: '/technologies/software-maintenance'
+      path: '/software-maintenance'
+      fullPath: '/technologies/software-maintenance'
+      preLoaderRoute: typeof TechnologiesSoftwareMaintenanceRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/software-development': {
+      id: '/technologies/software-development'
+      path: '/software-development'
+      fullPath: '/technologies/software-development'
+      preLoaderRoute: typeof TechnologiesSoftwareDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/saas-products': {
+      id: '/technologies/saas-products'
+      path: '/saas-products'
+      fullPath: '/technologies/saas-products'
+      preLoaderRoute: typeof TechnologiesSaasProductsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/qa-testing': {
+      id: '/technologies/qa-testing'
+      path: '/qa-testing'
+      fullPath: '/technologies/qa-testing'
+      preLoaderRoute: typeof TechnologiesQaTestingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/product-development': {
+      id: '/technologies/product-development'
+      path: '/product-development'
+      fullPath: '/technologies/product-development'
+      preLoaderRoute: typeof TechnologiesProductDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/mobile-development': {
+      id: '/technologies/mobile-development'
+      path: '/mobile-development'
+      fullPath: '/technologies/mobile-development'
+      preLoaderRoute: typeof TechnologiesMobileDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/legacy-modernization': {
+      id: '/technologies/legacy-modernization'
+      path: '/legacy-modernization'
+      fullPath: '/technologies/legacy-modernization'
+      preLoaderRoute: typeof TechnologiesLegacyModernizationRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/it-consulting': {
+      id: '/technologies/it-consulting'
+      path: '/it-consulting'
+      fullPath: '/technologies/it-consulting'
+      preLoaderRoute: typeof TechnologiesItConsultingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/insights': {
+      id: '/technologies/insights'
+      path: '/insights'
+      fullPath: '/technologies/insights'
+      preLoaderRoute: typeof TechnologiesInsightsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/industries': {
+      id: '/technologies/industries'
+      path: '/industries'
+      fullPath: '/technologies/industries'
+      preLoaderRoute: typeof TechnologiesIndustriesRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/expertise': {
+      id: '/technologies/expertise'
+      path: '/expertise'
+      fullPath: '/technologies/expertise'
+      preLoaderRoute: typeof TechnologiesExpertiseRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/enterprise-software': {
+      id: '/technologies/enterprise-software'
+      path: '/enterprise-software'
+      fullPath: '/technologies/enterprise-software'
+      preLoaderRoute: typeof TechnologiesEnterpriseSoftwareRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/engagement': {
+      id: '/technologies/engagement'
+      path: '/engagement'
+      fullPath: '/technologies/engagement'
+      preLoaderRoute: typeof TechnologiesEngagementRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/digital-transformation': {
+      id: '/technologies/digital-transformation'
+      path: '/digital-transformation'
+      fullPath: '/technologies/digital-transformation'
+      preLoaderRoute: typeof TechnologiesDigitalTransformationRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/digital-marketing': {
+      id: '/technologies/digital-marketing'
+      path: '/digital-marketing'
+      fullPath: '/technologies/digital-marketing'
+      preLoaderRoute: typeof TechnologiesDigitalMarketingRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/devops': {
+      id: '/technologies/devops'
+      path: '/devops'
+      fullPath: '/technologies/devops'
+      preLoaderRoute: typeof TechnologiesDevopsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/dedicated-team': {
+      id: '/technologies/dedicated-team'
+      path: '/dedicated-team'
+      fullPath: '/technologies/dedicated-team'
+      preLoaderRoute: typeof TechnologiesDedicatedTeamRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/data-engineering': {
+      id: '/technologies/data-engineering'
+      path: '/data-engineering'
+      fullPath: '/technologies/data-engineering'
+      preLoaderRoute: typeof TechnologiesDataEngineeringRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/custom-software-development': {
+      id: '/technologies/custom-software-development'
+      path: '/custom-software-development'
+      fullPath: '/technologies/custom-software-development'
+      preLoaderRoute: typeof TechnologiesCustomSoftwareDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/contact': {
+      id: '/technologies/contact'
+      path: '/contact'
+      fullPath: '/technologies/contact'
+      preLoaderRoute: typeof TechnologiesContactRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/company': {
+      id: '/technologies/company'
+      path: '/company'
+      fullPath: '/technologies/company'
+      preLoaderRoute: typeof TechnologiesCompanyRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/cloud-solutions': {
+      id: '/technologies/cloud-solutions'
+      path: '/cloud-solutions'
+      fullPath: '/technologies/cloud-solutions'
+      preLoaderRoute: typeof TechnologiesCloudSolutionsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/cloud-migration': {
+      id: '/technologies/cloud-migration'
+      path: '/cloud-migration'
+      fullPath: '/technologies/cloud-migration'
+      preLoaderRoute: typeof TechnologiesCloudMigrationRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/case-studies': {
+      id: '/technologies/case-studies'
+      path: '/case-studies'
+      fullPath: '/technologies/case-studies'
+      preLoaderRoute: typeof TechnologiesCaseStudiesRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/careers': {
+      id: '/technologies/careers'
+      path: '/careers'
+      fullPath: '/technologies/careers'
+      preLoaderRoute: typeof TechnologiesCareersRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/business-intelligence': {
+      id: '/technologies/business-intelligence'
+      path: '/business-intelligence'
+      fullPath: '/technologies/business-intelligence'
+      preLoaderRoute: typeof TechnologiesBusinessIntelligenceRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/api-development': {
+      id: '/technologies/api-development'
+      path: '/api-development'
+      fullPath: '/technologies/api-development'
+      preLoaderRoute: typeof TechnologiesApiDevelopmentRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/technologies/ai-solutions': {
+      id: '/technologies/ai-solutions'
+      path: '/ai-solutions'
+      fullPath: '/technologies/ai-solutions'
+      preLoaderRoute: typeof TechnologiesAiSolutionsRouteImport
+      parentRoute: typeof TechnologiesRoute
+    }
+    '/portfolio/$slug': {
+      id: '/portfolio/$slug'
+      path: '/portfolio/$slug'
+      fullPath: '/portfolio/$slug'
+      preLoaderRoute: typeof PortfolioSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/verify/$token': {
-      id: '/verify/$token'
-      path: '/verify/$token'
-      fullPath: '/verify/$token'
-      preLoaderRoute: typeof VerifyTokenRouteImport
+    '/jobs/$slug': {
+      id: '/jobs/$slug'
+      path: '/jobs/$slug'
+      fullPath: '/jobs/$slug'
+      preLoaderRoute: typeof JobsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
+    '/global-education/visa-guidance': {
+      id: '/global-education/visa-guidance'
+      path: '/visa-guidance'
+      fullPath: '/global-education/visa-guidance'
+      preLoaderRoute: typeof GlobalEducationVisaGuidanceRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
-      parentRoute: typeof rootRouteImport
+    '/global-education/universities': {
+      id: '/global-education/universities'
+      path: '/universities'
+      fullPath: '/global-education/universities'
+      preLoaderRoute: typeof GlobalEducationUniversitiesRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
-    '/_authenticated/assistant/': {
-      id: '/_authenticated/assistant/'
-      path: '/'
-      fullPath: '/assistant/'
-      preLoaderRoute: typeof AuthenticatedAssistantIndexRouteImport
-      parentRoute: typeof AuthenticatedAssistantRoute
+    '/global-education/study-abroad': {
+      id: '/global-education/study-abroad'
+      path: '/study-abroad'
+      fullPath: '/global-education/study-abroad'
+      preLoaderRoute: typeof GlobalEducationStudyAbroadRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
-    '/_authenticated/assistant/$conversationId': {
-      id: '/_authenticated/assistant/$conversationId'
-      path: '/$conversationId'
-      fullPath: '/assistant/$conversationId'
-      preLoaderRoute: typeof AuthenticatedAssistantConversationIdRouteImport
-      parentRoute: typeof AuthenticatedAssistantRoute
+    '/global-education/student-services': {
+      id: '/global-education/student-services'
+      path: '/student-services'
+      fullPath: '/global-education/student-services'
+      preLoaderRoute: typeof GlobalEducationStudentServicesRouteImport
+      parentRoute: typeof GlobalEducationRoute
     }
-    '/_authenticated/community/$slug': {
-      id: '/_authenticated/community/$slug'
+    '/global-education/scholarships': {
+      id: '/global-education/scholarships'
+      path: '/scholarships'
+      fullPath: '/global-education/scholarships'
+      preLoaderRoute: typeof GlobalEducationScholarshipsRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/faq': {
+      id: '/global-education/faq'
+      path: '/faq'
+      fullPath: '/global-education/faq'
+      preLoaderRoute: typeof GlobalEducationFaqRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/countries': {
+      id: '/global-education/countries'
+      path: '/countries'
+      fullPath: '/global-education/countries'
+      preLoaderRoute: typeof GlobalEducationCountriesRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/contact': {
+      id: '/global-education/contact'
+      path: '/contact'
+      fullPath: '/global-education/contact'
+      preLoaderRoute: typeof GlobalEducationContactRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/global-education/admission-process': {
+      id: '/global-education/admission-process'
+      path: '/admission-process'
+      fullPath: '/global-education/admission-process'
+      preLoaderRoute: typeof GlobalEducationAdmissionProcessRouteImport
+      parentRoute: typeof GlobalEducationRoute
+    }
+    '/docs/webhooks': {
+      id: '/docs/webhooks'
+      path: '/webhooks'
+      fullPath: '/docs/webhooks'
+      preLoaderRoute: typeof DocsWebhooksRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/authentication': {
+      id: '/docs/authentication'
+      path: '/authentication'
+      fullPath: '/docs/authentication'
+      preLoaderRoute: typeof DocsAuthenticationRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/api-reference': {
+      id: '/docs/api-reference'
+      path: '/api-reference'
+      fullPath: '/docs/api-reference'
+      preLoaderRoute: typeof DocsApiReferenceRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/$category': {
+      id: '/docs/$category'
+      path: '/$category'
+      fullPath: '/docs/$category'
+      preLoaderRoute: typeof DocsCategoryRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/careers/$slug': {
+      id: '/careers/$slug'
       path: '/$slug'
-      fullPath: '/community/$slug'
-      preLoaderRoute: typeof AuthenticatedCommunitySlugRouteImport
-      parentRoute: typeof AuthenticatedCommunityRoute
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof CareersRoute
     }
-    '/_authenticated/community/events': {
-      id: '/_authenticated/community/events'
-      path: '/events'
-      fullPath: '/community/events'
-      preLoaderRoute: typeof AuthenticatedCommunityEventsRouteImport
-      parentRoute: typeof AuthenticatedCommunityRoute
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
-    '/_authenticated/dashboard/': {
-      id: '/_authenticated/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/_authenticated/dashboard/admin': {
-      id: '/_authenticated/dashboard/admin'
-      path: '/admin'
-      fullPath: '/dashboard/admin'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/_authenticated/dashboard/career': {
-      id: '/_authenticated/dashboard/career'
-      path: '/career'
-      fullPath: '/dashboard/career'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/_authenticated/dashboard/counselor': {
-      id: '/_authenticated/dashboard/counselor'
-      path: '/counselor'
-      fullPath: '/dashboard/counselor'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/_authenticated/dashboard/faculty': {
-      id: '/_authenticated/dashboard/faculty'
-      path: '/faculty'
-      fullPath: '/dashboard/faculty'
-      preLoaderRoute: typeof AuthenticatedDashboardFacultyRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/notifications': {
-      id: '/_authenticated/dashboard/notifications'
-      path: '/notifications'
-      fullPath: '/dashboard/notifications'
-      preLoaderRoute: typeof AuthenticatedDashboardNotificationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/ai/prompts': {
+      id: '/ai/prompts'
+      path: '/prompts'
+      fullPath: '/ai/prompts'
+      preLoaderRoute: typeof AiPromptsRouteImport
+      parentRoute: typeof AiRoute
     }
-    '/_authenticated/dashboard/profile': {
-      id: '/_authenticated/dashboard/profile'
-      path: '/profile'
-      fullPath: '/dashboard/profile'
-      preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/ai/history': {
+      id: '/ai/history'
+      path: '/history'
+      fullPath: '/ai/history'
+      preLoaderRoute: typeof AiHistoryRouteImport
+      parentRoute: typeof AiRoute
     }
-    '/_authenticated/dashboard/programs': {
-      id: '/_authenticated/dashboard/programs'
+    '/ai/collections': {
+      id: '/ai/collections'
+      path: '/collections'
+      fullPath: '/ai/collections'
+      preLoaderRoute: typeof AiCollectionsRouteImport
+      parentRoute: typeof AiRoute
+    }
+    '/ai/chat': {
+      id: '/ai/chat'
+      path: '/chat'
+      fullPath: '/ai/chat'
+      preLoaderRoute: typeof AiChatRouteImport
+      parentRoute: typeof AiRoute
+    }
+    '/academy/success-stories': {
+      id: '/academy/success-stories'
+      path: '/success-stories'
+      fullPath: '/academy/success-stories'
+      preLoaderRoute: typeof AcademySuccessStoriesRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/scholarship': {
+      id: '/academy/scholarship'
+      path: '/scholarship'
+      fullPath: '/academy/scholarship'
+      preLoaderRoute: typeof AcademyScholarshipRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/placements': {
+      id: '/academy/placements'
+      path: '/placements'
+      fullPath: '/academy/placements'
+      preLoaderRoute: typeof AcademyPlacementsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/online-courses': {
+      id: '/academy/online-courses'
+      path: '/online-courses'
+      fullPath: '/academy/online-courses'
+      preLoaderRoute: typeof AcademyOnlineCoursesRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/offline-training': {
+      id: '/academy/offline-training'
+      path: '/offline-training'
+      fullPath: '/academy/offline-training'
+      preLoaderRoute: typeof AcademyOfflineTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/learning-paths': {
+      id: '/academy/learning-paths'
+      path: '/learning-paths'
+      fullPath: '/academy/learning-paths'
+      preLoaderRoute: typeof AcademyLearningPathsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/internships': {
+      id: '/academy/internships'
+      path: '/internships'
+      fullPath: '/academy/internships'
+      preLoaderRoute: typeof AcademyInternshipsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/faq': {
+      id: '/academy/faq'
+      path: '/faq'
+      fullPath: '/academy/faq'
+      preLoaderRoute: typeof AcademyFaqRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/corporate-training': {
+      id: '/academy/corporate-training'
+      path: '/corporate-training'
+      fullPath: '/academy/corporate-training'
+      preLoaderRoute: typeof AcademyCorporateTrainingRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/contact': {
+      id: '/academy/contact'
+      path: '/contact'
+      fullPath: '/academy/contact'
+      preLoaderRoute: typeof AcademyContactRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/certifications': {
+      id: '/academy/certifications'
+      path: '/certifications'
+      fullPath: '/academy/certifications'
+      preLoaderRoute: typeof AcademyCertificationsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/admissions': {
+      id: '/academy/admissions'
+      path: '/admissions'
+      fullPath: '/academy/admissions'
+      preLoaderRoute: typeof AcademyAdmissionsRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/ops': {
+      id: '/_authenticated/ops'
+      path: '/ops'
+      fullPath: '/ops'
+      preLoaderRoute: typeof AuthenticatedOpsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/education': {
+      id: '/_authenticated/education'
+      path: '/education'
+      fullPath: '/education'
+      preLoaderRoute: typeof AuthenticatedEducationRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/community': {
+      id: '/_authenticated/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof AuthenticatedCommunityRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/assistant': {
+      id: '/_authenticated/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AuthenticatedAssistantRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academy/programs/': {
+      id: '/academy/programs/'
       path: '/programs'
-      fullPath: '/dashboard/programs'
-      preLoaderRoute: typeof AuthenticatedDashboardProgramsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/security': {
-      id: '/_authenticated/dashboard/security'
-      path: '/security'
-      fullPath: '/dashboard/security'
-      preLoaderRoute: typeof AuthenticatedDashboardSecurityRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/technologies': {
-      id: '/_authenticated/dashboard/technologies'
-      path: '/technologies'
-      fullPath: '/dashboard/technologies'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/visa': {
-      id: '/_authenticated/dashboard/visa'
-      path: '/visa'
-      fullPath: '/dashboard/visa'
-      preLoaderRoute: typeof AuthenticatedDashboardVisaRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/education/': {
-      id: '/_authenticated/education/'
-      path: '/'
-      fullPath: '/education/'
-      preLoaderRoute: typeof AuthenticatedEducationIndexRouteImport
-      parentRoute: typeof AuthenticatedEducationRoute
-    }
-    '/_authenticated/education/applications': {
-      id: '/_authenticated/education/applications'
-      path: '/applications'
-      fullPath: '/education/applications'
-      preLoaderRoute: typeof AuthenticatedEducationApplicationsRouteImport
-      parentRoute: typeof AuthenticatedEducationRoute
-    }
-    '/_authenticated/education/documents': {
-      id: '/_authenticated/education/documents'
-      path: '/documents'
-      fullPath: '/education/documents'
-      preLoaderRoute: typeof AuthenticatedEducationDocumentsRouteImport
-      parentRoute: typeof AuthenticatedEducationRoute
-    }
-    '/_authenticated/education/profile': {
-      id: '/_authenticated/education/profile'
-      path: '/profile'
-      fullPath: '/education/profile'
-      preLoaderRoute: typeof AuthenticatedEducationProfileRouteImport
-      parentRoute: typeof AuthenticatedEducationRoute
-    }
-    '/_authenticated/ops/reliability': {
-      id: '/_authenticated/ops/reliability'
-      path: '/reliability'
-      fullPath: '/ops/reliability'
-      preLoaderRoute: typeof AuthenticatedOpsReliabilityRouteImport
-      parentRoute: typeof AuthenticatedOpsRoute
-    }
-    '/academy/blog/certifications-comparison': {
-      id: '/academy/blog/certifications-comparison'
-      path: '/blog/certifications-comparison'
-      fullPath: '/academy/blog/certifications-comparison'
-      preLoaderRoute: typeof AcademyBlogCertificationsComparisonRouteImport
+      fullPath: '/academy/programs/'
+      preLoaderRoute: typeof AcademyProgramsIndexRouteImport
       parentRoute: typeof AcademyRoute
     }
     '/academy/campuses/': {
@@ -5780,606 +5626,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyCampusesIndexRouteImport
       parentRoute: typeof AcademyRoute
     }
-    '/academy/campuses/$slug': {
-      id: '/academy/campuses/$slug'
-      path: '/campuses/$slug'
-      fullPath: '/academy/campuses/$slug'
-      preLoaderRoute: typeof AcademyCampusesSlugRouteImport
-      parentRoute: typeof AcademyRoute
+    '/_authenticated/education/': {
+      id: '/_authenticated/education/'
+      path: '/'
+      fullPath: '/education/'
+      preLoaderRoute: typeof AuthenticatedEducationIndexRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
     }
-    '/academy/programs/': {
-      id: '/academy/programs/'
-      path: '/programs'
-      fullPath: '/academy/programs/'
-      preLoaderRoute: typeof AcademyProgramsIndexRouteImport
-      parentRoute: typeof AcademyRoute
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/academy/programs/$slug': {
-      id: '/academy/programs/$slug'
-      path: '/programs/$slug'
-      fullPath: '/academy/programs/$slug'
-      preLoaderRoute: typeof AcademyProgramsSlugRouteImport
-      parentRoute: typeof AcademyRoute
+    '/_authenticated/assistant/': {
+      id: '/_authenticated/assistant/'
+      path: '/'
+      fullPath: '/assistant/'
+      preLoaderRoute: typeof AuthenticatedAssistantIndexRouteImport
+      parentRoute: typeof AuthenticatedAssistantRoute
     }
-    '/ai/collections/$slug': {
-      id: '/ai/collections/$slug'
+    '/technologies/insights/$slug': {
+      id: '/technologies/insights/$slug'
       path: '/$slug'
-      fullPath: '/ai/collections/$slug'
-      preLoaderRoute: typeof AiCollectionsSlugRouteImport
-      parentRoute: typeof AiCollectionsRoute
-    }
-    '/api/public/ai-mode': {
-      id: '/api/public/ai-mode'
-      path: '/api/public/ai-mode'
-      fullPath: '/api/public/ai-mode'
-      preLoaderRoute: typeof ApiPublicAiModeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/chat': {
-      id: '/api/public/chat'
-      path: '/api/public/chat'
-      fullPath: '/api/public/chat'
-      preLoaderRoute: typeof ApiPublicChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/decisions': {
-      id: '/api/public/decisions'
-      path: '/api/public/decisions'
-      fullPath: '/api/public/decisions'
-      preLoaderRoute: typeof ApiPublicDecisionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/email-verify': {
-      id: '/api/public/email-verify'
-      path: '/api/public/email-verify'
-      fullPath: '/api/public/email-verify'
-      preLoaderRoute: typeof ApiPublicEmailVerifyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/goals': {
-      id: '/api/public/goals'
-      path: '/api/public/goals'
-      fullPath: '/api/public/goals'
-      preLoaderRoute: typeof ApiPublicGoalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/governance': {
-      id: '/api/public/governance'
-      path: '/api/public/governance'
-      fullPath: '/api/public/governance'
-      preLoaderRoute: typeof ApiPublicGovernanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/health': {
-      id: '/api/public/health'
-      path: '/api/public/health'
-      fullPath: '/api/public/health'
-      preLoaderRoute: typeof ApiPublicHealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/memory-graph': {
-      id: '/api/public/memory-graph'
-      path: '/api/public/memory-graph'
-      fullPath: '/api/public/memory-graph'
-      preLoaderRoute: typeof ApiPublicMemoryGraphRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/replay': {
-      id: '/api/public/replay'
-      path: '/api/public/replay'
-      fullPath: '/api/public/replay'
-      preLoaderRoute: typeof ApiPublicReplayRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/resolve-hybrid': {
-      id: '/api/public/resolve-hybrid'
-      path: '/api/public/resolve-hybrid'
-      fullPath: '/api/public/resolve-hybrid'
-      preLoaderRoute: typeof ApiPublicResolveHybridRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/resolve-intent': {
-      id: '/api/public/resolve-intent'
-      path: '/api/public/resolve-intent'
-      fullPath: '/api/public/resolve-intent'
-      preLoaderRoute: typeof ApiPublicResolveIntentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/self-optimize': {
-      id: '/api/public/self-optimize'
-      path: '/api/public/self-optimize'
-      fullPath: '/api/public/self-optimize'
-      preLoaderRoute: typeof ApiPublicSelfOptimizeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/shared-memory': {
-      id: '/api/public/shared-memory'
-      path: '/api/public/shared-memory'
-      fullPath: '/api/public/shared-memory'
-      preLoaderRoute: typeof ApiPublicSharedMemoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/strategy': {
-      id: '/api/public/strategy'
-      path: '/api/public/strategy'
-      fullPath: '/api/public/strategy'
-      preLoaderRoute: typeof ApiPublicStrategyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/system-health': {
-      id: '/api/public/system-health'
-      path: '/api/public/system-health'
-      fullPath: '/api/public/system-health'
-      preLoaderRoute: typeof ApiPublicSystemHealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/vector-search': {
-      id: '/api/public/vector-search'
-      path: '/api/public/vector-search'
-      fullPath: '/api/public/vector-search'
-      preLoaderRoute: typeof ApiPublicVectorSearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/v1/courses': {
-      id: '/api/v1/courses'
-      path: '/api/v1/courses'
-      fullPath: '/api/v1/courses'
-      preLoaderRoute: typeof ApiV1CoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/v1/jobs': {
-      id: '/api/v1/jobs'
-      path: '/api/v1/jobs'
-      fullPath: '/api/v1/jobs'
-      preLoaderRoute: typeof ApiV1JobsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/v1/programs': {
-      id: '/api/v1/programs'
-      path: '/api/v1/programs'
-      fullPath: '/api/v1/programs'
-      preLoaderRoute: typeof ApiV1ProgramsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/v1/universities': {
-      id: '/api/v1/universities'
-      path: '/api/v1/universities'
-      fullPath: '/api/v1/universities'
-      preLoaderRoute: typeof ApiV1UniversitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/$category/$slug': {
-      id: '/docs/$category/$slug'
-      path: '/$slug'
-      fullPath: '/docs/$category/$slug'
-      preLoaderRoute: typeof DocsCategorySlugRouteImport
-      parentRoute: typeof DocsCategoryRoute
-    }
-    '/global-education/countries/$slug': {
-      id: '/global-education/countries/$slug'
-      path: '/$slug'
-      fullPath: '/global-education/countries/$slug'
-      preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
-      parentRoute: typeof GlobalEducationCountriesRoute
-    }
-    '/global-education/universities/$slug': {
-      id: '/global-education/universities/$slug'
-      path: '/$slug'
-      fullPath: '/global-education/universities/$slug'
-      preLoaderRoute: typeof GlobalEducationUniversitiesSlugRouteImport
-      parentRoute: typeof GlobalEducationUniversitiesRoute
-    }
-    '/technologies/case-studies/$slug': {
-      id: '/technologies/case-studies/$slug'
-      path: '/$slug'
-      fullPath: '/technologies/case-studies/$slug'
-      preLoaderRoute: typeof TechnologiesCaseStudiesSlugRouteImport
-      parentRoute: typeof TechnologiesCaseStudiesRoute
-    }
-    '/technologies/company/$slug': {
-      id: '/technologies/company/$slug'
-      path: '/$slug'
-      fullPath: '/technologies/company/$slug'
-      preLoaderRoute: typeof TechnologiesCompanySlugRouteImport
-      parentRoute: typeof TechnologiesCompanyRoute
-    }
-    '/technologies/engagement/build-operate-transfer': {
-      id: '/technologies/engagement/build-operate-transfer'
-      path: '/build-operate-transfer'
-      fullPath: '/technologies/engagement/build-operate-transfer'
-      preLoaderRoute: typeof TechnologiesEngagementBuildOperateTransferRouteImport
-      parentRoute: typeof TechnologiesEngagementRoute
-    }
-    '/technologies/engagement/dedicated-development-team': {
-      id: '/technologies/engagement/dedicated-development-team'
-      path: '/dedicated-development-team'
-      fullPath: '/technologies/engagement/dedicated-development-team'
-      preLoaderRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRouteImport
-      parentRoute: typeof TechnologiesEngagementRoute
-    }
-    '/technologies/engagement/fixed-price-projects': {
-      id: '/technologies/engagement/fixed-price-projects'
-      path: '/fixed-price-projects'
-      fullPath: '/technologies/engagement/fixed-price-projects'
-      preLoaderRoute: typeof TechnologiesEngagementFixedPriceProjectsRouteImport
-      parentRoute: typeof TechnologiesEngagementRoute
-    }
-    '/technologies/engagement/offshore-development-center': {
-      id: '/technologies/engagement/offshore-development-center'
-      path: '/offshore-development-center'
-      fullPath: '/technologies/engagement/offshore-development-center'
-      preLoaderRoute: typeof TechnologiesEngagementOffshoreDevelopmentCenterRouteImport
-      parentRoute: typeof TechnologiesEngagementRoute
-    }
-    '/technologies/engagement/staff-augmentation': {
-      id: '/technologies/engagement/staff-augmentation'
-      path: '/staff-augmentation'
-      fullPath: '/technologies/engagement/staff-augmentation'
-      preLoaderRoute: typeof TechnologiesEngagementStaffAugmentationRouteImport
-      parentRoute: typeof TechnologiesEngagementRoute
-    }
-    '/technologies/engagement/time-and-materials': {
-      id: '/technologies/engagement/time-and-materials'
-      path: '/time-and-materials'
-      fullPath: '/technologies/engagement/time-and-materials'
-      preLoaderRoute: typeof TechnologiesEngagementTimeAndMaterialsRouteImport
-      parentRoute: typeof TechnologiesEngagementRoute
-    }
-    '/technologies/expertise/ai-automation': {
-      id: '/technologies/expertise/ai-automation'
-      path: '/ai-automation'
-      fullPath: '/technologies/expertise/ai-automation'
-      preLoaderRoute: typeof TechnologiesExpertiseAiAutomationRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/android': {
-      id: '/technologies/expertise/android'
-      path: '/android'
-      fullPath: '/technologies/expertise/android'
-      preLoaderRoute: typeof TechnologiesExpertiseAndroidRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/angular': {
-      id: '/technologies/expertise/angular'
-      path: '/angular'
-      fullPath: '/technologies/expertise/angular'
-      preLoaderRoute: typeof TechnologiesExpertiseAngularRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/aws': {
-      id: '/technologies/expertise/aws'
-      path: '/aws'
-      fullPath: '/technologies/expertise/aws'
-      preLoaderRoute: typeof TechnologiesExpertiseAwsRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/azure': {
-      id: '/technologies/expertise/azure'
-      path: '/azure'
-      fullPath: '/technologies/expertise/azure'
-      preLoaderRoute: typeof TechnologiesExpertiseAzureRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/business-intelligence-tech': {
-      id: '/technologies/expertise/business-intelligence-tech'
-      path: '/business-intelligence-tech'
-      fullPath: '/technologies/expertise/business-intelligence-tech'
-      preLoaderRoute: typeof TechnologiesExpertiseBusinessIntelligenceTechRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/computer-vision': {
-      id: '/technologies/expertise/computer-vision'
-      path: '/computer-vision'
-      fullPath: '/technologies/expertise/computer-vision'
-      preLoaderRoute: typeof TechnologiesExpertiseComputerVisionRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/css3': {
-      id: '/technologies/expertise/css3'
-      path: '/css3'
-      fullPath: '/technologies/expertise/css3'
-      preLoaderRoute: typeof TechnologiesExpertiseCss3RouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/data-engineering-tech': {
-      id: '/technologies/expertise/data-engineering-tech'
-      path: '/data-engineering-tech'
-      fullPath: '/technologies/expertise/data-engineering-tech'
-      preLoaderRoute: typeof TechnologiesExpertiseDataEngineeringTechRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/docker': {
-      id: '/technologies/expertise/docker'
-      path: '/docker'
-      fullPath: '/technologies/expertise/docker'
-      preLoaderRoute: typeof TechnologiesExpertiseDockerRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/dotnet': {
-      id: '/technologies/expertise/dotnet'
-      path: '/dotnet'
-      fullPath: '/technologies/expertise/dotnet'
-      preLoaderRoute: typeof TechnologiesExpertiseDotnetRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/express': {
-      id: '/technologies/expertise/express'
-      path: '/express'
-      fullPath: '/technologies/expertise/express'
-      preLoaderRoute: typeof TechnologiesExpertiseExpressRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/flutter': {
-      id: '/technologies/expertise/flutter'
-      path: '/flutter'
-      fullPath: '/technologies/expertise/flutter'
-      preLoaderRoute: typeof TechnologiesExpertiseFlutterRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/gcp': {
-      id: '/technologies/expertise/gcp'
-      path: '/gcp'
-      fullPath: '/technologies/expertise/gcp'
-      preLoaderRoute: typeof TechnologiesExpertiseGcpRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/generative-ai': {
-      id: '/technologies/expertise/generative-ai'
-      path: '/generative-ai'
-      fullPath: '/technologies/expertise/generative-ai'
-      preLoaderRoute: typeof TechnologiesExpertiseGenerativeAiRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/go': {
-      id: '/technologies/expertise/go'
-      path: '/go'
-      fullPath: '/technologies/expertise/go'
-      preLoaderRoute: typeof TechnologiesExpertiseGoRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/html5': {
-      id: '/technologies/expertise/html5'
-      path: '/html5'
-      fullPath: '/technologies/expertise/html5'
-      preLoaderRoute: typeof TechnologiesExpertiseHtml5RouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/ios': {
-      id: '/technologies/expertise/ios'
-      path: '/ios'
-      fullPath: '/technologies/expertise/ios'
-      preLoaderRoute: typeof TechnologiesExpertiseIosRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/java': {
-      id: '/technologies/expertise/java'
-      path: '/java'
-      fullPath: '/technologies/expertise/java'
-      preLoaderRoute: typeof TechnologiesExpertiseJavaRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/javascript': {
-      id: '/technologies/expertise/javascript'
-      path: '/javascript'
-      fullPath: '/technologies/expertise/javascript'
-      preLoaderRoute: typeof TechnologiesExpertiseJavascriptRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/kubernetes': {
-      id: '/technologies/expertise/kubernetes'
-      path: '/kubernetes'
-      fullPath: '/technologies/expertise/kubernetes'
-      preLoaderRoute: typeof TechnologiesExpertiseKubernetesRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/laravel': {
-      id: '/technologies/expertise/laravel'
-      path: '/laravel'
-      fullPath: '/technologies/expertise/laravel'
-      preLoaderRoute: typeof TechnologiesExpertiseLaravelRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/machine-learning': {
-      id: '/technologies/expertise/machine-learning'
-      path: '/machine-learning'
-      fullPath: '/technologies/expertise/machine-learning'
-      preLoaderRoute: typeof TechnologiesExpertiseMachineLearningRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/mongodb': {
-      id: '/technologies/expertise/mongodb'
-      path: '/mongodb'
-      fullPath: '/technologies/expertise/mongodb'
-      preLoaderRoute: typeof TechnologiesExpertiseMongodbRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/mysql': {
-      id: '/technologies/expertise/mysql'
-      path: '/mysql'
-      fullPath: '/technologies/expertise/mysql'
-      preLoaderRoute: typeof TechnologiesExpertiseMysqlRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/nextjs': {
-      id: '/technologies/expertise/nextjs'
-      path: '/nextjs'
-      fullPath: '/technologies/expertise/nextjs'
-      preLoaderRoute: typeof TechnologiesExpertiseNextjsRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/nlp': {
-      id: '/technologies/expertise/nlp'
-      path: '/nlp'
-      fullPath: '/technologies/expertise/nlp'
-      preLoaderRoute: typeof TechnologiesExpertiseNlpRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/nodejs': {
-      id: '/technologies/expertise/nodejs'
-      path: '/nodejs'
-      fullPath: '/technologies/expertise/nodejs'
-      preLoaderRoute: typeof TechnologiesExpertiseNodejsRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/openai': {
-      id: '/technologies/expertise/openai'
-      path: '/openai'
-      fullPath: '/technologies/expertise/openai'
-      preLoaderRoute: typeof TechnologiesExpertiseOpenaiRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/php': {
-      id: '/technologies/expertise/php'
-      path: '/php'
-      fullPath: '/technologies/expertise/php'
-      preLoaderRoute: typeof TechnologiesExpertisePhpRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/postgresql': {
-      id: '/technologies/expertise/postgresql'
-      path: '/postgresql'
-      fullPath: '/technologies/expertise/postgresql'
-      preLoaderRoute: typeof TechnologiesExpertisePostgresqlRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/python': {
-      id: '/technologies/expertise/python'
-      path: '/python'
-      fullPath: '/technologies/expertise/python'
-      preLoaderRoute: typeof TechnologiesExpertisePythonRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/react': {
-      id: '/technologies/expertise/react'
-      path: '/react'
-      fullPath: '/technologies/expertise/react'
-      preLoaderRoute: typeof TechnologiesExpertiseReactRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/react-native': {
-      id: '/technologies/expertise/react-native'
-      path: '/react-native'
-      fullPath: '/technologies/expertise/react-native'
-      preLoaderRoute: typeof TechnologiesExpertiseReactNativeRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/redis': {
-      id: '/technologies/expertise/redis'
-      path: '/redis'
-      fullPath: '/technologies/expertise/redis'
-      preLoaderRoute: typeof TechnologiesExpertiseRedisRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/spring-boot': {
-      id: '/technologies/expertise/spring-boot'
-      path: '/spring-boot'
-      fullPath: '/technologies/expertise/spring-boot'
-      preLoaderRoute: typeof TechnologiesExpertiseSpringBootRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/typescript': {
-      id: '/technologies/expertise/typescript'
-      path: '/typescript'
-      fullPath: '/technologies/expertise/typescript'
-      preLoaderRoute: typeof TechnologiesExpertiseTypescriptRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/expertise/vuejs': {
-      id: '/technologies/expertise/vuejs'
-      path: '/vuejs'
-      fullPath: '/technologies/expertise/vuejs'
-      preLoaderRoute: typeof TechnologiesExpertiseVuejsRouteImport
-      parentRoute: typeof TechnologiesExpertiseRoute
-    }
-    '/technologies/industries/banking': {
-      id: '/technologies/industries/banking'
-      path: '/banking'
-      fullPath: '/technologies/industries/banking'
-      preLoaderRoute: typeof TechnologiesIndustriesBankingRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/ecommerce': {
-      id: '/technologies/industries/ecommerce'
-      path: '/ecommerce'
-      fullPath: '/technologies/industries/ecommerce'
-      preLoaderRoute: typeof TechnologiesIndustriesEcommerceRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/education': {
-      id: '/technologies/industries/education'
-      path: '/education'
-      fullPath: '/technologies/industries/education'
-      preLoaderRoute: typeof TechnologiesIndustriesEducationRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/enterprise': {
-      id: '/technologies/industries/enterprise'
-      path: '/enterprise'
-      fullPath: '/technologies/industries/enterprise'
-      preLoaderRoute: typeof TechnologiesIndustriesEnterpriseRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/finance': {
-      id: '/technologies/industries/finance'
-      path: '/finance'
-      fullPath: '/technologies/industries/finance'
-      preLoaderRoute: typeof TechnologiesIndustriesFinanceRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/fintech': {
-      id: '/technologies/industries/fintech'
-      path: '/fintech'
-      fullPath: '/technologies/industries/fintech'
-      preLoaderRoute: typeof TechnologiesIndustriesFintechRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/government': {
-      id: '/technologies/industries/government'
-      path: '/government'
-      fullPath: '/technologies/industries/government'
-      preLoaderRoute: typeof TechnologiesIndustriesGovernmentRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/healthcare': {
-      id: '/technologies/industries/healthcare'
-      path: '/healthcare'
-      fullPath: '/technologies/industries/healthcare'
-      preLoaderRoute: typeof TechnologiesIndustriesHealthcareRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/hospitality': {
-      id: '/technologies/industries/hospitality'
-      path: '/hospitality'
-      fullPath: '/technologies/industries/hospitality'
-      preLoaderRoute: typeof TechnologiesIndustriesHospitalityRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/logistics': {
-      id: '/technologies/industries/logistics'
-      path: '/logistics'
-      fullPath: '/technologies/industries/logistics'
-      preLoaderRoute: typeof TechnologiesIndustriesLogisticsRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/manufacturing': {
-      id: '/technologies/industries/manufacturing'
-      path: '/manufacturing'
-      fullPath: '/technologies/industries/manufacturing'
-      preLoaderRoute: typeof TechnologiesIndustriesManufacturingRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/real-estate': {
-      id: '/technologies/industries/real-estate'
-      path: '/real-estate'
-      fullPath: '/technologies/industries/real-estate'
-      preLoaderRoute: typeof TechnologiesIndustriesRealEstateRouteImport
-      parentRoute: typeof TechnologiesIndustriesRoute
-    }
-    '/technologies/industries/retail': {
-      id: '/technologies/industries/retail'
-      path: '/retail'
-      fullPath: '/technologies/industries/retail'
-      preLoaderRoute: typeof TechnologiesIndustriesRetailRouteImport
+      fullPath: '/technologies/insights/$slug'
+      preLoaderRoute: typeof TechnologiesInsightsSlugRouteImport
+      parentRoute: typeof TechnologiesInsightsRoute
+    }
+    '/technologies/industries/startups': {
+      id: '/technologies/industries/startups'
+      path: '/startups'
+      fullPath: '/technologies/industries/startups'
+      preLoaderRoute: typeof TechnologiesIndustriesStartupsRouteImport
       parentRoute: typeof TechnologiesIndustriesRoute
     }
     '/technologies/industries/sme': {
@@ -6389,753 +5668,739 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologiesIndustriesSmeRouteImport
       parentRoute: typeof TechnologiesIndustriesRoute
     }
-    '/technologies/industries/startups': {
-      id: '/technologies/industries/startups'
-      path: '/startups'
-      fullPath: '/technologies/industries/startups'
-      preLoaderRoute: typeof TechnologiesIndustriesStartupsRouteImport
+    '/technologies/industries/retail': {
+      id: '/technologies/industries/retail'
+      path: '/retail'
+      fullPath: '/technologies/industries/retail'
+      preLoaderRoute: typeof TechnologiesIndustriesRetailRouteImport
       parentRoute: typeof TechnologiesIndustriesRoute
     }
-    '/technologies/insights/$slug': {
-      id: '/technologies/insights/$slug'
-      path: '/$slug'
-      fullPath: '/technologies/insights/$slug'
-      preLoaderRoute: typeof TechnologiesInsightsSlugRouteImport
-      parentRoute: typeof TechnologiesInsightsRoute
-    }
-    '/_authenticated/community/$slug/$threadId': {
-      id: '/_authenticated/community/$slug/$threadId'
-      path: '/$threadId'
-      fullPath: '/community/$slug/$threadId'
-      preLoaderRoute: typeof AuthenticatedCommunitySlugThreadIdRouteImport
-      parentRoute: typeof AuthenticatedCommunitySlugRoute
-    }
-    '/_authenticated/community/events/$id': {
-      id: '/_authenticated/community/events/$id'
-      path: '/$id'
-      fullPath: '/community/events/$id'
-      preLoaderRoute: typeof AuthenticatedCommunityEventsIdRouteImport
-      parentRoute: typeof AuthenticatedCommunityEventsRoute
-    }
-    '/_authenticated/dashboard/admin/': {
-      id: '/_authenticated/dashboard/admin/'
-      path: '/'
-      fullPath: '/dashboard/admin/'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/ai': {
-      id: '/_authenticated/dashboard/admin/ai'
-      path: '/ai'
-      fullPath: '/dashboard/admin/ai'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminAiRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/analytics': {
-      id: '/_authenticated/dashboard/admin/analytics'
-      path: '/analytics'
-      fullPath: '/dashboard/admin/analytics'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminAnalyticsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/api': {
-      id: '/_authenticated/dashboard/admin/api'
-      path: '/api'
-      fullPath: '/dashboard/admin/api'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminApiRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/applications': {
-      id: '/_authenticated/dashboard/admin/applications'
-      path: '/applications'
-      fullPath: '/dashboard/admin/applications'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminApplicationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/assignments': {
-      id: '/_authenticated/dashboard/admin/assignments'
-      path: '/assignments'
-      fullPath: '/dashboard/admin/assignments'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminAssignmentsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/audit-logs': {
-      id: '/_authenticated/dashboard/admin/audit-logs'
-      path: '/audit-logs'
-      fullPath: '/dashboard/admin/audit-logs'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminAuditLogsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/certificates': {
-      id: '/_authenticated/dashboard/admin/certificates'
-      path: '/certificates'
-      fullPath: '/dashboard/admin/certificates'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminCertificatesRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/countries': {
-      id: '/_authenticated/dashboard/admin/countries'
-      path: '/countries'
-      fullPath: '/dashboard/admin/countries'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminCountriesRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/crm': {
-      id: '/_authenticated/dashboard/admin/crm'
-      path: '/crm'
-      fullPath: '/dashboard/admin/crm'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/domain-status': {
-      id: '/_authenticated/dashboard/admin/domain-status'
-      path: '/domain-status'
-      fullPath: '/dashboard/admin/domain-status'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminDomainStatusRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/employers': {
-      id: '/_authenticated/dashboard/admin/employers'
-      path: '/employers'
-      fullPath: '/dashboard/admin/employers'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminEmployersRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/enrollments': {
-      id: '/_authenticated/dashboard/admin/enrollments'
-      path: '/enrollments'
-      fullPath: '/dashboard/admin/enrollments'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminEnrollmentsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/env-readiness': {
-      id: '/_authenticated/dashboard/admin/env-readiness'
-      path: '/env-readiness'
-      fullPath: '/dashboard/admin/env-readiness'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminEnvReadinessRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/feature-flags': {
-      id: '/_authenticated/dashboard/admin/feature-flags'
-      path: '/feature-flags'
-      fullPath: '/dashboard/admin/feature-flags'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminFeatureFlagsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/governance': {
-      id: '/_authenticated/dashboard/admin/governance'
-      path: '/governance'
-      fullPath: '/dashboard/admin/governance'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminGovernanceRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/identity-providers': {
-      id: '/_authenticated/dashboard/admin/identity-providers'
-      path: '/identity-providers'
-      fullPath: '/dashboard/admin/identity-providers'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/jobs': {
-      id: '/_authenticated/dashboard/admin/jobs'
-      path: '/jobs'
-      fullPath: '/dashboard/admin/jobs'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminJobsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/launch-readiness': {
-      id: '/_authenticated/dashboard/admin/launch-readiness'
-      path: '/launch-readiness'
-      fullPath: '/dashboard/admin/launch-readiness'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/launch-report': {
-      id: '/_authenticated/dashboard/admin/launch-report'
-      path: '/launch-report'
-      fullPath: '/dashboard/admin/launch-report'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminLaunchReportRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/monitoring-secrets': {
-      id: '/_authenticated/dashboard/admin/monitoring-secrets'
-      path: '/monitoring-secrets'
-      fullPath: '/dashboard/admin/monitoring-secrets'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminMonitoringSecretsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/notifications': {
-      id: '/_authenticated/dashboard/admin/notifications'
-      path: '/notifications'
-      fullPath: '/dashboard/admin/notifications'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminNotificationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/observability': {
-      id: '/_authenticated/dashboard/admin/observability'
-      path: '/observability'
-      fullPath: '/dashboard/admin/observability'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminObservabilityRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/operator-checklist': {
-      id: '/_authenticated/dashboard/admin/operator-checklist'
-      path: '/operator-checklist'
-      fullPath: '/dashboard/admin/operator-checklist'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminOperatorChecklistRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/payments': {
-      id: '/_authenticated/dashboard/admin/payments'
-      path: '/payments'
-      fullPath: '/dashboard/admin/payments'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminPaymentsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/placements': {
-      id: '/_authenticated/dashboard/admin/placements'
-      path: '/placements'
-      fullPath: '/dashboard/admin/placements'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminPlacementsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/projects': {
-      id: '/_authenticated/dashboard/admin/projects'
-      path: '/projects'
-      fullPath: '/dashboard/admin/projects'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProjectsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/provider-health': {
-      id: '/_authenticated/dashboard/admin/provider-health'
-      path: '/provider-health'
-      fullPath: '/dashboard/admin/provider-health'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProviderHealthRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/rag': {
-      id: '/_authenticated/dashboard/admin/rag'
-      path: '/rag'
-      fullPath: '/dashboard/admin/rag'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminRagRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/releases': {
-      id: '/_authenticated/dashboard/admin/releases'
-      path: '/releases'
-      fullPath: '/dashboard/admin/releases'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminReleasesRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/sa-applications': {
-      id: '/_authenticated/dashboard/admin/sa-applications'
-      path: '/sa-applications'
-      fullPath: '/dashboard/admin/sa-applications'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSaApplicationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/sa-leads': {
-      id: '/_authenticated/dashboard/admin/sa-leads'
-      path: '/sa-leads'
-      fullPath: '/dashboard/admin/sa-leads'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSaLeadsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/scholarships': {
-      id: '/_authenticated/dashboard/admin/scholarships'
-      path: '/scholarships'
-      fullPath: '/dashboard/admin/scholarships'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminScholarshipsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/sentry': {
-      id: '/_authenticated/dashboard/admin/sentry'
-      path: '/sentry'
-      fullPath: '/dashboard/admin/sentry'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSentryRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/sentry-releases': {
-      id: '/_authenticated/dashboard/admin/sentry-releases'
-      path: '/sentry-releases'
-      fullPath: '/dashboard/admin/sentry-releases'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSentryReleasesRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/settings': {
-      id: '/_authenticated/dashboard/admin/settings'
-      path: '/settings'
-      fullPath: '/dashboard/admin/settings'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/sre-metrics': {
-      id: '/_authenticated/dashboard/admin/sre-metrics'
-      path: '/sre-metrics'
-      fullPath: '/dashboard/admin/sre-metrics'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSreMetricsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/stories': {
-      id: '/_authenticated/dashboard/admin/stories'
-      path: '/stories'
-      fullPath: '/dashboard/admin/stories'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminStoriesRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/system': {
-      id: '/_authenticated/dashboard/admin/system'
-      path: '/system'
-      fullPath: '/dashboard/admin/system'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminSystemRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/tech-leads': {
-      id: '/_authenticated/dashboard/admin/tech-leads'
-      path: '/tech-leads'
-      fullPath: '/dashboard/admin/tech-leads'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminTechLeadsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/uniprograms': {
-      id: '/_authenticated/dashboard/admin/uniprograms'
-      path: '/uniprograms'
-      fullPath: '/dashboard/admin/uniprograms'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminUniprogramsRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/universities': {
-      id: '/_authenticated/dashboard/admin/universities'
-      path: '/universities'
-      fullPath: '/dashboard/admin/universities'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminUniversitiesRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/users': {
-      id: '/_authenticated/dashboard/admin/users'
-      path: '/users'
-      fullPath: '/dashboard/admin/users'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminUsersRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/visa': {
-      id: '/_authenticated/dashboard/admin/visa'
-      path: '/visa'
-      fullPath: '/dashboard/admin/visa'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminVisaRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/admin/webhooks': {
-      id: '/_authenticated/dashboard/admin/webhooks'
-      path: '/webhooks'
-      fullPath: '/dashboard/admin/webhooks'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminWebhooksRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
-    }
-    '/_authenticated/dashboard/ai/career': {
-      id: '/_authenticated/dashboard/ai/career'
-      path: '/ai/career'
-      fullPath: '/dashboard/ai/career'
-      preLoaderRoute: typeof AuthenticatedDashboardAiCareerRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/ai/global': {
-      id: '/_authenticated/dashboard/ai/global'
-      path: '/ai/global'
-      fullPath: '/dashboard/ai/global'
-      preLoaderRoute: typeof AuthenticatedDashboardAiGlobalRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/ai/tutor': {
-      id: '/_authenticated/dashboard/ai/tutor'
-      path: '/ai/tutor'
-      fullPath: '/dashboard/ai/tutor'
-      preLoaderRoute: typeof AuthenticatedDashboardAiTutorRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/applications/': {
-      id: '/_authenticated/dashboard/applications/'
-      path: '/applications'
-      fullPath: '/dashboard/applications/'
-      preLoaderRoute: typeof AuthenticatedDashboardApplicationsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/applications/$id': {
-      id: '/_authenticated/dashboard/applications/$id'
-      path: '/applications/$id'
-      fullPath: '/dashboard/applications/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardApplicationsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/assignments/': {
-      id: '/_authenticated/dashboard/assignments/'
-      path: '/assignments'
-      fullPath: '/dashboard/assignments/'
-      preLoaderRoute: typeof AuthenticatedDashboardAssignmentsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/assignments/$assignmentId': {
-      id: '/_authenticated/dashboard/assignments/$assignmentId'
-      path: '/assignments/$assignmentId'
-      fullPath: '/dashboard/assignments/$assignmentId'
-      preLoaderRoute: typeof AuthenticatedDashboardAssignmentsAssignmentIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/career/': {
-      id: '/_authenticated/dashboard/career/'
-      path: '/'
-      fullPath: '/dashboard/career/'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardCareerRoute
-    }
-    '/_authenticated/dashboard/career/applications': {
-      id: '/_authenticated/dashboard/career/applications'
-      path: '/applications'
-      fullPath: '/dashboard/career/applications'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerApplicationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardCareerRoute
-    }
-    '/_authenticated/dashboard/career/portfolio': {
-      id: '/_authenticated/dashboard/career/portfolio'
-      path: '/portfolio'
-      fullPath: '/dashboard/career/portfolio'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerPortfolioRouteImport
-      parentRoute: typeof AuthenticatedDashboardCareerRoute
-    }
-    '/_authenticated/dashboard/career/profile': {
-      id: '/_authenticated/dashboard/career/profile'
-      path: '/profile'
-      fullPath: '/dashboard/career/profile'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerProfileRouteImport
-      parentRoute: typeof AuthenticatedDashboardCareerRoute
-    }
-    '/_authenticated/dashboard/career/resume': {
-      id: '/_authenticated/dashboard/career/resume'
-      path: '/resume'
-      fullPath: '/dashboard/career/resume'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerResumeRouteImport
-      parentRoute: typeof AuthenticatedDashboardCareerRoute
-    }
-    '/_authenticated/dashboard/career/saved': {
-      id: '/_authenticated/dashboard/career/saved'
-      path: '/saved'
-      fullPath: '/dashboard/career/saved'
-      preLoaderRoute: typeof AuthenticatedDashboardCareerSavedRouteImport
-      parentRoute: typeof AuthenticatedDashboardCareerRoute
-    }
-    '/_authenticated/dashboard/certificates/': {
-      id: '/_authenticated/dashboard/certificates/'
-      path: '/certificates'
-      fullPath: '/dashboard/certificates/'
-      preLoaderRoute: typeof AuthenticatedDashboardCertificatesIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/certificates/$id': {
-      id: '/_authenticated/dashboard/certificates/$id'
-      path: '/certificates/$id'
-      fullPath: '/dashboard/certificates/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardCertificatesIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/counselor/': {
-      id: '/_authenticated/dashboard/counselor/'
-      path: '/'
-      fullPath: '/dashboard/counselor/'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/analytics': {
-      id: '/_authenticated/dashboard/counselor/analytics'
-      path: '/analytics'
-      fullPath: '/dashboard/counselor/analytics'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorAnalyticsRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/applications': {
-      id: '/_authenticated/dashboard/counselor/applications'
-      path: '/applications'
-      fullPath: '/dashboard/counselor/applications'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorApplicationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/follow-ups': {
-      id: '/_authenticated/dashboard/counselor/follow-ups'
-      path: '/follow-ups'
-      fullPath: '/dashboard/counselor/follow-ups'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorFollowUpsRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/leads': {
-      id: '/_authenticated/dashboard/counselor/leads'
-      path: '/leads'
-      fullPath: '/dashboard/counselor/leads'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorLeadsRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/pipeline': {
-      id: '/_authenticated/dashboard/counselor/pipeline'
-      path: '/pipeline'
-      fullPath: '/dashboard/counselor/pipeline'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorPipelineRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/tasks': {
-      id: '/_authenticated/dashboard/counselor/tasks'
-      path: '/tasks'
-      fullPath: '/dashboard/counselor/tasks'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorTasksRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/visa': {
-      id: '/_authenticated/dashboard/counselor/visa'
-      path: '/visa'
-      fullPath: '/dashboard/counselor/visa'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorVisaRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/counselor/workload': {
-      id: '/_authenticated/dashboard/counselor/workload'
-      path: '/workload'
-      fullPath: '/dashboard/counselor/workload'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorWorkloadRouteImport
-      parentRoute: typeof AuthenticatedDashboardCounselorRoute
-    }
-    '/_authenticated/dashboard/courses/$courseId': {
-      id: '/_authenticated/dashboard/courses/$courseId'
-      path: '/courses/$courseId'
-      fullPath: '/dashboard/courses/$courseId'
-      preLoaderRoute: typeof AuthenticatedDashboardCoursesCourseIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/faculty/submissions': {
-      id: '/_authenticated/dashboard/faculty/submissions'
-      path: '/submissions'
-      fullPath: '/dashboard/faculty/submissions'
-      preLoaderRoute: typeof AuthenticatedDashboardFacultySubmissionsRouteImport
-      parentRoute: typeof AuthenticatedDashboardFacultyRoute
-    }
-    '/_authenticated/dashboard/lessons/$lessonId': {
-      id: '/_authenticated/dashboard/lessons/$lessonId'
-      path: '/lessons/$lessonId'
-      fullPath: '/dashboard/lessons/$lessonId'
-      preLoaderRoute: typeof AuthenticatedDashboardLessonsLessonIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/notifications/preferences': {
-      id: '/_authenticated/dashboard/notifications/preferences'
-      path: '/preferences'
-      fullPath: '/dashboard/notifications/preferences'
-      preLoaderRoute: typeof AuthenticatedDashboardNotificationsPreferencesRouteImport
-      parentRoute: typeof AuthenticatedDashboardNotificationsRoute
-    }
-    '/_authenticated/dashboard/payments/new': {
-      id: '/_authenticated/dashboard/payments/new'
-      path: '/payments/new'
-      fullPath: '/dashboard/payments/new'
-      preLoaderRoute: typeof AuthenticatedDashboardPaymentsNewRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/programs/$slug': {
-      id: '/_authenticated/dashboard/programs/$slug'
-      path: '/$slug'
-      fullPath: '/dashboard/programs/$slug'
-      preLoaderRoute: typeof AuthenticatedDashboardProgramsSlugRouteImport
-      parentRoute: typeof AuthenticatedDashboardProgramsRoute
-    }
-    '/_authenticated/dashboard/projects/': {
-      id: '/_authenticated/dashboard/projects/'
-      path: '/projects'
-      fullPath: '/dashboard/projects/'
-      preLoaderRoute: typeof AuthenticatedDashboardProjectsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/projects/$id': {
-      id: '/_authenticated/dashboard/projects/$id'
-      path: '/projects/$id'
-      fullPath: '/dashboard/projects/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardProjectsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/technologies/': {
-      id: '/_authenticated/dashboard/technologies/'
-      path: '/'
-      fullPath: '/dashboard/technologies/'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
-    }
-    '/_authenticated/dashboard/technologies/client': {
-      id: '/_authenticated/dashboard/technologies/client'
-      path: '/client'
-      fullPath: '/dashboard/technologies/client'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
-    }
-    '/_authenticated/dashboard/technologies/contracts': {
-      id: '/_authenticated/dashboard/technologies/contracts'
-      path: '/contracts'
-      fullPath: '/dashboard/technologies/contracts'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesContractsRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
-    }
-    '/_authenticated/dashboard/technologies/finance': {
-      id: '/_authenticated/dashboard/technologies/finance'
+    '/technologies/industries/real-estate': {
+      id: '/technologies/industries/real-estate'
+      path: '/real-estate'
+      fullPath: '/technologies/industries/real-estate'
+      preLoaderRoute: typeof TechnologiesIndustriesRealEstateRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/manufacturing': {
+      id: '/technologies/industries/manufacturing'
+      path: '/manufacturing'
+      fullPath: '/technologies/industries/manufacturing'
+      preLoaderRoute: typeof TechnologiesIndustriesManufacturingRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/logistics': {
+      id: '/technologies/industries/logistics'
+      path: '/logistics'
+      fullPath: '/technologies/industries/logistics'
+      preLoaderRoute: typeof TechnologiesIndustriesLogisticsRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/hospitality': {
+      id: '/technologies/industries/hospitality'
+      path: '/hospitality'
+      fullPath: '/technologies/industries/hospitality'
+      preLoaderRoute: typeof TechnologiesIndustriesHospitalityRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/healthcare': {
+      id: '/technologies/industries/healthcare'
+      path: '/healthcare'
+      fullPath: '/technologies/industries/healthcare'
+      preLoaderRoute: typeof TechnologiesIndustriesHealthcareRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/government': {
+      id: '/technologies/industries/government'
+      path: '/government'
+      fullPath: '/technologies/industries/government'
+      preLoaderRoute: typeof TechnologiesIndustriesGovernmentRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/fintech': {
+      id: '/technologies/industries/fintech'
+      path: '/fintech'
+      fullPath: '/technologies/industries/fintech'
+      preLoaderRoute: typeof TechnologiesIndustriesFintechRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/industries/finance': {
+      id: '/technologies/industries/finance'
       path: '/finance'
-      fullPath: '/dashboard/technologies/finance'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesFinanceRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+      fullPath: '/technologies/industries/finance'
+      preLoaderRoute: typeof TechnologiesIndustriesFinanceRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
     }
-    '/_authenticated/dashboard/technologies/proposals': {
-      id: '/_authenticated/dashboard/technologies/proposals'
-      path: '/proposals'
-      fullPath: '/dashboard/technologies/proposals'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProposalsRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    '/technologies/industries/enterprise': {
+      id: '/technologies/industries/enterprise'
+      path: '/enterprise'
+      fullPath: '/technologies/industries/enterprise'
+      preLoaderRoute: typeof TechnologiesIndustriesEnterpriseRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
     }
-    '/_authenticated/dashboard/technologies/requests': {
-      id: '/_authenticated/dashboard/technologies/requests'
-      path: '/requests'
-      fullPath: '/dashboard/technologies/requests'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesRequestsRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    '/technologies/industries/education': {
+      id: '/technologies/industries/education'
+      path: '/education'
+      fullPath: '/technologies/industries/education'
+      preLoaderRoute: typeof TechnologiesIndustriesEducationRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
     }
-    '/_authenticated/dashboard/technologies/support': {
-      id: '/_authenticated/dashboard/technologies/support'
-      path: '/support'
-      fullPath: '/dashboard/technologies/support'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesSupportRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    '/technologies/industries/ecommerce': {
+      id: '/technologies/industries/ecommerce'
+      path: '/ecommerce'
+      fullPath: '/technologies/industries/ecommerce'
+      preLoaderRoute: typeof TechnologiesIndustriesEcommerceRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
     }
-    '/api/public/ci-audit/ingest': {
-      id: '/api/public/ci-audit/ingest'
-      path: '/api/public/ci-audit/ingest'
-      fullPath: '/api/public/ci-audit/ingest'
-      preLoaderRoute: typeof ApiPublicCiAuditIngestRouteImport
+    '/technologies/industries/banking': {
+      id: '/technologies/industries/banking'
+      path: '/banking'
+      fullPath: '/technologies/industries/banking'
+      preLoaderRoute: typeof TechnologiesIndustriesBankingRouteImport
+      parentRoute: typeof TechnologiesIndustriesRoute
+    }
+    '/technologies/expertise/vuejs': {
+      id: '/technologies/expertise/vuejs'
+      path: '/vuejs'
+      fullPath: '/technologies/expertise/vuejs'
+      preLoaderRoute: typeof TechnologiesExpertiseVuejsRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/typescript': {
+      id: '/technologies/expertise/typescript'
+      path: '/typescript'
+      fullPath: '/technologies/expertise/typescript'
+      preLoaderRoute: typeof TechnologiesExpertiseTypescriptRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/spring-boot': {
+      id: '/technologies/expertise/spring-boot'
+      path: '/spring-boot'
+      fullPath: '/technologies/expertise/spring-boot'
+      preLoaderRoute: typeof TechnologiesExpertiseSpringBootRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/redis': {
+      id: '/technologies/expertise/redis'
+      path: '/redis'
+      fullPath: '/technologies/expertise/redis'
+      preLoaderRoute: typeof TechnologiesExpertiseRedisRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/react-native': {
+      id: '/technologies/expertise/react-native'
+      path: '/react-native'
+      fullPath: '/technologies/expertise/react-native'
+      preLoaderRoute: typeof TechnologiesExpertiseReactNativeRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/react': {
+      id: '/technologies/expertise/react'
+      path: '/react'
+      fullPath: '/technologies/expertise/react'
+      preLoaderRoute: typeof TechnologiesExpertiseReactRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/python': {
+      id: '/technologies/expertise/python'
+      path: '/python'
+      fullPath: '/technologies/expertise/python'
+      preLoaderRoute: typeof TechnologiesExpertisePythonRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/postgresql': {
+      id: '/technologies/expertise/postgresql'
+      path: '/postgresql'
+      fullPath: '/technologies/expertise/postgresql'
+      preLoaderRoute: typeof TechnologiesExpertisePostgresqlRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/php': {
+      id: '/technologies/expertise/php'
+      path: '/php'
+      fullPath: '/technologies/expertise/php'
+      preLoaderRoute: typeof TechnologiesExpertisePhpRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/openai': {
+      id: '/technologies/expertise/openai'
+      path: '/openai'
+      fullPath: '/technologies/expertise/openai'
+      preLoaderRoute: typeof TechnologiesExpertiseOpenaiRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/nodejs': {
+      id: '/technologies/expertise/nodejs'
+      path: '/nodejs'
+      fullPath: '/technologies/expertise/nodejs'
+      preLoaderRoute: typeof TechnologiesExpertiseNodejsRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/nlp': {
+      id: '/technologies/expertise/nlp'
+      path: '/nlp'
+      fullPath: '/technologies/expertise/nlp'
+      preLoaderRoute: typeof TechnologiesExpertiseNlpRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/nextjs': {
+      id: '/technologies/expertise/nextjs'
+      path: '/nextjs'
+      fullPath: '/technologies/expertise/nextjs'
+      preLoaderRoute: typeof TechnologiesExpertiseNextjsRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/mysql': {
+      id: '/technologies/expertise/mysql'
+      path: '/mysql'
+      fullPath: '/technologies/expertise/mysql'
+      preLoaderRoute: typeof TechnologiesExpertiseMysqlRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/mongodb': {
+      id: '/technologies/expertise/mongodb'
+      path: '/mongodb'
+      fullPath: '/technologies/expertise/mongodb'
+      preLoaderRoute: typeof TechnologiesExpertiseMongodbRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/machine-learning': {
+      id: '/technologies/expertise/machine-learning'
+      path: '/machine-learning'
+      fullPath: '/technologies/expertise/machine-learning'
+      preLoaderRoute: typeof TechnologiesExpertiseMachineLearningRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/laravel': {
+      id: '/technologies/expertise/laravel'
+      path: '/laravel'
+      fullPath: '/technologies/expertise/laravel'
+      preLoaderRoute: typeof TechnologiesExpertiseLaravelRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/kubernetes': {
+      id: '/technologies/expertise/kubernetes'
+      path: '/kubernetes'
+      fullPath: '/technologies/expertise/kubernetes'
+      preLoaderRoute: typeof TechnologiesExpertiseKubernetesRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/javascript': {
+      id: '/technologies/expertise/javascript'
+      path: '/javascript'
+      fullPath: '/technologies/expertise/javascript'
+      preLoaderRoute: typeof TechnologiesExpertiseJavascriptRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/java': {
+      id: '/technologies/expertise/java'
+      path: '/java'
+      fullPath: '/technologies/expertise/java'
+      preLoaderRoute: typeof TechnologiesExpertiseJavaRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/ios': {
+      id: '/technologies/expertise/ios'
+      path: '/ios'
+      fullPath: '/technologies/expertise/ios'
+      preLoaderRoute: typeof TechnologiesExpertiseIosRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/html5': {
+      id: '/technologies/expertise/html5'
+      path: '/html5'
+      fullPath: '/technologies/expertise/html5'
+      preLoaderRoute: typeof TechnologiesExpertiseHtml5RouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/go': {
+      id: '/technologies/expertise/go'
+      path: '/go'
+      fullPath: '/technologies/expertise/go'
+      preLoaderRoute: typeof TechnologiesExpertiseGoRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/generative-ai': {
+      id: '/technologies/expertise/generative-ai'
+      path: '/generative-ai'
+      fullPath: '/technologies/expertise/generative-ai'
+      preLoaderRoute: typeof TechnologiesExpertiseGenerativeAiRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/gcp': {
+      id: '/technologies/expertise/gcp'
+      path: '/gcp'
+      fullPath: '/technologies/expertise/gcp'
+      preLoaderRoute: typeof TechnologiesExpertiseGcpRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/flutter': {
+      id: '/technologies/expertise/flutter'
+      path: '/flutter'
+      fullPath: '/technologies/expertise/flutter'
+      preLoaderRoute: typeof TechnologiesExpertiseFlutterRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/express': {
+      id: '/technologies/expertise/express'
+      path: '/express'
+      fullPath: '/technologies/expertise/express'
+      preLoaderRoute: typeof TechnologiesExpertiseExpressRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/dotnet': {
+      id: '/technologies/expertise/dotnet'
+      path: '/dotnet'
+      fullPath: '/technologies/expertise/dotnet'
+      preLoaderRoute: typeof TechnologiesExpertiseDotnetRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/docker': {
+      id: '/technologies/expertise/docker'
+      path: '/docker'
+      fullPath: '/technologies/expertise/docker'
+      preLoaderRoute: typeof TechnologiesExpertiseDockerRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/data-engineering-tech': {
+      id: '/technologies/expertise/data-engineering-tech'
+      path: '/data-engineering-tech'
+      fullPath: '/technologies/expertise/data-engineering-tech'
+      preLoaderRoute: typeof TechnologiesExpertiseDataEngineeringTechRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/css3': {
+      id: '/technologies/expertise/css3'
+      path: '/css3'
+      fullPath: '/technologies/expertise/css3'
+      preLoaderRoute: typeof TechnologiesExpertiseCss3RouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/computer-vision': {
+      id: '/technologies/expertise/computer-vision'
+      path: '/computer-vision'
+      fullPath: '/technologies/expertise/computer-vision'
+      preLoaderRoute: typeof TechnologiesExpertiseComputerVisionRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/business-intelligence-tech': {
+      id: '/technologies/expertise/business-intelligence-tech'
+      path: '/business-intelligence-tech'
+      fullPath: '/technologies/expertise/business-intelligence-tech'
+      preLoaderRoute: typeof TechnologiesExpertiseBusinessIntelligenceTechRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/azure': {
+      id: '/technologies/expertise/azure'
+      path: '/azure'
+      fullPath: '/technologies/expertise/azure'
+      preLoaderRoute: typeof TechnologiesExpertiseAzureRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/aws': {
+      id: '/technologies/expertise/aws'
+      path: '/aws'
+      fullPath: '/technologies/expertise/aws'
+      preLoaderRoute: typeof TechnologiesExpertiseAwsRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/angular': {
+      id: '/technologies/expertise/angular'
+      path: '/angular'
+      fullPath: '/technologies/expertise/angular'
+      preLoaderRoute: typeof TechnologiesExpertiseAngularRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/android': {
+      id: '/technologies/expertise/android'
+      path: '/android'
+      fullPath: '/technologies/expertise/android'
+      preLoaderRoute: typeof TechnologiesExpertiseAndroidRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/expertise/ai-automation': {
+      id: '/technologies/expertise/ai-automation'
+      path: '/ai-automation'
+      fullPath: '/technologies/expertise/ai-automation'
+      preLoaderRoute: typeof TechnologiesExpertiseAiAutomationRouteImport
+      parentRoute: typeof TechnologiesExpertiseRoute
+    }
+    '/technologies/engagement/time-and-materials': {
+      id: '/technologies/engagement/time-and-materials'
+      path: '/time-and-materials'
+      fullPath: '/technologies/engagement/time-and-materials'
+      preLoaderRoute: typeof TechnologiesEngagementTimeAndMaterialsRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/staff-augmentation': {
+      id: '/technologies/engagement/staff-augmentation'
+      path: '/staff-augmentation'
+      fullPath: '/technologies/engagement/staff-augmentation'
+      preLoaderRoute: typeof TechnologiesEngagementStaffAugmentationRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/offshore-development-center': {
+      id: '/technologies/engagement/offshore-development-center'
+      path: '/offshore-development-center'
+      fullPath: '/technologies/engagement/offshore-development-center'
+      preLoaderRoute: typeof TechnologiesEngagementOffshoreDevelopmentCenterRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/fixed-price-projects': {
+      id: '/technologies/engagement/fixed-price-projects'
+      path: '/fixed-price-projects'
+      fullPath: '/technologies/engagement/fixed-price-projects'
+      preLoaderRoute: typeof TechnologiesEngagementFixedPriceProjectsRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/dedicated-development-team': {
+      id: '/technologies/engagement/dedicated-development-team'
+      path: '/dedicated-development-team'
+      fullPath: '/technologies/engagement/dedicated-development-team'
+      preLoaderRoute: typeof TechnologiesEngagementDedicatedDevelopmentTeamRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/engagement/build-operate-transfer': {
+      id: '/technologies/engagement/build-operate-transfer'
+      path: '/build-operate-transfer'
+      fullPath: '/technologies/engagement/build-operate-transfer'
+      preLoaderRoute: typeof TechnologiesEngagementBuildOperateTransferRouteImport
+      parentRoute: typeof TechnologiesEngagementRoute
+    }
+    '/technologies/company/$slug': {
+      id: '/technologies/company/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/company/$slug'
+      preLoaderRoute: typeof TechnologiesCompanySlugRouteImport
+      parentRoute: typeof TechnologiesCompanyRoute
+    }
+    '/technologies/case-studies/$slug': {
+      id: '/technologies/case-studies/$slug'
+      path: '/$slug'
+      fullPath: '/technologies/case-studies/$slug'
+      preLoaderRoute: typeof TechnologiesCaseStudiesSlugRouteImport
+      parentRoute: typeof TechnologiesCaseStudiesRoute
+    }
+    '/global-education/universities/$slug': {
+      id: '/global-education/universities/$slug'
+      path: '/$slug'
+      fullPath: '/global-education/universities/$slug'
+      preLoaderRoute: typeof GlobalEducationUniversitiesSlugRouteImport
+      parentRoute: typeof GlobalEducationUniversitiesRoute
+    }
+    '/global-education/countries/$slug': {
+      id: '/global-education/countries/$slug'
+      path: '/$slug'
+      fullPath: '/global-education/countries/$slug'
+      preLoaderRoute: typeof GlobalEducationCountriesSlugRouteImport
+      parentRoute: typeof GlobalEducationCountriesRoute
+    }
+    '/docs/$category/$slug': {
+      id: '/docs/$category/$slug'
+      path: '/$slug'
+      fullPath: '/docs/$category/$slug'
+      preLoaderRoute: typeof DocsCategorySlugRouteImport
+      parentRoute: typeof DocsCategoryRoute
+    }
+    '/api/v1/universities': {
+      id: '/api/v1/universities'
+      path: '/api/v1/universities'
+      fullPath: '/api/v1/universities'
+      preLoaderRoute: typeof ApiV1UniversitiesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/ci-ingest-failures/log': {
-      id: '/api/public/ci-ingest-failures/log'
-      path: '/api/public/ci-ingest-failures/log'
-      fullPath: '/api/public/ci-ingest-failures/log'
-      preLoaderRoute: typeof ApiPublicCiIngestFailuresLogRouteImport
+    '/api/v1/programs': {
+      id: '/api/v1/programs'
+      path: '/api/v1/programs'
+      fullPath: '/api/v1/programs'
+      preLoaderRoute: typeof ApiV1ProgramsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/constitution/amendments': {
-      id: '/api/public/constitution/amendments'
-      path: '/api/public/constitution/amendments'
-      fullPath: '/api/public/constitution/amendments'
-      preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
+    '/api/v1/jobs': {
+      id: '/api/v1/jobs'
+      path: '/api/v1/jobs'
+      fullPath: '/api/v1/jobs'
+      preLoaderRoute: typeof ApiV1JobsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/constitution/apply': {
-      id: '/api/public/constitution/apply'
-      path: '/api/public/constitution/apply'
-      fullPath: '/api/public/constitution/apply'
-      preLoaderRoute: typeof ApiPublicConstitutionApplyRouteImport
+    '/api/v1/courses': {
+      id: '/api/v1/courses'
+      path: '/api/v1/courses'
+      fullPath: '/api/v1/courses'
+      preLoaderRoute: typeof ApiV1CoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/constitution/status': {
-      id: '/api/public/constitution/status'
-      path: '/api/public/constitution/status'
-      fullPath: '/api/public/constitution/status'
-      preLoaderRoute: typeof ApiPublicConstitutionStatusRouteImport
+    '/api/public/vector-search': {
+      id: '/api/public/vector-search'
+      path: '/api/public/vector-search'
+      fullPath: '/api/public/vector-search'
+      preLoaderRoute: typeof ApiPublicVectorSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/cron/embeddings': {
-      id: '/api/public/cron/embeddings'
-      path: '/api/public/cron/embeddings'
-      fullPath: '/api/public/cron/embeddings'
-      preLoaderRoute: typeof ApiPublicCronEmbeddingsRouteImport
+    '/api/public/system-health': {
+      id: '/api/public/system-health'
+      path: '/api/public/system-health'
+      fullPath: '/api/public/system-health'
+      preLoaderRoute: typeof ApiPublicSystemHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/cron/webhook-dispatch': {
-      id: '/api/public/cron/webhook-dispatch'
-      path: '/api/public/cron/webhook-dispatch'
-      fullPath: '/api/public/cron/webhook-dispatch'
-      preLoaderRoute: typeof ApiPublicCronWebhookDispatchRouteImport
+    '/api/public/strategy': {
+      id: '/api/public/strategy'
+      path: '/api/public/strategy'
+      fullPath: '/api/public/strategy'
+      preLoaderRoute: typeof ApiPublicStrategyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/governance/decisions': {
-      id: '/api/public/governance/decisions'
-      path: '/decisions'
-      fullPath: '/api/public/governance/decisions'
-      preLoaderRoute: typeof ApiPublicGovernanceDecisionsRouteImport
-      parentRoute: typeof ApiPublicGovernanceRoute
-    }
-    '/api/public/governance/knowledge': {
-      id: '/api/public/governance/knowledge'
-      path: '/knowledge'
-      fullPath: '/api/public/governance/knowledge'
-      preLoaderRoute: typeof ApiPublicGovernanceKnowledgeRouteImport
-      parentRoute: typeof ApiPublicGovernanceRoute
-    }
-    '/api/public/hooks/env-readiness-recheck': {
-      id: '/api/public/hooks/env-readiness-recheck'
-      path: '/api/public/hooks/env-readiness-recheck'
-      fullPath: '/api/public/hooks/env-readiness-recheck'
-      preLoaderRoute: typeof ApiPublicHooksEnvReadinessRecheckRouteImport
+    '/api/public/shared-memory': {
+      id: '/api/public/shared-memory'
+      path: '/api/public/shared-memory'
+      fullPath: '/api/public/shared-memory'
+      preLoaderRoute: typeof ApiPublicSharedMemoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/poll-pr-ci': {
-      id: '/api/public/hooks/poll-pr-ci'
-      path: '/api/public/hooks/poll-pr-ci'
-      fullPath: '/api/public/hooks/poll-pr-ci'
-      preLoaderRoute: typeof ApiPublicHooksPollPrCiRouteImport
+    '/api/public/self-optimize': {
+      id: '/api/public/self-optimize'
+      path: '/api/public/self-optimize'
+      fullPath: '/api/public/self-optimize'
+      preLoaderRoute: typeof ApiPublicSelfOptimizeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/launch-readiness/ingest': {
-      id: '/api/public/launch-readiness/ingest'
-      path: '/api/public/launch-readiness/ingest'
-      fullPath: '/api/public/launch-readiness/ingest'
-      preLoaderRoute: typeof ApiPublicLaunchReadinessIngestRouteImport
+    '/api/public/resolve-intent': {
+      id: '/api/public/resolve-intent'
+      path: '/api/public/resolve-intent'
+      fullPath: '/api/public/resolve-intent'
+      preLoaderRoute: typeof ApiPublicResolveIntentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/risk/evaluate-pr': {
-      id: '/api/public/risk/evaluate-pr'
-      path: '/api/public/risk/evaluate-pr'
-      fullPath: '/api/public/risk/evaluate-pr'
-      preLoaderRoute: typeof ApiPublicRiskEvaluatePrRouteImport
+    '/api/public/resolve-hybrid': {
+      id: '/api/public/resolve-hybrid'
+      path: '/api/public/resolve-hybrid'
+      fullPath: '/api/public/resolve-hybrid'
+      preLoaderRoute: typeof ApiPublicResolveHybridRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/sentry/sync': {
-      id: '/api/public/sentry/sync'
-      path: '/api/public/sentry/sync'
-      fullPath: '/api/public/sentry/sync'
-      preLoaderRoute: typeof ApiPublicSentrySyncRouteImport
+    '/api/public/replay': {
+      id: '/api/public/replay'
+      path: '/api/public/replay'
+      fullPath: '/api/public/replay'
+      preLoaderRoute: typeof ApiPublicReplayRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/sentry/webhook': {
-      id: '/api/public/sentry/webhook'
-      path: '/api/public/sentry/webhook'
-      fullPath: '/api/public/sentry/webhook'
-      preLoaderRoute: typeof ApiPublicSentryWebhookRouteImport
+    '/api/public/memory-graph': {
+      id: '/api/public/memory-graph'
+      path: '/api/public/memory-graph'
+      fullPath: '/api/public/memory-graph'
+      preLoaderRoute: typeof ApiPublicMemoryGraphRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/sre/e2e-health': {
-      id: '/api/public/sre/e2e-health'
-      path: '/api/public/sre/e2e-health'
-      fullPath: '/api/public/sre/e2e-health'
-      preLoaderRoute: typeof ApiPublicSreE2eHealthRouteImport
+    '/api/public/health': {
+      id: '/api/public/health'
+      path: '/api/public/health'
+      fullPath: '/api/public/health'
+      preLoaderRoute: typeof ApiPublicHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/sre/e2e-trigger': {
-      id: '/api/public/sre/e2e-trigger'
-      path: '/api/public/sre/e2e-trigger'
-      fullPath: '/api/public/sre/e2e-trigger'
-      preLoaderRoute: typeof ApiPublicSreE2eTriggerRouteImport
+    '/api/public/governance': {
+      id: '/api/public/governance'
+      path: '/api/public/governance'
+      fullPath: '/api/public/governance'
+      preLoaderRoute: typeof ApiPublicGovernanceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/sre/verify-bearer': {
-      id: '/api/public/sre/verify-bearer'
-      path: '/api/public/sre/verify-bearer'
-      fullPath: '/api/public/sre/verify-bearer'
-      preLoaderRoute: typeof ApiPublicSreVerifyBearerRouteImport
+    '/api/public/goals': {
+      id: '/api/public/goals'
+      path: '/api/public/goals'
+      fullPath: '/api/public/goals'
+      preLoaderRoute: typeof ApiPublicGoalsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/webhooks/process': {
-      id: '/api/public/webhooks/process'
-      path: '/api/public/webhooks/process'
-      fullPath: '/api/public/webhooks/process'
-      preLoaderRoute: typeof ApiPublicWebhooksProcessRouteImport
+    '/api/public/email-verify': {
+      id: '/api/public/email-verify'
+      path: '/api/public/email-verify'
+      fullPath: '/api/public/email-verify'
+      preLoaderRoute: typeof ApiPublicEmailVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/decisions': {
+      id: '/api/public/decisions'
+      path: '/api/public/decisions'
+      fullPath: '/api/public/decisions'
+      preLoaderRoute: typeof ApiPublicDecisionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/chat': {
+      id: '/api/public/chat'
+      path: '/api/public/chat'
+      fullPath: '/api/public/chat'
+      preLoaderRoute: typeof ApiPublicChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai-mode': {
+      id: '/api/public/ai-mode'
+      path: '/api/public/ai-mode'
+      fullPath: '/api/public/ai-mode'
+      preLoaderRoute: typeof ApiPublicAiModeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai/collections/$slug': {
+      id: '/ai/collections/$slug'
+      path: '/$slug'
+      fullPath: '/ai/collections/$slug'
+      preLoaderRoute: typeof AiCollectionsSlugRouteImport
+      parentRoute: typeof AiCollectionsRoute
+    }
+    '/academy/programs/$slug': {
+      id: '/academy/programs/$slug'
+      path: '/programs/$slug'
+      fullPath: '/academy/programs/$slug'
+      preLoaderRoute: typeof AcademyProgramsSlugRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/campuses/$slug': {
+      id: '/academy/campuses/$slug'
+      path: '/campuses/$slug'
+      fullPath: '/academy/campuses/$slug'
+      preLoaderRoute: typeof AcademyCampusesSlugRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/blog/certifications-comparison': {
+      id: '/academy/blog/certifications-comparison'
+      path: '/blog/certifications-comparison'
+      fullPath: '/academy/blog/certifications-comparison'
+      preLoaderRoute: typeof AcademyBlogCertificationsComparisonRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/_authenticated/ops/reliability': {
+      id: '/_authenticated/ops/reliability'
+      path: '/reliability'
+      fullPath: '/ops/reliability'
+      preLoaderRoute: typeof AuthenticatedOpsReliabilityRouteImport
+      parentRoute: typeof AuthenticatedOpsRoute
+    }
+    '/_authenticated/education/profile': {
+      id: '/_authenticated/education/profile'
+      path: '/profile'
+      fullPath: '/education/profile'
+      preLoaderRoute: typeof AuthenticatedEducationProfileRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
+    }
+    '/_authenticated/education/documents': {
+      id: '/_authenticated/education/documents'
+      path: '/documents'
+      fullPath: '/education/documents'
+      preLoaderRoute: typeof AuthenticatedEducationDocumentsRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
+    }
+    '/_authenticated/education/applications': {
+      id: '/_authenticated/education/applications'
+      path: '/applications'
+      fullPath: '/education/applications'
+      preLoaderRoute: typeof AuthenticatedEducationApplicationsRouteImport
+      parentRoute: typeof AuthenticatedEducationRoute
+    }
+    '/_authenticated/dashboard/visa': {
+      id: '/_authenticated/dashboard/visa'
+      path: '/visa'
+      fullPath: '/dashboard/visa'
+      preLoaderRoute: typeof AuthenticatedDashboardVisaRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/technologies': {
+      id: '/_authenticated/dashboard/technologies'
+      path: '/technologies'
+      fullPath: '/dashboard/technologies'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/security': {
+      id: '/_authenticated/dashboard/security'
+      path: '/security'
+      fullPath: '/dashboard/security'
+      preLoaderRoute: typeof AuthenticatedDashboardSecurityRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/programs': {
+      id: '/_authenticated/dashboard/programs'
+      path: '/programs'
+      fullPath: '/dashboard/programs'
+      preLoaderRoute: typeof AuthenticatedDashboardProgramsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/profile': {
+      id: '/_authenticated/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/notifications': {
+      id: '/_authenticated/dashboard/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/notifications'
+      preLoaderRoute: typeof AuthenticatedDashboardNotificationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/faculty': {
+      id: '/_authenticated/dashboard/faculty'
+      path: '/faculty'
+      fullPath: '/dashboard/faculty'
+      preLoaderRoute: typeof AuthenticatedDashboardFacultyRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/counselor': {
+      id: '/_authenticated/dashboard/counselor'
+      path: '/counselor'
+      fullPath: '/dashboard/counselor'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/career': {
+      id: '/_authenticated/dashboard/career'
+      path: '/career'
+      fullPath: '/dashboard/career'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/admin': {
+      id: '/_authenticated/dashboard/admin'
+      path: '/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/community/events': {
+      id: '/_authenticated/community/events'
+      path: '/events'
+      fullPath: '/community/events'
+      preLoaderRoute: typeof AuthenticatedCommunityEventsRouteImport
+      parentRoute: typeof AuthenticatedCommunityRoute
+    }
+    '/_authenticated/community/$slug': {
+      id: '/_authenticated/community/$slug'
+      path: '/$slug'
+      fullPath: '/community/$slug'
+      preLoaderRoute: typeof AuthenticatedCommunitySlugRouteImport
+      parentRoute: typeof AuthenticatedCommunityRoute
+    }
+    '/_authenticated/assistant/$conversationId': {
+      id: '/_authenticated/assistant/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/assistant/$conversationId'
+      preLoaderRoute: typeof AuthenticatedAssistantConversationIdRouteImport
+      parentRoute: typeof AuthenticatedAssistantRoute
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/global-education/knowledge-base/universities/': {
@@ -7145,6 +6410,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesIndexRouteImport
       parentRoute: typeof GlobalEducationRoute
     }
+    '/_authenticated/dashboard/technologies/': {
+      id: '/_authenticated/dashboard/technologies/'
+      path: '/'
+      fullPath: '/dashboard/technologies/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/projects/': {
+      id: '/_authenticated/dashboard/projects/'
+      path: '/projects'
+      fullPath: '/dashboard/projects/'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/counselor/': {
+      id: '/_authenticated/dashboard/counselor/'
+      path: '/'
+      fullPath: '/dashboard/counselor/'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
+    '/_authenticated/dashboard/certificates/': {
+      id: '/_authenticated/dashboard/certificates/'
+      path: '/certificates'
+      fullPath: '/dashboard/certificates/'
+      preLoaderRoute: typeof AuthenticatedDashboardCertificatesIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/career/': {
+      id: '/_authenticated/dashboard/career/'
+      path: '/'
+      fullPath: '/dashboard/career/'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardCareerRoute
+    }
+    '/_authenticated/dashboard/assignments/': {
+      id: '/_authenticated/dashboard/assignments/'
+      path: '/assignments'
+      fullPath: '/dashboard/assignments/'
+      preLoaderRoute: typeof AuthenticatedDashboardAssignmentsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/applications/': {
+      id: '/_authenticated/dashboard/applications/'
+      path: '/applications'
+      fullPath: '/dashboard/applications/'
+      preLoaderRoute: typeof AuthenticatedDashboardApplicationsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/admin/': {
+      id: '/_authenticated/dashboard/admin/'
+      path: '/'
+      fullPath: '/dashboard/admin/'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
     '/global-education/knowledge-base/universities/$slug': {
       id: '/global-education/knowledge-base/universities/$slug'
       path: '/knowledge-base/universities/$slug'
@@ -7152,116 +6473,683 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalEducationKnowledgeBaseUniversitiesSlugRouteImport
       parentRoute: typeof GlobalEducationRoute
     }
-    '/_authenticated/dashboard/admin/ai/copilot': {
-      id: '/_authenticated/dashboard/admin/ai/copilot'
-      path: '/copilot'
-      fullPath: '/dashboard/admin/ai/copilot'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminAiCopilotRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminAiRoute
+    '/api/public/webhooks/process': {
+      id: '/api/public/webhooks/process'
+      path: '/api/public/webhooks/process'
+      fullPath: '/api/public/webhooks/process'
+      preLoaderRoute: typeof ApiPublicWebhooksProcessRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/admin/ai/usage': {
-      id: '/_authenticated/dashboard/admin/ai/usage'
-      path: '/usage'
-      fullPath: '/dashboard/admin/ai/usage'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminAiUsageRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminAiRoute
+    '/api/public/sre/verify-bearer': {
+      id: '/api/public/sre/verify-bearer'
+      path: '/api/public/sre/verify-bearer'
+      fullPath: '/api/public/sre/verify-bearer'
+      preLoaderRoute: typeof ApiPublicSreVerifyBearerRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/admin/crm/': {
-      id: '/_authenticated/dashboard/admin/crm/'
-      path: '/'
-      fullPath: '/dashboard/admin/crm/'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminCrmRoute
+    '/api/public/sre/e2e-trigger': {
+      id: '/api/public/sre/e2e-trigger'
+      path: '/api/public/sre/e2e-trigger'
+      fullPath: '/api/public/sre/e2e-trigger'
+      preLoaderRoute: typeof ApiPublicSreE2eTriggerRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/admin/incident-replay/$issueId': {
-      id: '/_authenticated/dashboard/admin/incident-replay/$issueId'
-      path: '/incident-replay/$issueId'
-      fullPath: '/dashboard/admin/incident-replay/$issueId'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    '/api/public/sre/e2e-health': {
+      id: '/api/public/sre/e2e-health'
+      path: '/api/public/sre/e2e-health'
+      fullPath: '/api/public/sre/e2e-health'
+      preLoaderRoute: typeof ApiPublicSreE2eHealthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/admin/programs/': {
-      id: '/_authenticated/dashboard/admin/programs/'
-      path: '/programs'
-      fullPath: '/dashboard/admin/programs/'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    '/api/public/sentry/webhook': {
+      id: '/api/public/sentry/webhook'
+      path: '/api/public/sentry/webhook'
+      fullPath: '/api/public/sentry/webhook'
+      preLoaderRoute: typeof ApiPublicSentryWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/admin/programs/$id': {
-      id: '/_authenticated/dashboard/admin/programs/$id'
-      path: '/programs/$id'
-      fullPath: '/dashboard/admin/programs/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    '/api/public/sentry/sync': {
+      id: '/api/public/sentry/sync'
+      path: '/api/public/sentry/sync'
+      fullPath: '/api/public/sentry/sync'
+      preLoaderRoute: typeof ApiPublicSentrySyncRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/admin/visa/$id': {
-      id: '/_authenticated/dashboard/admin/visa/$id'
-      path: '/$id'
-      fullPath: '/dashboard/admin/visa/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminVisaIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminVisaRoute
+    '/api/public/risk/evaluate-pr': {
+      id: '/api/public/risk/evaluate-pr'
+      path: '/api/public/risk/evaluate-pr'
+      fullPath: '/api/public/risk/evaluate-pr'
+      preLoaderRoute: typeof ApiPublicRiskEvaluatePrRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard/counselor/timeline/$id': {
-      id: '/_authenticated/dashboard/counselor/timeline/$id'
-      path: '/timeline/$id'
-      fullPath: '/dashboard/counselor/timeline/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardCounselorTimelineIdRouteImport
+    '/api/public/launch-readiness/ingest': {
+      id: '/api/public/launch-readiness/ingest'
+      path: '/api/public/launch-readiness/ingest'
+      fullPath: '/api/public/launch-readiness/ingest'
+      preLoaderRoute: typeof ApiPublicLaunchReadinessIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/poll-pr-ci': {
+      id: '/api/public/hooks/poll-pr-ci'
+      path: '/api/public/hooks/poll-pr-ci'
+      fullPath: '/api/public/hooks/poll-pr-ci'
+      preLoaderRoute: typeof ApiPublicHooksPollPrCiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/env-readiness-recheck': {
+      id: '/api/public/hooks/env-readiness-recheck'
+      path: '/api/public/hooks/env-readiness-recheck'
+      fullPath: '/api/public/hooks/env-readiness-recheck'
+      preLoaderRoute: typeof ApiPublicHooksEnvReadinessRecheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/governance/knowledge': {
+      id: '/api/public/governance/knowledge'
+      path: '/knowledge'
+      fullPath: '/api/public/governance/knowledge'
+      preLoaderRoute: typeof ApiPublicGovernanceKnowledgeRouteImport
+      parentRoute: typeof ApiPublicGovernanceRoute
+    }
+    '/api/public/governance/decisions': {
+      id: '/api/public/governance/decisions'
+      path: '/decisions'
+      fullPath: '/api/public/governance/decisions'
+      preLoaderRoute: typeof ApiPublicGovernanceDecisionsRouteImport
+      parentRoute: typeof ApiPublicGovernanceRoute
+    }
+    '/api/public/cron/webhook-dispatch': {
+      id: '/api/public/cron/webhook-dispatch'
+      path: '/api/public/cron/webhook-dispatch'
+      fullPath: '/api/public/cron/webhook-dispatch'
+      preLoaderRoute: typeof ApiPublicCronWebhookDispatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/cron/embeddings': {
+      id: '/api/public/cron/embeddings'
+      path: '/api/public/cron/embeddings'
+      fullPath: '/api/public/cron/embeddings'
+      preLoaderRoute: typeof ApiPublicCronEmbeddingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/constitution/status': {
+      id: '/api/public/constitution/status'
+      path: '/api/public/constitution/status'
+      fullPath: '/api/public/constitution/status'
+      preLoaderRoute: typeof ApiPublicConstitutionStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/constitution/apply': {
+      id: '/api/public/constitution/apply'
+      path: '/api/public/constitution/apply'
+      fullPath: '/api/public/constitution/apply'
+      preLoaderRoute: typeof ApiPublicConstitutionApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/constitution/amendments': {
+      id: '/api/public/constitution/amendments'
+      path: '/api/public/constitution/amendments'
+      fullPath: '/api/public/constitution/amendments'
+      preLoaderRoute: typeof ApiPublicConstitutionAmendmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ci-ingest-failures/log': {
+      id: '/api/public/ci-ingest-failures/log'
+      path: '/api/public/ci-ingest-failures/log'
+      fullPath: '/api/public/ci-ingest-failures/log'
+      preLoaderRoute: typeof ApiPublicCiIngestFailuresLogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ci-audit/ingest': {
+      id: '/api/public/ci-audit/ingest'
+      path: '/api/public/ci-audit/ingest'
+      fullPath: '/api/public/ci-audit/ingest'
+      preLoaderRoute: typeof ApiPublicCiAuditIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard/technologies/support': {
+      id: '/_authenticated/dashboard/technologies/support'
+      path: '/support'
+      fullPath: '/dashboard/technologies/support'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesSupportRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/requests': {
+      id: '/_authenticated/dashboard/technologies/requests'
+      path: '/requests'
+      fullPath: '/dashboard/technologies/requests'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesRequestsRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/proposals': {
+      id: '/_authenticated/dashboard/technologies/proposals'
+      path: '/proposals'
+      fullPath: '/dashboard/technologies/proposals'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProposalsRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/finance': {
+      id: '/_authenticated/dashboard/technologies/finance'
+      path: '/finance'
+      fullPath: '/dashboard/technologies/finance'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesFinanceRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/contracts': {
+      id: '/_authenticated/dashboard/technologies/contracts'
+      path: '/contracts'
+      fullPath: '/dashboard/technologies/contracts'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesContractsRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/projects/$id': {
+      id: '/_authenticated/dashboard/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/dashboard/projects/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/programs/$slug': {
+      id: '/_authenticated/dashboard/programs/$slug'
+      path: '/$slug'
+      fullPath: '/dashboard/programs/$slug'
+      preLoaderRoute: typeof AuthenticatedDashboardProgramsSlugRouteImport
+      parentRoute: typeof AuthenticatedDashboardProgramsRoute
+    }
+    '/_authenticated/dashboard/payments/new': {
+      id: '/_authenticated/dashboard/payments/new'
+      path: '/payments/new'
+      fullPath: '/dashboard/payments/new'
+      preLoaderRoute: typeof AuthenticatedDashboardPaymentsNewRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/notifications/preferences': {
+      id: '/_authenticated/dashboard/notifications/preferences'
+      path: '/preferences'
+      fullPath: '/dashboard/notifications/preferences'
+      preLoaderRoute: typeof AuthenticatedDashboardNotificationsPreferencesRouteImport
+      parentRoute: typeof AuthenticatedDashboardNotificationsRoute
+    }
+    '/_authenticated/dashboard/lessons/$lessonId': {
+      id: '/_authenticated/dashboard/lessons/$lessonId'
+      path: '/lessons/$lessonId'
+      fullPath: '/dashboard/lessons/$lessonId'
+      preLoaderRoute: typeof AuthenticatedDashboardLessonsLessonIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/faculty/submissions': {
+      id: '/_authenticated/dashboard/faculty/submissions'
+      path: '/submissions'
+      fullPath: '/dashboard/faculty/submissions'
+      preLoaderRoute: typeof AuthenticatedDashboardFacultySubmissionsRouteImport
+      parentRoute: typeof AuthenticatedDashboardFacultyRoute
+    }
+    '/_authenticated/dashboard/courses/$courseId': {
+      id: '/_authenticated/dashboard/courses/$courseId'
+      path: '/courses/$courseId'
+      fullPath: '/dashboard/courses/$courseId'
+      preLoaderRoute: typeof AuthenticatedDashboardCoursesCourseIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/counselor/workload': {
+      id: '/_authenticated/dashboard/counselor/workload'
+      path: '/workload'
+      fullPath: '/dashboard/counselor/workload'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorWorkloadRouteImport
       parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/client/': {
-      id: '/_authenticated/dashboard/technologies/client/'
-      path: '/'
-      fullPath: '/dashboard/technologies/client/'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRoute
+    '/_authenticated/dashboard/counselor/visa': {
+      id: '/_authenticated/dashboard/counselor/visa'
+      path: '/visa'
+      fullPath: '/dashboard/counselor/visa'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorVisaRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/client/$id': {
-      id: '/_authenticated/dashboard/technologies/client/$id'
-      path: '/$id'
-      fullPath: '/dashboard/technologies/client/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRoute
+    '/_authenticated/dashboard/counselor/tasks': {
+      id: '/_authenticated/dashboard/counselor/tasks'
+      path: '/tasks'
+      fullPath: '/dashboard/counselor/tasks'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorTasksRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/clients/': {
-      id: '/_authenticated/dashboard/technologies/clients/'
-      path: '/clients'
-      fullPath: '/dashboard/technologies/clients/'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    '/_authenticated/dashboard/counselor/pipeline': {
+      id: '/_authenticated/dashboard/counselor/pipeline'
+      path: '/pipeline'
+      fullPath: '/dashboard/counselor/pipeline'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorPipelineRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/clients/$id': {
-      id: '/_authenticated/dashboard/technologies/clients/$id'
-      path: '/clients/$id'
-      fullPath: '/dashboard/technologies/clients/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    '/_authenticated/dashboard/counselor/leads': {
+      id: '/_authenticated/dashboard/counselor/leads'
+      path: '/leads'
+      fullPath: '/dashboard/counselor/leads'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/contracts/': {
-      id: '/_authenticated/dashboard/technologies/contracts/'
-      path: '/'
-      fullPath: '/dashboard/technologies/contracts/'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesContractsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesContractsRoute
+    '/_authenticated/dashboard/counselor/follow-ups': {
+      id: '/_authenticated/dashboard/counselor/follow-ups'
+      path: '/follow-ups'
+      fullPath: '/dashboard/counselor/follow-ups'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorFollowUpsRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/contracts/$id': {
-      id: '/_authenticated/dashboard/technologies/contracts/$id'
-      path: '/$id'
-      fullPath: '/dashboard/technologies/contracts/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesContractsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesContractsRoute
+    '/_authenticated/dashboard/counselor/applications': {
+      id: '/_authenticated/dashboard/counselor/applications'
+      path: '/applications'
+      fullPath: '/dashboard/counselor/applications'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorApplicationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
     }
-    '/_authenticated/dashboard/technologies/projects/': {
-      id: '/_authenticated/dashboard/technologies/projects/'
+    '/_authenticated/dashboard/counselor/analytics': {
+      id: '/_authenticated/dashboard/counselor/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/counselor/analytics'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
+    '/_authenticated/dashboard/certificates/$id': {
+      id: '/_authenticated/dashboard/certificates/$id'
+      path: '/certificates/$id'
+      fullPath: '/dashboard/certificates/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardCertificatesIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/career/saved': {
+      id: '/_authenticated/dashboard/career/saved'
+      path: '/saved'
+      fullPath: '/dashboard/career/saved'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerSavedRouteImport
+      parentRoute: typeof AuthenticatedDashboardCareerRoute
+    }
+    '/_authenticated/dashboard/career/resume': {
+      id: '/_authenticated/dashboard/career/resume'
+      path: '/resume'
+      fullPath: '/dashboard/career/resume'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerResumeRouteImport
+      parentRoute: typeof AuthenticatedDashboardCareerRoute
+    }
+    '/_authenticated/dashboard/career/profile': {
+      id: '/_authenticated/dashboard/career/profile'
+      path: '/profile'
+      fullPath: '/dashboard/career/profile'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerProfileRouteImport
+      parentRoute: typeof AuthenticatedDashboardCareerRoute
+    }
+    '/_authenticated/dashboard/career/portfolio': {
+      id: '/_authenticated/dashboard/career/portfolio'
+      path: '/portfolio'
+      fullPath: '/dashboard/career/portfolio'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerPortfolioRouteImport
+      parentRoute: typeof AuthenticatedDashboardCareerRoute
+    }
+    '/_authenticated/dashboard/career/applications': {
+      id: '/_authenticated/dashboard/career/applications'
+      path: '/applications'
+      fullPath: '/dashboard/career/applications'
+      preLoaderRoute: typeof AuthenticatedDashboardCareerApplicationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardCareerRoute
+    }
+    '/_authenticated/dashboard/assignments/$assignmentId': {
+      id: '/_authenticated/dashboard/assignments/$assignmentId'
+      path: '/assignments/$assignmentId'
+      fullPath: '/dashboard/assignments/$assignmentId'
+      preLoaderRoute: typeof AuthenticatedDashboardAssignmentsAssignmentIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/applications/$id': {
+      id: '/_authenticated/dashboard/applications/$id'
+      path: '/applications/$id'
+      fullPath: '/dashboard/applications/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardApplicationsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/ai/tutor': {
+      id: '/_authenticated/dashboard/ai/tutor'
+      path: '/ai/tutor'
+      fullPath: '/dashboard/ai/tutor'
+      preLoaderRoute: typeof AuthenticatedDashboardAiTutorRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/ai/global': {
+      id: '/_authenticated/dashboard/ai/global'
+      path: '/ai/global'
+      fullPath: '/dashboard/ai/global'
+      preLoaderRoute: typeof AuthenticatedDashboardAiGlobalRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/ai/career': {
+      id: '/_authenticated/dashboard/ai/career'
+      path: '/ai/career'
+      fullPath: '/dashboard/ai/career'
+      preLoaderRoute: typeof AuthenticatedDashboardAiCareerRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/admin/webhooks': {
+      id: '/_authenticated/dashboard/admin/webhooks'
+      path: '/webhooks'
+      fullPath: '/dashboard/admin/webhooks'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminWebhooksRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/visa': {
+      id: '/_authenticated/dashboard/admin/visa'
+      path: '/visa'
+      fullPath: '/dashboard/admin/visa'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminVisaRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/users': {
+      id: '/_authenticated/dashboard/admin/users'
+      path: '/users'
+      fullPath: '/dashboard/admin/users'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/universities': {
+      id: '/_authenticated/dashboard/admin/universities'
+      path: '/universities'
+      fullPath: '/dashboard/admin/universities'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUniversitiesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/uniprograms': {
+      id: '/_authenticated/dashboard/admin/uniprograms'
+      path: '/uniprograms'
+      fullPath: '/dashboard/admin/uniprograms'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminUniprogramsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/tech-leads': {
+      id: '/_authenticated/dashboard/admin/tech-leads'
+      path: '/tech-leads'
+      fullPath: '/dashboard/admin/tech-leads'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminTechLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/system': {
+      id: '/_authenticated/dashboard/admin/system'
+      path: '/system'
+      fullPath: '/dashboard/admin/system'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSystemRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/stories': {
+      id: '/_authenticated/dashboard/admin/stories'
+      path: '/stories'
+      fullPath: '/dashboard/admin/stories'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminStoriesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sre-metrics': {
+      id: '/_authenticated/dashboard/admin/sre-metrics'
+      path: '/sre-metrics'
+      fullPath: '/dashboard/admin/sre-metrics'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSreMetricsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/settings': {
+      id: '/_authenticated/dashboard/admin/settings'
+      path: '/settings'
+      fullPath: '/dashboard/admin/settings'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sentry-releases': {
+      id: '/_authenticated/dashboard/admin/sentry-releases'
+      path: '/sentry-releases'
+      fullPath: '/dashboard/admin/sentry-releases'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSentryReleasesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sentry': {
+      id: '/_authenticated/dashboard/admin/sentry'
+      path: '/sentry'
+      fullPath: '/dashboard/admin/sentry'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSentryRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/scholarships': {
+      id: '/_authenticated/dashboard/admin/scholarships'
+      path: '/scholarships'
+      fullPath: '/dashboard/admin/scholarships'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminScholarshipsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sa-leads': {
+      id: '/_authenticated/dashboard/admin/sa-leads'
+      path: '/sa-leads'
+      fullPath: '/dashboard/admin/sa-leads'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSaLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/sa-applications': {
+      id: '/_authenticated/dashboard/admin/sa-applications'
+      path: '/sa-applications'
+      fullPath: '/dashboard/admin/sa-applications'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminSaApplicationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/releases': {
+      id: '/_authenticated/dashboard/admin/releases'
+      path: '/releases'
+      fullPath: '/dashboard/admin/releases'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminReleasesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/rag': {
+      id: '/_authenticated/dashboard/admin/rag'
+      path: '/rag'
+      fullPath: '/dashboard/admin/rag'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminRagRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/provider-health': {
+      id: '/_authenticated/dashboard/admin/provider-health'
+      path: '/provider-health'
+      fullPath: '/dashboard/admin/provider-health'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProviderHealthRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/projects': {
+      id: '/_authenticated/dashboard/admin/projects'
       path: '/projects'
-      fullPath: '/dashboard/technologies/projects/'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProjectsIndexRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+      fullPath: '/dashboard/admin/projects'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProjectsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
     }
-    '/_authenticated/dashboard/technologies/projects/$id': {
-      id: '/_authenticated/dashboard/technologies/projects/$id'
-      path: '/projects/$id'
-      fullPath: '/dashboard/technologies/projects/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProjectsIdRouteImport
+    '/_authenticated/dashboard/admin/placements': {
+      id: '/_authenticated/dashboard/admin/placements'
+      path: '/placements'
+      fullPath: '/dashboard/admin/placements'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminPlacementsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/payments': {
+      id: '/_authenticated/dashboard/admin/payments'
+      path: '/payments'
+      fullPath: '/dashboard/admin/payments'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminPaymentsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/operator-checklist': {
+      id: '/_authenticated/dashboard/admin/operator-checklist'
+      path: '/operator-checklist'
+      fullPath: '/dashboard/admin/operator-checklist'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminOperatorChecklistRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/observability': {
+      id: '/_authenticated/dashboard/admin/observability'
+      path: '/observability'
+      fullPath: '/dashboard/admin/observability'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminObservabilityRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/notifications': {
+      id: '/_authenticated/dashboard/admin/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/admin/notifications'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminNotificationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/monitoring-secrets': {
+      id: '/_authenticated/dashboard/admin/monitoring-secrets'
+      path: '/monitoring-secrets'
+      fullPath: '/dashboard/admin/monitoring-secrets'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminMonitoringSecretsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/launch-report': {
+      id: '/_authenticated/dashboard/admin/launch-report'
+      path: '/launch-report'
+      fullPath: '/dashboard/admin/launch-report'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminLaunchReportRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/launch-readiness': {
+      id: '/_authenticated/dashboard/admin/launch-readiness'
+      path: '/launch-readiness'
+      fullPath: '/dashboard/admin/launch-readiness'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminLaunchReadinessRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/jobs': {
+      id: '/_authenticated/dashboard/admin/jobs'
+      path: '/jobs'
+      fullPath: '/dashboard/admin/jobs'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminJobsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/identity-providers': {
+      id: '/_authenticated/dashboard/admin/identity-providers'
+      path: '/identity-providers'
+      fullPath: '/dashboard/admin/identity-providers'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminIdentityProvidersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/governance': {
+      id: '/_authenticated/dashboard/admin/governance'
+      path: '/governance'
+      fullPath: '/dashboard/admin/governance'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminGovernanceRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/feature-flags': {
+      id: '/_authenticated/dashboard/admin/feature-flags'
+      path: '/feature-flags'
+      fullPath: '/dashboard/admin/feature-flags'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminFeatureFlagsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/env-readiness': {
+      id: '/_authenticated/dashboard/admin/env-readiness'
+      path: '/env-readiness'
+      fullPath: '/dashboard/admin/env-readiness'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminEnvReadinessRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/enrollments': {
+      id: '/_authenticated/dashboard/admin/enrollments'
+      path: '/enrollments'
+      fullPath: '/dashboard/admin/enrollments'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminEnrollmentsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/employers': {
+      id: '/_authenticated/dashboard/admin/employers'
+      path: '/employers'
+      fullPath: '/dashboard/admin/employers'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminEmployersRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/domain-status': {
+      id: '/_authenticated/dashboard/admin/domain-status'
+      path: '/domain-status'
+      fullPath: '/dashboard/admin/domain-status'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminDomainStatusRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/crm': {
+      id: '/_authenticated/dashboard/admin/crm'
+      path: '/crm'
+      fullPath: '/dashboard/admin/crm'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/countries': {
+      id: '/_authenticated/dashboard/admin/countries'
+      path: '/countries'
+      fullPath: '/dashboard/admin/countries'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCountriesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/certificates': {
+      id: '/_authenticated/dashboard/admin/certificates'
+      path: '/certificates'
+      fullPath: '/dashboard/admin/certificates'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCertificatesRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/audit-logs': {
+      id: '/_authenticated/dashboard/admin/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/dashboard/admin/audit-logs'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAuditLogsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/assignments': {
+      id: '/_authenticated/dashboard/admin/assignments'
+      path: '/assignments'
+      fullPath: '/dashboard/admin/assignments'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAssignmentsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/applications': {
+      id: '/_authenticated/dashboard/admin/applications'
+      path: '/applications'
+      fullPath: '/dashboard/admin/applications'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminApplicationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/api': {
+      id: '/_authenticated/dashboard/admin/api'
+      path: '/api'
+      fullPath: '/dashboard/admin/api'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminApiRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/analytics': {
+      id: '/_authenticated/dashboard/admin/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/admin/analytics'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/ai': {
+      id: '/_authenticated/dashboard/admin/ai'
+      path: '/ai'
+      fullPath: '/dashboard/admin/ai'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAiRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/community/events/$id': {
+      id: '/_authenticated/community/events/$id'
+      path: '/$id'
+      fullPath: '/community/events/$id'
+      preLoaderRoute: typeof AuthenticatedCommunityEventsIdRouteImport
+      parentRoute: typeof AuthenticatedCommunityEventsRoute
+    }
+    '/_authenticated/community/$slug/$threadId': {
+      id: '/_authenticated/community/$slug/$threadId'
+      path: '/$threadId'
+      fullPath: '/community/$slug/$threadId'
+      preLoaderRoute: typeof AuthenticatedCommunitySlugThreadIdRouteImport
+      parentRoute: typeof AuthenticatedCommunitySlugRoute
+    }
+    '/_authenticated/dashboard/technologies/client': {
+      id: '/_authenticated/dashboard/technologies/client'
+      path: '/client'
+      fullPath: '/dashboard/technologies/client'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRouteImport
       parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
     }
     '/_authenticated/dashboard/technologies/proposals/': {
@@ -7271,12 +7159,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProposalsIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardTechnologiesProposalsRoute
     }
-    '/_authenticated/dashboard/technologies/proposals/$id': {
-      id: '/_authenticated/dashboard/technologies/proposals/$id'
-      path: '/$id'
-      fullPath: '/dashboard/technologies/proposals/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProposalsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardTechnologiesProposalsRoute
+    '/_authenticated/dashboard/technologies/projects/': {
+      id: '/_authenticated/dashboard/technologies/projects/'
+      path: '/projects'
+      fullPath: '/dashboard/technologies/projects/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/contracts/': {
+      id: '/_authenticated/dashboard/technologies/contracts/'
+      path: '/'
+      fullPath: '/dashboard/technologies/contracts/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesContractsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesContractsRoute
+    }
+    '/_authenticated/dashboard/technologies/clients/': {
+      id: '/_authenticated/dashboard/technologies/clients/'
+      path: '/clients'
+      fullPath: '/dashboard/technologies/clients/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/client/': {
+      id: '/_authenticated/dashboard/technologies/client/'
+      path: '/'
+      fullPath: '/dashboard/technologies/client/'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRoute
+    }
+    '/_authenticated/dashboard/admin/programs/': {
+      id: '/_authenticated/dashboard/admin/programs/'
+      path: '/programs'
+      fullPath: '/dashboard/admin/programs/'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/crm/': {
+      id: '/_authenticated/dashboard/admin/crm/'
+      path: '/'
+      fullPath: '/dashboard/admin/crm/'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminCrmIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminCrmRoute
     }
     '/api/v1/certificates/verify/$id': {
       id: '/api/v1/certificates/verify/$id'
@@ -7284,6 +7207,83 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/v1/certificates/verify/$id'
       preLoaderRoute: typeof ApiV1CertificatesVerifyIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard/technologies/proposals/$id': {
+      id: '/_authenticated/dashboard/technologies/proposals/$id'
+      path: '/$id'
+      fullPath: '/dashboard/technologies/proposals/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProposalsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesProposalsRoute
+    }
+    '/_authenticated/dashboard/technologies/projects/$id': {
+      id: '/_authenticated/dashboard/technologies/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/dashboard/technologies/projects/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesProjectsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/contracts/$id': {
+      id: '/_authenticated/dashboard/technologies/contracts/$id'
+      path: '/$id'
+      fullPath: '/dashboard/technologies/contracts/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesContractsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesContractsRoute
+    }
+    '/_authenticated/dashboard/technologies/clients/$id': {
+      id: '/_authenticated/dashboard/technologies/clients/$id'
+      path: '/clients/$id'
+      fullPath: '/dashboard/technologies/clients/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesRoute
+    }
+    '/_authenticated/dashboard/technologies/client/$id': {
+      id: '/_authenticated/dashboard/technologies/client/$id'
+      path: '/$id'
+      fullPath: '/dashboard/technologies/client/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardTechnologiesClientIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardTechnologiesClientRouteRoute
+    }
+    '/_authenticated/dashboard/counselor/timeline/$id': {
+      id: '/_authenticated/dashboard/counselor/timeline/$id'
+      path: '/timeline/$id'
+      fullPath: '/dashboard/counselor/timeline/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardCounselorTimelineIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardCounselorRoute
+    }
+    '/_authenticated/dashboard/admin/visa/$id': {
+      id: '/_authenticated/dashboard/admin/visa/$id'
+      path: '/$id'
+      fullPath: '/dashboard/admin/visa/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminVisaIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminVisaRoute
+    }
+    '/_authenticated/dashboard/admin/programs/$id': {
+      id: '/_authenticated/dashboard/admin/programs/$id'
+      path: '/programs/$id'
+      fullPath: '/dashboard/admin/programs/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProgramsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/incident-replay/$issueId': {
+      id: '/_authenticated/dashboard/admin/incident-replay/$issueId'
+      path: '/incident-replay/$issueId'
+      fullPath: '/dashboard/admin/incident-replay/$issueId'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminIncidentReplayIssueIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminRoute
+    }
+    '/_authenticated/dashboard/admin/ai/usage': {
+      id: '/_authenticated/dashboard/admin/ai/usage'
+      path: '/usage'
+      fullPath: '/dashboard/admin/ai/usage'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAiUsageRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminAiRoute
+    }
+    '/_authenticated/dashboard/admin/ai/copilot': {
+      id: '/_authenticated/dashboard/admin/ai/copilot'
+      path: '/copilot'
+      fullPath: '/dashboard/admin/ai/copilot'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminAiCopilotRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminAiRoute
     }
     '/_authenticated/dashboard/admin/crm/$type/$id': {
       id: '/_authenticated/dashboard/admin/crm/$type/$id'
@@ -8514,13 +8514,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
