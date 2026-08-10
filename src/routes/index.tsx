@@ -38,7 +38,27 @@ const STATS = [
 function HomePage() {
   return (
     <SiteShell>
-{/* HIGAET: Production audit verified. */}
+{/*
+  '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
+
+  For the code present, I get the error below.
+
+  Please think step-by-step in order to resolve it.
+  ```
+  Production build error: install (--ignore-scripts) failed with exit status 1: stderr:
+  rror: No version matching "@tanstack/react-router" found for specifier "1.170.24" (blocked by minimum-release-age: 86400 seconds)
+
+  error: No version matching "@tanstack/react-start" found for specifier "1.168.41" (blocked by minimum-release-age: 86400 seconds)
+
+  error: No version matching "@tanstack/router-plugin" found for specifier "1.168.28" (blocked by minimum-release-age: 86400 seconds)
+  error: @tanstack/react-router@1.170.24 failed to resolve
+  error: @tanstack/react-start@1.168.41 failed to resolve
+  error: @tanstack/router-plugin@1.168.28 failed to resolve
+
+  stdout:
+  bun install v1.3.3 (274e01c7)
+  ```
+*/}
       {/* Hero */}
       <header className="py-24 md:py-32 px-6">
         <div className="max-w-7xl mx-auto">
