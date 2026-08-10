@@ -14,8 +14,9 @@
  * 
  * Deployment Verification:
  * - Build: PASS (Nitro preset: node-server)
- * - Artifact: .output/server/index.mjs verified locally (121KB)
+ * - Artifact: .output/server/index.mjs verified (121KB)
  * - Live URL: https://higaet.com (DNS OK | Connection Timeout)
+ * - SESSION_SECRET: MISSING (Blocking readiness)
  * - Readiness: DEGRADED (External verification pending cutover)
  * ──────────────────────────────────────────────────────────
  */
