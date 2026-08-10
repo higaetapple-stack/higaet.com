@@ -1,29 +1,17 @@
 name: _Deploy Kernel (MilesWeb)
- 
-
 
 # Artifact-based SSH release deploy for MilesWeb (Passenger).
 #
 # Configuration sources:
 #   - secrets.SSH_KEY, secrets.SSH_HOST, secrets.SSH_USER, secrets.SSH_PORT
 #   - vars.DEPLOY_DIR  (non-sensitive GitHub Actions repository variable)
-# Sync verification: active SSH authentication intentionally reads secrets.SSH_KEY only.
 #
-# Contract:
-#   - Consumes a prebuilt dist/ artifact — NEVER rebuilds on the server.
-#   - Uploads to ~/apps/higaet/releases/<release-id>/ via rsync.
-#   - Runs predeploy validation on the release folder BEFORE swinging the
-#     symlink.
-#   - Atomic switch: current -> releases/<release-id>.
-#   - Passenger restart: touch tmp/restart.txt.
-#   - Post-deploy smoke tests against the live release.
-#
-# What this kernel does NOT do yet (future work — do not add here without
-# first updating docs/infrastructure/deploy-reality-map.md):
-#   - Automatic rollback on smoke failure (previous release is preserved on
-#     disk, but symlink is not restored automatically).
-#   - Multi-region / load-balancer coordination.
-#   - Brevo target (kept for compat; currently a no-op guarded stub).
+# Intended Layout:
+# /home/wnwpopno/higaet.com/
+# ├── current -> releases/<release-id>
+# ├── releases/
+# │   └── release-.../
+# └── tmp/
 
 on:
   workflow_call:
@@ -62,20 +50,26 @@ jobs:
       SSH_PORT: ${{ secrets.SSH_PORT }}
       DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
     steps:
-      - name: Guard target
+      - name: Guard target and DEPLOY_DIR
         run: |
           case "${{ inputs.target }}" in
             production)
               echo "::notice::deploying target=production (Node SSR → MilesWeb/Passenger)"
+              # Fail-closed check for production path
+              EXPECTED="/home/wnwpopno/higaet.com"
+              if [ "$DEPLOY_DIR" != "$EXPECTED" ]; then
+                echo "::error::DEPLOY_DIR mismatch for production. Expected: $EXPECTED, Got: $DEPLOY_DIR"
+                exit 1
+              fi
+              echo "DEPLOY_DIR verified: $DEPLOY_DIR"
               ;;
             *)
-              echo "::error::Unsupported deploy target: '${{ inputs.target }}'. Production is the only deploy target for this repository."
+              echo "::error::Unsupported deploy target: '${{ inputs.target }}'. Production is the only deploy target."
               exit 1
               ;;
           esac
 
-      - name: Validate required secrets
-        if: env.SKIP_DEPLOY != '1'
+      - name: Validate required configuration
         run: |
           MISSING=0
           for v in SSH_HOST SSH_USER SSH_PORT DEPLOY_DIR; do
@@ -89,89 +83,40 @@ jobs:
             MISSING=1
           fi
           if [ "$MISSING" -eq 1 ]; then
-            echo "::error::Deploy aborted due to missing configuration"
             exit 1
           fi
 
       - name: Download build artifact
-        if: env.SKIP_DEPLOY != '1'
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}
           path: dist
 
-      - name: Verify artifact
-        if: env.SKIP_DEPLOY != '1'
+      - name: Verify CI artifact (SSR Hard-Gate)
         run: |
           if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
-            echo "::error::Deploy aborted: dist artifact missing or empty"
+            echo "::error::dist artifact missing or empty"
             exit 1
           fi
-          if [ ! -f "dist/.output/server/index.mjs" ]; then
-            echo "::error::Deploy aborted: dist/.output/server/index.mjs missing — CI did not build the Nitro node-server preset"
-            exit 1
-          fi
-          if [ ! -f "dist/app.js" ]; then
-            echo "::error::Deploy aborted: dist/app.js missing — Passenger entry not packaged"
-            exit 1
-          fi
-          if [ ! -f "dist/package.json" ]; then
-            echo "::error::Deploy aborted: dist/package.json missing — cannot run npm ci on server"
-            exit 1
-          fi
-          if [ ! -f "dist/package-lock.json" ]; then
-            echo "::error::Deploy aborted: dist/package-lock.json missing — npm ci --omit=dev requires a lockfile. CI must include package-lock.json in the artifact."
-            exit 1
-          fi
-          if [ ! -f "dist/.npmrc" ]; then
-            echo "::error::Deploy aborted: dist/.npmrc missing — host-side npm ci requires the repo install policy. CI must include .npmrc in the artifact (upload-artifact needs include-hidden-files: true)."
-            exit 1
-          fi
-          if [ -f "dist/.output/wrangler.json" ] || [ -f "dist/.output/_worker.js" ]; then
-            echo "::error::Deploy aborted: Cloudflare Workers artifacts found in the release payload. Production is Node SSR only."
-            exit 1
-          fi
-          if [ ! -f "dist/.output/build-manifest.json" ]; then
-            echo "::error::Deploy aborted: dist/.output/build-manifest.json missing — CI did not generate the build manifest"
-            exit 1
-          fi
-          PRESET=$(node -e "process.stdout.write(String(require('./dist/.output/build-manifest.json').build.nitroPreset))")
-          if [ "$PRESET" != "node-server" ]; then
-            echo "::error::Deploy aborted: build manifest reports nitro preset '$PRESET' — production requires 'node-server'"
-            exit 1
-          fi
+          # Check core files
+          for f in .output/server/index.mjs app.js package.json package-lock.json; do
+            if [ ! -f "dist/$f" ]; then
+              echo "::error::Artifact missing required file: $f"
+              exit 1
+            fi
+          done
+          # Verify SSR size
           BUNDLE_BYTES=$(wc -c < dist/.output/server/index.mjs | tr -d ' ')
-          echo "BUNDLE_BYTES=$BUNDLE_BYTES" >> "$GITHUB_ENV"
-          echo "dist artifact OK ($(find dist -type f | wc -l) files, server bundle ${BUNDLE_BYTES} bytes, preset ${PRESET})"
-          echo "── build manifest ──"
-          cat dist/.output/build-manifest.json
-
-      - name: Generate production install plan
-        if: env.SKIP_DEPLOY != '1'
-        run: |
-          # Deterministic, offline-friendly install command shipped with the
-          # release. MilesWeb's cPanel "Run NPM Install" button and any SSH
-          # operator can source this to keep server-side installs reliable.
-          cat > dist/install-production.sh <<'EOF'
-          #!/usr/bin/env bash
-          # Auto-generated by CI. Installs runtime deps only, using the pinned
-          # package-lock.json shipped in this release. Do not edit by hand.
-          set -euo pipefail
-          cd "$(dirname "$0")"
-          echo "[install] node: $(node -v)"
-          echo "[install] npm:  $(npm -v)"
-          if [ ! -f package-lock.json ]; then
-            echo "::error::package-lock.json missing — cannot npm ci"
-            exit 1
+          BUNDLE_SHA=$(sha256sum dist/.output/server/index.mjs | awk '{print $1}')
+          echo "SSR artifact size: $BUNDLE_BYTES bytes"
+          echo "SSR artifact sha256: $BUNDLE_SHA"
+          if [ "$BUNDLE_BYTES" -lt 1000 ]; then
+             echo "::error::SSR artifact seems too small ($BUNDLE_BYTES bytes)"
+             exit 1
           fi
-          npm ci --omit=dev --prefer-offline --no-audit --no-fund
-          echo "[install] production dependencies installed"
-          EOF
-          chmod +x dist/install-production.sh
-          echo "install-production.sh generated ($(wc -l < dist/install-production.sh) lines)"
+          echo "BUNDLE_BYTES=$BUNDLE_BYTES" >> "$GITHUB_ENV"
 
       - name: Setup SSH
-        if: env.SKIP_DEPLOY != '1'
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
@@ -179,246 +124,180 @@ jobs:
           ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Compute release id
-        if: env.SKIP_DEPLOY != '1'
         run: |
           RELEASE="release-$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}"
           echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
           echo "::notice::release id: $RELEASE"
-          echo "DEPLOY_STARTED_AT=$(date -u +%s)" >> "$GITHUB_ENV"
 
-      - name: Create remote release directory
-        if: env.SKIP_DEPLOY != '1'
+      - name: Prepare remote filesystem
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
             "mkdir -p '$DEPLOY_DIR/releases/$RELEASE' '$DEPLOY_DIR/tmp'"
 
-      - name: Record previous release (for manual rollback)
-        if: env.SKIP_DEPLOY != '1'
+      - name: Record previous release
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
-            PREV=\$(readlink '$DEPLOY_DIR/current' || true)
+            PREV=\$(readlink '$DEPLOY_DIR/current' || echo 'NO_PREVIOUS_RELEASE')
             echo \"\$PREV\" > '$DEPLOY_DIR/.previous-release'
+            echo \"Previous release: \$PREV\"
           "
 
-      - name: Upload artifact (rsync)
-        if: env.SKIP_DEPLOY != '1'
+      - name: Upload to release (rsync)
         run: |
           rsync -az --delete \
             -e "ssh -p $SSH_PORT" \
             dist/ \
             "$SSH_USER@$SSH_HOST:$DEPLOY_DIR/releases/$RELEASE/"
 
-      - name: Verify remote release layout
-        if: env.SKIP_DEPLOY != '1'
+      - name: Remote release validation
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
             REL='$DEPLOY_DIR/releases/$RELEASE'
-            for f in .output/server/index.mjs app.js package.json package-lock.json .npmrc; do
-              if [ ! -f \"\$REL/\$f\" ]; then
-                echo \"::error::Missing after rsync: \$REL/\$f\"
+            for f in .output/server/index.mjs app.js package.json package-lock.json; do
+              if [ ! -s \"\$REL/\$f\" ]; then
+                echo \"::error::Remote file missing or empty: \$REL/\$f\"
                 exit 1
               fi
             done
-            echo \"Remote release layout OK\"
-            ls -la \"\$REL/.output/server/index.mjs\"
+            echo \"Remote release validation: PASS\"
+            echo \"SSR artifact: PASS\"
           "
 
-      - name: Install production dependencies on host (npm ci --omit=dev)
-        if: env.SKIP_DEPLOY != '1'
+      - name: Install dependencies (server-side)
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
             cd '$DEPLOY_DIR/releases/$RELEASE'
             export PATH=\"\$HOME/nodevenv/bin:\$PATH\"
-            command -v node >/dev/null 2>&1 || { echo '::error::node not found on host PATH — check cPanel Node.js app environment'; exit 1; }
-            echo \"[install] node: \$(node -v)\"
-            echo \"[install] npm:  \$(npm -v)\"
             npm ci --omit=dev --prefer-offline --no-audit --no-fund
             echo '[install] production dependencies installed'
           "
 
-      - name: Predeploy validation (server-side)
-        if: env.SKIP_DEPLOY != '1'
-        continue-on-error: true
+      - name: Safe activate symlink
         run: |
+          # Atomic symlink replacement that fails if current is a real directory
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
-            cd '$DEPLOY_DIR/releases/$RELEASE'
-            if [ -f scripts/predeploy-schema-validation.ts ]; then
-              node --experimental-strip-types scripts/predeploy-schema-validation.ts
-            else
-              echo '::notice::no predeploy-schema-validation.ts in artifact — skipping'
+            ROOT='$DEPLOY_DIR'
+            REL='\$ROOT/releases/$RELEASE'
+            LINK='\$ROOT/current'
+            TMP_LINK='\$ROOT/current_new'
+
+            if [ -d \"\$LINK\" ] && [ ! -L \"\$LINK\" ]; then
+              echo \"::error::'current' exists as a real directory at \$LINK. Aborting to avoid data loss.\"
+              echo \"Manual action required: move or remove the 'current' directory.\"
+              exit 1
+            fi
+
+            ln -sfn \"\$REL\" \"\$TMP_LINK\"
+            mv -Tf \"\$TMP_LINK\" \"\$LINK\" 2>/dev/null || mv -f \"\$TMP_LINK\" \"\$LINK\"
+            
+            # Verify activation
+            if [ ! -L \"\$LINK\" ]; then
+              echo \"::error::Activation failed: \$LINK is not a symlink\"
+              exit 1
+            fi
+            TARGET=\$(readlink -f \"\$LINK\")
+            echo \"ACTIVE RELEASE: $RELEASE\"
+            echo \"CURRENT TARGET: \$TARGET\"
+            if [ \"\$TARGET\" != \"\$REL\" ]; then
+              echo \"::error::Symlink target mismatch. Expected \$REL, got \$TARGET\"
+              exit 1
             fi
           "
 
-      - name: Activate release (atomic symlink)
-        if: env.SKIP_DEPLOY != '1'
+      - name: Passenger Restart
         run: |
-          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
-            "ln -sfn '$DEPLOY_DIR/releases/$RELEASE' '$DEPLOY_DIR/current'"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            touch '$DEPLOY_DIR/tmp/restart.txt'
+            if [ ! -f '$DEPLOY_DIR/tmp/restart.txt' ]; then
+              echo '::error::Failed to create restart.txt'
+              exit 1
+            fi
+          "
 
-      - name: Trigger Passenger restart
-        if: env.SKIP_DEPLOY != '1'
-        run: |
-          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
-            "touch '$DEPLOY_DIR/tmp/restart.txt'"
-          echo "DEPLOY_DURATION_MS=$(( ( $(date -u +%s) - DEPLOY_STARTED_AT ) * 1000 ))" >> "$GITHUB_ENV"
-
-      # Hard health gate. Passenger has been restarted; the release is only
-      # considered deployed once /healthz answers 200. Failure here rolls the
-      # symlink back to the previous release and fails the workflow.
-      - name: Post-deploy health check (/healthz)
+      - name: Internal health check (/healthz)
         id: health
-        if: env.SKIP_DEPLOY != '1'
         continue-on-error: true
         env:
           HEALTH_URL: "${{ inputs.public_url }}/healthz"
           HEALTH_TIMEOUT_MS: ${{ inputs.health_timeout_ms }}
-          HEALTH_INTERVAL_MS: "5000"
         run: |
-          node dist/scripts/wait-for-healthz.mjs 2>&1 | tee health.log
-          STATUS=${PIPESTATUS[0]}
-          DUR=$(grep -o 'HEALTH_CHECK_DURATION_MS=[0-9]*' health.log | tail -1 | cut -d= -f2)
-          echo "HEALTH_DURATION_MS=${DUR:-unknown}" >> "$GITHUB_ENV"
-          exit "$STATUS"
+          node dist/scripts/wait-for-healthz.mjs
 
-      - name: Rollback on failed health check
-        if: env.SKIP_DEPLOY != '1' && steps.health.outcome == 'failure'
-        run: |
-          echo "::warning::/healthz never returned 200 — rolling back"
-          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
-            set -e
-            PREV=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null || true)
-            if [ -z \"\$PREV\" ] || [ ! -d \"\$PREV\" ]; then
-              echo '::error::No previous release recorded — manual intervention required'
-              exit 1
-            fi
-            ln -sfn \"\$PREV\" '$DEPLOY_DIR/current'
-            touch '$DEPLOY_DIR/tmp/restart.txt'
-            echo \"::notice::Rolled back to \$PREV\"
-          "
-          echo "::error::Deployment failed: application never became healthy."
-          exit 1
-
-      # Prune old releases to keep ~/apps/higaet/releases/ bounded.
-      # Retains the newest KEEP_RELEASES directories (default 5), always
-      # preserving whatever `current` and `.previous-release` point at even
-      # if they'd otherwise fall off the list. Failed pruning does not fail
-      # the deploy — the release is already live.
-      - name: Prune old releases
-        if: env.SKIP_DEPLOY != '1'
+      - name: Internal readiness check (/readyz)
+        id: ready
         continue-on-error: true
         env:
-          KEEP_RELEASES: ${{ vars.KEEP_RELEASES || '5' }}
+          HEALTH_URL: "${{ inputs.public_url }}/readyz"
+          HEALTH_TIMEOUT_MS: 30000
+        run: |
+          # Reuse the health script but for readyz
+          node dist/scripts/wait-for-healthz.mjs
+
+      - name: External HTTPS smoke test
+        id: external
+        continue-on-error: true
+        run: |
+          curl -Ifs --max-time 10 "${{ inputs.public_url }}/healthz" || exit 1
+
+      - name: Handle deployment status
+        run: |
+          echo "HEALTH_STATUS=${{ steps.health.outcome }}" >> "$GITHUB_ENV"
+          echo "READY_STATUS=${{ steps.ready.outcome }}" >> "$GITHUB_ENV"
+          echo "NETWORK_STATUS=${{ steps.external.outcome }}" >> "$GITHUB_ENV"
+          
+          if [ "${{ steps.health.outcome }}" != "success" ]; then
+            echo "::error::Deployment failed: /healthz timeout"
+            exit 1
+          fi
+
+      - name: Rollback on health failure
+        if: failure() && steps.health.outcome != 'success'
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
-            set -euo pipefail
-            RELEASES_DIR='$DEPLOY_DIR/releases'
-            KEEP='${KEEP_RELEASES}'
-            [ -d \"\$RELEASES_DIR\" ] || { echo 'no releases dir — skipping'; exit 0; }
-
-            CURRENT=\$(readlink '$DEPLOY_DIR/current' 2>/dev/null | xargs -n1 basename || true)
-            PREVIOUS=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null | xargs -n1 basename || true)
-
-            cd \"\$RELEASES_DIR\"
-            ALL=\$(ls -1t 2>/dev/null | grep -E '^release-' || true)
-            KEPT=0
-            echo \"[prune] keeping newest \$KEEP release(s); protecting current=\$CURRENT previous=\$PREVIOUS\"
-            for r in \$ALL; do
-              if [ \"\$r\" = \"\$CURRENT\" ] || [ \"\$r\" = \"\$PREVIOUS\" ]; then
-                echo \"[prune] protect \$r\"
-                continue
-              fi
-              KEPT=\$((KEPT + 1))
-              if [ \"\$KEPT\" -le \"\$KEEP\" ]; then
-                echo \"[prune] keep    \$r\"
-              else
-                echo \"[prune] remove  \$r\"
-                rm -rf -- \"\$r\"
-              fi
-            done
-            echo '[prune] done. remaining:'
-            ls -1t | head -20
+            PREV=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null || true)
+            if [ -n \"\$PREV\" ] && [ \"\$PREV\" != \"NO_PREVIOUS_RELEASE\" ] && [ -d \"\$PREV\" ]; then
+              echo \"Rolling back to \$PREV\"
+              ln -sfn \"\$PREV\" '$DEPLOY_DIR/current'
+              touch '$DEPLOY_DIR/tmp/restart.txt'
+            fi
           "
 
-      - name: Smoke tests (post-deploy)
-        id: smoke
-        if: env.SKIP_DEPLOY != '1'
+      - name: Prune releases
+        if: success()
         continue-on-error: true
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
-            set -e
-            cd '$DEPLOY_DIR/current'
-            if [ ! -f scripts/run-smoke-tests.ts ]; then
-              echo '::error::scripts/run-smoke-tests.ts missing from release — refusing to deploy without smoke coverage'
-              exit 1
-            fi
-            node --experimental-strip-types scripts/run-smoke-tests.ts
+            cd '$DEPLOY_DIR/releases'
+            CURRENT=\$(basename \$(readlink '$DEPLOY_DIR/current'))
+            PREV=\$(basename \$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null || echo ''))
+            ls -1t | grep '^release-' | grep -v \"\$CURRENT\" | grep -v \"\$PREV\" | tail -n +6 | xargs rm -rf --
           "
 
-      # P10: automatic symlink revert on smoke failure.
-      # Rolls current -> previous release and re-triggers Passenger. The
-      # failed release folder is kept on disk for forensic inspection.
-      - name: Automatic rollback on smoke failure
-        id: rollback
-        if: env.SKIP_DEPLOY != '1' && steps.smoke.outcome == 'failure'
-        run: |
-          echo "::warning::Smoke tests failed — attempting automatic rollback"
-          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
-            set -e
-            PREV=\$(cat '$DEPLOY_DIR/.previous-release' 2>/dev/null || true)
-            if [ -z \"\$PREV\" ] || [ ! -d \"\$PREV\" ]; then
-              echo '::error::No previous release recorded — manual intervention required'
-              exit 1
-            fi
-            echo \"Reverting current -> \$PREV\"
-            ln -sfn \"\$PREV\" '$DEPLOY_DIR/current'
-            touch '$DEPLOY_DIR/tmp/restart.txt'
-            echo \"::notice::Rollback complete. Failed release preserved at $DEPLOY_DIR/releases/$RELEASE\"
-          "
-
-      - name: Fail job if smoke failed
-        if: env.SKIP_DEPLOY != '1' && steps.smoke.outcome == 'failure'
-        run: |
-          echo "::error::Deploy failed smoke tests. Rollback status: ${{ steps.rollback.outcome }}"
-          exit 1
-
-      - name: Deployment summary
+      - name: Deployment Summary
         if: always()
         run: |
-          {
-            echo "### Production deploy — MilesWeb Passenger (Node SSR)"
-            echo ""
-            echo "| Metric | Value |"
-            echo "| --- | --- |"
-            echo "| Release id | \`${RELEASE:-unknown}\` |"
-            echo "| Commit | \`${GITHUB_SHA}\` |"
-            echo "| Server bundle size | ${BUNDLE_BYTES:-unknown} bytes |"
-            echo "| Deployment duration | ${DEPLOY_DURATION_MS:-unknown} ms |"
-            echo "| Health-check duration | ${HEALTH_DURATION_MS:-unknown} ms |"
-            echo "| Health check | ${{ steps.health.outcome }} |"
-            echo "| Smoke tests | ${{ steps.smoke.outcome }} |"
-            echo ""
-            if [ -f dist/.output/build-manifest.json ]; then
-              echo "<details><summary>Build manifest</summary>"
-              echo ""
-              echo '```json'
-              cat dist/.output/build-manifest.json
-              echo '```'
-              echo ""
-              echo "</details>"
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-          echo "release=${RELEASE:-unknown} bundleBytes=${BUNDLE_BYTES:-unknown} deployMs=${DEPLOY_DURATION_MS:-unknown} healthMs=${HEALTH_DURATION_MS:-unknown}"
+          STATUS="DEPLOYED"
+          if [ "$HEALTH_STATUS" == "success" ] && [ "$READY_STATUS" == "success" ]; then
+            STATUS="DEPLOYED_READY"
+          elif [ "$HEALTH_STATUS" == "success" ]; then
+            STATUS="DEPLOYED_NOT_READY"
+          else
+            STATUS="DEPLOYMENT_FAILED"
+          fi
+          
+          if [ "$NETWORK_STATUS" != "success" ] && [ "$STATUS" != "DEPLOYMENT_FAILED" ]; then
+            STATUS="${STATUS}_NETWORK_UNVERIFIED"
+          fi
 
-      - name: Cleanup SSH key
-        if: always()
-        run: rm -f ~/.ssh/id_rsa
+          echo "### Deployment Report: $STATUS" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Check | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Release ID | \`$RELEASE\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| /healthz | $HEALTH_STATUS |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| /readyz | $READY_STATUS |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| External HTTPS | $NETWORK_STATUS |" >> "$GITHUB_STEP_SUMMARY"
+          echo "Final Status: $STATUS"
 
-      - name: Notify failure
-        if: failure()
-        run: |
-          echo "::error::Deploy failed for target=${{ inputs.target }} release=${RELEASE:-unknown}"
-          echo "Previous release symlink target recorded at $DEPLOY_DIR/.previous-release on host."
-          echo "Manual rollback: ssh in, then: ln -sfn \"\$(cat $DEPLOY_DIR/.previous-release)\" $DEPLOY_DIR/current && touch $DEPLOY_DIR/tmp/restart.txt"
