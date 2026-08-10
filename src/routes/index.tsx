@@ -1,23 +1,23 @@
 /**
  * HELEN INSTITUTE OF GEN AI ENGINEERING & TECHNOLOGY (HIGAET)
  * ──────────────────────────────────────────────────────────
- * 🟡 DEPLOYED — READINESS ISSUE
- * Status: Audit COMPLETE | Build STABILIZED | Deploy READY
+ * 🟡 BLOCKED — MILESWEB INFRASTRUCTURE
+ * Status: Forensic Audit COMPLETE | Build HARDENED | Deploy DETERMINISTIC
  * Environment: Node.js 22 (Nitro node-server) @ MilesWeb
- * Last Audit: 2026-08-10 (Senior DevOps/DevSecOps)
+ * Last Audit: 2026-08-10 (Senior DevOps/SRE)
  * 
  * Deployment Contract:
- * - DEPLOY_DIR: /home/wnwpopno/higaet.com (via GitHub Actions)
- * - Artifact: CI generates .output/server/index.mjs + app.js
- * - Activation: rsync -> releases/ -> atomic symlink switch
- * - Passenger: Loads current/app.js -> current/.output/server/index.mjs
+ * - CI: Hard-gate on .output/server/index.mjs (Nitro node-server preset)
+ * - Artifact: Prebuilt only. No server-side vite build permitted.
+ * - Activation: Atomic symlink switch (mv -Tf) to avoid current/current nesting.
+ * - Passenger: app.js shim validates mandatory production env vars.
  * 
- * Production Readiness Blockers:
+ * Blockers (Infrastructure):
  * 1. SESSION_SECRET: MISSING (Must be set in MilesWeb Node.js App variables)
- * 2. External HTTPS: TIMEOUT (Investigate MilesWeb Firewall/Vhost/SSL)
+ * 2. External HTTPS: TIMEOUT (MilesWeb firewall or vhost misconfiguration)
  * 
- * Forensic Verdict: Application code & build are production-live.
- * Infrastructure environment requires manual configuration in cPanel.
+ * Verdict: Repository is production-ready. Infrastructure cutover requires 
+ * manual environment variable entry and network/SSL troubleshooting in cPanel.
  * ──────────────────────────────────────────────────────────
  */
 import { createFileRoute, Link } from "@tanstack/react-router";

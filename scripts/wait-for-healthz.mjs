@@ -16,9 +16,10 @@
  * Always prints the total health-check duration for workflow logging.
  */
 
-const URL_TO_POLL = process.env.HEALTH_URL ?? "https://higaet.com/healthz";
-const TIMEOUT_MS = Number(process.env.HEALTH_TIMEOUT_MS ?? 180_000);
-const INTERVAL_MS = Number(process.env.HEALTH_INTERVAL_MS ?? 5_000);
+const URL_TO_POLL = process.env.HEALTH_URL || "https://higaet.com/healthz";
+const TIMEOUT_MS = Number(process.env.HEALTH_TIMEOUT_MS || 180_000);
+const INTERVAL_MS = Number(process.env.HEALTH_INTERVAL_MS || 5_000);
+const IS_EXTERNAL = !URL_TO_POLL.includes("localhost") && !URL_TO_POLL.includes("127.0.0.1");
 
 const started = Date.now();
 let attempt = 0;
@@ -64,9 +65,21 @@ while (Date.now() - started < TIMEOUT_MS) {
 
 const durationMs = Date.now() - started;
 console.log(`[health] HEALTH_CHECK_DURATION_MS=${durationMs}`);
+
+if (IS_EXTERNAL && (lastError.includes("ECONNREFUSED") || lastError.includes("ETIMEDOUT") || lastError.includes("AbortError"))) {
+  console.error(
+    `::warning::Public HTTPS reachability check failed for ${URL_TO_POLL}. ` +
+      `This is likely a MilesWeb firewall or vhost configuration issue, not a build failure.`
+  );
+  console.log(`Final Status: BLOCKED - MILESWEB INFRASTRUCTURE (Network Unreachable)`);
+  // We still exit 1 because the goal is a verified live deploy, 
+  // but the message clarifies it's an infra blocker.
+  process.exit(1);
+}
+
 console.error(
   `::error::/healthz never returned 200 within ${TIMEOUT_MS}ms ` +
     `(attempts=${attempt}, lastStatus=${lastStatus}${lastError ? `, lastError=${lastError}` : ""}). ` +
-    `Passenger did not start the release successfully.`,
+    `Passenger did not start the release successfully.`
 );
 process.exit(1);

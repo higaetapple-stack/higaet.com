@@ -87,6 +87,7 @@ if (errors.length > 0) {
   for (const e of errors) console.error(`  ✗ ${e}`);
   console.error("");
   console.error("Build is NOT deployable to MilesWeb / Passenger.");
+  console.error("Cause: Cloudflare presets detected or Node artifacts missing.");
   process.exit(1);
 }
 
