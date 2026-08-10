@@ -79,8 +79,9 @@ async function handle(input: ChatInput): Promise<Response> {
 }
 
 export const Route = createFileRoute("/api/public/chat")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async ({ request }) => {
         const limited = rateLimit(request, LIMITS.chat);
         if (limited) return limited;

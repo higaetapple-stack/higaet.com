@@ -38,8 +38,9 @@ interface ChatBody {
 }
 
 export const Route = createFileRoute("/api/chat")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       POST: async ({ request }) => {
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabasePub = process.env.SUPABASE_PUBLISHABLE_KEY;

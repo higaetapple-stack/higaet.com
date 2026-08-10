@@ -6,8 +6,9 @@ import { createFileRoute } from "@tanstack/react-router";
 const STARTED_AT = Date.now();
 
 export const Route = createFileRoute("/healthz")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async () => {
         const body = {
           status: "ok" as const,

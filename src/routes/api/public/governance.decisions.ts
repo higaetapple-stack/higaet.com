@@ -16,8 +16,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { authorizedGovernanceRequest, toCsv, buildDecisionsQuery } from "@/lib/governance/api-helpers.server";
 
 export const Route = createFileRoute("/api/public/governance/decisions")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async ({ request }) => {
         if (!authorizedGovernanceRequest(request)) {
           return new Response("Unauthorized", { status: 401 });

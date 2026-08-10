@@ -7,8 +7,9 @@ import { sendEmail } from "@/lib/email/send-email.server";
 // Usage: POST /api/public/email-verify  { "to": "addr@example.com" }
 // Response contract: boolean status only. No secrets, no env metadata, no key fragments.
 export const Route = createFileRoute("/api/public/email-verify")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       POST: async ({ request }) => {
         const secret = process.env.LAUNCH_READINESS_INGEST_SECRET;
         const auth = request.headers.get("authorization") || "";

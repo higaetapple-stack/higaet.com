@@ -17,8 +17,9 @@ const MAX_K = 10;
 const VALID_MODES = new Set<FusionMode>(["OFF", "SOFT", "FULL"]);
 
 export const Route = createFileRoute("/api/public/ai-mode")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const q = (url.searchParams.get("q") ?? "").slice(0, MAX_QUERY_LEN);

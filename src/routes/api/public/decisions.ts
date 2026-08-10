@@ -3,8 +3,9 @@ import { generateDecisions } from "@/lib/decision/engine";
 import { rankDecisions } from "@/lib/decision/ranker";
 
 export const Route = createFileRoute("/api/public/decisions")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const intent = url.searchParams.get("intent") ?? "";

@@ -12,8 +12,9 @@ import { createFileRoute } from "@tanstack/react-router";
  * skip the outbound Supabase probe (useful for locked-down environments).
  */
 export const Route = createFileRoute("/readyz")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async () => {
         const { buildHealthReport } = await import(
           "@/lib/server/deployment-health.server"

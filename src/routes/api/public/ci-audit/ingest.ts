@@ -59,8 +59,9 @@ async function logIngestFailure(args: {
 }
 
 export const Route = createFileRoute("/api/public/ci-audit/ingest")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       POST: async ({ request }) => {
         const correlationId =
           request.headers.get("x-correlation-id") ?? randomUUID();

@@ -4,8 +4,9 @@ import { sequenceGoalSteps } from "@/lib/goal/sequencer";
 import { optimizeGoal } from "@/lib/goal/optimizer";
 
 export const Route = createFileRoute("/api/public/goals")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const intent = url.searchParams.get("intent") ?? "";

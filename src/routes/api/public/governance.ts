@@ -9,8 +9,9 @@ function num(v: string | null, fallback: number): number {
 }
 
 export const Route = createFileRoute("/api/public/governance")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const signals: GovernorSignals = {

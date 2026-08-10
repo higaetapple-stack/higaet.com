@@ -17,8 +17,9 @@ const FailureSchema = z.object({
 });
 
 export const Route = createFileRoute("/api/public/ci-ingest-failures/log")({
-  server: {
-    handlers: {
+  loader: async () => ({}),
+  component: () => null,
+});
       POST: async ({ request }) => {
         const secret = process.env.CI_AUDIT_INGEST_SECRET;
         if (!secret) {
