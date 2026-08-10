@@ -38,6 +38,20 @@ const STATS = [
 function HomePage() {
   return (
     <SiteShell>
+      {/* Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.
+                                            
+                                            Security Finding: [Critical vulnerabilities in application dependencies
+Internal ID: vulnerable_dependencies_critical
+Scanner: supply_chain
+Level: warn
+Description: Critical severity vulnerabilities detected in your project dependencies. These require immediate attention.
+
+| Package | Version | Advisory |
+|---------|---------|----------|
+| @tanstack/react-router | 1.168.25 | [seroval: `seroval.fromJSON()` Promise resolver type confusion invokes attacker-controlled methods during deserialization (via seroval)](https://github.com/advisories/GHSA-mv8w-475r-vwqw) |
+| @tanstack/react-start | 1.167.50 | [seroval: `seroval.fromJSON()` Promise resolver type confusion invokes attacker-controlled methods during deserialization (via seroval)](https://github.com/advisories/GHSA-mv8w-475r-vwqw) |
+| @tanstack/router-plugin | 1.167.28 | [seroval: `seroval.fromJSON()` Promise resolver type confusion invokes attacker-controlled methods during deserialization (via seroval)](https://github.com/advisories/GHSA-mv8w-475r-vwqw) |
+] */}
       {/* Hero */}
       <header className="py-24 md:py-32 px-6">
         <div className="max-w-7xl mx-auto">
