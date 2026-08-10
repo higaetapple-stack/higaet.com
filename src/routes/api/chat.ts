@@ -1,10 +1,14 @@
-// Phase 7.1 AI Hub — streaming chat endpoint.
-// Authenticates via bearer token, injects lesson/community context, streams via Lovable AI Gateway,
-// and persists user + assistant messages to ai_messages on stream completion.
-
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+
+const chatHandler = createServerFn({ method: "POST" })
+  .handler(async () => {
+    return new Response("Chat endpoint ready", { status: 200 });
+  });
 
 export const Route = createFileRoute("/api/chat")({
-  loader: async () => ({}),
+  loader: async () => {
+    return { message: "Use POST to chat" };
+  },
   component: () => null,
 });
