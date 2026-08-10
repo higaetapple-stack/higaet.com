@@ -1,9 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+
+const getLiveness = createServerFn({ method: "GET" })
+  .handler(async () => {
+    return { status: "ok", timestamp: new Date().toISOString(), env: "production" };
+  });
 
 export const Route = createFileRoute("/healthz")({
   loader: async () => {
-    // Liveness probe: if this runs, the process is alive.
-    return { status: "ok", timestamp: new Date().toISOString() };
+    return await getLiveness();
   },
   component: () => null,
 });
