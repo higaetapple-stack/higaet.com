@@ -20,6 +20,7 @@ import { StatBand } from "@/components/site/StatBand";
 import { CTASection } from "@/components/site/CTASection";
 import { RelatedCluster } from "@/components/site/RelatedCluster";
 import { HubLongform } from "@/components/site/HubLongform";
+import { HubRelatedLinks } from "@/components/site/HubRelatedLinks";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { PROGRAMS } from "@/lib/academy-programs";
 import { getAcademyTestimonials, type TestimonialEntry } from "@/content/providers";
@@ -108,6 +109,7 @@ export const Route = createFileRoute("/academy/")({
         "Industry-aligned Gen AI, AI Agents, Automation, and Full-Stack programs with live cohorts, capstones, and dedicated placement support.",
       path: "/academy",
     });
+    const flagships = FLAGSHIP_SLUGS.map((s) => PROGRAMS.find((p) => p.slug === s)).filter(Boolean) as typeof PROGRAMS;
     return {
       meta: [
         ...meta.meta,
@@ -117,6 +119,20 @@ export const Route = createFileRoute("/academy/")({
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
         buildEducationalOrgJsonLd("/academy"),
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: flagships.map((p, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: p.title,
+              description: p.tagline,
+              url: "https://www.higaet.com/academy/programs/" + p.slug,
+            })),
+          }),
+        },
       ],
     };
   },
@@ -273,7 +289,7 @@ function AcademyHome() {
               <h3 className="font-display text-lg font-medium text-ink">{p.title}</h3>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{p.blurb}</p>
               <div className="mt-5 pt-5 border-t border-border inline-flex items-center gap-2 text-xs text-muted-foreground">
-                <Github className="size-4" /> {p.repo}
+                <GitBranch className="size-4" /> {p.repo}
               </div>
             </div>
           ))}
@@ -367,6 +383,30 @@ function AcademyHome() {
           </Link>
         </div>
       </Section>
+
+      <HubRelatedLinks
+        brand="academy"
+        eyebrow="Keep exploring"
+        title="More ways to study with HIGAET."
+        ringHoverClass="hover:ring-academy/40"
+        links={[
+          {
+            to: "/academy/online-courses",
+            label: "Online courses",
+            body: "Self-paced and live online courses across AI, data, cloud, and full-stack development.",
+          },
+          {
+            to: "/academy/certifications",
+            label: "Certifications",
+            body: "Industry-recognised certifications that validate role-ready skills for hiring partners.",
+          },
+          {
+            to: "/academy/learning-paths",
+            label: "Career tracks",
+            body: "Compare career-tracks by starting point — school, college, working professional, or team.",
+          },
+        ]}
+      />
 
       {/* 10 · FAQ */}
       <Section>

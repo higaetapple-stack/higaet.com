@@ -26,17 +26,15 @@ import {
 import { ServiceHero } from "@/components/site/ServiceHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { StatBand } from "@/components/site/StatBand";
-import { TrustedBy } from "@/components/site/TrustedBy";
 import { FeatureGrid } from "@/components/site/FeatureGrid";
 import { TechStackGrid } from "@/components/site/TechStackGrid";
 import { IndustryGrid, type Industry } from "@/components/site/IndustryCard";
 import { ProcessTimeline } from "@/components/site/ProcessTimeline";
-import { CaseStudyCard, type CaseStudy } from "@/components/site/CaseStudyCard";
-import { TestimonialCarousel, type Testimonial } from "@/components/site/TestimonialCarousel";
 import { FAQ, faqJsonLd, type QA } from "@/components/site/FAQ";
 import { CTASection } from "@/components/site/CTASection";
 import { RelatedCluster } from "@/components/site/RelatedCluster";
 import { HubLongform } from "@/components/site/HubLongform";
+import { HubRelatedLinks } from "@/components/site/HubRelatedLinks";
 import { LeadForm } from "@/components/site/LeadForm";
 import { jsonLdScript } from "@/components/site/JsonLd";
 
@@ -82,14 +80,12 @@ export const Route = createFileRoute("/technologies/")({
       { title: "HIGAET Technologies — Enterprise AI & Software" },
       {
         name: "description",
-        content:
-          "HIGAET Technologies delivers intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Specializing in software development, AI solutions, cloud technologies, automation, and digital transformation.",
+        content: "HIGAET Technologies delivers intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Specializing in software development, AI solutions, cloud technologies, automation, and digital transformation.",
       },
       { property: "og:title", content: "HIGAET Technologies — Enterprise AI & Software" },
       {
         property: "og:description",
-        content:
-          "Intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Software development, AI, cloud, automation, and digital transformation.",
+        content: "Intelligent digital solutions for businesses, educational institutions, startups, and enterprises. Software development, AI, cloud, automation, and digital transformation.",
       },
       { property: "og:url", content: "https://www.higaet.com/technologies" },
       { property: "og:type", content: "website" },
@@ -101,8 +97,7 @@ export const Route = createFileRoute("/technologies/")({
         "@type": "ProfessionalService",
         name: "HIGAET Technologies",
         url: "/technologies",
-        description:
-          "Enterprise software, applied AI, SaaS, cloud, and product engineering services.",
+        description: "Enterprise software, applied AI, SaaS, cloud, and product engineering services.",
         areaServed: "Global",
         parentOrganization: { "@type": "Organization", name: "HIGAET" },
         makesOffer: [
@@ -139,8 +134,6 @@ function TechHome() {
           "SOC 2-aligned controls and IP assignment",
         ]}
       />
-
-      <TrustedBy />
 
       {/* Company overview */}
       <Section>
@@ -277,6 +270,40 @@ function TechHome() {
         <IndustryGrid industries={INDUSTRIES} columns={3} />
       </Section>
 
+      <HubRelatedLinks
+        brand="tech"
+        eyebrow="Go deeper"
+        title="Explore what we deliver and how we work."
+        ringHoverClass="hover:ring-tech/40"
+        links={[
+          {
+            to: "/technologies/software-development",
+            label: "Software development services",
+            body: "Web, mobile, and platform engineering with senior squads owning delivery end to end.",
+          },
+          {
+            to: "/technologies/industries",
+            label: "Industries",
+            body: "Engineering grounded in education, healthcare, fintech, retail, logistics, and SaaS.",
+          },
+          {
+            to: "/technologies/case-studies",
+            label: "Case studies",
+            body: "Shipped systems, measured outcomes, and client stories across every practice.",
+          },
+          {
+            to: "/technologies/expertise",
+            label: "Expertise",
+            body: "The stacks, platforms, and AI tooling our engineers bring to every engagement.",
+          },
+          {
+            to: "/technologies/engagement",
+            label: "Engagement models",
+            body: "Dedicated teams, staff augmentation, fixed-scope delivery, and offshore centers.",
+          },
+        ]}
+      />
+
       {/* Technology stack */}
       <Section id="stack" className="bg-muted/40">
         <Eyebrow brand="tech">Technology stack</Eyebrow>
@@ -368,46 +395,6 @@ function TechHome() {
         />
       </Section>
 
-      {/* Featured case studies */}
-      <Section id="case-studies">
-        <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
-          <div>
-            <Eyebrow brand="tech">Case studies</Eyebrow>
-            <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance max-w-[28ch]">
-              Outcomes we've delivered for ambitious teams.
-            </h2>
-          </div>
-          <Link
-            to="/technologies/case-studies"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-tech"
-          >
-            View all case studies <ArrowRight className="size-4" />
-          </Link>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {CASE_STUDIES.map((cs) => (
-            <CaseStudyCard key={cs.title} caseStudy={cs} />
-          ))}
-        </div>
-      </Section>
-
-      {/* Testimonials */}
-      <Section className="bg-muted/40">
-        <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-          <div>
-            <Eyebrow brand="tech">Testimonials</Eyebrow>
-            <h2 className="mt-4 font-display text-3xl md:text-4xl font-medium tracking-tight text-ink text-balance">
-              What partners say about working with us.
-            </h2>
-            <p className="mt-4 text-sm text-muted-foreground">
-              {/* TODO: Replace with verified customer quotes once consent is collected. */}
-              Placeholder quotes — replace with verified partners.
-            </p>
-          </div>
-          <TestimonialCarousel items={TESTIMONIALS} />
-        </div>
-      </Section>
-
       {/* FAQ */}
       <Section id="faq">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
@@ -468,71 +455,3 @@ function TechHome() {
     </>
   );
 }
-
-/* TODO: Replace placeholder case studies with real engagements once approved. */
-const CASE_STUDIES: CaseStudy[] = [
-  {
-    industry: "EdTech",
-    title: "AI tutor lifts learner completion by 34% across 12 cohorts.",
-    summary:
-      "Retrieval-grounded tutor with adaptive practice and faculty review tooling, deployed across an EMEA education network.",
-    metrics: [
-      { value: "+34%", label: "Completion" },
-      { value: "−42%", label: "Support load" },
-      { value: "12", label: "Cohorts" },
-    ],
-    stack: ["React", "Node.js", "Postgres", "OpenAI"],
-    href: "/technologies/case-studies",
-  },
-  {
-    industry: "FinTech",
-    title: "KYC automation cuts onboarding time from 4 days to 9 minutes.",
-    summary:
-      "Document AI, risk scoring, and rules engine integrated into the bank's core platform, with full audit trails for regulators.",
-    metrics: [
-      { value: "9 min", label: "Onboarding" },
-      { value: "99.4%", label: "Match rate" },
-      { value: "SOC 2", label: "Compliance" },
-    ],
-    stack: ["Python", "AWS", "Postgres", "ML"],
-    href: "/technologies/case-studies",
-  },
-  {
-    industry: "SaaS",
-    title: "Multi-tenant platform launched in 14 weeks with global day-one.",
-    summary:
-      "Greenfield SaaS with billing, RBAC, observability, and AI copilot — handed over to the customer's product team at launch.",
-    metrics: [
-      { value: "14 wks", label: "To launch" },
-      { value: "8", label: "Regions" },
-      { value: "99.95%", label: "Uptime" },
-    ],
-    stack: ["Next.js", "Node.js", "Kubernetes", "Postgres"],
-    href: "/technologies/case-studies",
-  },
-];
-
-/* TODO: Replace placeholder testimonials with verified customer quotes. */
-const TESTIMONIALS: Testimonial[] = [
-  {
-    quote:
-      "HIGAET Technologies operated like an extension of our product team. We shipped a multi-tenant platform on a timeline most agencies wouldn't have committed to.",
-    name: "Avery Kapoor",
-    role: "VP Engineering",
-    org: "Confidential SaaS partner",
-  },
-  {
-    quote:
-      "Their applied AI team is the difference between a clever demo and a system we trust in production. Evaluations, guardrails, and observability were there from day one.",
-    name: "Dr. Linh Tran",
-    role: "Head of AI",
-    org: "Global EdTech network",
-  },
-  {
-    quote:
-      "Senior engineers, sensible architecture, and a partner who actually owns delivery. We've consolidated three vendors into HIGAET.",
-    name: "Marc Eliasson",
-    role: "CTO",
-    org: "European FinTech",
-  },
-];

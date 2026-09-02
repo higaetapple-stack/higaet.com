@@ -6,6 +6,7 @@ import { StatBand } from "@/components/site/StatBand";
 import { CTASection } from "@/components/site/CTASection";
 import { RelatedCluster } from "@/components/site/RelatedCluster";
 import { HubLongform } from "@/components/site/HubLongform";
+import { HubRelatedLinks } from "@/components/site/HubRelatedLinks";
 import { FeatureGrid } from "@/components/site/FeatureGrid";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 
@@ -95,6 +96,35 @@ function GlobalHome() {
           <FAQ items={FAQS} />
         </div>
       </Section>
+
+      <HubRelatedLinks
+        brand="global"
+        eyebrow="Explore destinations"
+        title="Start with the building blocks of your plan."
+        ringHoverClass="hover:ring-global/40"
+        links={[
+          {
+            to: "/global-education/countries",
+            label: "Countries",
+            body: "Compare tuition, intakes, and visa highlights across our partner study destinations.",
+          },
+          {
+            to: "/global-education/knowledge-base/universities",
+            label: "Universities",
+            body: "Verified profiles of leading universities — programs, tuition, admissions, and FAQs.",
+          },
+          {
+            to: "/global-education/study-abroad",
+            label: "Study abroad",
+            body: "Counselling tracks, timelines, and application support for every destination.",
+          },
+          {
+            to: "/global-education/visa-guidance",
+            label: "Visa guidance",
+            body: "Document prep, mock interviews, and country-wise visa success playbooks.",
+          },
+        ]}
+      />
 
       <CTASection
         title="Talk to a Global Hub counsellor."

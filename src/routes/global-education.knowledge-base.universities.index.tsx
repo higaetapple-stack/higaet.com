@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { HubRelatedLinks } from "@/components/site/HubRelatedLinks";
 import { Section } from "@/components/site/Section";
 import {
   UNIVERSITIES_KB,
@@ -156,6 +157,24 @@ function UniversityKBIndex() {
           </Section>
         );
       })}
+      <HubRelatedLinks
+        brand="global"
+        eyebrow="Plan further"
+        title="Match the university to the journey."
+        ringHoverClass="hover:ring-global/40"
+        links={[
+          {
+            to: "/global-education/countries",
+            label: "Study destinations",
+            body: "Compare countries on tuition, intakes, language, and visa highlights.",
+          },
+          {
+            to: "/academy/programs",
+            label: "HIGAET Academy programs",
+            body: "Domestic AI career tracks for learners building skills before going abroad.",
+          },
+        ]}
+      />
     </>
   );
 }
