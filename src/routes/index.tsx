@@ -116,7 +116,7 @@ function HomePage() {
               <div className="relative z-10 text-center px-8">
                 <Network className="size-12 text-muted-foreground/40 mx-auto mb-4" aria-hidden />
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  Institutional Campus &amp; Knowledge Graph
+                  Institutional Knowledge Graph
                 </span>
               </div>
             </div>
