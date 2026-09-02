@@ -180,9 +180,9 @@ jobs:
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             set -e
             ROOT='$DEPLOY_DIR'
-            REL='\$ROOT/releases/$RELEASE'
-            LINK='\$ROOT/current'
-            TMP_LINK='\$ROOT/current_new'
+            REL="\$ROOT/releases/$RELEASE"
+            LINK="\$ROOT/current"
+            TMP_LINK="\$ROOT/current_new"
 
             if [ -d \"\$LINK\" ] && [ ! -L \"\$LINK\" ]; then
               echo \"::error::'current' exists as a real directory at \$LINK. Aborting to avoid data loss.\"
