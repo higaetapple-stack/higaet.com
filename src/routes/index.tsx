@@ -113,7 +113,7 @@ function HomePage() {
                 height={900}
                 loading="lazy"
                 decoding="async"
-                className="absolute inset-0 bottom-8 h-auto w-full object-contain"
+                className="absolute inset-0 bottom-10 w-full object-contain"
               />
               <span className="absolute bottom-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 Institutional Knowledge Graph
