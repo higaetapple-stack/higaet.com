@@ -1,7 +1,11 @@
 import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
-import { AcademyMegaMenu } from "@/components/site/AcademyMegaMenu";
+import {
+  AcademyMegaMenuPanels,
+  AcademyMegaMenuTriggers,
+  useAcademyMegaMenu,
+} from "@/components/site/AcademyMegaMenu";
 import { AcademySearchTrigger } from "@/components/site/AcademySearch";
 
 export const Route = createFileRoute("/academy")({
@@ -20,12 +24,13 @@ function AcademyLayout() {
 }
 
 function AcademySubHeader() {
+  const menu = useAcademyMegaMenu();
   return (
     <div
       className="sticky top-16 z-40 border-b border-border bg-surface/90 backdrop-blur-md"
       aria-label="Academy navigation"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div ref={menu.containerRef} className="max-w-7xl mx-auto px-6 relative">
         <div className="flex items-center justify-between gap-4 py-3">
           <div className="flex items-center gap-6 min-w-0 overflow-x-auto">
             <Link
@@ -37,7 +42,7 @@ function AcademySubHeader() {
               HIGAET Academy
             </Link>
             <nav aria-label="Academy primary">
-              <AcademyMegaMenu />
+              <AcademyMegaMenuTriggers open={menu.open} onToggle={menu.toggle} />
             </nav>
           </div>
           <div className="hidden md:flex items-center gap-2 shrink-0">
@@ -50,6 +55,7 @@ function AcademySubHeader() {
             </Link>
           </div>
         </div>
+        <AcademyMegaMenuPanels open={menu.open} onClose={menu.close} />
       </div>
     </div>
   );
