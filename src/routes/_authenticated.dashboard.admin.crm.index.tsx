@@ -12,6 +12,7 @@ const TYPES = [
   { v: "", l: "All sources" },
   { v: "study_abroad_lead", l: "Study abroad lead" },
   { v: "tech_lead", l: "Tech lead" },
+  { v: "generic_lead", l: "Academy & general lead" },
   { v: "application", l: "Study abroad application" },
   { v: "job_application", l: "Job application" },
   { v: "placement", l: "Placement" },

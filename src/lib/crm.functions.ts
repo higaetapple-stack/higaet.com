@@ -8,7 +8,8 @@ type EntityType =
   | "tech_lead"
   | "application"
   | "job_application"
-  | "placement";
+  | "placement"
+  | "generic_lead";
 
 const ENTITY_TABLE: Record<EntityType, string> = {
   study_abroad_lead: "study_abroad_leads",
@@ -16,9 +17,17 @@ const ENTITY_TABLE: Record<EntityType, string> = {
   application: "applications",
   job_application: "job_applications",
   placement: "placements",
+  generic_lead: "leads",
 };
 
-const CRM_STATUSES = [
+/** Assignment column per entity. Extracted pure for unit tests. */
+export function assignFieldFor(entityType: EntityType): string {
+  return entityType === "tech_lead" || entityType === "generic_lead"
+    ? "assigned_to"
+    : "assigned_to_counselor";
+}
+
+export const CRM_STATUSES = [
   "new",
   "contacted",
   "qualified",
@@ -36,13 +45,15 @@ async function assertStaff(ctx: { supabase: any; userId: string }) {
   if (!data) throw new Error("Forbidden");
 }
 
-const entityTypeSchema = z.enum([
+export const crmEntityTypeSchema = z.enum([
   "study_abroad_lead",
   "tech_lead",
   "application",
   "job_application",
   "placement",
+  "generic_lead",
 ]);
+const entityTypeSchema = crmEntityTypeSchema;
 
 // ─── Unified inbox ──────────────────────────────────────────────────────────
 export const listCrmEntries = createServerFn({ method: "GET" })
@@ -77,25 +88,24 @@ export const listCrmEntries = createServerFn({ method: "GET" })
             ? "id, full_name, email, phone, company, service_interest, crm_status, crm_substatus, assigned_to, created_at"
             : type === "application"
               ? "id, student_id, university_id, program_id, status, crm_status, crm_substatus, assigned_to_counselor, created_at, profiles:student_id(full_name,email)"
-              : type === "job_application"
-                ? "id, student_id, job_id, status, crm_status, crm_substatus, applied_at, profiles:student_id(full_name,email)"
-                : "id, student_id, job_title, status, crm_status, crm_substatus, offer_date, created_at, profiles:student_id(full_name,email)";
+              : type === "generic_lead"
+                ? "id, full_name, email, phone, division, source, crm_status, crm_substatus, assigned_to, created_at"
+                : type === "job_application"
+                  ? "id, student_id, job_id, status, crm_status, crm_substatus, applied_at, profiles:student_id(full_name,email)"
+                  : "id, student_id, job_title, status, crm_status, crm_substatus, offer_date, created_at, profiles:student_id(full_name,email)";
 
       let q = (supabaseAdmin as any).from(table).select(sel).limit(200);
       if (data.crm_status) q = q.eq("crm_status", data.crm_status);
       if (data.assigned_to_me) {
         if (type === "study_abroad_lead" || type === "application")
           q = q.eq("assigned_to_counselor", context.userId);
-        else if (type === "tech_lead") q = q.eq("assigned_to", context.userId);
+        else if (type === "tech_lead" || type === "generic_lead")
+          q = q.eq("assigned_to", context.userId);
       }
       const { data: list, error } = await q;
       if (error) continue;
       (list ?? []).forEach((r: any) => {
-        const name =
-          r.full_name ??
-          r.profiles?.full_name ??
-          r.job_title ??
-          "—";
+        const name = r.full_name ?? r.profiles?.full_name ?? r.job_title ?? "—";
         const subtitle =
           r.email ??
           r.profiles?.email ??
@@ -120,14 +130,10 @@ export const listCrmEntries = createServerFn({ method: "GET" })
     if (data.search) {
       const s = data.search.toLowerCase();
       filtered = rows.filter(
-        (r) =>
-          r.name?.toLowerCase().includes(s) ||
-          r.subtitle?.toLowerCase().includes(s),
+        (r) => r.name?.toLowerCase().includes(s) || r.subtitle?.toLowerCase().includes(s),
       );
     }
-    filtered.sort((a, b) =>
-      (b.created_at ?? "").localeCompare(a.created_at ?? ""),
-    );
+    filtered.sort((a, b) => (b.created_at ?? "").localeCompare(a.created_at ?? ""));
     return filtered;
   });
 
@@ -200,10 +206,18 @@ export const assignCounselor = createServerFn({ method: "POST" })
     await assertStaff(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const table = ENTITY_TABLE[data.entity_type];
-    const field =
-      data.entity_type === "tech_lead" ? "assigned_to" : "assigned_to_counselor";
+    const field = assignFieldFor(data.entity_type);
     if (data.entity_type === "job_application" || data.entity_type === "placement") {
       throw new Error("Assignment not supported for this entity");
+    }
+    if (data.user_id) {
+      const { data: staff } = await (supabaseAdmin as any)
+        .from("user_roles")
+        .select("user_id")
+        .eq("user_id", data.user_id)
+        .in("role", STAFF_ROLES as unknown as string[])
+        .limit(1);
+      if (!staff || staff.length === 0) throw new Error("Assignee is not staff");
     }
     const { error } = await (supabaseAdmin as any)
       .from(table)
@@ -236,12 +250,15 @@ export const listCrmThread = createServerFn({ method: "GET" })
     const filter = (q: any) =>
       q.eq("entity_type", data.entity_type).eq("entity_id", data.entity_id);
     const [notes, tasks, followUps, activity] = await Promise.all([
-      filter((supabaseAdmin as any).from("crm_notes").select("*, author:author_id(full_name)"))
-        .order("created_at", { ascending: false }),
-      filter((supabaseAdmin as any).from("crm_tasks").select("*, assignee:assigned_to(full_name)"))
-        .order("due_date", { ascending: true }),
-      filter((supabaseAdmin as any).from("crm_follow_ups").select("*"))
-        .order("scheduled_at", { ascending: true }),
+      filter(
+        (supabaseAdmin as any).from("crm_notes").select("*, author:author_id(full_name)"),
+      ).order("created_at", { ascending: false }),
+      filter(
+        (supabaseAdmin as any).from("crm_tasks").select("*, assignee:assigned_to(full_name)"),
+      ).order("due_date", { ascending: true }),
+      filter((supabaseAdmin as any).from("crm_follow_ups").select("*")).order("scheduled_at", {
+        ascending: true,
+      }),
       filter((supabaseAdmin as any).from("crm_activity_log").select("*, actor:actor_id(full_name)"))
         .order("created_at", { ascending: false })
         .limit(50),
@@ -256,9 +273,7 @@ export const listCrmThread = createServerFn({ method: "GET" })
 
 export const addCrmNote = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) =>
-    polySchema.extend({ note: z.string().min(1).max(4000) }).parse(i),
-  )
+  .inputValidator((i: unknown) => polySchema.extend({ note: z.string().min(1).max(4000) }).parse(i))
   .handler(async ({ data, context }) => {
     await assertStaff(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

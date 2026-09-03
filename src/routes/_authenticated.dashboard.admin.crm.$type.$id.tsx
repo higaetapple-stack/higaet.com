@@ -55,7 +55,9 @@ function CrmDetail() {
 
   const statusM = useMutation({
     mutationFn: (crm_status: string) =>
-      setStatus({ data: { entity_type: entityType, entity_id: id, crm_status: crm_status as any } }),
+      setStatus({
+        data: { entity_type: entityType, entity_id: id, crm_status: crm_status as any },
+      }),
     onSuccess: () => {
       toast.success("Stage updated");
       invalidate();
@@ -112,7 +114,9 @@ function CrmDetail() {
   });
 
   const [fuAt, setFuAt] = useState("");
-  const [fuChannel, setFuChannel] = useState<"email" | "phone" | "whatsapp" | "meeting" | "other">("email");
+  const [fuChannel, setFuChannel] = useState<"email" | "phone" | "whatsapp" | "meeting" | "other">(
+    "email",
+  );
   const fuM = useMutation({
     mutationFn: () =>
       addFu({
@@ -137,9 +141,13 @@ function CrmDetail() {
 
   const entity: any = entityQ.data;
   const thread = threadQ.data ?? { notes: [], tasks: [], followUps: [], activity: [] };
-  const canAssign = type === "study_abroad_lead" || type === "tech_lead" || type === "application";
+  const canAssign =
+    type === "study_abroad_lead" ||
+    type === "tech_lead" ||
+    type === "application" ||
+    type === "generic_lead";
   const assignedField =
-    type === "tech_lead" ? "assigned_to" : "assigned_to_counselor";
+    type === "tech_lead" || type === "generic_lead" ? "assigned_to" : "assigned_to_counselor";
 
   return (
     <div className="space-y-6">
@@ -161,7 +169,14 @@ function CrmDetail() {
             </h1>
             {entity.email && <div className="text-sm text-muted-foreground">{entity.email}</div>}
             {entity.phone && <div className="text-sm text-muted-foreground">{entity.phone}</div>}
-            {entity.company && <div className="text-sm text-muted-foreground">{entity.company}</div>}
+            {entity.company && (
+              <div className="text-sm text-muted-foreground">{entity.company}</div>
+            )}
+            {type === "generic_lead" && (entity.division || entity.source) && (
+              <div className="text-sm text-muted-foreground">
+                {[entity.division, entity.source].filter(Boolean).join(" · ")}
+              </div>
+            )}
             {entity.message && (
               <p className="text-sm mt-3 text-muted-foreground border-l-2 border-border pl-3">
                 {entity.message}
@@ -301,11 +316,17 @@ function CrmDetail() {
                       }
                     />
                     <div className="flex-1">
-                      <div className={t.status === "done" ? "line-through text-muted-foreground" : "text-ink"}>
+                      <div
+                        className={
+                          t.status === "done" ? "line-through text-muted-foreground" : "text-ink"
+                        }
+                      >
                         {t.title}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {t.due_date ? `Due ${new Date(t.due_date).toLocaleDateString()}` : "No due date"}
+                        {t.due_date
+                          ? `Due ${new Date(t.due_date).toLocaleDateString()}`
+                          : "No due date"}
                         {t.assignee?.full_name ? ` · ${t.assignee.full_name}` : ""}
                       </div>
                     </div>

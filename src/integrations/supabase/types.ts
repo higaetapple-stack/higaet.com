@@ -2735,7 +2735,10 @@ export type Database = {
       }
       leads: {
         Row: {
+          assigned_to: string | null
           created_at: string
+          crm_status: Database["public"]["Enums"]["crm_status"]
+          crm_substatus: string | null
           division: string
           email: string
           full_name: string
@@ -2747,7 +2750,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           division: string
           email: string
           full_name: string
@@ -2759,7 +2765,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
           created_at?: string
+          crm_status?: Database["public"]["Enums"]["crm_status"]
+          crm_substatus?: string | null
           division?: string
           email?: string
           full_name?: string
