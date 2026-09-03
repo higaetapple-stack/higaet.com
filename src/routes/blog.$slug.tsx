@@ -1,164 +1,223 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/site/SiteShell";
+import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
-import { ArrowLeft } from "lucide-react";
-import { seoHead } from "@/lib/seo/seo-head";
-import { articleJsonLd } from "@/lib/seo/schema";
-import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
+import { CTASection } from "@/components/site/CTASection";
 
-type Post = {
-  slug: string;
+const POSTS: Record<string, {
   title: string;
   excerpt: string;
+  content: string;
   date: string;
   tag: string;
-  body: string[];
-};
-
-const POSTS: Record<string, Post> = {
+  readTime: string;
+}> = {
   "the-state-of-ai-engineering-education": {
-    slug: "the-state-of-ai-engineering-education",
     title: "The state of AI engineering education in 2026",
     excerpt: "Why traditional CS programs struggle to keep pace with applied AI — and what we built at HIGAET to close the gap.",
     date: "2026-05-21",
     tag: "Academy",
-    body: [
-      "Three years into the post-ChatGPT shift, most computer-science programs still treat applied AI as an elective rather than a discipline. Employers do not. Job postings for AI engineers, ML platform engineers, and applied research engineers have grown faster than any other technical role since 2023, and the gap between what graduates can do on day one and what teams need them to do by week two has become the single largest hiring bottleneck in the industry.",
-      "## The shape of the gap",
-      "Traditional CS curricula optimize for foundations: algorithms, operating systems, compilers, a semester of machine-learning theory built around scikit-learn and a final project on MNIST. That foundation still matters. It is no longer sufficient. An AI engineer in 2026 spends more time writing evaluation harnesses than training models, more time stitching tools and retrieval into an agent loop than tuning hyperparameters, and more time defending a system against prompt injection, hallucination, and cost blow-ups than optimizing F1 by two points on a held-out set.",
-      "Universities know this. The problem is structural. Curriculum committees move on multi-year cycles; frontier capabilities move on multi-week cycles. A syllabus that locks in a specific model family, framework, or evaluation harness in September is already partially obsolete by the time the cohort sits its January exams.",
-      "## What the work actually looks like",
-      "When we audited the day-to-day work of 200+ AI engineers across enterprise, scale-up, and frontier-lab teams, five activities accounted for the vast majority of billable hours: writing and maintaining evaluation suites, designing retrieval and context-assembly pipelines, building and instrumenting agent and tool-use loops, hardening systems against adversarial and edge-case inputs, and operating those systems under real cost, latency, and compliance constraints.",
-      "Almost none of this appears in a standard ML syllabus. Most of it is invisible in research papers. All of it is what separates a deployable engineer from a confident prototyper.",
-      "## How HIGAET teaches it",
-      "We redesigned the HIGAET Academy curriculum around those five activities, then worked backward into the foundations each one demands. Every module starts from a role profile — what does an AI engineer on a regulated-industry team need to be able to do by their first sprint? — and the learning outcomes are derived from there.",
-      "Three structural commitments make this work in practice. First, every cohort ships an enterprise capstone built against a real brief from a HIGAET Technologies client or partner. Second, evaluation is continuous and behavioral: learners are graded on the eval suites they write and the failure modes they catch, not just on the models they fine-tune. Third, the curriculum is versioned monthly. When a new model class, retrieval pattern, or safety technique materially changes the work, the relevant module is rewritten — not deferred to next year's intake.",
-      "## What we measure",
-      "We track three outcomes that map to employer expectations rather than academic convention: time-to-first-shipped-feature in a learner's first role, the percentage of graduates whose first production system survives a third-party safety and cost review without rework, and the rate at which hiring partners return for a second cohort. Those three numbers, watched over time, tell us whether the program is closing the gap or simply restating it.",
-      "## The bigger picture",
-      "AI engineering education is not a faster version of CS education. It is a different discipline with its own craft, its own failure modes, and its own definition of mastery. Universities that recognize this — and that build the operational muscle to teach against a moving frontier — will produce the engineers the next decade of the industry depends on. The rest will keep graduating students who are well prepared for a world that no longer exists.",
-      "That is the gap HIGAET was built to close, and the work we will keep publishing about here.",
-    ],
+    readTime: "8 min read",
+    content: `
+      <p>The gap between what universities teach and what AI engineering teams actually need has never been wider.</p>
+      <h2>The curriculum lag</h2>
+      <p>Most computer science programs still treat machine learning as an elective. They teach theory — backpropagation, gradient descent, loss functions — but not the engineering reality of shipping LLM systems: retrieval, evaluation, observability, cost control, and safety guardrails.</p>
+      <h2>What HIGAET Academy does differently</h2>
+      <p>We built our programs around what AI engineers actually do every day:</p>
+      <ul>
+        <li><strong>Foundations first:</strong> Linear algebra, probability, and Python patterns you will actually use</li>
+        <li><strong>Applied depth:</strong> RAG architectures, agent orchestration, eval frameworks</li>
+        <li><strong>Production reality:</strong> Cost-aware inference, latency budgets, guardrails, red-teaming</li>
+        <li><strong>Capstone with industry:</strong> Live briefs from hiring partners, architecture reviews, production deployment</li>
+      </ul>
+      <h2>The result</h2>
+      <p>Graduates don't just know ML theory — they've shipped working AI systems, run evaluations, and defended architecture decisions to hiring partners.</p>
+    `,
   },
   "study-abroad-checklist-fall-2026": {
-    slug: "study-abroad-checklist-fall-2026",
     title: "Study-abroad checklist: applying for Fall 2026 intakes",
     excerpt: "A clear, month-by-month plan for students targeting UK, US, and Canadian universities this cycle.",
     date: "2026-04-12",
     tag: "Global Hub",
-    body: [
-      "The Fall 2026 intake cycle has already opened at most universities. If you intend to apply for a graduate program in the UK, US, or Canada, the next six months matter more than the next sixty.",
-      "This guide walks through the timeline we use with HIGAET Global Hub students — when to take standardized tests, when to finalize your university shortlist, when to file your scholarship applications, and when to begin your visa file.",
-    ],
+    readTime: "6 min read",
+    content: `
+      <p>Fall 2026 applications open soon. Here is your timeline.</p>
+      <h2>12–18 months before intake</h2>
+      <ul>
+        <li>Research destinations and programs</li>
+        <li>Take standardized tests (IELTS/TOEFL, GRE/GMAT if required)</li>
+        <li>Build your university shortlist: safe, match, reach</li>
+      </ul>
+      <h2>9–12 months before</h2>
+      <ul>
+        <li>Request transcripts and recommendation letters</li>
+        <li>Draft SOPs and personal statements</li>
+        <li>Apply for scholarships and funding</li>
+      </ul>
+      <h2>6–9 months before</h2>
+      <ul>
+        <li>Submit applications before deadlines</li>
+        <li>Prepare financial evidence for visa</li>
+        <li>Track application status across portals</li>
+      </ul>
+      <h2>3–6 months before</h2>
+      <ul>
+        <li>Accept offer and pay deposit</li>
+        <li>Apply for student visa</li>
+        <li>Arrange housing, insurance, travel</li>
+      </ul>
+    `,
   },
   "rag-vs-fine-tuning-2026": {
-    slug: "rag-vs-fine-tuning-2026",
     title: "RAG vs. fine-tuning: a practitioner's framework",
     excerpt: "Choosing between retrieval and fine-tuning based on the actual constraints of your enterprise system.",
     date: "2026-03-04",
     tag: "Technologies",
-    body: [
-      "Most teams default to one of two strategies — retrieval-augmented generation or fine-tuning — without rigorously thinking about which their use case actually calls for.",
-      "We use a four-factor framework with our enterprise clients: data freshness, output specificity, evaluation strategy, and operating cost. This post walks through each.",
-    ],
+    readTime: "10 min read",
+    content: `
+      <p>The debate between RAG and fine-tuning misses the point: they solve different problems.</p>
+      <h2>When to use RAG</h2>
+      <ul>
+        <li>Knowledge changes frequently</li>
+        <li>You need citations and auditability</li>
+        <li>Domain knowledge is large but well-documented</li>
+        <li>Compliance requires traceable answers</li>
+      </ul>
+      <h2>When to fine-tune</h2>
+      <ul>
+        <li>Model behavior needs to change (style, format, reasoning)</li>
+        <li>Low-latency, high-throughput inference required</li>
+        <li>Proprietary reasoning patterns not in base model</li>
+        <li>You have high-quality training data (1k+ examples)</li>
+      </ul>
+      <h2>The pragmatic approach</h2>
+      <p>Most production systems need both: RAG for knowledge, fine-tuning for behavior. Start with RAG, measure, then fine-tune only where retrieval alone fails.</p>
+    `,
   },
 };
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = POSTS[params.slug];
-    if (!post) throw notFound();
-    return { post };
-  },
-  head: ({ loaderData }) => {
-    const post = loaderData?.post;
-    if (!post) return { meta: [{ title: "Post not found — HIGAET" }] };
-    const path = `/blog/${post.slug}`;
-    return seoHead({
-      path,
-      title: `${post.title} — HIGAET`,
-      description: post.excerpt,
-      ogType: "article",
-      extraMeta: [
+  head: ({ params }) => {
+    const slug = params.slug;
+    const post = POSTS[slug];
+    if (!post) {
+      return {
+        meta: [{ title: "Post not found — HIGAET" }],
+      };
+    }
+    const url = "https://www.higaet.com/blog/" + slug;
+    return {
+      meta: [
+        { title: post.title + " — HIGAET Journal" },
+        { name: "description", content: post.excerpt },
+        { property: "og:title", content: post.title },
+        { property: "og:description", content: post.excerpt },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
         { property: "article:published_time", content: post.date },
-        { property: "article:section", content: post.tag },
+        { property: "article:tag", content: post.tag },
       ],
-      jsonLd: [
-        articleJsonLd({
-          type: "BlogPosting",
-          path,
-          headline: post.title,
-          description: post.excerpt,
-          datePublished: post.date,
-          keywords: [post.tag, "HIGAET", "AI engineering"],
-        }),
-        breadcrumbJsonLd([
-          { label: "Home", href: "/" },
-          { label: "Blog", href: "/blog" },
-          { label: post.title },
-        ]),
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.excerpt,
+            datePublished: post.date,
+            author: { "@type": "Organization", name: "HIGAET" },
+            publisher: { "@type": "Organization", name: "HIGAET" },
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.higaet.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.higaet.com/blog" },
+              { "@type": "ListItem", "position": 3, "name": post.title, "item": url },
+            ],
+          }),
+        },
       ],
-    });
+    };
   },
-  notFoundComponent: () => (
-    <SiteShell>
-      <Section>
-        <h1 className="font-display text-3xl font-medium text-ink mb-4">Post not found</h1>
-        <Link to="/blog" className="text-sm text-ink underline">
-          Back to the journal
-        </Link>
-      </Section>
-    </SiteShell>
-  ),
-  errorComponent: () => (
-    <SiteShell>
-      <Section>
-        <h1 className="font-display text-3xl font-medium text-ink mb-4">Something went wrong</h1>
-        <Link to="/blog" className="text-sm text-ink underline">Back to the journal</Link>
-      </Section>
-    </SiteShell>
-  ),
-  component: PostPage,
+  component: BlogPostPage,
 });
 
-function PostPage() {
-  const { post } = Route.useLoaderData();
+function BlogPostPage() {
+  const { slug } = Route.useParams();
+  const post = POSTS[slug];
+
+  if (!post) {
+    return (
+      <SiteShell>
+        <PageHero eyebrow="Blog" title="Post not found" subtitle="The article you are looking for does not exist." />
+        <Section className="!pt-0">
+          <p className="text-muted-foreground">The article you are looking for does not exist.</p>
+          <Link to="/blog" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-tech">
+            Back to Blog
+          </Link>
+        </Section>
+      </SiteShell>
+    );
+  }
+
+  const crumbs = [
+    { label: "Home", url: "/" },
+    { label: "Blog", url: "/blog" },
+    { label: post.title, url: undefined },
+  ];
+
   return (
     <SiteShell>
-      <article>
-        <Section className="!py-16">
-          <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-ink mb-8">
-            <ArrowLeft className="size-4" /> All posts
-          </Link>
-          <header className="max-w-3xl">
-            <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4">
-              <span className="font-semibold uppercase tracking-widest text-ink/60">{post.tag}</span>
-              <span>·</span>
-              <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-              </time>
-            </div>
-            <h1 className="font-display text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-balance mb-6 text-ink">
-              {post.title}
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">{post.excerpt}</p>
-          </header>
+      <div className="px-6 pt-8">
+        <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto">
+          <ol className="flex items-center gap-2 text-sm text-muted-foreground">
+            {crumbs.map((c, i) => (
+              <li key={i} className="flex items-center gap-2">
+                {i > 0 && <span aria-hidden>/</span>}
+                {c.url ? (
+                  <Link to={c.url} className="hover:text-ink transition-colors">{c.label}</Link>
+                ) : (
+                  <span className="text-ink font-medium">{c.label}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </div>
+      <PageHero
+        eyebrow={post.tag}
+        title={post.title}
+        subtitle={post.excerpt}
+      >
+        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <time dateTime={post.date}>{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+          <span>·</span>
+          <span>{post.readTime}</span>
+          <span>{post.tag}</span>
+        </div>
+      </PageHero>
 
-          <div className="prose-content mt-12 max-w-3xl space-y-6 text-foreground/90 leading-relaxed">
-            {post.body.map((p: string, i: number) =>
-              p.startsWith("## ") ? (
-                <h2 key={i} className="font-display text-2xl md:text-3xl font-medium text-ink mt-12 mb-2 tracking-tight">
-                  {p.slice(3)}
-                </h2>
-              ) : (
-                <p key={i} className="text-base md:text-lg text-muted-foreground">
-                  {p}
-                </p>
-              )
-            )}
-          </div>
-        </Section>
-      </article>
+      <Section className="!pt-0">
+        <div className="max-w-3xl">
+          <article className="prose prose-lg max-w-none">
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </article>
+        </div>
+      </Section>
+
+      <CTASection
+        title="Want more insights like this?"
+        body="Subscribe to the HIGAET Journal for field notes on AI engineering, study abroad, and enterprise AI."
+        primaryHref="/blog"
+        primaryLabel="Read more articles"
+      />
     </SiteShell>
   );
 }

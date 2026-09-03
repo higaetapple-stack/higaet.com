@@ -32,16 +32,49 @@ const POSTS: Post[] = [
 ];
 
 export const Route = createFileRoute("/blog")({
-  head: () => ({
-    meta: [
-      { title: "Blog — HIGAET" },
-      { name: "description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
-      { property: "og:title", content: "Blog — HIGAET" },
-      { property: "og:description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
-      { property: "og:url", content: "https://www.higaet.com/blog" },
-    ],
-  }),
-  component: BlogIndex,
+  head: () => {
+    const url = "https://www.higaet.com/blog";
+    const posts = [
+      { slug: "the-state-of-ai-engineering-education", title: "The state of AI engineering education in 2026" },
+      { slug: "study-abroad-checklist-fall-2026", title: "Study-abroad checklist: applying for Fall 2026 intakes" },
+      { slug: "rag-vs-fine-tuning-2026", title: "RAG vs. fine-tuning: a practitioner's framework" },
+    ];
+    return {
+      meta: [
+        { title: "Blog — HIGAET" },
+        { name: "description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
+        { property: "og:title", content: "Blog — HIGAET" },
+        { property: "og:description", content: "Insights on AI engineering, study abroad, and enterprise AI from the HIGAET team." },
+        { property: "og:url", content: url },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: posts.map((p, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: p.title,
+              url: "https://www.higaet.com/blog/" + p.slug,
+            })),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.higaet.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": url },
+            ],
+          }),
+        },
+      ],
+    };
+  },  component: BlogIndex,
 });
 
 function BlogIndex() {

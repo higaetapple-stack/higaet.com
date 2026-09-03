@@ -16,15 +16,34 @@ const programSearch = z.object({
 
 export const Route = createFileRoute("/academy/programs/")({
   validateSearch: zodValidator(programSearch),
-  head: () => ({
-    meta: [
-      { title: "Programs — HIGAET Academy" },
-      { name: "description", content: "Flagship HIGAET Academy programs in Generative AI, Data Science, Cloud, Cybersecurity, and AI Product Management." },
-      { property: "og:title", content: "Programs — HIGAET Academy" },
-      { property: "og:description", content: "Industry-aligned career tracks with placement support." },
-      { property: "og:url", content: "https://www.higaet.com/academy/programs" },
-    ],
-  }),
+  head: () => {
+    const url = "https://www.higaet.com/academy/programs";
+    return {
+      meta: [
+        { title: "Programs — HIGAET Academy" },
+        { name: "description", content: "Flagship HIGAET Academy programs in Generative AI, Data Science, Cloud, Cybersecurity, and AI Product Management." },
+        { property: "og:title", content: "Programs — HIGAET Academy" },
+        { property: "og:description", content: "Industry-aligned career tracks with placement support." },
+        { property: "og:url", content: "https://www.higaet.com/academy/programs" },
+      ],
+      links: [{ rel: "canonical", href: "https://www.higaet.com/academy/programs" }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: PROGRAMS.map((p, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: p.title,
+              item: "https://www.higaet.com/academy/programs/" + p.slug,
+            })),
+          }),
+        },
+      ],
+    };
+  },
   component: ProgramsIndex,
 });
 
