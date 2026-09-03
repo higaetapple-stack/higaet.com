@@ -12,7 +12,7 @@ import {
   Building2,
   Rocket,
   Quote,
-  Github,
+  GitBranch,
 } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
