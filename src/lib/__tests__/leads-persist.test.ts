@@ -6,7 +6,7 @@ import {
   resolveLeadStore,
   type LeadDeps,
 } from "@/lib/leads.functions";
-import { LIMITS, rateLimitByKey } from "@/lib/server/rate-limit";
+import { LIMITS, rateLimitByKey } from "@/lib/rate-limit-core";
 
 const lead = (division: string, source = "test"): LeadPayload =>
   LeadSchema.parse({

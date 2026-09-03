@@ -4,7 +4,7 @@ import { LeadSchema, type LeadPayload } from "@/lib/schemas";
 import { getServerPublicClient } from "@/integrations/supabase/server-public";
 import { LEAD_RECIPIENTS } from "@/lib/contact";
 import { sendBrevoEmail } from "@/lib/email/brevo";
-import { LIMITS, rateLimitByKey } from "@/lib/server/rate-limit";
+import { LIMITS, rateLimitByKey } from "@/lib/rate-limit-core";
 
 /**
  * Public lead capture endpoint.
