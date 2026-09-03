@@ -24,10 +24,6 @@ export function buildCountryJsonLd(slug: string) {
       "@type": "Country",
       name: "World",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      // Approximate centroid coordinates - in production, use actual country centroids
-    },
     address: {
       "@type": "PostalAddress",
       addressCountry: country.name,
