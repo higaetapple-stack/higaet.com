@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequestHeader } from "@tanstack/react-start/server";
 import { LeadSchema, type LeadPayload } from "@/lib/schemas";
 import { getServerPublicClient } from "@/integrations/supabase/server-public";
 import { LEAD_RECIPIENTS } from "@/lib/contact";
@@ -115,19 +114,6 @@ export const LEAD_RATE_LIMIT_MESSAGE =
  * (Passenger/LiteSpeed set X-Forwarded-For); never trusts arbitrary client
  * input beyond these deployment-controlled headers. Fails open to "anon".
  */
-export function getLeadRateLimitKey(): string {
-  let ip = "anon";
-  try {
-    const cf = getRequestHeader("cf-connecting-ip");
-    const xff = getRequestHeader("x-forwarded-for");
-    const xri = getRequestHeader("x-real-ip");
-    ip = cf || xff?.split(",")[0]?.trim() || xri || "anon";
-  } catch {
-    ip = "anon";
-  }
-  return `lead.submit::${ip}`;
-}
-
 /** Injected I/O for processLeadSubmission (production wiring vs tests). */
 export interface LeadDeps {
   insert: (
@@ -187,6 +173,22 @@ export async function processLeadSubmission(
 export const submitLead = createServerFn({ method: "POST" })
   .inputValidator((data: LeadPayload) => LeadSchema.parse(data))
   .handler(async ({ data }) => {
+    // Header reads MUST stay inline here: TanStack import-protection denies
+    // the server request-headers specifier anywhere in the client-reachable
+    // module graph, but allows it inside a server-function handler body
+    // (same pattern as security.functions.ts). Reads standard proxy headers
+    // only; fails open to "anon".
+    const { getRequestHeader } = await import("@tanstack/react-start/server");
+    let ip = "anon";
+    try {
+      ip =
+        getRequestHeader("cf-connecting-ip") ||
+        getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ||
+        getRequestHeader("x-real-ip") ||
+        "anon";
+    } catch {
+      ip = "anon";
+    }
     const supabase = getServerPublicClient();
     // Untyped boundary: table/row shape is already constrained by
     // LeadStoreTable + resolveLeadStore; the client cast avoids
@@ -212,6 +214,6 @@ export const submitLead = createServerFn({ method: "POST" })
         });
         return { ok: res.ok, error: res.error };
       },
-      limitKey: getLeadRateLimitKey,
+      limitKey: () => `lead.submit::${ip}`,
     });
   });
