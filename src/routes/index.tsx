@@ -21,14 +21,7 @@
  * ──────────────────────────────────────────────────────────
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  GraduationCap,
-  Globe2,
-  Cpu,
-  CheckCircle2,
-  Network,
-} from "lucide-react";
+import { ArrowRight, GraduationCap, Globe2, Cpu, CheckCircle2 } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { DivisionCard } from "@/components/site/DivisionCard";
 import { StatBand } from "@/components/site/StatBand";
@@ -113,12 +106,18 @@ function HomePage() {
           <div className="lg:w-7/12">
             <div className="w-full aspect-[4/3] bg-muted rounded-[12px] outline outline-1 -outline-offset-1 outline-border grid place-items-center overflow-hidden relative">
               <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(currentColor 1px, transparent 1px)", backgroundSize: "16px 16px" }} aria-hidden />
-              <div className="relative z-10 text-center px-8">
-                <Network className="size-12 text-muted-foreground/40 mx-auto mb-4" aria-hidden />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  Institutional Knowledge Graph
-                </span>
-              </div>
+              <img
+                src="/images/institutional-knowledge-graph.webp"
+                alt="Institutional Knowledge Graph visualization showing HIGAET connected to programs, courses, faculty, students, research, resources, careers, and industry"
+                width={1200}
+                height={900}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 bottom-8 h-auto w-full object-contain"
+              />
+              <span className="absolute bottom-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Institutional Knowledge Graph
+              </span>
             </div>
           </div>
           <div className="lg:w-5/12 flex flex-col justify-center">
