@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
@@ -15,10 +15,10 @@ import {
   type InsightCategory,
 } from "@/content/insights";
 
-const searchSchema = z.object({
-  category: fallback(z.string().optional(), undefined as string | undefined),
-  tag: fallback(z.string().optional(), undefined as string | undefined),
-  q: fallback(z.string().optional(), undefined as string | undefined),
+export const insightsSearchSchema = z.object({
+  category: z.string().optional(),
+  tag: z.string().optional(),
+  q: z.string().optional(),
 });
 
 const PATH = "/technologies/insights";
@@ -30,7 +30,7 @@ const breadcrumbs: Crumb[] = [
 ];
 
 export const Route = createFileRoute("/technologies/insights")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: zodValidator(insightsSearchSchema),
   head: () => ({
     meta: [
       { title: "Insights & Knowledge Center | HIGAET Technologies" },

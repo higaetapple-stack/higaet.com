@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useMemo } from "react";
 import { Search, X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -30,17 +30,38 @@ const CRUMBS: Crumb[] = [
   { label: "Case Studies", href: "/technologies/case-studies" },
 ];
 
-const searchSchema = z.object({
-  q: fallback(z.string(), "").default(""),
-  category: fallback(z.string(), "").default(""),
-  industry: fallback(z.string(), "").default(""),
-  service: fallback(z.string(), "").default(""),
-  tech: fallback(z.string(), "").default(""),
-  page: fallback(z.number().int().min(1), 1).default(1),
+export const caseStudiesSearchSchema = z.object({
+  q: z.string().optional(),
+  category: z.string().optional(),
+  industry: z.string().optional(),
+  service: z.string().optional(),
+  tech: z.string().optional(),
+  page: z.coerce.number().int().min(1).optional(),
 });
 
+export type CaseStudiesSearch = {
+  q?: string;
+  category?: string;
+  industry?: string;
+  service?: string;
+  tech?: string;
+  page?: number;
+};
+
+/** Serialize only meaningful params: empty strings and page 1 are omitted. */
+export function cleanCaseStudiesSearch(s: CaseStudiesSearch): CaseStudiesSearch {
+  return {
+    q: s.q || undefined,
+    category: s.category || undefined,
+    industry: s.industry || undefined,
+    service: s.service || undefined,
+    tech: s.tech || undefined,
+    page: s.page && s.page > 1 ? s.page : undefined,
+  };
+}
+
 export const Route = createFileRoute("/technologies/case-studies")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: zodValidator(caseStudiesSearchSchema),
   head: () => ({
     meta: [
       { title: META_TITLE },
@@ -65,7 +86,9 @@ export const Route = createFileRoute("/technologies/case-studies")({
 });
 
 function CaseStudiesHub() {
-  const { q, category, industry, service, tech, page } = Route.useSearch();
+  const { q = "", category = "", industry = "", service = "", tech = "", page = 1 } =
+    Route.useSearch();
+  const navigate = useNavigate({ from: Route.id });
   const all = useMemo(() => Object.values(CASE_STUDIES), []);
 
   // Build facet lists from the registry.
@@ -177,6 +200,20 @@ function CaseStudiesHub() {
           action="/technologies/case-studies"
           method="get"
           className="mt-8 flex flex-col gap-3 md:flex-row md:items-center"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const fd = new FormData(e.currentTarget);
+            const val = (k: string) => String(fd.get(k) ?? "");
+            navigate({
+              search: cleanCaseStudiesSearch({
+                q: val("q"),
+                category: val("category"),
+                industry: val("industry"),
+                service: val("service"),
+                tech: val("tech"),
+              }),
+            });
+          }}
         >
           <label className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
@@ -202,7 +239,7 @@ function CaseStudiesHub() {
           {hasFilters && (
             <Link
               to="/technologies/case-studies"
-              search={{ q: "", category: "", industry: "", service: "", tech: "", page: 1 }}
+              search={cleanCaseStudiesSearch({})}
               className="inline-flex items-center gap-1.5 rounded-lg ring-1 ring-border px-4 py-2.5 text-sm font-medium text-ink hover:bg-muted"
             >
               <X className="size-4" /> Clear
@@ -263,7 +300,14 @@ function CaseStudiesHub() {
               <nav aria-label="Pagination" className="mt-10 flex items-center justify-between">
                 <Link
                   to="/technologies/case-studies"
-                  search={{ q, category, industry, service, tech, page: Math.max(1, safePage - 1) }}
+                  search={cleanCaseStudiesSearch({
+                    q,
+                    category,
+                    industry,
+                    service,
+                    tech,
+                    page: safePage - 1,
+                  })}
                   rel="prev"
                   aria-disabled={safePage === 1}
                   className={
@@ -280,7 +324,14 @@ function CaseStudiesHub() {
                 </span>
                 <Link
                   to="/technologies/case-studies"
-                  search={{ q, category, industry, service, tech, page: Math.min(totalPages, safePage + 1) }}
+                  search={cleanCaseStudiesSearch({
+                    q,
+                    category,
+                    industry,
+                    service,
+                    tech,
+                    page: safePage + 1,
+                  })}
                   rel="next"
                   aria-disabled={safePage === totalPages}
                   className={
@@ -335,7 +386,7 @@ function FilterRow({
         <li>
           <Link
             to="/technologies/case-studies"
-            search={{ ...current, [param]: "", page: 1 }}
+            search={cleanCaseStudiesSearch({ ...current, [param]: "" })}
             className={
               "block rounded-md px-2.5 py-1 text-sm transition " +
               (!active ? "bg-ink text-surface" : "text-muted-foreground hover:text-ink hover:bg-muted")
@@ -350,7 +401,7 @@ function FilterRow({
             <li key={opt.slug}>
               <Link
                 to="/technologies/case-studies"
-                search={{ ...current, [param]: opt.slug, page: 1 }}
+                search={cleanCaseStudiesSearch({ ...current, [param]: opt.slug })}
                 aria-current={isActive ? "page" : undefined}
                 className={
                   "block rounded-md px-2.5 py-1 text-sm transition " +
