@@ -106,15 +106,17 @@ function HomePage() {
           <div className="lg:w-7/12">
             <div className="w-full aspect-[4/3] bg-muted rounded-[12px] outline outline-1 -outline-offset-1 outline-border grid place-items-center overflow-hidden relative">
               <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(currentColor 1px, transparent 1px)", backgroundSize: "16px 16px" }} aria-hidden />
-              <img
-                src="/images/institutional-knowledge-graph.webp"
-                alt="Institutional Knowledge Graph visualization showing HIGAET connected to programs, courses, faculty, students, research, resources, careers, and industry"
-                width={1200}
-                height={900}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 bottom-10 w-full object-contain"
-              />
+              <div className="absolute inset-0 bottom-10">
+                <img
+                  src="/images/institutional-knowledge-graph.webp"
+                  alt="Institutional Knowledge Graph visualization showing HIGAET connected to programs, courses, faculty, students, research, resources, careers, and industry"
+                  width={1200}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-contain"
+                />
+              </div>
               <span className="absolute bottom-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 Institutional Knowledge Graph
               </span>
