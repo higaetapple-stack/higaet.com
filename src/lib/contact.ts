@@ -24,6 +24,20 @@ export const CONTACT_EMAILS = {
 
 export type ContactEmailKey = keyof typeof CONTACT_EMAILS;
 
+export type LeadDivisionKey = "main" | "academy" | "global" | "tech";
+
+/**
+ * Server-side allowlisted lead recipient per division.
+ * The client submits only `division` (validated against this allowlist);
+ * it can never choose an arbitrary recipient address.
+ */
+export const LEAD_RECIPIENTS: Record<LeadDivisionKey, string> = {
+  main: CONTACT_EMAILS.hello,
+  academy: CONTACT_EMAILS.admissions,
+  global: CONTACT_EMAILS.admissions,
+  tech: CONTACT_EMAILS.partnerships,
+} as const;
+
 export const CONTACT_PHONES = [
   { display: "+91 7780686821", href: "tel:+917780686821" },
   { display: "+91 9491927094", href: "tel:+919491927094" },

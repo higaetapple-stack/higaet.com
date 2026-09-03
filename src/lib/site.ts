@@ -62,8 +62,28 @@ export const ORG_JSONLD = {
     contentUrl: abs("/og-higaet.png"),
   },
   sameAs: [...SITE_SAME_AS],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-7780686821",
+      contactType: "sales",
+      areaServed: "IN",
+      availableLanguage: ["en"],
+    },
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-9491927094",
+      contactType: "customer service",
+      areaServed: "IN",
+      availableLanguage: ["en"],
+    },
+  ],
   department: [
-    { "@type": "EducationalOrganization", name: DIVISIONS.academy.name, url: abs(DIVISIONS.academy.slug) },
+    {
+      "@type": "EducationalOrganization",
+      name: DIVISIONS.academy.name,
+      url: abs(DIVISIONS.academy.slug),
+    },
     { "@type": "Organization", name: DIVISIONS.global.name, url: abs(DIVISIONS.global.slug) },
     { "@type": "Organization", name: DIVISIONS.tech.name, url: abs(DIVISIONS.tech.slug) },
   ],
