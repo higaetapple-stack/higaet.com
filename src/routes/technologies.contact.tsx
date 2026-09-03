@@ -5,7 +5,11 @@ export const Route = createFileRoute("/technologies/contact")({
   head: () => ({
     meta: [
       { title: "Contact HIGAET Technologies" },
-      { name: "description", content: "Contact HIGAET Technologies for software development, AI solutions, SaaS products, digital marketing, and enterprise product development." },
+      {
+        name: "description",
+        content:
+          "Contact HIGAET Technologies for software development, AI solutions, SaaS products, digital marketing, and enterprise product development.",
+      },
     ],
   }),
   component: TechContactPage,
@@ -21,10 +25,22 @@ function TechContactPage() {
       overviewTitle="Project conversations start with the problem."
       overviewBody="Use this route for enterprise software, AI implementations, SaaS builds, product development, digital growth, and technical advisory enquiries."
       points={[
-        { title: "Problem framing", body: "Clarify business objectives, users, workflows, constraints, and expected outcomes." },
-        { title: "Scope recommendation", body: "Identify whether you need discovery, prototype, MVP, modernization, or full build." },
-        { title: "Team planning", body: "Map the roles, skills, and delivery rhythm needed for the engagement." },
-        { title: "Next steps", body: "Receive a practical follow-up path based on urgency, complexity, and readiness." },
+        {
+          title: "Problem framing",
+          body: "Clarify business objectives, users, workflows, constraints, and expected outcomes.",
+        },
+        {
+          title: "Scope recommendation",
+          body: "Identify whether you need discovery, prototype, MVP, modernization, or full build.",
+        },
+        {
+          title: "Team planning",
+          body: "Map the roles, skills, and delivery rhythm needed for the engagement.",
+        },
+        {
+          title: "Next steps",
+          body: "Receive a practical follow-up path based on urgency, complexity, and readiness.",
+        },
       ]}
       outcomes={[
         "A clearer understanding of the project route and delivery model.",
@@ -39,6 +55,8 @@ function TechContactPage() {
       secondaryLabel="Case studies"
       leadDivision="tech"
       leadSource="tech_contact"
+      contactEmail="partnerships@higaet.com"
+      contactEmailLabel="Prefer email? Write to our team"
     />
   );
 }

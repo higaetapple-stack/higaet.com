@@ -7,12 +7,48 @@ import { HubRelatedLinks } from "@/components/site/HubRelatedLinks";
 import { MapPin, Briefcase, ArrowRight } from "lucide-react";
 
 const OPENINGS = [
-  { slug: "senior-ai-engineer", title: "Senior AI Engineer", team: "Technologies", location: "Bengaluru / Remote", type: "Full-time" },
-  { slug: "curriculum-lead-genai", title: "Curriculum Lead — Generative AI", team: "Academy", location: "Bengaluru", type: "Full-time" },
-  { slug: "admissions-counsellor-uk", title: "Admissions Counsellor — UK Track", team: "Global Hub", location: "Hyderabad", type: "Full-time" },
-  { slug: "fullstack-engineer", title: "Full-Stack Engineer", team: "Technologies", location: "Remote (IST ±3)", type: "Full-time" },
-  { slug: "growth-marketing-manager", title: "Growth Marketing Manager", team: "HIGAET", location: "Bengaluru", type: "Full-time" },
-  { slug: "visa-advisor-canada", title: "Visa Advisor — Canada Track", team: "Global Hub", location: "Mumbai", type: "Full-time" },
+  {
+    slug: "senior-ai-engineer",
+    title: "Senior AI Engineer",
+    team: "Technologies",
+    location: "Bengaluru / Remote",
+    type: "Full-time",
+  },
+  {
+    slug: "curriculum-lead-genai",
+    title: "Curriculum Lead — Generative AI",
+    team: "Academy",
+    location: "Bengaluru",
+    type: "Full-time",
+  },
+  {
+    slug: "admissions-counsellor-uk",
+    title: "Admissions Counsellor — UK Track",
+    team: "Global Hub",
+    location: "Hyderabad",
+    type: "Full-time",
+  },
+  {
+    slug: "fullstack-engineer",
+    title: "Full-Stack Engineer",
+    team: "Technologies",
+    location: "Remote (IST ±3)",
+    type: "Full-time",
+  },
+  {
+    slug: "growth-marketing-manager",
+    title: "Growth Marketing Manager",
+    team: "HIGAET",
+    location: "Bengaluru",
+    type: "Full-time",
+  },
+  {
+    slug: "visa-advisor-canada",
+    title: "Visa Advisor — Canada Track",
+    team: "Global Hub",
+    location: "Mumbai",
+    type: "Full-time",
+  },
 ];
 
 export const Route = createFileRoute("/careers")({
@@ -29,9 +65,15 @@ export const Route = createFileRoute("/careers")({
     return {
       meta: [
         { title: "Careers at HIGAET — Build the institute of the AI era" },
-        { name: "description", content: "Open roles at HIGAET across Academy, Global Education Hub, and Technologies." },
+        {
+          name: "description",
+          content: "Open roles at HIGAET across Academy, Global Education Hub, and Technologies.",
+        },
         { property: "og:title", content: "Careers at HIGAET" },
-        { property: "og:description", content: "Open roles across Academy, Global Education Hub, and Technologies." },
+        {
+          property: "og:description",
+          content: "Open roles across Academy, Global Education Hub, and Technologies.",
+        },
         { property: "og:url", content: url },
       ],
       scripts: [
@@ -54,14 +96,15 @@ export const Route = createFileRoute("/careers")({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.higaet.com/" },
-              { "@type": "ListItem", "position": 2, "name": "Careers", "item": url },
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.higaet.com/" },
+              { "@type": "ListItem", position: 2, name: "Careers", item: url },
             ],
           }),
         },
       ],
     };
-  },  component: CareersPage,
+  },
+  component: CareersPage,
 });
 
 function CareersPage() {
@@ -89,16 +132,33 @@ function CareersPage() {
                 <div>
                   <h3 className="font-display text-lg font-medium text-ink">{job.title}</h3>
                   <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-1.5"><Briefcase className="size-3.5" /> {job.team}</span>
-                    <span className="inline-flex items-center gap-1.5"><MapPin className="size-3.5" /> {job.location}</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Briefcase className="size-3.5" /> {job.team}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <MapPin className="size-3.5" /> {job.location}
+                    </span>
                     <span>{job.type}</span>
                   </div>
                 </div>
-                <ArrowRight className="size-4 text-muted-foreground group-hover:text-ink group-hover:translate-x-1 transition-all" aria-hidden />
+                <ArrowRight
+                  className="size-4 text-muted-foreground group-hover:text-ink group-hover:translate-x-1 transition-all"
+                  aria-hidden
+                />
               </Link>
             </li>
           ))}
         </ul>
+      </Section>
+
+      <Section>
+        <p className="text-sm text-muted-foreground">
+          General applications and referrals:{" "}
+          <a href="mailto:careers@higaet.com" className="font-medium text-ink underline">
+            careers@higaet.com
+          </a>
+          .
+        </p>
       </Section>
 
       <HubRelatedLinks

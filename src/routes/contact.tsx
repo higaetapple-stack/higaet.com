@@ -22,6 +22,39 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
+const DIVISION_EMAILS = [
+  {
+    title: "Academy admissions",
+    body: "Programs, batches, fees, certifications, and placement support.",
+    email: "admissions@higaet.com",
+  },
+  {
+    title: "Academy students",
+    body: "Enrolled learner support, billing, and subscriptions.",
+    email: "academy@higaet.com",
+  },
+  {
+    title: "Global Education Hub",
+    body: "Study abroad counselling, visas, scholarships, and university partnerships.",
+    email: "admissions@higaet.com",
+  },
+  {
+    title: "Technologies",
+    body: "Enterprise projects and technology partnerships.",
+    email: "partnerships@higaet.com",
+  },
+  {
+    title: "Careers",
+    body: "Open roles, referrals, and general applications.",
+    email: "careers@higaet.com",
+  },
+  {
+    title: "Support",
+    body: "Help with accounts, access, and platform issues.",
+    email: "support@higaet.com",
+  },
+] as const;
+
 function ContactPage() {
   return (
     <SiteShell>
@@ -44,12 +77,20 @@ function ContactPage() {
               value="hello@higaet.com"
               href="mailto:hello@higaet.com"
             />
-            <ContactBlock
-              icon={<Phone className="size-4" />}
-              title="Phone"
-              value="+91 80 0000 0000"
-              href="tel:+918000000000"
-            />
+            <div className="space-y-3">
+              <ContactBlock
+                icon={<Phone className="size-4" />}
+                title="Phone"
+                value="+91 7780686821 (Mon–Sat, 10am–7pm IST)"
+                href="tel:+917780686821"
+              />
+              <ContactBlock
+                icon={<Phone className="size-4" />}
+                title="Phone"
+                value="+91 9491927094 (Mon–Sat, 10am–7pm IST)"
+                href="tel:+919491927094"
+              />
+            </div>
             <ContactBlock
               icon={<MapPin className="size-4" />}
               title="Headquarters"
@@ -57,7 +98,9 @@ function ContactPage() {
             />
 
             <div className="rounded-2xl bg-muted/50 p-6">
-              <h3 className="font-display text-base font-medium text-ink mb-2">Press & partnerships</h3>
+              <h3 className="font-display text-base font-medium text-ink mb-2">
+                Press & partnerships
+              </h3>
               <p className="text-sm text-muted-foreground">
                 For media or partnership enquiries, write to{" "}
                 <a href="mailto:partnerships@higaet.com" className="underline text-ink">
@@ -67,6 +110,26 @@ function ContactPage() {
               </p>
             </div>
           </aside>
+        </div>
+      </Section>
+
+      <Section>
+        <div className="max-w-6xl">
+          <h2 className="font-display text-2xl font-medium text-ink">Reach the right team</h2>
+          <ul className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {DIVISION_EMAILS.map((d) => (
+              <li key={d.title + d.email} className="rounded-2xl bg-card p-6 ring-1 ring-border">
+                <h3 className="font-display text-base font-medium text-ink">{d.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{d.body}</p>
+                <a
+                  href={"mailto:" + d.email}
+                  className="mt-3 inline-block text-sm font-medium text-ink underline"
+                >
+                  {d.email}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </Section>
     </SiteShell>
@@ -90,7 +153,9 @@ function ContactBlock({
         {icon}
       </div>
       <div>
-        <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">{title}</div>
+        <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
+          {title}
+        </div>
         <div className="text-sm text-ink">{value}</div>
       </div>
     </div>

@@ -29,6 +29,8 @@ type DivisionDetailPageProps = {
   secondaryLabel?: string;
   leadDivision?: LeadDivision;
   leadSource?: string;
+  contactEmail?: string;
+  contactEmailLabel?: string;
 };
 
 const accentClasses: Record<Brand, string> = {
@@ -59,6 +61,8 @@ export function DivisionDetailPage({
   secondaryLabel,
   leadDivision,
   leadSource,
+  contactEmail,
+  contactEmailLabel = "Email us directly",
 }: DivisionDetailPageProps) {
   return (
     <>
@@ -79,7 +83,12 @@ export function DivisionDetailPage({
           <div className="grid gap-5 md:grid-cols-2">
             {points.map((point) => (
               <article key={point.title} className="rounded-xl bg-card p-6 ring-1 ring-border">
-                <div className={cn("mb-5 flex size-10 items-center justify-center rounded-lg", accentClasses[brand])}>
+                <div
+                  className={cn(
+                    "mb-5 flex size-10 items-center justify-center rounded-lg",
+                    accentClasses[brand],
+                  )}
+                >
                   <CheckCircle2 className="size-5" aria-hidden />
                 </div>
                 <h3 className="font-display text-lg font-medium text-ink">{point.title}</h3>
@@ -101,7 +110,10 @@ export function DivisionDetailPage({
           <ul className="grid gap-4 md:grid-cols-2">
             {outcomes.map((outcome) => (
               <li key={outcome} className="flex gap-3 text-sm leading-relaxed text-ink">
-                <CheckCircle2 className={cn("mt-0.5 size-4 shrink-0", accentClasses[brand].split(" ")[0])} aria-hidden />
+                <CheckCircle2
+                  className={cn("mt-0.5 size-4 shrink-0", accentClasses[brand].split(" ")[0])}
+                  aria-hidden
+                />
                 <span>{outcome}</span>
               </li>
             ))}
@@ -120,6 +132,14 @@ export function DivisionDetailPage({
               <p className="mt-5 text-muted-foreground leading-relaxed">
                 Share your goals and our team will respond with the next practical step.
               </p>
+              {contactEmail && (
+                <p className="mt-4 text-sm text-muted-foreground">
+                  {contactEmailLabel}:{" "}
+                  <a href={"mailto:" + contactEmail} className="font-medium text-ink underline">
+                    {contactEmail}
+                  </a>
+                </p>
+              )}
             </div>
             <div className="rounded-2xl bg-card p-6 ring-1 ring-border md:p-8">
               <LeadForm division={leadDivision} source={leadSource} />

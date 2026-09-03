@@ -5,7 +5,11 @@ export const Route = createFileRoute("/academy/contact")({
   head: () => ({
     meta: [
       { title: "Contact HIGAET Academy Admissions" },
-      { name: "description", content: "Contact HIGAET Academy admissions for online courses, offline training, certifications, internships, and placement support." },
+      {
+        name: "description",
+        content:
+          "Contact HIGAET Academy admissions for online courses, offline training, certifications, internships, and placement support.",
+      },
     ],
   }),
   component: AcademyContactPage,
@@ -21,9 +25,18 @@ function AcademyContactPage() {
       overviewTitle="Admissions guidance for AI learners."
       overviewBody="Use this route for program selection, batch availability, eligibility, fees, certification routes, and placement support questions."
       points={[
-        { title: "Program fit", body: "Find the right online, offline, certification, or internship-linked pathway." },
-        { title: "Batch planning", body: "Understand upcoming schedules, learning commitment, and format options." },
-        { title: "Career goals", body: "Discuss how your target role maps to Academy programs and placement support." },
+        {
+          title: "Program fit",
+          body: "Find the right online, offline, certification, or internship-linked pathway.",
+        },
+        {
+          title: "Batch planning",
+          body: "Understand upcoming schedules, learning commitment, and format options.",
+        },
+        {
+          title: "Career goals",
+          body: "Discuss how your target role maps to Academy programs and placement support.",
+        },
         { title: "Next steps", body: "Get a clear action plan after your enquiry is reviewed." },
       ]}
       outcomes={[
@@ -39,6 +52,8 @@ function AcademyContactPage() {
       secondaryLabel="View courses"
       leadDivision="academy"
       leadSource="academy_contact"
+      contactEmail="academy@higaet.com"
+      contactEmailLabel="Prefer email? Write to admissions"
     />
   );
 }

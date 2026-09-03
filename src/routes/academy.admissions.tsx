@@ -17,7 +17,11 @@ export const Route = createFileRoute("/academy/admissions")({
   head: () => ({
     meta: [
       { title: "Admissions — HIGAET Academy" },
-      { name: "description", content: "Apply to HIGAET Academy, book a counselling session, or download a program brochure. Structured admissions in 6 steps." },
+      {
+        name: "description",
+        content:
+          "Apply to HIGAET Academy, book a counselling session, or download a program brochure. Structured admissions in 6 steps.",
+      },
       { property: "og:title", content: "Admissions — HIGAET Academy" },
       { property: "og:description", content: "Apply, talk to an advisor, or request a brochure." },
       { property: "og:url", content: "https://www.higaet.com/academy/admissions" },
@@ -28,14 +32,37 @@ export const Route = createFileRoute("/academy/admissions")({
 
 const STEPS = [
   { n: "01", title: "Apply", body: "5-minute form. Background, goal, preferred program." },
-  { n: "02", title: "Counselling", body: "20-minute conversation with a HIGAET advisor — fit, scholarships, timelines." },
-  { n: "03", title: "Enrolment", body: "Confirm cohort, scholarship band, payment plan, and start date." },
-  { n: "04", title: "Learning", body: "Live cohorts, recorded modules, hands-on labs, mentor reviews." },
-  { n: "05", title: "Certification", body: "Industry-recognised HIGAET credential and verified outcomes record." },
-  { n: "06", title: "Placement", body: "Dedicated placement counsellor, interview prep, employer introductions." },
+  {
+    n: "02",
+    title: "Counselling",
+    body: "20-minute conversation with a HIGAET advisor — fit, scholarships, timelines.",
+  },
+  {
+    n: "03",
+    title: "Enrolment",
+    body: "Confirm cohort, scholarship band, payment plan, and start date.",
+  },
+  {
+    n: "04",
+    title: "Learning",
+    body: "Live cohorts, recorded modules, hands-on labs, mentor reviews.",
+  },
+  {
+    n: "05",
+    title: "Certification",
+    body: "Industry-recognised HIGAET credential and verified outcomes record.",
+  },
+  {
+    n: "06",
+    title: "Placement",
+    body: "Dedicated placement counsellor, interview prep, employer introductions.",
+  },
 ];
 
-const INTENT_COPY: Record<"apply" | "counselling" | "brochure", { eyebrow: string; title: string; body: string; icon: typeof Sparkles }> = {
+const INTENT_COPY: Record<
+  "apply" | "counselling" | "brochure",
+  { eyebrow: string; title: string; body: string; icon: typeof Sparkles }
+> = {
   apply: {
     eyebrow: "Start your application",
     title: "Apply to HIGAET Academy.",
@@ -64,12 +91,7 @@ function AdmissionsPage() {
 
   return (
     <>
-      <PageHero
-        brand="academy"
-        eyebrow={copy.eyebrow}
-        title={copy.title}
-        subtitle={copy.body}
-      />
+      <PageHero brand="academy" eyebrow={copy.eyebrow} title={copy.title} subtitle={copy.body} />
 
       <Section className="!pt-0">
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-start">
@@ -92,7 +114,8 @@ function AdmissionsPage() {
               source={`admissions:${intent}${program ? `:${program}` : ""}`}
             />
             <p className="text-xs text-muted-foreground mt-6">
-              By submitting you agree to be contacted by HIGAET about your enquiry. We never share your details with third parties.
+              By submitting you agree to be contacted by HIGAET about your enquiry. We never share
+              your details with third parties.
             </p>
           </div>
 
@@ -101,10 +124,21 @@ function AdmissionsPage() {
               <Eyebrow brand="academy">Other ways to reach us</Eyebrow>
               <ul className="mt-4 space-y-3 text-sm">
                 <li className="flex items-center gap-3 text-ink">
-                  <Phone className="size-4 text-academy" /> +91 80000 00000 (Mon–Sat, 10am–7pm IST)
+                  <Phone className="size-4 text-academy" />{" "}
+                  <a href="tel:+917780686821" className="underline">
+                    +91 7780686821
+                  </a>
+                  {" / "}
+                  <a href="tel:+919491927094" className="underline">
+                    +91 9491927094
+                  </a>{" "}
+                  (Mon–Sat, 10am–7pm IST)
                 </li>
                 <li className="flex items-center gap-3 text-ink">
-                  <Mail className="size-4 text-academy" /> admissions@higaet.edu
+                  <Mail className="size-4 text-academy" />{" "}
+                  <a href="mailto:admissions@higaet.com" className="underline">
+                    admissions@higaet.com
+                  </a>
                 </li>
               </ul>
             </div>
@@ -119,7 +153,9 @@ function AdmissionsPage() {
                     </span>
                     <div>
                       <div className="font-medium text-ink text-sm">{s.title}</div>
-                      <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">{s.body}</p>
+                      <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">
+                        {s.body}
+                      </p>
                     </div>
                   </li>
                 ))}

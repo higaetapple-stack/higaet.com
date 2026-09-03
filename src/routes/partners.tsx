@@ -26,7 +26,12 @@ const JSONLD = {
       "@id": `${URL}#breadcrumb`,
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://www.higaet.com/" },
-        { "@type": "ListItem", position: 2, name: "About HIGAET", item: "https://www.higaet.com/about-higaet" },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "About HIGAET",
+          item: "https://www.higaet.com/about-higaet",
+        },
         { "@type": "ListItem", position: 3, name: "Partners", item: URL },
       ],
     },
@@ -72,12 +77,32 @@ function PartnersPage() {
           ))}
         </ul>
         <p className="mt-10 text-sm text-muted-foreground">
-          Explore <Link to="/higaet-global-education-hub" className="text-academy underline">university partnerships</Link>,{" "}
-          <Link to="/higaet-technologies" className="text-academy underline">enterprise engagements</Link>, and the{" "}
-          <Link to="/higaet-ai-platform" className="text-academy underline">AI Platform</Link>.
+          Explore{" "}
+          <Link to="/higaet-global-education-hub" className="text-academy underline">
+            university partnerships
+          </Link>
+          ,{" "}
+          <Link to="/higaet-technologies" className="text-academy underline">
+            enterprise engagements
+          </Link>
+          , and the{" "}
+          <Link to="/higaet-ai-platform" className="text-academy underline">
+            AI Platform
+          </Link>
+          .
         </p>
       </Section>
-      <CTASection title="Partner with HIGAET." body="Talk to our team about university, enterprise, and cloud partnerships." />
+      <p className="mt-10 text-sm text-muted-foreground">
+        Prefer email? Write to{" "}
+        <a href="mailto:partnerships@higaet.com" className="text-ink underline">
+          partnerships@higaet.com
+        </a>
+        .
+      </p>
+      <CTASection
+        title="Partner with HIGAET."
+        body="Talk to our team about university, enterprise, and cloud partnerships."
+      />
     </SiteShell>
   );
 }

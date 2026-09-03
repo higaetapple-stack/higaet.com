@@ -5,7 +5,11 @@ export const Route = createFileRoute("/global-education/contact")({
   head: () => ({
     meta: [
       { title: "Contact HIGAET Global Education Hub" },
-      { name: "description", content: "Contact HIGAET Global Education Hub for study abroad counselling, university applications, scholarships, visa guidance, and student services." },
+      {
+        name: "description",
+        content:
+          "Contact HIGAET Global Education Hub for study abroad counselling, university applications, scholarships, visa guidance, and student services.",
+      },
     ],
   }),
   component: GlobalContactPage,
@@ -21,10 +25,22 @@ function GlobalContactPage() {
       overviewTitle="Counselling for international admissions."
       overviewBody="Use this route for university shortlisting, application planning, scholarship questions, visa preparation, and student service guidance."
       points={[
-        { title: "Destination advice", body: "Compare countries, intakes, programs, costs, and long-term pathways." },
-        { title: "University shortlists", body: "Identify realistic and ambitious options based on profile fit." },
-        { title: "Application planning", body: "Clarify SOPs, recommendations, documents, and deadline strategy." },
-        { title: "Visa next steps", body: "Understand what preparation may be required after offers arrive." },
+        {
+          title: "Destination advice",
+          body: "Compare countries, intakes, programs, costs, and long-term pathways.",
+        },
+        {
+          title: "University shortlists",
+          body: "Identify realistic and ambitious options based on profile fit.",
+        },
+        {
+          title: "Application planning",
+          body: "Clarify SOPs, recommendations, documents, and deadline strategy.",
+        },
+        {
+          title: "Visa next steps",
+          body: "Understand what preparation may be required after offers arrive.",
+        },
       ]}
       outcomes={[
         "A clearer view of your study abroad options.",
@@ -39,6 +55,8 @@ function GlobalContactPage() {
       secondaryLabel="See process"
       leadDivision="global"
       leadSource="global_contact"
+      contactEmail="admissions@higaet.com"
+      contactEmailLabel="Prefer email? Write to our counsellors"
     />
   );
 }
