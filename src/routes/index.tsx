@@ -111,7 +111,7 @@ function HomePage() {
                   src="/images/institutional-knowledge-graph.webp"
                   alt="Institutional Knowledge Graph visualization showing HIGAET connected to programs, courses, faculty, students, research, resources, careers, and industry"
                   width={1200}
-                  height={900}
+                  height={800}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-contain"
