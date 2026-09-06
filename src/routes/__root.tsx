@@ -109,12 +109,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: SITE.description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: canonical },
-      { property: "og:image", content: `${SITE.url}/og-higaet.png` },
+      { property: "og:image", content: `${SITE.url}/og-higaet-2026.png` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: SITE.twitter },
       { name: "twitter:title", content: `${SITE.name} — ${SITE.tagline}` },
       { name: "twitter:description", content: SITE.description },
-      { name: "twitter:image", content: `${SITE.url}/og-higaet.png` },
+      { name: "twitter:image", content: `${SITE.url}/og-higaet-2026.png` },
     ];
     if (ANALYTICS_IDS.gscVerification) {
       meta.push({ name: "google-site-verification", content: ANALYTICS_IDS.gscVerification });

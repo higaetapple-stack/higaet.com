@@ -53,7 +53,7 @@ export function articleJsonLd(opts: {
     headline: opts.headline,
     description: opts.description,
     mainEntityOfPage: { "@type": "WebPage", "@id": abs(opts.path) },
-    image: opts.image ? abs(opts.image) : `${SITE.url}/og-higaet.png`,
+    image: opts.image ? abs(opts.image) : `${SITE.url}/og-higaet-2026.png`,
     datePublished: opts.datePublished,
     dateModified: opts.dateModified ?? opts.datePublished,
     author: opts.authorName

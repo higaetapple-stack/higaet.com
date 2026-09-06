@@ -37,7 +37,7 @@ const abs = (href: string) =>
 
 export function seoHead(input: SeoHeadInput) {
   const url = abs(input.path);
-  const image = input.image ? abs(input.image) : `${SITE.url}/og-higaet.png`;
+  const image = input.image ? abs(input.image) : `${SITE.url}/og-higaet-2026.png`;
   const ogType = input.ogType ?? "website";
 
   const meta: Array<Record<string, string>> = [

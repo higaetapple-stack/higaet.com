@@ -37,7 +37,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: `${SITE.name} — ${SITE.tagline}` },
       { property: "og:description", content: SITE.description },
       { property: "og:url", content: "https://www.higaet.com/" },
-      { property: "og:image", content: "https://www.higaet.com/og-higaet.png" },
+      { property: "og:image", content: "https://www.higaet.com/og-higaet-2026.png" },
     ],
   }),
   component: HomePage,

@@ -89,7 +89,7 @@ export const Route = createFileRoute("/technologies/")({
       },
       { property: "og:url", content: "https://www.higaet.com/technologies" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.higaet.com/og-higaet.png" },
+      { property: "og:image", content: "https://www.higaet.com/og-higaet-2026.png" },
     ],
     scripts: [
       jsonLdScript({

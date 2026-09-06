@@ -58,8 +58,8 @@ export const ORG_JSONLD = {
   logo: {
     "@type": "ImageObject",
     "@id": `${SITE.url}/#logo`,
-    url: abs("/og-higaet.png"),
-    contentUrl: abs("/og-higaet.png"),
+    url: abs("/og-higaet-2026.png"),
+    contentUrl: abs("/og-higaet-2026.png"),
   },
   sameAs: [...SITE_SAME_AS],
   contactPoint: [

@@ -6,6 +6,7 @@ Allow: /
 Allow: /assets/
 Allow: /_build/
 Allow: /og-higaet.png
+Allow: /og-higaet-2026.png
 Allow: /favicon.ico
 Allow: /manifest.webmanifest
 

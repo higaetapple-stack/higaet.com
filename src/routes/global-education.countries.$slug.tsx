@@ -33,7 +33,7 @@ export const Route = createFileRoute("/global-education/countries/$slug")({
         { property: "og:title", content: "Study in " + country.name },
         { property: "og:description", content: country.summary },
         { property: "og:url", content: "https://www.higaet.com/global-education/countries/" + slug },
-        { property: "og:image", content: "https://www.higaet.com/og-higaet.png" },
+        { property: "og:image", content: "https://www.higaet.com/og-higaet-2026.png" },
         { property: "og:type", content: "website" },
       ],
       scripts,
