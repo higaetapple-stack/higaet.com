@@ -101,6 +101,13 @@ import { Route as GlobalEducationVisaGuidanceRouteImport } from './routes/global
 import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as JobsSlugRouteImport } from './routes/jobs.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as SitemapsSitemapAcademyDotxmlRouteImport } from './routes/sitemaps.sitemap-academy[.]xml'
+import { Route as SitemapsSitemapBlogDotxmlRouteImport } from './routes/sitemaps.sitemap-blog[.]xml'
+import { Route as SitemapsSitemapCareersDotxmlRouteImport } from './routes/sitemaps.sitemap-careers[.]xml'
+import { Route as SitemapsSitemapDocsDotxmlRouteImport } from './routes/sitemaps.sitemap-docs[.]xml'
+import { Route as SitemapsSitemapGlobalEducationDotxmlRouteImport } from './routes/sitemaps.sitemap-global-education[.]xml'
+import { Route as SitemapsSitemapPagesDotxmlRouteImport } from './routes/sitemaps.sitemap-pages[.]xml'
+import { Route as SitemapsSitemapTechnologiesDotxmlRouteImport } from './routes/sitemaps.sitemap-technologies[.]xml'
 import { Route as TechnologiesIndexRouteImport } from './routes/technologies.index'
 import { Route as TechnologiesAiSolutionsRouteImport } from './routes/technologies.ai-solutions'
 import { Route as TechnologiesApiDevelopmentRouteImport } from './routes/technologies.api-development'
@@ -847,6 +854,48 @@ const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
   path: '/portfolio/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapsSitemapAcademyDotxmlRoute =
+  SitemapsSitemapAcademyDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-academy.xml',
+    path: '/sitemaps/sitemap-academy.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapsSitemapBlogDotxmlRoute =
+  SitemapsSitemapBlogDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-blog.xml',
+    path: '/sitemaps/sitemap-blog.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapsSitemapCareersDotxmlRoute =
+  SitemapsSitemapCareersDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-careers.xml',
+    path: '/sitemaps/sitemap-careers.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapsSitemapDocsDotxmlRoute =
+  SitemapsSitemapDocsDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-docs.xml',
+    path: '/sitemaps/sitemap-docs.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapsSitemapGlobalEducationDotxmlRoute =
+  SitemapsSitemapGlobalEducationDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-global-education.xml',
+    path: '/sitemaps/sitemap-global-education.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapsSitemapPagesDotxmlRoute =
+  SitemapsSitemapPagesDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-pages.xml',
+    path: '/sitemaps/sitemap-pages.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapsSitemapTechnologiesDotxmlRoute =
+  SitemapsSitemapTechnologiesDotxmlRouteImport.update({
+    id: '/sitemaps/sitemap-technologies.xml',
+    path: '/sitemaps/sitemap-technologies.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TechnologiesIndexRoute = TechnologiesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -2533,6 +2582,13 @@ export interface FileRoutesByFullPath {
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/sitemaps/sitemap-academy.xml': typeof SitemapsSitemapAcademyDotxmlRoute
+  '/sitemaps/sitemap-blog.xml': typeof SitemapsSitemapBlogDotxmlRoute
+  '/sitemaps/sitemap-careers.xml': typeof SitemapsSitemapCareersDotxmlRoute
+  '/sitemaps/sitemap-docs.xml': typeof SitemapsSitemapDocsDotxmlRoute
+  '/sitemaps/sitemap-global-education.xml': typeof SitemapsSitemapGlobalEducationDotxmlRoute
+  '/sitemaps/sitemap-pages.xml': typeof SitemapsSitemapPagesDotxmlRoute
+  '/sitemaps/sitemap-technologies.xml': typeof SitemapsSitemapTechnologiesDotxmlRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
   '/technologies/api-development': typeof TechnologiesApiDevelopmentRoute
   '/technologies/business-intelligence': typeof TechnologiesBusinessIntelligenceRoute
@@ -2893,6 +2949,13 @@ export interface FileRoutesByTo {
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/sitemaps/sitemap-academy.xml': typeof SitemapsSitemapAcademyDotxmlRoute
+  '/sitemaps/sitemap-blog.xml': typeof SitemapsSitemapBlogDotxmlRoute
+  '/sitemaps/sitemap-careers.xml': typeof SitemapsSitemapCareersDotxmlRoute
+  '/sitemaps/sitemap-docs.xml': typeof SitemapsSitemapDocsDotxmlRoute
+  '/sitemaps/sitemap-global-education.xml': typeof SitemapsSitemapGlobalEducationDotxmlRoute
+  '/sitemaps/sitemap-pages.xml': typeof SitemapsSitemapPagesDotxmlRoute
+  '/sitemaps/sitemap-technologies.xml': typeof SitemapsSitemapTechnologiesDotxmlRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
   '/technologies/api-development': typeof TechnologiesApiDevelopmentRoute
   '/technologies/business-intelligence': typeof TechnologiesBusinessIntelligenceRoute
@@ -3255,6 +3318,13 @@ export interface FileRoutesById {
   '/global-education/visa-guidance': typeof GlobalEducationVisaGuidanceRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/sitemaps/sitemap-academy.xml': typeof SitemapsSitemapAcademyDotxmlRoute
+  '/sitemaps/sitemap-blog.xml': typeof SitemapsSitemapBlogDotxmlRoute
+  '/sitemaps/sitemap-careers.xml': typeof SitemapsSitemapCareersDotxmlRoute
+  '/sitemaps/sitemap-docs.xml': typeof SitemapsSitemapDocsDotxmlRoute
+  '/sitemaps/sitemap-global-education.xml': typeof SitemapsSitemapGlobalEducationDotxmlRoute
+  '/sitemaps/sitemap-pages.xml': typeof SitemapsSitemapPagesDotxmlRoute
+  '/sitemaps/sitemap-technologies.xml': typeof SitemapsSitemapTechnologiesDotxmlRoute
   '/technologies/ai-solutions': typeof TechnologiesAiSolutionsRoute
   '/technologies/api-development': typeof TechnologiesApiDevelopmentRoute
   '/technologies/business-intelligence': typeof TechnologiesBusinessIntelligenceRoute
@@ -3625,6 +3695,13 @@ export interface FileRouteTypes {
     | '/global-education/visa-guidance'
     | '/jobs/$slug'
     | '/portfolio/$slug'
+    | '/sitemaps/sitemap-academy.xml'
+    | '/sitemaps/sitemap-blog.xml'
+    | '/sitemaps/sitemap-careers.xml'
+    | '/sitemaps/sitemap-docs.xml'
+    | '/sitemaps/sitemap-global-education.xml'
+    | '/sitemaps/sitemap-pages.xml'
+    | '/sitemaps/sitemap-technologies.xml'
     | '/technologies/ai-solutions'
     | '/technologies/api-development'
     | '/technologies/business-intelligence'
@@ -3985,6 +4062,13 @@ export interface FileRouteTypes {
     | '/global-education/visa-guidance'
     | '/jobs/$slug'
     | '/portfolio/$slug'
+    | '/sitemaps/sitemap-academy.xml'
+    | '/sitemaps/sitemap-blog.xml'
+    | '/sitemaps/sitemap-careers.xml'
+    | '/sitemaps/sitemap-docs.xml'
+    | '/sitemaps/sitemap-global-education.xml'
+    | '/sitemaps/sitemap-pages.xml'
+    | '/sitemaps/sitemap-technologies.xml'
     | '/technologies/ai-solutions'
     | '/technologies/api-development'
     | '/technologies/business-intelligence'
@@ -4346,6 +4430,13 @@ export interface FileRouteTypes {
     | '/global-education/visa-guidance'
     | '/jobs/$slug'
     | '/portfolio/$slug'
+    | '/sitemaps/sitemap-academy.xml'
+    | '/sitemaps/sitemap-blog.xml'
+    | '/sitemaps/sitemap-careers.xml'
+    | '/sitemaps/sitemap-docs.xml'
+    | '/sitemaps/sitemap-global-education.xml'
+    | '/sitemaps/sitemap-pages.xml'
+    | '/sitemaps/sitemap-technologies.xml'
     | '/technologies/ai-solutions'
     | '/technologies/api-development'
     | '/technologies/business-intelligence'
@@ -4676,6 +4767,13 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   JobsSlugRoute: typeof JobsSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
+  SitemapsSitemapAcademyDotxmlRoute: typeof SitemapsSitemapAcademyDotxmlRoute
+  SitemapsSitemapBlogDotxmlRoute: typeof SitemapsSitemapBlogDotxmlRoute
+  SitemapsSitemapCareersDotxmlRoute: typeof SitemapsSitemapCareersDotxmlRoute
+  SitemapsSitemapDocsDotxmlRoute: typeof SitemapsSitemapDocsDotxmlRoute
+  SitemapsSitemapGlobalEducationDotxmlRoute: typeof SitemapsSitemapGlobalEducationDotxmlRoute
+  SitemapsSitemapPagesDotxmlRoute: typeof SitemapsSitemapPagesDotxmlRoute
+  SitemapsSitemapTechnologiesDotxmlRoute: typeof SitemapsSitemapTechnologiesDotxmlRoute
   VerifyCertificateIdRoute: typeof VerifyCertificateIdRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
   JobsIndexRoute: typeof JobsIndexRoute
@@ -5365,6 +5463,55 @@ declare module '@tanstack/react-router' {
       path: '/portfolio/$slug'
       fullPath: '/portfolio/$slug'
       preLoaderRoute: typeof PortfolioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-academy.xml': {
+      id: '/sitemaps/sitemap-academy.xml'
+      path: '/sitemaps/sitemap-academy.xml'
+      fullPath: '/sitemaps/sitemap-academy.xml'
+      preLoaderRoute: typeof SitemapsSitemapAcademyDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-blog.xml': {
+      id: '/sitemaps/sitemap-blog.xml'
+      path: '/sitemaps/sitemap-blog.xml'
+      fullPath: '/sitemaps/sitemap-blog.xml'
+      preLoaderRoute: typeof SitemapsSitemapBlogDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-careers.xml': {
+      id: '/sitemaps/sitemap-careers.xml'
+      path: '/sitemaps/sitemap-careers.xml'
+      fullPath: '/sitemaps/sitemap-careers.xml'
+      preLoaderRoute: typeof SitemapsSitemapCareersDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-docs.xml': {
+      id: '/sitemaps/sitemap-docs.xml'
+      path: '/sitemaps/sitemap-docs.xml'
+      fullPath: '/sitemaps/sitemap-docs.xml'
+      preLoaderRoute: typeof SitemapsSitemapDocsDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-global-education.xml': {
+      id: '/sitemaps/sitemap-global-education.xml'
+      path: '/sitemaps/sitemap-global-education.xml'
+      fullPath: '/sitemaps/sitemap-global-education.xml'
+      preLoaderRoute: typeof SitemapsSitemapGlobalEducationDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-pages.xml': {
+      id: '/sitemaps/sitemap-pages.xml'
+      path: '/sitemaps/sitemap-pages.xml'
+      fullPath: '/sitemaps/sitemap-pages.xml'
+      preLoaderRoute: typeof SitemapsSitemapPagesDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/sitemap-technologies.xml': {
+      id: '/sitemaps/sitemap-technologies.xml'
+      path: '/sitemaps/sitemap-technologies.xml'
+      fullPath: '/sitemaps/sitemap-technologies.xml'
+      preLoaderRoute: typeof SitemapsSitemapTechnologiesDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/technologies/': {
@@ -8466,6 +8613,15 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   JobsSlugRoute: JobsSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
+  SitemapsSitemapAcademyDotxmlRoute: SitemapsSitemapAcademyDotxmlRoute,
+  SitemapsSitemapBlogDotxmlRoute: SitemapsSitemapBlogDotxmlRoute,
+  SitemapsSitemapCareersDotxmlRoute: SitemapsSitemapCareersDotxmlRoute,
+  SitemapsSitemapDocsDotxmlRoute: SitemapsSitemapDocsDotxmlRoute,
+  SitemapsSitemapGlobalEducationDotxmlRoute:
+    SitemapsSitemapGlobalEducationDotxmlRoute,
+  SitemapsSitemapPagesDotxmlRoute: SitemapsSitemapPagesDotxmlRoute,
+  SitemapsSitemapTechnologiesDotxmlRoute:
+    SitemapsSitemapTechnologiesDotxmlRoute,
   VerifyCertificateIdRoute: VerifyCertificateIdRoute,
   VerifyTokenRoute: VerifyTokenRoute,
   JobsIndexRoute: JobsIndexRoute,

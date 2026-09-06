@@ -1,16 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import {
+  buildSitemapIndexXml,
+  getSitemapSegments,
+  xmlResponse,
+} from "@/lib/sitemap";
 
-const getSitemap = createServerFn({ method: "GET" })
-  .handler(async () => {
-    return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>', {
-      headers: { "Content-Type": "application/xml" },
-    });
-  });
-
+/**
+ * Canonical sitemap index — the single submission point for
+ * Google Search Console and Bing Webmaster Tools.
+ * https://www.higaet.com/sitemap.xml
+ */
 export const Route = createFileRoute("/sitemap.xml")({
-  loader: async () => {
-    return await getSitemap();
+  server: {
+    handlers: {
+      GET: async () => {
+        const segs = await getSitemapSegments();
+        return xmlResponse(buildSitemapIndexXml(segs.map((s) => s.file)));
+      },
+    },
   },
-  component: () => null,
 });
