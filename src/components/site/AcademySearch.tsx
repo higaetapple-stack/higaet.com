@@ -29,6 +29,7 @@ import {
   type SearchRecord,
 } from "@/content/providers";
 import { trackEvent } from "@/lib/analytics";
+import { metaEvents } from "@/lib/analytics-events";
 import { cn } from "@/lib/utils";
 
 const QUICK_LINKS = [
@@ -81,7 +82,8 @@ export function AcademySearchTrigger({ className }: { className?: string }) {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const inField =
-        target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
+        target &&
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
       if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && !inField)) {
         e.preventDefault();
         setOpen((v) => !v);
@@ -117,7 +119,13 @@ export function AcademySearchTrigger({ className }: { className?: string }) {
   );
 }
 
-function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+function AcademySearchDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+}) {
   const navigate = useNavigate();
 
   const programsByCategory = useMemo(() => {
@@ -148,6 +156,7 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
 
   const go = (label: string, fn: () => void) => {
     trackEvent("academy_search_result_click", { label });
+    metaEvents.search({ search_string: label, content_category: "academy" });
     fn();
     onOpenChange(false);
   };
@@ -161,7 +170,7 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
     <CommandDialog open={open} onOpenChange={onOpenChange}>
       <CommandInput
         placeholder="Search programs, learning paths, campuses…"
-        onValueChange={(v) => v && trackEvent("academy_search_query", { q: v })}
+        onValueChange={(v) => v && trackEvent("academy_search_query", { q_len: v.length })}
       />
       <CommandList>
         <CommandEmpty>No matches. Try a topic like "AI", "Data", or "Cloud".</CommandEmpty>
@@ -250,7 +259,9 @@ function AcademySearchDialog({ open, onOpenChange }: { open: boolean; onOpenChan
               <MapPin className="size-4 text-academy" />
               <div className="flex min-w-0 flex-col">
                 <span className="truncate">{c.name}</span>
-                <span className="truncate text-xs text-muted-foreground">{c.city} · {c.degree}</span>
+                <span className="truncate text-xs text-muted-foreground">
+                  {c.city} · {c.degree}
+                </span>
               </div>
             </CommandItem>
           ))}

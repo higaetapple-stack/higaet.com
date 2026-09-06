@@ -8,6 +8,20 @@
  * Fans out to GA4 (via GTM), Meta Pixel, and PostHog through `trackEvent`.
  */
 import { trackEvent } from "./analytics";
+import { trackMeta } from "./analytics";
+
+/** Meta standard events mapped from HIGAET journeys.
+ *  Only fires on genuine business outcomes (successful submit / view),
+ *  with safe contextual params only — NEVER PII. */
+export const metaEvents = {
+  viewContent: (props: { content_name: string; content_type: string; content_category: string }) =>
+    trackMeta("ViewContent", props),
+  lead: (props: { content_category: string; content_name?: string }) => trackMeta("Lead", props),
+  completeRegistration: (props: { method: string }) =>
+    trackMeta("CompleteRegistration", { content_name: "account", ...props }),
+  search: (props: { search_string: string; content_category?: string }) =>
+    trackMeta("Search", props),
+};
 
 /** Auth funnel — measures if users can enter the platform. */
 export const authEvents = {
@@ -15,14 +29,12 @@ export const authEvents = {
   signupCompleted: (props: { method: "email" | "google" | "apple"; source?: string }) =>
     trackEvent("signup_completed", props),
   login: (method: "email" | "google" | "apple") => trackEvent("login", { method }),
-  passwordReset: (stage: "requested" | "completed") =>
-    trackEvent("password_reset", { stage }),
+  passwordReset: (stage: "requested" | "completed") => trackEvent("password_reset", { stage }),
 };
 
 /** Study Abroad funnel — lead → application → visa case. */
 export const studyAbroadEvents = {
-  leadCaptured: (props: { division: string; source: string }) =>
-    trackEvent("lead_captured", props),
+  leadCaptured: (props: { division: string; source: string }) => trackEvent("lead_captured", props),
   applicationStarted: (props: { university_id?: string; program_id?: string }) =>
     trackEvent("application_started", props),
   applicationSubmitted: (props: {
@@ -48,19 +60,13 @@ export const paymentEvents = {
     amount_minor: number;
     currency: string;
   }) => trackEvent("payment_succeeded", props),
-  paymentFailed: (props: {
-    purpose: string;
-    method: string;
-    reason?: string;
-  }) => trackEvent("payment_failed", props),
+  paymentFailed: (props: { purpose: string; method: string; reason?: string }) =>
+    trackEvent("payment_failed", props),
   refundRequested: (props: { payment_id: string; reason?: string }) =>
     trackEvent("refund_requested", props),
   /** Refund processed successfully by admin (downstream outcome). */
-  refundProcessed: (props: {
-    payment_id: string;
-    amount_minor: number;
-    currency: string;
-  }) => trackEvent("refund_processed", props),
+  refundProcessed: (props: { payment_id: string; amount_minor: number; currency: string }) =>
+    trackEvent("refund_processed", props),
   /** Refund attempt failed / declined by admin (downstream outcome). */
   refundFailed: (props: { payment_id: string; reason?: string }) =>
     trackEvent("refund_failed", props),

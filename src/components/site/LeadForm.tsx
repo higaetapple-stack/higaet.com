@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { LeadSchema, type LeadDivision, type LeadPayload } from "@/lib/schemas";
 import { submitLead } from "@/lib/leads.functions";
-import { studyAbroadEvents } from "@/lib/analytics-events";
+import { studyAbroadEvents, metaEvents } from "@/lib/analytics-events";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -35,6 +35,7 @@ export function LeadForm({
     try {
       await submit({ data: values });
       studyAbroadEvents.leadCaptured({ division, source });
+      metaEvents.lead({ content_category: division, content_name: source });
       setSubmitted(true);
       form.reset({ ...values, name: "", email: "", phone: "", message: "" });
     } catch (e) {
@@ -63,14 +64,25 @@ export function LeadForm({
       <div className={compact ? "" : "grid grid-cols-1 md:grid-cols-2 gap-4"}>
         <div>
           <Label htmlFor="name">Full name</Label>
-          <Input id="name" autoComplete="name" {...form.register("name")} aria-invalid={!!form.formState.errors.name} />
+          <Input
+            id="name"
+            autoComplete="name"
+            {...form.register("name")}
+            aria-invalid={!!form.formState.errors.name}
+          />
           {form.formState.errors.name && (
             <p className="text-xs text-destructive mt-1">{form.formState.errors.name.message}</p>
           )}
         </div>
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" autoComplete="email" {...form.register("email")} aria-invalid={!!form.formState.errors.email} />
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            {...form.register("email")}
+            aria-invalid={!!form.formState.errors.email}
+          />
           {form.formState.errors.email && (
             <p className="text-xs text-destructive mt-1">{form.formState.errors.email.message}</p>
           )}

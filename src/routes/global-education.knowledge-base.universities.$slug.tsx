@@ -1,4 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { metaEvents } from "@/lib/analytics-events";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
@@ -6,17 +8,12 @@ import { getUniversityKB } from "@/content/universities-kb";
 
 const BASE = "/global-education/knowledge-base/universities";
 
-export const Route = createFileRoute(
-  "/global-education/knowledge-base/universities/$slug",
-)({
+export const Route = createFileRoute("/global-education/knowledge-base/universities/$slug")({
   head: ({ params }) => {
     const u = getUniversityKB(params.slug);
     if (!u) {
       return {
-        meta: [
-          { title: "University not found — HIGAET" },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: "University not found — HIGAET" }, { name: "robots", content: "noindex" }],
       };
     }
     const url = `${BASE}/${u.slug}`;
@@ -108,6 +105,15 @@ export const Route = createFileRoute(
 function UniversityKBDetail() {
   const { slug } = Route.useParams();
   const u = getUniversityKB(slug);
+  useEffect(() => {
+    if (u) {
+      metaEvents.viewContent({
+        content_name: u.name,
+        content_type: "university",
+        content_category: "global-education",
+      });
+    }
+  }, [slug]);
   if (!u) throw notFound();
 
   return (
@@ -167,9 +173,7 @@ function UniversityKBDetail() {
             </div>
 
             <div>
-              <h2 className="font-display text-2xl text-ink mb-3">
-                Admission requirements
-              </h2>
+              <h2 className="font-display text-2xl text-ink mb-3">Admission requirements</h2>
               <ul className="list-disc pl-5 text-ink/90 space-y-1">
                 {u.admissions.map((a) => (
                   <li key={a}>{a}</li>
@@ -190,13 +194,8 @@ function UniversityKBDetail() {
               <h2 className="font-display text-2xl text-ink mb-3">FAQs</h2>
               <div className="space-y-3">
                 {u.faqs.map((f) => (
-                  <details
-                    key={f.q}
-                    className="ring-1 ring-border rounded-lg bg-card p-4"
-                  >
-                    <summary className="cursor-pointer font-medium text-ink">
-                      {f.q}
-                    </summary>
+                  <details key={f.q} className="ring-1 ring-border rounded-lg bg-card p-4">
+                    <summary className="cursor-pointer font-medium text-ink">{f.q}</summary>
                     <p className="mt-2 text-ink/85 text-sm">{f.a}</p>
                   </details>
                 ))}
@@ -207,9 +206,7 @@ function UniversityKBDetail() {
           <aside className="space-y-3">
             <Fact label="Country" value={`${u.countryName}`} />
             <Fact label="City" value={u.city} />
-            {u.worldRanking && (
-              <Fact label="World ranking" value={`#${u.worldRanking}`} />
-            )}
+            {u.worldRanking && <Fact label="World ranking" value={`#${u.worldRanking}`} />}
             {u.tuitionUsd.undergrad && (
               <Fact label="Undergraduate tuition" value={u.tuitionUsd.undergrad} />
             )}
@@ -221,8 +218,8 @@ function UniversityKBDetail() {
                 Get help applying
               </div>
               <p className="text-sm text-ink/85 mb-3">
-                HIGAET counsellors can help you shortlist programs, build your
-                profile, and apply to {u.name}.
+                HIGAET counsellors can help you shortlist programs, build your profile, and apply to{" "}
+                {u.name}.
               </p>
               <Link
                 to="/global-education/contact"
@@ -241,9 +238,7 @@ function UniversityKBDetail() {
 function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl ring-1 ring-border bg-card p-4">
-      <div className="text-xs uppercase tracking-wider text-muted-foreground">
-        {label}
-      </div>
+      <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
       <div className="mt-1 text-ink font-medium">{value}</div>
     </div>
   );

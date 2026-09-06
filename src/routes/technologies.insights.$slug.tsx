@@ -1,4 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { metaEvents } from "@/lib/analytics-events";
 import { InsightDetailPage, buildInsightHead } from "@/components/site/InsightDetailPage";
 import { getInsight } from "@/content/insights";
 
@@ -25,5 +27,12 @@ export const Route = createFileRoute("/technologies/insights/$slug")({
 
 function InsightDetailRoute() {
   const { insight } = Route.useLoaderData();
+  useEffect(() => {
+    metaEvents.viewContent({
+      content_name: insight.title,
+      content_type: "article",
+      content_category: "technologies-insights",
+    });
+  }, [insight.title]);
   return <InsightDetailPage content={insight} />;
 }

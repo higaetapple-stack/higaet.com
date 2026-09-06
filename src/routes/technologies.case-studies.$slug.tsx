@@ -1,8 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import {
-  CaseStudyDetailPage,
-  buildCaseStudyHead,
-} from "@/components/site/CaseStudyDetailPage";
+import { useEffect } from "react";
+import { metaEvents } from "@/lib/analytics-events";
+import { CaseStudyDetailPage, buildCaseStudyHead } from "@/components/site/CaseStudyDetailPage";
 import { CASE_STUDIES } from "@/content/case-studies";
 
 export const Route = createFileRoute("/technologies/case-studies/$slug")({
@@ -11,7 +10,8 @@ export const Route = createFileRoute("/technologies/case-studies/$slug")({
     if (!cs) throw notFound();
     return cs;
   },
-  head: ({ loaderData }) => (loaderData ? buildCaseStudyHead(loaderData) : { meta: [{ title: "Case Study Not Found" }] }),
+  head: ({ loaderData }) =>
+    loaderData ? buildCaseStudyHead(loaderData) : { meta: [{ title: "Case Study Not Found" }] },
   component: CaseStudyRoute,
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-6 py-32 text-center">
@@ -25,5 +25,12 @@ export const Route = createFileRoute("/technologies/case-studies/$slug")({
 
 function CaseStudyRoute() {
   const cs = Route.useLoaderData();
+  useEffect(() => {
+    metaEvents.viewContent({
+      content_name: cs.title,
+      content_type: "case-study",
+      content_category: "technologies",
+    });
+  }, [cs.title]);
   return <CaseStudyDetailPage content={cs} />;
 }

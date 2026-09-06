@@ -11,7 +11,15 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ORG_JSONLD, SITE, WEBSITE_JSONLD, canonicalUrl, isPrivatePath } from "@/lib/site";
-import { ANALYTICS_IDS, getConsent, identifyUser, loadTags, resetIdentity } from "@/lib/analytics";
+import {
+  ANALYTICS_IDS,
+  getConsent,
+  identifyUser,
+  loadTags,
+  primePageViewed,
+  resetIdentity,
+  trackPageView,
+} from "@/lib/analytics";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
 import { DevErrorOverlay } from "@/components/DevErrorOverlay";
@@ -123,7 +131,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       meta.push({ name: "robots", content: "noindex, nofollow, noarchive" });
       meta.push({ name: "googlebot", content: "noindex, nofollow" });
     } else {
-      meta.push({ name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" });
+      meta.push({
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1",
+      });
     }
 
     const links: Array<Record<string, string>> = [
@@ -178,6 +189,18 @@ function RootComponent() {
     if (getConsent() === "granted") loadTags();
     import("@/lib/observability/sentry-browser").then((m) => m.initSentryClient());
   }, []);
+
+  // SPA PageView: initial load is covered by the pixel init snippet;
+  // prime the guard, then track pathname-only changes (query-only
+  // updates are not meaningful navigations). Cleanup on unmount
+  // makes StrictMode double-effects safe.
+  useEffect(() => {
+    primePageViewed(router.state.location.pathname);
+    const unsub = router.history.subscribe(({ location }: { location: { pathname: string } }) => {
+      trackPageView(location.pathname);
+    });
+    return unsub;
+  }, [router]);
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {

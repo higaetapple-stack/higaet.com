@@ -10,7 +10,7 @@ import { AuthCard } from "./auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { safeRedirectPath } from "@/lib/role-routing";
-import { authEvents } from "@/lib/analytics-events";
+import { authEvents, metaEvents } from "@/lib/analytics-events";
 
 const Schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(120),
@@ -56,6 +56,7 @@ function RegisterPage() {
       });
       if (error) throw error;
       authEvents.signupCompleted({ method: "email", source: "register_page" });
+      metaEvents.completeRegistration({ method: "email" });
       toast.success("Account created. Check your email to confirm.");
       navigate({ to: "/auth/login", search: { next: search.next } });
     } catch (e) {
@@ -85,6 +86,7 @@ function RegisterPage() {
         return;
       }
       authEvents.signupCompleted({ method: "google", source: "register_page" });
+      metaEvents.completeRegistration({ method: "google" });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Google sign-in failed");
       setGoogleLoading(false);

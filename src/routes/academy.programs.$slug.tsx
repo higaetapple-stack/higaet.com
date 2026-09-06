@@ -1,13 +1,24 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { CheckCircle2, Clock, GraduationCap, IndianRupee, Users, ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { LeadForm } from "@/components/site/LeadForm";
-import { getProgram, CATEGORY_LABELS, type Program, type ProgramCategory } from "@/lib/academy-programs";
-import { buildCourseJsonLd, buildBreadcrumbJsonLd, buildProviderJsonLd } from "@/lib/seo/course-schema";
+import {
+  getProgram,
+  CATEGORY_LABELS,
+  type Program,
+  type ProgramCategory,
+} from "@/lib/academy-programs";
+import {
+  buildCourseJsonLd,
+  buildBreadcrumbJsonLd,
+  buildProviderJsonLd,
+} from "@/lib/seo/course-schema";
 import { seoHead } from "@/lib/seo/seo-head";
+import { metaEvents } from "@/lib/analytics-events";
 
 export const Route = createFileRoute("/academy/programs/$slug")({
   loader: ({ params }): { program: Program } => {
@@ -42,7 +53,9 @@ export const Route = createFileRoute("/academy/programs/$slug")({
     <Section>
       <h1 className="font-display text-3xl">Program not found</h1>
       <p className="mt-3 text-muted-foreground">
-        <Link to="/academy/programs" className="text-academy underline">Browse all programs</Link>
+        <Link to="/academy/programs" className="text-academy underline">
+          Browse all programs
+        </Link>
       </p>
     </Section>
   ),
@@ -57,9 +70,14 @@ export const Route = createFileRoute("/academy/programs/$slug")({
 
 function ProgramDetail() {
   const { program } = Route.useLoaderData() as { program: Program };
+  useEffect(() => {
+    metaEvents.viewContent({
+      content_name: program.title,
+      content_type: "program",
+      content_category: "academy",
+    });
+  }, [program.title]);
   const categoryLabel = CATEGORY_LABELS[program.category as ProgramCategory];
-
-
 
   return (
     <>
@@ -89,11 +107,15 @@ function ProgramDetail() {
           <ol className="space-y-6">
             {program.curriculum.map((term) => (
               <li key={term.term} className="rounded-xl bg-card p-6 ring-1 ring-border">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-academy">{term.term}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                  {term.term}
+                </span>
                 <h3 className="mt-2 font-display text-lg font-medium text-ink">{term.title}</h3>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {term.topics.map((t) => (
-                    <li key={t} className="rounded-md bg-muted/60 px-2.5 py-1 text-xs text-ink">{t}</li>
+                    <li key={t} className="rounded-md bg-muted/60 px-2.5 py-1 text-xs text-ink">
+                      {t}
+                    </li>
                   ))}
                 </ul>
               </li>
@@ -107,7 +129,9 @@ function ProgramDetail() {
         <div className="grid gap-10 md:grid-cols-2">
           <div className="rounded-2xl bg-card p-8 ring-1 ring-border">
             <Eyebrow brand="academy">Eligibility</Eyebrow>
-            <h3 className="mt-3 font-display text-2xl font-medium text-ink">Who this program is for</h3>
+            <h3 className="mt-3 font-display text-2xl font-medium text-ink">
+              Who this program is for
+            </h3>
             <ul className="mt-5 space-y-3">
               {program.eligibility.map((e) => (
                 <li key={e} className="flex gap-3 text-sm text-ink">
@@ -184,7 +208,8 @@ function ProgramDetail() {
               Start your application.
             </h2>
             <p className="mt-5 text-muted-foreground leading-relaxed">
-              Share a few details and a HIGAET advisor will reach out within one business day with next steps.
+              Share a few details and a HIGAET advisor will reach out within one business day with
+              next steps.
             </p>
           </div>
           <div className="rounded-2xl bg-card p-6 ring-1 ring-border md:p-8">
@@ -214,7 +239,9 @@ function Meta({ icon: Icon, label, value }: { icon: typeof Clock; label: string;
   return (
     <div>
       <Icon className="mb-2 size-4 text-academy" aria-hidden />
-      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</p>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </p>
       <p className="text-sm font-medium text-ink">{value}</p>
     </div>
   );

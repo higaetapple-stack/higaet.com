@@ -1,20 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { metaEvents } from "@/lib/analytics-events";
 import { SiteShell } from "@/components/site/SiteShell";
 import { PageHero } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import { CTASection } from "@/components/site/CTASection";
 
-const POSTS: Record<string, {
-  title: string;
-  excerpt: string;
-  content: string;
-  date: string;
-  tag: string;
-  readTime: string;
-}> = {
+const POSTS: Record<
+  string,
+  {
+    title: string;
+    excerpt: string;
+    content: string;
+    date: string;
+    tag: string;
+    readTime: string;
+  }
+> = {
   "the-state-of-ai-engineering-education": {
     title: "The state of AI engineering education in 2026",
-    excerpt: "Why traditional CS programs struggle to keep pace with applied AI — and what we built at HIGAET to close the gap.",
+    excerpt:
+      "Why traditional CS programs struggle to keep pace with applied AI — and what we built at HIGAET to close the gap.",
     date: "2026-05-21",
     tag: "Academy",
     readTime: "8 min read",
@@ -36,7 +42,8 @@ const POSTS: Record<string, {
   },
   "study-abroad-checklist-fall-2026": {
     title: "Study-abroad checklist: applying for Fall 2026 intakes",
-    excerpt: "A clear, month-by-month plan for students targeting UK, US, and Canadian universities this cycle.",
+    excerpt:
+      "A clear, month-by-month plan for students targeting UK, US, and Canadian universities this cycle.",
     date: "2026-04-12",
     tag: "Global Hub",
     readTime: "6 min read",
@@ -70,7 +77,8 @@ const POSTS: Record<string, {
   },
   "rag-vs-fine-tuning-2026": {
     title: "RAG vs. fine-tuning: a practitioner's framework",
-    excerpt: "Choosing between retrieval and fine-tuning based on the actual constraints of your enterprise system.",
+    excerpt:
+      "Choosing between retrieval and fine-tuning based on the actual constraints of your enterprise system.",
     date: "2026-03-04",
     tag: "Technologies",
     readTime: "10 min read",
@@ -137,9 +145,14 @@ export const Route = createFileRoute("/blog/$slug")({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.higaet.com/" },
-              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.higaet.com/blog" },
-              { "@type": "ListItem", "position": 3, "name": post.title, "item": url },
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.higaet.com/" },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Blog",
+                item: "https://www.higaet.com/blog",
+              },
+              { "@type": "ListItem", position: 3, name: post.title, item: url },
             ],
           }),
         },
@@ -153,13 +166,30 @@ function BlogPostPage() {
   const { slug } = Route.useParams();
   const post = POSTS[slug];
 
+  useEffect(() => {
+    if (post) {
+      metaEvents.viewContent({
+        content_name: post.title,
+        content_type: "article",
+        content_category: "blog",
+      });
+    }
+  }, [slug]);
+
   if (!post) {
     return (
       <SiteShell>
-        <PageHero eyebrow="Blog" title="Post not found" subtitle="The article you are looking for does not exist." />
+        <PageHero
+          eyebrow="Blog"
+          title="Post not found"
+          subtitle="The article you are looking for does not exist."
+        />
         <Section className="!pt-0">
           <p className="text-muted-foreground">The article you are looking for does not exist.</p>
-          <Link to="/blog" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-tech">
+          <Link
+            to="/blog"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-tech"
+          >
             Back to Blog
           </Link>
         </Section>
@@ -182,7 +212,9 @@ function BlogPostPage() {
               <li key={i} className="flex items-center gap-2">
                 {i > 0 && <span aria-hidden>/</span>}
                 {c.url ? (
-                  <Link to={c.url} className="hover:text-ink transition-colors">{c.label}</Link>
+                  <Link to={c.url} className="hover:text-ink transition-colors">
+                    {c.label}
+                  </Link>
                 ) : (
                   <span className="text-ink font-medium">{c.label}</span>
                 )}
@@ -191,13 +223,15 @@ function BlogPostPage() {
           </ol>
         </nav>
       </div>
-      <PageHero
-        eyebrow={post.tag}
-        title={post.title}
-        subtitle={post.excerpt}
-      >
+      <PageHero eyebrow={post.tag} title={post.title} subtitle={post.excerpt}>
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-          <time dateTime={post.date}>{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
+          <time dateTime={post.date}>
+            {new Date(post.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
           <span>·</span>
           <span>{post.readTime}</span>
           <span>{post.tag}</span>

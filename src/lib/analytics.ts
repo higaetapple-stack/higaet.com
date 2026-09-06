@@ -7,7 +7,10 @@
 export const ANALYTICS_IDS = {
   gtm: import.meta.env.VITE_GTM_ID ?? "",
   ga4: import.meta.env.VITE_GA4_ID ?? "",
-  metaPixel: import.meta.env.VITE_META_PIXEL_ID ?? "",
+  // Meta Pixel ID is public by design (visible in page source).
+  // Env override wins; falls back to the official production pixel
+  // so tracking works without secret plumbing.
+  metaPixel: import.meta.env.VITE_META_PIXEL_ID ?? "2104345063848428",
   clarity: import.meta.env.VITE_CLARITY_ID ?? "",
   linkedIn: import.meta.env.VITE_LINKEDIN_PARTNER_ID ?? "",
   gscVerification: import.meta.env.VITE_GSC_VERIFICATION ?? "",
@@ -111,7 +114,9 @@ export function trackEvent(name: string, params: Record<string, unknown> = {}) {
   }
   window.dataLayer?.push({ event: name, ...params });
   window.fbq?.("trackCustom", name, params);
-  const ph = (window as unknown as { posthog?: { capture: (n: string, p?: Record<string, unknown>) => void } }).posthog;
+  const ph = (
+    window as unknown as { posthog?: { capture: (n: string, p?: Record<string, unknown>) => void } }
+  ).posthog;
   ph?.capture(name, params);
 }
 
@@ -121,7 +126,11 @@ export function identifyUser(userId: string, traits: Record<string, unknown> = {
   // GA4 via GTM
   window.dataLayer?.push({ event: "user_identified", user_id: userId, ...traits });
   // PostHog
-  const ph = (window as unknown as { posthog?: { identify: (id: string, t?: Record<string, unknown>) => void } }).posthog;
+  const ph = (
+    window as unknown as {
+      posthog?: { identify: (id: string, t?: Record<string, unknown>) => void };
+    }
+  ).posthog;
   ph?.identify(userId, traits);
 }
 
@@ -131,4 +140,37 @@ export function resetIdentity() {
   window.dataLayer?.push({ event: "user_signed_out" });
   const ph = (window as unknown as { posthog?: { reset: () => void } }).posthog;
   ph?.reset();
+}
+
+/**
+ * Meta standard events (PageView, ViewContent, Lead, CompleteRegistration,
+ * Contact, Search, Schedule). Uses fbq('track') — NOT trackCustom — so Meta
+ * can use them for ads optimization. Safe no-op until consent loads tags.
+ * NEVER pass PII (emails, phones, tokens, form contents) in params.
+ */
+export type MetaStandardEvent =
+  "PageView" | "ViewContent" | "Lead" | "CompleteRegistration" | "Contact" | "Search" | "Schedule";
+
+export function trackMeta(event: MetaStandardEvent, params: Record<string, unknown> = {}) {
+  if (typeof window === "undefined") return;
+  window.dataLayer?.push({ event: `meta_${event}`, ...params });
+  window.fbq?.("track", event, params);
+}
+
+let lastTrackedPath: string | null = null;
+
+/** Prime the dedupe guard with the already-tracked initial load path,
+ *  so the first SPA navigation doesn't double-fire PageView. */
+export function primePageViewed(path: string) {
+  lastTrackedPath = path;
+}
+
+/** Fire a single PageView per meaningful SPA navigation. Dedupes repeats,
+ *  query-only changes, and StrictMode double-effects (subscription cleanup
+ *  + last-path guard). Initial load is covered by the pixel init snippet. */
+export function trackPageView(path: string) {
+  if (typeof window === "undefined") return;
+  if (lastTrackedPath === path) return;
+  lastTrackedPath = path;
+  trackMeta("PageView");
 }
