@@ -45,6 +45,7 @@ import { Route as ReadyzRouteImport } from './routes/readyz'
 import { Route as ReplayRouteImport } from './routes/replay'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SimulateRouteImport } from './routes/simulate'
+import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
@@ -562,6 +563,11 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
 const SimulateRoute = SimulateRouteImport.update({
   id: '/simulate',
   path: '/simulate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -2531,6 +2537,7 @@ export interface FileRoutesByFullPath {
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
+  '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -2902,6 +2909,7 @@ export interface FileRoutesByTo {
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
+  '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -3267,6 +3275,7 @@ export interface FileRoutesById {
   '/replay': typeof ReplayRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/simulate': typeof SimulateRoute
+  '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status': typeof StatusRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -3644,6 +3653,7 @@ export interface FileRouteTypes {
     | '/replay'
     | '/robots.txt'
     | '/simulate'
+    | '/sitemap'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -4015,6 +4025,7 @@ export interface FileRouteTypes {
     | '/replay'
     | '/robots.txt'
     | '/simulate'
+    | '/sitemap'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -4379,6 +4390,7 @@ export interface FileRouteTypes {
     | '/replay'
     | '/robots.txt'
     | '/simulate'
+    | '/sitemap'
     | '/sitemap.xml'
     | '/status'
     | '/success-stories'
@@ -4756,6 +4768,7 @@ export interface RootRouteChildren {
   ReplayRoute: typeof ReplayRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SimulateRoute: typeof SimulateRoute
+  SitemapRoute: typeof SitemapRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StatusRoute: typeof StatusRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
@@ -5071,6 +5084,13 @@ declare module '@tanstack/react-router' {
       path: '/simulate'
       fullPath: '/simulate'
       preLoaderRoute: typeof SimulateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -8601,6 +8621,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReplayRoute: ReplayRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SimulateRoute: SimulateRoute,
+  SitemapRoute: SitemapRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StatusRoute: StatusRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,

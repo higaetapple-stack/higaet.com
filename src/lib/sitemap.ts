@@ -337,10 +337,9 @@ export async function getSitemapSegments(): Promise<SitemapSegment[]> {
     {
       name: "blog",
       file: "sitemap-blog.xml",
-      urls: [
-        { loc: abs("/blog") },
-        ...BLOG_SLUGS.map((s) => ({ loc: abs(`/blog/${s}`) })),
-      ].sort((a, b) => (a.loc < b.loc ? -1 : 1)),
+      urls: [{ loc: abs("/blog") }, ...BLOG_SLUGS.map((s) => ({ loc: abs(`/blog/${s}`) }))].sort(
+        (a, b) => (a.loc < b.loc ? -1 : 1),
+      ),
     },
     {
       name: "careers",
@@ -380,4 +379,264 @@ export function xmlResponse(xml: string): Response {
       "Cache-Control": "public, max-age=3600",
     },
   });
+}
+
+/* ================================================================
+ * HTML sitemap (https://www.higaet.com/sitemap) — human-readable
+ * sections derived from the same verified sources as the XML
+ * sitemap. Labels come from content registries; titleize fallback
+ * for slug-only lists. NEVER add a link here that is not a verified
+ * indexable URL from getSitemapSegments().
+ * ============================================================== */
+
+export interface HtmlSitemapLink {
+  loc: string;
+  label: string;
+}
+
+export interface HtmlSitemapSection {
+  title: string;
+  blurb: string;
+  links: HtmlSitemapLink[];
+}
+
+const ACRONYMS = new Set([
+  "ai",
+  "api",
+  "saas",
+  "qa",
+  "ui",
+  "ux",
+  "iot",
+  "ml",
+  "nlp",
+  "aws",
+  "gcp",
+  "seo",
+  "crm",
+  "lms",
+  "rag",
+  "llm",
+  "mlops",
+  "devops",
+  "css",
+  "html",
+  "ios",
+  "faq",
+  "sop",
+  "lor",
+  "usa",
+  "uk",
+  "f1",
+]);
+
+function titleize(slug: string): string {
+  return slug
+    .split("-")
+    .map((w) =>
+      ACRONYMS.has(w.toLowerCase()) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1),
+    )
+    .join(" ");
+}
+
+/** Curated descriptive labels for key landing pages. */
+const LANDING_LABELS: Record<string, string> = {
+  "/": "HIGAET Home",
+  "/about": "About HIGAET",
+  "/about-higaet": "About the Institute",
+  "/contact": "Contact HIGAET",
+  "/careers": "Careers at HIGAET",
+  "/blog": "HIGAET Blog",
+  "/jobs": "HIGAET Job Board",
+  "/success-stories": "Student Success Stories",
+  "/privacy": "Privacy Policy",
+  "/terms": "Terms of Service",
+  "/cookies": "Cookie Policy",
+  "/academy": "HIGAET Academy",
+  "/academy/programs": "HIGAET Academy Programs",
+  "/academy/admissions": "Academy Admissions",
+  "/academy/campuses": "Academy Campuses",
+  "/academy/certifications": "Academy Certifications",
+  "/academy/learning-paths": "Academy Learning Paths",
+  "/academy/online-courses": "Academy Online Courses",
+  "/academy/corporate-training": "Corporate Training",
+  "/academy/offline-training": "Offline Training",
+  "/academy/scholarship": "Academy Scholarships",
+  "/academy/placements": "Academy Placements",
+  "/academy/internships": "Academy Internships",
+  "/academy/success-stories": "Academy Success Stories",
+  "/academy/faq": "Academy FAQs",
+  "/academy/contact": "Academy Contact",
+  "/academy/blog/certifications-comparison": "Certifications Comparison Guide",
+  "/global-education": "HIGAET Global Education Hub",
+  "/global-education/study-abroad": "Study Abroad Programs",
+  "/global-education/universities": "Partner Universities",
+  "/global-education/knowledge-base/universities": "University Knowledge Base",
+  "/global-education/scholarships": "Study Abroad Scholarships",
+  "/global-education/countries": "Study Destinations",
+  "/global-education/visa-guidance": "Student Visa Guidance",
+  "/global-education/student-services": "Student Services",
+  "/global-education/admission-process": "Admission Process",
+  "/global-education/faq": "Global Education FAQs",
+  "/global-education/contact": "Global Education Contact",
+  "/technologies": "HIGAET Technologies",
+  "/technologies/case-studies": "Technology Case Studies",
+  "/technologies/industries": "Industries Served",
+  "/technologies/expertise": "Technology Expertise",
+  "/technologies/engagement": "Engagement Models",
+  "/technologies/careers": "Technology Careers",
+  "/technologies/contact": "Technologies Contact",
+  "/technologies/insights": "Technology Insights",
+  "/technologies/company": "About HIGAET Technologies",
+  "/docs/api-reference": "API Reference",
+  "/docs/authentication": "Authentication Guide",
+  "/docs/webhooks": "Webhooks Guide",
+  "/higaet-academy": "HIGAET Academy Overview",
+  "/higaet-global-education-hub": "Global Education Hub Overview",
+  "/higaet-technologies": "HIGAET Technologies Overview",
+  "/higaet-ai-platform": "HIGAET AI Platform",
+  "/founder": "Founder",
+  "/leadership": "Leadership",
+  "/faculty": "Faculty",
+  "/advisors": "Advisors",
+  "/partners": "Partners",
+};
+
+const BLOG_TITLES: Record<string, string> = {
+  "the-state-of-ai-engineering-education": "The State of AI Engineering Education",
+  "study-abroad-checklist-fall-2026": "Study Abroad Checklist — Fall 2026",
+  "rag-vs-fine-tuning-2026": "RAG vs Fine-Tuning in 2026",
+};
+
+const CAREER_TITLES: Record<string, string> = {
+  "senior-ai-engineer": "Senior AI Engineer",
+  "curriculum-lead-genai": "Curriculum Lead — Generative AI",
+  "admissions-counsellor-uk": "Admissions Counsellor — UK Track",
+  "fullstack-engineer": "Full-Stack Engineer",
+  "growth-marketing-manager": "Growth Marketing Manager",
+  "visa-advisor-canada": "Visa Advisor — Canada Track",
+};
+
+function labelFor(path: string): string {
+  const hit = LANDING_LABELS[path];
+  if (hit) return hit;
+  const slug = path.split("/").pop() ?? path;
+  return titleize(slug);
+}
+
+function link(path: string, label?: string): HtmlSitemapLink {
+  return { loc: abs(path), label: label ?? labelFor(path) };
+}
+
+export async function getHtmlSitemapSections(): Promise<HtmlSitemapSection[]> {
+  const programLabels = new Map(PROGRAMS.map((p) => [`/academy/programs/${p.slug}`, p.title]));
+  const campusLabels = new Map(CAMPUSES.map((c) => [`/academy/campuses/${c.slug}`, c.name]));
+  const countryLabels = new Map(
+    Object.entries(COUNTRIES).map(([k, v]) => [
+      `/global-education/countries/${k}`,
+      `Study in ${v.name}`,
+    ]),
+  );
+  const kbLabels = new Map(
+    UNIVERSITIES_KB.map((u) => [`/global-education/knowledge-base/universities/${u.slug}`, u.name]),
+  );
+  const docLabels = new Map<string, string>();
+  for (const cat of DOC_CATEGORIES) {
+    docLabels.set(`/docs/${cat.slug}`, `${cat.name} — Documentation`);
+    for (const a of cat.articles) {
+      docLabels.set(`/docs/${cat.slug}/${a.slug}`, a.title);
+    }
+  }
+  docLabels.set("/docs/api-reference", "API Reference");
+  docLabels.set("/docs/authentication", "Authentication Guide");
+  docLabels.set("/docs/webhooks", "Webhooks Guide");
+
+  const labelMaps = [programLabels, campusLabels, countryLabels, kbLabels, docLabels];
+  const labeled = (path: string): HtmlSitemapLink => {
+    for (const m of labelMaps) {
+      const hit = m.get(path);
+      if (hit) return { loc: abs(path), label: hit };
+    }
+    if (path.startsWith("/blog/")) {
+      const slug = path.split("/").pop() ?? "";
+      return { loc: abs(path), label: BLOG_TITLES[slug] ?? titleize(slug) };
+    }
+    if (path.startsWith("/careers/")) {
+      const slug = path.split("/").pop() ?? "";
+      return { loc: abs(path), label: CAREER_TITLES[slug] ?? titleize(slug) };
+    }
+    return link(path);
+  };
+
+  const segs = await getSitemapSegments();
+  const byName = new Map(
+    segs.map((s) => [s.name, s.urls.map((u) => u.loc.replace(SITEMAP_BASE, ""))]),
+  );
+
+  const pick = (name: string): HtmlSitemapLink[] => (byName.get(name) ?? []).map(labeled);
+
+  const inPaths = (name: string, paths: string[]): HtmlSitemapLink[] =>
+    pick(name).filter((l) => paths.includes(l.loc.replace(SITEMAP_BASE, "")));
+
+  const notInPaths = (name: string, paths: string[]): HtmlSitemapLink[] =>
+    pick(name).filter((l) => !paths.includes(l.loc.replace(SITEMAP_BASE, "")));
+
+  const institutePaths = [
+    "/",
+    "/about",
+    "/about-higaet",
+    "/higaet-academy",
+    "/higaet-global-education-hub",
+    "/higaet-technologies",
+    "/higaet-ai-platform",
+    "/founder",
+    "/leadership",
+    "/faculty",
+    "/advisors",
+    "/partners",
+    "/contact",
+    "/success-stories",
+    "/privacy",
+    "/terms",
+    "/cookies",
+  ];
+
+  return [
+    {
+      title: "HIGAET Institute",
+      blurb: "Home, about, contact, company, and legal pages.",
+      links: inPaths("pages", institutePaths),
+    },
+    {
+      title: "HIGAET Academy",
+      blurb: "Programs, admissions, campuses, certifications, and learning resources.",
+      links: pick("academy"),
+    },
+    {
+      title: "Global Education Hub",
+      blurb: "Study-abroad programs, destinations, universities, visas, and scholarships.",
+      links: pick("global-education"),
+    },
+    {
+      title: "HIGAET Technologies",
+      blurb: "Services, industries, expertise, case studies, insights, and engagement models.",
+      links: pick("technologies"),
+    },
+    {
+      title: "Blog",
+      blurb: "Articles and guides from the HIGAET Journal.",
+      links: pick("blog"),
+    },
+    {
+      title: "Careers & Jobs",
+      blurb: "Open roles at HIGAET and the graduate job board.",
+      links: [...pick("careers"), ...inPaths("pages", ["/jobs"])],
+    },
+    {
+      title: "Resources & Documentation",
+      blurb:
+        "Guides, references, and documentation for Academy, Global Education, AI Platform, and APIs.",
+      links: pick("docs"),
+    },
+  ];
 }
