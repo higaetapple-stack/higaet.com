@@ -64,7 +64,7 @@ export const Route = createFileRoute("/global-education/knowledge-base/universit
                 {
                   "@type": "ListItem",
                   position: 3,
-                  name: "University Knowledge Base",
+                  name: "University Guides",
                   item: BASE,
                 },
                 {

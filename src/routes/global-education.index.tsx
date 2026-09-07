@@ -11,25 +11,42 @@ import { FeatureGrid } from "@/components/site/FeatureGrid";
 import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 
 const FAQS = [
-  { q: "Which countries does HIGAET Global Hub work with?", a: "We have active university partnerships in the UK, US, Canada, Australia, Ireland, Germany, and Singapore. We support applications to many more on request." },
-  { q: "Do you charge counselling fees?", a: "Initial consultations are free. Full-cycle counselling is fee-based and depends on the destination and program scope. We'll quote transparently before any commitment." },
-  { q: "Can you help with scholarships?", a: "Yes — our team tracks scholarships across partner institutions and external bodies, and helps you assemble competitive applications." },
-  { q: "How long does a typical admissions cycle take?", a: "Plan on six to nine months from shortlisting to visa approval. Earlier is always better — many top scholarships have deadlines twelve months ahead of intake." },
+  {
+    q: "Which countries does HIGAET Global Hub work with?",
+    a: "We support applications to universities in the UK, US, Canada, Australia, Ireland, Germany, and Singapore — and many more on request.",
+  },
+  {
+    q: "Do you charge counselling fees?",
+    a: "Initial consultations are free. Full-cycle counselling is fee-based and depends on the destination and program scope. We'll quote transparently before any commitment.",
+  },
+  {
+    q: "Can you help with scholarships?",
+    a: "Yes — our team tracks scholarships across universities and external funding bodies, and helps you assemble competitive applications.",
+  },
+  {
+    q: "How long does a typical admissions cycle take?",
+    a: "Plan on six to nine months from shortlisting to visa approval. Earlier is always better — many top scholarships have deadlines twelve months ahead of intake.",
+  },
 ];
 
 export const Route = createFileRoute("/global-education/")({
   head: () => ({
     meta: [
       { title: "HIGAET Global Education Hub — Study Abroad & Visas" },
-      { name: "description", content: "University partnerships, scholarships, and visa guidance for students applying to global institutions. End-to-end counselling from HIGAET." },
+      {
+        name: "description",
+        content:
+          "University partnerships, scholarships, and visa guidance for students applying to global institutions. End-to-end counselling from HIGAET.",
+      },
       { property: "og:title", content: "HIGAET Global Education Hub — Study Abroad & Visas" },
-      { property: "og:description", content: "Study abroad, simplified — from shortlisting to visa." },
+      {
+        property: "og:description",
+        content: "Study abroad, simplified — from shortlisting to visa.",
+      },
       { property: "og:url", content: "https://www.higaet.com/global-education" },
       { property: "og:image", content: "https://www.higaet.com/og-higaet-2026.png" },
     ],
-    scripts: [
-      { type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) },
-    ],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd(FAQS)) }],
   }),
   component: GlobalHome,
 });
@@ -61,15 +78,46 @@ function GlobalHome() {
 
       <StatBand
         stats={[
-          { value: "450+", label: "Partner universities" },
+          { value: "450+", label: "Universities worldwide" },
           { value: "20+", label: "Destination countries" },
           { value: "94%", label: "Visa success rate" },
           { value: "$18M+", label: "Scholarships secured" },
         ]}
       />
 
+      <HubRelatedLinks
+        brand="global"
+        eyebrow="Start here"
+        title="Four clear paths into your global plan."
+        ringHoverClass="hover:ring-global/40"
+        links={[
+          {
+            to: "/global-education/countries",
+            label: "Study Destinations",
+            body: "Compare countries and study pathways — tuition, intakes, scholarships and visas.",
+          },
+          {
+            to: "/global-education/universities",
+            label: "Find Universities",
+            body: "Discover and compare university profiles by destination, programs and budget.",
+          },
+          {
+            to: "/global-education/scholarships",
+            label: "Scholarships",
+            body: "Explore funding opportunities and check eligibility before you apply.",
+          },
+          {
+            to: "/global-education/visa-guidance",
+            label: "Visa Guidance",
+            body: "Student visa preparation, documentation and interview guidance.",
+          },
+        ]}
+      />
+
       <Section>
-        <span className="text-xs font-semibold uppercase tracking-widest text-global">Services</span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-global">
+          Services
+        </span>
         <h2 className="font-display text-3xl md:text-4xl font-medium tracking-tight mt-4 mb-12 max-w-[28ch] text-balance">
           End-to-end support, from your first question to your first day on campus.
         </h2>
@@ -77,10 +125,26 @@ function GlobalHome() {
           brand="global"
           columns={4}
           features={[
-            { icon: Globe2, title: "University shortlisting", body: "Match your profile and ambitions to the right programs across our partner network." },
-            { icon: ScrollText, title: "Applications & SOPs", body: "Polished applications, SOPs, and recommendation strategy — managed end to end." },
-            { icon: HandCoins, title: "Scholarships", body: "Identify and apply to merit and need-based funding across institutions and bodies." },
-            { icon: Plane, title: "Visa & pre-departure", body: "Document prep, mock interviews, accommodation, and pre-departure orientation." },
+            {
+              icon: Globe2,
+              title: "University shortlisting",
+              body: "Match your profile and ambitions to the right programs across our university network.",
+            },
+            {
+              icon: ScrollText,
+              title: "Applications & SOPs",
+              body: "Polished applications, SOPs, and recommendation strategy — managed end to end.",
+            },
+            {
+              icon: HandCoins,
+              title: "Scholarships",
+              body: "Identify and apply to merit and need-based funding across institutions and bodies.",
+            },
+            {
+              icon: Plane,
+              title: "Visa & pre-departure",
+              body: "Document prep, mock interviews, accommodation, and pre-departure orientation.",
+            },
           ]}
         />
       </Section>
@@ -99,19 +163,19 @@ function GlobalHome() {
 
       <HubRelatedLinks
         brand="global"
-        eyebrow="Explore destinations"
-        title="Start with the building blocks of your plan."
+        eyebrow="Go deeper"
+        title="Keep building your plan."
         ringHoverClass="hover:ring-global/40"
         links={[
           {
             to: "/global-education/countries",
-            label: "Countries",
-            body: "Compare tuition, intakes, and visa highlights across our partner study destinations.",
+            label: "Study destinations",
+            body: "Compare tuition, intakes, and visa highlights across our study destinations.",
           },
           {
             to: "/global-education/knowledge-base/universities",
-            label: "Universities",
-            body: "Verified profiles of leading universities — programs, tuition, admissions, and FAQs.",
+            label: "University guides",
+            body: "In-depth guides and profiles for leading universities — programs, tuition, admissions, and FAQs.",
           },
           {
             to: "/global-education/study-abroad",
