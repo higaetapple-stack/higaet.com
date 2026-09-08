@@ -169,6 +169,8 @@ import { Route as AuthenticatedOpsReliabilityRouteImport } from './routes/_authe
 import { Route as AcademyBlogCertificationsComparisonRouteImport } from './routes/academy.blog.certifications-comparison'
 import { Route as AcademyCampusesIndexRouteImport } from './routes/academy.campuses.index'
 import { Route as AcademyCampusesSlugRouteImport } from './routes/academy.campuses.$slug'
+import { Route as AcademyCoursesIndexRouteImport } from './routes/academy.courses.index'
+import { Route as AcademyCoursesSlugRouteImport } from './routes/academy.courses.$slug'
 import { Route as AcademyProgramsIndexRouteImport } from './routes/academy.programs.index'
 import { Route as AcademyProgramsSlugRouteImport } from './routes/academy.programs.$slug'
 import { Route as AiCollectionsSlugRouteImport } from './routes/ai.collections.$slug'
@@ -1242,6 +1244,16 @@ const AcademyCampusesIndexRoute = AcademyCampusesIndexRouteImport.update({
 const AcademyCampusesSlugRoute = AcademyCampusesSlugRouteImport.update({
   id: '/campuses/$slug',
   path: '/campuses/$slug',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCoursesIndexRoute = AcademyCoursesIndexRouteImport.update({
+  id: '/courses/',
+  path: '/courses/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyCoursesSlugRoute = AcademyCoursesSlugRouteImport.update({
+  id: '/courses/$slug',
+  path: '/courses/$slug',
   getParentRoute: () => AcademyRoute,
 } as any)
 const AcademyProgramsIndexRoute = AcademyProgramsIndexRouteImport.update({
@@ -2657,6 +2669,7 @@ export interface FileRoutesByFullPath {
   '/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
+  '/academy/courses/$slug': typeof AcademyCoursesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/ai/collections/$slug': typeof AiCollectionsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
@@ -2748,6 +2761,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/education/': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
+  '/academy/courses/': typeof AcademyCoursesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
   '/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
@@ -3021,6 +3035,7 @@ export interface FileRoutesByTo {
   '/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
+  '/academy/courses/$slug': typeof AcademyCoursesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/ai/collections/$slug': typeof AiCollectionsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
@@ -3112,6 +3127,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/education': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses': typeof AcademyCampusesIndexRoute
+  '/academy/courses': typeof AcademyCoursesIndexRoute
   '/academy/programs': typeof AcademyProgramsIndexRoute
   '/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
   '/community/events/$id': typeof AuthenticatedCommunityEventsIdRoute
@@ -3395,6 +3411,7 @@ export interface FileRoutesById {
   '/_authenticated/ops/reliability': typeof AuthenticatedOpsReliabilityRoute
   '/academy/blog/certifications-comparison': typeof AcademyBlogCertificationsComparisonRoute
   '/academy/campuses/$slug': typeof AcademyCampusesSlugRoute
+  '/academy/courses/$slug': typeof AcademyCoursesSlugRoute
   '/academy/programs/$slug': typeof AcademyProgramsSlugRoute
   '/ai/collections/$slug': typeof AiCollectionsSlugRoute
   '/api/public/ai-mode': typeof ApiPublicAiModeRoute
@@ -3486,6 +3503,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/education/': typeof AuthenticatedEducationIndexRoute
   '/academy/campuses/': typeof AcademyCampusesIndexRoute
+  '/academy/courses/': typeof AcademyCoursesIndexRoute
   '/academy/programs/': typeof AcademyProgramsIndexRoute
   '/_authenticated/dashboard/technologies/client': typeof AuthenticatedDashboardTechnologiesClientRouteRouteWithChildren
   '/_authenticated/community/$slug/$threadId': typeof AuthenticatedCommunitySlugThreadIdRoute
@@ -3773,6 +3791,7 @@ export interface FileRouteTypes {
     | '/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
+    | '/academy/courses/$slug'
     | '/academy/programs/$slug'
     | '/ai/collections/$slug'
     | '/api/public/ai-mode'
@@ -3864,6 +3883,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/education/'
     | '/academy/campuses/'
+    | '/academy/courses/'
     | '/academy/programs/'
     | '/dashboard/technologies/client'
     | '/community/$slug/$threadId'
@@ -4137,6 +4157,7 @@ export interface FileRouteTypes {
     | '/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
+    | '/academy/courses/$slug'
     | '/academy/programs/$slug'
     | '/ai/collections/$slug'
     | '/api/public/ai-mode'
@@ -4228,6 +4249,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/education'
     | '/academy/campuses'
+    | '/academy/courses'
     | '/academy/programs'
     | '/community/$slug/$threadId'
     | '/community/events/$id'
@@ -4510,6 +4532,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ops/reliability'
     | '/academy/blog/certifications-comparison'
     | '/academy/campuses/$slug'
+    | '/academy/courses/$slug'
     | '/academy/programs/$slug'
     | '/ai/collections/$slug'
     | '/api/public/ai-mode'
@@ -4601,6 +4624,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/'
     | '/_authenticated/education/'
     | '/academy/campuses/'
+    | '/academy/courses/'
     | '/academy/programs/'
     | '/_authenticated/dashboard/technologies/client'
     | '/_authenticated/community/$slug/$threadId'
@@ -5952,6 +5976,20 @@ declare module '@tanstack/react-router' {
       path: '/campuses/$slug'
       fullPath: '/academy/campuses/$slug'
       preLoaderRoute: typeof AcademyCampusesSlugRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/courses/': {
+      id: '/academy/courses/'
+      path: '/courses'
+      fullPath: '/academy/courses/'
+      preLoaderRoute: typeof AcademyCoursesIndexRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/academy/courses/$slug': {
+      id: '/academy/courses/$slug'
+      path: '/courses/$slug'
+      fullPath: '/academy/courses/$slug'
+      preLoaderRoute: typeof AcademyCoursesSlugRouteImport
       parentRoute: typeof AcademyRoute
     }
     '/academy/programs/': {
@@ -8094,8 +8132,10 @@ interface AcademyRouteChildren {
   AcademyIndexRoute: typeof AcademyIndexRoute
   AcademyBlogCertificationsComparisonRoute: typeof AcademyBlogCertificationsComparisonRoute
   AcademyCampusesSlugRoute: typeof AcademyCampusesSlugRoute
+  AcademyCoursesSlugRoute: typeof AcademyCoursesSlugRoute
   AcademyProgramsSlugRoute: typeof AcademyProgramsSlugRoute
   AcademyCampusesIndexRoute: typeof AcademyCampusesIndexRoute
+  AcademyCoursesIndexRoute: typeof AcademyCoursesIndexRoute
   AcademyProgramsIndexRoute: typeof AcademyProgramsIndexRoute
 }
 
@@ -8116,8 +8156,10 @@ const AcademyRouteChildren: AcademyRouteChildren = {
   AcademyBlogCertificationsComparisonRoute:
     AcademyBlogCertificationsComparisonRoute,
   AcademyCampusesSlugRoute: AcademyCampusesSlugRoute,
+  AcademyCoursesSlugRoute: AcademyCoursesSlugRoute,
   AcademyProgramsSlugRoute: AcademyProgramsSlugRoute,
   AcademyCampusesIndexRoute: AcademyCampusesIndexRoute,
+  AcademyCoursesIndexRoute: AcademyCoursesIndexRoute,
   AcademyProgramsIndexRoute: AcademyProgramsIndexRoute,
 }
 

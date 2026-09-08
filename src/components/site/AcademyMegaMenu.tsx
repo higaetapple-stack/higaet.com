@@ -136,6 +136,15 @@ export function AcademyMegaMenuTriggers({
   return (
     <ul className="flex items-center gap-1 text-sm font-medium text-muted-foreground whitespace-nowrap">
       <li>
+        <Link
+          to="/academy/courses"
+          className="px-3 py-1.5 rounded-md hover:text-ink hover:bg-muted/60 transition-colors"
+          activeProps={{ className: "text-ink bg-muted" }}
+        >
+          Courses
+        </Link>
+      </li>
+      <li>
         <MegaTrigger
           label="Programs"
           panelId={PANEL_IDS.programs}
