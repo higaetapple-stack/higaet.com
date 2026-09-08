@@ -1,15 +1,17 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-// eslint-disable-next-line no-restricted-imports -- detail page resolves a single course by slug; provider already exposes this via resolveCourseBySlug but the route needs the frozen registry shape directly for stable loader typing (approved, see ADR-0001)
+import { CheckCircle2, Clock, GraduationCap, Users, ArrowRight } from "lucide-react";
+// eslint-disable-next-line no-restricted-imports -- see detail-page ADR note in academy.courses.index.tsx
 import { ACADEMY_COURSES } from "@/content/academy/courses";
-// eslint-disable-next-line no-restricted-imports -- category label for breadcrumb/eyebrow, same rationale
+// eslint-disable-next-line no-restricted-imports -- same rationale
 import { ACADEMY_CATEGORIES } from "@/content/academy/categories";
 import type { CourseEntry } from "@/content/_registry/types";
+import { PageHero } from "@/components/site/PageHero";
+import { Section, Eyebrow } from "@/components/site/Section";
+import { CTASection } from "@/components/site/CTASection";
+import { LeadForm } from "@/components/site/LeadForm";
+import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 import { seoHead } from "@/lib/seo/seo-head";
 import { breadcrumbJsonLd } from "@/components/site/Breadcrumbs";
-import { PageHero } from "@/components/site/PageHero";
-import { Section } from "@/components/site/Section";
-import { Breadcrumbs } from "@/components/site/Breadcrumbs";
-import { FAQ, faqJsonLd } from "@/components/site/FAQ";
 
 function findCourse(slug: string): CourseEntry | undefined {
   return ACADEMY_COURSES.find((c) => c.slug === slug);
@@ -46,7 +48,14 @@ export const Route = createFileRoute("/academy/courses/$slug")({
           ...(category ? { about: category.name } : {}),
         },
         ...(course.faqs?.length
-          ? [faqJsonLd(course.faqs.map((f) => ({ q: f.question, a: f.answer })))]
+          ? [
+              faqJsonLd(
+                course.faqs.map((f: { question: string; answer: string }) => ({
+                  q: f.question,
+                  a: f.answer,
+                })),
+              ),
+            ]
           : []),
         breadcrumbJsonLd([
           { label: "Home", href: "/" },
@@ -78,175 +87,158 @@ function CourseDetail() {
     <>
       <PageHero
         brand="academy"
-        eyebrow={`Academy · ${category?.name ?? "Course"}`}
+        eyebrow={`Academy · ${category?.name ?? "Course"} · ${course.level ?? "All levels"}`}
         title={course.title}
         subtitle={course.summary}
       >
-        <dl className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-          {course.duration && (
-            <span className="rounded-full border border-border bg-card px-3 py-1.5 text-ink">
-              {course.duration}
-            </span>
-          )}
-          {course.level && (
-            <span className="rounded-full border border-border bg-card px-3 py-1.5 text-ink capitalize">
-              {course.level}
-            </span>
-          )}
-          {course.mode && (
-            <span className="rounded-full border border-border bg-card px-3 py-1.5 text-ink capitalize">
-              {course.mode}
-            </span>
-          )}
-          {course.status === "comingSoon" && (
-            <span className="rounded-full bg-amber-500/15 px-3 py-1.5 text-amber-800 font-medium">
-              Coming soon
-            </span>
-          )}
-        </dl>
+        <div className="grid max-w-3xl grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-4">
+          <Meta icon={Clock} label="Duration" value={course.duration ?? "—"} />
+          <Meta
+            icon={GraduationCap}
+            label="Level"
+            value={
+              course.level ? course.level.charAt(0).toUpperCase() + course.level.slice(1) : "—"
+            }
+          />
+          <Meta
+            icon={Users}
+            label="Delivery"
+            value={course.mode ? course.mode.charAt(0).toUpperCase() + course.mode.slice(1) : "—"}
+          />
+          <Meta
+            icon={CheckCircle2}
+            label="Status"
+            value={course.status === "comingSoon" ? "Coming soon" : "Open for enrollment"}
+          />
+        </div>
       </PageHero>
 
-      <Section className="!pt-0">
-        <Breadcrumbs
-          items={[
-            { label: "Academy", href: "/academy" },
-            { label: "Courses", href: "/academy/courses" },
-            { label: course.title },
-          ]}
-          className="mb-8"
-        />
+      {/* Curriculum — same Eyebrow + headline split as Program detail */}
+      {course.curriculum?.length ? (
+        <Section className="!pt-0">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Curriculum</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                {course.duration
+                  ? `A ${course.duration.toLowerCase()} arc, module by module.`
+                  : "The curriculum, module by module."}
+              </h2>
+            </div>
+            <ol className="space-y-6">
+              {(course.curriculum as readonly string[]).map((m: string, i: number) => (
+                <li key={i} className="rounded-xl bg-card p-6 ring-1 ring-border">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                    Module {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="mt-2 text-sm font-medium leading-snug text-ink">{m}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
 
-        {course.outcomes?.length ? (
-          <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
-            <h2 className="font-display text-xl font-semibold text-ink">What You Will Learn</h2>
-            <ul className="mt-4 space-y-3">
-              {(course.outcomes as readonly string[]).map((o: string, i: number) => (
-                <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-academy" aria-hidden />
+          {/* Practical Training flow — kept from original, now sits naturally under curriculum like Program's term cards */}
+          <div className="mt-10 rounded-xl bg-academy/5 border border-academy/10 p-5 md:p-6">
+            <h3 className="text-sm font-semibold text-ink">Practical Training Flow</h3>
+            <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+              Learning → Guided Labs → Independent Practice → Industry Project → Capstone →
+              Portfolio → Career Preparation. Practical hours are tracked alongside instructional
+              hours and surfaced on the certificate.
+            </p>
+            <p className="mt-2 text-xs font-medium text-ink">
+              Delivery as HIGAET Practical Training / Experiential Learning.
+            </p>
+            {course.metadata.keywords?.length ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {(course.metadata.keywords as readonly string[]).map((k: string) => (
+                  <span key={k} className="rounded-md bg-muted/60 px-2.5 py-1 text-xs text-ink">
+                    {k}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Outcomes — same grid + CheckCircle2 pattern as Program detail */}
+      {course.outcomes?.length ? (
+        <Section className="bg-muted/30">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <div>
+              <Eyebrow brand="academy">Outcomes</Eyebrow>
+              <h2 className="mt-4 font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                What you&apos;ll be able to do.
+              </h2>
+            </div>
+            <ul className="grid gap-4 md:grid-cols-2">
+              {(course.outcomes as readonly string[]).map((o: string) => (
+                <li key={o} className="flex gap-3 text-sm text-ink">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-academy" aria-hidden />
                   <span>{o}</span>
                 </li>
               ))}
             </ul>
           </div>
-        ) : null}
+        </Section>
+      ) : null}
 
-        {course.curriculum?.length ? (
-          <div className="mt-8 rounded-2xl border border-border bg-card p-6 md:p-8">
-            <h2 className="font-display text-xl font-semibold text-ink">Curriculum</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Structured progression from foundations through practical training to capstone —
-              experience-oriented, not just lectures.
+      {/* Lead form — mirrors Program detail's Apply section */}
+      <Section>
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <Eyebrow brand="academy">Apply</Eyebrow>
+            <h2 className="mt-4 max-w-[18ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+              Start your application.
+            </h2>
+            <p className="mt-5 text-muted-foreground leading-relaxed">
+              Share a few details and a HIGAET advisor will reach out within one business day with
+              next steps.
             </p>
-            <ol className="mt-6 space-y-3">
-              {(course.curriculum as readonly string[]).map((m: string, i: number) => (
-                <li
-                  key={i}
-                  className="flex gap-4 rounded-xl border border-border bg-muted/20 px-4 py-3"
-                >
-                  <span className="font-mono text-xs font-semibold text-academy mt-0.5">
-                    {(i + 1).toString().padStart(2, "0")}
-                  </span>
-                  <span className="text-sm font-medium text-ink">{m}</span>
-                </li>
-              ))}
-            </ol>
-
-            <div className="mt-8 rounded-xl bg-academy/5 border border-academy/10 p-5">
-              <h3 className="text-sm font-semibold text-ink">Practical Training Flow</h3>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Learning → Guided Labs → Independent Practice → Industry Project → Capstone →
-                Portfolio → Career Preparation. Practical hours are tracked alongside instructional
-                hours and surfaced on the certificate.
-              </p>
-              <p className="mt-2 text-xs font-medium text-ink">
-                Delivery as HIGAET Practical Training / Experiential Learning.
-              </p>
-            </div>
           </div>
-        ) : null}
-
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-display text-base font-semibold text-ink">Skills & Technologies</h3>
-            {course.metadata.keywords?.length ? (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {(course.metadata.keywords as readonly string[]).map((k: string) => (
-                  <span
-                    key={k}
-                    className="rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-muted-foreground"
-                  >
-                    {k}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Technologies are introduced progressively through labs, assignments, and the
-                capstone.
-              </p>
-            )}
-            <dl className="mt-4 space-y-2 text-sm">
-              {course.duration && (
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Duration</dt>
-                  <dd className="font-medium text-ink">{course.duration}</dd>
-                </div>
-              )}
-              {course.level && (
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Level</dt>
-                  <dd className="font-medium text-ink capitalize">{course.level}</dd>
-                </div>
-              )}
-              {course.mode && (
-                <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Delivery</dt>
-                  <dd className="font-medium text-ink capitalize">{course.mode}</dd>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <dt className="text-muted-foreground">Status</dt>
-                <dd className="font-medium text-ink">{course.status}</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-display text-base font-semibold text-ink">Career</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Courses are designed around portfolio artifacts — GitHub projects, capstone
-              demonstrations, and interview-ready talking points — not attendance alone.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link
-                to="/academy/learning-paths"
-                className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-ink hover:bg-muted"
-              >
-                View learning paths
-              </Link>
-              <Link
-                to="/academy/courses"
-                className="rounded-md bg-academy px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
-              >
-                Browse all courses
-              </Link>
-            </div>
+          <div className="rounded-2xl bg-card p-6 ring-1 ring-border md:p-8">
+            <LeadForm division="academy" source={`course:${course.slug}`} />
           </div>
         </div>
-
-        {course.faqs?.length ? (
-          <div className="mt-10">
-            <h2 className="font-display text-xl font-semibold text-ink">FAQs</h2>
-            <div className="mt-4">
-              <FAQ
-                items={(course.faqs as readonly { question: string; answer: string }[]).map(
-                  (f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }),
-                )}
-              />
-            </div>
-          </div>
-        ) : null}
       </Section>
+
+      {/* FAQ — same as Program detail */}
+      {course.faqs?.length ? (
+        <Section className="bg-muted/30">
+          <FAQ
+            items={(course.faqs as readonly { question: string; answer: string }[]).map(
+              (f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }),
+            )}
+            eyebrow="FAQ"
+            title="Common questions"
+          />
+        </Section>
+      ) : null}
+
+      <CTASection
+        title={`Ready to start ${course.title}?`}
+        body={
+          course.duration
+            ? `A ${course.duration} course — ${category?.name ?? "HIGAET Academy"}.`
+            : (category?.name ?? "HIGAET Academy")
+        }
+        primaryHref="/academy/contact"
+        primaryLabel="Talk to an advisor"
+        secondaryHref="/academy/courses"
+        secondaryLabel="Browse all courses"
+      />
     </>
+  );
+}
+
+function Meta({ icon: Icon, label, value }: { icon: typeof Clock; label: string; value: string }) {
+  return (
+    <div>
+      <Icon className="mb-2 size-4 text-academy" aria-hidden />
+      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </p>
+      <p className="text-sm font-medium text-ink">{value}</p>
+    </div>
   );
 }
