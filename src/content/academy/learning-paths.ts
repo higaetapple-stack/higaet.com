@@ -53,6 +53,17 @@ const C_BOOTCAMP_AI_ENGINEER = "academy_course_bootcamp_ai_engineer";
 const C_BOOTCAMP_LLMOPS = "academy_course_bootcamp_llmops";
 const C_EXEC_AI_STRATEGY = "academy_course_exec_ai_strategy";
 const C_WORKSHOP_EVALS = "academy_course_workshop_evals";
+const C_MCP = "academy_course_mcp_engineering";
+const C_EVALS = "academy_course_ai_evals_engineering";
+const C_KG = "academy_course_knowledge_graphs_vectors";
+const C_DATA_ENG = "academy_course_data_engineering_ai";
+const C_MLOPS = "academy_course_mlops_pipeline";
+const C_CLAUDE = "academy_course_claude_code_engineering";
+const C_SYS = "academy_course_system_design_ai_era";
+const C_CLOUD_SEC = "academy_course_cloud_security_devsecops";
+const C_AI_SEC = "academy_course_ai_security_governance";
+const C_FULLSTACK = "academy_course_fullstack_nextjs";
+const C_GOV = "academy_course_ai_governance_responsible";
 
 /* ----------------------------------------------------------------
  * Learning Path Registry
@@ -107,12 +118,7 @@ export const ACADEMY_LEARNING_PATHS: readonly LearningPathEntry[] = [
       "Specialize in building user-facing Generative AI products — prompt design, retrieval, evaluation, and shipping with confidence.",
     audience: "Full-stack developers shipping LLM-powered features",
     duration: "~5 months",
-    courseIds: [
-      C_GENAI_FOUNDATIONS,
-      C_CERT_PROMPT,
-      C_RAG_SYSTEMS,
-      C_APPLIED_LLM,
-    ],
+    courseIds: [C_GENAI_FOUNDATIONS, C_CERT_PROMPT, C_RAG_SYSTEMS, C_APPLIED_LLM],
     metadata: {
       title: "GenAI Application Developer Path | HIGAET Academy",
       description:
@@ -141,22 +147,12 @@ export const ACADEMY_LEARNING_PATHS: readonly LearningPathEntry[] = [
       "Own the operational lifecycle of LLM systems — evaluation, observability, cost control, safety, and incident response at scale.",
     audience: "Platform, SRE, and MLOps engineers operating LLM workloads",
     duration: "~6 months",
-    courseIds: [
-      C_GENAI_FOUNDATIONS,
-      C_APPLIED_LLM,
-      C_WORKSHOP_EVALS,
-      C_BOOTCAMP_LLMOPS,
-    ],
+    courseIds: [C_GENAI_FOUNDATIONS, C_APPLIED_LLM, C_WORKSHOP_EVALS, C_BOOTCAMP_LLMOPS],
     metadata: {
       title: "LLMOps Specialist Path | HIGAET Academy",
       description:
         "HIGAET Academy's LLMOps Specialist path — evaluation, observability, cost control, safety, and incident response for production LLM workloads.",
-      keywords: [
-        "llmops path",
-        "llm operations career",
-        "ai sre",
-        "higaet learning path",
-      ],
+      keywords: ["llmops path", "llm operations career", "ai sre", "higaet learning path"],
     },
     audit: {
       createdAt: CREATED_AT,
@@ -175,10 +171,7 @@ export const ACADEMY_LEARNING_PATHS: readonly LearningPathEntry[] = [
       "A leadership-focused journey that pairs working AI fluency with the strategy, portfolio, and governance skills modern executives need.",
     audience: "Senior leaders driving Generative AI adoption",
     duration: "~4 months",
-    courseIds: [
-      C_GENAI_FOUNDATIONS,
-      C_EXEC_AI_STRATEGY,
-    ],
+    courseIds: [C_GENAI_FOUNDATIONS, C_EXEC_AI_STRATEGY],
     metadata: {
       title: "AI Leader Learning Path | HIGAET Academy",
       description:
@@ -197,6 +190,125 @@ export const ACADEMY_LEARNING_PATHS: readonly LearningPathEntry[] = [
       author: AUTHOR,
     },
   },
+  {
+    id: "academy_path_agentic_systems",
+    slug: "agentic-systems-and-mcp",
+    status: "published",
+    visibility: "public",
+    title: "Agentic Systems & MCP",
+    summary:
+      "From tool-using agents to multi-agent workforces — MCP servers, orchestration, trajectory evals, and production reliability.",
+    audience: "AI engineers building agentic automations and workforces",
+    duration: "~8 months",
+    courseIds: [
+      C_GENAI_FOUNDATIONS,
+      C_APPLIED_LLM,
+      C_MCP,
+      C_EVALS,
+      C_KG,
+      C_CLAUDE,
+      C_BOOTCAMP_AI_ENGINEER,
+    ],
+    metadata: {
+      title: "Agentic Systems & MCP Path | HIGAET Academy",
+      description:
+        "HIGAET Academy agentic systems path — MCP servers, multi-agent orchestration, AI evals, knowledge graphs, and agentic coding at scale.",
+      keywords: [
+        "agentic ai path",
+        "mcp course path",
+        "multi agent systems",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_data_platform",
+    slug: "data-engineering-and-mlops",
+    status: "published",
+    visibility: "public",
+    title: "Data Engineering & MLOps",
+    summary:
+      "The complete data-to-model platform: pipelines, lakes, feature stores, and model operations that survive reorgs and audits.",
+    audience: "Data engineers, ML engineers, and platform teams",
+    duration: "~7 months",
+    courseIds: [C_GENAI_FOUNDATIONS, C_DATA_ENG, C_MLOPS, C_SYS],
+    metadata: {
+      title: "Data Engineering & MLOps Path | HIGAET Academy",
+      description:
+        "HIGAET Academy data platform path — data engineering for AI, MLOps pipelines, system design for AI-scale workloads.",
+      keywords: [
+        "data engineering path",
+        "mlops path",
+        "feature store course",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_platform_cloud_security",
+    slug: "platform-cloud-and-ai-security",
+    status: "published",
+    visibility: "public",
+    title: "Platform, Cloud & AI Security",
+    summary:
+      "Defend the modern stack: hardened cloud platforms, DevSecOps pipelines, and AI-aware security from prompt to production.",
+    audience: "Platform, SRE, and security engineers",
+    duration: "~7 months",
+    courseIds: [C_GENAI_FOUNDATIONS, C_CLOUD_SEC, C_AI_SEC, C_GOV, C_BOOTCAMP_LLMOPS],
+    metadata: {
+      title: "Platform, Cloud & AI Security Path | HIGAET Academy",
+      description:
+        "HIGAET Academy security path — cloud security, DevSecOps, AI security and governance for the modern AI stack.",
+      keywords: ["cloud security path", "ai security", "devsecops course", "higaet learning path"],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_fullstack_ai",
+    slug: "full-stack-ai-engineering",
+    status: "published",
+    visibility: "public",
+    title: "Full-Stack AI Engineering",
+    summary:
+      "Ship the full product: typed full-stack apps on Next.js with RAG, structured outputs, and agentic features built in.",
+    audience: "Full-stack engineers shipping LLM-powered products",
+    duration: "~6 months",
+    courseIds: [C_GENAI_FOUNDATIONS, C_SYS, C_FULLSTACK, C_RAG_SYSTEMS],
+    metadata: {
+      title: "Full-Stack AI Engineering Path | HIGAET Academy",
+      description:
+        "HIGAET Academy full-stack AI path — Next.js, system design, retrieval, and shipping LLM features end-to-end.",
+      keywords: [
+        "full stack ai path",
+        "nextjs ai engineering",
+        "llm application developer",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
 ] as const;
 
 /**
@@ -204,5 +316,4 @@ export const ACADEMY_LEARNING_PATHS: readonly LearningPathEntry[] = [
  * Derived from `ACADEMY_LEARNING_PATHS`; exported for cross-
  * registry reference validation (e.g. testimonials `subjectId`).
  */
-export const ACADEMY_LEARNING_PATH_IDS: readonly string[] =
-  ACADEMY_LEARNING_PATHS.map((p) => p.id);
+export const ACADEMY_LEARNING_PATH_IDS: readonly string[] = ACADEMY_LEARNING_PATHS.map((p) => p.id);

@@ -62,35 +62,84 @@ export const PROGRAMS: Program[] = [
       {
         term: "Term 1 · Foundations (10 weeks)",
         title: "Engineering for AI",
-        topics: ["Modern Python & typing", "Linear algebra you actually need", "Probability & statistics", "Data engineering with Polars/DuckDB"],
+        topics: [
+          "Modern Python & typing",
+          "Linear algebra you actually need",
+          "Probability & statistics",
+          "Data engineering with Polars/DuckDB",
+        ],
       },
       {
         term: "Term 2 · Core (12 weeks)",
         title: "LLMs in practice",
-        topics: ["Transformer internals", "Prompting & structured outputs", "RAG architectures", "Vector stores & retrieval evals"],
+        topics: [
+          "Transformer internals",
+          "Prompting & structured outputs",
+          "RAG architectures",
+          "Vector stores & retrieval evals",
+        ],
       },
       {
         term: "Term 3 · Systems (10 weeks)",
         title: "Production AI systems",
-        topics: ["Agents & tool use", "Observability for LLMs", "Cost & latency engineering", "Safety, red-teaming, governance"],
+        topics: [
+          "Agents & tool use",
+          "Observability for LLMs",
+          "Cost & latency engineering",
+          "Safety, red-teaming, governance",
+        ],
       },
       {
         term: "Term 4 · Capstone (12 weeks)",
         title: "Enterprise capstone",
-        topics: ["Live brief from a hiring partner", "Architecture review", "Production deployment", "Industry jury defense"],
+        topics: [
+          "Live brief from a hiring partner",
+          "Architecture review",
+          "Production deployment",
+          "Industry jury defense",
+        ],
       },
     ],
     faculty: [
-      { name: "Dr. Anika Rao", role: "Program Director", bio: "Former staff ML engineer with 12 years across applied research and production AI at global SaaS companies." },
-      { name: "Vikram Iyer", role: "Lead Faculty — Systems", bio: "Builds large-scale inference platforms; mentors HIGAET cohorts on serving and observability." },
-      { name: "Priya Menon", role: "Industry Mentor", bio: "Head of AI at a fintech unicorn; reviews capstone projects and runs mock interviews." },
+      {
+        name: "Dr. Anika Rao",
+        role: "Program Director",
+        bio: "Former staff ML engineer with 12 years across applied research and production AI at global SaaS companies.",
+      },
+      {
+        name: "Vikram Iyer",
+        role: "Lead Faculty — Systems",
+        bio: "Builds large-scale inference platforms; mentors HIGAET cohorts on serving and observability.",
+      },
+      {
+        name: "Priya Menon",
+        role: "Industry Mentor",
+        bio: "Head of AI at a fintech unicorn; reviews capstone projects and runs mock interviews.",
+      },
     ],
-    hiringPartners: ["AI-first SaaS firms", "Banking & financial services", "Consulting & systems integrators", "Healthcare technology"],
+    hiringPartners: [
+      "AI-first SaaS firms",
+      "Banking & financial services",
+      "Consulting & systems integrators",
+      "Healthcare technology",
+    ],
     faqs: [
-      { q: "Do I need prior machine-learning experience?", a: "No. Term 1 brings everyone to a common foundation. Strong Python and quantitative thinking are what we expect at the start." },
-      { q: "What does 'hybrid' mean for this program?", a: "Live evening cohorts run online four days a week, with two intensive on-campus weekends per term at the HIGAET Bengaluru campus." },
-      { q: "Is there placement support?", a: "Yes — every Career Track student gets a dedicated placement counsellor, interview prep, and warm introductions to hiring partners." },
-      { q: "Can my employer sponsor the fee?", a: "Yes. We provide GST invoices and structured sponsorship letters; many enterprise sponsors fund the program directly." },
+      {
+        q: "Do I need prior machine-learning experience?",
+        a: "No. Term 1 brings everyone to a common foundation. Strong Python and quantitative thinking are what we expect at the start.",
+      },
+      {
+        q: "What does 'hybrid' mean for this program?",
+        a: "Live evening cohorts run online four days a week, with two intensive on-campus weekends per term at the HIGAET Bengaluru campus.",
+      },
+      {
+        q: "Is there placement support?",
+        a: "Yes — every Career Track student gets a dedicated placement counsellor, interview prep, and warm introductions to hiring partners.",
+      },
+      {
+        q: "Can my employer sponsor the fee?",
+        a: "Yes. We provide GST invoices and structured sponsorship letters; many enterprise sponsors fund the program directly.",
+      },
     ],
   },
   {
@@ -116,18 +165,54 @@ export const PROGRAMS: Program[] = [
       "Deploy and monitor models in production",
     ],
     curriculum: [
-      { term: "Term 1 (10 weeks)", title: "Data foundations", topics: ["SQL deep dive", "Python for analysis", "Statistics for decisions", "Storytelling with data"] },
-      { term: "Term 2 (10 weeks)", title: "Machine learning", topics: ["Supervised models", "Feature engineering", "Model evaluation", "Causal inference basics"] },
-      { term: "Term 3 (10 weeks)", title: "Production", topics: ["MLOps essentials", "Monitoring & drift", "A/B testing", "Capstone"] },
+      {
+        term: "Term 1 (10 weeks)",
+        title: "Data foundations",
+        topics: [
+          "SQL deep dive",
+          "Python for analysis",
+          "Statistics for decisions",
+          "Storytelling with data",
+        ],
+      },
+      {
+        term: "Term 2 (10 weeks)",
+        title: "Machine learning",
+        topics: [
+          "Supervised models",
+          "Feature engineering",
+          "Model evaluation",
+          "Causal inference basics",
+        ],
+      },
+      {
+        term: "Term 3 (10 weeks)",
+        title: "Production",
+        topics: ["MLOps essentials", "Monitoring & drift", "A/B testing", "Capstone"],
+      },
     ],
     faculty: [
-      { name: "Rahul Sengupta", role: "Program Director", bio: "Former Head of Data at a logistics platform; 10+ years building data teams." },
-      { name: "Dr. Neha Bhatt", role: "Lead Faculty", bio: "Statistician and applied researcher with a focus on causal methods." },
+      {
+        name: "Rahul Sengupta",
+        role: "Program Director",
+        bio: "Former Head of Data at a logistics platform; 10+ years building data teams.",
+      },
+      {
+        name: "Dr. Neha Bhatt",
+        role: "Lead Faculty",
+        bio: "Statistician and applied researcher with a focus on causal methods.",
+      },
     ],
     hiringPartners: ["E-commerce & marketplaces", "Banking", "Healthcare", "Consumer internet"],
     faqs: [
-      { q: "Is this an online-only program?", a: "Yes — live cohorts run 4 evenings a week with recorded modules and weekend labs." },
-      { q: "Will I get a portfolio?", a: "Yes. You graduate with 4 portfolio projects and 1 enterprise capstone reviewed by a hiring partner." },
+      {
+        q: "Is this an online-only program?",
+        a: "Yes — live cohorts run 4 evenings a week with recorded modules and weekend labs.",
+      },
+      {
+        q: "Will I get a portfolio?",
+        a: "Yes. You graduate with 4 portfolio projects and 1 enterprise capstone reviewed by a hiring partner.",
+      },
     ],
   },
   {
@@ -141,7 +226,11 @@ export const PROGRAMS: Program[] = [
     startDate: "Next cohort: 21 September 2026",
     feeINR: "₹2,15,000",
     emiFromINR: "₹6,450/mo",
-    eligibility: ["Bachelor's degree (any)", "Comfort with Linux command line", "Basic networking concepts"],
+    eligibility: [
+      "Bachelor's degree (any)",
+      "Comfort with Linux command line",
+      "Basic networking concepts",
+    ],
     outcomes: [
       "Build CI/CD pipelines used by real engineering teams",
       "Operate Kubernetes clusters in production",
@@ -149,16 +238,35 @@ export const PROGRAMS: Program[] = [
       "Pass associate-level cloud certifications",
     ],
     curriculum: [
-      { term: "Term 1", title: "Linux & networking", topics: ["Bash & systemd", "TCP/IP fundamentals", "Containers"] },
-      { term: "Term 2", title: "Cloud platforms", topics: ["Compute, storage, networking", "IaC with Terraform", "Cost & governance"] },
-      { term: "Term 3", title: "Platform engineering", topics: ["Kubernetes in depth", "Observability stack", "Incident response", "Capstone"] },
+      {
+        term: "Term 1",
+        title: "Linux & networking",
+        topics: ["Bash & systemd", "TCP/IP fundamentals", "Containers"],
+      },
+      {
+        term: "Term 2",
+        title: "Cloud platforms",
+        topics: ["Compute, storage, networking", "IaC with Terraform", "Cost & governance"],
+      },
+      {
+        term: "Term 3",
+        title: "Platform engineering",
+        topics: ["Kubernetes in depth", "Observability stack", "Incident response", "Capstone"],
+      },
     ],
     faculty: [
-      { name: "Sandeep Kulkarni", role: "Program Director", bio: "Platform leader who scaled infrastructure for two unicorns." },
+      {
+        name: "Sandeep Kulkarni",
+        role: "Program Director",
+        bio: "Platform leader who scaled infrastructure for two unicorns.",
+      },
     ],
     hiringPartners: ["Cloud-native startups", "Banking", "Telecom", "Enterprise SaaS"],
     faqs: [
-      { q: "Which cloud do you teach?", a: "Concepts are vendor-neutral; labs cover AWS primarily, with comparative coverage of GCP and Azure." },
+      {
+        q: "Which cloud do you teach?",
+        a: "Concepts are vendor-neutral; labs cover AWS primarily, with comparative coverage of GCP and Azure.",
+      },
     ],
   },
   {
@@ -172,7 +280,11 @@ export const PROGRAMS: Program[] = [
     startDate: "Next cohort: 28 September 2026",
     feeINR: "₹2,75,000",
     emiFromINR: "₹8,300/mo",
-    eligibility: ["Bachelor's degree", "Comfort with networking and OS basics", "No prior security experience required"],
+    eligibility: [
+      "Bachelor's degree",
+      "Comfort with networking and OS basics",
+      "No prior security experience required",
+    ],
     outcomes: [
       "Run SOC workflows on real telemetry",
       "Investigate incidents with disciplined methodology",
@@ -180,16 +292,35 @@ export const PROGRAMS: Program[] = [
       "Prepare for industry-recognised certifications",
     ],
     curriculum: [
-      { term: "Term 1", title: "Security foundations", topics: ["Threat models", "Network security", "Identity & access"] },
-      { term: "Term 2", title: "Detection & response", topics: ["SIEM/SOAR", "Log analytics", "Incident handling"] },
-      { term: "Term 3", title: "Cloud security & capstone", topics: ["AWS/GCP security", "Container security", "Red-team simulation"] },
+      {
+        term: "Term 1",
+        title: "Security foundations",
+        topics: ["Threat models", "Network security", "Identity & access"],
+      },
+      {
+        term: "Term 2",
+        title: "Detection & response",
+        topics: ["SIEM/SOAR", "Log analytics", "Incident handling"],
+      },
+      {
+        term: "Term 3",
+        title: "Cloud security & capstone",
+        topics: ["AWS/GCP security", "Container security", "Red-team simulation"],
+      },
     ],
     faculty: [
-      { name: "Arjun Pillai", role: "Program Director", bio: "Former SOC lead at a global bank; specialises in detection engineering." },
+      {
+        name: "Arjun Pillai",
+        role: "Program Director",
+        bio: "Former SOC lead at a global bank; specialises in detection engineering.",
+      },
     ],
     hiringPartners: ["Banks & insurance", "MSSPs", "Cloud providers", "Public sector"],
     faqs: [
-      { q: "Is this a red-team or blue-team program?", a: "Primarily blue-team / defensive engineering, with enough offensive context to inform detections." },
+      {
+        q: "Is this a red-team or blue-team program?",
+        a: "Primarily blue-team / defensive engineering, with enough offensive context to inform detections.",
+      },
     ],
   },
   {
@@ -211,16 +342,35 @@ export const PROGRAMS: Program[] = [
       "Lead cross-functional AI launches",
     ],
     curriculum: [
-      { term: "Module 1", title: "AI literacy for PMs", topics: ["LLM capabilities & limits", "Evals as the product spec"] },
-      { term: "Module 2", title: "Discovery & design", topics: ["AI UX patterns", "Risk & safety reviews"] },
-      { term: "Module 3", title: "Launch & operate", topics: ["Rollout strategy", "Cost & latency", "Capstone"] },
+      {
+        term: "Module 1",
+        title: "AI literacy for PMs",
+        topics: ["LLM capabilities & limits", "Evals as the product spec"],
+      },
+      {
+        term: "Module 2",
+        title: "Discovery & design",
+        topics: ["AI UX patterns", "Risk & safety reviews"],
+      },
+      {
+        term: "Module 3",
+        title: "Launch & operate",
+        topics: ["Rollout strategy", "Cost & latency", "Capstone"],
+      },
     ],
     faculty: [
-      { name: "Meera Krishnan", role: "Program Director", bio: "Product leader who shipped GenAI features at consumer scale." },
+      {
+        name: "Meera Krishnan",
+        role: "Program Director",
+        bio: "Product leader who shipped GenAI features at consumer scale.",
+      },
     ],
     hiringPartners: ["SaaS", "Fintech", "Consumer internet"],
     faqs: [
-      { q: "Do I need to code?", a: "No, but you should be comfortable reading specs and reasoning about data." },
+      {
+        q: "Do I need to code?",
+        a: "No, but you should be comfortable reading specs and reasoning about data.",
+      },
     ],
   },
   {
@@ -241,16 +391,31 @@ export const PROGRAMS: Program[] = [
       "Decide whether to pursue an advanced HIGAET track",
     ],
     curriculum: [
-      { term: "Weeks 1-4", title: "How AI works", topics: ["Models, data, training", "Tokens & embeddings"] },
+      {
+        term: "Weeks 1-4",
+        title: "How AI works",
+        topics: ["Models, data, training", "Tokens & embeddings"],
+      },
       { term: "Weeks 5-8", title: "Using LLMs", topics: ["Prompting", "Retrieval", "Evaluation"] },
-      { term: "Weeks 9-12", title: "Mini-project", topics: ["Pick a workflow", "Build & ship", "Demo day"] },
+      {
+        term: "Weeks 9-12",
+        title: "Mini-project",
+        topics: ["Pick a workflow", "Build & ship", "Demo day"],
+      },
     ],
     faculty: [
-      { name: "HIGAET Faculty Pool", role: "Rotating instructors", bio: "Curated by the program director from across HIGAET tracks." },
+      {
+        name: "HIGAET Faculty Pool",
+        role: "Rotating instructors",
+        bio: "Curated by the program director from across HIGAET tracks.",
+      },
     ],
     hiringPartners: [],
     faqs: [
-      { q: "Will this get me a job?", a: "Foundations is a literacy program. Combine it with a Career Track to target a role change." },
+      {
+        q: "Will this get me a job?",
+        a: "Foundations is a literacy program. Combine it with a Career Track to target a role change.",
+      },
     ],
   },
   {
@@ -272,16 +437,35 @@ export const PROGRAMS: Program[] = [
       "Apply evals and guardrails specific to agentic systems",
     ],
     curriculum: [
-      { term: "Term 1", title: "Agent foundations", topics: ["LLM tool use", "ReAct & planning", "Memory & state"] },
-      { term: "Term 2", title: "Multi-agent systems", topics: ["Orchestration patterns", "MCP & function calling", "Long-running workflows"] },
-      { term: "Term 3", title: "Production", topics: ["Agent observability", "Guardrails & evals", "Capstone with industry brief"] },
+      {
+        term: "Term 1",
+        title: "Agent foundations",
+        topics: ["LLM tool use", "ReAct & planning", "Memory & state"],
+      },
+      {
+        term: "Term 2",
+        title: "Multi-agent systems",
+        topics: ["Orchestration patterns", "MCP & function calling", "Long-running workflows"],
+      },
+      {
+        term: "Term 3",
+        title: "Production",
+        topics: ["Agent observability", "Guardrails & evals", "Capstone with industry brief"],
+      },
     ],
     faculty: [
-      { name: "Karthik Subramanian", role: "Program Director", bio: "Builds agentic platforms for enterprise automation." },
+      {
+        name: "Karthik Subramanian",
+        role: "Program Director",
+        bio: "Builds agentic platforms for enterprise automation.",
+      },
     ],
     hiringPartners: ["AI-first SaaS", "Consulting", "Operations & BPO"],
     faqs: [
-      { q: "How is this different from Gen AI Engineering?", a: "Gen AI Engineering is broader (RAG, fine-tuning, inference). Agents is specialist depth on planning, tool use, and multi-agent orchestration." },
+      {
+        q: "How is this different from Gen AI Engineering?",
+        a: "Gen AI Engineering is broader (RAG, fine-tuning, inference). Agents is specialist depth on planning, tool use, and multi-agent orchestration.",
+      },
     ],
   },
   {
@@ -295,7 +479,11 @@ export const PROGRAMS: Program[] = [
     startDate: "Next cohort: 2 November 2026",
     feeINR: "₹1,85,000",
     emiFromINR: "₹5,600/mo",
-    eligibility: ["Bachelor's degree", "Basic scripting comfort", "Curiosity about business operations"],
+    eligibility: [
+      "Bachelor's degree",
+      "Basic scripting comfort",
+      "Curiosity about business operations",
+    ],
     outcomes: [
       "Map and re-engineer workflows for AI automation",
       "Ship n8n, Zapier, and custom code pipelines that scale",
@@ -303,16 +491,35 @@ export const PROGRAMS: Program[] = [
       "Measure automation ROI for stakeholders",
     ],
     curriculum: [
-      { term: "Term 1", title: "Workflow thinking", topics: ["Process mapping", "Event-driven design", "APIs & webhooks"] },
-      { term: "Term 2", title: "AI in the loop", topics: ["LLM extraction patterns", "Human-in-the-loop", "Cost & reliability"] },
-      { term: "Term 3", title: "Ship & measure", topics: ["Production rollout", "Monitoring", "Capstone automation"] },
+      {
+        term: "Term 1",
+        title: "Workflow thinking",
+        topics: ["Process mapping", "Event-driven design", "APIs & webhooks"],
+      },
+      {
+        term: "Term 2",
+        title: "AI in the loop",
+        topics: ["LLM extraction patterns", "Human-in-the-loop", "Cost & reliability"],
+      },
+      {
+        term: "Term 3",
+        title: "Ship & measure",
+        topics: ["Production rollout", "Monitoring", "Capstone automation"],
+      },
     ],
     faculty: [
-      { name: "Sneha Reddy", role: "Program Director", bio: "Automation lead at a global services firm; ships 100+ live workflows." },
+      {
+        name: "Sneha Reddy",
+        role: "Program Director",
+        bio: "Automation lead at a global services firm; ships 100+ live workflows.",
+      },
     ],
     hiringPartners: ["BPO & shared services", "Mid-market SaaS", "Operations teams"],
     faqs: [
-      { q: "Is coding required?", a: "Light scripting helps but isn't mandatory at the start; you'll build coding fluency through the program." },
+      {
+        q: "Is coding required?",
+        a: "Light scripting helps but isn't mandatory at the start; you'll build coding fluency through the program.",
+      },
     ],
   },
   {
@@ -334,16 +541,35 @@ export const PROGRAMS: Program[] = [
       "Ship prompt-driven features into real products",
     ],
     curriculum: [
-      { term: "Weeks 1-3", title: "Prompt fundamentals", topics: ["Instruction patterns", "Few-shot design", "Structured outputs"] },
-      { term: "Weeks 4-6", title: "Evaluation", topics: ["Offline evals", "LLM-as-judge", "Versioning prompts"] },
-      { term: "Weeks 7-10", title: "Shipping", topics: ["Chaining & tool use", "Cost & safety", "Capstone"] },
+      {
+        term: "Weeks 1-3",
+        title: "Prompt fundamentals",
+        topics: ["Instruction patterns", "Few-shot design", "Structured outputs"],
+      },
+      {
+        term: "Weeks 4-6",
+        title: "Evaluation",
+        topics: ["Offline evals", "LLM-as-judge", "Versioning prompts"],
+      },
+      {
+        term: "Weeks 7-10",
+        title: "Shipping",
+        topics: ["Chaining & tool use", "Cost & safety", "Capstone"],
+      },
     ],
     faculty: [
-      { name: "HIGAET Faculty Pool", role: "Rotating instructors", bio: "Practitioners from AI product, content, and engineering teams." },
+      {
+        name: "HIGAET Faculty Pool",
+        role: "Rotating instructors",
+        bio: "Practitioners from AI product, content, and engineering teams.",
+      },
     ],
     hiringPartners: [],
     faqs: [
-      { q: "Is this enough to become an AI Engineer?", a: "It's a strong literacy track. Pair it with Gen AI Engineering or AI Agents for a full career switch." },
+      {
+        q: "Is this enough to become an AI Engineer?",
+        a: "It's a strong literacy track. Pair it with Gen AI Engineering or AI Agents for a full career switch.",
+      },
     ],
   },
   {
@@ -365,16 +591,201 @@ export const PROGRAMS: Program[] = [
       "Deploy on modern edge and serverless platforms",
     ],
     curriculum: [
-      { term: "Term 1", title: "Web foundations", topics: ["TypeScript", "React & forms", "APIs & databases"] },
-      { term: "Term 2", title: "Full-stack craft", topics: ["Auth & payments", "Background jobs", "Testing & CI"] },
-      { term: "Term 3", title: "AI features", topics: ["LLM integration patterns", "RAG in production", "Capstone"] },
+      {
+        term: "Term 1",
+        title: "Web foundations",
+        topics: ["TypeScript", "React & forms", "APIs & databases"],
+      },
+      {
+        term: "Term 2",
+        title: "Full-stack craft",
+        topics: ["Auth & payments", "Background jobs", "Testing & CI"],
+      },
+      {
+        term: "Term 3",
+        title: "AI features",
+        topics: ["LLM integration patterns", "RAG in production", "Capstone"],
+      },
     ],
     faculty: [
-      { name: "Dev Chatterjee", role: "Program Director", bio: "Staff engineer; ships AI-native SaaS products." },
+      {
+        name: "Dev Chatterjee",
+        role: "Program Director",
+        bio: "Staff engineer; ships AI-native SaaS products.",
+      },
     ],
     hiringPartners: ["SaaS startups", "Product studios", "Enterprise IT"],
     faqs: [
-      { q: "Do I need prior web dev experience?", a: "No — we start from TypeScript fundamentals. Prior coding helps but isn't required." },
+      {
+        q: "Do I need prior web dev experience?",
+        a: "No — we start from TypeScript fundamentals. Prior coding helps but isn't required.",
+      },
+    ],
+  },
+  {
+    slug: "agentic-systems-and-mcp-engineering",
+    title: "Agentic Systems & MCP Engineering",
+    tagline:
+      "Build agentic workforces: multi-agent orchestration, MCP servers, and eval-driven reliability.",
+    category: "ai",
+    level: "Career Track",
+    duration: "10 months",
+    format: "Hybrid",
+    startDate: "Next cohort: 9 November 2026",
+    feeINR: "₹2,95,000",
+    emiFromINR: "₹8,900/mo",
+    eligibility: [
+      "Bachelor's degree in engineering, science, or quantitative discipline",
+      "Working Python and API fluency (JSON, REST, auth)",
+      "Completed Prompt Engineering or equivalent familiarity with LLM behaviour",
+    ],
+    outcomes: [
+      "Ship multi-agent systems that plan, delegate, and recover with verification loops",
+      "Build MCP servers and function-calling contracts that survive production traffic",
+      "Evaluate agentic trajectories with groundedness, tool-use accuracy, and cost",
+      "Own the agentic platform: observability, safety gates, and human-in-the-loop",
+    ],
+    curriculum: [
+      {
+        term: "Term 1 · Foundations (10 weeks)",
+        title: "Agent fundamentals",
+        topics: [
+          "ReAct & planning",
+          "Tool use and function calling",
+          "Memory, state, and long-running workflows",
+        ],
+      },
+      {
+        term: "Term 2 · Systems (10 weeks)",
+        title: "MCP & orchestration",
+        topics: [
+          "MCP servers: contracts and auth",
+          "Multi-agent patterns (orchestrator, handoff, debate)",
+          "Recovery, idempotency, and human gates",
+        ],
+      },
+      {
+        term: "Term 3 · Production (10 weeks)",
+        title: "Evaluation & operations",
+        topics: [
+          "Trajectory evals and reward signals",
+          "Agent observability and cost",
+          "Safety, guardrails, and incident drills",
+        ],
+      },
+      {
+        term: "Term 4 · Capstone (10 weeks)",
+        title: "Agentic workforce capstone",
+        topics: [
+          "Live brief: automate a real ops workflow",
+          "Architecture & safety review",
+          "Production deployment",
+          "Industry jury defense",
+        ],
+      },
+    ],
+    faculty: [
+      {
+        name: "Karthik Subramanian",
+        role: "Program Director — Agentic Systems",
+        bio: "Builds agentic platforms for enterprise automation; leads HIGAET's MCP work.",
+      },
+      {
+        name: "Neel Iyer",
+        role: "Lead Faculty — Orchestration",
+        bio: "Ships multi-agent systems at SaaS scale; specialises in planning and recovery.",
+      },
+    ],
+    hiringPartners: ["AI-first SaaS", "Consulting & SI", "BPO & operations", "Fintech automation"],
+    faqs: [
+      {
+        q: "How does this differ from AI Agents Development?",
+        a: "AI Agents Development covers agent foundations. This program goes deeper: MCP servers, multi-agent orchestration, trajectory evals, and a 10-week production capstone.",
+      },
+      {
+        q: "Is there an on-campus component?",
+        a: "Two intensive weekends per term in Bengaluru; the rest is live-online evenings.",
+      },
+    ],
+  },
+  {
+    slug: "data-engineering-and-mlops-at-scale",
+    title: "Data Engineering & MLOps at Scale",
+    tagline: "The data-to-model pipeline that actually survives reorgs and audits.",
+    category: "data",
+    level: "Career Track",
+    duration: "9 months",
+    format: "Online",
+    startDate: "Next cohort: 16 November 2026",
+    feeINR: "₹2,55,000",
+    emiFromINR: "₹7,700/mo",
+    eligibility: [
+      "Bachelor's degree (any quantitative or technical discipline preferred)",
+      "Comfortable with SQL and Python for data work",
+      "Familiarity with cloud concepts (compute, storage, networking)",
+    ],
+    outcomes: [
+      "Design batch and streaming pipelines with contracts, lineage, and quality gates",
+      "Build feature stores that serve both retrieval and training reliably",
+      "Run MLOps pipelines from experiment → registry → deployment → drift response",
+      "Own data platform operability: cost, governance, and audit readiness",
+    ],
+    curriculum: [
+      {
+        term: "Term 1 · Foundations (10 weeks)",
+        title: "Data platforms",
+        topics: [
+          "Pipeline architecture (batch + streaming)",
+          "Lakes, warehouses, lakehouses",
+          "Data quality & observability",
+        ],
+      },
+      {
+        term: "Term 2 · Core (10 weeks)",
+        title: "Features & pipelines",
+        topics: [
+          "Feature stores and serving",
+          "Governance, lineage, and cost",
+          "Performance and scale",
+        ],
+      },
+      {
+        term: "Term 3 · MLOps (10 weeks)",
+        title: "MLOps at scale",
+        topics: [
+          "Experiment tracking & registries",
+          "Training and serving pipelines",
+          "Drift, skew, and rollback",
+        ],
+      },
+      {
+        term: "Term 4 · Capstone (8 weeks)",
+        title: "Platform capstone",
+        topics: ["Live brief from a data partner", "Architecture review", "Production deployment"],
+      },
+    ],
+    faculty: [
+      {
+        name: "Rahul Sengupta",
+        role: "Program Director — Data",
+        bio: "Former Head of Data at a logistics platform; now shapes HIGAET's data engineering track.",
+      },
+      {
+        name: "Pooja Nair",
+        role: "Lead Faculty — MLOps",
+        bio: "Operates ML platforms serving 50M+ predictions per day.",
+      },
+    ],
+    hiringPartners: ["Marketplaces & logistics", "Fintech & banking", "Enterprise data orgs"],
+    faqs: [
+      {
+        q: "Do I need prior data engineering experience?",
+        a: "No — we start from pipeline thinking. SQL + Python fluency is what matters at entry.",
+      },
+      {
+        q: "Will I learn a specific stack?",
+        a: "Patterns are vendor-neutral; labs use Python, SQL, Spark/DuckDB, and modern cloud warehouses.",
+      },
     ],
   },
 ];
@@ -422,10 +833,7 @@ export const CAMPUSES: Campus[] = [
     city: "Hyderabad, TS",
     degree: "Industry Diploma in Cloud & Platform Engineering",
     durationYears: 1,
-    eligibility: [
-      "Bachelor's degree in any discipline",
-      "Cleared the HIGAET Aptitude Test (HAT)",
-    ],
+    eligibility: ["Bachelor's degree in any discipline", "Cleared the HIGAET Aptitude Test (HAT)"],
     highlights: [
       "Live SRE-style war rooms with operating partners",
       "Dedicated placement track for cloud roles",
