@@ -123,6 +123,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: `${SITE.name} — ${SITE.tagline}` },
       { name: "twitter:description", content: SITE.description },
       { name: "twitter:image", content: `${SITE.url}/og-higaet-2026.png` },
+      { name: "facebook-domain-verification", content: "u1vdtslr6bfqwmverldab9h349n4p5" },
     ];
     if (ANALYTICS_IDS.gscVerification) {
       meta.push({ name: "google-site-verification", content: ANALYTICS_IDS.gscVerification });
