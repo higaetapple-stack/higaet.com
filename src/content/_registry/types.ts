@@ -264,6 +264,18 @@ export interface CourseEntry extends BaseEntry {
   curriculum?: readonly string[];
   /** Frequently asked questions block. */
   faqs?: readonly { question: string; answer: string }[];
+  /** Who the course is for (audience labels, e.g. "Software developers"). */
+  audience?: readonly string[];
+  /** Entry requirements in plain language. */
+  prerequisites?: readonly string[];
+  /** Technology & tool ecosystem (displayed as chips). */
+  technologies?: readonly string[];
+  /** Practical projects incl. capstone (displayed as "You will build"). */
+  projects?: readonly string[];
+  /** Skills held after completion (displayed as chips). */
+  skills?: readonly string[];
+  /** Weekly effort label (e.g. "6–8 hours/week"). */
+  hoursPerWeek?: string;
 }
 
 /**

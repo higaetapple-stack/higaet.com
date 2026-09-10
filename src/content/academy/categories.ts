@@ -241,12 +241,12 @@ export const ACADEMY_CATEGORIES: readonly CategoryEntry[] = [
     slug: "ai-generative-ai",
     status: "published",
     visibility: "public",
-    name: "AI & Generative AI",
+    name: "AI & Generative Intelligence",
     tagline: "Production LLM systems — agents, RAG, evals, and AI applications.",
     icon: "Brain",
     order: 80,
     metadata: {
-      title: "AI & Generative AI Courses | HIGAET Academy",
+      title: "AI & Generative Intelligence Courses | HIGAET Academy",
       description:
         "HIGAET courses in Generative AI engineering, LLM systems, AI agents, RAG, evals, and applied AI product development.",
       keywords: [
@@ -295,12 +295,12 @@ export const ACADEMY_CATEGORIES: readonly CategoryEntry[] = [
     slug: "cloud-infrastructure",
     status: "published",
     visibility: "public",
-    name: "Cloud & Infrastructure",
+    name: "Cloud & Platform Engineering",
     tagline: "Cloud, DevOps, Kubernetes, platforms, and reliability engineering.",
     icon: "Cloud",
     order: 100,
     metadata: {
-      title: "Cloud & Infrastructure Courses | HIGAET Academy",
+      title: "Cloud & Platform Engineering Courses | HIGAET Academy",
       description:
         "HIGAET cloud and infrastructure courses — DevOps, Kubernetes, platform engineering, SRE, and cloud architecture.",
       keywords: [
@@ -398,12 +398,12 @@ export const ACADEMY_CATEGORIES: readonly CategoryEntry[] = [
     slug: "engineering-leadership",
     status: "published",
     visibility: "public",
-    name: "Engineering Leadership",
+    name: "Engineering Leadership & Architecture",
     tagline: "Management, architecture, and strategy for technology leaders.",
     icon: "Users",
     order: 140,
     metadata: {
-      title: "Engineering Leadership Courses | HIGAET Academy",
+      title: "Engineering Leadership & Architecture Courses | HIGAET Academy",
       description:
         "HIGAET leadership courses — engineering management, technical leadership, product management, and architecture.",
       keywords: [

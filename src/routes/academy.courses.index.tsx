@@ -55,6 +55,11 @@ function CoursesIndex() {
   const [level, setLevel] = useState<LevelFilter>("all");
 
   const catById = useMemo(() => new Map(CATEGORIES.map((c) => [c.id, c] as const)), []);
+  const countByCat = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const c of COURSES) m.set(c.categoryId, (m.get(c.categoryId) ?? 0) + 1);
+    return m;
+  }, []);
 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -127,6 +132,7 @@ function CoursesIndex() {
                 {CATEGORIES.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
+                    {countByCat.get(c.id) ? ` (${countByCat.get(c.id)})` : ""}
                   </option>
                 ))}
               </select>
@@ -213,6 +219,7 @@ function CoursesIndex() {
                       <span className="inline-flex items-center gap-1">
                         <Clock className="size-3.5" aria-hidden />
                         {c.duration}
+                        {c.hoursPerWeek ? ` · ${c.hoursPerWeek}` : ""}
                       </span>
                     )}
                     {c.mode && (
@@ -222,6 +229,22 @@ function CoursesIndex() {
                       </span>
                     )}
                   </dl>
+
+                  {(c.technologies?.length || c.metadata.keywords?.length) && (
+                    <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                      <span className="font-semibold text-ink">Learn: </span>
+                      {(c.technologies?.length
+                        ? (c.technologies as readonly string[]).slice(0, 5)
+                        : (c.metadata.keywords as readonly string[]).slice(0, 5)
+                      ).join(" · ")}
+                    </p>
+                  )}
+                  {c.prerequisites?.length ? (
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                      <span className="font-semibold text-ink">Requires: </span>
+                      {(c.prerequisites as readonly string[])[0]}
+                    </p>
+                  ) : null}
 
                   <div className="mt-6">
                     <Link

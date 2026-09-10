@@ -99,7 +99,17 @@ function CourseDetail() {
         subtitle={course.summary}
       >
         <div className="grid max-w-3xl grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-4">
-          <Meta icon={Clock} label="Duration" value={course.duration ?? "—"} />
+          <Meta
+            icon={Clock}
+            label="Duration"
+            value={
+              course.duration
+                ? course.hoursPerWeek
+                  ? `${course.duration} · ${course.hoursPerWeek}`
+                  : course.duration
+                : (course.hoursPerWeek ?? "—")
+            }
+          />
           <Meta
             icon={GraduationCap}
             label="Level"
@@ -119,6 +129,80 @@ function CourseDetail() {
           />
         </div>
       </PageHero>
+
+      {/* Overview — standardized learning-system block: who it's for, prerequisites, toolbox */}
+      {course.audience?.length || course.prerequisites?.length || course.technologies?.length ? (
+        <Section className="!pt-0">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Overview</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                Know exactly what you&apos;re signing up for.
+              </h2>
+            </div>
+            <div className="space-y-8">
+              {course.audience?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">Who is this for</h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {course.audience.map((a: string) => (
+                      <span
+                        key={a}
+                        className="rounded-full bg-academy/10 px-3 py-1 text-xs font-medium text-academy"
+                      >
+                        {a}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {course.prerequisites?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">Prerequisites</h3>
+                  <ul className="mt-3 space-y-2">
+                    {course.prerequisites.map((req: string) => (
+                      <li key={req} className="flex gap-3 text-sm text-ink">
+                        <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-academy" aria-hidden />
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              {course.technologies?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">Technologies &amp; tools</h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {course.technologies.map((t: string) => (
+                      <span
+                        key={t}
+                        className="rounded-md bg-muted/60 px-2.5 py-1 font-mono text-xs text-ink"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {course.skills?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">Skills you&apos;ll gain</h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {course.skills.map((s: string) => (
+                      <span
+                        key={s}
+                        className="rounded-md border border-border px-2.5 py-1 text-xs text-ink"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </Section>
+      ) : null}
 
       {/* Curriculum — same Eyebrow + headline split as Program detail */}
       {course.curriculum?.length ? (
@@ -186,6 +270,39 @@ function CourseDetail() {
                 </li>
               ))}
             </ul>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Projects — "You will build", same card language as curriculum modules */}
+      {course.projects?.length ? (
+        <Section className="bg-muted/30">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Projects</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                You will build.
+              </h2>
+              <p className="mt-5 text-muted-foreground leading-relaxed">
+                Every project ships as HIGAET Practical Training / Experiential Learning —
+                portfolio-ready work, not exercises.
+              </p>
+            </div>
+            <ol className="space-y-6">
+              {course.projects.map((p: string, i: number) => {
+                const isCapstone = p.toLowerCase().startsWith("capstone:");
+                return (
+                  <li key={i} className="rounded-xl bg-card p-6 ring-1 ring-border">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                      {isCapstone ? "Capstone" : `Project ${String(i + 1).padStart(2, "0")}`}
+                    </span>
+                    <p className="mt-2 text-sm font-medium leading-snug text-ink">
+                      {isCapstone ? p.replace(/^[Cc]apstone:\s*/, "") : p}
+                    </p>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
         </Section>
       ) : null}
