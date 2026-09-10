@@ -54,6 +54,13 @@ const CAT_BOOTCAMPS = "academy_category_bootcamps";
 const CAT_EXECUTIVE = "academy_category_executive_programs";
 const CAT_WORKSHOPS = "academy_category_workshops";
 const CAT_ENTERPRISE = "academy_category_enterprise_training";
+const CAT_AI_GENERATIVE = "academy_category_ai_generative_ai";
+const CAT_SOFTWARE = "academy_category_software_engineering";
+const CAT_CLOUD = "academy_category_cloud_infrastructure";
+const CAT_DATA_ML = "academy_category_data_ml";
+const CAT_CYBER = "academy_category_cybersecurity";
+const CAT_EMERGING = "academy_category_emerging_tech";
+const CAT_LEADERSHIP = "academy_category_engineering_leadership";
 
 /* ----------------------------------------------------------------
  * Course Registry
@@ -983,6 +990,5313 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       version: ENTRY_VERSION,
       author: AUTHOR,
     },
+  },
+  // ============================================================
+  // HIGAET Original Catalog - 72 discipline courses (2026-09)
+  // AI & Generative AI (16) -> Software (11) -> Cloud (10) ->
+  // Data & ML (11) -> Cybersecurity (10) -> Emerging (7) ->
+  // Leadership (7). Titles are authoritative; fee = to be configured.
+  // ============================================================
+  {
+    id: "academy_course_genai_engineering",
+    slug: "generative-ai-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET Generative AI Engineering",
+    summary:
+      "Learn prompt design, LLM APIs, embeddings, and vector search while building chatbots, summarizers, and multimodal prototypes through guided practical training.",
+    duration: "12 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build production-style LLM features using chat, completion, and embedding APIs",
+      "Design structured prompts, templates, and output schemas for reliable responses",
+      "Develop retrieval-grounded assistants backed by curated knowledge sources",
+      "Deploy containerized generative AI services with logging and versioning",
+      "Integrate function calling, file handling, and third-party APIs",
+      "Evaluate response quality with task-based rubrics and regression checks",
+      "Secure API keys, redact sensitive data, and apply usage controls",
+      "Optimize token usage, latency, and cost across model selections",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: How transformers, tokens, and LLM APIs work",
+      "Module 02 — Prompt Engineering: Patterns, templates, and structured outputs",
+      "Module 03 — Core: Embeddings, chunking, and vector database workflows",
+      "Module 04 — Engineering: Function calling and tool-connected assistants",
+      "Module 05 — Engineering: Document Q&A and summarization pipelines",
+      "Module 06 — Advanced: Multimodal inputs, images, and audio handling",
+      "Module 07 — Production: Deployment, monitoring, cost control, and safety filters",
+      "Module 08 — Capstone: Design and deploy a grounded generative AI product",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Developers, analysts, and product builders with basic Python and API experience. Familiarity with JSON, Git, and command-line workflows helps with HIGAET Practical Training / Experiential Learning labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A support chatbot, a document summarizer, and a capstone grounded assistant with retrieval, tool calls, and a deployed demo interface.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include AI application developer, prompt engineer, LLM integration developer, chatbot developer, solutions engineer, and technical product builder.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Generative AI Engineering | HIGAET Academy",
+      description:
+        "Learn LLM APIs, prompts, embeddings, and deployment by building chatbots and grounded AI apps in HIGAET Academy practical training.",
+      keywords: [
+        "generative ai",
+        "llm apis",
+        "prompt engineering",
+        "embeddings",
+        "vector databases",
+        "chatbots",
+        "ai application developer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_agentic_ai_engineering",
+    slug: "agentic-ai-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET Agentic AI Engineering",
+    summary:
+      "Design autonomous agents with planning, memory, and tools, covering orchestration, multi-agent collaboration, and guardrails through hands-on engineering projects.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Architect single and multi-agent systems with defined roles and handoffs",
+      "Build planning, reflection, and task-decomposition loops for agents",
+      "Develop persistent memory using state stores and conversation history",
+      "Integrate browsers, code runners, databases, and custom tools",
+      "Deploy agent services with job queues, retries, and human approval gates",
+      "Evaluate task success, tool accuracy, and failure recovery paths",
+      "Secure agent actions with scopes, allowlists, and audit trails",
+      "Optimize step counts, context size, and execution cost",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Agent loops, planners, tools, and memory models",
+      "Module 02 — Core: Tool design, schemas, error handling, and retries",
+      "Module 03 — Core: Memory systems, state management, and context budgets",
+      "Module 04 — Engineering: Single-agent task automation workflows",
+      "Module 05 — Engineering: Multi-agent collaboration and supervisor patterns",
+      "Module 06 — Advanced: Browser, code, and data tools for agents",
+      "Module 07 — Production: Guardrails, approvals, observability, and cost control",
+      "Module 08 — Capstone: Ship a multi-agent system for a defined operations task",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Intermediate Python developers comfortable with APIs and LLM basics. Prior work with prompts, JSON, and async workflows helps with HIGAET Practical Training / Experiential Learning agent labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A research assistant agent, a multi-agent support triage workflow, and a capstone operations agent with tools, memory, and approval gates.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include AI agent developer, automation engineer, applied AI engineer, workflow engineer, solutions architect, and platform engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Agentic AI Engineering | HIGAET Academy",
+      description:
+        "Build planning agents, tool integrations, memory, and multi-agent workflows with guardrails in HIGAET Academy engineering labs.",
+      keywords: [
+        "agentic ai",
+        "ai agents",
+        "multi-agent systems",
+        "tool use",
+        "agent memory",
+        "orchestration",
+        "automation engineer",
+        "applied ai engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_agent_builder",
+    slug: "ai-agent-builder",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Agent Builder",
+    summary:
+      "Build practical no-code and low-code AI agents using visual builders, knowledge bases, and integrations, ending with a deployed assistant for a real workflow.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build assistants with visual agent builders and conversational flows",
+      "Design intents, entities, fallback paths, and escalation rules",
+      "Develop knowledge-backed answers from documents and FAQs",
+      "Integrate spreadsheets, CRMs, forms, and messaging channels",
+      "Deploy agents to web widgets and team workspaces",
+      "Evaluate conversation logs and improve failed turns",
+      "Secure access controls, data retention, and PII handling",
+      "Automate follow-ups, ticket creation, and notification workflows",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Agent builder concepts, flows, and use cases",
+      "Module 02 — Core: Conversation design, intents, and fallback handling",
+      "Module 03 — Core: Knowledge bases, documents, and grounded answers",
+      "Module 04 — Engineering: Integrations with forms, sheets, and CRMs",
+      "Module 05 — Engineering: Deployment to web, chat, and workspace channels",
+      "Module 06 — Advanced: Analytics, log review, and iteration cycles",
+      "Module 07 — Production: Privacy, access control, and handoff design",
+      "Module 08 — Capstone: Launch a deployed agent for a selected support workflow",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Founders, operators, marketers, and analysts with basic computer skills. No prior coding is required; comfort with documents and spreadsheets supports HIGAET Practical Training / Experiential Learning work.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A FAQ assistant, a lead-capture agent with CRM integration, and a capstone deployed agent covering one complete business workflow.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include AI agent builder, chatbot specialist, business automation analyst, customer support technologist, operations associate, and freelance AI consultant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Agent Builder | HIGAET Academy",
+      description:
+        "Create no-code AI agents with knowledge bases, integrations, and deployment using visual builders in practical HIGAET Academy labs.",
+      keywords: [
+        "ai agent builder",
+        "no-code ai",
+        "chatbot builder",
+        "conversation design",
+        "knowledge base",
+        "business automation",
+        "support technologist",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_llm_engineering",
+    slug: "llm-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET LLM Engineering",
+    summary:
+      "Go deep on model selection, fine-tuning, inference optimization, and serving, with labs on data preparation, adapters, and production LLM endpoints.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Evaluate open and hosted models for quality, latency, and cost trade-offs",
+      "Develop instruction and preference datasets with cleaning and deduping",
+      "Build fine-tuning runs using parameter-efficient adapter methods",
+      "Deploy scalable inference endpoints with batching and caching",
+      "Integrate guardrails, structured outputs, and fallback models",
+      "Architect long-context handling with chunking and summarization",
+      "Secure model artifacts, datasets, and endpoint access",
+      "Optimize throughput, quantization, and serving costs",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Model families, tokenizers, and context windows",
+      "Module 02 — Core: Model selection, benchmarks, and routing strategies",
+      "Module 03 — Core: Dataset design, cleaning, and instruction formatting",
+      "Module 04 — Engineering: Adapter-based fine-tuning and checkpoint review",
+      "Module 05 — Engineering: Inference servers, batching, and caching",
+      "Module 06 — Advanced: Long-context design and structured generation",
+      "Module 07 — Production: Serving, scaling, monitoring, and fallback design",
+      "Module 08 — Capstone: Fine-tune and serve a task-specialized model endpoint",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Python developers and ML practitioners comfortable with APIs, dataframes, and training concepts. Basic Linux and Git experience supports HIGAET Practical Training / Experiential Learning serving labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A model comparison study, a fine-tuned support classifier, and a capstone served endpoint with inference caching and monitoring.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include LLM engineer, ML engineer, NLP engineer, MLOps engineer, applied scientist associate, and AI platform engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "LLM Engineering | HIGAET Academy",
+      description:
+        "Master fine-tuning, inference serving, model routing, and optimization by shipping a task-specialized LLM endpoint with HIGAET Academy.",
+      keywords: [
+        "llm engineering",
+        "fine-tuning",
+        "inference serving",
+        "model evaluation",
+        "quantization",
+        "nlp engineer",
+        "mlops engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_rag_application_engineering",
+    slug: "rag-application-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET RAG Application Engineering",
+    summary:
+      "Engineer retrieval-augmented generation systems covering chunking, embeddings, hybrid search, reranking, citations, and grounded answer evaluation.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build document ingestion pipelines with parsing, cleaning, and chunking",
+      "Design embedding workflows and vector index schemas",
+      "Develop hybrid search with dense, lexical, and reranking stages",
+      "Deploy grounded Q&A APIs with citations and source links",
+      "Integrate access filters, metadata routing, and refresh jobs",
+      "Evaluate faithfulness, recall, and answer relevance",
+      "Secure indexes with tenant isolation and redaction rules",
+      "Optimize chunk size, top-k selection, and query latency",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: RAG architectures and grounding concepts",
+      "Module 02 — Core: Document parsing, cleaning, and chunking strategies",
+      "Module 03 — Core: Embeddings, vector stores, and metadata design",
+      "Module 04 — Engineering: Hybrid search, filters, and rerankers",
+      "Module 05 — Engineering: Grounded answering with citations",
+      "Module 06 — Advanced: RAG evaluation, failure analysis, and tuning",
+      "Module 07 — Production: Refresh pipelines, access control, and monitoring",
+      "Module 08 — Capstone: Ship a cited Q&A app over a document collection",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Developers with basic Python and API skills who want search-grounded assistants. Familiarity with databases and JSON supports HIGAET Practical Training / Experiential Learning labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A policy document Q&A tool, a hybrid search prototype with reranking, and a capstone cited assistant with refresh and evaluation checks.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include RAG developer, search engineer, knowledge assistant developer, applied AI engineer, data application developer, and solutions engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "RAG App Engineering | HIGAET Academy",
+      description:
+        "Build cited RAG apps with chunking, embeddings, hybrid search, reranking, and grounding checks in HIGAET Academy labs.",
+      keywords: [
+        "rag",
+        "retrieval augmented generation",
+        "embeddings",
+        "vector search",
+        "hybrid search",
+        "reranking",
+        "search engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_mcp_application_engineering",
+    slug: "mcp-application-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET MCP Engineering",
+    summary:
+      "Build Model Context Protocol servers and clients, exposing tools, resources, and prompts with schemas, auth, and production-ready deployment practices.",
+    duration: "6 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build MCP servers exposing tools, resources, and prompts",
+      "Design JSON schemas, capability manifests, and error responses",
+      "Develop MCP clients that discover and invoke server actions",
+      "Integrate file, database, and API backends behind MCP tools",
+      "Deploy versioned MCP servers with logging and health checks",
+      "Evaluate tool correctness, schema compliance, and edge cases",
+      "Secure tokens, scopes, rate limits, and input validation",
+      "Automate regression tests for tool contracts and upgrades",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: MCP concepts, servers, clients, and transports",
+      "Module 02 — Core: Tool definitions, schemas, and resources",
+      "Module 03 — Core: Prompts, context assembly, and capability discovery",
+      "Module 04 — Engineering: Backend integrations for files and APIs",
+      "Module 05 — Production: Auth, validation, logging, and versioning",
+      "Module 06 — Capstone: Ship a tested MCP server with a demo client",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Developers familiar with APIs, JSON schemas, and basic TypeScript or Python. Prior LLM tool-calling experience helps with HIGAET Practical Training / Experiential Learning server labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A file-search MCP server, a database query tool set, and a capstone versioned MCP server with a working demo client.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include MCP developer, AI integration engineer, backend developer, tooling engineer, platform engineer, and applied AI engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "MCP Engineering | HIGAET Academy",
+      description:
+        "Learn MCP servers, clients, tools, and resources by shipping a tested integrations server in HIGAET Academy labs.",
+      keywords: [
+        "model context protocol",
+        "mcp servers",
+        "mcp clients",
+        "tool schemas",
+        "ai integrations",
+        "backend developer",
+        "platform engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_evals",
+    slug: "ai-evals",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Evals Engineering",
+    summary:
+      "Master offline and online evaluation for AI systems, covering datasets, judges, guardrails, regression suites, and production quality monitoring.",
+    duration: "6 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build offline eval suites with gold sets and task rubrics",
+      "Design LLM-judge and programmatic scoring methods",
+      "Develop regression tests for prompts, retrieval, and agents",
+      "Deploy online monitors for drift, toxicity, and refusal behavior",
+      "Integrate guardrails and policy checks into serving paths",
+      "Evaluate agreement rates, calibration, and failure clusters",
+      "Secure eval data with sampling, masking, and access controls",
+      "Optimize eval runtime, sampling strategy, and alert thresholds",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Eval types, metrics, and quality dimensions",
+      "Module 02 — Core: Dataset curation, gold sets, and rubric design",
+      "Module 03 — Core: LLM judges, scoring functions, and calibration",
+      "Module 04 — Engineering: Regression suites for RAG and agents",
+      "Module 05 — Production: Guardrails, online monitoring, and alerting",
+      "Module 06 — Capstone: Deliver an eval harness with dashboards and reports",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "AI developers and QA engineers with Python and basic LLM app experience. Familiarity with datasets and statistics helps with HIGAET Practical Training / Experiential Learning eval labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "A rubric-based eval suite, a calibrated judge comparison, and a capstone regression harness with monitoring dashboards.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include AI eval engineer, quality engineer for AI, applied AI engineer, trust and safety analyst, data analyst, and release engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Evals Engineering | HIGAET Academy",
+      description:
+        "Design eval suites, LLM judges, guardrails, and monitors to measure AI quality reliably in HIGAET Academy labs.",
+      keywords: [
+        "ai evals",
+        "llm judges",
+        "guardrails",
+        "regression testing",
+        "quality monitoring",
+        "trust and safety",
+        "quality engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_automation_engineering",
+    slug: "ai-automation-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Automation Engineering",
+    summary:
+      "Automate business operations with AI workflows spanning triggers, extraction, approvals, and integrations across documents, email, and spreadsheets.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build trigger-based AI workflows for documents and messages",
+      "Design extraction schemas for invoices, forms, and emails",
+      "Develop approval steps, escalations, and exception queues",
+      "Integrate office suites, drives, queues, and webhooks",
+      "Deploy scheduled and event-driven automation pipelines",
+      "Evaluate accuracy, exception rates, and processing time",
+      "Secure credentials, audit logs, and data retention policies",
+      "Automate reporting, alerts, and status updates for stakeholders",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Automation patterns, triggers, and actions",
+      "Module 02 — Core: Document extraction and structured outputs",
+      "Module 03 — Core: Workflow builders, branching, and approvals",
+      "Module 04 — Engineering: Email, sheet, and drive integrations",
+      "Module 05 — Engineering: Queues, webhooks, and error recovery",
+      "Module 06 — Advanced: Monitoring, cost tracking, and iteration",
+      "Module 07 — Production: Security, audit trails, and rollout planning",
+      "Module 08 — Capstone: Deliver an end-to-end operations automation",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course?",
+        answer:
+          "Operators, analysts, and developers with spreadsheet and workflow tool experience. Basic API familiarity helps with HIGAET Practical Training / Experiential Learning integration labs.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "An invoice extraction flow, an inbox triage automation, and a capstone operations pipeline with approvals and monitoring.",
+      },
+      {
+        question: "What careers does this support?",
+        answer:
+          "Relevant roles include AI automation engineer, business systems analyst, operations engineer, integration specialist, workflow consultant, and support technologist.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Automation Engineering | HIGAET Academy",
+      description:
+        "Automate docs, email, and sheets with AI extraction, approvals, and monitored pipelines in HIGAET Academy labs.",
+      keywords: [
+        "ai automation",
+        "workflow automation",
+        "document extraction",
+        "integrations",
+        "approvals",
+        "operations engineer",
+        "systems analyst",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_product_management",
+    slug: "ai-product-management",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Product Management",
+    summary:
+      "Learn to scope, roadmap, and ship AI features through HIGAET Practical Training, building specs, evaluations, and launch plans for real product scenarios.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build AI product requirement documents with success metrics and scope boundaries",
+      "Design evaluation plans that link model quality to user and business outcomes",
+      "Develop roadmaps that sequence data, model, and UX milestones pragmatically",
+      "Deploy pilot launches with feedback loops and staged rollout criteria",
+      "Integrate analytics and experimentation to guide AI feature iteration",
+      "Evaluate build-versus-buy decisions across models, APIs, and vendors",
+      "Secure stakeholder alignment with risk, cost, and limitation disclosures",
+      "Optimize AI pricing, packaging, and lifecycle decisions from usage data",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: AI product lifecycle, capabilities, and constraints",
+      "Module 02 — Discovery: user research and problem framing for AI features",
+      "Module 03 — Scoping: PRDs, acceptance criteria, and evaluation metrics",
+      "Module 04 — Data and Model Strategy: sourcing, quality, and vendor selection",
+      "Module 05 — UX Engineering: designing for uncertainty, feedback, and trust",
+      "Module 06 — Measurement: experiments, analytics, and iteration loops",
+      "Module 07 — Launch: risk review, rollout planning, and lifecycle management",
+      "Module 08 — Capstone: end-to-end AI product plan with roadmap and launch readiness",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Product managers, founders, analysts, and engineers moving into product roles. Prerequisites: basic familiarity with AI concepts and comfort reading product documents; no coding required.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an AI PRD with evaluation metrics, a phased product roadmap, and a capstone launch plan covering pilot design, measurement, and iteration for a chosen AI feature.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "AI product manager, technical product manager, product analyst, solutions consultant, innovation lead, startup founder, business analyst, and go-to-market specialist.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Product Management | HIGAET Academy",
+      description:
+        "Learn AI product management: scoping, roadmaps, evaluation metrics, UX, and launch planning through HIGAET Academy practical training.",
+      keywords: [
+        "ai product management",
+        "product roadmaps",
+        "ai metrics",
+        "product strategy",
+        "user research",
+        "ai ux",
+        "experimentation",
+        "product launch",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_governance_safety",
+    slug: "ai-governance-and-safety",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Governance & Safety",
+    summary:
+      "Learn risk assessment, policy design, and safety testing for AI systems, producing governance documentation and red-team reports through structured practical exercises.",
+    duration: "6 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build AI risk registers covering misuse, bias, privacy, and operational failure modes",
+      "Design usage policies and content guidelines for generative AI deployments",
+      "Develop red-team test plans with documented findings and severity ratings",
+      "Deploy review workflows for model releases and high-risk use cases",
+      "Integrate logging and incident response procedures for AI system events",
+      "Evaluate models for bias, robustness, and safety using structured checklists",
+      "Secure sensitive data handling through access controls and retention rules",
+      "Automate compliance evidence collection for audits and internal reviews",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: AI risk landscape, safety principles, and governance models",
+      "Module 02 — Risk Assessment: threat modeling and impact classification for AI uses",
+      "Module 03 — Policy Design: acceptable use, content rules, and escalation paths",
+      "Module 04 — Safety Testing: red-teaming, jailbreak probes, and evaluation suites",
+      "Module 05 — Operations: monitoring, incident response, and release gating",
+      "Module 06 — Documentation: model cards, system cards, and audit trails",
+      "Module 07 — Regulation: overview of major AI regulatory approaches and obligations",
+      "Module 08 — Capstone: governance pack with risk register, policy, and safety test report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Compliance staff, product leads, engineers, and operations managers responsible for AI oversight. Prerequisites: general familiarity with AI applications; no advanced math or coding required.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an AI risk register, a usage policy document, and a capstone governance pack with red-team findings and an incident response plan for a sample deployment.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "AI governance analyst, trust and safety specialist, compliance associate, risk analyst, policy researcher, AI auditor, operations manager, and program coordinator.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Governance & Safety | HIGAET Academy",
+      description:
+        "Study AI governance and safety: risk assessment, policy design, red-teaming, and audit documentation with HIGAET Academy training.",
+      keywords: [
+        "ai governance",
+        "ai safety",
+        "risk assessment",
+        "red teaming",
+        "ai policy",
+        "compliance",
+        "trust and safety",
+        "model cards",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_application_engineering",
+    slug: "ai-application-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Application Engineering",
+    summary:
+      "Learn to design and ship full AI applications with retrieval, tool use, and clean interfaces, building deployed prototypes through HIGAET Practical Training.",
+    duration: "10 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build full-stack AI applications combining language models with application backends",
+      "Design retrieval pipelines with chunking, embeddings, and grounded responses",
+      "Develop tool-calling features that connect models to APIs and databases",
+      "Deploy containerized AI services with configuration and health checks",
+      "Integrate authentication, session state, and conversation memory safely",
+      "Evaluate response quality with test sets and failure-case analysis",
+      "Secure API keys, user data, and model inputs against common attacks",
+      "Optimize latency and cost through caching, batching, and model routing",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: AI application architecture and component patterns",
+      "Module 02 — Core: model integration, prompts, and structured outputs",
+      "Module 03 — Retrieval: embeddings, vector stores, and grounded generation",
+      "Module 04 — Engineering: tool use, function calling, and external APIs",
+      "Module 05 — Interfaces: chat and task UIs with streaming and state",
+      "Module 06 — Data: session memory, feedback capture, and content stores",
+      "Module 07 — Production: testing, deployment, logging, and cost control",
+      "Module 08 — Capstone: deployed AI application with retrieval, tools, and evaluation report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Developers with working knowledge of JavaScript or Python, REST APIs, and Git. Familiarity with basic AI concepts helps; advanced machine learning is not required.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a retrieval-grounded assistant, a tool-using task application, and a capstone full-stack AI application deployed with documentation and an evaluation summary.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "AI application developer, full-stack developer, software engineer, solutions engineer, product engineer, backend developer, and applied AI developer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Application Engineering | HIGAET Academy",
+      description:
+        "Build full-stack AI apps with retrieval, tool use, and deployment skills taught step by step in HIGAET Academy experiential labs.",
+      keywords: [
+        "ai applications",
+        "retrieval augmented generation",
+        "tool calling",
+        "full stack ai",
+        "vector databases",
+        "model integration",
+        "app deployment",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_systems_engineering",
+    slug: "ai-systems-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Systems Engineering",
+    summary:
+      "Learn to architect scalable, observable AI platforms covering orchestration, memory, evaluation harnesses, and production operations through intensive engineering labs.",
+    duration: "12 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Architect multi-service AI platforms with clear service and data boundaries",
+      "Design orchestration layers for agents, queues, retries, and long-running jobs",
+      "Develop evaluation harnesses with regression suites and quality gates",
+      "Deploy scalable inference topologies with load balancing and fallbacks",
+      "Integrate observability with traces, metrics, and cost attribution",
+      "Evaluate scaling trade-offs across throughput, latency, and reliability targets",
+      "Secure multi-tenant AI systems with isolation, quotas, and audit logging",
+      "Optimize distributed AI workloads through batching, caching, and autoscaling",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: distributed AI system patterns and reference architectures",
+      "Module 02 — Core: orchestration, task graphs, and stateful agent runtimes",
+      "Module 03 — Memory: short-term, long-term, and shared context stores",
+      "Module 04 — Engineering: inference scaling, queues, and failure handling",
+      "Module 05 — Data: pipelines, feature stores, and feedback ingestion",
+      "Module 06 — Advanced: evaluation platforms and continuous quality gates",
+      "Module 07 — Production: observability, incident management, and cost governance",
+      "Module 08 — Capstone: production-grade AI platform design with operations runbook",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Experienced backend or platform engineers comfortable with distributed systems, containers, and APIs. Prior exposure to AI application development is strongly recommended.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an orchestration service with retries and queues, an evaluation harness with regression gates, and a capstone platform blueprint with scaling and observability plans.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "AI systems engineer, platform engineer, ML platform engineer, backend architect, infrastructure engineer, DevOps engineer, and applied AI architect.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Systems Engineering | HIGAET Academy",
+      description:
+        "Architect scalable AI systems: orchestration, memory, evaluation harnesses, and production operations with HIGAET Academy labs.",
+      keywords: [
+        "ai systems",
+        "platform engineering",
+        "orchestration",
+        "inference scaling",
+        "observability",
+        "evaluation harness",
+        "distributed systems",
+        "mlops",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_solutions_engineering",
+    slug: "ai-solutions-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Solutions Engineering",
+    summary:
+      "Learn to translate client needs into working AI proposals, demos, and delivery plans, practicing scoping, estimation, and handover through applied solution exercises.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build tailored AI solution proposals with scope, assumptions, and delivery milestones",
+      "Design demonstration prototypes that address specific client workflows",
+      "Develop estimation models covering effort, data needs, and operating cost",
+      "Deploy pilot solutions with acceptance criteria and success measurement",
+      "Integrate client systems through APIs, data feeds, and access controls",
+      "Evaluate solution fit across accuracy, latency, cost, and maintainability",
+      "Secure client confidence with risk registers and limitation statements",
+      "Optimize handover packages with documentation, training, and support plans",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: solutions lifecycle from discovery to handover",
+      "Module 02 — Discovery: requirements elicitation and technical qualification",
+      "Module 03 — Design: solution blueprints, data mapping, and integration plans",
+      "Module 04 — Engineering: rapid prototyping and demo construction",
+      "Module 05 — Estimation: effort, timeline, and total cost modeling",
+      "Module 06 — Delivery: pilot execution, testing, and acceptance management",
+      "Module 07 — Handover: documentation, training, and support transitions",
+      "Module 08 — Capstone: complete client solution pack with demo and delivery plan",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Consultants, presales engineers, and senior developers who scope client work. Prerequisites: prior AI application or integration experience plus comfort presenting technical ideas.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a discovery-to-proposal pack, a working demo for a sample client brief, and a capstone solution bundle with prototype, estimates, and handover documents.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "AI solutions engineer, solutions architect, presales engineer, technical consultant, delivery lead, integration specialist, and client success engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Solutions Engineering | HIGAET Academy",
+      description:
+        "Master AI solutions engineering: discovery, demos, estimation, pilot delivery, and handover through HIGAET Academy applied training.",
+      keywords: [
+        "ai solutions",
+        "solutions architect",
+        "presales engineering",
+        "client delivery",
+        "prototyping",
+        "estimation",
+        "system integration",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_multimodal_ai_engineering",
+    slug: "multimodal-ai-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET Multimodal AI Engineering",
+    summary:
+      "Learn to build applications combining text, images, and audio using vision-language models, generation APIs, and cross-modal retrieval in hands-on engineering labs.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build vision-language applications for captioning, visual QA, and document understanding",
+      "Design cross-modal retrieval systems spanning text, image, and audio indexes",
+      "Develop image generation workflows with prompt controls and safety filters",
+      "Deploy audio pipelines for transcription, synthesis, and voice interaction",
+      "Integrate multimodal inputs into unified application interfaces",
+      "Evaluate multimodal outputs for accuracy, grounding, and failure modes",
+      "Secure media handling with consent, filtering, and storage controls",
+      "Optimize multimodal latency and cost across model and modality choices",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: modality types, encoders, and fusion approaches",
+      "Module 02 — Vision-Language: captioning, visual QA, and document parsing",
+      "Module 03 — Generation: image synthesis controls, editing, and safety review",
+      "Module 04 — Audio: speech recognition, synthesis, and voice interfaces",
+      "Module 05 — Retrieval: cross-modal embeddings and unified search indexes",
+      "Module 06 — Engineering: multimodal pipelines, caching, and orchestration",
+      "Module 07 — Production: evaluation, moderation, and operating costs",
+      "Module 08 — Capstone: multimodal application combining vision, audio, and retrieval",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Intermediate developers comfortable with Python, APIs, and basic AI application concepts. Prior work with language-model APIs is recommended before tackling multimodal pipelines.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a visual question-answering tool, a cross-modal search prototype, and a capstone multimodal application with image, audio, and text capabilities.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Multimodal AI engineer, computer vision engineer, applied AI developer, voice interface developer, media AI specialist, and product engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Multimodal AI Engineering | HIGAET Academy",
+      description:
+        "Build multimodal AI apps with vision-language models, image generation, audio pipelines, and cross-modal search at HIGAET Academy.",
+      keywords: [
+        "multimodal ai",
+        "vision language models",
+        "image generation",
+        "speech recognition",
+        "cross-modal retrieval",
+        "voice interfaces",
+        "computer vision",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_api_engineering",
+    slug: "ai-api-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI API Engineering",
+    summary:
+      "Learn to design robust APIs for AI services covering streaming, authentication, rate limits, versioning, and developer experience through practical backend labs.",
+    duration: "6 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build versioned REST APIs that expose language-model and embedding services",
+      "Design streaming endpoints with token events, timeouts, and reconnect handling",
+      "Develop authentication and key-management flows for API consumers",
+      "Deploy rate limiting, quotas, and usage metering for AI workloads",
+      "Integrate validation, structured outputs, and error contracts consistently",
+      "Evaluate API reliability with load tests and failure-injection exercises",
+      "Secure AI endpoints against abuse, injection, and data leakage",
+      "Optimize throughput and cost with batching, caching, and request routing",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: API design principles for AI services",
+      "Module 02 — Core: request schemas, validation, and structured responses",
+      "Module 03 — Streaming: server-sent events, websockets, and partial results",
+      "Module 04 — Access: authentication, keys, scopes, and tenant isolation",
+      "Module 05 — Controls: rate limits, quotas, metering, and versioning",
+      "Module 06 — Quality: testing, load testing, and error handling",
+      "Module 07 — Operations: logging, monitoring, and developer documentation",
+      "Module 08 — Capstone: production-ready AI service API with docs and usage controls",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Backend developers familiar with HTTP, JSON, and one server framework in Python or JavaScript. Basic knowledge of AI model APIs is helpful but not mandatory.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a versioned AI service API, a streaming chat endpoint with usage metering, and a capstone documented API with auth, limits, and load-test results.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "API engineer, backend developer, platform engineer, integration engineer, software engineer, DevOps engineer, and applied AI developer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI API Engineering | HIGAET Academy",
+      description:
+        "Engineer production AI APIs: streaming, auth, rate limits, versioning, and docs through hands-on HIGAET Academy backend labs.",
+      keywords: [
+        "ai apis",
+        "api design",
+        "streaming endpoints",
+        "authentication",
+        "rate limiting",
+        "versioning",
+        "backend development",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_workflow_engineering",
+    slug: "ai-workflow-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_ai_generative_ai",
+    title: "HIGAET AI Workflow Engineering",
+    summary:
+      "Learn to automate everyday work with AI-connected workflows, combining triggers, approvals, and data steps into reliable routines via guided HIGAET Practical Training.",
+    duration: "6 weeks",
+    level: "beginner",
+    mode: "online",
+    outcomes: [
+      "Build automated workflows that connect AI steps to everyday business tools",
+      "Design trigger-based routines with filters, branches, and approval gates",
+      "Develop reusable templates for content, support, and reporting tasks",
+      "Deploy scheduled and event-driven workflows with error notifications",
+      "Integrate spreadsheets, documents, email, and chat tools into flows",
+      "Evaluate workflow runs using logs, success rates, and correction reviews",
+      "Secure workflow credentials and restrict sensitive actions with approvals",
+      "Automate routine reporting pipelines with checks and human review points",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: workflow concepts, triggers, actions, and data flow",
+      "Module 02 — Core: connecting AI steps to documents, sheets, and messaging",
+      "Module 03 — Logic: branching, filters, loops, and approval patterns",
+      "Module 04 — Reliability: error handling, retries, and run monitoring",
+      "Module 05 — Templates: reusable workflows for support and reporting tasks",
+      "Module 06 — Governance: access control, audit logs, and safe automation",
+      "Module 07 — Scaling: scheduling, batch runs, and maintenance practices",
+      "Module 08 — Capstone: automated departmental workflow with docs and review gates",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Beginners, operations staff, and non-engineers who want practical automation skills. Prerequisites: comfort with spreadsheets and web apps; no programming experience required.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a content-drafting workflow, a support-triage routine with approvals, and a capstone automated reporting flow with logging and human review steps.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Automation specialist, operations associate, workflow analyst, virtual assistant, office administrator, support specialist, and junior no-code developer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Workflow Engineering | HIGAET Academy",
+      description:
+        "Learn AI workflow automation: triggers, approvals, tool connections, and reliable routines for teams with HIGAET Academy labs.",
+      keywords: [
+        "ai workflows",
+        "workflow automation",
+        "no-code automation",
+        "business process",
+        "ai triggers",
+        "approvals",
+        "productivity",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_full_stack_engineering",
+    slug: "full-stack-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Full Stack Engineering",
+    summary:
+      "Study full-stack web development end to end, from semantic interfaces and APIs to databases, testing, security basics, observability, and cloud deployment.",
+    duration: "16 weeks",
+    level: "beginner",
+    mode: "hybrid",
+    outcomes: [
+      "Build responsive web interfaces with semantic HTML, modern CSS, and TypeScript.",
+      "Design RESTful endpoints with clear versioning, validation, and error handling.",
+      "Develop database-backed applications with relational modeling and migrations.",
+      "Deploy full-stack applications to cloud hosting with environment configuration.",
+      "Integrate third-party services for authentication, storage, and email delivery.",
+      "Evaluate application performance using browser tools and server-side metrics.",
+      "Secure web applications with authentication, authorization, and input validation.",
+      "Automate testing and delivery with unit tests, integration tests, and pipelines.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of the Web and Developer Tooling",
+      "Module 02 — Semantic HTML and Modern CSS Systems",
+      "Module 03 — TypeScript and Interactive Frontend Development",
+      "Module 04 — React Components, State, and Data Fetching",
+      "Module 05 — Backend Foundations with HTTP and Databases",
+      "Module 06 — Authentication, Authorization, and File Handling",
+      "Module 07 — Testing, Debugging, and Performance Habits",
+      "Module 08 — Deployment, Observability, and Production Readiness",
+      "Module 09 — Capstone: Plan, Build, and Deploy a Full-Stack Application",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "This beginner course suits learners with basic computer skills and an interest in websites. Familiarity with any programming concepts helps, but core HTML, CSS, and JavaScript are taught from the start.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build styled pages, interactive frontend apps, REST APIs, and database-backed features. The capstone combines them into one deployed full-stack application with documentation and tests.",
+      },
+      {
+        question: "What roles does this course relate to?",
+        answer:
+          "The skills covered relate to roles such as frontend developer, backend developer, full-stack developer, web developer, QA engineer, support engineer, and freelance web developer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Full Stack Engineering | HIGAET Academy",
+      description:
+        "Learn full-stack web engineering across frontend, APIs, databases, testing, security basics, and deployment in a 16-week hybrid program with projects.",
+      keywords: [
+        "full stack development",
+        "frontend basics",
+        "backend basics",
+        "rest api course",
+        "database design",
+        "react course",
+        "web deployment",
+        "software testing basics",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_frontend_engineering",
+    slug: "frontend-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Frontend Engineering",
+    summary:
+      "Study modern frontend development with semantic HTML, CSS systems, TypeScript, and React, including testing, accessibility, routing, and daily performance habits.",
+    duration: "10 weeks",
+    level: "beginner",
+    mode: "online",
+    outcomes: [
+      "Build accessible page layouts with semantic HTML and modern CSS techniques.",
+      "Design reusable component libraries with consistent props, slots, and theming.",
+      "Develop interactive React applications with routing and client-side state.",
+      "Deploy static and frontend-hosted sites with preview environments and rollbacks.",
+      "Integrate REST APIs with loading, error, empty, and pagination states.",
+      "Evaluate interface performance with audits, bundle analysis, and image strategy.",
+      "Secure frontend applications against cross-site scripting and unsafe rendering.",
+      "Automate visual checks and unit tests for components and user flows.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of Browsers, HTML, and CSS",
+      "Module 02 — Responsive Layouts and Design Systems",
+      "Module 03 — JavaScript and TypeScript for Interfaces",
+      "Module 04 — React Components, Hooks, and State",
+      "Module 05 — Routing, Forms, and API Integration",
+      "Module 06 — Accessibility, Internationalization, and SEO Basics",
+      "Module 07 — Testing, Performance, and Production Builds",
+      "Module 08 — Capstone: Design, Build, and Ship a Polished Frontend App",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "This beginner course suits learners comfortable with computers and basic problem solving. No prior framework experience is needed; HTML, CSS, and JavaScript fundamentals are covered before React.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build landing pages, a design-system component set, and data-driven React screens. The capstone is a complete accessible frontend application connected to a public API.",
+      },
+      {
+        question: "What roles does this course relate to?",
+        answer:
+          "The skills covered relate to roles such as frontend developer, UI developer, web developer, design engineer, QA engineer, content developer, and freelance web designer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Frontend Engineering | HIGAET Academy",
+      description:
+        "Learn modern frontend engineering with HTML, CSS, TypeScript, and React in a 10-week online program focused on accessible, tested, responsive interfaces.",
+      keywords: [
+        "frontend development",
+        "html css course",
+        "typescript basics",
+        "react course",
+        "responsive design",
+        "web accessibility",
+        "frontend testing",
+        "ui components",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_backend_engineering",
+    slug: "backend-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Backend Engineering",
+    summary:
+      "Study reliable server-side engineering with structured data modeling, HTTP APIs, authentication, background jobs, caching, testing, observability, logging, and deployment practices.",
+    duration: "12 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build HTTP services with routing, middleware, validation, and structured logging.",
+      "Design relational schemas with constraints, indexes, transactions, and migrations.",
+      "Develop authenticated APIs with sessions, tokens, roles, and permission checks.",
+      "Deploy backend services with configuration, health checks, and database backups.",
+      "Integrate message queues and background workers for long-running tasks.",
+      "Evaluate query and endpoint performance with profiling and caching strategy.",
+      "Secure backend systems with hashing, rate limiting, and secrets management.",
+      "Automate API and data-layer tests across unit, integration, and contract levels.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of HTTP, Servers, and Tooling",
+      "Module 02 — Data Modeling with Relational Databases",
+      "Module 03 — API Construction with Validation and Errors",
+      "Module 04 — Authentication, Sessions, and Permissions",
+      "Module 05 — Background Jobs, Queues, and Scheduled Tasks",
+      "Module 06 — Caching, Pagination, and Performance Tuning",
+      "Module 07 — Testing, Logging, and Production Operations",
+      "Module 08 — Capstone: Design, Build, and Operate a Backend Service",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "This intermediate course suits learners who can write basic code in any language. Comfort with variables, functions, and command-line basics helps before tackling databases and APIs.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build database schemas, REST endpoints, auth flows, and background workers. The capstone is a production-style backend service with tests, logs, and deployment notes.",
+      },
+      {
+        question: "What roles does this course relate to?",
+        answer:
+          "The skills covered relate to roles such as backend developer, API developer, database developer, platform engineer, DevOps associate, QA automation engineer, and support engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Backend Engineering | HIGAET Academy",
+      description:
+        "Learn backend engineering with HTTP APIs, relational data modeling, queues, caching, auth, and testing in a 12-week hybrid program with reviews.",
+      keywords: [
+        "backend development",
+        "server side programming",
+        "database design",
+        "rest api development",
+        "authentication systems",
+        "message queues",
+        "caching strategies",
+        "backend testing",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_api_engineering",
+    slug: "api-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET API Engineering",
+    summary:
+      "Study practical API engineering with careful REST and GraphQL design, versioning, authentication, validation, testing, documentation, rate limiting, and operational controls.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build versioned REST APIs with pagination, filtering, sorting, and error contracts.",
+      "Design GraphQL schemas with types, resolvers, mutations, and query budgets.",
+      "Develop contract tests and mock servers that keep clients and servers aligned.",
+      "Deploy documented APIs with staging environments and backward-compatible releases.",
+      "Integrate OAuth flows, API keys, and webhook receivers into client systems.",
+      "Evaluate API reliability with latency budgets, tracing, and usage dashboards.",
+      "Secure APIs with scopes, rotation policies, validation, and abuse controls.",
+      "Automate linting, breaking-change detection, and client SDK generation.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of APIs and Interface Contracts",
+      "Module 02 — REST Resource Modeling and Versioning",
+      "Module 03 — GraphQL Schemas, Resolvers, and Mutations",
+      "Module 04 — Authentication, Authorization, and Webhooks",
+      "Module 05 — Validation, Errors, Pagination, and Rate Limits",
+      "Module 06 — Testing, Mocking, and Client Integration",
+      "Module 07 — Documentation, SDKs, and Release Operations",
+      "Module 08 — Capstone: Design, Document, and Deliver a Versioned API",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "This intermediate course suits developers who can build basic HTTP handlers or frontend fetch calls. Familiarity with JSON and one programming language is enough to follow the design exercises.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build REST resources, a GraphQL service, webhook handlers, and OpenAPI documents. The capstone is a versioned API with guides, examples, tests, and a migration note.",
+      },
+      {
+        question: "What roles does this course relate to?",
+        answer:
+          "The skills covered relate to roles such as API developer, backend developer, integration engineer, platform engineer, solutions engineer, QA engineer, and technical writer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "API Engineering | HIGAET Academy",
+      description:
+        "Learn REST and GraphQL API design, versioning, security, validation, testing, and operations in an 8-week online program with guided reviews.",
+      keywords: [
+        "api design course",
+        "rest api",
+        "graphql course",
+        "openapi documentation",
+        "api security",
+        "webhooks",
+        "api testing",
+        "integration engineering",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_system_design",
+    slug: "system-design",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET System Design",
+    summary:
+      "Study how large systems scale, from load balancing and caching to queues, sharding, replication, consistency models, failure handling, and consensus protocols.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build capacity models that connect traffic estimates to servers, storage, and bandwidth.",
+      "Design cache hierarchies with eviction, invalidation, and consistency trade-offs.",
+      "Develop queue-based workflows with retries, dead letters, and ordering guarantees.",
+      "Deploy multi-region read patterns with replication lag and failover planning.",
+      "Integrate sharding and partitioning strategies for hot keys and uneven growth.",
+      "Evaluate CAP and PACELC trade-offs for session, catalog, and payment workloads.",
+      "Secure distributed communication with mutual TLS, idempotency, and audit trails.",
+      "Optimize consensus-dependent paths using leader election and quorum reasoning.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of Scale, Latency, and Availability",
+      "Module 02 — Load Balancing, Caching, and Content Delivery",
+      "Module 03 — Queues, Streams, and Asynchronous Workflows",
+      "Module 04 — Sharding, Partitioning, and Replication",
+      "Module 05 — CAP, Consistency Models, and Consensus",
+      "Module 06 — Storage Selection and Data Lifecycle Design",
+      "Module 07 — Observability, Failure Drills, and Cost Control",
+      "Module 08 — Capstone: Present and Defend a Scalable System Design",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "This advanced course suits developers comfortable with APIs, databases, and deployment basics. Experience reading architecture diagrams and reasoning about latency helps with the weekly design drills.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will produce estimation sheets, architecture diagrams, and failure-mode reviews for services like feeds and checkouts. The capstone is a defended design document with trade-offs and scaling math.",
+      },
+      {
+        question: "What roles does this course relate to?",
+        answer:
+          "The skills covered relate to roles such as backend engineer, platform engineer, site reliability engineer, solutions architect, infrastructure engineer, data engineer, and engineering manager.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "System Design | HIGAET Academy",
+      description:
+        "Learn distributed system design covering scaling, CAP trade-offs, caching, queues, sharding, replication, and consensus in an advanced online program.",
+      keywords: [
+        "system design course",
+        "distributed systems",
+        "scalability patterns",
+        "caching and cdn",
+        "message queues",
+        "database sharding",
+        "cap theorem",
+        "consensus protocols",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_software_architecture",
+    slug: "software-architecture",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Software Architecture",
+    summary:
+      "Study designing durable and practical software architecture through clear components, boundaries, quality attributes, patterns, documentation, governance, trade-off records, and evolutionary design.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build modular monoliths with explicit module boundaries and dependency rules.",
+      "Design service boundaries using domain modeling and context-mapping techniques.",
+      "Develop architecture decision records that capture context, options, and consequences.",
+      "Deploy evolvable systems with fitness functions and staged modernization plans.",
+      "Integrate event-driven patterns with schemas, versioning, and consumer contracts.",
+      "Evaluate quality attributes such as maintainability, testability, and operability.",
+      "Secure architecture reviews with threat modeling and data-flow analysis.",
+      "Automate governance with lint rules, contract checks, and diagram validation.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of Architecture and Quality Attributes",
+      "Module 02 — Components, Modules, and Dependency Discipline",
+      "Module 03 — Domain Boundaries and Context Mapping",
+      "Module 04 — Architectural Styles from Monolith to Services",
+      "Module 05 — Events, Contracts, and Integration Patterns",
+      "Module 06 — Data Ownership, Transactions, and Reporting",
+      "Module 07 — Documentation, Reviews, and Governance Habits",
+      "Module 08 — Capstone: Document and Present an Evolutionary Architecture",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "This advanced course suits developers who have shipped multi-module code or maintained production services. Comfort with APIs, data stores, and code reviews helps with the architecture exercises.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build context maps, decision records, interface contracts, and migration plans. The capstone is a documented architecture proposal with diagrams, risks, and an evolution roadmap.",
+      },
+      {
+        question: "What roles does this course relate to?",
+        answer:
+          "The skills covered relate to roles such as software architect, senior backend engineer, platform engineer, staff engineer, engineering manager, solutions architect, and consultant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Software Architecture | HIGAET Academy",
+      description:
+        "Learn pragmatic software architecture with components, boundaries, quality attributes, documentation, and evolution in a 10-week advanced online program.",
+      keywords: [
+        "software architecture",
+        "system architecture",
+        "domain driven design",
+        "microservices patterns",
+        "event driven architecture",
+        "architecture documentation",
+        "quality attributes",
+        "technical leadership",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_software_engineering",
+    slug: "software-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Software Engineering",
+    summary:
+      "Learn software engineering foundations through version control, testing, design patterns, and collaborative workflows, progressing from programming fundamentals to shipping a tested team-built release.",
+    duration: "12 weeks",
+    level: "beginner",
+    mode: "hybrid",
+    outcomes: [
+      "Build tested command-line and small web programs using control flow, functions, and modules.",
+      "Design clean code with readable structure, naming conventions, and documented interfaces.",
+      "Develop version-controlled projects with branching, pull requests, and code review habits.",
+      "Evaluate software designs using common patterns, trade-offs, and maintainability criteria.",
+      "Integrate automated unit tests and debugging workflows into everyday development practice.",
+      "Secure applications with input validation, safe defaults, and responsible secret handling.",
+      "Automate builds, formatting, and checks with simple continuous integration pipelines.",
+      "Deploy a tested team release with documentation, issue tracking, and a demo walkthrough.",
+    ],
+    curriculum: [
+      "Module 01: Foundations of Software Engineering and Developer Tooling",
+      "Module 02: Programming Fundamentals and Problem Decomposition",
+      "Module 03: Version Control, Branching, and Collaborative Workflows",
+      "Module 04: Data Structures, Algorithms, and Code Design Patterns",
+      "Module 05: Testing, Debugging, and Code Quality Practices",
+      "Module 06: Databases, APIs, and Application Architecture Basics",
+      "Module 07: Production Practices, CI Pipelines, and Release Management",
+      "Module 08: Capstone: Plan, Build, Test, and Deploy a Team Software Release",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and are there prerequisites?",
+        answer:
+          "It suits beginners with basic computer skills and an interest in programming. Familiarity with any programming language helps, but core concepts are taught from the foundations with guided practice.",
+      },
+      {
+        question: "What will I build during the course including the capstone?",
+        answer:
+          "You will build tested programs, a version-controlled team project, automated checks, and a documented release. The capstone is a team-built software release with tests, documentation, and a demo.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Relevant roles include software engineer, application support engineer, QA engineer, junior backend developer, junior frontend developer, tools engineer, and release coordinator.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Software Engineering | HIGAET Academy",
+      description:
+        "A 12-week hybrid software engineering course covering design, testing, collaboration, and release practices with a team-built capstone project.",
+      keywords: [
+        "software engineering course",
+        "programming fundamentals",
+        "version control",
+        "software testing",
+        "code review",
+        "design patterns",
+        "ci pipelines",
+        "software release practices",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_application_engineering",
+    slug: "application-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Application Engineering",
+    summary:
+      "Design and deliver production application features across backend services, data models, and user interfaces, applying testing, debugging, and release practices on realistic projects.",
+    duration: "10 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Architect layered application features spanning interfaces, services, and data models.",
+      "Build backend endpoints with validation, error handling, and paginated data access.",
+      "Develop interactive user interfaces that consume APIs and manage application state.",
+      "Integrate authentication, sessions, and role-based access into application workflows.",
+      "Evaluate application performance, queries, and caching strategies under realistic load.",
+      "Secure application endpoints against common input, access, and session risks.",
+      "Automate application test suites covering units, integration paths, and regressions.",
+      "Deploy versioned application releases with environment configuration and rollback plans.",
+    ],
+    curriculum: [
+      "Module 01: Foundations of Application Architecture and Project Setup",
+      "Module 02: Data Modeling, Migrations, and Query Design",
+      "Module 03: Backend Services, Routing, and Validation",
+      "Module 04: Authentication, Sessions, and Access Control",
+      "Module 05: Frontend State, Forms, and API Integration",
+      "Module 06: Testing, Debugging, and Performance Tuning",
+      "Module 07: Production Readiness, Configuration, and Deployment Pipelines",
+      "Module 08: Capstone: Design, Build, and Deploy a Full Application Feature Set",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and are there prerequisites?",
+        answer:
+          "It suits learners with basic programming and web fundamentals. Comfort with one language, simple APIs, and databases will help you follow the backend and interface modules.",
+      },
+      {
+        question: "What will I build during the course including the capstone?",
+        answer:
+          "You will build validated endpoints, data models, authenticated workflows, and connected interfaces. The capstone is a deployed application feature set with tests and release notes.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Relevant roles include application engineer, backend developer, frontend developer, full-stack developer, API developer, QA automation engineer, and release engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Application Engineering | HIGAET Academy",
+      description:
+        "A 10-week online application engineering course covering backend services, data models, interfaces, testing, and release workflows in depth.",
+      keywords: [
+        "application engineering course",
+        "backend services",
+        "api development",
+        "data modeling",
+        "frontend integration",
+        "authentication",
+        "application testing",
+        "deployment pipelines",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_web_engineering",
+    slug: "web-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Web Engineering",
+    summary:
+      "Build modern web applications with semantic HTML, responsive CSS, and interactive JavaScript, covering routing, forms, APIs, accessibility, and deployment fundamentals.",
+    duration: "8 weeks",
+    level: "beginner",
+    mode: "online",
+    outcomes: [
+      "Build responsive pages with semantic markup, modern layouts, and reusable styles.",
+      "Develop interactive browser behavior with events, state, and form validation.",
+      "Design accessible interfaces with keyboard support, contrast, and screen-reader labels.",
+      "Integrate public and custom APIs for data fetching, error states, and loading flows.",
+      "Evaluate page performance using loading, rendering, and asset-size techniques.",
+      "Secure browser forms with validation, safe storage, and cross-site scripting awareness.",
+      "Optimize media, fonts, and bundles for faster and more reliable page loads.",
+      "Deploy a live multi-page site with routing, forms, and production hosting setup.",
+    ],
+    curriculum: [
+      "Module 01: Foundations of the Web, Browsers, and Developer Tools",
+      "Module 02: Semantic HTML, Forms, and Content Structure",
+      "Module 03: Responsive CSS, Layout Systems, and Design Tokens",
+      "Module 04: JavaScript Essentials, DOM Events, and Application State",
+      "Module 05: Routing, Data Fetching, and API-Driven Pages",
+      "Module 06: Accessibility, Performance, and Browser Compatibility",
+      "Module 07: Production Builds, Hosting, and Deployment Workflows",
+      "Module 08: Capstone: Build and Deploy an Accessible Multi-Page Web Application",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and are there prerequisites?",
+        answer:
+          "It suits beginners with basic computer literacy and no prior web experience. General comfort with files, browsers, and text editors is enough to start the foundations modules.",
+      },
+      {
+        question: "What will I build during the course including the capstone?",
+        answer:
+          "You will build responsive pages, validated forms, API-driven views, and optimized assets. The capstone is a deployed multi-page web application with routing and accessible design.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Relevant roles include frontend developer, web developer, UI developer, web content engineer, junior full-stack developer, and website maintenance specialist.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Web Engineering | HIGAET Academy",
+      description:
+        "An 8-week online web engineering course covering modern HTML, CSS, JavaScript, routing, forms, APIs, accessibility, and deployment fundamentals.",
+      keywords: [
+        "web engineering course",
+        "html css javascript",
+        "responsive design",
+        "frontend development",
+        "web accessibility",
+        "api integration",
+        "web performance",
+        "website deployment",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_distributed_systems_engineering",
+    slug: "distributed-systems-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Distributed Systems Engineering",
+    summary:
+      "Study consistency, replication, partitioning, consensus, and fault tolerance while building resilient services that handle failure, scaling, and coordination across nodes.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Architect partitioned services with clear consistency, availability, and latency trade-offs.",
+      "Build replicated data flows with conflict handling, versioning, and repair strategies.",
+      "Develop consensus-driven coordination for leader election, locks, and configuration changes.",
+      "Evaluate consistency models and isolation levels for transactions across nodes.",
+      "Integrate retries, timeouts, idempotency, and backpressure into service communication.",
+      "Secure inter-service traffic with mutual authentication, encryption, and policy controls.",
+      "Automate chaos, failure-injection, and recovery drills to validate resilience assumptions.",
+      "Deploy observable multi-node services with health checks, load balancing, and failover.",
+    ],
+    curriculum: [
+      "Module 01: Foundations of Distributed Systems, Clocks, and Failure Models",
+      "Module 02: Networking, RPC Design, and Messaging Guarantees",
+      "Module 03: Replication, Consistency Models, and Conflict Resolution",
+      "Module 04: Partitioning, Sharding, and Distributed Storage Design",
+      "Module 05: Consensus, Leader Election, and Distributed Coordination",
+      "Module 06: Transactions, Isolation, and Exactly-Once Processing Patterns",
+      "Module 07: Fault Tolerance, Load Balancing, and Production Operations",
+      "Module 08: Capstone: Design, Deploy, and Test a Fault-Tolerant Multi-Node Service",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and are there prerequisites?",
+        answer:
+          "It suits experienced developers comfortable with backend services, networking basics, and databases. Prior work with APIs, concurrency, and production deployments will help with the advanced modules.",
+      },
+      {
+        question: "What will I build during the course including the capstone?",
+        answer:
+          "You will build replicated stores, partitioned services, consensus coordination labs, and resilience tests. The capstone is a deployed multi-node service validated under injected failures.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Relevant roles include distributed systems engineer, backend engineer, platform engineer, site reliability engineer, infrastructure engineer, database engineer, and cloud engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Distributed Systems Engineering | HIGAET Academy",
+      description:
+        "A 10-week online distributed systems course covering consistency, replication, partitioning, consensus, and resilient fault-tolerant service design.",
+      keywords: [
+        "distributed systems course",
+        "consistency models",
+        "replication",
+        "partitioning",
+        "consensus algorithms",
+        "fault tolerance",
+        "distributed transactions",
+        "systems reliability",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_microservices_engineering",
+    slug: "microservices-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_software_engineering",
+    title: "HIGAET Microservices Engineering",
+    summary:
+      "Practice service decomposition, API contracts, saga transactions, service mesh routing, and observability while building independently deployable services with resilient communication.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Architect service boundaries using domain decomposition, ownership, and coupling analysis.",
+      "Design versioned API contracts with schema validation, compatibility, and documentation.",
+      "Build saga-based transactions with compensation logic for multi-service workflows.",
+      "Develop mesh-routed services with traffic policies, retries, and circuit breaking.",
+      "Integrate centralized logging, metrics, and distributed tracing across services.",
+      "Secure service identities, tokens, and inter-service authorization policies.",
+      "Automate service pipelines with contract tests, canary releases, and safe rollbacks.",
+      "Deploy an observable service set with gateways, discovery, and health management.",
+    ],
+    curriculum: [
+      "Module 01: Foundations of Microservices, Domains, and Service Boundaries",
+      "Module 02: Decomposition Patterns, Contracts, and API Versioning",
+      "Module 03: Data Ownership, Sagas, and Event-Driven Communication",
+      "Module 04: Service Mesh, Gateways, and Resilient Routing",
+      "Module 05: Observability with Metrics, Logs, and Distributed Tracing",
+      "Module 06: Security, Identity, and Policy Across Services",
+      "Module 07: Production Delivery with Testing, Canaries, and Rollbacks",
+      "Module 08: Capstone: Decompose, Deploy, and Operate an Observable Service Suite",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and are there prerequisites?",
+        answer:
+          "It suits backend or platform developers familiar with APIs, containers, and deployments. Experience with one backend framework and basic distributed concepts will help with the advanced labs.",
+      },
+      {
+        question: "What will I build during the course including the capstone?",
+        answer:
+          "You will build versioned contracts, saga workflows, mesh-routed services, and tracing dashboards. The capstone is a deployed suite of observable services with gateway routing and canary releases.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Relevant roles include microservices developer, backend engineer, platform engineer, API engineer, site reliability engineer, integration engineer, and cloud application engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Microservices Engineering | HIGAET Academy",
+      description:
+        "An 8-week online microservices engineering course covering decomposition, contracts, sagas, service mesh routing, and observability practices.",
+      keywords: [
+        "microservices course",
+        "service decomposition",
+        "api contracts",
+        "saga pattern",
+        "service mesh",
+        "distributed tracing",
+        "event driven services",
+        "canary releases",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_cloud_engineering",
+    slug: "cloud-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Cloud Engineering",
+    summary:
+      "Learn cloud fundamentals hands-on across compute, networking, storage, and identity, then automate deployments, manage costs, monitor workloads, and operate production-ready infrastructure with confidence.",
+    duration: "10 weeks",
+    level: "beginner",
+    mode: "hybrid",
+    outcomes: [
+      "Build virtual networks, subnets, and routing rules for isolated cloud workloads.",
+      "Deploy virtual machines and managed compute services with repeatable configurations.",
+      "Secure cloud identities using roles, policies, and least-privilege access controls.",
+      "Automate provisioning with templates and scripts for consistent environments.",
+      "Integrate object, block, and file storage into application architectures.",
+      "Optimize cloud spending with budgets, tagging, and right-sizing practices.",
+      "Evaluate reliability using backups, health checks, and multi-zone placement.",
+      "Architect a production-ready cloud workload with monitoring and documentation.",
+    ],
+    curriculum: [
+      "Module 01 — Cloud Foundations and Service Models",
+      "Module 02 — Virtual Networking and Connectivity",
+      "Module 03 — Compute Services and Scaling Basics",
+      "Module 04 — Storage Services and Data Placement",
+      "Module 05 — Identity, Access, and Security Baselines",
+      "Module 06 — Automation with Templates and Scripts",
+      "Module 07 — Monitoring, Logging, and Alerting",
+      "Module 08 — Cost Management and Budget Controls",
+      "Module 09 — Reliability, Backups, and Recovery",
+      "Module 10 — Capstone: Deploy a Production-Ready Cloud Workload",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for, and are there prerequisites?",
+        answer:
+          "This beginner course suits learners with basic computer and programming literacy. No prior cloud experience is needed; networking, Linux, and pricing concepts are introduced from first principles.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will configure networks, compute, storage, and identity controls across guided labs, culminating in a capstone where you deploy and document a monitored, cost-aware cloud workload.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Related roles learners explore include cloud support associate, systems administrator, network operations analyst, cloud analyst, infrastructure technician, site reliability associate, and DevOps trainee.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Cloud Engineering | HIGAET Academy",
+      description:
+        "A 10-week hybrid cloud engineering course covering core services, networking, storage, identity, automation, cost control, and production deployment skills.",
+      keywords: [
+        "cloud engineering",
+        "cloud fundamentals",
+        "virtual networking",
+        "cloud storage",
+        "identity management",
+        "infrastructure automation",
+        "cloud cost management",
+        "cloud monitoring",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_devops_engineering",
+    slug: "devops-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET DevOps Engineering",
+    summary:
+      "Build reliable delivery pipelines with Git, CI, automated testing, and safe releases, then operate observable infrastructure, manage incidents, and improve deployment speed with steady confidence.",
+    duration: "12 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Design branching, review, and merge workflows for collaborative delivery teams.",
+      "Build continuous integration pipelines with automated tests and quality gates.",
+      "Deploy applications using staged rollouts, approvals, and rollback procedures.",
+      "Automate infrastructure provisioning with version-controlled configuration.",
+      "Integrate artifact registries and environment promotion into release flows.",
+      "Evaluate pipeline health using lead time, failure rate, and recovery metrics.",
+      "Secure pipelines with scoped credentials, signing, and access controls.",
+      "Optimize incident response with runbooks, postmortems, and on-call practices.",
+    ],
+    curriculum: [
+      "Module 01 — DevOps Foundations and Delivery Models",
+      "Module 02 — Git Workflows and Collaboration Practices",
+      "Module 03 — Continuous Integration and Quality Gates",
+      "Module 04 — Artifact Management and Environment Promotion",
+      "Module 05 — Continuous Delivery and Release Strategies",
+      "Module 06 — Infrastructure Automation and Configuration",
+      "Module 07 — Observability, Alerting, and Incident Response",
+      "Module 08 — Security Basics for Delivery Pipelines",
+      "Module 09 — Scaling Delivery Across Teams and Services",
+      "Module 10 — Capstone: Ship a Fully Automated Release Pipeline",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for, and are there prerequisites?",
+        answer:
+          "This intermediate course suits learners comfortable with the command line, Git basics, and one programming language. Familiarity with cloud concepts helps but advanced administration is not required.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build automated CI pipelines, staged release flows, and version-controlled infrastructure, culminating in a capstone with a complete pipeline from commit to observable production deployment.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Related roles learners explore include DevOps engineer, build and release engineer, site reliability engineer, platform engineer, automation engineer, cloud engineer, and infrastructure engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "DevOps Engineering | HIGAET Academy",
+      description:
+        "A 12-week hybrid DevOps course covering Git workflows, CI pipelines, artifact releases, infrastructure automation, observability, and delivery.",
+      keywords: [
+        "devops engineering",
+        "ci cd pipelines",
+        "git workflows",
+        "release management",
+        "infrastructure automation",
+        "deployment strategies",
+        "devops observability",
+        "incident response",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_kubernetes_engineering",
+    slug: "kubernetes-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Kubernetes Engineering",
+    summary:
+      "Operate Kubernetes workloads with confidence across pods, deployments, services, ingress, and storage, then package with Helm, observe clusters, and manage upgrades and reliability.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build pod specifications with probes, resources, and lifecycle controls.",
+      "Deploy rolling and staged application updates using deployments and replicasets.",
+      "Design service discovery and ingress routing for internal and external traffic.",
+      "Integrate persistent volumes and storage classes into stateful workloads.",
+      "Automate application packaging and releases with Helm charts and values.",
+      "Evaluate cluster and workload health using metrics, logs, and traces.",
+      "Secure workloads with RBAC, namespaces, network policies, and secrets handling.",
+      "Optimize cluster operations with upgrades, autoscaling, and backup procedures.",
+    ],
+    curriculum: [
+      "Module 01 — Kubernetes Foundations and Cluster Architecture",
+      "Module 02 — Pods, Scheduling, and Configuration",
+      "Module 03 — Deployments, Scaling, and Update Strategies",
+      "Module 04 — Services, Ingress, and Traffic Routing",
+      "Module 05 — Storage, Volumes, and Stateful Workloads",
+      "Module 06 — Helm Packaging and Release Management",
+      "Module 07 — Observability, Troubleshooting, and Autoscaling",
+      "Module 08 — Cluster Operations, Security, and Upgrades",
+      "Module 09 — Capstone: Operate a Production-Grade Kubernetes Service",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for, and are there prerequisites?",
+        answer:
+          "This advanced course suits learners comfortable with containers, YAML, Linux commands, and networking basics. Prior Docker and command-line experience is expected before enrolling.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will deploy, expose, store, package, and observe containerized services across guided clusters, culminating in a capstone operating a versioned service with ingress, storage, and monitoring.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Related roles learners explore include Kubernetes administrator, container platform engineer, site reliability engineer, DevOps engineer, cloud infrastructure engineer, and systems engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Kubernetes Engineering | HIGAET Academy",
+      description:
+        "An 8-week online Kubernetes course covering pods, deployments, services, ingress, storage, Helm, observability, upgrades, and production cluster operations.",
+      keywords: [
+        "kubernetes engineering",
+        "pods and deployments",
+        "kubernetes services",
+        "ingress routing",
+        "persistent storage",
+        "helm charts",
+        "cluster observability",
+        "cluster operations",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_devsecops",
+    slug: "devsecops",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET DevSecOps",
+    summary:
+      "Shift security left across code, pipelines, images, and runtime by adding threat modeling, secrets handling, scanning, policy checks, monitoring, and disciplined incident response habits.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Develop threat models and risk-ranked controls for delivery pipelines.",
+      "Secure CI pipelines with least-privilege runners, signed artifacts, and reviews.",
+      "Automate static analysis, dependency checks, and container image scanning.",
+      "Integrate secrets management and rotation into builds and deployments.",
+      "Evaluate runtime posture with hardening checks and vulnerability triage.",
+      "Design policy guardrails that block risky changes without slowing teams.",
+      "Deploy signed, traceable releases with audit-ready change records.",
+      "Optimize response with detection playbooks and structured postmortems.",
+    ],
+    curriculum: [
+      "Module 01 — DevSecOps Foundations and Threat Modeling",
+      "Module 02 — Secure Coding and Dependency Management",
+      "Module 03 — Pipeline Security and Artifact Integrity",
+      "Module 04 — Secrets Management and Identity Controls",
+      "Module 05 — Container and Infrastructure Scanning",
+      "Module 06 — Policy Guardrails and Compliance Checks",
+      "Module 07 — Runtime Monitoring and Incident Response",
+      "Module 08 — Capstone: Harden an End-to-End Delivery Pipeline",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for, and are there prerequisites?",
+        answer:
+          "This advanced course suits learners with working DevOps or cloud experience, including CI pipelines and Linux fundamentals. Basic security vocabulary is helpful but formal security training is not required.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will add scanning, secrets handling, signing, and policy checks to a sample pipeline, culminating in a capstone that hardens an end-to-end build-to-runtime workflow with documented controls.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Related roles learners explore include DevSecOps engineer, application security engineer, security automation engineer, platform security engineer, cloud security analyst, and release engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "DevSecOps | HIGAET Academy",
+      description:
+        "An 8-week online DevSecOps course covering threat modeling, pipeline security, secrets handling, image scanning, policy guardrails, and secure releases.",
+      keywords: [
+        "devsecops course",
+        "pipeline security",
+        "threat modeling",
+        "secrets management",
+        "image scanning",
+        "policy guardrails",
+        "vulnerability triage",
+        "secure releases",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_platform_engineering",
+    slug: "platform-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Platform Engineering",
+    summary:
+      "Design internal developer platforms with golden paths, templates, self-service environments, and policy guardrails that reduce cognitive load and standardize reliable production delivery.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Architect internal platform visions with clear users, boundaries, and success metrics.",
+      "Build golden-path templates for services, pipelines, and infrastructure baselines.",
+      "Develop self-service environments with quotas, approvals, and lifecycle controls.",
+      "Deploy reusable platform APIs and automation behind documented interfaces.",
+      "Integrate identity, policy, and cost guardrails into every paved road.",
+      "Evaluate platform adoption using friction logs, surveys, and delivery metrics.",
+      "Secure multi-tenant platforms with isolation, RBAC, and audit trails.",
+      "Optimize platform reliability with versioning, change management, and support models.",
+    ],
+    curriculum: [
+      "Module 01 — Platform Engineering Foundations and Product Thinking",
+      "Module 02 — Developer Experience and Golden Paths",
+      "Module 03 — Templates, Scaffolding, and Service Catalogs",
+      "Module 04 — Self-Service Environments and Provisioning",
+      "Module 05 — Platform APIs and Automation Layers",
+      "Module 06 — Policy, Governance, and Cost Guardrails",
+      "Module 07 — Observability and Support Models for Platforms",
+      "Module 08 — Multi-Tenancy, Isolation, and Access Design",
+      "Module 09 — Adoption, Metrics, and Platform Evolution",
+      "Module 10 — Capstone: Deliver a Working Internal Developer Platform",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for, and are there prerequisites?",
+        answer:
+          "This advanced course suits DevOps, SRE, or backend practitioners comfortable with cloud services, CI pipelines, and infrastructure automation. Team leadership experience is useful but not required.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will design templates, self-service flows, and guardrails for a sample organization, culminating in a capstone delivering a documented internal platform with a working golden-path service.",
+      },
+      {
+        question: "What career paths does this course relate to?",
+        answer:
+          "Related roles learners explore include platform engineer, developer experience engineer, site reliability engineer, DevOps engineer, cloud architect, infrastructure product manager, and systems engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Platform Engineering | HIGAET Academy",
+      description:
+        "A 10-week online platform engineering course covering shared platforms, golden paths, self-service, environments, policy, observability, and reliable operations.",
+      keywords: [
+        "platform engineering",
+        "developer platforms",
+        "golden paths",
+        "self service environments",
+        "service catalogs",
+        "platform apis",
+        "policy guardrails",
+        "platform adoption",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_ai_infrastructure_engineering",
+    slug: "ai-infrastructure-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET AI Infrastructure Engineering",
+    summary:
+      "Design GPU-powered infrastructure for training and serving AI systems, covering compute clusters, inference endpoints, batch pipelines, observability, cost control, and latency optimization for production workloads.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Architect GPU cluster layouts for training and inference with capacity and isolation planning.",
+      "Deploy scalable inference endpoints with batching, caching, and autoscaling policies.",
+      "Build batch data and training pipelines with scheduling, retries, and checkpointing.",
+      "Optimize inference latency and throughput using quantization, batching, and request routing.",
+      "Evaluate infrastructure cost and performance trade-offs across GPU types and regions.",
+      "Integrate observability for GPU utilization, queue depth, latency, and error signals.",
+      "Secure model artifacts, endpoints, and cluster access with networks and identity controls.",
+      "Automate provisioning of AI infrastructure with repeatable templates and environment promotion.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of AI infrastructure and GPU computing",
+      "Module 02 — Compute clusters, storage, and networking for training",
+      "Module 03 — Containers and orchestration for ML workloads",
+      "Module 04 — Inference serving patterns and model endpoints",
+      "Module 05 — Batch pipelines, schedulers, and data movement",
+      "Module 06 — Latency and throughput optimization techniques",
+      "Module 07 — Cost governance, quotas, and capacity planning",
+      "Module 08 — Observability, security, and production operations",
+      "Module 09 — Capstone: production-ready AI infrastructure for a model workload",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "It suits engineers comfortable with Linux, containers, and basic cloud services. Familiarity with Python and machine learning workflows helps, and each module reviews the infrastructure concepts it builds on.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build GPU cluster templates, an inference endpoint with autoscaling, and a batch pipeline, finishing with a capstone that provisions and documents production-ready AI infrastructure for a model workload.",
+      },
+      {
+        question: "Which roles use these skills?",
+        answer:
+          "Learners apply these skills in roles such as AI infrastructure engineer, ML platform engineer, cloud engineer, DevOps engineer, systems engineer, and solutions architect. Actual titles vary by employer and experience.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Infrastructure Engineering | HIGAET Academy",
+      description:
+        "Build GPU clusters, inference services, and batch pipelines with cost and latency controls in this 10-week hybrid AI infrastructure engineering course.",
+      keywords: [
+        "ai infrastructure",
+        "gpu compute",
+        "inference serving",
+        "batch pipelines",
+        "ml platform",
+        "cost optimization",
+        "latency tuning",
+        "hybrid cloud",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_cloud_architecture",
+    slug: "cloud-architecture",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Cloud Architecture",
+    summary:
+      "Learn to design resilient multi-tier cloud architectures across compute, storage, and networking, with patterns for scaling, high availability, decoupling, cost awareness, and secure landing zones.",
+    duration: "8 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Architect multi-tier cloud solutions across compute, storage, and networking layers.",
+      "Design high-availability and disaster-recovery patterns across zones and regions.",
+      "Develop decoupled architectures using queues, events, and managed services.",
+      "Evaluate build-versus-managed-service trade-offs for scale and operations.",
+      "Secure landing zones with identity, network segmentation, and policy guardrails.",
+      "Optimize cloud architectures for cost, performance, and operational overhead.",
+      "Integrate observability, backup, and recovery into architecture blueprints.",
+      "Deploy reference architectures with documentation, diagrams, and decision records.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of cloud architecture and well-architected principles",
+      "Module 02 — Compute, storage, and networking building blocks",
+      "Module 03 — Identity, access, and landing zone design",
+      "Module 04 — Decoupled and event-driven architecture patterns",
+      "Module 05 — High availability, scaling, and disaster recovery",
+      "Module 06 — Data architectures, caching, and messaging",
+      "Module 07 — Cost, governance, and architecture trade-offs",
+      "Module 08 — Capstone: end-to-end cloud architecture blueprint with review",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "It suits working engineers and technical leads with basic cloud experience. Comfort with one cloud console, networking basics, and core services helps you follow the architecture exercises.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will produce architecture diagrams, decision records, and a landing zone design, finishing with a capstone blueprint for a multi-tier application covering availability, security, and cost.",
+      },
+      {
+        question: "Which roles use these skills?",
+        answer:
+          "Learners apply these skills in roles such as cloud architect, solutions architect, platform engineer, infrastructure consultant, systems engineer, and technical lead. Actual titles vary by employer and experience.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Cloud Architecture | HIGAET Academy",
+      description:
+        "Design scalable, available, and secure cloud architectures across compute, storage, and networking in this 8-week online cloud architecture course.",
+      keywords: [
+        "cloud architecture",
+        "solution design",
+        "landing zones",
+        "high availability",
+        "cloud networking",
+        "disaster recovery",
+        "cost architecture",
+        "well-architected",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_infrastructure_engineering",
+    slug: "infrastructure-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Infrastructure Engineering",
+    summary:
+      "Build strong foundations in compute, networking, storage, and Linux operations, learning to provision, configure, monitor, and troubleshoot reliable infrastructure that supports modern application delivery.",
+    duration: "10 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build virtual machines, containers, and networks that host reliable application stacks.",
+      "Deploy Linux servers with hardening, patching, and configuration baselines.",
+      "Automate routine provisioning and configuration with scripts and templates.",
+      "Evaluate storage and backup options for durability and recovery needs.",
+      "Secure infrastructure access with SSH practices, firewalls, and identity controls.",
+      "Integrate monitoring, logging, and alerting across servers and services.",
+      "Optimize resource sizing and performance for steady-state workloads.",
+      "Develop runbooks for troubleshooting, incident handling, and routine operations.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of infrastructure engineering and Linux",
+      "Module 02 — Compute, virtualization, and containers",
+      "Module 03 — Networking essentials: DNS, routing, and load balancing",
+      "Module 04 — Storage, backups, and recovery practices",
+      "Module 05 — Configuration management and templating",
+      "Module 06 — Identity, access, and infrastructure hardening",
+      "Module 07 — Monitoring, logging, and alerting",
+      "Module 08 — Performance tuning and capacity basics",
+      "Module 09 — Capstone: production-style infrastructure stack with runbooks",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "It suits aspiring infrastructure and support engineers with basic command-line comfort. No prior administration background is assumed, and early modules establish Linux and networking fundamentals.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will provision servers, networks, and storage with monitoring and backups, finishing with a capstone infrastructure stack complete with configuration templates and operational runbooks.",
+      },
+      {
+        question: "Which roles use these skills?",
+        answer:
+          "Learners apply these skills in roles such as infrastructure engineer, systems administrator, network operations engineer, cloud support engineer, DevOps engineer, and site reliability engineer. Actual titles vary by employer and experience.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Infrastructure Engineering | HIGAET Academy",
+      description:
+        "Provision and operate compute, network, and storage foundations with Linux, monitoring, and troubleshooting in this 10-week online infrastructure course.",
+      keywords: [
+        "infrastructure engineering",
+        "linux administration",
+        "computer networking",
+        "server management",
+        "storage and backup",
+        "monitoring basics",
+        "system troubleshooting",
+        "it operations",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_sre",
+    slug: "site-reliability-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Site Reliability Engineering",
+    summary:
+      "Practice site reliability engineering through service-level objectives, error budgets, incident response, chaos experiments, observability, automation, and steady reduction of operational toil.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Design service-level indicators, objectives, and error-budget policies for real services.",
+      "Build golden-signal dashboards, alerts, and runbooks tied to user impact.",
+      "Develop incident response practices with roles, communication, and blameless reviews.",
+      "Automate toil-heavy operational tasks with scripts, scheduled jobs, and self-healing checks.",
+      "Evaluate release safety with error budgets, deployment gates, and rollback plans.",
+      "Deploy chaos and resilience experiments that validate failure assumptions safely.",
+      "Secure on-call operations with access controls, audit trails, and escalation paths.",
+      "Optimize alert quality and on-call load through tuning and paging discipline.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of site reliability and service ownership",
+      "Module 02 — SLIs, SLOs, and error-budget design",
+      "Module 03 — Observability: metrics, logs, traces, and alerting",
+      "Module 04 — Incident response and blameless postmortems",
+      "Module 05 — Chaos engineering and resilience testing",
+      "Module 06 — Release engineering and safe deployment gates",
+      "Module 07 — Toil measurement and operations automation",
+      "Module 08 — On-call health, paging, and capacity planning",
+      "Module 09 — Capstone: SLO-driven reliability program for a live-style service",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "It suits engineers with Linux, cloud, and incident-handling exposure who want structured reliability practices. Comfort with monitoring tools and basic scripting helps with the hands-on labs.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will define SLOs, build dashboards and runbooks, and run incident and chaos drills, finishing with a capstone reliability program covering budgets, response plans, and automation.",
+      },
+      {
+        question: "Which roles use these skills?",
+        answer:
+          "Learners apply these skills in roles such as site reliability engineer, platform engineer, DevOps engineer, production engineer, cloud operations engineer, and infrastructure engineer. Actual titles vary by employer and experience.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Site Reliability Engineering | HIGAET Academy",
+      description:
+        "Apply SLOs, error budgets, incident response, chaos testing, and automation to run reliable services in this 10-week online SRE course for engineers.",
+      keywords: [
+        "site reliability engineering",
+        "slos and error budgets",
+        "incident response",
+        "chaos engineering",
+        "observability",
+        "toil reduction",
+        "on-call practices",
+        "release safety",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_cloud_automation_engineering",
+    slug: "cloud-automation-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cloud_infrastructure",
+    title: "HIGAET Cloud Automation Engineering",
+    summary:
+      "Automate cloud provisioning and operations with infrastructure as code, policy checks, CI pipelines, reusable modules, drift detection, and safe rollout practices across environments.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build reusable infrastructure-as-code modules for networks, compute, and data services.",
+      "Automate environment provisioning with versioned stacks and promotion workflows.",
+      "Deploy policy checks that guard naming, tagging, cost, and security baselines.",
+      "Integrate infrastructure pipelines with testing, approvals, and plan reviews.",
+      "Evaluate drift, state conflicts, and recovery paths for managed stacks.",
+      "Secure pipeline credentials, state files, and privileged automation roles.",
+      "Optimize pipeline speed and feedback with caching, layering, and targeted plans.",
+      "Develop rollback and recovery procedures for failed infrastructure changes.",
+    ],
+    curriculum: [
+      "Module 01 — Foundations of cloud automation and infrastructure as code",
+      "Module 02 — Templating, modules, and state management",
+      "Module 03 — Networks and compute automation patterns",
+      "Module 04 — Policy as code and guardrails",
+      "Module 05 — CI pipelines for infrastructure changes",
+      "Module 06 — Drift detection, testing, and safe rollouts",
+      "Module 07 — Secrets, state security, and multi-environment promotion",
+      "Module 08 — Capstone: automated cloud delivery pipeline with guardrails",
+    ],
+    faqs: [
+      {
+        question: "Who is this course for and what should I know first?",
+        answer:
+          "It suits cloud and DevOps learners comfortable with the command line and basic cloud services. Introductory scripting and version-control familiarity help, and early modules review both.",
+      },
+      {
+        question: "What will I build during the course?",
+        answer:
+          "You will build versioned infrastructure modules, policy checks, and a CI pipeline with drift detection, finishing with a capstone automated delivery pipeline across staged environments.",
+      },
+      {
+        question: "Which roles use these skills?",
+        answer:
+          "Learners apply these skills in roles such as cloud automation engineer, DevOps engineer, platform engineer, infrastructure engineer, release engineer, and cloud engineer. Actual titles vary by employer and experience.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Cloud Automation Engineering | HIGAET Academy",
+      description:
+        "Automate cloud delivery with infrastructure as code, policies, pipelines, and drift control in this 8-week online cloud automation engineering course.",
+      keywords: [
+        "cloud automation",
+        "infrastructure as code",
+        "iac modules",
+        "policy as code",
+        "ci pipelines",
+        "drift detection",
+        "cloud provisioning",
+        "devops automation",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_course_data_analytics",
+    slug: "data-analytics",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Data Analytics",
+    summary:
+      "Learn SQL, Python, spreadsheets, and visualization to clean data, build dashboards, and deliver clear business reports through HIGAET Practical Training.",
+    duration: "10 weeks",
+    level: "beginner",
+    mode: "hybrid",
+    outcomes: [
+      "Build interactive dashboards and reports that answer defined business questions with clean visuals",
+      "Design SQL queries for joins, aggregation, filtering, and windowed analysis on business datasets",
+      "Develop Python data workflows for cleaning, transformation, and exploratory analysis",
+      "Evaluate dataset quality by profiling missing values, duplicates, outliers, and inconsistencies",
+      "Automate recurring spreadsheet and reporting workflows with reusable templates and checks",
+      "Optimize dashboard performance and clarity through layout, filtering, and aggregation choices",
+      "Integrate multiple data sources into unified analysis-ready tables for reporting",
+      "Architect a documented analytics portfolio project with metrics, methods, and findings",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Analytics Thinking, Metrics, and the Data Analysis Lifecycle",
+      "Module 02 — Core: SQL for Selection, Joins, Aggregation, and Business Queries",
+      "Module 03 — Core: Data Cleaning, Validation, and Exploratory Analysis with Python",
+      "Module 04 — Core: Statistics for Analysts Including Distributions and Comparisons",
+      "Module 05 — Engineering: Visualization Design and Interactive Dashboard Construction",
+      "Module 06 — Engineering: Multi-Source Integration and Reporting Automation",
+      "Module 07 — Advanced: Cohort, Funnel, and Trend Analysis for Decision Support",
+      "Module 08 — Production: Stakeholder Reporting, Documentation, and Insight Reviews",
+      "Module 09 — Capstone: End-to-End Business Analytics Dashboard and Insight Report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This beginner course suits students, career changers, and business professionals entering analytics. No prior coding is required; comfort with spreadsheets and basic mathematics plus HIGAET Practical Training support is enough to begin.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a SQL business-query portfolio, an exploratory analysis notebook, and a capstone analytics dashboard with an insight report covering metrics, trends, and recommendations.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as data analyst, business intelligence analyst, reporting analyst, operations analyst, marketing analyst, product analyst, and analytics associate.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Data Analytics | HIGAET Academy",
+      description:
+        "Learn SQL, Python, dashboards, and applied statistics in this beginner HIGAET Academy course with hands-on analytics and reporting projects.",
+      keywords: [
+        "data analytics",
+        "sql for analytics",
+        "python pandas",
+        "data visualization",
+        "business intelligence",
+        "dashboards",
+        "excel reporting",
+        "data analyst roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_data_science",
+    slug: "data-science",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Data Science",
+    summary:
+      "Learn statistics, Python, and machine learning fundamentals to analyze datasets, build predictive models, and communicate insights with HIGAET Practical Training.",
+    duration: "14 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build predictive models for regression and classification using Python machine learning libraries",
+      "Design experiments and hypothesis tests that distinguish correlation from measurable effects",
+      "Develop feature engineering pipelines that improve model signal and reduce leakage",
+      "Evaluate models with cross-validation, error analysis, and appropriate performance metrics",
+      "Automate exploratory analysis and reporting workflows with reproducible notebooks",
+      "Optimize model performance through tuning, regularization, and feature selection",
+      "Integrate model outputs into dashboards and narratives for non-technical stakeholders",
+      "Architect a documented data science case study from problem framing to recommendations",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Data Science Workflow, Problem Framing, and Reproducible Analysis",
+      "Module 02 — Core: Python for Data Analysis Including Wrangling and Visualization",
+      "Module 03 — Core: Probability, Statistical Inference, and Hypothesis Testing",
+      "Module 04 — Core: Regression, Classification, and Model Evaluation Methods",
+      "Module 05 — Engineering: Feature Engineering, Selection, and Data Leakage Control",
+      "Module 06 — Engineering: Tree-Based Models, Ensembles, and Hyperparameter Tuning",
+      "Module 07 — Advanced: Unsupervised Learning Including Clustering and Dimensionality Reduction",
+      "Module 08 — Advanced: Storytelling with Data and Stakeholder Communication",
+      "Module 09 — Production: Model Documentation, Limitations, and Responsible Analysis",
+      "Module 10 — Capstone: Predictive Data Science Project with Model and Insight Report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This intermediate course suits analytics learners and developers moving into data science. Basic Python and SQL plus high-school mathematics help; early modules refresh statistics and programming through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an exploratory analysis portfolio, a tuned predictive model with evaluation reports, and a capstone case study combining modeling, visualizations, and business recommendations.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as data scientist, analytics scientist, machine learning analyst, business intelligence developer, quantitative analyst, research analyst, and product data analyst.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Data Science | HIGAET Academy",
+      description:
+        "Master statistics, Python, machine learning basics, and storytelling in this intermediate HIGAET Academy data science course with guided projects.",
+      keywords: [
+        "data science",
+        "python for data science",
+        "statistics",
+        "predictive modeling",
+        "feature engineering",
+        "data visualization",
+        "machine learning basics",
+        "data scientist roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_data_engineering",
+    slug: "data-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Data Engineering",
+    summary:
+      "Learn Python, SQL, and pipeline tools to build warehouses, orchestrate workflows, and deliver reliable datasets through HIGAET Practical Training projects.",
+    duration: "12 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build batch ingestion pipelines that load structured and semi-structured data into warehouses",
+      "Design dimensional models and schemas that support analytics and reporting workloads",
+      "Develop orchestrated workflows with retries, scheduling, and dependency management",
+      "Evaluate data quality with validation tests, freshness checks, and anomaly detection",
+      "Automate pipeline testing and deployment with version control and CI practices",
+      "Optimize query and pipeline performance through partitioning, indexing, and incremental loads",
+      "Integrate streaming sources with batch systems for unified data delivery",
+      "Architect a production-style data platform project with documentation and monitoring",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Data Engineering Lifecycle, Warehouses, Lakes, and Lakehouse Concepts",
+      "Module 02 — Core: Advanced SQL and Data Modeling for Analytics Workloads",
+      "Module 03 — Core: Python for Ingestion, Transformation, and File Format Handling",
+      "Module 04 — Engineering: Batch Pipelines, Incremental Loads, and Idempotent Design",
+      "Module 05 — Engineering: Workflow Orchestration, Scheduling, and Failure Recovery",
+      "Module 06 — Engineering: Warehousing, Transformation Layers, and Data Contracts",
+      "Module 07 — Advanced: Streaming Ingestion and Near-Real-Time Processing Patterns",
+      "Module 08 — Production: Data Quality, Observability, Security, and Access Control",
+      "Module 09 — Capstone: Production-Style Data Pipeline with Warehouse and Monitoring",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This intermediate course suits developers, analysts, and database practitioners moving into data engineering. Basic Python and SQL are recommended; pipeline and cloud concepts are introduced through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a modeled warehouse schema, an orchestrated batch pipeline with quality checks, and a capstone platform combining ingestion, transformation, orchestration, and monitoring.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as data engineer, analytics engineer, ETL developer, data platform engineer, warehouse developer, BI engineer, and data operations engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Data Engineering | HIGAET Academy",
+      description:
+        "Design pipelines, warehouses, and streaming data systems in this intermediate HIGAET Academy course with hands-on data engineering projects.",
+      keywords: [
+        "data engineering",
+        "etl pipelines",
+        "data warehousing",
+        "data modeling",
+        "workflow orchestration",
+        "streaming data",
+        "sql",
+        "data engineer roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_machine_learning",
+    slug: "machine-learning",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Machine Learning",
+    summary:
+      "Learn applied regression, classification, and model evaluation to train, tune, and compare machine learning models through HIGAET Practical Training projects.",
+    duration: "12 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build supervised learning models for regression, classification, and ranking tasks",
+      "Design validation strategies that prevent leakage and measure true generalization",
+      "Develop preprocessing and feature pipelines for tabular, text, and time-based data",
+      "Evaluate models using precision, recall, calibration, and business-aligned metrics",
+      "Automate training and tuning workflows with tracked experiments and reproducible code",
+      "Optimize algorithms through regularization, ensembles, and hyperparameter search",
+      "Integrate trained models into simple services and batch scoring workflows",
+      "Architect a complete modeling project with baselines, comparisons, and deployment notes",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Machine Learning Concepts, Problem Types, and Evaluation Thinking",
+      "Module 02 — Core: Data Preparation, Feature Engineering, and Baseline Modeling",
+      "Module 03 — Core: Regression, Classification, and Probability Calibration",
+      "Module 04 — Core: Tree Models, Ensembles, and Model Comparison Methods",
+      "Module 05 — Engineering: Cross-Validation, Tuning, and Experiment Organization",
+      "Module 06 — Engineering: Unsupervised Methods, Embeddings, and Feature Extraction",
+      "Module 07 — Advanced: Time Series, Imbalanced Data, and Error Analysis",
+      "Module 08 — Production: Model Packaging, Batch Scoring, and Responsible ML Review",
+      "Module 09 — Capstone: End-to-End Machine Learning Model with Evaluation Report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This intermediate course suits programmers and analysts with basic Python and statistics. Familiarity with dataframes and algebra helps; modeling theory is taught practically through HIGAET Practical Training and guided labs.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a baseline-to-tuned classifier, a regression and ensemble comparison study, and a capstone modeling project with validation, evaluation, and scoring workflow.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as machine learning engineer, data scientist, applied scientist, predictive modeler, AI engineer, analytics engineer, and research assistant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Machine Learning | HIGAET Academy",
+      description:
+        "Build regression, classification, and ensemble models in this intermediate HIGAET Academy machine learning course with applied model projects.",
+      keywords: [
+        "machine learning",
+        "supervised learning",
+        "model evaluation",
+        "feature engineering",
+        "ensemble methods",
+        "scikit-learn",
+        "hyperparameter tuning",
+        "ml engineer roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_deep_learning_engineering",
+    slug: "deep-learning-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Deep Learning Engineering",
+    summary:
+      "Learn neural network design, training, and optimization with modern frameworks to build vision and sequence models through HIGAET Practical Training.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build convolutional and sequence models for image, text, and signal tasks",
+      "Design training loops with loss functions, optimizers, schedulers, and checkpointing",
+      "Develop transfer learning workflows using pretrained backbones and fine-tuning",
+      "Evaluate deep models with task metrics, confusion analysis, and overfitting diagnostics",
+      "Automate training runs with configuration management and experiment tracking",
+      "Optimize models through augmentation, regularization, mixed precision, and early stopping",
+      "Integrate trained models into inference scripts and lightweight serving endpoints",
+      "Architect a documented deep learning project with datasets, baselines, and tuning history",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Neural Networks, Gradient Descent, and Modern Framework Workflows",
+      "Module 02 — Core: Convolutional Networks for Image Classification and Detection Basics",
+      "Module 03 — Core: Sequence Models, Attention Concepts, and Text Representations",
+      "Module 04 — Engineering: Datasets, Augmentation, Loaders, and Training Pipelines",
+      "Module 05 — Engineering: Transfer Learning, Fine-Tuning, and Pretrained Models",
+      "Module 06 — Advanced: Regularization, Optimization, and Debugging Training Failures",
+      "Module 07 — Advanced: Model Compression, Quantization, and Inference Optimization",
+      "Module 08 — Capstone: Deep Learning Application with Training Report and Demo",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This advanced course suits ML practitioners and engineers comfortable with Python and basic modeling. Prior machine learning exposure and linear algebra basics help; framework skills are strengthened through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an image classifier with transfer learning, a text sequence model, and a capstone deep learning application with training logs, evaluation, and an inference demo.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as deep learning engineer, computer vision engineer, NLP engineer, applied AI engineer, ML engineer, perception engineer, and research engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Deep Learning | HIGAET Academy",
+      description:
+        "Engineer neural networks with PyTorch and TensorFlow in this advanced HIGAET Academy course covering applied training, tuning, and deployment work.",
+      keywords: [
+        "deep learning",
+        "neural networks",
+        "pytorch",
+        "tensorflow",
+        "computer vision",
+        "nlp models",
+        "transfer learning",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_mlops",
+    slug: "mlops",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET MLOps",
+    summary:
+      "Learn pipelines, registries, and deployment automation to operate reliable machine learning systems with monitoring and incident response through HIGAET Practical Training.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build automated training pipelines with versioned data, code, and artifacts",
+      "Design model registries and promotion workflows across staging and production",
+      "Develop CI and CD workflows for testing, packaging, and releasing ML services",
+      "Evaluate production models with drift detection, quality gates, and rollback criteria",
+      "Automate retraining triggers, batch scoring, and endpoint deployment routines",
+      "Optimize inference cost, latency, and resource use for serving workloads",
+      "Integrate feature stores and observability tooling into ML platforms",
+      "Secure model services with access controls, audit trails, and environment isolation",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: MLOps Lifecycle, Environments, and Production Readiness",
+      "Module 02 — Core: Experiment Tracking, Versioning, and Reproducible Training",
+      "Module 03 — Core: Model Registries, Approval Gates, and Release Management",
+      "Module 04 — Engineering: CI and CD Pipelines for Machine Learning Services",
+      "Module 05 — Engineering: Feature Stores, Data Versioning, and Training Automation",
+      "Module 06 — Advanced: Deployment Strategies, Scaling, and Inference Management",
+      "Module 07 — Production: Monitoring, Drift Detection, Alerting, and Incident Response",
+      "Module 08 — Capstone: Production MLOps Pipeline with Registry and Monitoring",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This advanced course suits ML engineers and backend developers operating models in production. Familiarity with Python, containers, and basic modeling is recommended; platform tooling is taught through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a tracked training pipeline, a registry-backed release workflow, and a capstone MLOps system with CI, deployment, monitoring dashboards, and rollback procedures.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as MLOps engineer, ML platform engineer, applied ML engineer, DevOps for AI engineer, data engineer, backend engineer, and site reliability engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "MLOps | HIGAET Academy",
+      description:
+        "Operate production ML with pipelines, registries, and monitoring in this advanced HIGAET Academy MLOps course with hands-on platform projects.",
+      keywords: [
+        "mlops",
+        "ml pipelines",
+        "model registry",
+        "experiment tracking",
+        "ci cd for ml",
+        "model monitoring",
+        "feature store",
+        "ml platform roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_analytics",
+    slug: "ai-analytics",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET AI Analytics",
+    summary:
+      "Learn to combine analytics with generative AI to automate reporting, build assistants, and deliver faster insights through HIGAET Practical Training.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build AI-assisted dashboards that summarize trends and highlight key drivers",
+      "Design prompts and retrieval workflows that answer questions over business data",
+      "Develop automated reporting pipelines combining SQL, Python, and language models",
+      "Evaluate AI-generated insights for accuracy, grounding, and business relevance",
+      "Automate insight briefs, alerts, and executive summaries from live metrics",
+      "Optimize analytics workflows by pairing statistical checks with AI drafting",
+      "Integrate chat-based data assistants with governed datasets and guardrails",
+      "Secure AI analytics workflows with privacy controls and source citations",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: AI-Augmented Analytics, Use Cases, and Responsible Practices",
+      "Module 02 — Core: Prompt Design and Grounded Question Answering over Data",
+      "Module 03 — Core: Retrieval Workflows for Reports, Metrics, and Documents",
+      "Module 04 — Engineering: Automated Reporting with SQL, Python, and Language Models",
+      "Module 05 — Engineering: Data Assistants, Agents, and Dashboard Integration",
+      "Module 06 — Advanced: Evaluation, Hallucination Control, and Human Review Loops",
+      "Module 07 — Production: Privacy, Governance, and Deployment of AI Analytics",
+      "Module 08 — Capstone: AI Analytics Assistant with Reports and Live Dashboard",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This intermediate course suits analysts and product professionals familiar with dashboards and spreadsheets. Basic SQL or Python helps but is not mandatory; AI workflows are introduced practically through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an automated insight-report generator, a grounded data Q&A assistant, and a capstone AI analytics dashboard with assistant integration and review controls.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as AI analytics specialist, business intelligence analyst, product analyst, data analyst, insights analyst, reporting engineer, and analytics consultant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Analytics | HIGAET Academy",
+      description:
+        "Apply generative AI to dashboards, reporting, and insights in this intermediate HIGAET Academy course with practical AI-assisted analytics work.",
+      keywords: [
+        "ai analytics",
+        "generative ai",
+        "data assistants",
+        "automated reporting",
+        "prompt engineering",
+        "retrieval augmented generation",
+        "dashboards",
+        "analytics roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ml_engineering",
+    slug: "ml-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET ML Engineering",
+    summary:
+      "Learn to design reliable production machine learning services with APIs, orchestration, and observability through HIGAET Practical Training.",
+    duration: "12 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Build production ML services with APIs, batch jobs, and versioned artifacts",
+      "Design system architectures covering data flow, inference paths, and failure handling",
+      "Develop testing suites for data, features, models, and service contracts",
+      "Evaluate service readiness with load tests, latency budgets, and quality thresholds",
+      "Automate build, test, and release workflows for ML applications",
+      "Optimize serving performance through caching, batching, and resource sizing",
+      "Integrate observability with logging, metrics, tracing, and model telemetry",
+      "Secure ML endpoints with authentication, rate limits, and input validation",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: ML Systems Design, Service Patterns, and Production Constraints",
+      "Module 02 — Core: APIs, Batch Scoring, and Model Interface Design",
+      "Module 03 — Core: Data Validation, Feature Pipelines, and Contract Testing",
+      "Module 04 — Engineering: Containers, Orchestration, and Environment Management",
+      "Module 05 — Engineering: Testing, Release Strategies, and Rollback Planning",
+      "Module 06 — Advanced: Scaling, Caching, Queues, and Performance Engineering",
+      "Module 07 — Advanced: Observability, Logging, and Production Debugging",
+      "Module 08 — Production: Security, Cost Control, and Lifecycle Maintenance",
+      "Module 09 — Capstone: Production ML Service with Tests and Observability",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This advanced course suits software and ML engineers with Python and API experience. Basic modeling knowledge is expected; systems design and deployment skills are developed through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a tested model API, a batch scoring workflow, and a capstone production ML service with orchestration, observability, and documented release procedures.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as ML engineer, AI platform engineer, backend engineer, applied scientist, MLOps engineer, data engineer, and software engineer in AI.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "ML Engineering | HIGAET Academy",
+      description:
+        "Ship production ML systems with APIs, testing, scaling, and monitoring in this advanced HIGAET Academy course with end-to-end engineering projects.",
+      keywords: [
+        "ml engineering",
+        "model serving",
+        "ml apis",
+        "production ml",
+        "containers",
+        "orchestration",
+        "observability",
+        "ml engineer roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_data_architecture",
+    slug: "data-architecture",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Data Architecture",
+    summary:
+      "Learn data modeling, platform design, and governance to plan warehouses, lakehouses, and enterprise standards and cataloging practices through HIGAET Practical Training.",
+    duration: "8 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Build conceptual and logical data models for transactional and analytical domains",
+      "Design warehouse and lakehouse architectures with zones, contracts, and SLAs",
+      "Develop governance frameworks covering quality, lineage, ownership, and retention",
+      "Evaluate platform tradeoffs across cost, latency, scalability, and maintainability",
+      "Automate metadata, cataloging, and documentation workflows for data assets",
+      "Optimize storage and access patterns for analytics and operational consumers",
+      "Integrate security, privacy, and compliance controls into platform blueprints",
+      "Architect an enterprise data strategy with roadmaps and migration phases",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Data Architecture Roles, Viewpoints, and Design Principles",
+      "Module 02 — Core: Conceptual, Logical, and Physical Modeling Techniques",
+      "Module 03 — Core: Warehouses, Lakes, Lakehouses, and Serving Layers",
+      "Module 04 — Engineering: Integration Patterns, Contracts, and Master Data Concepts",
+      "Module 05 — Engineering: Metadata, Catalogs, Lineage, and Discoverability",
+      "Module 06 — Advanced: Governance, Quality Frameworks, and Stewardship Models",
+      "Module 07 — Production: Security, Compliance, Cost Design, and Platform Operations",
+      "Module 08 — Capstone: Enterprise Data Architecture Blueprint and Review Board",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This professional course suits senior engineers, analysts, and technology leads designing data platforms. Experience with databases or pipelines is recommended; strategy methods are taught through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a domain data model, a governance and catalog plan, and a capstone enterprise architecture blueprint with platform diagrams, standards, and migration roadmap.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as data architect, enterprise data manager, data platform architect, analytics architect, data governance lead, and solutions architect.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Data Architecture | HIGAET Academy",
+      description:
+        "Design enterprise data platforms, governance, and modeling in this professional HIGAET Academy course with architecture blueprints and reviews.",
+      keywords: [
+        "data architecture",
+        "data modeling",
+        "data governance",
+        "lakehouse architecture",
+        "metadata catalog",
+        "data strategy",
+        "enterprise data",
+        "data architect roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_big_data_engineering",
+    slug: "big-data-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Big Data Engineering",
+    summary:
+      "Learn reliable Spark, Kafka, and lakehouse systems to process large-scale batch and streaming data reliably through HIGAET Practical Training projects.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build distributed batch jobs that process large datasets with partitioning and fault tolerance",
+      "Design streaming topologies with windows, watermarks, and exactly-once handling",
+      "Develop lakehouse tables with schema evolution, compaction, and time travel",
+      "Evaluate job performance using metrics, skew analysis, and resource profiling",
+      "Automate cluster workflows with scheduling, retries, and environment templates",
+      "Optimize shuffle, storage formats, and query plans for cost and speed",
+      "Integrate batch and streaming layers into unified analytics-ready outputs",
+      "Secure big data workloads with encryption, access policies, and audit logging",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Distributed Systems, Batch Versus Streaming, and Storage Formats",
+      "Module 02 — Core: Distributed Processing Models, Partitions, and Fault Tolerance",
+      "Module 03 — Core: Batch Engineering with Large-Scale Frames and SQL Engines",
+      "Module 04 — Engineering: Lakehouse Tables, Partitioning, and Incremental Processing",
+      "Module 05 — Engineering: Event Streaming, Messaging, and Stream Processing",
+      "Module 06 — Advanced: Stateful Streaming, Windows, Joins, and Late Data",
+      "Module 07 — Advanced: Performance Tuning, Skew Handling, and Cost Optimization",
+      "Module 08 — Production: Security, Monitoring, and Operations for Data Clusters",
+      "Module 09 — Capstone: Unified Batch and Streaming Platform with Lakehouse Output",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This advanced course suits data engineers and backend developers handling large-scale workloads. Python and SQL plus basic data pipeline experience are recommended; distributed concepts are taught through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a distributed batch processing job, a streaming pipeline with windowed outputs, and a capstone unified platform combining batch, streaming, and lakehouse tables.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as big data engineer, streaming data engineer, data platform engineer, Spark developer, data infrastructure engineer, and analytics engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Big Data Engineering | HIGAET Academy",
+      description:
+        "Process massive datasets with Spark, Kafka, and lakehouse platforms in this advanced HIGAET Academy course with scalable big data engineering labs.",
+      keywords: [
+        "big data engineering",
+        "apache spark",
+        "kafka streaming",
+        "lakehouse",
+        "distributed systems",
+        "stream processing",
+        "data pipelines",
+        "big data roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_applied_machine_learning",
+    slug: "applied-machine-learning",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_data_ml",
+    title: "HIGAET Applied Machine Learning",
+    summary:
+      "Learn practical applied modeling, feature engineering, and evaluation to solve business problems and deploy useful models through HIGAET Practical Training.",
+    duration: "10 weeks",
+    level: "intermediate",
+    mode: "hybrid",
+    outcomes: [
+      "Build applied models for churn, demand, scoring, and recommendation-style problems",
+      "Design scoped ML use cases with success metrics and feasibility checks",
+      "Develop end-to-end workflows from data collection to validation and handoff",
+      "Evaluate solutions with business metrics, ablations, and stakeholder review",
+      "Automate reporting and refresh routines for applied modeling workflows",
+      "Optimize practical tradeoffs among accuracy, latency, cost, and maintainability",
+      "Integrate models into dashboards, tools, and operational workflows",
+      "Architect a portfolio-ready applied ML case study with limitations and next steps",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Applied ML Scoping, Metrics, and Solution Design",
+      "Module 02 — Core: Data Sourcing, Labeling Concepts, and Practical Preparation",
+      "Module 03 — Core: Feature Engineering for Tabular and Text Business Data",
+      "Module 04 — Core: Baselines, Model Selection, and Applied Evaluation",
+      "Module 05 — Engineering: Tuning, Validation, and Responsible Applied Modeling",
+      "Module 06 — Engineering: Prototypes, Dashboards, and Workflow Integration",
+      "Module 07 — Advanced: Pilot Design, Feedback Loops, and Iteration Planning",
+      "Module 08 — Production: Handoff, Documentation, and Maintenance Planning",
+      "Module 09 — Capstone: Applied ML Solution with Prototype and Business Report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what prerequisites are needed?",
+        answer:
+          "This intermediate course suits analysts, developers, and domain specialists applying ML to real workflows. Basic Python and data handling help; solution design is taught hands-on through HIGAET Practical Training.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a scoped business ML prototype, an evaluation and iteration report, and a capstone applied solution with working prototype, metrics, and deployment handoff plan.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as applied ML engineer, data scientist, product analyst, business intelligence engineer, AI solutions analyst, automation analyst, and analytics engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Applied ML | HIGAET Academy",
+      description:
+        "Solve business problems with applied ML workflows in this intermediate HIGAET Academy course covering practical modeling, evaluation, and deployment.",
+      keywords: [
+        "applied machine learning",
+        "business ml",
+        "model prototyping",
+        "feature engineering",
+        "model evaluation",
+        "ml deployment",
+        "practical ai",
+        "applied ml roles",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_cybersecurity_engineering",
+    slug: "cybersecurity-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Cybersecurity Engineering",
+    summary:
+      "Learn defensive security foundations and build hardened lab networks, secure endpoints, and monitoring workflows through guided HIGAET Practical Training / Experiential Learning.",
+    duration: "12 weeks",
+    level: "beginner",
+    mode: "hybrid",
+    outcomes: [
+      "Build hardened virtual lab networks with segmented zones and baselines",
+      "Design endpoint hardening checklists for Windows and Linux lab systems",
+      "Develop security monitoring dashboards using open-source log tooling",
+      "Deploy vulnerability scanning workflows and remediation tracking boards",
+      "Integrate identity hygiene controls including MFA and least privilege",
+      "Evaluate security alerts and document defensive findings clearly",
+      "Secure web and network services using defensive configuration patterns",
+      "Automate routine security checks with scripts and scheduled tasks",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Security principles, threats, and defense models",
+      "Module 02 — Lab Setup: Virtual networks and isolated practice environments",
+      "Module 03 — System Hardening: OS baselines and secure configuration",
+      "Module 04 — Core: Networking, firewalls, and segmentation defenses",
+      "Module 05 — Engineering: Vulnerability assessment and patch workflows",
+      "Module 06 — Detection Basics: Logs, alerts, and monitoring fundamentals",
+      "Module 07 — Identity Defense: Passwords, MFA, and access hygiene",
+      "Module 08 — Applied Defense: Secure services and backup resilience",
+      "Module 09 — Capstone: Hardened lab network with monitoring and report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Beginners interested in defensive security roles. Basic computer skills and familiarity with operating systems are helpful. No prior security experience is required.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a segmented virtual lab network, an endpoint hardening checklist project, and a capstone with monitoring dashboards plus a remediation report through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as security analyst, security operations associate, IT support specialist, network technician, systems administrator, compliance assistant, and security technician.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Cybersecurity Engineering | HIGAET Academy",
+      description:
+        "Beginner cybersecurity engineering course covering lab networks, hardening, vulnerability workflows, and defensive monitoring with practical projects.",
+      keywords: [
+        "cybersecurity fundamentals",
+        "network defense",
+        "system hardening",
+        "vulnerability management",
+        "security monitoring",
+        "firewalls",
+        "lab environments",
+        "security analyst",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_cloud_security",
+    slug: "cloud-security",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Cloud Security",
+    summary:
+      "Learn to secure cloud accounts, storage, and workloads while building identity policies, logging pipelines, and misconfiguration reviews in controlled labs.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build secure cloud lab accounts with organized projects and guardrails",
+      "Design identity and access policies using least-privilege principles",
+      "Develop storage and network security controls for lab workloads",
+      "Deploy centralized logging and alerting for cloud activity",
+      "Integrate automated misconfiguration checks into review workflows",
+      "Evaluate shared responsibility models across service types",
+      "Secure containers and serverless functions with defensive baselines",
+      "Automate compliance checks with policy-as-code templates",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Cloud models and shared responsibility",
+      "Module 02 — Identity: IAM users, roles, and least privilege",
+      "Module 03 — Network Defense: Virtual networks, groups, and filtering",
+      "Module 04 — Core: Storage encryption and key handling",
+      "Module 05 — Engineering: Workload hardening for VMs and containers",
+      "Module 06 — Visibility: Logging, auditing, and alert design",
+      "Module 07 — Posture Review: Benchmarks and misconfiguration response",
+      "Module 08 — Capstone: Secured cloud lab with policy checks and report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Learners with basic cloud and networking familiarity. Prior completion of an introductory IT or cybersecurity course is helpful but not mandatory.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a secured cloud lab account, an IAM policy set, and a capstone with logging, posture checks, and a findings report through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as cloud security analyst, cloud administrator, security engineer associate, compliance analyst, DevOps support engineer, SOC analyst, and systems engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Cloud Security | HIGAET Academy",
+      description:
+        "Intermediate cloud security course on IAM, storage defense, workload hardening, logging, and posture reviews using controlled cloud labs.",
+      keywords: [
+        "cloud security",
+        "iam",
+        "least privilege",
+        "storage security",
+        "cloud logging",
+        "posture management",
+        "containers",
+        "policy as code",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_application_security",
+    slug: "application-security",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Application Security",
+    summary:
+      "Learn secure coding, authentication design, and defensive testing while building threat models, code reviews, and pipeline checks for sample applications.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build threat models for sample web applications and APIs",
+      "Design secure authentication and session handling controls",
+      "Develop input validation and output encoding defenses",
+      "Deploy static and dependency checks in a lab pipeline",
+      "Integrate security headers and defensive error handling",
+      "Evaluate common web risks using defensive review checklists",
+      "Secure APIs with authorization checks and rate controls",
+      "Automate security test summaries for developer review",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Application risks and secure design principles",
+      "Module 02 — Threat Modeling: Assets, trust boundaries, and abuse cases",
+      "Module 03 — Identity: Authentication, sessions, and password defense",
+      "Module 04 — Core: Input handling, injection defenses, and encoding",
+      "Module 05 — Engineering: Access control and API security patterns",
+      "Module 06 — Pipeline Checks: Static analysis and dependency review",
+      "Module 07 — Defensive Testing: Controlled review and report writing",
+      "Module 08 — Capstone: Secured sample app with threat model and checks",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Learners with basic programming or web fundamentals. Familiarity with HTTP, HTML, and one programming language will help with lab exercises.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a threat model, a secure coding review pack, and a capstone securing a sample app with pipeline checks through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as application security analyst, secure code reviewer, software engineer, QA security tester, API developer, DevOps engineer, and security consultant associate.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Application Security | HIGAET Academy",
+      description:
+        "Intermediate application security course covering threat modeling, secure coding, API defenses, and pipeline checks for sample apps.",
+      keywords: [
+        "application security",
+        "secure coding",
+        "threat modeling",
+        "api security",
+        "owasp awareness",
+        "static analysis",
+        "authentication",
+        "secure development",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_security",
+    slug: "ai-security",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET AI Security",
+    summary:
+      "Learn defensive security for AI systems including prompt safeguards, data protection, model access controls, and evaluation of LLM behavior in labs.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build safeguard patterns for LLM inputs and outputs in lab apps",
+      "Design data handling controls for training and retrieval pipelines",
+      "Develop evaluation checklists for prompt injection and leakage risks",
+      "Deploy access controls and logging for model endpoints",
+      "Integrate content filters and human review gates",
+      "Evaluate model theft, poisoning, and misuse risks defensively",
+      "Secure RAG pipelines with source validation and redaction",
+      "Automate safety regression checks for AI application updates",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: AI system components and trust boundaries",
+      "Module 02 — Data Defense: Dataset provenance and privacy controls",
+      "Module 03 — Prompt Safeguards: Injection awareness and defensive design",
+      "Module 04 — Core: Model access control and endpoint logging",
+      "Module 05 — Engineering: RAG security and retrieval validation",
+      "Module 06 — Evaluation: Safety testing and guardrail measurement",
+      "Module 07 — Advanced: Controlled red-teaming methods and reporting",
+      "Module 08 — Capstone: Guardrailed lab AI app with safety evaluation",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Advanced learners with Python and basic machine learning or LLM application familiarity. Prior application security knowledge is strongly recommended.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build input-output safeguard rules, a RAG protection review, and a capstone guardrailed AI app with evaluation notes through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as AI security analyst, LLM application engineer, security engineer, trust and safety analyst, data engineer, MLOps associate, and product security analyst.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Security | HIGAET Academy",
+      description:
+        "Advanced AI security course on prompt safeguards, RAG protection, model access controls, and safety evaluation for lab AI apps.",
+      keywords: [
+        "ai security",
+        "llm guardrails",
+        "prompt injection defense",
+        "rag security",
+        "model risk",
+        "data poisoning awareness",
+        "ai evaluation",
+        "trust and safety",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_soc_engineering",
+    slug: "soc-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET SOC Engineering",
+    summary:
+      "Learn security operations workflows and build SIEM dashboards, detection rules, triage playbooks, and incident timelines using simulated log data.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build SIEM dashboards from simulated endpoint and network logs",
+      "Design detection rules with tuning notes to reduce noise",
+      "Develop triage playbooks for common alert categories",
+      "Deploy case management workflows with severity and SLAs",
+      "Integrate threat intelligence feeds into review processes",
+      "Evaluate incidents and document timelines with evidence",
+      "Secure log collection pipelines with parsing and retention rules",
+      "Automate enrichment and notification steps for analyst queues",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: SOC roles, tiers, and operations flow",
+      "Module 02 — Log Engineering: Sources, parsing, and normalization",
+      "Module 03 — SIEM Practice: Queries, dashboards, and alert design",
+      "Module 04 — Core: Detection engineering and rule tuning",
+      "Module 05 — Triage: Playbooks, prioritization, and case handling",
+      "Module 06 — Intelligence: Threat feeds and contextual analysis",
+      "Module 07 — Response: Containment coordination and recovery notes",
+      "Module 08 — Capstone: SOC lab with detections, playbook, and case report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Learners with basic networking and security familiarity. Comfort reading logs and following structured procedures will help with simulations.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build SIEM dashboards, tuned detection rules, and a capstone SOC case with timeline and playbook through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as SOC analyst, detection analyst, incident response associate, threat intelligence analyst, security engineer, network defender, and security consultant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "SOC Engineering | HIGAET Academy",
+      description:
+        "Intermediate SOC course on SIEM, detection engineering, triage playbooks, threat intel, and incident timelines with lab data.",
+      keywords: [
+        "soc",
+        "siem",
+        "detection engineering",
+        "alert triage",
+        "threat intelligence",
+        "incident response",
+        "playbooks",
+        "log analysis",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_security_automation",
+    slug: "security-automation",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Security Automation",
+    summary:
+      "Learn to automate defensive security tasks and build alert enrichment, evidence collection, and reporting workflows with APIs and playbooks.",
+    duration: "6 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build automation scripts for log collection and parsing tasks",
+      "Design SOAR-style playbooks for enrichment and escalation",
+      "Develop API integrations between security lab tools",
+      "Deploy scheduled jobs for hygiene and posture checks",
+      "Integrate ticketing updates with alert evidence packs",
+      "Evaluate automation reliability with error handling and logs",
+      "Secure automation credentials using vault patterns",
+      "Automate weekly defensive reporting dashboards",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Automation use cases and safety guardrails",
+      "Module 02 — Scripting: Python patterns for defensive workflows",
+      "Module 03 — APIs: Connecting lab security tools reliably",
+      "Module 04 — Core: Playbook design and decision logic",
+      "Module 05 — Engineering: Scheduling, retries, and failure handling",
+      "Module 06 — Capstone: Automated triage pipeline with evidence report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Advanced learners comfortable with Python and APIs. Prior SOC, cloud, or scripting exposure will make automation labs easier to follow.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build enrichment scripts, integration connectors, and a capstone automated triage pipeline with reports through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as security automation engineer, SOC engineer, detection engineer, security tools engineer, DevSecOps engineer, platform engineer, and security analyst.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Security Automation | HIGAET Academy",
+      description:
+        "Advanced security automation course on scripting, API integrations, playbooks, scheduling, and automated defensive reporting.",
+      keywords: [
+        "security automation",
+        "soar playbooks",
+        "python scripting",
+        "api integration",
+        "alert enrichment",
+        "workflow design",
+        "detection support",
+        "devsecops",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_devsecops_security",
+    slug: "devsecops-security",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET DevSecOps Security",
+    summary:
+      "Learn to embed defensive checks into delivery pipelines while building secret handling, image scanning, and deployment guardrails for sample services.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build pipeline stages with security gates and approvals",
+      "Design secret handling and artifact protection workflows",
+      "Develop container image and dependency scanning checks",
+      "Deploy infrastructure policy checks for lab environments",
+      "Integrate DAST-style defensive reviews into staging",
+      "Evaluate pipeline failures and document remediation paths",
+      "Secure CI runners and deployment credentials defensively",
+      "Automate security summaries for release review meetings",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: DevSecOps models and pipeline risk points",
+      "Module 02 — Source Defense: Branch controls and secret handling",
+      "Module 03 — Build Checks: Dependencies and artifact protection",
+      "Module 04 — Core: Container scanning and image baselines",
+      "Module 05 — Engineering: Infrastructure policy and configuration checks",
+      "Module 06 — Release: Deployment guardrails and approvals",
+      "Module 07 — Observability: Post-release monitoring and feedback",
+      "Module 08 — Capstone: Secured pipeline with gates and release report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Advanced learners with Git, CI basics, and container familiarity. Prior Linux or cloud exposure will help with pipeline labs.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build scanned build workflows, policy checks, and a capstone secured pipeline with release evidence through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as DevSecOps engineer, platform engineer, cloud security engineer, release engineer, site reliability engineer, security engineer, and build engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "DevSecOps Security | HIGAET Academy",
+      description:
+        "Advanced DevSecOps course on pipeline gates, secret handling, container scanning, policy checks, and release guardrails.",
+      keywords: [
+        "devsecops",
+        "ci cd security",
+        "container scanning",
+        "secrets management",
+        "policy as code",
+        "pipeline gates",
+        "deployment safety",
+        "platform security",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_cyber_defense_engineering",
+    slug: "cyber-defense-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Cyber Defense Engineering",
+    summary:
+      "Learn layered defense design and build network controls, endpoint defenses, deception sensors, and coordinated response drills in isolated labs.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Build layered defense layouts for lab networks and endpoints",
+      "Design detection coverage maps across network and host telemetry",
+      "Develop coordinated response runbooks for simulated scenarios",
+      "Deploy honeypots and alerting sensors in isolated labs",
+      "Integrate firewall, EDR, and log controls into one view",
+      "Evaluate adversary tactics using defensive mapping frameworks",
+      "Secure recovery workflows with backups and rehearsal checklists",
+      "Automate evidence packaging for post-exercise reviews",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Defense in depth and control families",
+      "Module 02 — Network Defense: Segmentation, filtering, and monitoring",
+      "Module 03 — Endpoint Defense: Baselines, allowlists, and EDR review",
+      "Module 04 — Core: Detection mapping and coverage analysis",
+      "Module 05 — Engineering: Deception sensors and alert validation",
+      "Module 06 — Coordination: Response roles and communication drills",
+      "Module 07 — Resilience: Backup, restore, and continuity checks",
+      "Module 08 — Exercise: Controlled blue-team simulation and review",
+      "Module 09 — Capstone: Integrated defense lab with exercise report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Advanced learners with networking and SOC or systems fundamentals. This course uses only isolated lab environments for defensive drills.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build layered defense controls, deception sensors, and a capstone integrated defense exercise with findings through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as cyber defense engineer, SOC lead associate, incident responder, network security engineer, threat analyst, security architect associate, and defense consultant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Cyber Defense Engineering | HIGAET",
+      description:
+        "Advanced cyber defense course on layered controls, detection mapping, deception sensors, and coordinated lab response drills.",
+      keywords: [
+        "cyber defense",
+        "blue team",
+        "detection mapping",
+        "network security",
+        "edr review",
+        "deception technology",
+        "incident drills",
+        "resilience",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_identity_access_security",
+    slug: "identity-and-access-security",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Identity & Access Security",
+    summary:
+      "Learn identity-first defense and build MFA rollouts, lifecycle workflows, privileged access reviews, and directory monitoring in practice labs.",
+    duration: "6 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build directory structures with groups, roles, and naming standards",
+      "Design MFA and conditional access policies for lab tenants",
+      "Develop joiner-mover-leaver workflows with approval trails",
+      "Deploy privileged access reviews and just-in-time controls",
+      "Integrate single sign-on for sample lab applications",
+      "Evaluate access logs for anomalous sign-in patterns",
+      "Secure service accounts and API credentials defensively",
+      "Automate access review reminders and evidence exports",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Identity models and access principles",
+      "Module 02 — Directories: Users, groups, and role design",
+      "Module 03 — Authentication: MFA and conditional access",
+      "Module 04 — Core: Lifecycle workflows and approvals",
+      "Module 05 — Privilege: Reviews, vaulting, and session controls",
+      "Module 06 — Capstone: Identity-hardened lab with review report",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Learners with basic IT administration familiarity. Experience with user accounts, directories, or helpdesk tasks will be useful.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build access policies, lifecycle workflows, and a capstone identity-hardened environment with review evidence through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as IAM analyst, identity engineer associate, systems administrator, IT support lead, security analyst, access reviewer, and compliance assistant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Identity Access Security | HIGAET",
+      description:
+        "Intermediate identity security course on MFA, lifecycle workflows, privileged access reviews, and directory monitoring labs.",
+      keywords: [
+        "identity security",
+        "iam",
+        "mfa",
+        "conditional access",
+        "privileged access",
+        "access review",
+        "single sign on",
+        "directory defense",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_security_architecture",
+    slug: "security-architecture",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_cybersecurity",
+    title: "HIGAET Security Architecture",
+    summary:
+      "Learn to design enterprise security architectures and produce reference models, control maps, zero-trust roadmaps, and executive-ready review documents.",
+    duration: "10 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Build reference architectures for identity, network, and data zones",
+      "Design control maps aligned to risk scenarios and requirements",
+      "Develop zero-trust roadmaps with phased defensive milestones",
+      "Deploy architecture review templates for new systems",
+      "Integrate logging and resilience patterns into designs",
+      "Evaluate vendor proposals using structured security criteria",
+      "Secure data flows with classification and protection patterns",
+      "Architect executive summaries with risks, options, and next steps",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Architecture domains and design methods",
+      "Module 02 — Risk Framing: Assets, threats, and control objectives",
+      "Module 03 — Identity Architecture: Enterprise access patterns",
+      "Module 04 — Core: Network zones and secure connectivity",
+      "Module 05 — Data Design: Classification, encryption, and retention",
+      "Module 06 — Engineering: Logging, resilience, and recovery design",
+      "Module 07 — Zero Trust: Segmentation and phased adoption plans",
+      "Module 08 — Governance: Reviews, exceptions, and documentation",
+      "Module 09 — Capstone: Enterprise security architecture pack and review",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Experienced professionals with security, infrastructure, or software background. Familiarity with risk concepts and enterprise systems is recommended.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build reference diagrams, a control map, and a capstone architecture pack with roadmap and review notes through HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "Supports awareness of roles such as security architect, enterprise architect, security consultant, cloud architect, risk analyst, compliance manager, CISO associate, and solutions architect.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Security Architecture | HIGAET Academy",
+      description:
+        "Professional security architecture course on reference models, control maps, zero-trust roadmaps, and architecture reviews.",
+      keywords: [
+        "security architecture",
+        "zero trust",
+        "control mapping",
+        "reference architecture",
+        "risk design",
+        "enterprise security",
+        "governance",
+        "security reviews",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_blockchain_engineering",
+    slug: "blockchain-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET Blockchain Engineering",
+    summary:
+      "Learn distributed ledgers, consensus, smart contracts, and token standards while building secure decentralized applications through HIGAET Practical Training applied projects.",
+    duration: "10 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build smart contracts for payments, access control, and asset transfers",
+      "Design token standards for fungible and non-fungible digital assets",
+      "Develop decentralized applications with wallet and node integration",
+      "Deploy smart contracts to test networks with verification workflows",
+      "Integrate blockchain explorers, oracles, and off-chain storage",
+      "Evaluate consensus mechanisms for throughput, cost, and decentralization",
+      "Secure contracts against reentrancy, overflow, and access flaws",
+      "Automate contract testing, auditing checks, and deployment pipelines",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: distributed ledgers, cryptography, and network models",
+      "Module 02 — Core: transactions, consensus, and Ethereum architecture",
+      "Module 03 — Core: Solidity programming, accounts, and gas optimization",
+      "Module 04 — Engineering: ERC token standards, wallets, and key management",
+      "Module 05 — Engineering: decentralized applications, libraries, and node providers",
+      "Module 06 — Advanced: oracles, bridges, layer-two scaling, and storage",
+      "Module 07 — Advanced: security patterns, audits, and formal verification basics",
+      "Module 08 — Production: testing, monitoring, upgrades, and governance",
+      "Module 09 — Capstone: design, build, and deploy an audited decentralized application",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Software developers and technology students with JavaScript or Python fundamentals and basic web development skills. Familiarity with command-line tools and APIs is helpful. All practical work is completed as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a wallet-connected token contract, a decentralized marketplace prototype, and a capstone decentralized application with tested, verified contracts, frontend integration, and deployment documentation.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as blockchain developer, smart contract developer, decentralized application developer, Web3 backend developer, token engineer, blockchain QA engineer, protocol analyst, and solutions engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Blockchain Engineering | HIGAET Academy",
+      description:
+        "Master blockchain ledgers, consensus, smart contracts, and token engineering while building secure decentralized applications with HIGAET Academy.",
+      keywords: [
+        "blockchain engineering",
+        "smart contracts",
+        "solidity",
+        "token standards",
+        "decentralized applications",
+        "consensus mechanisms",
+        "web3 developer",
+        "contract security",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_web3_engineering",
+    slug: "web3-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET Web3 Engineering",
+    summary:
+      "Master wallets, decentralized identity, smart contract frontends, and NFT systems while engineering full-stack Web3 products through HIGAET Practical Training applied projects.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build wallet-connected Web3 frontends with transaction signing flows",
+      "Design decentralized identity and authentication using signatures",
+      "Develop NFT minting, listing, and marketplace interactions",
+      "Deploy Web3 frontends with testnet contract integrations",
+      "Integrate IPFS storage, indexers, and price oracles",
+      "Evaluate gas costs, wallet UX, and protocol trade-offs",
+      "Secure frontend transactions against phishing and approval risks",
+      "Automate contract interaction testing and release checks",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Web3 architecture, wallets, and networks",
+      "Module 02 — Core: accounts, signatures, transactions, and gas",
+      "Module 03 — Core: contract ABIs, libraries, and frontend connections",
+      "Module 04 — Engineering: decentralized identity, sessions, and permissions",
+      "Module 05 — Engineering: NFTs, marketplaces, and metadata storage",
+      "Module 06 — Advanced: indexing, notifications, and oracle data",
+      "Module 07 — Production: security, testing, analytics, and deployment",
+      "Module 08 — Capstone: launch a full-stack Web3 application on a test network",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Frontend or full-stack learners with HTML, CSS, JavaScript, and basic React knowledge. Prior blockchain exposure is useful but not required. Hands-on labs run as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a wallet login application, an NFT collection with marketplace functions, and a capstone full-stack Web3 product with contract integration and deployed frontend.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as Web3 frontend developer, decentralized application developer, NFT platform developer, blockchain integration developer, product engineer, Web3 QA engineer, and technical support engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Web3 Engineering | HIGAET Academy",
+      description:
+        "Build web3 wallets, decentralized identities, smart contract frontends, and NFT marketplaces through applied engineering training at HIGAET Academy.",
+      keywords: [
+        "web3 engineering",
+        "decentralized applications",
+        "wallets",
+        "nft marketplaces",
+        "decentralized identity",
+        "ipfs storage",
+        "frontend development",
+        "smart contract integration",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_iot_engineering",
+    slug: "iot-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET IoT Engineering",
+    summary:
+      "Learn sensors, microcontrollers, MQTT messaging, and telemetry pipelines while deploying connected monitoring solutions through HIGAET Practical Training applied device projects.",
+    duration: "8 weeks",
+    level: "intermediate",
+    mode: "online",
+    outcomes: [
+      "Build sensor circuits for temperature, motion, and environmental data",
+      "Design MQTT and HTTP messaging flows for constrained devices",
+      "Develop firmware logic for sampling, sleep modes, and alerts",
+      "Deploy device telemetry to cloud dashboards and databases",
+      "Integrate edge gateways, brokers, and device shadows",
+      "Evaluate power, connectivity, and reliability trade-offs",
+      "Secure devices with authentication, encryption, and updates",
+      "Automate device provisioning, testing, and data validation",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: IoT architecture, sensors, and actuators",
+      "Module 02 — Core: microcontrollers, GPIO, and embedded programming",
+      "Module 03 — Core: wireless protocols, Wi-Fi, Bluetooth, and LoRa basics",
+      "Module 04 — Engineering: MQTT brokers, topics, and message design",
+      "Module 05 — Engineering: edge gateways, filtering, and local rules",
+      "Module 06 — Advanced: telemetry pipelines, storage, and dashboards",
+      "Module 07 — Production: device management, updates, and security operations",
+      "Module 08 — Capstone: deploy an end-to-end connected monitoring system",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Students and engineers with basic Python and electronics curiosity; no prior embedded experience required. Comfort with computers and spreadsheets is enough. Device work is structured as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a sensor data logger, an MQTT-based alert system with dashboard, and a capstone connected monitoring solution with gateway, cloud pipeline, and visualization.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as IoT engineer, embedded systems technician, device integration specialist, telemetry analyst, automation technician, field systems engineer, and IoT support engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "IoT Engineering | HIGAET Academy",
+      description:
+        "Design IoT sensing, MQTT messaging, edge gateways, and telemetry pipelines while deploying connected device solutions through HIGAET Academy training.",
+      keywords: [
+        "iot engineering",
+        "sensors",
+        "mqtt",
+        "microcontrollers",
+        "telemetry pipelines",
+        "edge gateways",
+        "device management",
+        "connected devices",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_edge_computing_engineering",
+    slug: "edge-computing-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET Edge Computing Engineering",
+    summary:
+      "Architect edge clusters, container workloads, stream processing, and device fleets while delivering low-latency intelligent systems through HIGAET Practical Training applied labs.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build containerized workloads optimized for edge hardware",
+      "Design edge cluster topologies for latency and resilience",
+      "Develop stream processing jobs for sensor and video data",
+      "Deploy models and services to edge nodes and gateways",
+      "Integrate message buses, time-series stores, and cloud sync",
+      "Evaluate latency, bandwidth, and offline-operation trade-offs",
+      "Secure edge nodes, APIs, and over-the-air updates",
+      "Optimize resource usage, caching, and inference scheduling",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: edge paradigms, latency, and use cases",
+      "Module 02 — Core: Linux systems, networking, and edge hardware",
+      "Module 03 — Core: containers, registries, and lightweight orchestration",
+      "Module 04 — Engineering: stream ingestion, filtering, and time-series storage",
+      "Module 05 — Engineering: on-device inference and model serving",
+      "Module 06 — Advanced: fleet management, updates, and observability",
+      "Module 07 — Advanced: zero-trust security, encryption, and access control",
+      "Module 08 — Production: reliability, failover, and cloud-edge synchronization",
+      "Module 09 — Capstone: architect and deploy a production-grade edge computing solution",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Cloud, DevOps, or IoT practitioners with Linux, containers, and Python fundamentals. Networking basics are recommended. All builds are delivered as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a containerized edge data pipeline, an on-device inference service, and a capstone distributed edge deployment with monitoring, updates, and cloud synchronization.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as edge computing engineer, DevOps engineer, infrastructure engineer, IoT platform engineer, systems engineer, network engineer, and edge AI engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Edge Computing Engineering | HIGAET Academy",
+      description:
+        "Architect applied edge infrastructure, container orchestration, stream processing, and device fleets for low-latency intelligent systems at HIGAET Academy.",
+      keywords: [
+        "edge computing",
+        "container orchestration",
+        "stream processing",
+        "edge ai",
+        "fleet management",
+        "time-series data",
+        "distributed systems",
+        "infrastructure engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_digital_twin_engineering",
+    slug: "digital-twin-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET Digital Twin Engineering",
+    summary:
+      "Model digital twins, sensor fusion, 3D simulation, and predictive analytics while creating virtual replicas of assets through HIGAET Practical Training applied engineering projects.",
+    duration: "8 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build geometric and behavioral models of physical assets",
+      "Design sensor fusion pipelines for real-time twin updates",
+      "Develop 3D visualizations and simulation dashboards",
+      "Deploy twin data services with live telemetry ingestion",
+      "Integrate IoT platforms, historians, and analytics tools",
+      "Evaluate model fidelity, latency, and prediction accuracy",
+      "Secure twin data flows and access-controlled interfaces",
+      "Automate calibration, validation, and anomaly detection routines",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: digital twin concepts, types, and lifecycles",
+      "Module 02 — Core: sensors, data acquisition, and asset modeling",
+      "Module 03 — Core: 3D geometry, scene design, and visualization",
+      "Module 04 — Engineering: fusion, synchronization, and state estimation",
+      "Module 05 — Engineering: simulation logic, rules, and what-if analysis",
+      "Module 06 — Advanced: predictive models, thresholds, and maintenance signals",
+      "Module 07 — Production: deployment, governance, and lifecycle management",
+      "Module 08 — Capstone: deliver an operational digital twin with live data and analytics",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Engineers and analysts with Python, data handling, and basic 3D or systems thinking. IoT familiarity is helpful. Modeling work is completed as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build an asset data model, a live 3D monitoring dashboard, and a capstone operational digital twin with sensor integration, simulation, and predictive alerts.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as digital twin engineer, simulation engineer, industrial data analyst, IoT solutions engineer, predictive maintenance analyst, systems modeler, and manufacturing technology specialist.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Digital Twin Engineering | HIGAET Academy",
+      description:
+        "Model digital twins, sensor fusion, 3D simulation, and predictive analytics for factories, buildings, and infrastructure with HIGAET Academy.",
+      keywords: [
+        "digital twins",
+        "sensor fusion",
+        "3d simulation",
+        "predictive analytics",
+        "industrial iot",
+        "asset modeling",
+        "simulation engineer",
+        "predictive maintenance",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_robotics_engineering",
+    slug: "robotics-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET Robotics Engineering",
+    summary:
+      "Learn kinematics, sensing, control systems, and ROS programming while assembling and programming mobile robots through HIGAET Practical Training hands-on engineering labs.",
+    duration: "12 weeks",
+    level: "advanced",
+    mode: "hybrid",
+    outcomes: [
+      "Build mobile robot assemblies with motors, sensors, and controllers",
+      "Design kinematic models and motion constraints for manipulators",
+      "Develop ROS nodes for perception, navigation, and control",
+      "Deploy obstacle avoidance and path-planning behaviors",
+      "Integrate cameras, lidar, IMU, and actuator feedback",
+      "Evaluate localization accuracy, stability, and safety limits",
+      "Secure control interfaces and operational stop procedures",
+      "Automate calibration, testing, and performance benchmarking",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: robotics systems, mathematics, and safety",
+      "Module 02 — Core: kinematics, dynamics, and coordinate frames",
+      "Module 03 — Core: sensors, actuators, and embedded controllers",
+      "Module 04 — Engineering: ROS architecture, topics, and packages",
+      "Module 05 — Engineering: localization, mapping, and navigation stacks",
+      "Module 06 — Engineering: computer vision for detection and tracking",
+      "Module 07 — Advanced: manipulation, grasping, and motion planning",
+      "Module 08 — Advanced: control theory, PID tuning, and simulation",
+      "Module 09 — Production: testing, maintenance, and field deployment",
+      "Module 10 — Capstone: build and demonstrate an autonomous mobile robotics system",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Engineering students and developers with Python, Linux basics, and introductory physics or mathematics. Prior hardware experience is helpful but optional. Lab work runs as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a sensor-driven robot chassis, a ROS-based navigation module, and a capstone autonomous robot that maps, navigates, and completes assigned tasks.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as robotics engineer, ROS developer, automation engineer, controls engineer, mechatronics technician, perception engineer, field robotics specialist, and systems integration engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Robotics Engineering | HIGAET Academy",
+      description:
+        "Engineer robotic kinematics, sensing, control systems, and ROS programming while building autonomous mobile robots through HIGAET Academy labs.",
+      keywords: [
+        "robotics engineering",
+        "ros programming",
+        "kinematics",
+        "control systems",
+        "computer vision",
+        "navigation",
+        "mechatronics",
+        "automation engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_autonomous_systems_engineering",
+    slug: "autonomous-systems-engineering",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_emerging_tech",
+    title: "HIGAET Autonomous Systems Engineering",
+    summary:
+      "Master perception, localization, planning, and control stacks while engineering safe autonomous vehicles and drones through HIGAET Practical Training applied simulation projects.",
+    duration: "10 weeks",
+    level: "advanced",
+    mode: "online",
+    outcomes: [
+      "Build perception pipelines for detection, tracking, and segmentation",
+      "Design localization and mapping workflows with sensor fusion",
+      "Develop path-planning and decision logic for dynamic environments",
+      "Deploy control systems for steering, braking, and flight",
+      "Integrate simulation environments, datasets, and middleware",
+      "Evaluate safety cases, failure modes, and operational boundaries",
+      "Secure autonomy stacks against sensor spoofing and software faults",
+      "Automate scenario testing, regression suites, and performance metrics",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: autonomy levels, architectures, and safety",
+      "Module 02 — Core: sensors, calibration, and data synchronization",
+      "Module 03 — Core: perception, detection, and tracking algorithms",
+      "Module 04 — Engineering: localization, SLAM, and HD maps",
+      "Module 05 — Engineering: behavior planning and trajectory generation",
+      "Module 06 — Advanced: vehicle and flight control systems",
+      "Module 07 — Advanced: simulation, datasets, and edge-case testing",
+      "Module 08 — Production: validation, monitoring, and fleet operations",
+      "Module 09 — Capstone: engineer and validate an autonomous system in simulation",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what are the prerequisites?",
+        answer:
+          "Advanced learners with Python, linear algebra basics, and robotics or machine learning familiarity. Simulation experience is useful. Project work is delivered as HIGAET Practical Training / Experiential Learning.",
+      },
+      {
+        question: "What will I build during this course?",
+        answer:
+          "You will build a perception and tracking pipeline, a planning and control module, and a capstone simulated autonomous vehicle or drone mission with safety evaluation.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as autonomous systems engineer, perception engineer, planning engineer, simulation engineer, robotics software engineer, validation engineer, and autonomy test engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Autonomous Systems | HIGAET Academy",
+      description:
+        "Develop perception, mapping, planning, and control stacks for safe autonomous vehicles and drones through applied engineering at HIGAET Academy.",
+      keywords: [
+        "autonomous systems",
+        "perception",
+        "sensor fusion",
+        "path planning",
+        "slam",
+        "simulation testing",
+        "control systems",
+        "autonomy engineer",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_engineering_management",
+    slug: "engineering-management",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET Engineering Management",
+    summary:
+      "Learn to lead software teams through hiring, coaching, delivery planning, and performance systems while building operating cadences that ship reliable products.",
+    duration: "8 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Lead sprint planning, standups, reviews, and retros that improve delivery predictability",
+      "Design team structures, roles, and onboarding plans for growing engineering groups",
+      "Evaluate delivery metrics, capacity, and quality signals to guide decisions",
+      "Architect feedback, coaching, and performance review practices for engineers",
+      "Govern technical debt, incident response, and on-call rotations responsibly",
+      "Develop hiring plans, interview loops, and leveling criteria for teams",
+      "Optimize cross-team communication with product, design, and stakeholders",
+      "Build a team operating plan covering goals, rituals, and growth paths",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Management transitions, team models, and leadership responsibilities",
+      "Module 02 — Core: Hiring, interviewing, onboarding, and leveling engineers",
+      "Module 03 — Core: Coaching, feedback, one-on-ones, and performance management",
+      "Module 04 — Core: Agile delivery, estimation, capacity planning, and roadmaps",
+      "Module 05 — Practice: Metrics, DORA signals, quality gates, and status reporting",
+      "Module 06 — Practice: Incident management, on-call health, and technical debt governance",
+      "Module 07 — Advanced: Stakeholder management, conflict resolution, and distributed teams",
+      "Module 08 — Advanced: Career ladders, compensation inputs, and retention practices",
+      "Module 09 — Capstone: Produce a team operating plan with hiring, rituals, metrics, and a quarterly delivery roadmap",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Senior engineers, tech leads, and new managers moving into people leadership. Learners should have around two years of software experience and familiarity with agile delivery. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce a hiring scorecard, a team delivery dashboard, coaching and feedback worksheets, and a capstone team operating plan with rituals, metrics, and a quarterly roadmap.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports engineering manager, team lead, delivery manager, program manager, technical lead, QA lead, and release manager roles. It builds leadership readiness without promising employment.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Engineering Management | HIGAET Academy",
+      description:
+        "Lead engineering teams with hiring, coaching, delivery metrics, and operating cadences through HIGAET Practical Training and guided projects.",
+      keywords: [
+        "engineering management",
+        "team leadership",
+        "hiring engineers",
+        "delivery metrics",
+        "coaching",
+        "agile delivery",
+        "incident management",
+        "career ladders",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_technical_product_management",
+    slug: "technical-product-management",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET Technical Product Management",
+    summary:
+      "Learn to translate customer needs into technical requirements, APIs, and roadmaps while building specs, backlogs, and release plans with engineering teams.",
+    duration: "8 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Evaluate customer problems, usage data, and technical constraints to shape scope",
+      "Design product requirements, user stories, and acceptance criteria engineers can build",
+      "Architect API contracts, data models, and integration requirements with developers",
+      "Build prioritized backlogs, roadmaps, and release plans tied to outcomes",
+      "Lead backlog refinement, sprint reviews, and launch readiness with stakeholders",
+      "Develop instrumentation, analytics events, and experiment plans for features",
+      "Optimize onboarding, activation, and usability through iterative releases",
+      "Govern scope changes, dependencies, and risk across product increments",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Technical product roles, discovery, and delivery lifecycles",
+      "Module 02 — Core: User research synthesis, problem framing, and opportunity mapping",
+      "Module 03 — Core: Requirements writing, user stories, acceptance criteria, and edge cases",
+      "Module 04 — Core: APIs, data models, integrations, and non-functional requirements",
+      "Module 05 — Practice: Backlog management, prioritization frameworks, and roadmap planning",
+      "Module 06 — Practice: Prototyping, usability testing, and analytics instrumentation",
+      "Module 07 — Advanced: Experimentation, A/B testing, rollout strategies, and launch plans",
+      "Module 08 — Advanced: Stakeholder alignment, pricing inputs, and support readiness",
+      "Module 09 — Capstone: Produce a product requirements package with roadmap, backlog, and launch checklist as HIGAET Practical Training",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Engineers, analysts, designers, and associate product managers seeking technical product roles. Learners should be comfortable with software concepts and basic data literacy. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce a product requirements document, an API and data specification, a prioritized roadmap, and a capstone launch package with backlog and release checklist.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports technical product manager, product owner, business analyst, solutions consultant, API product manager, platform product manager, and program manager roles.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Technical Product Mgmt | HIGAET Academy",
+      description:
+        "Build technical specs, API requirements, roadmaps, and launch plans for software products through HIGAET Practical Training and reviews.",
+      keywords: [
+        "technical product management",
+        "requirements",
+        "user stories",
+        "api products",
+        "roadmaps",
+        "backlog management",
+        "experimentation",
+        "product analytics",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_ai_product_management_leadership",
+    slug: "ai-product-management-leadership",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET AI Product Management",
+    summary:
+      "Learn to set AI product strategy, evaluate build-versus-buy options, and govern model risks while building roadmaps, pricing plans, and responsible launch frameworks.",
+    duration: "8 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Architect AI product strategy linking use cases, data advantage, and business value",
+      "Evaluate build-versus-buy, vendor, and foundation-model options for product needs",
+      "Design AI roadmaps, phased rollouts, and success metrics for uncertain capabilities",
+      "Govern data rights, safety, evaluation, and responsible AI policies",
+      "Lead cross-functional alignment across engineering, legal, design, and operations",
+      "Develop pricing, packaging, and cost models for inference-heavy products",
+      "Optimize human-in-the-loop workflows, feedback loops, and quality monitoring",
+      "Build go-to-market, support, and incident plans for AI feature launches",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: AI product landscape, capabilities, limits, and leadership responsibilities",
+      "Module 02 — Core: Opportunity discovery, feasibility scoring, and data-readiness assessment",
+      "Module 03 — Core: Build-versus-buy analysis, vendor evaluation, and platform selection",
+      "Module 04 — Core: AI roadmapping, milestone planning, and portfolio prioritization",
+      "Module 05 — Practice: Evaluation design, quality rubrics, red-teaming, and acceptance gates",
+      "Module 06 — Practice: Governance, privacy, safety reviews, and compliance workflows",
+      "Module 07 — Advanced: Cost modeling, latency tradeoffs, pricing, and packaging strategy",
+      "Module 08 — Advanced: Launch operations, monitoring, feedback loops, and model-change management",
+      "Module 09 — Capstone: Produce an AI product strategy memo with roadmap, governance plan, and launch scorecard as HIGAET Practical Training",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Product managers, engineering leads, and founders guiding AI-enabled offerings. Learners should have product or engineering experience and basic familiarity with machine learning concepts. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce an AI opportunity assessment, a build-versus-buy recommendation, an evaluation and governance checklist, and a capstone strategy memo with roadmap and launch plan.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports AI product manager, platform product lead, product strategy manager, innovation manager, solutions lead, partnerships manager, and portfolio manager roles.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "AI Product Management | HIGAET Academy",
+      description:
+        "Lead AI product strategy, vendor selection, governance, and launches with roadmaps and cost models through HIGAET Practical Training.",
+      keywords: [
+        "ai product strategy",
+        "ai roadmaps",
+        "build versus buy",
+        "ai governance",
+        "model evaluation",
+        "ai pricing",
+        "product leadership",
+        "responsible ai",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_technology_architecture",
+    slug: "technology-architecture",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET Technology Architecture",
+    summary:
+      "Learn to design enterprise technology landscapes, platforms, and standards while building reference architectures, migration plans, and governance models.",
+    duration: "8 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Architect enterprise reference architectures across applications, data, and infrastructure",
+      "Evaluate platforms, frameworks, and cloud services against long-term fitness",
+      "Design integration landscapes, shared services, and platform boundaries",
+      "Govern architecture standards, review boards, and exception processes",
+      "Develop migration and modernization plans for legacy estates",
+      "Secure architectures through identity, network, and data-protection patterns",
+      "Optimize for reliability, scalability, and operational cost at portfolio scale",
+      "Build technology radars, principles, and decision records for organizations",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Enterprise architecture domains, viewpoints, and stakeholder concerns",
+      "Module 02 — Core: Application portfolios, domain boundaries, and platform topology",
+      "Module 03 — Core: Data architecture, integration styles, and event-driven landscapes",
+      "Module 04 — Core: Cloud, infrastructure, and networking patterns for enterprises",
+      "Module 05 — Practice: Standards, principles, review boards, and governance workflows",
+      "Module 06 — Practice: Modernization, migration sequencing, and strangler patterns",
+      "Module 07 — Advanced: Security architecture, resilience, disaster recovery, and compliance mapping",
+      "Module 08 — Advanced: Cost architecture, FinOps inputs, and vendor consolidation",
+      "Module 09 — Capstone: Produce a technology architecture blueprint with roadmap, standards, and migration plan as HIGAET Experiential Learning",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Senior engineers, technical leads, and architects shaping organization-wide technology. Learners should have several years of software or infrastructure experience. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce a reference architecture diagram set, a platform evaluation, governance worksheets, and a capstone blueprint with migration roadmap and decision records.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports technology architect, enterprise architect, platform architect, cloud architect, integration architect, infrastructure lead, and principal engineer roles.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Technology Architecture | HIGAET Academy",
+      description:
+        "Design enterprise platforms, standards, and migration roadmaps with governance and reviews through HIGAET Practical Training projects.",
+      keywords: [
+        "technology architecture",
+        "enterprise architecture",
+        "platform strategy",
+        "integration landscape",
+        "modernization",
+        "architecture governance",
+        "cloud strategy",
+        "reference architecture",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_solution_architecture",
+    slug: "solution-architecture",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET Solution Architecture",
+    summary:
+      "Learn to turn business requirements into secure, costed solution designs while building architecture decision records, integration blueprints, and delivery estimates.",
+    duration: "10 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Architect end-to-end solutions from discovery through deployment and operations",
+      "Design integration patterns across APIs, events, files, and third-party systems",
+      "Evaluate non-functional requirements for performance, security, and availability",
+      "Develop architecture decision records documenting options, tradeoffs, and rationale",
+      "Secure solution designs with auth, encryption, secrets, and audit controls",
+      "Optimize solution costing, licensing, and cloud resource estimates",
+      "Build sequence, deployment, and data-flow views for developer handoff",
+      "Lead technical proposals, reviews, and stakeholder walkthroughs confidently",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Solution architecture roles, viewpoints, and discovery techniques",
+      "Module 02 — Core: Requirements analysis, constraints, assumptions, and scope boundaries",
+      "Module 03 — Core: Application, data, and infrastructure design for single solutions",
+      "Module 04 — Core: Integration patterns, API design, messaging, and error handling",
+      "Module 05 — Practice: Non-functional requirements, capacity planning, and resilience design",
+      "Module 06 — Practice: Security design, threat modeling, and compliance alignment",
+      "Module 07 — Practice: Costing, estimation, vendor inputs, and proposal writing",
+      "Module 08 — Advanced: Architecture decision records, review preparation, and stakeholder sign-off",
+      "Module 09 — Advanced: Handoff packages, build sequencing, test strategy, and cutover planning",
+      "Module 10 — Capstone: Produce a solution architecture dossier with diagrams, decision records, costing, and delivery plan",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Developers, consultants, and technical leads designing client or internal solutions. Learners should have hands-on software or cloud experience and basic modeling skills. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce discovery notes, integration blueprints, a decision-record set, and a capstone solution dossier with costing, security design, and delivery sequencing.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports solution architect, pre-sales engineer, integration architect, application architect, cloud consultant, systems analyst, and delivery lead roles.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Solution Architecture | HIGAET Academy",
+      description:
+        "Design secure, costed solutions with ADRs, integrations, and NFRs through HIGAET Practical Training and capstone dossier.",
+      keywords: [
+        "solution architecture",
+        "integration patterns",
+        "architecture decision records",
+        "non-functional requirements",
+        "solution costing",
+        "threat modeling",
+        "api design",
+        "delivery planning",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_technical_leadership",
+    slug: "technical-leadership",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET Technical Leadership",
+    summary:
+      "Learn to guide engineering direction through code stewardship, design reviews, and mentorship while building standards, review habits, and influence without authority.",
+    duration: "6 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Lead design reviews, code reviews, and RFC processes that raise quality",
+      "Architect pragmatic technical standards for testing, style, and documentation",
+      "Develop mentorship plans, pairing routines, and knowledge-sharing sessions",
+      "Evaluate technical tradeoffs and communicate risks to non-technical partners",
+      "Build influence through writing, demos, and clear technical storytelling",
+      "Optimize delivery flow by removing bottlenecks and clarifying ownership",
+      "Secure team practices through secure-coding guidance and review checklists",
+      "Govern technical debt with visible backlogs and repayment agreements",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Tech-lead roles, ownership, and influence without authority",
+      "Module 02 — Core: Code stewardship, review culture, and quality standards",
+      "Module 03 — Core: Design docs, RFCs, decision facilitation, and tradeoff communication",
+      "Module 04 — Practice: Mentorship, pairing, onboarding buddies, and learning circles",
+      "Module 05 — Practice: Delivery unblocking, incident leadership, and debt governance",
+      "Module 06 — Advanced: Technical storytelling, stakeholder updates, and visibility practices",
+      "Module 07 — Advanced: Scaling practices across squads, guilds, and communities of practice",
+      "Module 08 — Capstone: Produce a technical leadership playbook with standards, review templates, and a mentorship plan",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Mid-level and senior engineers stepping into tech-lead responsibilities. Learners should have production coding experience and comfort giving feedback. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce a design-review template, a code-quality checklist, mentorship worksheets, and a capstone leadership playbook for your team context.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports tech lead, senior software engineer, staff engineer, squad lead, backend lead, frontend lead, and developer advocate roles.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Technical Leadership | HIGAET Academy",
+      description:
+        "Grow as a tech lead with reviews, RFCs, mentorship, and standards through HIGAET Practical Training and playbooks.",
+      keywords: [
+        "technical leadership",
+        "tech lead",
+        "code reviews",
+        "design docs",
+        "mentorship",
+        "engineering standards",
+        "rfc process",
+        "team influence",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
+  },
+  {
+    id: "academy_course_engineering_strategy",
+    slug: "engineering-strategy",
+    status: "published",
+    visibility: "public",
+    categoryId: "academy_category_engineering_leadership",
+    title: "HIGAET Engineering Strategy",
+    summary:
+      "Learn to connect engineering investment to business outcomes through portfolio planning, platform leverage, and talent strategy while building measurable operating plans.",
+    duration: "6 weeks",
+    level: "professional",
+    mode: "online",
+    outcomes: [
+      "Architect engineering strategy narratives linking technology bets to business goals",
+      "Evaluate portfolio investments across products, platforms, and maintenance work",
+      "Design platform-leverage plans for reuse, developer experience, and speed",
+      "Develop talent systems covering hiring, leveling, mobility, and succession",
+      "Govern funding, prioritization, and quarterly planning across organizations",
+      "Optimize engineering metrics, scorecards, and review cadences for accountability",
+      "Lead build-partner-buy decisions and ecosystem strategy with vendors",
+      "Build multi-quarter operating plans with milestones, risks, and owners",
+    ],
+    curriculum: [
+      "Module 01 — Foundations: Strategy frames, business linkage, and engineering value stories",
+      "Module 02 — Core: Portfolio planning, capacity allocation, and investment thesis writing",
+      "Module 03 — Core: Platform strategy, developer experience, and reuse economics",
+      "Module 04 — Practice: Talent strategy, org design, leveling, and succession planning",
+      "Module 05 — Practice: Metrics systems, scorecards, and quarterly business reviews",
+      "Module 06 — Advanced: Ecosystem decisions, sourcing, partnerships, and risk management",
+      "Module 07 — Advanced: Change leadership, communication plans, and adoption measurement",
+      "Module 08 — Capstone: Produce an engineering strategy and operating plan with portfolio, metrics, and talent roadmap",
+    ],
+    faqs: [
+      {
+        question: "Who should take this course and what experience is expected?",
+        answer:
+          "Engineering managers, directors, architects, and senior leads shaping multi-team direction. Learners should have team leadership or architecture experience. No degree is required.",
+      },
+      {
+        question: "What will I produce during the course?",
+        answer:
+          "You will produce a portfolio investment map, a platform-leverage brief, an engineering scorecard, and a capstone strategy with operating plan and talent roadmap.",
+      },
+      {
+        question: "What roles does this course support?",
+        answer:
+          "It supports director of engineering, head of engineering, principal engineer, engineering manager, portfolio manager, platform lead, and CTO-track roles.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
+    ],
+    metadata: {
+      title: "Engineering Strategy | HIGAET Academy",
+      description:
+        "Set engineering strategy with portfolios, platforms, talent systems, and scorecards through HIGAET Practical Training work.",
+      keywords: [
+        "engineering strategy",
+        "portfolio planning",
+        "platform strategy",
+        "talent systems",
+        "engineering metrics",
+        "operating plans",
+        "org design",
+        "technology investment",
+        "higaet academy",
+      ],
+    },
+    audit: { createdAt: CREATED_AT, updatedAt: UPDATED_AT, version: ENTRY_VERSION, author: AUTHOR },
   },
 ] as const;
 

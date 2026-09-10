@@ -82,6 +82,13 @@ export const Route = createFileRoute("/academy/courses/$slug")({
 function CourseDetail() {
   const { course } = Route.useLoaderData();
   const category = ACADEMY_CATEGORIES.find((c) => c.id === course.categoryId);
+  const related = ACADEMY_COURSES.filter(
+    (c) =>
+      c.categoryId === course.categoryId &&
+      c.slug !== course.slug &&
+      c.status === "published" &&
+      c.visibility === "public",
+  ).slice(0, 3);
 
   return (
     <>
@@ -212,6 +219,36 @@ function CourseDetail() {
             eyebrow="FAQ"
             title="Common questions"
           />
+        </Section>
+      ) : null}
+
+      {/* Related courses — same-category internal linking */}
+      {related.length ? (
+        <Section className="!pt-0">
+          <Eyebrow brand="academy">Related courses</Eyebrow>
+          <h2 className="mt-4 max-w-[22ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+            Continue in {category?.name ?? "the Academy"}.
+          </h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {related.map((r) => (
+              <Link
+                key={r.slug}
+                to="/academy/courses/$slug"
+                params={{ slug: r.slug }}
+                className="group rounded-xl bg-card p-6 ring-1 ring-border transition-colors hover:ring-academy/40"
+              >
+                <p className="text-sm font-semibold leading-snug text-ink group-hover:text-academy">
+                  {r.title}
+                </p>
+                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                  {r.summary}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-academy">
+                  View Course <ArrowRight className="size-3.5" aria-hidden />
+                </span>
+              </Link>
+            ))}
+          </div>
         </Section>
       ) : null}
 

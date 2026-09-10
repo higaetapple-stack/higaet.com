@@ -254,8 +254,8 @@ export interface CourseEntry extends BaseEntry {
   categoryId: CategoryId;
   /** Human-readable duration label (e.g. `"12 weeks"`). */
   duration?: string;
-  /** Skill level. */
-  level?: "beginner" | "intermediate" | "advanced";
+  /** Skill level. Widened 2026-09 with "professional" (additive; existing values unchanged). */
+  level?: "beginner" | "intermediate" | "advanced" | "professional";
   /** Delivery mode. */
   mode?: "online" | "offline" | "hybrid";
   /** Outcome bullets shown on the detail page. */
@@ -335,14 +335,7 @@ export interface SitemapEntry {
   /** ISO 8601 last-modified timestamp. */
   lastmod?: string;
   /** Update frequency hint for crawlers. */
-  changefreq?:
-    | "always"
-    | "hourly"
-    | "daily"
-    | "weekly"
-    | "monthly"
-    | "yearly"
-    | "never";
+  changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
   /** Relative priority (0.0 – 1.0). */
   priority?: number;
 }

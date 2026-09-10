@@ -47,7 +47,7 @@ export const Route = createFileRoute("/academy/courses/")({
   component: CoursesIndex,
 });
 
-type LevelFilter = "all" | "beginner" | "intermediate" | "advanced";
+type LevelFilter = "all" | "beginner" | "intermediate" | "advanced" | "professional";
 
 function CoursesIndex() {
   const [q, setQ] = useState("");
@@ -144,6 +144,7 @@ function CoursesIndex() {
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
+                <option value="professional">Professional</option>
               </select>
             </div>
           </div>

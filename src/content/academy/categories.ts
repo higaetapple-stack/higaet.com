@@ -119,12 +119,7 @@ export const ACADEMY_CATEGORIES: readonly CategoryEntry[] = [
       title: "Generative AI Bootcamps | HIGAET Academy",
       description:
         "Cohort-based AI engineering bootcamps with live mentorship, real-world projects, and career support across global hiring markets.",
-      keywords: [
-        "ai bootcamp",
-        "generative ai bootcamp",
-        "llm bootcamp",
-        "higaet bootcamp",
-      ],
+      keywords: ["ai bootcamp", "generative ai bootcamp", "llm bootcamp", "higaet bootcamp"],
     },
     audit: {
       createdAt: CREATED_AT,
@@ -241,6 +236,190 @@ export const ACADEMY_CATEGORIES: readonly CategoryEntry[] = [
       author: AUTHOR,
     },
   },
+  {
+    id: "academy_category_ai_generative_ai",
+    slug: "ai-generative-ai",
+    status: "published",
+    visibility: "public",
+    name: "AI & Generative AI",
+    tagline: "Production LLM systems — agents, RAG, evals, and AI applications.",
+    icon: "Brain",
+    order: 80,
+    metadata: {
+      title: "AI & Generative AI Courses | HIGAET Academy",
+      description:
+        "HIGAET courses in Generative AI engineering, LLM systems, AI agents, RAG, evals, and applied AI product development.",
+      keywords: [
+        "generative ai courses",
+        "llm engineering course",
+        "ai agents course",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_category_software_engineering",
+    slug: "software-engineering",
+    status: "published",
+    visibility: "public",
+    name: "Software Engineering",
+    tagline: "Full-stack, backend, APIs, architecture, and distributed systems.",
+    icon: "Code2",
+    order: 90,
+    metadata: {
+      title: "Software Engineering Courses | HIGAET Academy",
+      description:
+        "HIGAET software engineering courses — full-stack, backend, APIs, system design, architecture, and microservices.",
+      keywords: [
+        "software engineering courses",
+        "full stack course",
+        "backend engineering course",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_category_cloud_infrastructure",
+    slug: "cloud-infrastructure",
+    status: "published",
+    visibility: "public",
+    name: "Cloud & Infrastructure",
+    tagline: "Cloud, DevOps, Kubernetes, platforms, and reliability engineering.",
+    icon: "Cloud",
+    order: 100,
+    metadata: {
+      title: "Cloud & Infrastructure Courses | HIGAET Academy",
+      description:
+        "HIGAET cloud and infrastructure courses — DevOps, Kubernetes, platform engineering, SRE, and cloud architecture.",
+      keywords: [
+        "cloud engineering course",
+        "devops course",
+        "kubernetes course",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_category_data_ml",
+    slug: "data-machine-learning",
+    status: "published",
+    visibility: "public",
+    name: "Data & Machine Learning",
+    tagline: "Analytics, data engineering, ML systems, and MLOps.",
+    icon: "Database",
+    order: 110,
+    metadata: {
+      title: "Data & Machine Learning Courses | HIGAET Academy",
+      description:
+        "HIGAET data and ML courses — analytics, data engineering, machine learning, deep learning, and MLOps.",
+      keywords: [
+        "data science course",
+        "data engineering course",
+        "machine learning course",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_category_cybersecurity",
+    slug: "cybersecurity",
+    status: "published",
+    visibility: "public",
+    name: "Cybersecurity",
+    tagline: "Security engineering across apps, cloud, AI, and operations.",
+    icon: "ShieldCheck",
+    order: 120,
+    metadata: {
+      title: "Cybersecurity Courses | HIGAET Academy",
+      description:
+        "HIGAET cybersecurity courses — application, cloud, and AI security, SOC operations, and security architecture.",
+      keywords: [
+        "cybersecurity course",
+        "cloud security course",
+        "ai security course",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_category_emerging_tech",
+    slug: "emerging-technology",
+    status: "published",
+    visibility: "public",
+    name: "Emerging Technology",
+    tagline: "Blockchain, Web3, IoT, edge, robotics, and autonomous systems.",
+    icon: "Cpu",
+    order: 130,
+    metadata: {
+      title: "Emerging Technology Courses | HIGAET Academy",
+      description:
+        "HIGAET emerging technology courses — blockchain, Web3, IoT, edge computing, robotics, and autonomous systems.",
+      keywords: ["blockchain course", "web3 course", "iot course", "higaet academy"],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_category_engineering_leadership",
+    slug: "engineering-leadership",
+    status: "published",
+    visibility: "public",
+    name: "Engineering Leadership",
+    tagline: "Management, architecture, and strategy for technology leaders.",
+    icon: "Users",
+    order: 140,
+    metadata: {
+      title: "Engineering Leadership Courses | HIGAET Academy",
+      description:
+        "HIGAET leadership courses — engineering management, technical leadership, product management, and architecture.",
+      keywords: [
+        "engineering management course",
+        "technical leadership course",
+        "solution architect course",
+        "higaet academy",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
 ] as const;
 
 /**
@@ -248,6 +427,4 @@ export const ACADEMY_CATEGORIES: readonly CategoryEntry[] = [
  * Exported as a convenience for type-narrowing and validation;
  * derived purely from `ACADEMY_CATEGORIES`.
  */
-export const ACADEMY_CATEGORY_IDS: readonly string[] = ACADEMY_CATEGORIES.map(
-  (c) => c.id,
-);
+export const ACADEMY_CATEGORY_IDS: readonly string[] = ACADEMY_CATEGORIES.map((c) => c.id);
