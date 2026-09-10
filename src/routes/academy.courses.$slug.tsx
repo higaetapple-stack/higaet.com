@@ -4,6 +4,8 @@ import { CheckCircle2, Clock, GraduationCap, Users, ArrowRight } from "lucide-re
 import { ACADEMY_COURSES } from "@/content/academy/courses";
 // eslint-disable-next-line no-restricted-imports -- same rationale
 import { ACADEMY_CATEGORIES } from "@/content/academy/categories";
+// eslint-disable-next-line no-restricted-imports -- detail needs path membership client-side for the journey block (see ADR-0001)
+import { ACADEMY_LEARNING_PATHS } from "@/content/academy/learning-paths";
 import type { CourseEntry } from "@/content/_registry/types";
 import { PageHero } from "@/components/site/PageHero";
 import { Section, Eyebrow } from "@/components/site/Section";
@@ -89,6 +91,12 @@ function CourseDetail() {
       c.status === "published" &&
       c.visibility === "public",
   ).slice(0, 3);
+  const journeys = ACADEMY_LEARNING_PATHS.filter(
+    (p) =>
+      p.status === "published" &&
+      p.visibility === "public" &&
+      (p.courseIds as readonly string[]).includes(course.id),
+  );
 
   return (
     <>
@@ -365,6 +373,67 @@ function CourseDetail() {
                 </span>
               </Link>
             ))}
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Learning paths — "what should I learn next" journey block */}
+      {journeys.length ? (
+        <Section className="!pt-0">
+          <Eyebrow brand="academy">Continue your journey</Eyebrow>
+          <h2 className="mt-4 max-w-[22ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+            What should you learn next?
+          </h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {journeys.map((j) => {
+              const ids = j.courseIds as readonly string[];
+              const position = ids.indexOf(course.id) + 1;
+              const total = ids.length;
+              const next = ACADEMY_COURSES.find(
+                (c) =>
+                  c.id === ids[position] && c.status === "published" && c.visibility === "public",
+              );
+              return next ? (
+                <Link
+                  key={j.slug}
+                  to="/academy/courses/$slug"
+                  params={{ slug: next.slug }}
+                  className="group rounded-xl bg-card p-6 ring-1 ring-border transition-colors hover:ring-academy/40"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                    Step {position} of {total} · Next in {j.title}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold leading-snug text-ink group-hover:text-academy">
+                    Continue with {next.title}
+                  </p>
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                    {next.summary}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-academy">
+                    View next course <ArrowRight className="size-3.5" aria-hidden />
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  key={j.slug}
+                  to="/academy/learning-paths"
+                  className="group rounded-xl bg-card p-6 ring-1 ring-border transition-colors hover:ring-academy/40"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                    Final step · {j.title}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold leading-snug text-ink group-hover:text-academy">
+                    Track complete — keep exploring
+                  </p>
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                    {j.summary}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-academy">
+                    Explore learning paths <ArrowRight className="size-3.5" aria-hidden />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </Section>
       ) : null}

@@ -64,6 +64,27 @@ const C_CLOUD_SEC = "academy_course_cloud_security_devsecops";
 const C_AI_SEC = "academy_course_ai_security_governance";
 const C_FULLSTACK = "academy_course_fullstack_nextjs";
 const C_GOV = "academy_course_ai_governance_responsible";
+const C_SW_ENG = "academy_course_software_engineering";
+const C_GENAI_ENG = "academy_course_genai_engineering";
+const C_LLM_ENG = "academy_course_llm_engineering";
+const C_RAG_APP = "academy_course_rag_application_engineering";
+const C_AGENTIC = "academy_course_agentic_ai_engineering";
+const C_AI_SYSTEMS = "academy_course_ai_systems_engineering";
+const C_CLOUD_ENG = "academy_course_cloud_engineering";
+const C_DEVOPS = "academy_course_devops_engineering";
+const C_K8S = "academy_course_kubernetes_engineering";
+const C_PLATFORM = "academy_course_platform_engineering";
+const C_SRE = "academy_course_sre";
+const C_ANALYTICS = "academy_course_data_analytics";
+const C_DS = "academy_course_data_science";
+const C_DE = "academy_course_data_engineering";
+const C_ML = "academy_course_machine_learning";
+const C_MLOPS_NEW = "academy_course_mlops";
+const C_CYBER = "academy_course_cybersecurity_engineering";
+const C_APPSEC = "academy_course_application_security";
+const C_CLOUDSEC = "academy_course_cloud_security";
+const C_SOC = "academy_course_soc_engineering";
+const C_SECARCH = "academy_course_security_architecture";
 
 /* ----------------------------------------------------------------
  * Learning Path Registry
@@ -299,6 +320,122 @@ export const ACADEMY_LEARNING_PATHS: readonly LearningPathEntry[] = [
         "full stack ai path",
         "nextjs ai engineering",
         "llm application developer",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_ai_engineering_track",
+    slug: "ai-engineering-track",
+    status: "published",
+    visibility: "public",
+    title: "AI Engineering Track",
+    summary:
+      "The canonical HIGAET journey into production AI: programming foundations, Generative AI, LLMs, RAG, agents, and AI systems engineering.",
+    audience: "Engineers pursuing an AI engineering role",
+    duration: "~8 months",
+    courseIds: [C_SW_ENG, C_GENAI_ENG, C_LLM_ENG, C_RAG_APP, C_AGENTIC, C_AI_SYSTEMS],
+    metadata: {
+      title: "AI Engineering Track | HIGAET Academy",
+      description:
+        "HIGAET Academy AI Engineering Track — software foundations to Generative AI, LLMs, RAG, agents, and production AI systems.",
+      keywords: [
+        "ai engineering track",
+        "ai engineer roadmap",
+        "llm to agents path",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_cloud_platform_track",
+    slug: "cloud-platform-engineering-track",
+    status: "published",
+    visibility: "public",
+    title: "Cloud & Platform Engineering Track",
+    summary:
+      "From cloud fundamentals to owning platforms: DevOps delivery, Kubernetes operations, internal platforms, and reliability engineering.",
+    audience: "Engineers pursuing cloud, platform, or SRE roles",
+    duration: "~7 months",
+    courseIds: [C_CLOUD_ENG, C_DEVOPS, C_K8S, C_PLATFORM, C_SRE],
+    metadata: {
+      title: "Cloud & Platform Track | HIGAET Academy",
+      description:
+        "HIGAET Academy Cloud and Platform Track — cloud, DevOps, Kubernetes, platform engineering, and site reliability.",
+      keywords: [
+        "cloud engineer path",
+        "platform engineering track",
+        "sre roadmap",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_data_ml_track",
+    slug: "data-machine-learning-track",
+    status: "published",
+    visibility: "public",
+    title: "Data & Machine Learning Track",
+    summary:
+      "From dashboards to deployed models: analytics, data science, data engineering, machine learning, and MLOps.",
+    audience: "Analysts and engineers pursuing data or ML roles",
+    duration: "~8 months",
+    courseIds: [C_ANALYTICS, C_DS, C_DE, C_ML, C_MLOPS_NEW],
+    metadata: {
+      title: "Data & Machine Learning Track | HIGAET Academy",
+      description:
+        "HIGAET Academy Data and ML Track — analytics, data science, data engineering, machine learning, and MLOps.",
+      keywords: [
+        "data science path",
+        "ml engineer roadmap",
+        "data to ml track",
+        "higaet learning path",
+      ],
+    },
+    audit: {
+      createdAt: CREATED_AT,
+      updatedAt: UPDATED_AT,
+      version: ENTRY_VERSION,
+      author: AUTHOR,
+    },
+  },
+  {
+    id: "academy_path_cybersecurity_track",
+    slug: "cybersecurity-track",
+    status: "published",
+    visibility: "public",
+    title: "Cybersecurity Track",
+    summary:
+      "From defensive foundations to architecture: application and cloud security, SOC operations, and security architecture.",
+    audience: "IT staff and engineers pursuing security roles",
+    duration: "~7 months",
+    courseIds: [C_CYBER, C_APPSEC, C_CLOUDSEC, C_SOC, C_SECARCH],
+    metadata: {
+      title: "Cybersecurity Track | HIGAET Academy",
+      description:
+        "HIGAET Academy Cybersecurity Track — security engineering, app and cloud security, SOC operations, and architecture.",
+      keywords: [
+        "cybersecurity path",
+        "security engineer roadmap",
+        "soc analyst track",
         "higaet learning path",
       ],
     },
