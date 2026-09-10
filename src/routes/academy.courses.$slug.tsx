@@ -138,6 +138,37 @@ function CourseDetail() {
         </div>
       </PageHero>
 
+      {/* Introduction — deep educational hook: what it is, why it matters */}
+      {course.introduction || course.whyExists ? (
+        <Section className="!pt-0">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Introduction</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                Why this technology matters.
+              </h2>
+            </div>
+            <div className="space-y-5">
+              {course.introduction
+                ? course.introduction.split("\n\n").map((para: string, i: number) => (
+                    <p key={i} className="leading-relaxed text-ink/90">
+                      {para}
+                    </p>
+                  ))
+                : null}
+              {course.whyExists ? (
+                <div className="rounded-xl bg-academy/5 border border-academy/10 p-5 md:p-6">
+                  <h3 className="text-sm font-semibold text-ink">Why this course exists</h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                    {course.whyExists}
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </Section>
+      ) : null}
+
       {/* Overview — standardized learning-system block: who it's for, prerequisites, toolbox */}
       {course.audience?.length || course.prerequisites?.length || course.technologies?.length ? (
         <Section className="!pt-0">
@@ -311,6 +342,158 @@ function CourseDetail() {
                 );
               })}
             </ol>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Concepts — course glossary, the knowledge-graph node set */}
+      {course.concepts?.length ? (
+        <Section className="!pt-0">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Key concepts</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                Speak the language first.
+              </h2>
+            </div>
+            <dl className="space-y-5">
+              {course.concepts.map((c: { term: string; definition: string }) => (
+                <div key={c.term} className="rounded-xl bg-card p-5 ring-1 ring-border">
+                  <dt className="font-mono text-sm font-semibold text-academy">{c.term}</dt>
+                  <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {c.definition}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Case studies — problem → approach → outcome narratives */}
+      {course.caseStudies?.length ? (
+        <Section className="bg-muted/30">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Case studies</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                Learn from real engineering decisions.
+              </h2>
+            </div>
+            <div className="space-y-6">
+              {course.caseStudies.map(
+                (
+                  cs: { title: string; problem: string; approach: string; outcome: string },
+                  i: number,
+                ) => (
+                  <article key={cs.title} className="rounded-xl bg-card p-6 ring-1 ring-border">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                      Case study {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="mt-2 font-display text-lg font-semibold text-ink">{cs.title}</h3>
+                    <div className="mt-4 space-y-3 text-sm leading-relaxed">
+                      <p>
+                        <span className="font-semibold text-ink">Problem: </span>
+                        <span className="text-muted-foreground">{cs.problem}</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold text-ink">Approach: </span>
+                        <span className="text-muted-foreground">{cs.approach}</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold text-ink">Outcome: </span>
+                        <span className="text-muted-foreground">{cs.outcome}</span>
+                      </p>
+                    </div>
+                  </article>
+                ),
+              )}
+            </div>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Labs — hands-on sequence */}
+      {course.labs?.length ? (
+        <Section className="!pt-0">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Hands-on labs</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                Learn by building, step by step.
+              </h2>
+            </div>
+            <ol className="space-y-6">
+              {course.labs.map((lab: string, i: number) => (
+                <li key={i} className="rounded-xl bg-card p-6 ring-1 ring-border">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-academy">
+                    Lab {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="mt-2 text-sm font-medium leading-snug text-ink">{lab}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Troubleshooting + readiness + resources */}
+      {course.troubleshooting?.length || course.readiness?.length || course.resources?.length ? (
+        <Section className="bg-muted/30">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <Eyebrow brand="academy">Keep going</Eyebrow>
+              <h2 className="mt-4 max-w-[20ch] font-display text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                Fix, check, and go deeper.
+              </h2>
+            </div>
+            <div className="space-y-8">
+              {course.troubleshooting?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">
+                    Troubleshooting &amp; common mistakes
+                  </h3>
+                  <div className="mt-3 space-y-4">
+                    {course.troubleshooting.map((t: { problem: string; fix: string }) => (
+                      <div key={t.problem} className="rounded-xl bg-card p-5 ring-1 ring-border">
+                        <p className="text-sm font-medium text-ink">{t.problem}</p>
+                        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                          {t.fix}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {course.readiness?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">
+                    Before you move on, you should be able to
+                  </h3>
+                  <ul className="mt-3 space-y-2">
+                    {course.readiness.map((r: string) => (
+                      <li key={r} className="flex gap-3 text-sm text-ink">
+                        <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-academy" aria-hidden />
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              {course.resources?.length ? (
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">Continue learning</h3>
+                  <ul className="mt-3 space-y-2">
+                    {course.resources.map((r: string) => (
+                      <li key={r} className="flex gap-3 text-sm text-muted-foreground">
+                        <ArrowRight className="mt-0.5 size-4 shrink-0 text-academy" aria-hidden />
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
           </div>
         </Section>
       ) : null}

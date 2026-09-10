@@ -276,6 +276,22 @@ export interface CourseEntry extends BaseEntry {
   skills?: readonly string[];
   /** Weekly effort label (e.g. "6–8 hours/week"). */
   hoursPerWeek?: string;
+  /** Deep intro prose: what the technology is, why it matters, evolution, uses, limits (paragraphs separated by \n\n). */
+  introduction?: string;
+  /** Why this course exists: the real-world problem it solves and the capability arc it teaches. */
+  whyExists?: string;
+  /** Glossary: key terms with plain-language definitions (knowledge-graph nodes). */
+  concepts?: readonly { term: string; definition: string }[];
+  /** Case studies: problem → approach → outcome narratives. */
+  caseStudies?: readonly { title: string; problem: string; approach: string; outcome: string }[];
+  /** Hands-on labs in sequence. */
+  labs?: readonly string[];
+  /** Troubleshooting: common failure → diagnosis and fix. */
+  troubleshooting?: readonly { problem: string; fix: string }[];
+  /** Readiness checklist: what the learner should be able to do before moving on. */
+  readiness?: readonly string[];
+  /** Further reading: docs, papers, references, next courses (plain labels, no URLs required). */
+  resources?: readonly string[];
 }
 
 /**

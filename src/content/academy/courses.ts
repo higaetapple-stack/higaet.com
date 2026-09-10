@@ -2318,6 +2318,146 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "intermediate",
     mode: "hybrid",
+    introduction:
+      "Generative AI engineering is the discipline of turning large language models into software people can rely on. The model is only one component: around it sit prompts, retrieved knowledge, tools, memory, guardrails, evaluations, and deployment pipelines. This course teaches that full stack, not just the model call.\n\nThese systems matter because they change what software can do. Traditional programs follow rules written in advance; generative systems interpret open-ended requests, work with unstructured documents, draft content, call tools, and carry multi-step tasks forward. Organizations use them for support assistants, knowledge search, drafting workflows, data extraction, and developer tooling.\n\nThe field moved fast: from research transformers to chat models, then to retrieval-grounded assistants, tool-using agents, and evaluation-driven operations. Each wave made the engineering around the model more important, not less. Knowing which model to call is table stakes; knowing how to ground, test, secure, and operate it is the profession.\n\nGenerative AI solves language-shaped problems: summarizing, drafting, classifying, extracting, translating, and conversing over your own data. It does not solve problems it cannot verify: it will confidently invent citations, dates, and facts unless retrieval, constraints, and evaluation hold it accountable. By the end of this course you will have designed and deployed a grounded assistant with tools, tests, and monitoring — and you will know exactly where its limits are.\n\nA retrieval system at a glance: User Question → Retriever → Knowledge Base → Relevant Documents → LLM → Generated Answer. Each arrow is an engineering decision: what to chunk, what to embed, what to retrieve, what to cite, and what to measure.",
+    whyExists:
+      "Calling an AI API takes minutes; shipping an AI product takes engineering. Between the demo and production sit retrieval quality, prompt robustness, tool reliability, evaluation, safety, cost control, and operations — and each one fails in ways the others cannot catch. This course exists to teach the full chain: Model to Prompt to Context to Retrieval to Tools to Agents to Evaluation to Security to Infrastructure to Production, with a working system at the end that proves every link.",
+    concepts: [
+      {
+        term: "Token",
+        definition:
+          "The smallest unit of text a language model reads and writes. A word may split into several tokens; models count usage and cost in tokens.",
+      },
+      {
+        term: "Embedding",
+        definition:
+          "A list of numbers that captures the meaning of a piece of text. Similar meanings sit close together, which lets systems search by meaning instead of keywords.",
+      },
+      {
+        term: "Transformer",
+        definition:
+          "The neural network architecture behind modern language models. Its attention mechanism weighs which parts of the input matter most for each output.",
+      },
+      {
+        term: "Context window",
+        definition:
+          "How much text a model can consider at once, measured in tokens. Longer windows hold more context but cost more and demand careful management.",
+      },
+      {
+        term: "Prompt",
+        definition:
+          "The instruction and context given to a model to shape its output. Good prompts are specific, structured, and testable.",
+      },
+      {
+        term: "RAG",
+        definition:
+          "Retrieval-Augmented Generation: answering from retrieved documents instead of memory alone, so responses stay grounded and citeable.",
+      },
+      {
+        term: "Vector database",
+        definition:
+          "A database optimized for similarity search over embeddings. It powers the retrieval step in RAG and semantic search features.",
+      },
+      {
+        term: "Agent",
+        definition:
+          "A system that plans multi-step work, calls tools, observes results, and adjusts. Agents combine language models with software around them.",
+      },
+      {
+        term: "Tool calling",
+        definition:
+          "Giving a model access to functions such as search, databases, or APIs, so it can act on the world instead of only producing text.",
+      },
+      {
+        term: "Evaluation",
+        definition:
+          "Measuring whether an AI system does its job: offline test sets, online monitoring, and human review of real outputs.",
+      },
+    ],
+    caseStudies: [
+      {
+        title: "University regulations assistant",
+        problem:
+          "Students ask the same questions about deadlines, eligibility, and procedures every term, and staff answer from memory or scattered PDFs, which is slow and sometimes inconsistent.",
+        approach:
+          "The team exports official regulations to plain text, splits them into short sections, converts each to embeddings, and stores them in a vector index. At question time the assistant retrieves the top matching sections, passes them to the model with an instruction to answer only from the provided text and cite the source section, and logs every answer with its citations for review.",
+        outcome:
+          "Students get instant answers with visible sources, staff handle fewer repetitive queries, and every response is traceable to an official document, which builds trust in the system.",
+      },
+      {
+        title: "Support copilot with human approval",
+        problem:
+          "A support team answers repetitive product questions across channels, and response quality varies by agent, shift, and workload.",
+        approach:
+          "The team connects resolved ticket history to a retrieval index, drafts answers with source links for agents to approve, and adds an evaluation set of past tickets so every prompt or model change is regression-tested before release. Escalation rules route low-confidence answers to humans.",
+        outcome:
+          "First-response time drops, answers stay consistent across agents, and the evaluation suite catches quality regressions before customers ever see them.",
+      },
+      {
+        title: "Editorial drafting workflow",
+        problem:
+          "A content team produces similar briefs, summaries, and reports every week, and quality depends entirely on who is writing that day.",
+        approach:
+          "Editors define reusable prompt templates with fixed output schemas, connect a retrieval layer over the style guide and past articles, and review a weekly sample of outputs against a quality rubric before the templates are promoted to the whole team.",
+        outcome:
+          "Drafting cycles shorten, output format stays consistent across writers, and the rubric reviews give the team a shared definition of good output.",
+      },
+    ],
+    labs: [
+      "Call an LLM API and compare outputs across temperatures and system prompts",
+      "Design a structured-output schema and validate responses against it",
+      "Build an embedding pipeline and inspect nearest-neighbor quality by hand",
+      "Chunk a document collection three ways and measure retrieval recall for each",
+      "Assemble a cited question-answering endpoint over your documents",
+      "Add function calling so the assistant can query a live data source",
+      "Wire conversation memory with a fixed context budget and summarization",
+      "Write an offline evaluation set and score two prompt versions against it",
+      "Add input-output guardrails, redaction, and usage logging",
+      "Containerize the service and ship it with health checks and cost tracking",
+    ],
+    troubleshooting: [
+      {
+        problem: "RAG returns irrelevant documents.",
+        fix: "Split shorter with overlap, add metadata filters, rewrite the query before retrieval, and compare recall across chunk sizes on a fixed question set.",
+      },
+      {
+        problem: "The model ignores the required output format.",
+        fix: "Constrain the output with a schema, validate every response, retry with repair instructions, and fall back to a safe default when validation fails twice.",
+      },
+      {
+        problem: "Costs spike as conversations get longer.",
+        fix: "Shorten history with summarization, set a token budget per component, cache repeated context, and route simple turns to a smaller model.",
+      },
+      {
+        problem: "A prompt tweak silently degrades quality.",
+        fix: "Pin versions, keep a golden evaluation set, run it on every prompt or model change, and review diffs before promoting to production.",
+      },
+      {
+        problem: "Answers sound confident but contain invented facts.",
+        fix: "Require citations from retrieved text, refuse when nothing relevant is found, and log unanswered questions so gaps in the knowledge base become visible.",
+      },
+      {
+        problem: "Tool calls fail midway through agent runs.",
+        fix: "Add timeouts and retries with backoff, make tool calls idempotent, cap the agent's step count, and require approval for irreversible actions.",
+      },
+    ],
+    readiness: [
+      "Explain tokens, embeddings, and context windows in plain language",
+      "Design a structured prompt with a validated output schema",
+      "Build a retrieval pipeline with chunking and a vector index",
+      "Connect a model to a real tool with error handling",
+      "Write an offline evaluation and interpret its failures",
+      "Name three failure modes of ungrounded generation and their fixes",
+      "Describe the cost and latency levers of a production AI feature",
+    ],
+    resources: [
+      "Attention Is All You Need — Vaswani et al. (foundational paper)",
+      "HIGAET LLM Engineering — go deeper on models and fine-tuning",
+      "HIGAET RAG Application Engineering — production retrieval systems",
+      "HIGAET AI Evals Engineering — measurement and guardrails",
+      "HIGAET Agentic AI Engineering — agents and orchestration",
+      "Your vector database documentation — index types and filtering",
+    ],
     audience: [
       "Students",
       "Career changers",
