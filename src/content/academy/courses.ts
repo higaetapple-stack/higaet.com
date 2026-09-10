@@ -85,6 +85,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "beginner",
     mode: "online",
+    concepts: [
+      {
+        term: "Tokens and tokenization",
+        definition:
+          "Tokens are the small text pieces a model reads and writes; tokenization splits input text so you can predict cost and context limits.",
+      },
+      {
+        term: "Embeddings",
+        definition:
+          "Embeddings are number lists that capture word and sentence meaning, letting systems compare similarity between texts.",
+      },
+      {
+        term: "Transformers",
+        definition:
+          "Transformers are the neural network design behind modern language models, using attention to weigh which words matter most.",
+      },
+      {
+        term: "Large language models",
+        definition:
+          "Large language models predict likely next tokens from patterns learned in training, powering generation and summarization.",
+      },
+      {
+        term: "Prompt design",
+        definition:
+          "Prompt design is writing clear instructions, context, and examples so a model returns consistent, useful output.",
+      },
+      {
+        term: "Structured outputs",
+        definition:
+          "Structured outputs force model answers into formats like JSON or tables so applications can parse them reliably.",
+      },
+      {
+        term: "Fine-tuning basics",
+        definition:
+          "Fine-tuning continues training a model on task examples so it follows domain style and terminology more closely.",
+      },
+      {
+        term: "Model evaluation basics",
+        definition:
+          "Evaluation checks model answers against expected examples to spot errors before relying on the system.",
+      },
+      {
+        term: "Responsible AI basics",
+        definition:
+          "Responsible AI basics cover checking outputs for bias and errors and using models only for appropriate tasks.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Prompts return inconsistent answers across runs",
+        fix: "Add explicit format instructions and one or two examples, then rerun the same prompt three times to confirm stability.",
+      },
+      {
+        problem: "Summaries drop key facts from long texts",
+        fix: "Split the source into smaller sections, summarize each, then combine, so nothing falls outside the context window.",
+      },
+      {
+        problem: "Model invents facts for knowledge questions",
+        fix: "Ask only what the provided text supports and add a rule to say when the answer is not in the source.",
+      },
+      {
+        problem: "Structured output is hard to parse",
+        fix: "Specify the exact schema with field names and types, and reject and retry any response missing required fields.",
+      },
+      {
+        problem: "Token limits cut off long inputs",
+        fix: "Shorten or chunk the input and count tokens first so the prompt plus expected answer fits the limit.",
+      },
+    ],
+    readiness: [
+      "Explain how tokens, embeddings, and transformers produce model output",
+      "Design prompts that produce consistent and structured responses",
+      "Build small text generation and summarization prototypes",
+      "Evaluate model outputs against expected examples",
+      "Describe when fine-tuning is appropriate for a task",
+      "Apply responsible-use checks to everyday AI tasks",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -191,6 +268,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "LLM orchestration",
+        definition:
+          "Orchestration chains prompts, retrieval, and tools into steps so an application handles multi-part tasks reliably.",
+      },
+      {
+        term: "Retrieval integration",
+        definition:
+          "Retrieval integration feeds relevant documents into the prompt so the model answers from current, grounded sources.",
+      },
+      {
+        term: "Tool calling",
+        definition:
+          "Tool calling lets a model request actions like API lookups, with the application running the call and returning results.",
+      },
+      {
+        term: "Offline evaluation pipelines",
+        definition:
+          "Offline evaluation runs a fixed test set against model changes to catch regressions before release.",
+      },
+      {
+        term: "Online evaluation and monitoring",
+        definition:
+          "Online evaluation samples live traffic and user signals to detect quality drops after deployment.",
+      },
+      {
+        term: "LLM observability",
+        definition:
+          "Observability records prompts, outputs, latency, and errors so teams can trace failures to specific steps.",
+      },
+      {
+        term: "Cost control",
+        definition:
+          "Cost control tracks tokens per request and routes work to cheaper models or caches where quality holds.",
+      },
+      {
+        term: "Production deployment patterns",
+        definition:
+          "Deployment patterns such as gated releases and rollbacks let teams ship LLM changes safely and revert fast.",
+      },
+      {
+        term: "API gateways for LLMs",
+        definition:
+          "Gateways centralize keys, rate limits, and retries for model calls so applications handle outages gracefully.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Orchestrated chain fails silently at one step",
+        fix: "Log inputs and outputs at every step with trace IDs, then isolate the failing step with a minimal replay.",
+      },
+      {
+        problem: "Eval scores regress after a prompt change",
+        fix: "Diff the failing cases against the prior run, pin the changed prompt version, and roll back before iterating.",
+      },
+      {
+        problem: "Latency spikes under concurrent load",
+        fix: "Check token counts and downstream timeouts in traces, then add caching, request batching, or a smaller model for simple steps.",
+      },
+      {
+        problem: "Token costs grow without quality gains",
+        fix: "Break down spend by step on the cost dashboard and cap max tokens or cache repeated retrieval queries.",
+      },
+      {
+        problem: "Retrieval step returns irrelevant context",
+        fix: "Inspect the retrieved passages for the failing queries and tighten the retrieval filters or query wording.",
+      },
+      {
+        problem: "Live quality drifts while offline evals pass",
+        fix: "Sample live failures into the offline set weekly so the test suite reflects real traffic.",
+      },
+    ],
+    readiness: [
+      "Architect LLM applications separating orchestration, retrieval, and tools",
+      "Build offline and online evaluation pipelines that catch regressions",
+      "Deploy observable LLM services with tracing and error handling",
+      "Control token cost and latency across application steps",
+      "Operate gated releases and rollbacks for model changes",
+      "Diagnose production failures from traces and eval reports",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -295,6 +453,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Document chunking",
+        definition:
+          "Chunking splits documents into passages sized for embedding so retrieval returns focused, relevant context.",
+      },
+      {
+        term: "Embedding pipelines",
+        definition:
+          "Embedding pipelines convert chunks into vectors that capture meaning for similarity search.",
+      },
+      {
+        term: "Vector databases",
+        definition:
+          "Vector databases store embeddings and return the nearest passages for a query at scale.",
+      },
+      {
+        term: "Hybrid retrieval",
+        definition:
+          "Hybrid retrieval combines keyword and vector search so exact terms and meaning both count.",
+      },
+      {
+        term: "Reranking",
+        definition:
+          "Reranking re-scores top candidates with a stronger model to put the best passages first.",
+      },
+      {
+        term: "Grounded generation",
+        definition:
+          "Grounded generation instructs the model to answer only from retrieved passages, reducing invented facts.",
+      },
+      {
+        term: "Citation handling",
+        definition:
+          "Citations link each claim to its source passage so answers can be checked and trusted.",
+      },
+      {
+        term: "RAG evaluation",
+        definition:
+          "RAG evaluation measures retrieval hit rate and answer faithfulness on a labeled question set.",
+      },
+      {
+        term: "Index operations",
+        definition:
+          "Index operations cover updating, versioning, and scaling the vector store as documents change.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Answers cite wrong or irrelevant passages",
+        fix: "Inspect top retrieved chunks for the failing query; shrink chunk size with overlap and retune retrieval filters.",
+      },
+      {
+        problem: "Correct document exists but is never retrieved",
+        fix: "Check embedding coverage and metadata filters, then re-chunk the missing document and verify it ranks in top results.",
+      },
+      {
+        problem: "Model invents facts despite retrieved context",
+        fix: "Tighten the prompt to answer only from provided passages and require citations per claim.",
+      },
+      {
+        problem: "Large documents slow ingestion and search",
+        fix: "Batch embedding calls, pre-filter by metadata, and scale the index shards before re-ingesting.",
+      },
+      {
+        problem: "Quality drops as the corpus grows",
+        fix: "Add a regression question set over old and new documents and rerank or prune stale passages.",
+      },
+    ],
+    readiness: [
+      "Design RAG pipelines balancing accuracy, latency, and operating cost",
+      "Build document ingestion with chunking and embedding stages",
+      "Deploy vector search with reranking and citation-aware answers",
+      "Evaluate retrieval accuracy and groundedness on test sets",
+      "Operate index updates and monitoring at scale",
+      "Diagnose grounding failures from retrieval traces",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -404,6 +639,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "Self-paced exam window",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Solution design for AI systems",
+        definition:
+          "Solution design maps a business need to model choice, retrieval, tools, and safety checks before building.",
+      },
+      {
+        term: "Prompt frameworks",
+        definition:
+          "Prompt frameworks standardize instructions, examples, and output schemas so behavior stays consistent.",
+      },
+      {
+        term: "Retrieval-grounded applications",
+        definition:
+          "Retrieval-grounded applications pair a model with document search so answers stay current and checkable.",
+      },
+      {
+        term: "Evaluation harnesses",
+        definition:
+          "Evaluation harnesses run repeatable test suites that score quality and catch regressions.",
+      },
+      {
+        term: "Deployment platforms",
+        definition:
+          "Deployment platforms package and release AI services with versioning and rollback support.",
+      },
+      {
+        term: "Observability tooling",
+        definition:
+          "Observability tooling captures prompts, outputs, and errors so failures can be traced and fixed.",
+      },
+      {
+        term: "Safety controls",
+        definition:
+          "Safety controls such as content filters and output checks block harmful or off-policy responses.",
+      },
+      {
+        term: "API integration patterns",
+        definition:
+          "API patterns cover keys, retries, and timeouts so model and tool calls behave reliably in production.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Assessment build fails end-to-end under time pressure",
+        fix: "Scope to the smallest working slice first, then add retrieval and evals once the base path runs.",
+      },
+      {
+        problem: "Grounded application returns unfaithful answers",
+        fix: "Verify retrieved passages before generation and constrain the prompt to cite only provided sources.",
+      },
+      {
+        problem: "Evaluation suite flags regressions late",
+        fix: "Run the harness after every change and triage failures by step so the cause is isolated early.",
+      },
+      {
+        problem: "Deployed demo errors on reviewer traffic",
+        fix: "Check gateway logs for rate limits and timeouts, then add retries and a fallback response path.",
+      },
+      {
+        problem: "Monitoring shows silent quality drift",
+        fix: "Compare recent outputs to the golden set and refresh test cases with newly observed failures.",
+      },
+    ],
+    readiness: [
+      "Design end-to-end Generative AI solutions from need to architecture",
+      "Build retrieval-grounded applications with structured outputs",
+      "Evaluate systems with repeatable quality and safety suites",
+      "Deploy versioned services with monitoring and rollback",
+      "Operate live systems using traces and incident checks",
+      "Demonstrate competence across design, build, and operate tasks",
+    ],
     audience: [
       "Software developers",
       "AI engineers",
@@ -502,6 +809,77 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "Self-paced exam window",
     level: "beginner",
     mode: "online",
+    concepts: [
+      {
+        term: "Prompt patterns",
+        definition:
+          "Prompt patterns are reusable instruction shapes, such as role plus task plus format, that produce steady results.",
+      },
+      {
+        term: "Few-shot examples",
+        definition:
+          "Few-shot examples show the model two or three input-output pairs so it copies the desired style.",
+      },
+      {
+        term: "Structured output schemas",
+        definition: "Schemas define exact fields and types so model answers parse cleanly in code.",
+      },
+      {
+        term: "System and task framing",
+        definition:
+          "Framing separates stable rules from per-task details so prompts stay clear and testable.",
+      },
+      {
+        term: "Model comparison",
+        definition:
+          "Model comparison runs the same prompts across frontier models to see quality and cost trade-offs.",
+      },
+      {
+        term: "Prompt evaluation harnesses",
+        definition:
+          "Evaluation harnesses score prompt outputs on fixed cases to prove improvements and catch regressions.",
+      },
+      {
+        term: "Regression test suites",
+        definition:
+          "Regression suites rerun known-good prompts after edits to confirm nothing broke.",
+      },
+      {
+        term: "Prompt operations",
+        definition:
+          "Prompt operations covers versioning, review, and release of prompts the way code is managed.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Same prompt behaves differently across models",
+        fix: "Run the comparison study on identical cases and pin model-specific wording where behavior diverges.",
+      },
+      {
+        problem: "Structured outputs break parsing",
+        fix: "Lock the schema with required fields and add a validator that retries on malformed responses.",
+      },
+      {
+        problem: "Small wording tweaks cause big quality swings",
+        fix: "Test each variant against the harness and keep only changes that improve scores across the full set.",
+      },
+      {
+        problem: "Long prompts drift off task",
+        fix: "Move stable rules to the top, trim extra context, and split the task into smaller chained prompts.",
+      },
+      {
+        problem: "Regression suite passes but users complain",
+        fix: "Add the reported failure cases to the suite and re-score so the harness reflects real usage.",
+      },
+    ],
+    readiness: [
+      "Design prompts using proven patterns and examples",
+      "Build structured-output generators that parse reliably",
+      "Evaluate prompt quality with harnesses and rubrics",
+      "Compare model behavior across frontier options",
+      "Operate versioned prompts with regression testing",
+      "Assemble a prompt operations portfolio for assessment",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -602,6 +980,77 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "16 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Python application building",
+        definition:
+          "Python application building covers structuring code, APIs, and tests so AI features run reliably.",
+      },
+      {
+        term: "LLM integration",
+        definition:
+          "LLM integration connects applications to models through prompts, parameters, and response handling.",
+      },
+      {
+        term: "Orchestration frameworks",
+        definition:
+          "Orchestration frameworks organize multi-step model, retrieval, and tool flows into maintainable code.",
+      },
+      {
+        term: "Retrieval systems",
+        definition:
+          "Retrieval systems supply relevant documents to the model so answers stay grounded.",
+      },
+      {
+        term: "Evaluation practices",
+        definition:
+          "Evaluation practices test builds against expected cases to prove quality before sharing.",
+      },
+      {
+        term: "Deployment workflows",
+        definition:
+          "Deployment workflows publish services with versioning, checks, and rollback paths.",
+      },
+      {
+        term: "Version control collaboration",
+        definition: "Version control with reviews keeps team code clean and changes traceable.",
+      },
+      {
+        term: "Technical communication",
+        definition:
+          "Technical communication explains builds, trade-offs, and results clearly in portfolios and interviews.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Bootcamp build stalls across too many features",
+        fix: "Cut scope to one working demo path, then layer retrieval and evals in weekly milestones.",
+      },
+      {
+        problem: "Retrieval-grounded demo gives weak answers",
+        fix: "Check chunk quality and retrieved passages first, then tighten prompts before changing models.",
+      },
+      {
+        problem: "Deployment breaks the night before review",
+        fix: "Freeze features early, deploy from a clean checkout, and verify the live path with a smoke script.",
+      },
+      {
+        problem: "Code reviews surface repeated basic issues",
+        fix: "Adopt a short checklist for tests, naming, and error handling and clear it before requesting review.",
+      },
+      {
+        problem: "Portfolio pieces look unfinished to reviewers",
+        fix: "Add a readme with problem, architecture, eval results, and a live demo link for each project.",
+      },
+    ],
+    readiness: [
+      "Build LLM applications in Python with tested APIs",
+      "Integrate retrieval and orchestration into working assistants",
+      "Evaluate builds and iterate from test results",
+      "Deploy versioned services with monitoring basics",
+      "Collaborate through reviews and open-source workflows",
+      "Present a portfolio and interview narrative with evidence",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -710,6 +1159,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "LLM observability",
+        definition:
+          "Observability traces prompts, tool calls, and outputs so teams find slow or failing steps fast.",
+      },
+      {
+        term: "Evaluation-gated releases",
+        definition:
+          "Gated releases block deployment when eval scores drop, keeping bad changes out of production.",
+      },
+      {
+        term: "Cost management",
+        definition:
+          "Cost management attributes token spend by team and route, then caps or caches expensive paths.",
+      },
+      {
+        term: "Safety guardrails",
+        definition:
+          "Guardrails filter inputs and outputs for injection, leaks, and policy violations.",
+      },
+      {
+        term: "Incident response",
+        definition:
+          "Incident response defines roles, runbooks, and rollback steps for LLM outages and quality events.",
+      },
+      {
+        term: "Model gateways",
+        definition:
+          "Gateways route model traffic with keys, quotas, and fallbacks across providers.",
+      },
+      {
+        term: "CI pipelines for LLMs",
+        definition:
+          "CI pipelines run evals, cost checks, and safety scans automatically on every change.",
+      },
+      {
+        term: "Drift detection",
+        definition:
+          "Drift detection compares live outputs to baselines to flag slow quality decay.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Noisy alerts hide real LLM incidents",
+        fix: "Tune thresholds on latency and error-rate signals and route quality alerts to a separate review queue.",
+      },
+      {
+        problem: "Eval gate blocks every release",
+        fix: "Inspect which cases fail and whether the golden set is stale, then update baselines before loosening gates.",
+      },
+      {
+        problem: "Token bill spikes after a release",
+        fix: "Attribute spend by endpoint and model on the dashboard, then restore caps and caching on the costly path.",
+      },
+      {
+        problem: "Guardrail blocks legitimate traffic",
+        fix: "Review blocked samples, narrow the rule patterns, and add an allowlist with audit logging.",
+      },
+      {
+        problem: "Post-incident fixes never stick",
+        fix: "Record the timeline in the runbook, add a regression eval for the failure, and assign an owner.",
+      },
+    ],
+    readiness: [
+      "Deploy LLM observability across prompts, tools, and outputs",
+      "Build evaluation-gated release pipelines",
+      "Control cost with budgets, routing, and caching",
+      "Operate safety guardrails and audit trails",
+      "Lead incident response with runbooks and rollbacks",
+      "Report reliability, cost, and safety posture to stakeholders",
+    ],
     audience: [
       "DevOps practitioners",
       "Platform engineers",
@@ -804,6 +1325,69 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "AI opportunity mapping",
+        definition:
+          "Opportunity mapping lists where AI can help across teams, scored by value and feasibility.",
+      },
+      {
+        term: "Pilot design",
+        definition:
+          "Pilot design scopes a small trial with success metrics, timeline, and risk notes.",
+      },
+      {
+        term: "Success metrics",
+        definition: "Measurable targets that show whether a pilot or rollout actually worked.",
+      },
+      {
+        term: "Risk and governance mapping",
+        definition:
+          "A review of misuse, bias, privacy, and operational risks with owners and mitigations.",
+      },
+      {
+        term: "Roadmap development",
+        definition: "Sequenced rollout plans with phases, checkpoints, and resource needs.",
+      },
+      {
+        term: "Investment prioritization",
+        definition: "Ranking AI bets by return, risk, and strategic fit to decide funding order.",
+      },
+      {
+        term: "Stakeholder communication",
+        definition: "Clear updates that keep executives, teams, and partners aligned on AI plans.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Pilots never graduate to production",
+        fix: "Define graduation criteria up front with owners, then fund the top pilot through rollout.",
+      },
+      {
+        problem: "Teams chase hype use cases",
+        fix: "Score every proposal on value versus feasibility and kill low-score items quarterly.",
+      },
+      {
+        problem: "Risk review arrives after launch",
+        fix: "Gate funding on a completed risk map and require sign-off before pilot expansion.",
+      },
+      {
+        problem: "Roadmap slips every quarter",
+        fix: "Cut the roadmap to funded milestones with named owners and review progress monthly.",
+      },
+      {
+        problem: "Executives lose confidence after a failed pilot",
+        fix: "Publish the lessons with metrics, narrow the next pilot, and report small wins early.",
+      },
+    ],
+    readiness: [
+      "Map AI opportunities across an organization by value and feasibility",
+      "Design pilots with success metrics and risk notes",
+      "Build roadmaps with phased rollouts and governance checkpoints",
+      "Prioritize AI investments across competing proposals",
+      "Communicate strategy clearly to executives and teams",
+      "Evaluate pilot results and decide graduate, pivot, or stop",
+    ],
     audience: [
       "Technology leaders",
       "Engineering managers",
@@ -896,6 +1480,73 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "2 days",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Golden set",
+        definition:
+          "A small fixed set of inputs with approved correct answers used as the reference for checking model outputs.",
+      },
+      {
+        term: "Eval dataset",
+        definition:
+          "A collection of test prompts and expected answers that represents the real tasks the model must handle.",
+      },
+      {
+        term: "Scoring rubric",
+        definition:
+          "A written checklist that defines what counts as correct, partial, or wrong so scoring stays consistent.",
+      },
+      {
+        term: "Model judge",
+        definition:
+          "A second model used to score outputs against a rubric when exact matching is too strict.",
+      },
+      {
+        term: "Human review sampling",
+        definition:
+          "Having people check a random subset of outputs to catch errors that automatic scores miss.",
+      },
+      {
+        term: "Regression suite",
+        definition:
+          "A repeatable set of eval tests run after every change to catch drops in quality.",
+      },
+      {
+        term: "Error analysis",
+        definition:
+          "Grouping failures by type and impact so fixes target the most harmful problems first.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Scores vary between runs on the same outputs",
+        fix: "Freeze the dataset, prompt version, and scoring settings, then rerun and compare only one change at a time.",
+      },
+      {
+        problem: "Model judge disagrees with human reviewers",
+        fix: "Calibrate the judge on 30 labeled examples, tighten the rubric wording, and add two scored examples per level.",
+      },
+      {
+        problem: "Golden answers go stale after product changes",
+        fix: "Review and re-approve the golden set each cycle, version it, and record what changed and why.",
+      },
+      {
+        problem: "Regression run passes but users still report bad answers",
+        fix: "Add the reported failing prompts to the eval set, label the error type, and expand coverage for that category.",
+      },
+      {
+        problem: "Eval takes too long to run on every change",
+        fix: "Split into a fast smoke set for every run and a full suite nightly, then track both scores over time.",
+      },
+    ],
+    readiness: [
+      "Build a 20-item golden set with approved answers",
+      "Write a 3-level scoring rubric with examples",
+      "Score one output set by hand and with a model judge",
+      "Run a before-and-after regression on a small prompt change",
+      "Sort 10 failures into error types ranked by impact",
+      "Write a one-page findings note with scores and next actions",
+    ],
     audience: [
       "Software developers",
       "AI engineers",
@@ -986,6 +1637,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "4–8 weeks (configurable)",
     level: "beginner",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Shared AI vocabulary",
+        definition:
+          "Shared vocabulary gives every team the same words for models, prompts, and risks so collaboration works.",
+      },
+      {
+        term: "Effective prompting",
+        definition:
+          "Effective prompting means giving clear task, context, and format so everyday AI tools return useful drafts.",
+      },
+      {
+        term: "Safe data handling",
+        definition:
+          "Safe data handling teaches what must never go into public tools, such as customer or secret data.",
+      },
+      {
+        term: "Use-case identification",
+        definition:
+          "Use-case identification helps teams spot repetitive tasks where AI assistance genuinely saves effort.",
+      },
+      {
+        term: "Responsible-use norms",
+        definition:
+          "Responsible-use norms set rules for checking outputs and keeping humans accountable for decisions.",
+      },
+      {
+        term: "Output verification",
+        definition:
+          "Verification means cross-checking AI drafts against sources before acting on them.",
+      },
+      {
+        term: "Team adoption planning",
+        definition:
+          "Adoption planning sequences training, champions, and support so new habits stick across functions.",
+      },
+      {
+        term: "Collaboration workflows",
+        definition:
+          "Collaboration workflows show how teams share prompts, templates, and lessons safely.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Staff paste sensitive data into public tools",
+        fix: "Publish a one-page data guide with approved tools and run a hands-on redaction exercise.",
+      },
+      {
+        problem: "Teams try AI once and abandon it",
+        fix: "Assign champions, schedule short practice sessions, and track one workflow win per team.",
+      },
+      {
+        problem: "Outputs accepted without checking",
+        fix: "Require source checks on a checklist for decisions and review a sample of work weekly.",
+      },
+      {
+        problem: "Uneven skills across functions",
+        fix: "Offer role-based exercises from a shared catalog and pair stronger users as buddies.",
+      },
+      {
+        problem: "Shadow AI tools proliferate",
+        fix: "Maintain an approved-tool list with request steps and review usage quarterly.",
+      },
+    ],
+    readiness: [
+      "Explain core AI concepts in plain non-technical language",
+      "Design prompts for everyday documents and workflows",
+      "Apply safe data-handling rules to real tasks",
+      "Evaluate AI outputs before acting on them",
+      "Build a team use-case catalog with responsible-use norms",
+      "Lead adoption habits that sustain organization-wide use",
+    ],
     audience: [
       "Operations staff",
       "IT administrators",
@@ -1082,6 +1805,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Model Context Protocol",
+        definition:
+          "MCP is a standard way for models to discover and call external tools through a shared server interface.",
+      },
+      {
+        term: "MCP servers",
+        definition:
+          "MCP servers expose tools and data with clear contracts so clients can call them safely.",
+      },
+      {
+        term: "MCP clients",
+        definition:
+          "MCP clients connect assistants to servers, handling discovery, calls, and results.",
+      },
+      {
+        term: "Tool schemas",
+        definition:
+          "Tool schemas describe each function name, inputs, and outputs so the model calls tools correctly.",
+      },
+      {
+        term: "Function-calling contracts",
+        definition:
+          "Calling contracts define retries, timeouts, and error shapes so tool use survives real traffic.",
+      },
+      {
+        term: "Authentication controls",
+        definition:
+          "Authentication controls verify who and what may call each tool, protecting sensitive APIs.",
+      },
+      {
+        term: "Trajectory evaluation",
+        definition:
+          "Trajectory evaluation scores the whole sequence of tool calls, not just the final answer.",
+      },
+      {
+        term: "Groundedness metrics",
+        definition:
+          "Groundedness metrics check that tool-based answers reflect actual tool results rather than guesses.",
+      },
+      {
+        term: "Retry and fallback design",
+        definition:
+          "Retries and fallbacks define what happens when a tool fails, from second attempts to safe defaults.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Model calls tools with malformed arguments",
+        fix: "Validate schemas strictly, tighten parameter descriptions, and reject bad calls with a corrective retry.",
+      },
+      {
+        problem: "Tool calls fail under real traffic",
+        fix: "Add timeouts, idempotency keys, and exponential-backoff retries, then load-test the server path.",
+      },
+      {
+        problem: "Auth blocks legitimate tool use",
+        fix: "Trace the credential scope per tool, fix token refresh, and log denied calls for review.",
+      },
+      {
+        problem: "Agent loops or repeats tool calls",
+        fix: "Cap call depth, detect repeated arguments, and force a summarize-or-ask step after the limit.",
+      },
+      {
+        problem: "Tool results ignored in final answers",
+        fix: "Score trajectories for groundedness and require citations of tool outputs in the response.",
+      },
+    ],
+    readiness: [
+      "Explain how MCP servers, clients, and tools interact",
+      "Design MCP servers and function-calling contracts for real traffic",
+      "Build secure connectors with auth and retry handling",
+      "Evaluate tool-use quality with groundedness and trajectory metrics",
+      "Deploy multi-tool agent workflows with monitoring",
+      "Diagnose tool-call failures from traces and eval reports",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -1191,6 +1991,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Golden test sets",
+        definition:
+          "A curated set of inputs with approved expected outputs used as the stable reference for checking model behavior over time.",
+      },
+      {
+        term: "LLM-as-judge scoring",
+        definition:
+          "Using a separate language model with a fixed rubric to grade outputs for qualities like correctness and helpfulness.",
+      },
+      {
+        term: "Regression eval pipelines",
+        definition:
+          "Automated checks that rerun the eval set on every prompt or model change to catch silent quality drops.",
+      },
+      {
+        term: "Groundedness checks",
+        definition:
+          "Tests that verify a model answer is supported by the retrieved documents rather than invented.",
+      },
+      {
+        term: "Task success metrics",
+        definition:
+          "Outcome-level measures such as pass rate or error rate that show whether the system completes real user tasks.",
+      },
+      {
+        term: "Human preference ratings",
+        definition:
+          "Structured side-by-side comparisons where reviewers pick the better response to guide quality decisions.",
+      },
+      {
+        term: "Failure taxonomy",
+        definition:
+          "A shared set of labels for error types, such as hallucination or refusal, so teams can count and fix them systematically.",
+      },
+      {
+        term: "Prompt versioning",
+        definition:
+          "Saving every prompt template with a version number so eval results can be traced back to the exact wording tested.",
+      },
+      {
+        term: "Statistical significance for evals",
+        definition:
+          "Checking that a score change is large enough, given the sample size, to trust it is a real improvement.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Golden-set drift makes scores meaningless",
+        fix: "Audit failing items to separate real regressions from outdated expectations, then update the goldens with a documented review and re-baseline scores.",
+      },
+      {
+        problem: "LLM judge disagrees with human reviewers",
+        fix: "Calibrate the judge on a labeled sample, tighten the rubric with examples, and track judge-human agreement before trusting automated scores.",
+      },
+      {
+        problem: "Small sample sizes hide regressions",
+        fix: "Expand the failing slice with targeted cases, stratify results by task type, and require a minimum sample before declaring a win.",
+      },
+      {
+        problem: "Flaky scores from non-deterministic outputs",
+        fix: "Fix decoding settings for eval runs, average over multiple runs, and log seeds and model versions with each result.",
+      },
+      {
+        problem: "Eval suite runs too slowly to gate releases",
+        fix: "Split into a fast smoke set for every change and a full nightly suite, then cache fixtures and parallelize the slow judges.",
+      },
+      {
+        problem: "Good aggregate score masks a broken slice",
+        fix: "Report scores per category and severity, add slice-level thresholds, and block release when any critical slice regresses.",
+      },
+    ],
+    readiness: [
+      "Explain when to use golden sets, human review, and automated judges",
+      "Design an eval plan with metrics tied to real task outcomes",
+      "Build a regression pipeline that runs on every prompt and model change",
+      "Evaluate groundedness and catch unsupported model claims",
+      "Diagnose eval failures using a shared error taxonomy",
+      "Deploy guardrails so score drops block unsafe releases",
+      "Document eval results and version history for review",
+    ],
     audience: [
       "AI engineers",
       "ML engineers",
@@ -1289,6 +2171,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Vector embeddings",
+        definition:
+          "Numeric representations of text that place similar meanings close together so search can find related content.",
+      },
+      {
+        term: "Vector similarity search",
+        definition:
+          "Finding the stored items whose embeddings are closest to a query, typically with cosine similarity or a similar measure.",
+      },
+      {
+        term: "Knowledge graphs",
+        definition:
+          "Databases of entities and their relationships, such as people linked to organizations, that support precise factual lookups.",
+      },
+      {
+        term: "Hybrid retrieval",
+        definition:
+          "Combining keyword search, vector search, and graph lookups so each method covers the others' blind spots.",
+      },
+      {
+        term: "Hybrid ranking and fusion",
+        definition:
+          "Merging multiple ranked result lists into one ordering, often with weighted scores or reciprocal rank fusion.",
+      },
+      {
+        term: "Entity linking",
+        definition:
+          "Matching a name in text to the correct unique entity in the graph, resolving ambiguity between same-named things.",
+      },
+      {
+        term: "Chunking for retrieval",
+        definition:
+          "Splitting documents into passages sized for embedding so each chunk carries enough context to rank and cite well.",
+      },
+      {
+        term: "Graph traversal queries",
+        definition:
+          "Queries that hop across relationships, such as finding a product's supplier's suppliers, to answer multi-step questions.",
+      },
+      {
+        term: "Entity-grounded generation",
+        definition:
+          "Generating answers constrained to retrieved entities and facts so outputs stay tied to verified sources.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Bad chunking returns unusable passages",
+        fix: "Inspect top retrieved chunks for truncation and overlap, then adjust chunk size and overlap and re-index a test corpus before full rebuild.",
+      },
+      {
+        problem: "Entity ambiguity pollutes graph results",
+        fix: "Add disambiguation using context and type filters, review conflated entities, and split merged nodes with corrected aliases.",
+      },
+      {
+        problem: "Vector search misses exact names and codes",
+        fix: "Add keyword search alongside vectors with hybrid fusion, and boost exact-match fields for identifiers and proper nouns.",
+      },
+      {
+        problem: "Stale embeddings after document updates",
+        fix: "Version the embedding pipeline, re-embed changed documents on update events, and monitor index freshness with a lag dashboard.",
+      },
+      {
+        problem: "Slow queries at scale",
+        fix: "Profile whether the bottleneck is embedding, search, or graph hops, then tune index parameters, add caching, and limit traversal depth.",
+      },
+      {
+        problem: "Answers cite wrong entities",
+        fix: "Require the generator to cite retrieved node IDs, validate citations before display, and fall back to retrieved snippets when validation fails.",
+      },
+    ],
+    readiness: [
+      "Explain how embeddings, vector search, and graphs complement each other",
+      "Design a hybrid retrieval pipeline for entity-grounded questions",
+      "Build a knowledge graph with entities, relations, and linked text",
+      "Evaluate retrieval quality with recall and ranking measures",
+      "Diagnose chunking, linking, and ranking failures systematically",
+      "Deploy a retrieval service with caching and freshness monitoring",
+      "Document indexing choices and their effect on answer quality",
+    ],
     audience: [
       "AI engineers",
       "Data engineers",
@@ -1393,6 +2357,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Batch data pipelines",
+        definition:
+          "Scheduled jobs that move and transform data in bulk, used for training sets and nightly refreshes.",
+      },
+      {
+        term: "Streaming pipelines",
+        definition:
+          "Continuously running flows that process events as they arrive for low-latency AI features.",
+      },
+      {
+        term: "Data lakes",
+        definition:
+          "Low-cost storage holding raw and processed data in open formats so many teams can reuse it.",
+      },
+      {
+        term: "Feature stores",
+        definition:
+          "Shared repositories that serve consistent, versioned input features to both training and live inference.",
+      },
+      {
+        term: "Data contracts",
+        definition:
+          "Written agreements on schema, freshness, and ownership between data producers and model or retrieval teams.",
+      },
+      {
+        term: "Schema evolution",
+        definition:
+          "Rules for changing data fields safely so downstream pipelines and models keep working.",
+      },
+      {
+        term: "Data quality checks",
+        definition:
+          "Automated validations for missing values, duplicates, and distribution shifts before data reaches models.",
+      },
+      {
+        term: "Orchestration DAGs",
+        definition:
+          "Directed graphs of pipeline steps with dependencies, retries, and schedules managed by an orchestrator.",
+      },
+      {
+        term: "Embedding pipelines for AI",
+        definition:
+          "Pipelines that chunk, embed, and index documents so retrieval systems always serve fresh content.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Schema change breaks downstream models",
+        fix: "Quarantine the offending batch with contract validation, pin the last good schema version, and require backward-compatible changes going forward.",
+      },
+      {
+        problem: "Training-serving skew from mismatched features",
+        fix: "Compare training and live feature values side by side, route both through the same feature store logic, and alert on divergence.",
+      },
+      {
+        problem: "Streaming lag starves real-time features",
+        fix: "Check consumer lag and partition throughput, scale consumers or repartition the topic, and backfill gaps from the raw log.",
+      },
+      {
+        problem: "Duplicate events corrupt aggregates",
+        fix: "Enforce idempotent writes with event IDs, deduplicate in the staging layer, and reconcile counts against source totals.",
+      },
+      {
+        problem: "Silent data quality decay",
+        fix: "Add freshness, null-rate, and distribution checks at ingestion, page the owning team on breach, and halt promotion of bad partitions.",
+      },
+      {
+        problem: "Pipeline reruns are not reproducible",
+        fix: "Pin code, data snapshot, and dependency versions per run, log run lineage, and rerun from the stored snapshot rather than live tables.",
+      },
+    ],
+    readiness: [
+      "Explain batch, streaming, and lake trade-offs for AI workloads",
+      "Design pipelines that feed training, features, and retrieval reliably",
+      "Build versioned datasets and feature stores for model teams",
+      "Evaluate data quality and freshness with automated checks",
+      "Diagnose skew, lag, and schema failures in production pipelines",
+      "Deploy orchestrated pipelines with retries and lineage tracking",
+      "Document data contracts shared with model and retrieval teams",
+    ],
     audience: [
       "Data engineers",
       "AI engineers",
@@ -1499,6 +2545,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "ML lifecycle management",
+        definition:
+          "The end-to-end practice of moving a model from experiment through deployment to monitored operation.",
+      },
+      {
+        term: "Reproducible training DAGs",
+        definition:
+          "Pipeline graphs that rerun data preparation, training, and evaluation identically from versioned inputs.",
+      },
+      {
+        term: "Experiment tracking",
+        definition:
+          "Logging parameters, metrics, and artifacts for every run so the best model can be explained and reproduced.",
+      },
+      {
+        term: "Model registries",
+        definition:
+          "Central catalogs that version trained models, record approvals, and control which build goes to production.",
+      },
+      {
+        term: "Drift monitoring",
+        definition:
+          "Watching input data and predictions for shifts that signal the model is degrading in the real world.",
+      },
+      {
+        term: "Evaluation gates",
+        definition:
+          "Required metric thresholds a model must pass before promotion to staging or production.",
+      },
+      {
+        term: "Shadow and canary deployment",
+        definition:
+          "Releasing a new model to a small or mirrored slice of traffic to compare behavior before full rollout.",
+      },
+      {
+        term: "Automated retraining triggers",
+        definition:
+          "Rules that start a fresh training run when drift, staleness, or performance drops cross a threshold.",
+      },
+      {
+        term: "Rollback procedures",
+        definition:
+          "Tested steps to revert to the last good model version quickly when a release fails.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Training runs cannot be reproduced",
+        fix: "Lock data snapshots, code commits, seeds, and environment images per run, then verify by rerunning the logged configuration.",
+      },
+      {
+        problem: "Drift alerts fire without real degradation",
+        fix: "Tune alert thresholds on historical data, separate input drift from outcome drops, and require outcome confirmation before retraining.",
+      },
+      {
+        problem: "Registry holds conflicting model versions",
+        fix: "Enforce a single promotion path with stage labels, audit who promoted what, and pin serving to an explicit versioned artifact.",
+      },
+      {
+        problem: "Evaluation passes offline but fails live",
+        fix: "Compare offline and serving feature pipelines field by field, add serving-side validation, and test with shadow traffic before promotion.",
+      },
+      {
+        problem: "Retraining loop amplifies bad labels",
+        fix: "Pause the trigger, quarantine suspect labels with human review, and retrain from the last verified dataset before re-enabling automation.",
+      },
+      {
+        problem: "Failed deploy with no fast rollback",
+        fix: "Shift traffic back to the pinned prior version, freeze promotions, and rehearse the rollback path so the next revert is one command.",
+      },
+    ],
+    readiness: [
+      "Explain the full path from experiment to monitored deployment",
+      "Design reproducible DAGs for data, training, and evaluation",
+      "Build a registry workflow with versioned models and approvals",
+      "Evaluate promotion candidates with gated metrics",
+      "Deploy models with canary releases and tested rollbacks",
+      "Monitor drift and trigger retraining responsibly",
+      "Document lineage from dataset to deployed model version",
+    ],
     audience: [
       "ML engineers",
       "AI engineers",
@@ -1597,6 +2725,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "3 days",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Agentic coding loops",
+        definition:
+          "Workflows where the assistant plans, edits, runs checks, and revises code in repeated cycles toward a goal.",
+      },
+      {
+        term: "Repository context scoping",
+        definition:
+          "Selecting the right files and symbols to load into the session so the assistant works with relevant code.",
+      },
+      {
+        term: "Structured task plans",
+        definition:
+          "Breaking a coding task into explicit steps with acceptance checks before making changes.",
+      },
+      {
+        term: "Test-driven iteration",
+        definition:
+          "Writing or running tests first so each code change is verified against expected behavior immediately.",
+      },
+      {
+        term: "Diff review discipline",
+        definition:
+          "Reading every proposed change line by line for correctness, scope creep, and risk before accepting it.",
+      },
+      {
+        term: "Long-session memory",
+        definition:
+          "Notes and summaries carried across sessions so conventions and decisions persist without reloading everything.",
+      },
+      {
+        term: "Tool-use permissions",
+        definition:
+          "Explicit rules for which file, shell, and network actions the assistant may take without asking.",
+      },
+      {
+        term: "Safe command execution",
+        definition:
+          "Running shell commands with scoped paths and review, avoiding destructive or untrusted operations.",
+      },
+      {
+        term: "Session handoff notes",
+        definition:
+          "Brief records of goals, changes, and open items so work can resume cleanly in a new session.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Assistant edits the wrong files",
+        fix: "Stop the run, narrow the working scope to named paths, restate the target files, and require a plan before further edits.",
+      },
+      {
+        problem: "Large context overflows the session",
+        fix: "Summarize progress into handoff notes, start a fresh session with only the needed files, and reintroduce context on demand.",
+      },
+      {
+        problem: "Generated code passes no tests",
+        fix: "Run the failing test to capture the exact error, fix the smallest slice first, and rerun the suite before accepting the diff.",
+      },
+      {
+        problem: "Risky shell command proposed",
+        fix: "Deny the command, restrict permissions to the project directory, and approve only explicit read-only or reversible commands.",
+      },
+      {
+        problem: "Assistant loops without progress",
+        fix: "Interrupt the loop, restate the acceptance criteria in smaller steps, and ask for one minimal change with a verification check.",
+      },
+      {
+        problem: "Unreviewed diff merged with regressions",
+        fix: "Revert to the last green commit, review the diff hunk by hunk, and add the missing test that would have caught the break.",
+      },
+    ],
+    readiness: [
+      "Explain how agentic coding loops turn plans into verified changes",
+      "Design scoped tasks with clear acceptance checks",
+      "Build features iteratively with tests guarding each step",
+      "Evaluate diffs for correctness, scope, and safety",
+      "Deploy session conventions that keep long projects coherent",
+      "Troubleshoot stalled or off-scope assistant behavior",
+      "Document handoffs so work resumes cleanly across sessions",
+    ],
     audience: [
       "Software developers",
       "Frontend developers",
@@ -1698,6 +2908,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Distributed system fundamentals",
+        definition:
+          "Core ideas like scaling, replication, and partitioning that let services handle large AI workloads reliably.",
+      },
+      {
+        term: "Latency budgeting for LLM apps",
+        definition:
+          "Splitting the total response-time allowance across retrieval, inference, and post-processing so each part stays fast.",
+      },
+      {
+        term: "Retrieval-augmented serving paths",
+        definition:
+          "Request flows that fetch relevant documents before generation so answers stay grounded and current.",
+      },
+      {
+        term: "Agentic workload orchestration",
+        definition:
+          "Coordinating multi-step tool calls and model steps with queues, retries, and state tracking.",
+      },
+      {
+        term: "Caching for inference",
+        definition:
+          "Reusing prior embeddings, retrieval results, or completions to cut cost and response time.",
+      },
+      {
+        term: "Cost-aware capacity planning",
+        definition:
+          "Estimating token, compute, and storage spend per request so scaling decisions stay within budget.",
+      },
+      {
+        term: "Failure modes of AI systems",
+        definition:
+          "Known breakdowns such as cascading retries, overloaded inference queues, and stale indexes, with planned mitigations.",
+      },
+      {
+        term: "Observability for AI pipelines",
+        definition:
+          "Logging prompts, retrieval hits, latencies, and quality signals so problems can be traced end to end.",
+      },
+      {
+        term: "Interview-style trade-off analysis",
+        definition:
+          "Comparing design options on latency, cost, accuracy, and operability to justify choices clearly.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "P99 latency spikes under load",
+        fix: "Trace the request path to find the slow stage, add caching or concurrency limits there, and shed or queue excess agentic retries.",
+      },
+      {
+        problem: "Inference costs explode with traffic",
+        fix: "Measure tokens per request by stage, add caches and smaller-model fallbacks, and cap runaway retry and context sizes.",
+      },
+      {
+        problem: "Stale index serves outdated answers",
+        fix: "Check index freshness lag, shorten the re-index interval for hot sources, and serve a freshness flag until the update lands.",
+      },
+      {
+        problem: "Cascading failures from retry storms",
+        fix: "Add timeouts, backoff with jitter, and circuit breakers between services, then replay traffic gradually after recovery.",
+      },
+      {
+        problem: "Inconsistent answers across replicas",
+        fix: "Pin model, prompt, and index versions per deployment, verify replica configs match, and route sticky sessions during transitions.",
+      },
+      {
+        problem: "Eval-blind deploys ship regressions",
+        fix: "Gate releases on latency, cost, and quality checks, canary the new design, and roll back when any gate breaches.",
+      },
+    ],
+    readiness: [
+      "Explain how distributed components carry LLM and retrieval load",
+      "Design serving paths that balance latency, cost, and accuracy",
+      "Build caching and queueing strategies for agentic workloads",
+      "Evaluate designs with explicit trade-off reasoning",
+      "Diagnose latency, cost, and failure cascades in AI systems",
+      "Deploy observable pipelines with versioned models and indexes",
+      "Present a system design clearly under interview conditions",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -1803,6 +3095,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Shared responsibility model",
+        definition:
+          "Defines what the cloud provider secures versus what the customer must secure, covering infrastructure, data, and access controls.",
+      },
+      {
+        term: "Shift-left security",
+        definition:
+          "Moves security checks earlier into design and coding so flaws are caught before deployment.",
+      },
+      {
+        term: "SAST and DAST scanning",
+        definition:
+          "SAST reviews source code for flaws without running it, while DAST probes a running app for exploitable weaknesses.",
+      },
+      {
+        term: "Container image scanning",
+        definition:
+          "Checks container images for known vulnerabilities and misconfigurations before they are deployed.",
+      },
+      {
+        term: "Infrastructure as code scanning",
+        definition:
+          "Reviews declarative infrastructure templates for insecure defaults such as open storage or permissive network rules.",
+      },
+      {
+        term: "Secrets management",
+        definition:
+          "Stores API keys and credentials in a managed vault with rotation and least-privilege access instead of code or config files.",
+      },
+      {
+        term: "CI/CD pipeline hardening",
+        definition:
+          "Protects build pipelines with signed artifacts, pinned dependencies, and restricted runner permissions.",
+      },
+      {
+        term: "Cloud misconfiguration controls",
+        definition:
+          "Enforces secure defaults for storage, identity, and networking using policy checks and continuous auditing.",
+      },
+      {
+        term: "Incident response runbooks",
+        definition:
+          "Step-by-step plans for detecting, containing, and recovering from cloud security incidents.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Pipeline blocked by failing SAST findings",
+        fix: "Check whether findings are true positives or test-code noise, then tune rules or add scoped suppressions and fix confirmed flaws at the source.",
+      },
+      {
+        problem: "Container deploy rejected for critical CVEs in base image",
+        fix: "Rebuild from a minimal patched base image, pin versions, and re-scan before pushing to the registry.",
+      },
+      {
+        problem: "Infrastructure template fails policy check for public storage",
+        fix: "Set storage to private by default, restrict access with identity policies, and re-run the template scan.",
+      },
+      {
+        problem: "Build fails after pinning dependencies for supply-chain control",
+        fix: "Inspect the lockfile for version conflicts, update the incompatible package, and re-run tests before merging.",
+      },
+      {
+        problem: "Secrets leak detected in repository history",
+        fix: "Revoke the exposed credential immediately, rotate it in the vault, and purge history following defensive cleanup practices.",
+      },
+      {
+        problem: "Cloud audit flags overly permissive IAM role",
+        fix: "Reduce the role to only the actions the workload needs, verify with access logs, and re-audit.",
+      },
+    ],
+    readiness: [
+      "Explain the shared responsibility model for cloud workloads",
+      "Design a CI/CD pipeline with integrated security gates",
+      "Build hardened container images with vulnerability scanning",
+      "Evaluate infrastructure templates for misconfigurations",
+      "Deploy secrets management with rotation and least privilege",
+      "Respond to cloud incidents using documented runbooks",
+      "Assess IAM policies for least-privilege compliance",
+    ],
     audience: [
       "Cloud engineers",
       "DevOps practitioners",
@@ -1908,6 +3282,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "AI threat modeling",
+        definition:
+          "Identifies how attackers could abuse a model or its data flows, covering inputs, outputs, tools, and integrations.",
+      },
+      {
+        term: "Prompt injection",
+        definition:
+          "A technique where crafted inputs try to override a model's instructions, requiring input validation and output controls.",
+      },
+      {
+        term: "Data leakage prevention for LLMs",
+        definition:
+          "Practices that stop models from exposing sensitive training or retrieval data through careful scoping and redaction.",
+      },
+      {
+        term: "Model supply-chain risk",
+        definition:
+          "Risks from third-party models, datasets, and plugins, managed through provenance checks and version pinning.",
+      },
+      {
+        term: "Access control for AI systems",
+        definition:
+          "Restricts who can query, retrain, or configure models using roles, API keys, and audit logging.",
+      },
+      {
+        term: "Evaluation for harmful outputs",
+        definition:
+          "Tests model responses against safety criteria to catch disallowed or unsafe behavior before release.",
+      },
+      {
+        term: "Logging and traceability",
+        definition:
+          "Records prompts, retrieval context, and tool calls so AI decisions can be reviewed defensively after incidents.",
+      },
+      {
+        term: "Responsible disclosure process",
+        definition:
+          "A defined path for reporting and fixing AI vulnerabilities without exposing users to additional harm.",
+      },
+      {
+        term: "Governance controls mapping",
+        definition:
+          "Links AI safeguards to organizational policies so responsibilities for review and approval are clear.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Model echoes sensitive retrieved content to unauthorized users",
+        fix: "Restrict retrieval scope by user role, add output filtering, and re-test with role-separated queries.",
+      },
+      {
+        problem: "Prompt injection bypasses system instructions",
+        fix: "Separate untrusted input from instructions, add validation and constrained tool permissions, then re-run adversarial tests.",
+      },
+      {
+        problem: "Third-party model update changes behavior unexpectedly",
+        fix: "Pin the model version, compare outputs against a saved evaluation set, and gate upgrades behind review.",
+      },
+      {
+        problem: "Audit log missing prompt context for an incident",
+        fix: "Enable structured logging of prompts, retrieval IDs, and tool calls, then verify coverage with a sample review.",
+      },
+      {
+        problem: "Safety evaluation flags rising refusal errors on benign queries",
+        fix: "Inspect the flagged cases for over-broad filters, refine categories, and re-run the evaluation suite.",
+      },
+    ],
+    readiness: [
+      "Explain common attack paths against LLM-based systems",
+      "Design access controls for model APIs and tool integrations",
+      "Build logging that supports defensive incident review",
+      "Evaluate model outputs against defined safety criteria",
+      "Deploy version pinning for third-party models and datasets",
+      "Respond to reported AI vulnerabilities through a disclosure workflow",
+      "Assess AI features against organizational governance controls",
+    ],
     audience: [
       "Security practitioners",
       "AI engineers",
@@ -2011,6 +3463,82 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "beginner",
     mode: "online",
+    concepts: [
+      {
+        term: "Descriptive statistics",
+        definition:
+          "Summarizes data with measures like mean, median, and spread to describe what happened.",
+      },
+      {
+        term: "Data cleaning",
+        definition:
+          "Fixes missing values, duplicates, and inconsistent formats so analysis is trustworthy.",
+      },
+      {
+        term: "SQL joins and aggregations",
+        definition:
+          "Combines tables with joins and summarizes rows with grouping to answer business questions.",
+      },
+      {
+        term: "Data visualization",
+        definition:
+          "Uses charts such as bars, lines, and histograms to reveal patterns and communicate findings.",
+      },
+      {
+        term: "Cohort analysis",
+        definition: "Compares groups of users or records over time to see how behavior changes.",
+      },
+      {
+        term: "Correlation versus causation",
+        definition:
+          "Distinguishes relationships between variables from proof that one causes the other.",
+      },
+      {
+        term: "Dashboards and KPIs",
+        definition:
+          "Tracks key metrics in regularly updated views so teams can monitor performance.",
+      },
+      {
+        term: "Spreadsheet modeling",
+        definition: "Uses formulas and pivot tables to explore and summarize tabular data quickly.",
+      },
+      {
+        term: "Sampling and bias",
+        definition:
+          "Covers how sample selection can skew results and how to check for representative data.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "SQL query returns duplicated rows after a join",
+        fix: "Check join keys for duplicates, verify the relationship is one-to-many as expected, and deduplicate or aggregate before joining.",
+      },
+      {
+        problem: "Dashboard totals do not match source data",
+        fix: "Compare filters, date ranges, and aggregation logic between the dashboard and the query, then correct the mismatched step.",
+      },
+      {
+        problem: "Chart shows misleading spikes from missing dates",
+        fix: "Fill gaps in the date series, confirm null handling, and re-render to verify the trend is accurate.",
+      },
+      {
+        problem: "Analysis skewed by duplicate or null records",
+        fix: "Profile the dataset for nulls and duplicates, apply documented cleaning rules, and re-run the summary.",
+      },
+      {
+        problem: "CSV import breaks column types in spreadsheet",
+        fix: "Inspect delimiters and headers, set explicit column types on import, and validate a sample of rows.",
+      },
+    ],
+    readiness: [
+      "Explain key descriptive statistics for a dataset",
+      "Build SQL queries with joins and aggregations",
+      "Design clear charts for common analysis questions",
+      "Evaluate dashboard metrics for accuracy and consistency",
+      "Build cleaned analysis-ready tables from raw data",
+      "Explain correlation limits when interpreting results",
+      "Design a KPI dashboard for a defined business question",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -2111,6 +3639,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Next.js app router",
+        definition:
+          "Organizes pages, layouts, and routes with server and client components for a typed full-stack app.",
+      },
+      {
+        term: "TypeScript end-to-end typing",
+        definition:
+          "Shares types between frontend, API routes, and database models to catch errors before runtime.",
+      },
+      {
+        term: "Authentication and sessions",
+        definition:
+          "Verifies user identity and manages sessions so protected pages and APIs stay secure.",
+      },
+      {
+        term: "API routes and server actions",
+        definition:
+          "Handles backend logic inside the Next.js app for forms, payments, and data mutations.",
+      },
+      {
+        term: "Retrieval-augmented generation (RAG)",
+        definition:
+          "Grounds LLM answers in retrieved documents so responses are more accurate and traceable.",
+      },
+      {
+        term: "Structured outputs",
+        definition:
+          "Constrains model responses to a defined schema so the app can validate and render them reliably.",
+      },
+      {
+        term: "AI agents in products",
+        definition:
+          "Lets a model call app tools step by step to complete tasks, with limits and review for safety.",
+      },
+      {
+        term: "Edge deployment",
+        definition:
+          "Runs the app close to users on edge infrastructure for lower latency and simpler scaling.",
+      },
+      {
+        term: "Observability",
+        definition:
+          "Uses logs, metrics, and traces to monitor app health, payments, and LLM feature quality.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Build fails on server versus client component boundary",
+        fix: "Check for client-only hooks in server components, move interactivity into marked client components, and rebuild.",
+      },
+      {
+        problem: "Auth session missing on protected API route",
+        fix: "Verify session cookies and middleware config, confirm the route checks the session, and test with a fresh login.",
+      },
+      {
+        problem: "RAG answers cite irrelevant documents",
+        fix: "Inspect chunk size and retrieval ranking, tighten filters, and re-test with a small set of known questions.",
+      },
+      {
+        problem: "LLM structured output fails schema validation",
+        fix: "Constrain the response schema, retry with validation and a repair pass, and log failures for review.",
+      },
+      {
+        problem: "Payment webhook not updating order status",
+        fix: "Verify webhook signatures and idempotency handling, replay a test event, and check logs for rejected requests.",
+      },
+      {
+        problem: "Edge deployment shows stale data after updates",
+        fix: "Review caching and revalidation settings for the affected route, then adjust revalidation and redeploy.",
+      },
+    ],
+    readiness: [
+      "Explain Next.js routing with server and client components",
+      "Build a typed full-stack app with auth and payments",
+      "Design API routes and server actions for app workflows",
+      "Build production-grade RAG with structured outputs",
+      "Evaluate LLM feature quality with test queries",
+      "Deploy a Next.js app to edge infrastructure with observability",
+    ],
     audience: [
       "Software developers",
       "Frontend developers",
@@ -2211,6 +3820,80 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "4 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "AI risk tiers",
+        definition:
+          "Classifies AI use cases by potential harm so higher-risk systems receive stronger review.",
+      },
+      {
+        term: "Fairness assessment",
+        definition:
+          "Checks model outcomes across groups to detect and reduce unwanted disparities.",
+      },
+      {
+        term: "Transparency and disclosure",
+        definition: "Informs users when AI is involved and explains its role in plain language.",
+      },
+      {
+        term: "Data consent and minimization",
+        definition: "Collects only the data needed with proper permission and limits retention.",
+      },
+      {
+        term: "Human oversight",
+        definition: "Keeps people in review or approval roles for consequential AI decisions.",
+      },
+      {
+        term: "Impact assessment",
+        definition:
+          "A structured review of an AI system's risks, stakeholders, and mitigations before deployment.",
+      },
+      {
+        term: "Incident and redress process",
+        definition:
+          "Defines how harms are reported, investigated, and corrected after an AI system ships.",
+      },
+      {
+        term: "Policy mapping",
+        definition:
+          "Connects internal AI rules to external expectations so teams know which reviews apply.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Use case stuck in review with unclear risk tier",
+        fix: "Re-score it against documented risk criteria with concrete examples, then route it to the matching review path.",
+      },
+      {
+        problem: "Fairness check shows disparities across groups",
+        fix: "Examine data sampling and thresholds, document findings, and adjust scope or add mitigations before approval.",
+      },
+      {
+        problem: "Team collects more data than the policy allows",
+        fix: "Map each field to a stated purpose, remove unneeded fields, and set retention limits.",
+      },
+      {
+        problem: "Users unaware a workflow involves AI",
+        fix: "Add plain-language disclosure at the point of use and verify it appears in the shipped interface.",
+      },
+      {
+        problem: "Impact assessment missing stakeholder input",
+        fix: "Identify affected groups, gather their concerns, and record mitigations in the assessment.",
+      },
+      {
+        problem: "Post-launch complaint has no clear owner",
+        fix: "Assign the report to the documented redress path, acknowledge it, and track resolution steps.",
+      },
+    ],
+    readiness: [
+      "Explain AI risk tiers and when each review applies",
+      "Design an impact assessment for a proposed AI use case",
+      "Build transparency disclosures for AI-assisted workflows",
+      "Evaluate model outcomes for fairness concerns",
+      "Deploy human oversight for consequential decisions",
+      "Respond to AI incidents through a redress process",
+      "Assess data collection against consent and minimization norms",
+    ],
     audience: [
       "Technology leaders",
       "Product managers",
@@ -2569,6 +4252,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Agent planning loops",
+        definition:
+          "Step-by-step reasoning cycles where an agent breaks a goal into tasks, acts, and revises its plan based on results.",
+      },
+      {
+        term: "Task decomposition",
+        definition:
+          "Splitting a complex goal into smaller subtasks that an agent can execute in order or in parallel.",
+      },
+      {
+        term: "Agent tools",
+        definition:
+          "External functions such as search, calculators, or APIs that an agent can call to act beyond text generation.",
+      },
+      {
+        term: "Agent memory",
+        definition:
+          "Stored conversation history and state that lets an agent recall past steps and user context.",
+      },
+      {
+        term: "Multi-agent orchestration",
+        definition:
+          "Coordinating several agents with defined roles so work passes cleanly between them.",
+      },
+      {
+        term: "Role handoffs",
+        definition:
+          "Rules for passing tasks and context from one agent to another without losing information.",
+      },
+      {
+        term: "Reflection",
+        definition:
+          "A self-check step where the agent reviews its own output for errors before proceeding.",
+      },
+      {
+        term: "Guardrails",
+        definition:
+          "Limits on agent behavior, such as allowed tools and approval gates, that keep actions safe and on scope.",
+      },
+      {
+        term: "State stores",
+        definition:
+          "Databases or key-value stores that hold agent progress so long tasks can pause and resume.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Agent loops without finishing a task",
+        fix: "Add a maximum step count and a stop condition, then check the plan log to find the repeating step and tighten its completion criteria.",
+      },
+      {
+        problem: "Handoffs between agents lose context",
+        fix: "Pass a structured handoff object with goal, prior results, and next action, and log each handoff to confirm nothing is dropped.",
+      },
+      {
+        problem: "Agent calls the wrong tool or wrong arguments",
+        fix: "Simplify tool descriptions and validate arguments against a schema before execution, then review failed calls to clarify ambiguous names.",
+      },
+      {
+        problem: "Memory grows too large and slows the agent",
+        fix: "Summarize older conversation turns into a compact state record and keep only recent steps in the active prompt.",
+      },
+      {
+        problem: "Agent takes unsafe or out-of-scope actions",
+        fix: "Restrict the tool allowlist, add approval gates for sensitive actions, and test guardrails with adversarial prompts.",
+      },
+    ],
+    readiness: [
+      "Design single and multi-agent systems with defined roles and handoffs",
+      "Build planning and task-decomposition loops for autonomous goals",
+      "Develop persistent agent memory with state stores and history",
+      "Evaluate multi-agent collaboration for correctness and efficiency",
+      "Deploy agents with guardrails and orchestration controls",
+      "Explain how planning, memory, and tools combine in agent behavior",
+      "Build reflection steps that catch and correct agent errors",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -2678,6 +4439,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Visual agent builders",
+        definition:
+          "No-code canvas tools for assembling assistants from blocks for messages, logic, and integrations.",
+      },
+      {
+        term: "Conversational flows",
+        definition:
+          "Designed paths of prompts and replies that guide a user toward a completed task.",
+      },
+      {
+        term: "Intents",
+        definition:
+          "The user goals, such as booking or asking a question, that an assistant is trained to recognize.",
+      },
+      {
+        term: "Entities",
+        definition:
+          "Key details pulled from a message, such as dates or order numbers, that the flow needs to act on.",
+      },
+      {
+        term: "Fallback paths",
+        definition:
+          "Backup replies and routes used when the assistant does not understand a request.",
+      },
+      {
+        term: "Escalation rules",
+        definition:
+          "Conditions that hand a conversation to a human reviewer when the agent cannot resolve it.",
+      },
+      {
+        term: "Knowledge bases",
+        definition:
+          "Curated collections of documents and FAQs the assistant searches to answer questions.",
+      },
+      {
+        term: "Workflow integrations",
+        definition:
+          "Connections to email, calendars, or spreadsheets so the assistant can read and update real systems.",
+      },
+      {
+        term: "Deployed assistants",
+        definition:
+          "Published agents embedded in a website or channel so real users can interact with them.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Assistant misunderstands common requests",
+        fix: "Add more example phrases per intent, check for overlapping intents, and split confused intents into separate ones.",
+      },
+      {
+        problem: "Knowledge answers cite outdated documents",
+        fix: "Review the knowledge base for stale files, update or remove them, and re-test the affected questions.",
+      },
+      {
+        problem: "Fallback triggers too often",
+        fix: "Inspect fallback logs for patterns, add missing intents or synonyms, and widen entity values for those cases.",
+      },
+      {
+        problem: "Escalation never fires on difficult cases",
+        fix: "Lower the confidence threshold for handoff, test with edge-case messages, and confirm the escalation channel is connected.",
+      },
+      {
+        problem: "Integration step fails after deployment",
+        fix: "Re-check connection credentials and field mappings in the live environment, then run a test record through the flow.",
+      },
+    ],
+    readiness: [
+      "Build assistants with visual builders and conversational flows",
+      "Design intents, entities, fallback paths, and escalation rules",
+      "Develop knowledge-backed answers from documents and FAQs",
+      "Evaluate assistant accuracy on real workflow conversations",
+      "Deploy an assistant for a real operational workflow",
+      "Explain how flows, knowledge, and integrations work together",
+      "Build integrations that connect assistants to business tools",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -2785,6 +4624,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Model selection",
+        definition:
+          "Comparing open and hosted models on quality, latency, and cost to pick the right fit for a task.",
+      },
+      {
+        term: "Instruction datasets",
+        definition:
+          "Collections of prompt-and-answer examples used to teach a model to follow directions.",
+      },
+      {
+        term: "Data cleaning and deduping",
+        definition:
+          "Removing errors and duplicate examples so training data is consistent and reliable.",
+      },
+      {
+        term: "Parameter-efficient adapters",
+        definition:
+          "Small trainable layers added to a frozen model that adapt behavior without retraining everything.",
+      },
+      {
+        term: "Fine-tuning runs",
+        definition:
+          "Training sessions that adjust a model on task data, tracked with settings and checkpoints.",
+      },
+      {
+        term: "Inference optimization",
+        definition:
+          "Techniques that make model responses faster and cheaper, such as batching and caching.",
+      },
+      {
+        term: "Batching",
+        definition:
+          "Grouping multiple requests together so the model processes them more efficiently.",
+      },
+      {
+        term: "Inference endpoints",
+        definition:
+          "Hosted API services that serve a model to applications with scaling and monitoring.",
+      },
+      {
+        term: "Latency-cost trade-offs",
+        definition:
+          "Balancing response speed, answer quality, and operating cost when choosing a setup.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Fine-tuning barely improves task quality",
+        fix: "Inspect the dataset for noisy or duplicated examples, clean and rebalance it, then rerun with a smaller learning rate.",
+      },
+      {
+        problem: "Inference endpoint is slow under load",
+        fix: "Enable request batching and response caching, then check GPU utilization to decide whether to scale replicas.",
+      },
+      {
+        problem: "Model choice exceeds budget",
+        fix: "Benchmark a smaller open model against the hosted one on your eval set and switch routine traffic to the cheaper option.",
+      },
+      {
+        problem: "Training run overfits to repeated phrases",
+        fix: "Dedupe near-identical examples, add held-out validation checks, and stop training when validation quality plateaus.",
+      },
+      {
+        problem: "Endpoint returns timeouts on long outputs",
+        fix: "Raise timeout limits, enable streaming so partial tokens return early, and cap maximum output length.",
+      },
+    ],
+    readiness: [
+      "Evaluate open and hosted models for quality, latency, and cost",
+      "Develop instruction and preference datasets with cleaning and deduping",
+      "Build fine-tuning runs using parameter-efficient adapters",
+      "Deploy scalable inference endpoints with batching and caching",
+      "Explain model selection trade-offs for production use",
+      "Evaluate fine-tuned models against baseline behavior",
+      "Build data preparation pipelines for training runs",
+    ],
     audience: [
       "AI engineers",
       "ML engineers",
@@ -2894,6 +4811,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Document ingestion",
+        definition:
+          "Parsing and cleaning source files so their text is ready for indexing and search.",
+      },
+      {
+        term: "Chunking",
+        definition:
+          "Splitting documents into overlapping passages sized so each one carries enough context for retrieval.",
+      },
+      {
+        term: "Embeddings",
+        definition:
+          "Numeric representations of text that let a system find passages by meaning rather than exact words.",
+      },
+      {
+        term: "Vector index schemas",
+        definition:
+          "The organized structure of a vector store, including fields and metadata used for filtering.",
+      },
+      {
+        term: "Hybrid search",
+        definition:
+          "Combining meaning-based dense search with keyword-based lexical search for better recall.",
+      },
+      {
+        term: "Reranking",
+        definition:
+          "Re-scoring top search hits with a stronger model so the most relevant passages answer first.",
+      },
+      {
+        term: "Citations",
+        definition: "Source links attached to generated answers so readers can verify each claim.",
+      },
+      {
+        term: "Grounded answers",
+        definition:
+          "Responses built strictly from retrieved passages rather than the model guessing from memory.",
+      },
+      {
+        term: "Grounded answer evaluation",
+        definition:
+          "Checking answers for faithfulness to sources and flagging unsupported statements.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Answers cite irrelevant passages",
+        fix: "Tighten chunk size and overlap, add metadata filters, and test whether a reranking stage restores relevance.",
+      },
+      {
+        problem: "Key facts are missing from retrieval",
+        fix: "Check parsing output for dropped tables or text, adjust chunk boundaries, and confirm the embedding model covers the domain.",
+      },
+      {
+        problem: "Hybrid search underperforms dense-only search",
+        fix: "Compare dense, lexical, and fused rankings on a test query set, then retune the fusion weights toward the stronger signal.",
+      },
+      {
+        problem: "Generated answers lack citations",
+        fix: "Require the prompt to quote source identifiers per claim and reject responses that omit them during testing.",
+      },
+      {
+        problem: "Index is slow as documents grow",
+        fix: "Review index settings and metadata filters, then partition the collection or pre-filter by source before search.",
+      },
+    ],
+    readiness: [
+      "Build document ingestion pipelines with parsing, cleaning, and chunking",
+      "Design embedding workflows and vector index schemas",
+      "Develop hybrid search with dense, lexical, and reranking stages",
+      "Deploy grounded Q&A APIs with citations and source links",
+      "Evaluate grounded answers for faithfulness to sources",
+      "Explain how chunking and retrieval shape answer quality",
+      "Build citation checks into answer generation",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -3001,6 +4995,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Model Context Protocol",
+        definition:
+          "An open standard for connecting AI clients to servers that expose tools, data, and prompts.",
+      },
+      {
+        term: "MCP servers",
+        definition:
+          "Services that publish tools, resources, and prompts for AI clients to discover and call.",
+      },
+      {
+        term: "MCP clients",
+        definition:
+          "Applications that connect to MCP servers, list their capabilities, and invoke actions.",
+      },
+      {
+        term: "Tools",
+        definition:
+          "Callable functions a server exposes, such as looking up records or running calculations.",
+      },
+      {
+        term: "Resources",
+        definition:
+          "Data objects a server shares, such as files or records, that clients can read with context.",
+      },
+      {
+        term: "JSON schemas",
+        definition:
+          "Formal descriptions of inputs and outputs that validate calls between client and server.",
+      },
+      {
+        term: "Capability manifests",
+        definition:
+          "Declarations of what a server offers so clients know which actions are available.",
+      },
+      {
+        term: "MCP auth",
+        definition:
+          "Credential checks that control which clients and users may call server actions.",
+      },
+      {
+        term: "Error responses",
+        definition:
+          "Structured failure messages that tell the client what went wrong and how to retry.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Client cannot discover server tools",
+        fix: "Verify the capability manifest is served correctly, check the server URL and version, and confirm the client lists capabilities after connect.",
+      },
+      {
+        problem: "Tool calls fail schema validation",
+        fix: "Compare the sent arguments against the JSON schema field by field, fix types or missing fields, and re-test with a minimal payload.",
+      },
+      {
+        problem: "Auth rejects valid clients",
+        fix: "Check token scope and expiry, confirm the server auth settings match the client credentials, and inspect auth logs.",
+      },
+      {
+        problem: "Server returns vague errors",
+        fix: "Standardize error responses with codes and messages, add request logging, and reproduce with a single isolated call.",
+      },
+      {
+        problem: "Deployed server drops connections",
+        fix: "Review hosting logs for restarts or timeouts, add health checks, and confirm the transport settings match the client.",
+      },
+    ],
+    readiness: [
+      "Build MCP servers exposing tools, resources, and prompts",
+      "Design JSON schemas, capability manifests, and error responses",
+      "Develop MCP clients that discover and invoke server actions",
+      "Evaluate tool contracts for correctness and safety",
+      "Deploy MCP servers with auth and production practices",
+      "Explain how clients, servers, and schemas interact in MCP",
+      "Build auth checks into server tool handlers",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -3106,6 +5178,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Offline eval suites",
+        definition:
+          "Repeatable test sets run before release to measure AI quality without live users.",
+      },
+      {
+        term: "Gold sets",
+        definition:
+          "Curated examples with approved answers used as the reference standard for scoring.",
+      },
+      {
+        term: "Task rubrics",
+        definition:
+          "Written scoring rules that define what counts as a correct or high-quality response.",
+      },
+      {
+        term: "LLM judges",
+        definition:
+          "Models configured to score outputs against a rubric when human review is too slow.",
+      },
+      {
+        term: "Programmatic scoring",
+        definition:
+          "Rule-based checks, such as exact match or citation presence, that score outputs automatically.",
+      },
+      {
+        term: "Regression tests",
+        definition:
+          "Saved prompt and retrieval cases rerun after changes to catch behavior that got worse.",
+      },
+      {
+        term: "Online monitors",
+        definition:
+          "Live dashboards that track quality signals such as drift, toxicity, and refusal rates.",
+      },
+      {
+        term: "Quality drift",
+        definition:
+          "Gradual change in model behavior over time that moves results away from the approved standard.",
+      },
+      {
+        term: "Guardrails",
+        definition:
+          "Filters and policies that block unsafe or off-topic outputs before they reach users.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Gold set scores drift from human judgment",
+        fix: "Sample disagreements, refresh stale references and rubric wording, and re-calibrate the gold answers.",
+      },
+      {
+        problem: "LLM judge disagrees with reviewers",
+        fix: "Tighten the rubric with examples, lower judge temperature for consistency, and measure agreement on a labeled subset.",
+      },
+      {
+        problem: "Regression suite misses real failures",
+        fix: "Add failing production cases to the suite, tag them by prompt, retrieval, or agent cause, and rerun on every change.",
+      },
+      {
+        problem: "Online monitor fires false alarms",
+        fix: "Adjust alert thresholds on clean baseline data and separate real drift from normal traffic variation.",
+      },
+      {
+        problem: "Toxicity or refusal spikes in production",
+        fix: "Correlate the spike with recent prompt or data changes, tighten guardrail rules, and roll back the offending change.",
+      },
+    ],
+    readiness: [
+      "Build offline eval suites with gold sets and task rubrics",
+      "Design LLM-judge and programmatic scoring methods",
+      "Develop regression tests for prompts, retrieval, and agents",
+      "Deploy online monitors for drift, toxicity, and refusal behavior",
+      "Evaluate eval reliability against human judgment",
+      "Explain how offline and online evaluation complement each other",
+      "Build quality gates that block releases on eval failures",
+    ],
     audience: [
       "AI engineers",
       "ML engineers",
@@ -3212,6 +5362,79 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Trigger-based workflows",
+        definition:
+          "Automations that start on events such as new emails, form uploads, or schedule times.",
+      },
+      {
+        term: "Extraction schemas",
+        definition:
+          "Defined field layouts that tell the AI exactly which details to pull from invoices, forms, and emails.",
+      },
+      {
+        term: "Approval steps",
+        definition:
+          "Human review gates inside a workflow that must pass before sensitive actions continue.",
+      },
+      {
+        term: "Escalations",
+        definition:
+          "Rules that route stuck or low-confidence items to the right person for handling.",
+      },
+      {
+        term: "Exception queues",
+        definition:
+          "Holding lists for failed or uncertain items so they can be reviewed and retried.",
+      },
+      {
+        term: "Business integrations",
+        definition:
+          "Connections to documents, email, and spreadsheets that let workflows read and write real data.",
+      },
+      {
+        term: "Idempotent runs",
+        definition:
+          "Workflow designs that can safely retry without creating duplicate records or charges.",
+      },
+      {
+        term: "Audit logs",
+        definition:
+          "Records of each workflow run showing inputs, decisions, and outputs for review.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Workflow triggers twice on one event",
+        fix: "Add deduplication keys on incoming events and check the trigger filter so retries do not create duplicate runs.",
+      },
+      {
+        problem: "Extraction misses fields on varied layouts",
+        fix: "Expand the extraction schema with examples from failing documents and add validation that flags low-confidence fields.",
+      },
+      {
+        problem: "Approvals stall and block operations",
+        fix: "Set timeouts with automatic escalations, notify backup approvers, and surface pending items in an exception queue.",
+      },
+      {
+        problem: "Integration writes fail intermittently",
+        fix: "Add retries with backoff, log the failing API responses, and verify credentials and rate limits.",
+      },
+      {
+        problem: "Errors vanish without a trace",
+        fix: "Route all failures to an exception queue with full run context and enable alerts on repeated failures.",
+      },
+    ],
+    readiness: [
+      "Build trigger-based AI workflows for documents and messages",
+      "Design extraction schemas for invoices, forms, and emails",
+      "Develop approval steps, escalations, and exception queues",
+      "Evaluate workflow accuracy and handling of edge cases",
+      "Deploy automations integrated with documents, email, and spreadsheets",
+      "Explain how triggers, extraction, and approvals fit together",
+      "Build monitoring and retry logic into workflow runs",
+    ],
     audience: [
       "Operations staff",
       "Career changers",
@@ -3320,6 +5543,77 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "AI product requirements",
+        definition:
+          "Written specs that define the user problem, scope boundaries, and success metrics for an AI feature.",
+      },
+      {
+        term: "Success metrics",
+        definition:
+          "Measurable targets, such as task completion or error rate, that show whether a feature works.",
+      },
+      {
+        term: "Evaluation plans",
+        definition: "Test designs that link model quality scores to user and business outcomes.",
+      },
+      {
+        term: "Roadmaps",
+        definition:
+          "Sequenced plans that order data, model, and interface work so each milestone unlocks the next.",
+      },
+      {
+        term: "Scope boundaries",
+        definition:
+          "Clear statements of what a release will and will not do, used to prevent uncontrolled growth.",
+      },
+      {
+        term: "Pilot launches",
+        definition:
+          "Limited releases to a small user group to gather feedback before wider rollout.",
+      },
+      {
+        term: "Feedback loops",
+        definition:
+          "Channels for collecting user reports and behavior data that guide the next iteration.",
+      },
+      {
+        term: "Staged rollout criteria",
+        definition:
+          "Checkpoints of quality and readiness that decide when a pilot can expand to more users.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Stakeholders keep expanding scope",
+        fix: "Refer decisions back to the written scope boundaries and success metrics, and move new asks to a sequenced backlog.",
+      },
+      {
+        problem: "Eval scores look good but users complain",
+        fix: "Rewrite the evaluation plan around task completion and user-reported issues, then add those cases to the test set.",
+      },
+      {
+        problem: "Roadmap stalls on data dependencies",
+        fix: "Re-sequence milestones so interface and eval work proceed on sample data while data gaps are closed in parallel.",
+      },
+      {
+        problem: "Pilot feedback is sparse or vague",
+        fix: "Add in-product prompts and short interviews tied to specific tasks, then group findings into actionable themes.",
+      },
+      {
+        problem: "Launch readiness is disputed across teams",
+        fix: "Publish staged rollout criteria with owners and thresholds, and gate expansion on meeting each checkpoint.",
+      },
+    ],
+    readiness: [
+      "Build AI product requirement documents with success metrics and scope boundaries",
+      "Design evaluation plans linking model quality to user outcomes",
+      "Develop roadmaps sequencing data, model, and UX milestones",
+      "Deploy pilot launches with feedback loops and rollout criteria",
+      "Evaluate AI features against user and business metrics",
+      "Explain trade-offs between model quality, scope, and timeline",
+    ],
     audience: [
       "Product managers",
       "Engineering managers",
@@ -3429,6 +5723,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "AI risk registers",
+        definition:
+          "Structured lists of possible harms such as misuse, bias, privacy leaks, and operational failures, each rated by likelihood and impact.",
+      },
+      {
+        term: "Usage policies",
+        definition:
+          "Written rules that state what users may and may not do with a generative AI deployment.",
+      },
+      {
+        term: "Content guidelines",
+        definition:
+          "Standards for acceptable model outputs, including how to handle sensitive, false, or harmful content.",
+      },
+      {
+        term: "Red-teaming",
+        definition:
+          "Deliberately probing an AI system with tricky or adversarial inputs to uncover weaknesses before real users do.",
+      },
+      {
+        term: "Severity ratings",
+        definition:
+          "Labels such as low, medium, or high that rank each safety finding so the worst issues get fixed first.",
+      },
+      {
+        term: "Safety test plans",
+        definition:
+          "Documented sets of test cases covering bias, privacy, misuse, and failure modes for an AI system.",
+      },
+      {
+        term: "Release review workflows",
+        definition:
+          "Approval steps a model or feature must pass before launch, especially for high-risk use cases.",
+      },
+      {
+        term: "Operational failure modes",
+        definition:
+          "Ways an AI system can break in production, such as silent wrong answers, outages, or runaway actions.",
+      },
+      {
+        term: "Governance documentation",
+        definition:
+          "Records of risks, policies, tests, and decisions that show how an AI system was evaluated and approved.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Risk register misses key failure modes",
+        fix: "Walk each lifecycle stage of input, model, output, and deployment use, and add misuse, bias, privacy, and operational risks with owners.",
+      },
+      {
+        problem: "Vague usage policies nobody can enforce",
+        fix: "Rewrite rules as specific allowed and prohibited behaviors with examples, then map each rule to a detection or review step.",
+      },
+      {
+        problem: "Red-team findings lack severity ratings",
+        fix: "Score each finding by impact and ease of reproduction, then re-sort the report so high-severity items get fixes first.",
+      },
+      {
+        problem: "Safety tests pass but harms slip through",
+        fix: "Add adversarial and edge-case prompts for bias, privacy, and misuse, and rerun the suite against fresh model outputs.",
+      },
+      {
+        problem: "High-risk releases bypass review",
+        fix: "Define clear triggers for mandatory review, add a checklist gate before release, and log every approval decision.",
+      },
+    ],
+    readiness: [
+      "Build an AI risk register covering misuse, bias, privacy, and operational failures",
+      "Design usage policies and content guidelines for a generative AI deployment",
+      "Develop a red-team test plan with documented findings and severity ratings",
+      "Deploy a release review workflow for models and high-risk use cases",
+      "Explain how governance documentation supports safe model releases",
+      "Evaluate safety test results and prioritize fixes by risk level",
+    ],
     audience: [
       "Technology leaders",
       "Product managers",
@@ -3537,6 +5908,82 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Full-stack AI applications",
+        definition:
+          "Apps that combine a language model with a backend, database, and user interface into one working product.",
+      },
+      {
+        term: "Retrieval pipelines",
+        definition:
+          "Sequences of parsing, chunking, embedding, and search steps that feed relevant documents to a model.",
+      },
+      {
+        term: "Text chunking",
+        definition:
+          "Splitting documents into small passages so the retriever can find and pass the most relevant parts to the model.",
+      },
+      {
+        term: "Embeddings",
+        definition:
+          "Numeric representations of text that let software measure meaning similarity for search.",
+      },
+      {
+        term: "Grounded responses",
+        definition: "Model answers built from retrieved sources, reducing made-up facts.",
+      },
+      {
+        term: "Tool calling",
+        definition:
+          "A technique that lets a model invoke APIs or databases to fetch data or take actions.",
+      },
+      {
+        term: "Application backends",
+        definition:
+          "Server code that handles requests, connects the model to data, and returns results to the interface.",
+      },
+      {
+        term: "Containerized deployment",
+        definition:
+          "Packaging an AI service with its dependencies into a container so it runs consistently anywhere.",
+      },
+      {
+        term: "Health checks and configuration",
+        definition:
+          "Settings and status endpoints that keep a deployed service reliable and easy to operate.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Answers hallucinate despite retrieval",
+        fix: "Check chunk size and overlap, confirm top retrieved passages are relevant, and tighten the prompt to answer only from provided context.",
+      },
+      {
+        problem: "Tool calls fail or use wrong arguments",
+        fix: "Inspect the tool schema and logged calls, validate argument types, and add error handling with a retry or fallback.",
+      },
+      {
+        problem: "Interface shows stale or missing results",
+        fix: "Trace the request from frontend to backend logs, verify API contracts, and fix state or caching handling.",
+      },
+      {
+        problem: "Container runs locally but fails when deployed",
+        fix: "Compare environment variables and config, check port and health-check paths, and rebuild with locked dependencies.",
+      },
+      {
+        problem: "Retrieval returns irrelevant passages",
+        fix: "Review embedding model choice and index settings, improve document cleaning, and test different chunk sizes.",
+      },
+    ],
+    readiness: [
+      "Build a full-stack AI application combining a language model with an application backend",
+      "Design a retrieval pipeline with chunking, embeddings, and grounded responses",
+      "Develop tool-calling features that connect models to APIs and databases",
+      "Deploy a containerized AI service with configuration and health checks",
+      "Explain how retrieval grounding improves answer reliability",
+      "Evaluate application behavior using logs and user-facing tests",
+    ],
     audience: [
       "Software developers",
       "Frontend developers",
@@ -3644,6 +6091,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Multi-service AI platforms",
+        definition:
+          "Systems split into separate services for inference, orchestration, data, and evaluation, each with clear boundaries.",
+      },
+      {
+        term: "Orchestration layers",
+        definition:
+          "Coordination code that routes work across agents, queues, retries, and long-running jobs.",
+      },
+      {
+        term: "Agent queues and retries",
+        definition:
+          "Mechanisms that hold tasks in line and automatically retry failed steps without losing work.",
+      },
+      {
+        term: "Long-running jobs",
+        definition:
+          "Background tasks such as batch inference or index builds that run for minutes or hours with progress tracking.",
+      },
+      {
+        term: "Conversational and task memory",
+        definition:
+          "State stores that let agents remember history and context across steps and sessions.",
+      },
+      {
+        term: "Evaluation harnesses",
+        definition:
+          "Automated test setups with regression suites and quality gates that check AI behavior on every change.",
+      },
+      {
+        term: "Quality gates",
+        definition:
+          "Pass-or-fail thresholds in the release pipeline that block bad models or prompts from shipping.",
+      },
+      {
+        term: "Inference topologies",
+        definition:
+          "Arrangements of model servers with load balancing and fallbacks to stay fast and available.",
+      },
+      {
+        term: "Observability for AI",
+        definition:
+          "Logging, metrics, and traces that reveal latency, errors, and quality issues in production.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Orchestrated jobs stall or duplicate work",
+        fix: "Check queue visibility timeouts and idempotency keys, then fix retry logic so failed steps resume without re-running completed ones.",
+      },
+      {
+        problem: "Memory grows stale or leaks across sessions",
+        fix: "Inspect state-store keys and expiry rules, scope memory per user or task, and add pruning for old entries.",
+      },
+      {
+        problem: "Eval harness passes but production quality drops",
+        fix: "Compare the regression set against live traffic, add missing cases, and tighten quality-gate thresholds.",
+      },
+      {
+        problem: "Inference overload during traffic spikes",
+        fix: "Review load-balancer metrics and autoscaling rules, add caching and fallback models, and shed or queue excess load.",
+      },
+      {
+        problem: "Service boundaries cause cascading failures",
+        fix: "Trace failures across service logs, add timeouts and circuit breakers, and clarify ownership of each service contract.",
+      },
+    ],
+    readiness: [
+      "Architect a multi-service AI platform with clear service and data boundaries",
+      "Design an orchestration layer for agents, queues, retries, and long-running jobs",
+      "Develop an evaluation harness with regression suites and quality gates",
+      "Deploy a scalable inference topology with load balancing and fallbacks",
+      "Explain how observability reveals platform bottlenecks and quality drops",
+      "Evaluate platform trade-offs in latency, cost, and reliability",
+    ],
     audience: [
       "AI engineers",
       "Backend developers",
@@ -3753,6 +6277,77 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Solution proposals",
+        definition:
+          "Documents that describe scope, assumptions, deliverables, and milestones for a client AI project.",
+      },
+      {
+        term: "Scope boundaries",
+        definition:
+          "Clear statements of what a project includes and excludes, preventing creep and mismatched expectations.",
+      },
+      {
+        term: "Demonstration prototypes",
+        definition:
+          "Small working demos built around a client's real workflow to prove a solution fits.",
+      },
+      {
+        term: "Estimation models",
+        definition:
+          "Breakdowns of effort, data needs, and operating cost used to price and plan a delivery.",
+      },
+      {
+        term: "Delivery milestones",
+        definition:
+          "Scheduled checkpoints with agreed outputs that track progress toward handover.",
+      },
+      {
+        term: "Pilot deployments",
+        definition:
+          "Limited first rollouts that test a solution with real users before full launch.",
+      },
+      {
+        term: "Acceptance criteria",
+        definition: "Measurable conditions a pilot must meet before the client signs off.",
+      },
+      {
+        term: "Handover plans",
+        definition:
+          "Guides covering operations, documentation, and training so the client can run the solution.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Client asks for scope beyond the proposal",
+        fix: "Point to the written scope boundaries and assumptions, then re-estimate the extra work as a change request.",
+      },
+      {
+        problem: "Demo impresses but misses the client workflow",
+        fix: "Re-interview stakeholders on their actual steps, then rebuild the prototype around one real task end to end.",
+      },
+      {
+        problem: "Estimates understate data and operating cost",
+        fix: "Recalculate data preparation, inference, and support effort separately, and present a revised cost table.",
+      },
+      {
+        problem: "Pilot lacks clear success measurement",
+        fix: "Draft acceptance criteria with metrics and targets, and agree with the client how each will be measured.",
+      },
+      {
+        problem: "Handover stalls after pilot success",
+        fix: "Deliver runbooks, access credentials, and training sessions, and assign owners for each operational task.",
+      },
+    ],
+    readiness: [
+      "Build a tailored AI solution proposal with scope, assumptions, and delivery milestones",
+      "Design a demonstration prototype that addresses a specific client workflow",
+      "Develop an estimation model covering effort, data needs, and operating cost",
+      "Deploy a pilot solution with acceptance criteria and success measurement",
+      "Explain how scoping and estimation reduce delivery risk",
+      "Evaluate pilot results against agreed acceptance criteria",
+    ],
     audience: [
       "Software developers",
       "Product managers",
@@ -3860,6 +6455,81 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Vision-language models",
+        definition:
+          "Models that accept both images and text, enabling tasks like captioning and visual question answering.",
+      },
+      {
+        term: "Visual question answering",
+        definition:
+          "Answering natural-language questions about an image, such as reading a chart or describing a scene.",
+      },
+      {
+        term: "Document understanding",
+        definition:
+          "Extracting text, tables, and meaning from scanned pages and images of documents.",
+      },
+      {
+        term: "Cross-modal retrieval",
+        definition:
+          "Search that matches queries in one form, such as text, against content in another, such as images or audio.",
+      },
+      {
+        term: "Image generation controls",
+        definition:
+          "Prompt settings for style, composition, and detail that steer what a generation model produces.",
+      },
+      {
+        term: "Safety filters",
+        definition: "Checks that block or flag unsafe generated images and enforce content rules.",
+      },
+      {
+        term: "Speech transcription",
+        definition:
+          "Converting spoken audio into written text for search, captions, or downstream processing.",
+      },
+      {
+        term: "Speech synthesis",
+        definition: "Generating spoken audio from text to build voice responses and narration.",
+      },
+      {
+        term: "Voice interaction pipelines",
+        definition:
+          "Combined steps of transcription, language understanding, and synthesis that power spoken assistants.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Visual QA gives wrong answers on documents",
+        fix: "Check image resolution and preprocessing, verify the vision prompt includes the right crop, and test with simpler layouts first.",
+      },
+      {
+        problem: "Cross-modal search misses obvious matches",
+        fix: "Inspect embedding coverage across text, image, and audio indexes, and normalize metadata before re-indexing.",
+      },
+      {
+        problem: "Generated images ignore prompt controls",
+        fix: "Simplify the prompt to one subject and style at a time, adjust control strengths, and compare outputs across seeds.",
+      },
+      {
+        problem: "Transcription fails on noisy audio",
+        fix: "Check sample rate and channel settings, add noise reduction or segmentation, and retry with shorter clips.",
+      },
+      {
+        problem: "Safety filter blocks valid images or misses bad ones",
+        fix: "Review filter thresholds and blocked categories, log edge cases, and tune settings against a labeled test set.",
+      },
+    ],
+    readiness: [
+      "Build a vision-language application for captioning, visual QA, or document understanding",
+      "Design a cross-modal retrieval system spanning text, image, and audio indexes",
+      "Develop an image generation workflow with prompt controls and safety filters",
+      "Deploy an audio pipeline for transcription, synthesis, or voice interaction",
+      "Explain how modality choice affects accuracy and cost",
+      "Evaluate multimodal outputs for quality and safety",
+    ],
     audience: [
       "Software developers",
       "AI engineers",
@@ -3967,6 +6637,79 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "REST APIs for AI",
+        definition:
+          "Web endpoints that expose language-model and embedding services with predictable request and response formats.",
+      },
+      {
+        term: "API versioning",
+        definition:
+          "Numbering schemes that let developers change endpoints without breaking existing consumers.",
+      },
+      {
+        term: "Streaming endpoints",
+        definition:
+          "Connections that send model tokens as events while they are generated, for faster-feeling responses.",
+      },
+      {
+        term: "Token events and reconnects",
+        definition:
+          "Stream messages carrying partial output, plus logic to resume cleanly after timeouts or disconnects.",
+      },
+      {
+        term: "API authentication",
+        definition: "Key or token checks that verify which consumer is calling an AI service.",
+      },
+      {
+        term: "Key management",
+        definition: "Issuing, rotating, and revoking API keys so access stays controlled.",
+      },
+      {
+        term: "Rate limiting and quotas",
+        definition:
+          "Caps on how many requests a consumer may send, protecting the service from overload.",
+      },
+      {
+        term: "Usage metering",
+        definition: "Tracking tokens or calls per consumer so costs and billing stay accurate.",
+      },
+      {
+        term: "Developer experience",
+        definition: "Docs, errors, and examples that make an API easy to adopt and debug.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Streaming responses cut off or hang",
+        fix: "Check timeout settings and event framing, add heartbeat messages, and implement client reconnect with resume offsets.",
+      },
+      {
+        problem: "Clients break after an API change",
+        fix: "Compare versions and changelogs, restore backward compatibility or bump the version, and update migration docs.",
+      },
+      {
+        problem: "Keys leak or stop working",
+        fix: "Rotate the affected keys, audit where they are stored, and add scoped keys with expiry.",
+      },
+      {
+        problem: "Rate limiter blocks legitimate traffic",
+        fix: "Review quota tiers and burst settings against usage logs, then tune limits or add priority queues.",
+      },
+      {
+        problem: "Usage metering disagrees with bills",
+        fix: "Reconcile token counting logic with logged requests, fix double-counted retries, and backfill corrected totals.",
+      },
+    ],
+    readiness: [
+      "Build versioned REST APIs that expose language-model and embedding services",
+      "Design streaming endpoints with token events, timeouts, and reconnect handling",
+      "Develop authentication and key-management flows for API consumers",
+      "Deploy rate limiting, quotas, and usage metering for AI workloads",
+      "Explain how versioning and docs improve developer experience",
+      "Evaluate API reliability under load and error conditions",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -4074,6 +6817,74 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "beginner",
     mode: "online",
+    concepts: [
+      {
+        term: "Trigger-based routines",
+        definition:
+          "Automations that start when an event happens, such as a new email, form entry, or scheduled time.",
+      },
+      {
+        term: "Filters and branches",
+        definition: "Conditions that route a workflow down different paths based on data values.",
+      },
+      {
+        term: "Approval gates",
+        definition: "Pause points where a person must approve before the workflow continues.",
+      },
+      {
+        term: "AI extraction steps",
+        definition:
+          "Stages where a model pulls structured fields from documents, emails, or messages.",
+      },
+      {
+        term: "Reusable templates",
+        definition:
+          "Saved workflow blueprints for common tasks like content drafts, support replies, and reporting.",
+      },
+      {
+        term: "Event-driven scheduling",
+        definition: "Running workflows on timetables or live events while avoiding duplicates.",
+      },
+      {
+        term: "Error notifications",
+        definition: "Alerts sent when a workflow step fails, including context needed to fix it.",
+      },
+      {
+        term: "Business-tool integrations",
+        definition:
+          "Connections that let workflows read and write everyday tools such as spreadsheets and inboxes.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Workflow never triggers or fires twice",
+        fix: "Check trigger filters and polling intervals, verify event IDs, and add deduplication on the trigger key.",
+      },
+      {
+        problem: "Approvals stall the routine",
+        fix: "Review assignees and escalation timeouts, add reminders, and define a fallback path for non-response.",
+      },
+      {
+        problem: "AI step returns malformed data",
+        fix: "Tighten the extraction schema and examples, validate outputs, and route failures to a manual review queue.",
+      },
+      {
+        problem: "Scheduled runs overlap and clash",
+        fix: "Check cron overlap and run duration, add locking or concurrency limits, and stagger schedules.",
+      },
+      {
+        problem: "Errors go unnoticed by owners",
+        fix: "Verify notification channels and error handlers, attach run context to each alert, and test with a forced failure.",
+      },
+    ],
+    readiness: [
+      "Build automated workflows that connect AI steps to everyday business tools",
+      "Design trigger-based routines with filters, branches, and approval gates",
+      "Develop reusable templates for content, support, and reporting tasks",
+      "Deploy scheduled and event-driven workflows with error notifications",
+      "Explain how approvals and error handling make routines reliable",
+      "Evaluate workflow runs and improve templates from failures",
+    ],
     audience: [
       "Operations staff",
       "Career changers",
@@ -4182,6 +6993,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "16 weeks",
     level: "beginner",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Semantic HTML",
+        definition:
+          "Markup that describes page meaning with headings, landmarks, and forms so browsers and assistive tools interpret structure correctly.",
+      },
+      {
+        term: "Modern CSS layout",
+        definition:
+          "Responsive styling with flexbox, grid, and media queries that adapts page layout to different screen sizes.",
+      },
+      {
+        term: "TypeScript interfaces",
+        definition:
+          "Typed front-end code that catches shape and spelling mistakes early by describing the expected form of data and props.",
+      },
+      {
+        term: "REST endpoint versioning",
+        definition:
+          "Numbering API routes so clients can keep using an older contract while newer versions add changes safely.",
+      },
+      {
+        term: "Request validation and error handling",
+        definition:
+          "Checking incoming data on the server and returning clear status codes and messages when input is missing or invalid.",
+      },
+      {
+        term: "Relational modeling",
+        definition:
+          "Organizing data into tables with keys and relationships so records stay consistent and can be joined for queries.",
+      },
+      {
+        term: "Database migrations",
+        definition:
+          "Versioned scripts that change schema step by step so every environment upgrades the database in the same order.",
+      },
+      {
+        term: "Application testing",
+        definition:
+          "Automated checks from unit to end-to-end level that confirm interfaces, APIs, and data flows behave as expected.",
+      },
+      {
+        term: "Cloud deployment with environment configuration",
+        definition:
+          "Publishing the app to hosted infrastructure with separate settings and secrets for development, staging, and production.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "API returns unclear 400 or 500 errors with no usable message",
+        fix: "Add server-side validation with a consistent error contract including code, field, and message, then log the failing request shape.",
+      },
+      {
+        problem: "Front-end type mismatches when API fields change",
+        fix: "Update shared TypeScript types from the API contract and add a test that fails when response shape drifts.",
+      },
+      {
+        problem: "Migration fails or leaves environments out of sync",
+        fix: "Run migrations in order on a staging copy first, fix the failing script, and re-apply forward rather than editing history.",
+      },
+      {
+        problem: "Styles or layout break on small screens",
+        fix: "Inspect with responsive device widths, fix grid and breakpoint rules, and add a visual check for mobile widths.",
+      },
+      {
+        problem: "Production bug cannot be reproduced locally",
+        fix: "Compare environment configuration and add structured logs plus health checks to trace the failing request path.",
+      },
+    ],
+    readiness: [
+      "Build responsive interfaces with semantic HTML, modern CSS, and TypeScript",
+      "Design RESTful endpoints with versioning, validation, and clear error handling",
+      "Build database-backed applications with relational models and migrations",
+      "Deploy full-stack applications to cloud hosting with environment configuration",
+      "Explain testing coverage across interfaces, APIs, and data flows",
+      "Evaluate security basics and observability for a full-stack release",
+      "Design an end-to-end feature from interface through API to database",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -4301,6 +7190,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "beginner",
     mode: "online",
+    concepts: [
+      {
+        term: "Semantic page layout",
+        definition:
+          "Using headings, landmarks, and lists to give pages a clear structure that is easier to style, navigate, and make accessible.",
+      },
+      {
+        term: "CSS systems and theming",
+        definition:
+          "Reusable tokens for color, spacing, and type plus shared classes that keep styling consistent across pages.",
+      },
+      {
+        term: "TypeScript props",
+        definition:
+          "Typed inputs to UI components that document expected data and catch wrong values before the app runs.",
+      },
+      {
+        term: "Reusable components",
+        definition:
+          "Small configurable interface pieces with clear props and slots that can be combined into larger screens.",
+      },
+      {
+        term: "Client-side routing",
+        definition:
+          "Changing views inside the browser without full page reloads by mapping URLs to screens.",
+      },
+      {
+        term: "Client-side state",
+        definition:
+          "Data kept in the browser session such as form input, filters, and loaded records that drives what the interface shows.",
+      },
+      {
+        term: "Accessibility practices",
+        definition:
+          "Keyboard support, labels, focus order, and contrast choices that let more people use the interface.",
+      },
+      {
+        term: "Preview environments and rollbacks",
+        definition:
+          "Temporary hosted copies of each change for review, with the ability to return to the last good release if needed.",
+      },
+      {
+        term: "Frontend performance habits",
+        definition:
+          "Daily routines like checking bundle size, images, and render cost so pages stay fast.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Components render inconsistently with mismatched styles",
+        fix: "Consolidate shared theme tokens and component props, then replace one-off styles with the library version.",
+      },
+      {
+        problem: "Route shows a blank screen or stale content",
+        fix: "Check route definitions and data loading for that path, then verify navigation state updates after route change.",
+      },
+      {
+        problem: "State updates do not appear in the interface",
+        fix: "Trace the state update with dev tools, confirm the setter runs and the component subscribes to the right slice of state.",
+      },
+      {
+        problem: "Keyboard or screen-reader users cannot complete a flow",
+        fix: "Add labels, visible focus, and logical tab order, then retest the flow using only the keyboard.",
+      },
+      {
+        problem: "Deployed preview looks different from local development",
+        fix: "Compare build settings and environment values between preview and local, then rebuild and verify the preview URL.",
+      },
+    ],
+    readiness: [
+      "Build accessible page layouts with semantic HTML and modern CSS",
+      "Design reusable component libraries with consistent props and theming",
+      "Build interactive React applications with routing and client-side state",
+      "Deploy frontend sites with preview environments and rollbacks",
+      "Explain accessibility checks for keyboard, labels, and contrast",
+      "Evaluate page performance using bundle, image, and render checks",
+      "Design a component API that stays consistent across screens",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -4417,6 +7384,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "HTTP routing and middleware",
+        definition:
+          "Mapping URLs to handler functions with shared pipeline steps for parsing, logging, and error handling.",
+      },
+      {
+        term: "Request validation",
+        definition:
+          "Checking incoming fields and types on the server so bad data is rejected with a clear error.",
+      },
+      {
+        term: "Relational schema design",
+        definition:
+          "Defining tables, keys, and constraints so stored data stays valid and connected.",
+      },
+      {
+        term: "Indexes and transactions",
+        definition:
+          "Database helpers that speed up lookups and group related writes so they succeed or fail together.",
+      },
+      {
+        term: "Authentication with sessions and tokens",
+        definition:
+          "Verifying user identity and keeping a session or signed token so later requests stay signed in.",
+      },
+      {
+        term: "Roles and permission checks",
+        definition: "Rules that limit which authenticated users can read or change each resource.",
+      },
+      {
+        term: "Background jobs",
+        definition:
+          "Work such as emails or reports that runs outside the request cycle so responses stay fast.",
+      },
+      {
+        term: "Caching",
+        definition:
+          "Storing repeated results temporarily so the service can answer faster and reduce database load.",
+      },
+      {
+        term: "Health checks and backups",
+        definition:
+          "Endpoints and routines that report service status and preserve database copies for recovery.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Requests fail validation with unclear field errors",
+        fix: "Log the received payload shape, tighten schema rules per field, and return the failing field name in the error.",
+      },
+      {
+        problem: "Authenticated requests are rejected after login",
+        fix: "Check token expiry, secret mismatch, and session storage, then verify the auth header is forwarded on each request.",
+      },
+      {
+        problem: "Permission checks allow or block the wrong users",
+        fix: "Add a test per role and resource, then move the check into shared middleware so no route skips it.",
+      },
+      {
+        problem: "Slow endpoints overload the database",
+        fix: "Add missing indexes, cache repeated reads, and move heavy work into a background job.",
+      },
+      {
+        problem: "Deploy reports healthy but serves stale or failing data",
+        fix: "Verify configuration values, database connection, and health-check depth, then review structured logs around failures.",
+      },
+    ],
+    readiness: [
+      "Build HTTP services with routing, middleware, validation, and structured logging",
+      "Design relational schemas with constraints, indexes, transactions, and migrations",
+      "Build authenticated APIs with sessions, tokens, roles, and permission checks",
+      "Deploy backend services with configuration, health checks, and database backups",
+      "Explain caching choices for repeated reads and background jobs",
+      "Evaluate observability using logs and health signals for failures",
+      "Design a backend endpoint from validation through storage to response",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -4534,6 +7578,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "REST resource design",
+        definition:
+          "Organizing endpoints around named resources with consistent URLs and HTTP methods for reading and changing data.",
+      },
+      {
+        term: "Pagination, filtering, and sorting",
+        definition:
+          "Query options that let clients request data in pages and order or narrow results instead of fetching everything.",
+      },
+      {
+        term: "Error contracts",
+        definition:
+          "A standard error shape with status, code, and message so clients can handle failures predictably.",
+      },
+      {
+        term: "GraphQL types and resolvers",
+        definition:
+          "A typed schema describing available data plus functions that fetch each field when a query asks for it.",
+      },
+      {
+        term: "Mutations and query budgets",
+        definition:
+          "Controlled write operations plus limits on query depth and cost so one request cannot overload the server.",
+      },
+      {
+        term: "Contract tests and mock servers",
+        definition:
+          "Shared examples and fake servers that check clients and servers agree on request and response shapes.",
+      },
+      {
+        term: "Authentication and rate limiting",
+        definition:
+          "Identity checks plus per-client request caps that protect the API from misuse and overload.",
+      },
+      {
+        term: "Versioning and staging releases",
+        definition:
+          "Numbered API versions tested in a staging environment so changes ship without breaking existing clients.",
+      },
+      {
+        term: "API documentation",
+        definition:
+          "Clear reference pages with examples and error cases so developers can integrate without guessing.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Clients break when response fields change",
+        fix: "Restore backward compatibility, version the change, and add a contract test covering the old field shape.",
+      },
+      {
+        problem: "GraphQL queries time out or fetch too much",
+        fix: "Set depth and cost limits, require pagination on list fields, and check resolver batching for repeated lookups.",
+      },
+      {
+        problem: "Mocks and production responses disagree",
+        fix: "Regenerate mocks from the current schema, add a contract test per endpoint, and run it before release.",
+      },
+      {
+        problem: "Legitimate clients hit rate limits",
+        fix: "Review quota rules per key and endpoint, return limit headers, and adjust tiers for expected usage patterns.",
+      },
+      {
+        problem: "Staging passes but production clients see errors",
+        fix: "Diff staging and production configuration and data, then replay failing requests against staging with production-like data.",
+      },
+    ],
+    readiness: [
+      "Build versioned REST APIs with pagination, filtering, sorting, and error contracts",
+      "Design GraphQL schemas with types, resolvers, mutations, and query budgets",
+      "Build contract tests and mock servers that keep clients and servers aligned",
+      "Deploy documented APIs with staging environments and backward-compatible releases",
+      "Explain authentication and rate-limiting choices for API operations",
+      "Evaluate versioning trade-offs when introducing breaking changes",
+      "Design an API release plan covering docs, staging, and compatibility checks",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -4650,6 +7772,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Load balancing",
+        definition:
+          "Spreading incoming traffic across servers so no single machine becomes a bottleneck.",
+      },
+      {
+        term: "Cache hierarchies",
+        definition:
+          "Layers of fast temporary storage from browser to content network to server that reduce repeated work.",
+      },
+      {
+        term: "Eviction and invalidation",
+        definition:
+          "Rules for removing cached entries when space runs out or when stored data becomes outdated.",
+      },
+      {
+        term: "Message queues",
+        definition:
+          "Buffers that hold tasks between services so bursts of work can be processed steadily.",
+      },
+      {
+        term: "Retries and dead letters",
+        definition:
+          "Automatic re-attempts for failed tasks plus a holding area for messages that keep failing.",
+      },
+      {
+        term: "Sharding and replication",
+        definition:
+          "Splitting data across machines for scale plus keeping copies for faster reads and recovery.",
+      },
+      {
+        term: "Consistency models",
+        definition:
+          "Guarantees about when different copies of data will agree, trading freshness against speed and availability.",
+      },
+      {
+        term: "Capacity modeling",
+        definition:
+          "Estimating servers, storage, and bandwidth from expected traffic so the design has enough headroom.",
+      },
+      {
+        term: "Consensus protocols",
+        definition:
+          "Methods for distributed machines to agree on one value or leader even when some parts fail.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Cache serves stale data after updates",
+        fix: "Shorten time-to-live on fast-changing keys and add explicit invalidation on the write path.",
+      },
+      {
+        problem: "Queue backlog grows with repeated retries",
+        fix: "Add backoff with limited retries, route poison messages to a dead-letter queue, and alert on its growth.",
+      },
+      {
+        problem: "One shard or replica becomes a hotspot",
+        fix: "Rebalance keys, add read replicas for hot data, and review the partitioning scheme for skew.",
+      },
+      {
+        problem: "Failover serves outdated reads",
+        fix: "Check replication lag metrics, direct sensitive reads to the primary, and document acceptable lag for other reads.",
+      },
+      {
+        problem: "Capacity estimate misses peak traffic",
+        fix: "Rebuild the model from peak measurements with headroom, then load-test the bottleneck tier.",
+      },
+    ],
+    readiness: [
+      "Build capacity models connecting traffic estimates to servers, storage, and bandwidth",
+      "Design cache hierarchies with eviction, invalidation, and consistency trade-offs",
+      "Build queue-based workflows with retries, dead letters, and ordering guarantees",
+      "Deploy multi-region read patterns with replication lag and failover planning",
+      "Explain consistency, availability, and latency trade-offs for a design",
+      "Evaluate failure handling for balancing, sharding, and replication choices",
+      "Design a scaling plan for traffic growth and regional failure",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -4766,6 +7966,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Components and boundaries",
+        definition:
+          "Dividing a system into named parts with clear responsibilities so changes stay inside one area.",
+      },
+      {
+        term: "Modular monolith",
+        definition:
+          "A single deployable app with strict internal module rules that keep dependencies pointing the right way.",
+      },
+      {
+        term: "Domain modeling and context mapping",
+        definition:
+          "Naming business concepts and drawing where each meaning applies so service lines follow real workflows.",
+      },
+      {
+        term: "Quality attributes",
+        definition:
+          "Goals like reliability, performance, and maintainability that shape which design trade-offs are acceptable.",
+      },
+      {
+        term: "Architecture patterns",
+        definition:
+          "Reusable structural approaches such as layers or event-driven flows chosen to fit the problem.",
+      },
+      {
+        term: "Architecture decision records",
+        definition:
+          "Short documents capturing context, options, decision, and consequences so future teams understand why.",
+      },
+      {
+        term: "Fitness functions",
+        definition:
+          "Automated checks that warn when the system drifts away from architectural rules such as dependency limits.",
+      },
+      {
+        term: "Evolutionary design",
+        definition:
+          "Planning small staged changes that modernize the system without a risky full rewrite.",
+      },
+      {
+        term: "Governance and documentation",
+        definition:
+          "Shared review routines and diagrams that keep the architecture understood and followed.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Module boundaries leak with tangled dependencies",
+        fix: "Map current dependencies, reinstate allowed directions, and add a fitness check that fails on violations.",
+      },
+      {
+        problem: "Service boundaries split the wrong workflows",
+        fix: "Revisit domain terms and transaction flows, then redraw boundaries around cohesive business capabilities.",
+      },
+      {
+        problem: "Decisions are revisited because rationale is lost",
+        fix: "Write a decision record with context, options, and consequences and link it from the affected code.",
+      },
+      {
+        problem: "Modernization stalls halfway",
+        fix: "Break the plan into smaller releasable stages with fitness checks per stage and a clear next slice.",
+      },
+      {
+        problem: "Reviews become approval theater with no real feedback",
+        fix: "Require trade-off notes and quality-attribute checks before approval and record open risks explicitly.",
+      },
+    ],
+    readiness: [
+      "Build modular monoliths with explicit module boundaries and dependency rules",
+      "Design service boundaries using domain modeling and context-mapping techniques",
+      "Build architecture decision records capturing context, options, and consequences",
+      "Deploy evolvable systems with fitness functions and staged modernization plans",
+      "Explain quality-attribute trade-offs behind a structural choice",
+      "Evaluate pattern options against maintainability and operational cost",
+      "Design a governance routine that keeps documentation and boundaries current",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -4882,6 +8160,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "beginner",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Control flow and functions",
+        definition:
+          "Branches, loops, and reusable functions that organize program behavior into clear steps.",
+      },
+      {
+        term: "Modules and interfaces",
+        definition:
+          "Separating code into files with documented inputs and outputs so each part can be understood alone.",
+      },
+      {
+        term: "Version control with branches",
+        definition:
+          "Tracking changes in named lines of work so edits can be reviewed and merged safely.",
+      },
+      {
+        term: "Pull requests and code review",
+        definition:
+          "Proposed changes with discussion and checks that catch issues before code joins the main line.",
+      },
+      {
+        term: "Testing levels",
+        definition:
+          "Unit, integration, and end-to-end checks that verify small pieces and whole flows together.",
+      },
+      {
+        term: "Clean code and naming",
+        definition:
+          "Readable structure and descriptive names that make intent obvious to the next reader.",
+      },
+      {
+        term: "Design patterns",
+        definition:
+          "Common reusable solutions to recurring design problems, each with known strengths and costs.",
+      },
+      {
+        term: "Maintainability criteria",
+        definition:
+          "Measures like readability, test coverage, and coupling used to judge whether code will be easy to change.",
+      },
+      {
+        term: "Team release workflow",
+        definition:
+          "Shared steps from issue to reviewed merge to tested release that let a group ship together.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Merges produce repeated conflicts or lost work",
+        fix: "Pull and merge main often in small branches, resolve conflicts file by file, and rerun tests before pushing.",
+      },
+      {
+        problem: "Tests pass alone but fail together or in CI",
+        fix: "Remove shared-state leaks and ordering assumptions, then reproduce with the same seed and CI configuration.",
+      },
+      {
+        problem: "Functions grow hard to read and reuse",
+        fix: "Split by responsibility with clear names and documented interfaces, then add unit tests per piece.",
+      },
+      {
+        problem: "Reviews catch style debates instead of real defects",
+        fix: "Adopt automated formatting and a short review checklist focused on behavior, tests, and interfaces.",
+      },
+      {
+        problem: "Release breaks despite green tests",
+        fix: "Add missing integration coverage for the failing path and require a clean end-to-end run before release.",
+      },
+    ],
+    readiness: [
+      "Build tested command-line and small web programs with control flow, functions, and modules",
+      "Design clean code with readable structure, naming conventions, and documented interfaces",
+      "Build version-controlled projects with branching, pull requests, and code review habits",
+      "Evaluate software designs using patterns, trade-offs, and maintainability criteria",
+      "Explain testing strategy across unit, integration, and end-to-end levels",
+      "Deploy a tested team-built release through a shared workflow",
+      "Design a small program breakdown from requirements to modules to tests",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -4998,6 +8354,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Layered application features",
+        definition:
+          "Building a feature across interface, service, and data layers with each layer owning one responsibility.",
+      },
+      {
+        term: "Backend validation and error handling",
+        definition:
+          "Server checks on input plus clear error responses so the interface can explain what went wrong.",
+      },
+      {
+        term: "Paginated data access",
+        definition:
+          "Fetching records in pages so lists stay fast even when the dataset grows large.",
+      },
+      {
+        term: "API-consuming interfaces",
+        definition:
+          "Screens that load, display, and update server data while handling loading and error states.",
+      },
+      {
+        term: "Application state management",
+        definition:
+          "Keeping track of current user input, selections, and loaded data so screens stay consistent.",
+      },
+      {
+        term: "Application testing",
+        definition:
+          "Checks across services, models, and interfaces that confirm a feature works end to end.",
+      },
+      {
+        term: "Debugging practices",
+        definition:
+          "Reproducing a bug, narrowing it with logs and tools, then fixing and verifying the failing case.",
+      },
+      {
+        term: "Release practices",
+        definition: "Staged rollout steps with versioning and checks so new features ship safely.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Interface shows wrong data after updates",
+        fix: "Check API response shape, state update timing, and cache invalidation, then add a test for the update flow.",
+      },
+      {
+        problem: "Form submissions fail with vague errors",
+        fix: "Align client and server validation rules and return field-level messages the interface can display.",
+      },
+      {
+        problem: "Lists slow down as data grows",
+        fix: "Add server pagination with indexes on sort keys and load more pages on demand in the interface.",
+      },
+      {
+        problem: "Bug reproduces only in the staged release",
+        fix: "Compare staged data and configuration with local, then add logging around the failing service call.",
+      },
+      {
+        problem: "Release introduces regressions in existing features",
+        fix: "Add regression tests for the broken paths and gate the rollout on a full feature test pass.",
+      },
+    ],
+    readiness: [
+      "Design layered application features spanning interfaces, services, and data models",
+      "Build backend endpoints with validation, error handling, and paginated data access",
+      "Build interactive interfaces that consume APIs and manage application state",
+      "Deploy application releases with testing and staged rollout checks",
+      "Explain debugging steps from reproduction through logs to verified fix",
+      "Evaluate test coverage across services, models, and interfaces",
+      "Design a production feature plan from data model to endpoint to screen",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -5114,6 +8542,79 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "beginner",
     mode: "online",
+    concepts: [
+      {
+        term: "Semantic markup",
+        definition:
+          "HTML elements that describe content meaning so pages are easier to style, find, and use with assistive tools.",
+      },
+      {
+        term: "Responsive CSS layouts",
+        definition:
+          "Flexible grids and breakpoints that rearrange content cleanly across phone, tablet, and desktop widths.",
+      },
+      {
+        term: "Browser events and state",
+        definition:
+          "User actions such as clicks and input plus stored values that drive interactive page behavior.",
+      },
+      {
+        term: "Form validation",
+        definition:
+          "Checking user entries in the browser and on submit so mistakes are flagged before data is sent.",
+      },
+      {
+        term: "Client routing",
+        definition:
+          "Mapping URLs to views so users can navigate and bookmark pages in a multi-screen site.",
+      },
+      {
+        term: "API consumption in the browser",
+        definition:
+          "Fetching and sending data with fetch calls while handling loading, success, and error states.",
+      },
+      {
+        term: "Web accessibility",
+        definition:
+          "Keyboard support, contrast, and labels that make pages usable for people with different needs.",
+      },
+      {
+        term: "Static deployment fundamentals",
+        definition:
+          "Publishing built files to web hosting with correct routes, caching, and rollback options.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Layout breaks on narrow screens",
+        fix: "Test at mobile widths, fix grid and overflow rules, and replace fixed widths with flexible units.",
+      },
+      {
+        problem: "Form accepts bad input or rejects good input",
+        fix: "Align validation rules with expected formats, show inline messages per field, and retest edge inputs.",
+      },
+      {
+        problem: "Interactive element does not respond to clicks or keys",
+        fix: "Verify the event listener is attached, check console errors, and confirm keyboard focus reaches the control.",
+      },
+      {
+        problem: "Screen-reader or keyboard users cannot use a control",
+        fix: "Add proper labels, roles, and focus handling, then retest the flow without a mouse.",
+      },
+      {
+        problem: "Deployed site shows stale pages or broken routes",
+        fix: "Check build output, routing rewrites, and cache headers, then redeploy and verify each route.",
+      },
+    ],
+    readiness: [
+      "Build responsive pages with semantic markup, modern layouts, and reusable styles",
+      "Build interactive browser behavior with events, state, and form validation",
+      "Design accessible interfaces with keyboard support, contrast, and screen-reader labels",
+      "Deploy web applications with routing, caching, and rollback basics",
+      "Explain how browser code consumes APIs with loading and error states",
+      "Evaluate a page for accessibility and responsive issues",
+      "Design a multi-page web flow from markup through interaction to deployment",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -5230,6 +8731,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Partitioning",
+        definition:
+          "Splitting data and work across nodes so the system can scale beyond one machine.",
+      },
+      {
+        term: "Replication",
+        definition:
+          "Keeping copies of data on multiple nodes for faster reads and survival when a node fails.",
+      },
+      {
+        term: "Consistency models",
+        definition:
+          "Rules describing when replicas agree, from immediate agreement to eventual convergence.",
+      },
+      {
+        term: "Isolation levels",
+        definition:
+          "Guarantees about how concurrent transactions interact so overlapping writes stay correct.",
+      },
+      {
+        term: "Consensus and leader election",
+        definition:
+          "Protocols that let nodes agree on one leader or value so coordination stays consistent.",
+      },
+      {
+        term: "Distributed locks and configuration",
+        definition:
+          "Shared coordination tools that control exclusive access and propagate settings across nodes.",
+      },
+      {
+        term: "Conflict handling and repair",
+        definition:
+          "Versioning and merge strategies that resolve divergent writes plus background fixes for drift.",
+      },
+      {
+        term: "Fault tolerance",
+        definition:
+          "Design choices such as timeouts, retries, and redundancy that keep services working through failures.",
+      },
+      {
+        term: "Availability and latency trade-offs",
+        definition:
+          "Balancing staying responsive against staying consistent when networks are slow or split.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Replicas diverge with conflicting writes",
+        fix: "Add versioning with a defined merge rule, then run a repair pass to reconcile existing conflicts.",
+      },
+      {
+        problem: "Leader election flaps or stalls",
+        fix: "Check timeouts, quorum size, and network stability, then tune election timers for the observed latency.",
+      },
+      {
+        problem: "Distributed transactions deadlock or lose updates",
+        fix: "Review isolation levels and lock ordering, shorten transaction scope, and add retry on serialization failures.",
+      },
+      {
+        problem: "Single slow node drags down requests",
+        fix: "Add timeouts with hedged requests or failover, then isolate the slow node for inspection.",
+      },
+      {
+        problem: "Failover loses recent writes",
+        fix: "Measure replication lag, tighten acknowledgment rules for critical writes, and document recovery expectations.",
+      },
+    ],
+    readiness: [
+      "Design partitioned services with clear consistency, availability, and latency trade-offs",
+      "Build replicated data flows with conflict handling, versioning, and repair strategies",
+      "Build consensus-driven coordination for leader election, locks, and configuration changes",
+      "Evaluate consistency models and isolation levels for transactions across nodes",
+      "Explain fault-tolerance choices for failure, scaling, and coordination",
+      "Deploy resilient services with timeout, retry, and failover handling",
+      "Design a coordination plan for configuration changes across nodes",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -5346,6 +8925,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Domain decomposition",
+        definition:
+          "Splitting a system into services around business capabilities so each team owns a clear area.",
+      },
+      {
+        term: "Service ownership and coupling",
+        definition:
+          "Assigning each service to one owner and reducing shared dependencies so services can change independently.",
+      },
+      {
+        term: "Versioned API contracts",
+        definition:
+          "Numbered interface definitions with schema checks so services evolve without silently breaking callers.",
+      },
+      {
+        term: "Saga transactions",
+        definition:
+          "Multi-service workflows where each step has a compensating action that undoes it if a later step fails.",
+      },
+      {
+        term: "Compensation logic",
+        definition:
+          "Rollback steps such as refunds or cancellations that restore consistency when a saga cannot complete.",
+      },
+      {
+        term: "Service mesh routing",
+        definition:
+          "A traffic layer between services that applies routing, retries, and policy without changing app code.",
+      },
+      {
+        term: "Retries and circuit breaking",
+        definition:
+          "Bounded re-attempts for failed calls plus breakers that stop calling an unhealthy service until it recovers.",
+      },
+      {
+        term: "Service observability",
+        definition:
+          "Logs, metrics, and traces correlated across services so a request can be followed end to end.",
+      },
+      {
+        term: "Independent deployability",
+        definition:
+          "Designing services so each can be released alone with compatible contracts and isolated data.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Service change breaks downstream callers",
+        fix: "Restore contract compatibility, add schema validation tests, and release the breaking change as a new version.",
+      },
+      {
+        problem: "Saga leaves partial work after a mid-flow failure",
+        fix: "Add missing compensation steps per completed action, then replay or roll back the failed workflow explicitly.",
+      },
+      {
+        problem: "Retry storms overload a struggling service",
+        fix: "Add bounded retries with backoff and a circuit breaker, then shed noncritical traffic until recovery.",
+      },
+      {
+        problem: "Traffic shifts do not reach the intended version",
+        fix: "Check mesh routing rules and version labels, then verify weights with canary metrics before widening rollout.",
+      },
+      {
+        problem: "Failure cannot be traced across services",
+        fix: "Propagate correlation IDs on every call and align log and trace fields so one request links across services.",
+      },
+    ],
+    readiness: [
+      "Design service boundaries using domain decomposition, ownership, and coupling analysis",
+      "Build versioned API contracts with schema validation, compatibility, and documentation",
+      "Build saga-based transactions with compensation logic for multi-service workflows",
+      "Deploy mesh-routed services with traffic policies, retries, and circuit breaking",
+      "Explain resilient communication choices across independently deployed services",
+      "Evaluate observability coverage for tracing requests across service calls",
+      "Design an independent release plan with contract and rollback checks",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -5462,6 +9119,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "beginner",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Virtual networks and subnets",
+        definition:
+          "Isolated network segments that control which cloud resources can reach each other and the internet.",
+      },
+      {
+        term: "Routing and network isolation",
+        definition:
+          "Route tables and rules that direct traffic between subnets and separate workloads for safety.",
+      },
+      {
+        term: "Virtual machines and managed compute",
+        definition:
+          "On-demand servers and managed services that run applications without buying physical hardware.",
+      },
+      {
+        term: "Cloud storage tiers",
+        definition:
+          "Different storage options for files, disks, and archives, each balancing cost, speed, and durability.",
+      },
+      {
+        term: "Identity roles and policies",
+        definition:
+          "Permissions attached to users and services that define exactly what they may access.",
+      },
+      {
+        term: "Least-privilege access",
+        definition:
+          "The practice of granting only the minimum permissions a workload or person needs.",
+      },
+      {
+        term: "Infrastructure templates",
+        definition:
+          "Reusable configuration files that provision the same cloud environment every time.",
+      },
+      {
+        term: "Cost monitoring and budgets",
+        definition: "Usage tracking and alerts that keep cloud spending visible and under control.",
+      },
+      {
+        term: "Workload monitoring and alerts",
+        definition:
+          "Metrics and alarms that show resource health and warn before problems affect users.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Virtual machine unreachable after network change",
+        fix: "Check subnet route table, firewall rules, and public address assignment, then reopen only the required ports.",
+      },
+      {
+        problem: "Deployment works once but fails on rebuild",
+        fix: "Compare manual changes against the template, move drifted settings into the template, and redeploy from code.",
+      },
+      {
+        problem: "Access denied for an application service",
+        fix: "Inspect the attached role and policy scope, grant the missing least-privilege permission, and retest.",
+      },
+      {
+        problem: "Unexpected spike in cloud bill",
+        fix: "Review usage by service and region, stop idle instances, downsize disks, and set a budget alert.",
+      },
+      {
+        problem: "Monitoring shows high CPU but app seems fine",
+        fix: "Correlate CPU with request counts and scheduled jobs, then right-size the instance or add autoscaling.",
+      },
+    ],
+    readiness: [
+      "Build isolated virtual networks with subnets and routing rules",
+      "Deploy virtual machines and managed compute with repeatable configurations",
+      "Secure cloud identities using roles and least-privilege policies",
+      "Automate provisioning with templates and scripts",
+      "Monitor workload health and respond to alerts",
+      "Manage cloud costs with budgets and usage reviews",
+      "Operate production-ready cloud infrastructure with confidence",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -5580,6 +9314,74 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Git branching workflows",
+        definition:
+          "Shared rules for branches, reviews, and merges that keep team changes organized and safe.",
+      },
+      {
+        term: "Continuous integration pipelines",
+        definition: "Automated builds and tests that run on every change to catch defects early.",
+      },
+      {
+        term: "Automated testing and quality gates",
+        definition: "Checks that block risky changes until tests and code standards pass.",
+      },
+      {
+        term: "Staged rollouts",
+        definition:
+          "Releases that reach users in small steps so problems are found before full launch.",
+      },
+      {
+        term: "Approvals and rollback plans",
+        definition: "Review steps plus a tested revert path used when a release misbehaves.",
+      },
+      {
+        term: "Observable infrastructure",
+        definition:
+          "Systems that expose logs, metrics, and traces so teams can see delivery and runtime health.",
+      },
+      {
+        term: "Incident management",
+        definition:
+          "A repeatable process for detecting, responding to, and learning from service disruptions.",
+      },
+      {
+        term: "Deployment frequency and lead time",
+        definition: "Measures of how often releases ship and how fast a change reaches production.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Pipeline fails only on the CI runner",
+        fix: "Compare local and runner dependency versions and environment variables, then pin versions in the pipeline config.",
+      },
+      {
+        problem: "Merge conflicts block every sprint",
+        fix: "Shorten branch lifetimes, pull main daily, and split work into smaller reviewable changes.",
+      },
+      {
+        problem: "Staged rollout stalls halfway",
+        fix: "Check stage health gates and approval steps, fix the failing check, then resume or roll back.",
+      },
+      {
+        problem: "Rollback does not restore service",
+        fix: "Verify the rollback targets both code and config versions, restore data snapshots if needed, and test the procedure.",
+      },
+      {
+        problem: "Alerts fire but nobody acts",
+        fix: "Tie each alert to an owner and runbook step, tune noisy thresholds, and review response in retros.",
+      },
+    ],
+    readiness: [
+      "Design branching, review, and merge workflows for delivery teams",
+      "Build continuous integration pipelines with automated tests and quality gates",
+      "Deploy applications using staged rollouts, approvals, and rollbacks",
+      "Operate observable infrastructure tied to delivery health",
+      "Manage incidents with clear roles and follow-up actions",
+      "Improve deployment speed while keeping releases reliable",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -5698,6 +9500,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Pods and containers",
+        definition:
+          "The smallest deployable units in Kubernetes, grouping containers that run and scale together.",
+      },
+      {
+        term: "Probes and resource limits",
+        definition:
+          "Health checks and CPU-memory boundaries that keep workloads stable and schedulable.",
+      },
+      {
+        term: "Deployments and ReplicaSets",
+        definition:
+          "Controllers that keep the desired number of pod copies running through updates and failures.",
+      },
+      {
+        term: "Rolling updates",
+        definition:
+          "A strategy that replaces pods gradually so the application stays available during upgrades.",
+      },
+      {
+        term: "Services and service discovery",
+        definition:
+          "Stable network endpoints that route traffic to changing pod addresses inside the cluster.",
+      },
+      {
+        term: "Ingress routing",
+        definition:
+          "Rules that direct external web traffic to the correct service inside the cluster.",
+      },
+      {
+        term: "Persistent volumes and storage classes",
+        definition:
+          "Durable storage that survives pod restarts, provisioned by class for stateful workloads.",
+      },
+      {
+        term: "Helm packaging",
+        definition:
+          "Templated bundles that install and version a full application stack reproducibly.",
+      },
+      {
+        term: "Cluster observability and upgrades",
+        definition:
+          "Monitoring plus planned version upgrades that keep nodes and workloads reliable.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Pod stuck in CrashLoopBackOff",
+        fix: "Read pod logs and events, fix the failing command or missing env variable, and verify readiness probes.",
+      },
+      {
+        problem: "Service reachable inside cluster but not externally",
+        fix: "Inspect service type, ingress rules, and DNS names, then correct the selector or ingress path.",
+      },
+      {
+        problem: "Stateful app loses data after restart",
+        fix: "Confirm the volume claim is bound to a persistent volume and not ephemeral storage, then reattach correctly.",
+      },
+      {
+        problem: "Rolling update never completes",
+        fix: "Describe the ReplicaSet for image pull or probe failures, fix the image tag or thresholds, and resume the rollout.",
+      },
+      {
+        problem: "Helm upgrade fails with conflicting values",
+        fix: "Diff current versus new values, render templates locally, then upgrade with corrected values.",
+      },
+      {
+        problem: "Node pressure evicts pods unexpectedly",
+        fix: "Check node CPU-memory pressure and missing resource requests, then set requests and limits per workload.",
+      },
+    ],
+    readiness: [
+      "Build pod specifications with probes, resources, and lifecycle controls",
+      "Deploy rolling and staged updates using deployments and ReplicaSets",
+      "Design service discovery and ingress routing for cluster traffic",
+      "Integrate persistent volumes and storage classes into stateful workloads",
+      "Package applications with Helm for repeatable installs",
+      "Observe clusters and manage upgrades for reliability",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -5815,6 +9698,71 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Threat modeling",
+        definition: "A structured review that lists what can go wrong and ranks controls by risk.",
+      },
+      {
+        term: "Least-privilege pipeline runners",
+        definition: "Build agents given only the narrow permissions needed for their job.",
+      },
+      {
+        term: "Signed artifacts",
+        definition:
+          "Build outputs with verifiable signatures that prove they came from a trusted pipeline.",
+      },
+      {
+        term: "Static application analysis",
+        definition: "Automated scans of source code that flag risky patterns before runtime.",
+      },
+      {
+        term: "Dependency and image scanning",
+        definition: "Checks of libraries and container images for known vulnerabilities.",
+      },
+      {
+        term: "Secrets management and rotation",
+        definition: "Central storage plus scheduled replacement of passwords, keys, and tokens.",
+      },
+      {
+        term: "Policy checks in pipelines",
+        definition: "Automated rules that block builds violating security baselines.",
+      },
+      {
+        term: "Runtime monitoring and incident response",
+        definition: "Detection of live attacks plus practiced steps to contain and recover.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Scanner floods pipeline with false positives",
+        fix: "Tune rule severity, add scoped suppressions with reasons, and gate only on high-confidence findings.",
+      },
+      {
+        problem: "Secrets leaked into build logs",
+        fix: "Mask secret variables, revoke the exposed value, rotate replacements, and re-run from a clean build.",
+      },
+      {
+        problem: "Signed artifact verification fails in staging",
+        fix: "Check key version and signing step order, re-sign with the current key, and verify the trust chain.",
+      },
+      {
+        problem: "Image scan blocks release at the last minute",
+        fix: "Pin a patched base image, rebuild early in the pipeline, and add daily scheduled scans.",
+      },
+      {
+        problem: "Policy check rejects compliant change",
+        fix: "Read the failing rule output, correct tags or config fields, and update the rule docs if intent changed.",
+      },
+    ],
+    readiness: [
+      "Develop threat models with risk-ranked controls for pipelines",
+      "Secure CI pipelines with least-privilege runners and signed artifacts",
+      "Automate static analysis, dependency checks, and image scanning",
+      "Integrate secrets management and rotation into builds and deployments",
+      "Add policy checks and runtime monitoring to delivery",
+      "Respond to security incidents with disciplined containment and review",
+    ],
     audience: [
       "Software developers",
       "DevOps practitioners",
@@ -5930,6 +9878,75 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Internal developer platforms",
+        definition:
+          "Shared tooling and services that give product teams a fast, standard way to ship software.",
+      },
+      {
+        term: "Golden paths",
+        definition:
+          "Recommended templates and workflows that make the safe production route the easiest route.",
+      },
+      {
+        term: "Service templates",
+        definition:
+          "Starter kits for code, pipelines, and infrastructure that standardize new services.",
+      },
+      {
+        term: "Self-service environments",
+        definition: "On-demand spaces teams can create themselves within quotas and approvals.",
+      },
+      {
+        term: "Policy guardrails",
+        definition:
+          "Automated rules that enforce security and reliability baselines without manual reviews.",
+      },
+      {
+        term: "Platform success metrics",
+        definition:
+          "Measures like onboarding time and template adoption that show whether the platform helps.",
+      },
+      {
+        term: "Environment lifecycle controls",
+        definition: "Rules for creating, expiring, and cleaning up temporary environments.",
+      },
+      {
+        term: "Cognitive load reduction",
+        definition: "Removing needless choices and toil so developers focus on product work.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Teams bypass the golden path",
+        fix: "Interview teams on gaps, add the missing options to templates, and track adoption as a metric.",
+      },
+      {
+        problem: "Self-service environments pile up and cost grows",
+        fix: "Add expiry dates, quotas, and automated cleanup, then notify owners before deletion.",
+      },
+      {
+        problem: "Template upgrades break consuming teams",
+        fix: "Version templates, publish changelogs, and let teams upgrade on a supported window.",
+      },
+      {
+        problem: "Policy guardrails block valid work",
+        fix: "Log which rule fired, narrow its scope, and add an appeal path with fast review.",
+      },
+      {
+        problem: "Platform backlog grows without clear priorities",
+        fix: "Rank requests by user count and delivery pain, publish a roadmap, and review monthly.",
+      },
+    ],
+    readiness: [
+      "Architect an internal platform vision with users, boundaries, and success metrics",
+      "Build golden-path templates for services, pipelines, and infrastructure",
+      "Develop self-service environments with quotas and lifecycle controls",
+      "Design policy guardrails that standardize reliable delivery",
+      "Evaluate platform adoption and reduce developer toil",
+      "Operate shared platforms that scale across teams",
+    ],
     audience: [
       "Software developers",
       "DevOps practitioners",
@@ -6047,6 +10064,80 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "GPU cluster layout",
+        definition:
+          "How graphics processors, networking, and storage are arranged for training and inference.",
+      },
+      {
+        term: "Capacity and isolation planning",
+        definition:
+          "Reserving compute for workloads so training jobs do not starve live serving traffic.",
+      },
+      {
+        term: "Inference endpoints",
+        definition:
+          "Network services that take model requests and return predictions with low delay.",
+      },
+      {
+        term: "Batching and caching",
+        definition:
+          "Grouping requests and reusing results to serve more traffic on the same hardware.",
+      },
+      {
+        term: "Autoscaling policies",
+        definition: "Rules that add or remove serving capacity as request volume changes.",
+      },
+      {
+        term: "Batch training pipelines",
+        definition:
+          "Scheduled jobs that prepare data, train models, and save checkpoints with retries.",
+      },
+      {
+        term: "Checkpointing",
+        definition:
+          "Regularly saved training progress that lets long jobs resume after interruptions.",
+      },
+      {
+        term: "Latency and cost optimization",
+        definition: "Tuning response speed against hardware spend for production AI workloads.",
+      },
+      {
+        term: "AI workload observability",
+        definition: "Tracking GPU use, queue depth, and error rates to spot bottlenecks early.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Inference latency spikes under load",
+        fix: "Check queue depth and GPU utilization, enable batching and caching, then tighten autoscaling thresholds.",
+      },
+      {
+        problem: "Training job fails hours in without progress saved",
+        fix: "Enable frequent checkpoints to durable storage and resume from the latest checkpoint with retries.",
+      },
+      {
+        problem: "Out-of-memory errors on GPUs",
+        fix: "Lower batch size, enable gradient accumulation or sharding, and monitor memory per worker.",
+      },
+      {
+        problem: "Autoscaler oscillates up and down",
+        fix: "Widen cooldown windows, smooth the scaling metric, and set minimum replica counts.",
+      },
+      {
+        problem: "GPU costs grow faster than traffic",
+        fix: "Profile idle time, consolidate models per endpoint, and schedule batch work on cheaper capacity.",
+      },
+    ],
+    readiness: [
+      "Architect GPU cluster layouts with capacity and isolation planning",
+      "Deploy scalable inference endpoints with batching, caching, and autoscaling",
+      "Build batch data and training pipelines with scheduling and checkpointing",
+      "Optimize latency and cost for production AI workloads",
+      "Observe GPU utilization and serving health",
+      "Design reliable infrastructure for training and serving AI systems",
+    ],
     audience: [
       "AI engineers",
       "ML engineers",
@@ -6164,6 +10255,76 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Multi-tier architectures",
+        definition:
+          "Designs that separate presentation, logic, and data layers across compute and storage.",
+      },
+      {
+        term: "High availability patterns",
+        definition:
+          "Designs that spread workloads across zones so one failure does not stop service.",
+      },
+      {
+        term: "Disaster recovery across regions",
+        definition:
+          "Backup and failover plans that restore service when a whole region has trouble.",
+      },
+      {
+        term: "Decoupled event-driven design",
+        definition:
+          "Systems linked by queues and events so parts can scale and fail independently.",
+      },
+      {
+        term: "Managed services trade-offs",
+        definition:
+          "Choosing between provider-run services and self-built parts based on scale and effort.",
+      },
+      {
+        term: "Scaling patterns",
+        definition: "Ways to add capacity automatically or by design as demand grows.",
+      },
+      {
+        term: "Secure landing zones",
+        definition:
+          "Preconfigured accounts, networks, and policies that give new workloads a safe starting point.",
+      },
+      {
+        term: "Cost-aware design",
+        definition: "Selecting sizes, tiers, and lifecycles that meet needs without overspending.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Single-zone outage takes app offline",
+        fix: "Spread tiers across zones with load balancing, then test failover with a zone-failure drill.",
+      },
+      {
+        problem: "Tightly coupled services fail together",
+        fix: "Insert queues or events between services, add retries with backoff, and decouple deployments.",
+      },
+      {
+        problem: "Database becomes the scaling bottleneck",
+        fix: "Add read replicas or caching, partition hot data, and match instance size to measured load.",
+      },
+      {
+        problem: "Landing zone blocks new workload launch",
+        fix: "Check account guardrails and network limits, request quota increases, and document the standard path.",
+      },
+      {
+        problem: "Costs exceed forecast after launch",
+        fix: "Break down spend by tier, move cold data to cheaper storage, and apply scaling schedules.",
+      },
+    ],
+    readiness: [
+      "Architect multi-tier cloud solutions across compute, storage, and networking",
+      "Design high-availability and disaster-recovery patterns across zones and regions",
+      "Develop decoupled architectures using queues, events, and managed services",
+      "Evaluate build-versus-managed-service trade-offs for scale and operations",
+      "Design secure landing zones for new workloads",
+      "Balance resilience, scaling, and cost in cloud designs",
+    ],
     audience: [
       "Software developers",
       "Cloud engineers",
@@ -6279,6 +10440,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Virtual machine",
+        definition:
+          "A software-based computer that runs inside physical hardware and can host its own operating system and apps.",
+      },
+      {
+        term: "Container",
+        definition:
+          "A lightweight package that holds an app and its settings so it runs the same way on different machines.",
+      },
+      {
+        term: "IP networking",
+        definition:
+          "The system of addresses and rules that lets computers find each other and exchange data.",
+      },
+      {
+        term: "Firewall",
+        definition:
+          "A filter that allows safe network traffic and blocks unwanted connections to servers.",
+      },
+      {
+        term: "Linux server hardening",
+        definition:
+          "Turning off unneeded services, updating software, and tightening settings to make a server safer.",
+      },
+      {
+        term: "Infrastructure as code",
+        definition:
+          "Writing setup steps in templates or scripts so servers and networks can be built the same way every time.",
+      },
+      {
+        term: "Monitoring and alerting",
+        definition:
+          "Tracking server health and sending warnings when CPU, memory, disk, or services have problems.",
+      },
+      {
+        term: "Backup and restore",
+        definition:
+          "Saving copies of data and systems so they can be recovered after deletion, failure, or damage.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Cannot connect over SSH",
+        fix: "Check the server is running, confirm the IP and username, verify the firewall allows port 22, and check key file permissions.",
+      },
+      {
+        problem: "Server disk full",
+        fix: "Find large files and old logs, clear unneeded packages and temp files, then add disk space or log rotation.",
+      },
+      {
+        problem: "Website unreachable but server is on",
+        fix: "Check DNS settings, firewall rules, web service status, and listening ports with system logs.",
+      },
+      {
+        problem: "High CPU or memory use",
+        fix: "List top processes, restart or limit the heavy service, and resize the machine if use stays high.",
+      },
+      {
+        problem: "Failed software updates",
+        fix: "Check internet access and disk space, read the error message, fix broken packages, then rerun the update.",
+      },
+    ],
+    readiness: [
+      "Create a virtual machine and install Linux on it",
+      "Set up SSH keys and basic firewall rules",
+      "Use the command line to manage files, users, and services",
+      "Write a simple script to automate server setup",
+      "Configure monitoring checks and read system logs",
+      "Practice restoring files from a backup",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -6395,6 +10628,77 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Service-level indicators",
+        definition:
+          "Chosen measurements, like success rate or latency, that reflect what users actually experience.",
+      },
+      {
+        term: "Service-level objectives",
+        definition: "Target values for those measurements that define acceptable reliability.",
+      },
+      {
+        term: "Error budgets",
+        definition:
+          "The allowed amount of failure before teams pause features and focus on stability.",
+      },
+      {
+        term: "Golden signals",
+        definition:
+          "Core health measures of latency, traffic, errors, and saturation used in dashboards.",
+      },
+      {
+        term: "Runbooks",
+        definition: "Step-by-step guides that help responders fix known problems quickly.",
+      },
+      {
+        term: "Blameless reviews",
+        definition: "Post-incident discussions focused on systems and fixes, not individual fault.",
+      },
+      {
+        term: "Chaos experiments",
+        definition: "Planned fault injections that test how services behave under failure.",
+      },
+      {
+        term: "Toil automation",
+        definition: "Replacing repetitive operational work with scripts and self-healing checks.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Alerts fire constantly but users are unaffected",
+        fix: "Retune alerts to user-facing indicators and objectives, then route low-impact noise to tickets.",
+      },
+      {
+        problem: "Error budget burns out mid-quarter",
+        fix: "Freeze risky launches, prioritize reliability fixes, and review budget policy with stakeholders.",
+      },
+      {
+        problem: "Incident response is chaotic",
+        fix: "Assign commander, communications, and operations roles, then follow a written runbook.",
+      },
+      {
+        problem: "Same incident repeats every month",
+        fix: "Run a blameless review, file action items with owners, and automate the manual fix.",
+      },
+      {
+        problem: "Toil consumes all engineering time",
+        fix: "Measure toil hours, automate the top task with scripts or scheduled jobs, and track reduction.",
+      },
+      {
+        problem: "Dashboard hides the real outage",
+        fix: "Rebuild around golden signals tied to user impact and validate against past incidents.",
+      },
+    ],
+    readiness: [
+      "Design service-level indicators, objectives, and error-budget policies",
+      "Build golden-signal dashboards, alerts, and runbooks tied to user impact",
+      "Develop incident response practices with roles and blameless reviews",
+      "Automate toil-heavy tasks with scripts and self-healing checks",
+      "Run chaos experiments to validate reliability",
+      "Reduce operational toil while sustaining service reliability",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -6511,6 +10815,76 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Infrastructure as code",
+        definition:
+          "Managing cloud resources with versioned files instead of manual console clicks.",
+      },
+      {
+        term: "Reusable modules",
+        definition:
+          "Shared building blocks for networks, compute, and data services used across projects.",
+      },
+      {
+        term: "Versioned stacks",
+        definition:
+          "Environment definitions pinned to specific code versions for predictable promotion.",
+      },
+      {
+        term: "Environment promotion workflows",
+        definition:
+          "Steps that move tested infrastructure changes from development through production.",
+      },
+      {
+        term: "Policy checks",
+        definition: "Automated guards for naming, tagging, cost, and security baselines.",
+      },
+      {
+        term: "Drift detection",
+        definition:
+          "Finding manual changes that differ from the coded definition of infrastructure.",
+      },
+      {
+        term: "Safe rollout practices",
+        definition: "Staged applies with previews and approvals that limit blast radius.",
+      },
+      {
+        term: "CI pipelines for infrastructure",
+        definition:
+          "Automated tests and plans that validate code changes before they touch real resources.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Apply fails halfway with partial resources",
+        fix: "Read the plan error, fix the failing resource, and re-apply since code-based tools track state.",
+      },
+      {
+        problem: "Manual console edit causes drift",
+        fix: "Run drift detection, import or revert the change into code, and lock console edits.",
+      },
+      {
+        problem: "Module update breaks many environments",
+        fix: "Pin the prior module version, test the new version in one environment, then roll out gradually.",
+      },
+      {
+        problem: "Policy check rejects a valid stack",
+        fix: "Inspect the violated naming or tagging rule, correct metadata, and adjust the rule scope if needed.",
+      },
+      {
+        problem: "Promotion to production applies unexpected changes",
+        fix: "Compare plan output across environments, sync variables, and require plan approval before apply.",
+      },
+    ],
+    readiness: [
+      "Build reusable infrastructure-as-code modules for networks, compute, and data",
+      "Automate environment provisioning with versioned stacks and promotion workflows",
+      "Deploy policy checks for naming, tagging, cost, and security baselines",
+      "Detect drift and apply safe rollout practices across environments",
+      "Validate infrastructure changes with CI pipelines",
+      "Operate automated cloud provisioning reliably",
+    ],
     audience: [
       "Cloud engineers",
       "DevOps practitioners",
@@ -6626,6 +11000,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "beginner",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "SQL Joins and Aggregation",
+        definition:
+          "SQL techniques that combine tables and summarize rows with functions like SUM and AVG to answer business questions.",
+      },
+      {
+        term: "Window Functions",
+        definition:
+          "SQL functions that compute running totals, ranks, and moving averages across ordered rows without collapsing them.",
+      },
+      {
+        term: "Data Profiling",
+        definition:
+          "The practice of scanning a dataset for missing values, duplicates, and outliers before analysis begins.",
+      },
+      {
+        term: "Data Cleaning with Python",
+        definition:
+          "Using Python workflows to fix types, handle nulls, and standardize messy columns into analysis-ready data.",
+      },
+      {
+        term: "Exploratory Data Analysis",
+        definition:
+          "Using summaries and plots to discover patterns, relationships, and anomalies in a dataset.",
+      },
+      {
+        term: "Dashboard Design",
+        definition:
+          "Building interactive charts and reports that let viewers filter and explore answers to defined business questions.",
+      },
+      {
+        term: "Data Visualization Principles",
+        definition:
+          "Guidelines for choosing clear chart types, labels, and scales so visuals communicate accurately.",
+      },
+      {
+        term: "Business Reporting",
+        definition:
+          "Writing concise summaries that connect analytical findings to decisions and next steps.",
+      },
+      {
+        term: "Spreadsheet Analysis",
+        definition:
+          "Using spreadsheet formulas and pivot-style summaries for quick cleaning and ad hoc business analysis.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "SQL join returns duplicated or inflated row counts",
+        fix: "Check join keys for duplicates with GROUP BY counts, then deduplicate or aggregate the many-side table before joining.",
+      },
+      {
+        problem: "Dashboard numbers do not match source data",
+        fix: "Trace filters and aggregations back to the query, verify date ranges and join logic, then reconcile totals against a raw-data spot check.",
+      },
+      {
+        problem: "Python cleaning script leaves mixed types and nulls",
+        fix: "Profile dtypes and null rates column by column, coerce types explicitly, and standardize missing-value handling before downstream steps.",
+      },
+      {
+        problem: "Charts mislead viewers with wrong scales or chart types",
+        fix: "Match chart type to the comparison, start bar axes at zero, label units clearly, and test the visual with a sample business question.",
+      },
+      {
+        problem: "Duplicate and outlier rows skew summary statistics",
+        fix: "Flag duplicates with key-based checks and inspect outliers with distributions, then document removal or capping rules in the report.",
+      },
+    ],
+    readiness: [
+      "Design SQL queries with joins, filters, aggregation, and windowed analysis",
+      "Build interactive dashboards that answer defined business questions",
+      "Develop Python workflows for cleaning, transformation, and exploration",
+      "Evaluate dataset quality by profiling missing values, duplicates, and outliers",
+      "Explain visual choices that keep charts clear and honest",
+      "Deliver concise business reports that link findings to decisions",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -6737,6 +11188,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "14 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Hypothesis Testing",
+        definition:
+          "Statistical tests that judge whether an observed effect is likely real or just random variation.",
+      },
+      {
+        term: "Correlation vs Causation",
+        definition:
+          "The distinction between variables that move together and one variable actually causing change in another.",
+      },
+      {
+        term: "Regression Modeling",
+        definition:
+          "Predicting a numeric outcome from input features, for example forecasting demand from past signals.",
+      },
+      {
+        term: "Classification Modeling",
+        definition: "Predicting a category label such as churn or no-churn from input features.",
+      },
+      {
+        term: "Feature Engineering",
+        definition:
+          "Creating and transforming input variables so models capture more useful signal from raw data.",
+      },
+      {
+        term: "Data Leakage",
+        definition:
+          "When training data accidentally includes information unavailable at prediction time, inflating performance.",
+      },
+      {
+        term: "Cross-Validation",
+        definition:
+          "Splitting data into folds to train and test repeatedly, giving a steadier estimate of model performance.",
+      },
+      {
+        term: "Performance Metrics",
+        definition:
+          "Measures like accuracy, RMSE, precision, and recall used to judge how well a model predicts.",
+      },
+      {
+        term: "Error Analysis",
+        definition:
+          "Reviewing where a model fails by segment or example to guide the next round of improvements.",
+      },
+      {
+        term: "Experiment Design",
+        definition:
+          "Planning comparisons with control groups and success metrics so results can be trusted.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Model scores high in training but poorly on new data",
+        fix: "Suspect leakage or overfitting; audit features for future information, add cross-validation, and simplify or regularize the model.",
+      },
+      {
+        problem: "Leaky features inflate validation scores",
+        fix: "Rebuild features using only data available at prediction time and re-run time-aware splits to confirm honest metrics.",
+      },
+      {
+        problem: "Imbalanced classes produce misleading accuracy",
+        fix: "Switch to precision, recall, or F1 with stratified splits and confusion analysis, and consider resampling or class weights.",
+      },
+      {
+        problem: "Experiment shows correlation but no clear effect",
+        fix: "Check sample size, randomization, and confounders, then rerun with a defined hypothesis and appropriate statistical test.",
+      },
+      {
+        problem: "Feature pipeline works in notebook but fails on fresh data",
+        fix: "Convert ad hoc steps into a fitted pipeline with saved encoders and imputers, then test on a held-out raw sample.",
+      },
+    ],
+    readiness: [
+      "Build regression and classification models with Python machine learning libraries",
+      "Design experiments and hypothesis tests that separate correlation from real effects",
+      "Develop feature engineering pipelines that improve signal and reduce leakage",
+      "Evaluate models with cross-validation, error analysis, and fitting metrics",
+      "Explain model results and limits to non-technical stakeholders",
+      "Compare candidate models and select one with evidence",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -6841,6 +11373,82 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Batch Ingestion Pipelines",
+        definition:
+          "Scheduled jobs that extract data from sources and load it into a warehouse for analysis.",
+      },
+      {
+        term: "Data Warehousing",
+        definition:
+          "Central storage organized for fast analytical queries over cleaned, modeled tables.",
+      },
+      {
+        term: "Dimensional Modeling",
+        definition:
+          "Designing fact and dimension tables so reports and dashboards query efficiently.",
+      },
+      {
+        term: "Schema Design",
+        definition:
+          "Defining table structures, types, and constraints that keep stored data consistent.",
+      },
+      {
+        term: "Workflow Orchestration",
+        definition:
+          "Scheduling pipeline tasks with dependencies and retries so they run in the right order.",
+      },
+      {
+        term: "Dependency Management",
+        definition:
+          "Declaring task order and upstream requirements so a job waits for the data it needs.",
+      },
+      {
+        term: "Data Validation Tests",
+        definition: "Automated checks for nulls, ranges, and row counts that catch bad data early.",
+      },
+      {
+        term: "Freshness and Anomaly Checks",
+        definition:
+          "Monitors that alert when data arrives late or volumes and values look unusual.",
+      },
+      {
+        term: "Semi-Structured Data Loading",
+        definition:
+          "Techniques for ingesting JSON and similar flexible formats into structured warehouse tables.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Pipeline fails when upstream data arrives late or out of order",
+        fix: "Add dependency sensors, scheduling windows, and retries with backoff, then alert on missed SLAs.",
+      },
+      {
+        problem: "Duplicate rows appear after pipeline reruns",
+        fix: "Make loads idempotent with merge keys or delete-then-insert windows, and add row-count validation tests.",
+      },
+      {
+        problem: "Schema change in source breaks warehouse loads",
+        fix: "Add schema checks at ingestion, quarantine unexpected columns, and version the target schema before backfilling.",
+      },
+      {
+        problem: "Stale dashboards caused by silent pipeline failure",
+        fix: "Add freshness checks and row-count monitors with alerts, then backfill and verify the affected partitions.",
+      },
+      {
+        problem: "Data quality issues reach reporting tables",
+        fix: "Add validation tests for nulls, ranges, and referential integrity at staging, and block promotion on test failure.",
+      },
+    ],
+    readiness: [
+      "Build batch ingestion pipelines into warehouse tables",
+      "Design dimensional models and schemas for analytics workloads",
+      "Develop orchestrated workflows with scheduling, retries, and dependencies",
+      "Evaluate data quality with validation tests and freshness checks",
+      "Detect anomalies in pipeline outputs before they reach reports",
+      "Explain pipeline lineage and failure handling to stakeholders",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -6952,6 +11560,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Supervised Learning",
+        definition: "Training models on labeled examples to predict outcomes for new inputs.",
+      },
+      {
+        term: "Regression",
+        definition: "Predicting continuous values such as prices or demand from input features.",
+      },
+      {
+        term: "Classification",
+        definition: "Assigning inputs to categories such as spam or not spam.",
+      },
+      {
+        term: "Validation Strategy",
+        definition:
+          "How data is split for training and testing so results reflect true generalization.",
+      },
+      {
+        term: "Data Leakage Prevention",
+        definition:
+          "Practices that keep test information out of training so evaluation stays honest.",
+      },
+      {
+        term: "Preprocessing Pipelines",
+        definition:
+          "Ordered steps for imputation, scaling, and encoding that are fitted on training data only.",
+      },
+      {
+        term: "Hyperparameter Tuning",
+        definition:
+          "Searching settings like tree depth or regularization strength to improve validation performance.",
+      },
+      {
+        term: "Precision and Recall",
+        definition:
+          "Metrics that measure false alarms versus missed cases in classification tasks.",
+      },
+      {
+        term: "Model Calibration",
+        definition: "Checking that predicted probabilities match real-world outcome rates.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Validation scores look great but test performance collapses",
+        fix: "Audit for leakage by checking split order and time boundaries, then rebuild splits so no test information leaks into training.",
+      },
+      {
+        problem: "Model overfits small tabular datasets",
+        fix: "Add cross-validation, simplify the model, tune regularization, and compare learning curves before adding features.",
+      },
+      {
+        problem: "Preprocessing leaks statistics from test data",
+        fix: "Fit imputers, scalers, and encoders on training folds only, then apply the fitted steps to validation and test sets.",
+      },
+      {
+        problem: "Precision-recall tradeoff misaligned with business need",
+        fix: "Revisit the decision threshold against business costs, then select metrics and thresholds with stakeholder review.",
+      },
+      {
+        problem: "Text or time features degrade model performance",
+        fix: "Isolate the new features with ablations, check encoding and date-based splits, and keep only features that improve held-out metrics.",
+      },
+      {
+        problem: "Tuning results vary wildly between runs",
+        fix: "Fix random seeds, use repeated cross-validation, and compare configurations by mean and spread rather than a single run.",
+      },
+    ],
+    readiness: [
+      "Build supervised models for regression, classification, and ranking tasks",
+      "Design validation strategies that prevent leakage and measure generalization",
+      "Develop preprocessing and feature pipelines for tabular, text, and time data",
+      "Evaluate models with precision, recall, calibration, and business-aligned metrics",
+      "Tune and compare models with documented evidence",
+      "Explain model tradeoffs and limits to stakeholders",
+    ],
     audience: [
       "Software developers",
       "Data scientists",
@@ -7063,6 +11748,79 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Neural Networks",
+        definition: "Layered models that learn patterns by adjusting weights through training.",
+      },
+      {
+        term: "Convolutional Models",
+        definition:
+          "Networks that detect spatial patterns, widely used for image and signal tasks.",
+      },
+      {
+        term: "Sequence Models",
+        definition: "Networks that process ordered data such as text or time series.",
+      },
+      {
+        term: "Loss Functions",
+        definition:
+          "Objectives such as cross-entropy that quantify prediction error during training.",
+      },
+      {
+        term: "Optimizers and Schedulers",
+        definition:
+          "Algorithms and learning-rate plans that control how weights update during training.",
+      },
+      {
+        term: "Checkpointing",
+        definition: "Saving model weights and training state so the best version can be restored.",
+      },
+      {
+        term: "Transfer Learning",
+        definition:
+          "Starting from a pretrained backbone and fine-tuning it for a new task with less data.",
+      },
+      {
+        term: "Overfitting Diagnostics",
+        definition:
+          "Comparing training and validation curves and errors to detect memorization versus learning.",
+      },
+      {
+        term: "Confusion Analysis",
+        definition: "Examining per-class errors to find which categories a model confuses most.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Training loss stalls or diverges",
+        fix: "Check learning rate, batch size, and loss choice, then try a scheduler with gradient clipping and verify data normalization.",
+      },
+      {
+        problem: "Model overfits while validation accuracy lags",
+        fix: "Compare train and validation curves, add augmentation, dropout, or weight decay, and restore the best checkpoint by validation metric.",
+      },
+      {
+        problem: "Fine-tuned pretrained model performs worse than baseline",
+        fix: "Freeze the backbone first with a small learning rate on the head, then unfreeze gradually while monitoring validation metrics.",
+      },
+      {
+        problem: "GPU runs out of memory mid-training",
+        fix: "Reduce batch size, enable gradient accumulation and mixed precision, and clear cached tensors before retrying.",
+      },
+      {
+        problem: "Class imbalance causes poor minority-class results",
+        fix: "Use weighted loss or sampling, track per-class metrics with confusion analysis, and tune thresholds on validation data.",
+      },
+    ],
+    readiness: [
+      "Build convolutional and sequence models for image, text, and signal tasks",
+      "Design training loops with loss functions, optimizers, schedulers, and checkpointing",
+      "Develop transfer learning workflows with pretrained backbones and fine-tuning",
+      "Evaluate deep models with task metrics and confusion analysis",
+      "Diagnose overfitting with training and validation evidence",
+      "Compare architectures and document design choices",
+    ],
     audience: [
       "Software developers",
       "AI engineers",
@@ -7172,6 +11930,80 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Training Pipelines",
+        definition:
+          "Automated workflows that prepare data, train models, and package versioned artifacts.",
+      },
+      {
+        term: "Model Registry",
+        definition:
+          "A versioned catalog that tracks model artifacts, metadata, and promotion status.",
+      },
+      {
+        term: "Staging and Production Promotion",
+        definition:
+          "Gated steps that move a model from testing to live serving after quality checks pass.",
+      },
+      {
+        term: "CI for ML",
+        definition: "Automated tests for data, features, and models that run on every code change.",
+      },
+      {
+        term: "CD for ML Services",
+        definition:
+          "Automated packaging and release steps that deploy approved models as services.",
+      },
+      {
+        term: "Drift Detection",
+        definition:
+          "Monitoring that flags when live data or predictions shift away from training baselines.",
+      },
+      {
+        term: "Quality Gates",
+        definition: "Threshold checks a model must pass before promotion or continued serving.",
+      },
+      {
+        term: "Rollback Strategy",
+        definition:
+          "Plans and automation to revert to a prior model version when production quality drops.",
+      },
+      {
+        term: "Incident Response",
+        definition: "Defined steps to detect, triage, and resolve ML production failures.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Production metrics drift after deployment",
+        fix: "Compare live feature distributions to training baselines, confirm the drift source, then retrain or roll back per quality gates.",
+      },
+      {
+        problem: "Unregistered model artifact deployed to production",
+        fix: "Halt promotion, register the artifact with data and code versions, and require registry-gated releases going forward.",
+      },
+      {
+        problem: "Training pipeline succeeds locally but fails in automation",
+        fix: "Pin dependencies, version data snapshots, and reproduce with pipeline logs before re-enabling scheduled runs.",
+      },
+      {
+        problem: "Failed deployment leaves a bad model serving traffic",
+        fix: "Trigger the rollback to the last approved registry version, verify health checks, then investigate with deployment logs.",
+      },
+      {
+        problem: "Stale model serves because retraining never triggered",
+        fix: "Add schedule or drift-based triggers with freshness monitors, then backfill and verify the new version before promotion.",
+      },
+    ],
+    readiness: [
+      "Build automated training pipelines with versioned data, code, and artifacts",
+      "Design model registries and promotion workflows across staging and production",
+      "Develop CI and CD workflows for testing, packaging, and releasing ML services",
+      "Evaluate production models with drift detection and quality gates",
+      "Deploy rollback plans when production quality drops",
+      "Respond to ML incidents with monitoring and documented follow-up",
+    ],
     audience: [
       "ML engineers",
       "DevOps practitioners",
@@ -7282,6 +12114,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "AI-assisted dashboards",
+        definition:
+          "Dashboards that pair charts with generated summaries explaining trends and key drivers in plain language.",
+      },
+      {
+        term: "Prompt design for data questions",
+        definition:
+          "Writing clear instructions and context so a language model answers questions over business data accurately.",
+      },
+      {
+        term: "Retrieval over business data",
+        definition:
+          "Fetching the right tables, documents, or metric definitions before the model writes an answer.",
+      },
+      {
+        term: "Automated reporting pipelines",
+        definition:
+          "Scheduled workflows that combine SQL, Python, and language models to produce recurring reports.",
+      },
+      {
+        term: "SQL aggregation for reporting",
+        definition:
+          "Using joins, grouping, and filtering to prepare clean metric tables that feed reports and assistants.",
+      },
+      {
+        term: "Python data cleaning",
+        definition:
+          "Fixing missing values, duplicates, and inconsistent labels so analysis and AI summaries rest on clean data.",
+      },
+      {
+        term: "Grounding and citation",
+        definition:
+          "Requiring AI answers to reference source rows or documents so claims can be checked.",
+      },
+      {
+        term: "Insight evaluation",
+        definition:
+          "Checking generated summaries for accuracy, relevance, and whether they answer the business question.",
+      },
+      {
+        term: "Metric definitions",
+        definition:
+          "Shared rules for how each KPI is calculated so dashboards and AI answers stay consistent.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "AI summary cites numbers that do not match the dashboard",
+        fix: "Compare the query behind each number, restrict the model to the verified result set, and require it to quote source values.",
+      },
+      {
+        problem: "Assistant gives vague answers over business data",
+        fix: "Add schema context, metric definitions, and few-shot examples, then narrow retrieval to the relevant tables.",
+      },
+      {
+        problem: "Automated report breaks when a column renames or goes missing",
+        fix: "Add schema checks at the pipeline start and map columns explicitly before the SQL and Python steps run.",
+      },
+      {
+        problem: "Generated narrative highlights trivial changes and misses real drivers",
+        fix: "Add change thresholds and driver-ranking logic so only material movements reach the summary.",
+      },
+      {
+        problem: "Stale data feeds into the AI report",
+        fix: "Check freshness timestamps and job logs, then gate report generation on a successful data refresh.",
+      },
+      {
+        problem: "Model invents metric definitions",
+        fix: "Store approved definitions in a glossary file, inject them into the prompt, and reject answers that stray from them.",
+      },
+    ],
+    readiness: [
+      "Build AI-assisted dashboards that summarize trends and key drivers",
+      "Design prompts and retrieval workflows that answer questions over business data",
+      "Build automated reporting pipelines combining SQL, Python, and language models",
+      "Evaluate AI-generated insights for accuracy, grounding, and business relevance",
+      "Explain metric definitions and data sources behind every reported insight",
+      "Design validation checks that keep recurring AI reports fresh and consistent",
+    ],
     audience: [
       "Data analysts",
       "Product managers",
@@ -7392,6 +12305,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Production ML services",
+        definition:
+          "Deployed models behind APIs or batch jobs that serve predictions reliably to other systems.",
+      },
+      {
+        term: "Inference paths",
+        definition:
+          "The route a request takes from input validation through features to model output and response.",
+      },
+      {
+        term: "Model and artifact versioning",
+        definition:
+          "Labeling every model, dataset, and config so any release can be reproduced or rolled back.",
+      },
+      {
+        term: "Service testing for ML",
+        definition:
+          "Tests covering data schemas, feature logic, model behavior, and API contracts before release.",
+      },
+      {
+        term: "Orchestration",
+        definition:
+          "Scheduling and chaining training, validation, and deployment steps with retries and dependencies.",
+      },
+      {
+        term: "Latency budgets",
+        definition:
+          "Limits on how long prediction requests may take, split across preprocessing, inference, and postprocessing.",
+      },
+      {
+        term: "Load testing",
+        definition:
+          "Simulating expected traffic to confirm the service holds latency and error targets under pressure.",
+      },
+      {
+        term: "Observability",
+        definition:
+          "Logging, metrics, and traces that reveal prediction quality, errors, and slowdowns in production.",
+      },
+      {
+        term: "Failure handling",
+        definition:
+          "Fallbacks, retries, and graceful degradation when data, features, or models fail.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Inference latency exceeds the budget after deploy",
+        fix: "Profile preprocessing, feature lookup, and model call separately, then cache features or batch and simplify the slow stage.",
+      },
+      {
+        problem: "Model tests pass offline but the API returns schema errors",
+        fix: "Diff training features against serving features, pin the shared schema, and add contract tests on the request payload.",
+      },
+      {
+        problem: "New model version degrades quality silently",
+        fix: "Gate promotion on quality thresholds and shadow-score live traffic before shifting production weight.",
+      },
+      {
+        problem: "Batch jobs fail intermittently on retries",
+        fix: "Inspect dependency ordering and idempotency, then set explicit retries with backoff and checkpointed outputs.",
+      },
+      {
+        problem: "Feature values drift between training and serving",
+        fix: "Log served feature distributions, compare against training stats, and unify the feature code into one shared module.",
+      },
+      {
+        problem: "Traffic spikes cause cascading timeouts",
+        fix: "Add autoscaling rules, request queues, and timeouts with fallbacks, then re-run load tests at peak multiples.",
+      },
+    ],
+    readiness: [
+      "Build production ML services with APIs, batch jobs, and versioned artifacts",
+      "Design system architectures covering data flow, inference paths, and failure handling",
+      "Develop testing suites for data, features, models, and service contracts",
+      "Evaluate service readiness with load tests, latency budgets, and quality thresholds",
+      "Deploy model updates with versioned releases and rollback plans",
+      "Explain observability signals that reveal prediction and service health",
+    ],
     audience: [
       "Software developers",
       "ML engineers",
@@ -7503,6 +12497,88 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Conceptual data modeling",
+        definition:
+          "Sketching core business entities and their relationships before choosing any technology.",
+      },
+      {
+        term: "Logical data modeling",
+        definition:
+          "Defining tables, keys, and relationships precisely so transactional and analytical needs are both covered.",
+      },
+      {
+        term: "Warehouse architecture",
+        definition:
+          "A structured platform of curated tables and marts designed for fast, consistent analytics queries.",
+      },
+      {
+        term: "Lakehouse zones",
+        definition:
+          "Layered storage from raw landing to cleaned to curated data, balancing flexibility with governance.",
+      },
+      {
+        term: "Data contracts",
+        definition:
+          "Agreements on schema, quality, and freshness between data producers and consumers.",
+      },
+      {
+        term: "Data lineage",
+        definition:
+          "A record of where each dataset came from and how it was transformed along the way.",
+      },
+      {
+        term: "Data governance",
+        definition:
+          "Rules for ownership, quality, retention, and access that keep enterprise data trustworthy.",
+      },
+      {
+        term: "Data cataloging",
+        definition:
+          "Searchable documentation of datasets, owners, and definitions so teams can find and reuse data.",
+      },
+      {
+        term: "Platform tradeoff analysis",
+        definition:
+          "Comparing design options across cost, latency, scalability, and maintainability before committing.",
+      },
+      {
+        term: "Service-level agreements for data",
+        definition:
+          "Promised freshness and availability targets that pipelines are built and monitored against.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Two teams report different numbers for the same KPI",
+        fix: "Consolidate metric logic into one curated layer, publish definitions in the catalog, and deprecate duplicate tables.",
+      },
+      {
+        problem: "Warehouse costs spike after adding new domains",
+        fix: "Audit query patterns and partitioning, then tier cold data and right-size clustering on hot tables.",
+      },
+      {
+        problem: "Schema change upstream breaks downstream marts",
+        fix: "Enforce data contracts with compatibility checks and version the changed tables before migration.",
+      },
+      {
+        problem: "Nobody trusts the catalog because entries are stale",
+        fix: "Assign dataset owners, auto-sync metadata from pipelines, and add freshness badges to each entry.",
+      },
+      {
+        problem: "Retention rules conflict with audit needs",
+        fix: "Classify datasets by sensitivity, set tiered retention with archived snapshots, and document exceptions.",
+      },
+    ],
+    readiness: [
+      "Build conceptual and logical data models for transactional and analytical domains",
+      "Design warehouse and lakehouse architectures with zones, contracts, and SLAs",
+      "Develop governance frameworks covering quality, lineage, ownership, and retention",
+      "Evaluate platform tradeoffs across cost, latency, scalability, and maintainability",
+      "Explain cataloging practices that make datasets discoverable and reusable",
+      "Design data contracts that keep producers and consumers aligned",
+    ],
     audience: [
       "Data engineers",
       "Technology leaders",
@@ -7613,6 +12689,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Distributed batch processing",
+        definition:
+          "Splitting large datasets across many workers so jobs finish faster and survive node failures.",
+      },
+      {
+        term: "Partitioning",
+        definition:
+          "Dividing data by keys or time ranges so workers read and process only what they need.",
+      },
+      {
+        term: "Streaming windows",
+        definition:
+          "Grouping continuous events into fixed or sliding time buckets for aggregation.",
+      },
+      {
+        term: "Watermarks",
+        definition:
+          "Markers for how late event data may arrive before a streaming window is considered complete.",
+      },
+      {
+        term: "Exactly-once handling",
+        definition:
+          "Techniques like idempotent writes and checkpoints that prevent duplicate results in streams.",
+      },
+      {
+        term: "Lakehouse tables",
+        definition:
+          "Large-scale tables with transactions, schema evolution, and time travel over object storage.",
+      },
+      {
+        term: "Schema evolution",
+        definition:
+          "Adding or changing columns safely so old and new data stay readable by existing jobs.",
+      },
+      {
+        term: "Compaction",
+        definition:
+          "Merging many small files into fewer large ones to speed up reads and lower costs.",
+      },
+      {
+        term: "Skew analysis",
+        definition:
+          "Detecting when a few keys hog workers while others sit idle, then rebalancing the load.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Spark job crawls because one partition dwarfs the rest",
+        fix: "Inspect key distributions, salt the hot keys or repartition, and confirm worker runtimes even out.",
+      },
+      {
+        problem: "Streaming results show duplicates after a restart",
+        fix: "Enable checkpointing with idempotent sinks and verify exactly-once settings on the source and writer.",
+      },
+      {
+        problem: "Late events silently drop from windowed counts",
+        fix: "Tune watermarks and allowed lateness, then route overly late records to a side output for review.",
+      },
+      {
+        problem: "Lakehouse reads slow down as small files pile up",
+        fix: "Run compaction and vacuum on a schedule and check file counts per partition before and after.",
+      },
+      {
+        problem: "Schema change breaks existing batch jobs",
+        fix: "Apply evolution with added nullable columns, test readers against both versions, and pin table versions in jobs.",
+      },
+      {
+        problem: "Executors run out of memory on wide shuffles",
+        fix: "Reduce shuffle partitions, broadcast small joins, and profile memory per stage to find the heavy operator.",
+      },
+    ],
+    readiness: [
+      "Build distributed batch jobs with partitioning and fault tolerance",
+      "Design streaming topologies with windows, watermarks, and exactly-once handling",
+      "Develop lakehouse tables with schema evolution, compaction, and time travel",
+      "Evaluate job performance using metrics, skew analysis, and resource profiling",
+      "Deploy batch and streaming pipelines with checkpointing and recovery",
+      "Explain resource tradeoffs behind partition and cluster sizing choices",
+    ],
     audience: [
       "Data engineers",
       "Backend developers",
@@ -7724,6 +12881,85 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Use-case scoping",
+        definition:
+          "Narrowing a business problem to a measurable prediction task with clear success criteria.",
+      },
+      {
+        term: "Feature engineering",
+        definition:
+          "Turning raw fields into signals like recency, aggregates, and encodings that models can learn from.",
+      },
+      {
+        term: "Applied regression",
+        definition: "Predicting numeric outcomes such as demand or spend for planning decisions.",
+      },
+      {
+        term: "Applied classification",
+        definition:
+          "Sorting cases into categories such as churn or fraud risk for targeted action.",
+      },
+      {
+        term: "Recommendation-style models",
+        definition: "Ranking items or offers by estimated relevance to each customer or context.",
+      },
+      {
+        term: "Validation and handoff",
+        definition:
+          "Proving a model holds on unseen data and packaging it with docs so teams can use it.",
+      },
+      {
+        term: "Business-metric evaluation",
+        definition:
+          "Judging models by outcomes like reduced churn or forecast error cost, not just accuracy scores.",
+      },
+      {
+        term: "Ablation checks",
+        definition:
+          "Removing features or components one at a time to see which ones truly drive performance.",
+      },
+      {
+        term: "Feasibility checks",
+        definition:
+          "Confirming data coverage, label quality, and latency limits before committing to a modeling approach.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Model scores well offline but disappoints in review",
+        fix: "Realign on the business metric, re-split validation by time, and check for leakage from future-dated features.",
+      },
+      {
+        problem: "Churn model flags nearly everyone or no one",
+        fix: "Recalibrate thresholds against the cost of false positives and validate on a recent holdout window.",
+      },
+      {
+        problem: "Demand forecast collapses around promotions and holidays",
+        fix: "Add calendar and promotion features, split evaluation by event periods, and compare against a seasonal baseline.",
+      },
+      {
+        problem: "Recommendation list repeats the same popular items",
+        fix: "Add diversity rules and per-user features, then evaluate with rank metrics plus stakeholder spot checks.",
+      },
+      {
+        problem: "Stakeholders reject the handoff as unusable",
+        fix: "Package feature definitions, validation results, and refresh steps into a short handoff doc with a worked example.",
+      },
+      {
+        problem: "Performance swings between data refreshes",
+        fix: "Pin feature logic, track input distributions per refresh, and gate updates on ablation and stability checks.",
+      },
+    ],
+    readiness: [
+      "Build applied models for churn, demand, scoring, and recommendation-style problems",
+      "Design scoped ML use cases with success metrics and feasibility checks",
+      "Develop end-to-end workflows from data collection to validation and handoff",
+      "Evaluate solutions with business metrics, ablations, and stakeholder review",
+      "Explain feature choices and validation results to non-technical stakeholders",
+      "Deploy useful model handoffs with documentation and refresh guidance",
+    ],
     audience: [
       "Software developers",
       "Data analysts",
@@ -7835,6 +13071,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "beginner",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Network segmentation",
+        definition:
+          "Dividing a lab network into separate zones so a problem in one area stays contained and easier to monitor.",
+      },
+      {
+        term: "Security baseline",
+        definition:
+          "A standard safe configuration for systems that all machines are compared against to spot unwanted changes.",
+      },
+      {
+        term: "Endpoint hardening",
+        definition:
+          "Turning off unneeded services and tightening settings on Windows and Linux systems to reduce ways they can be attacked.",
+      },
+      {
+        term: "Log collection",
+        definition:
+          "Gathering event records from systems and network devices into one place for review and alerting.",
+      },
+      {
+        term: "Monitoring dashboard",
+        definition:
+          "A visual display of security events and system health built from log data to help spot unusual activity.",
+      },
+      {
+        term: "Vulnerability scanning",
+        definition:
+          "Using automated tools to check systems for known weaknesses that need patching or configuration fixes.",
+      },
+      {
+        term: "Remediation tracking",
+        definition:
+          "Recording found weaknesses, assigned fixes, and verification status on a shared board until resolved.",
+      },
+      {
+        term: "Defense in depth",
+        definition:
+          "Layering several protective controls so if one fails, others still guard the system.",
+      },
+      {
+        term: "Patch management",
+        definition:
+          "The routine process of testing and applying software updates to close known security gaps.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Lab virtual machines cannot reach each other across segmented zones",
+        fix: "Check virtual switch assignments and firewall rules for the zone; confirm each VM has the correct gateway and that inter-zone traffic is explicitly allowed where intended.",
+      },
+      {
+        problem: "Endpoint hardening checklist breaks a lab application login",
+        fix: "Compare the system against the baseline to find the changed setting, restore it in a test copy, and add an exception note with compensating controls.",
+      },
+      {
+        problem: "Monitoring dashboard shows no incoming log events",
+        fix: "Verify the log forwarder service is running and the time zones match, then send a test event and trace it from source to collector to dashboard query.",
+      },
+      {
+        problem: "Vulnerability scan reports stale or duplicate findings",
+        fix: "Confirm scan credentials and target ranges are current, remove retired lab hosts from scope, and rescan after reconciling the asset list.",
+      },
+      {
+        problem: "Remediation board items stay open with no owner",
+        fix: "Assign one owner and due date per item, link each to its scan evidence, and review aging items weekly until verified closed.",
+      },
+      {
+        problem: "Excessive false-positive alerts overwhelm the dashboard",
+        fix: "Tune noisy rules with allowlists and thresholds, document each tuning decision, and re-check that genuine test alerts still fire.",
+      },
+    ],
+    readiness: [
+      "Explain core defensive security principles and layered protection",
+      "Build hardened virtual lab networks with segmented zones",
+      "Design endpoint hardening checklists for Windows and Linux systems",
+      "Build security monitoring dashboards from collected log data",
+      "Evaluate vulnerability scan results and prioritize fixes",
+      "Deploy remediation tracking workflows from finding to verified closure",
+    ],
     audience: [
       "Students",
       "Career changers",
@@ -7948,6 +13265,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Least privilege",
+        definition:
+          "Giving cloud users and services only the permissions they need to do their task and nothing more.",
+      },
+      {
+        term: "Identity and access management",
+        definition:
+          "The set of users, roles, and policies that controls who can access which cloud resources.",
+      },
+      {
+        term: "Cloud guardrails",
+        definition:
+          "Preventive rules and defaults that keep lab accounts and projects within safe configurations.",
+      },
+      {
+        term: "Storage security",
+        definition:
+          "Settings such as private access, encryption, and versioning that protect data stored in cloud buckets and disks.",
+      },
+      {
+        term: "Network security groups",
+        definition:
+          "Virtual firewall rules that control which traffic can reach cloud workloads and subnets.",
+      },
+      {
+        term: "Centralized logging",
+        definition:
+          "Collecting cloud activity records from all projects into one store for searching and alerting.",
+      },
+      {
+        term: "Misconfiguration review",
+        definition:
+          "A structured check of cloud settings against safe defaults to find risky exposures before they matter.",
+      },
+      {
+        term: "Alerting pipeline",
+        definition:
+          "The path from a detected cloud event to a notification, with severity levels and routing to reviewers.",
+      },
+      {
+        term: "Encryption at rest",
+        definition:
+          "Protecting stored cloud data with encryption so it stays unreadable without the proper keys.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Lab users cannot access a resource they should be able to use",
+        fix: "Trace the effective permissions from user to group to role binding, check for an explicit deny, and correct the narrowest policy that grants the needed access.",
+      },
+      {
+        problem: "Storage bucket flagged as publicly exposed in a review",
+        fix: "Switch the bucket to private, re-apply the least-privilege bucket policy, and verify with a recheck plus an unauthenticated access test.",
+      },
+      {
+        problem: "Cloud activity logs stop arriving in the central store",
+        fix: "Check the log sink destination and its write permissions, confirm the source projects still have auditing enabled, and replay a test action to verify delivery.",
+      },
+      {
+        problem: "Alert pipeline sends duplicate or noisy notifications",
+        fix: "Group related events with thresholds and quiet hours for lab use, then confirm a controlled test action still produces exactly one alert.",
+      },
+      {
+        problem: "Network rules block legitimate lab workload traffic",
+        fix: "Review ingress and egress rules against the intended flow diagram, open only the required ports to the required sources, and log the change.",
+      },
+      {
+        problem: "Misconfiguration review shows drift after each lab reset",
+        fix: "Save the known-good configuration as a checklist or template, compare before and after each reset, and re-apply the guardrails consistently.",
+      },
+    ],
+    readiness: [
+      "Explain shared responsibility and safe cloud account organization",
+      "Build secure cloud lab accounts with projects and guardrails",
+      "Design least-privilege identity and access policies",
+      "Evaluate storage and network controls for lab workloads",
+      "Deploy centralized logging and alerting for cloud activity",
+      "Evaluate misconfiguration review findings and corrective actions",
+    ],
     audience: [
       "Cloud engineers",
       "DevOps practitioners",
@@ -8057,6 +13455,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Threat modeling",
+        definition:
+          "A structured walkthrough of how a sample app could be misused, used to pick defenses before coding.",
+      },
+      {
+        term: "Secure authentication",
+        definition:
+          "Verifying user identity with strong password handling, multi-factor options, and safe credential storage.",
+      },
+      {
+        term: "Session management",
+        definition:
+          "Creating, storing, and expiring user login sessions safely so they cannot be reused by others.",
+      },
+      {
+        term: "Input validation",
+        definition:
+          "Checking user-supplied data against expected rules on the server before the app acts on it.",
+      },
+      {
+        term: "Output encoding",
+        definition:
+          "Converting app output so browsers treat data as text rather than executable code, reducing injection effects.",
+      },
+      {
+        term: "Static application testing",
+        definition:
+          "Automated scanning of source code for risky patterns without running the program.",
+      },
+      {
+        term: "Dependency scanning",
+        definition:
+          "Checking third-party libraries used by an app for known vulnerabilities and safer versions.",
+      },
+      {
+        term: "Security pipeline gate",
+        definition:
+          "A checkpoint in the build process that blocks release when security checks fail.",
+      },
+      {
+        term: "Security code review",
+        definition:
+          "A focused peer review that looks for authentication, validation, and data-handling flaws with fix notes.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Threat model misses important parts of the sample app",
+        fix: "Redraw the data-flow diagram to include all inputs, APIs, and data stores, then revisit each trust boundary for misuse cases.",
+      },
+      {
+        problem: "Users get logged out unexpectedly after session control changes",
+        fix: "Check session timeout, cookie flags, and clock settings, then align them with the design and retest login and idle-expiry flows.",
+      },
+      {
+        problem: "Valid user input is rejected by new validation rules",
+        fix: "Review server-side allowlists against real expected formats, adjust the rule narrowly, and add test cases for valid and invalid examples.",
+      },
+      {
+        problem: "Static scan floods the pipeline with low-value warnings",
+        fix: "Prioritize high-confidence rules first, suppress documented false positives with reasons, and track remaining items to fix.",
+      },
+      {
+        problem: "Dependency scan flags a library with no safe upgrade available",
+        fix: "Check the advisory for mitigations, isolate the affected feature if possible, and schedule rechecks until a patched version is released.",
+      },
+      {
+        problem: "Security gate blocks every build after a pipeline change",
+        fix: "Run each check separately to find the failing step, correct its configuration or threshold, and rerun on a known-good commit.",
+      },
+    ],
+    readiness: [
+      "Explain common application risks and defensive design choices",
+      "Build threat models for sample web applications and APIs",
+      "Design secure authentication and session handling controls",
+      "Build input validation and output encoding defenses",
+      "Evaluate static and dependency scan findings for fixes",
+      "Deploy pipeline checks that gate releases on security results",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -8167,6 +13646,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Prompt safeguards",
+        definition:
+          "Input and output checks around an LLM app that keep interactions within intended and safe behavior.",
+      },
+      {
+        term: "Prompt injection",
+        definition:
+          "A trick where hidden instructions in user input or retrieved text try to make the model act against its intended rules.",
+      },
+      {
+        term: "Data leakage",
+        definition:
+          "Unintended exposure of private or sensitive information through model outputs, logs, or stored prompts.",
+      },
+      {
+        term: "Retrieval pipeline security",
+        definition:
+          "Protecting the documents and search steps that feed an AI app so only allowed content reaches the model.",
+      },
+      {
+        term: "Model access controls",
+        definition:
+          "Authentication and permission rules that decide which users and services may call an AI endpoint.",
+      },
+      {
+        term: "Output filtering",
+        definition:
+          "Reviewing generated text for disallowed or sensitive content before showing it to users.",
+      },
+      {
+        term: "Evaluation checklist",
+        definition:
+          "A repeatable set of test prompts and pass criteria used to check AI behavior for safety risks.",
+      },
+      {
+        term: "Endpoint logging",
+        definition:
+          "Recording who called a model, with what inputs and outputs, to support review and incident analysis.",
+      },
+      {
+        term: "Data minimization",
+        definition:
+          "Keeping only the training and log data truly needed, with retention limits and access restrictions.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Lab chatbot follows instructions hidden in pasted content",
+        fix: "Separate system instructions from untrusted input, add an output review step, and retest with the same injection examples to confirm refusal or safe handling.",
+      },
+      {
+        problem: "Model output reveals sensitive data from retrieval documents",
+        fix: "Restrict the retrieval index to approved documents, redact sensitive fields, and add output checks that block responses containing protected patterns.",
+      },
+      {
+        problem: "Evaluation results vary between runs on the same prompts",
+        fix: "Fix the test settings and dataset version, run each prompt multiple times, and record pass criteria so results are comparable.",
+      },
+      {
+        problem: "Legitimate prompts are blocked by overly strict safeguards",
+        fix: "Review blocked examples to find the triggering rule, narrow its pattern, and add the cases to a regression set for future tuning.",
+      },
+      {
+        problem: "Model endpoint logs miss key request details",
+        fix: "Confirm logging captures caller identity, timestamps, and redacted prompts and responses, then emit a test call and trace it end to end.",
+      },
+      {
+        problem: "Retrieval step returns irrelevant or unauthorized documents",
+        fix: "Check index permissions and chunk metadata, tighten access filters, and re-evaluate with a fixed question set.",
+      },
+    ],
+    readiness: [
+      "Explain defensive security risks unique to AI and LLM applications",
+      "Build safeguard patterns for LLM inputs and outputs in lab apps",
+      "Design data handling controls for training and retrieval pipelines",
+      "Evaluate LLM behavior with checklists for injection and leakage risks",
+      "Deploy access controls and logging for model endpoints",
+      "Design response steps for unsafe AI outputs in lab scenarios",
+    ],
     audience: [
       "AI engineers",
       "ML engineers",
@@ -8277,6 +13837,87 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "SIEM",
+        definition:
+          "A central system that collects, searches, and correlates security logs from many sources in one place.",
+      },
+      {
+        term: "Detection rule",
+        definition:
+          "A defined condition that raises an alert when log data matches a suspicious pattern.",
+      },
+      {
+        term: "Alert triage",
+        definition:
+          "The process of reviewing, prioritizing, and assigning new alerts based on severity and evidence.",
+      },
+      {
+        term: "Triage playbook",
+        definition:
+          "A step-by-step guide that tells analysts exactly what to check and do for each alert category.",
+      },
+      {
+        term: "Incident timeline",
+        definition:
+          "An ordered record of what happened, when, and what actions were taken during a security event.",
+      },
+      {
+        term: "Severity and SLA",
+        definition:
+          "Priority levels paired with expected response times so the most urgent cases get attention first.",
+      },
+      {
+        term: "Rule tuning",
+        definition:
+          "Adjusting detection thresholds and exceptions to reduce noise while keeping real threats visible.",
+      },
+      {
+        term: "Case management",
+        definition:
+          "Tracking alerts as cases with status, owner, notes, and evidence from open to resolved.",
+      },
+      {
+        term: "Threat indicator",
+        definition:
+          "A known sign such as a suspicious address or hash that helps analysts recognize related activity.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "SIEM dashboard shows gaps for expected log sources",
+        fix: "Verify each forwarder is connected and parsing correctly, compare event counts by source, and re-ingest a test event to confirm the pipeline.",
+      },
+      {
+        problem: "Detection rule fires hundreds of noisy alerts",
+        fix: "Add thresholds, exclusions for known benign lab activity, and tuning notes, then verify the rule still fires on a controlled true-positive test.",
+      },
+      {
+        problem: "Analysts follow different steps for the same alert type",
+        fix: "Update the playbook with exact queries, evidence to collect, and escalation criteria, then walk through it once on a sample alert.",
+      },
+      {
+        problem: "Incident timeline has missing or out-of-order events",
+        fix: "Synchronize source clocks, re-sort by normalized timestamps, and fill gaps from raw logs before finalizing the case notes.",
+      },
+      {
+        problem: "High-severity cases miss their response targets",
+        fix: "Review severity definitions and queue assignments, rebalance on-call coverage, and track SLA misses with corrective notes per case.",
+      },
+      {
+        problem: "Resolved cases lack evidence for later review",
+        fix: "Require linked queries, alert samples, and action notes before closure, and audit a sample of closed cases weekly.",
+      },
+    ],
+    readiness: [
+      "Explain SOC roles, alert flow, and escalation paths",
+      "Build SIEM dashboards from simulated endpoint and network logs",
+      "Design detection rules with tuning notes to reduce noise",
+      "Build triage playbooks for common alert categories",
+      "Evaluate incident evidence to construct clear timelines",
+      "Deploy case workflows with severity levels and response targets",
+    ],
     audience: [
       "Security practitioners",
       "Operations staff",
@@ -8387,6 +14028,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Log collection automation",
+        definition:
+          "Scripts and connectors that gather logs from endpoints, networks, and cloud sources into one place for analysis.",
+      },
+      {
+        term: "Log parsing and normalization",
+        definition:
+          "Converting varied log formats into consistent fields like timestamp, source, and severity so alerts are comparable.",
+      },
+      {
+        term: "Alert enrichment",
+        definition:
+          "Automatically adding context such as asset owner, threat reputation, or past activity to each alert before review.",
+      },
+      {
+        term: "SOAR-style playbooks",
+        definition:
+          "Step-by-step automated workflows that triage, enrich, and escalate alerts the same way every time.",
+      },
+      {
+        term: "Security API integration",
+        definition:
+          "Connecting lab tools through APIs so tickets, alerts, and evidence move between systems without manual copying.",
+      },
+      {
+        term: "Evidence collection workflow",
+        definition:
+          "Automated capture of logs, timestamps, and artifacts that document what happened during an incident.",
+      },
+      {
+        term: "Scheduled hygiene checks",
+        definition:
+          "Recurring automated jobs that verify patching, configurations, and account posture across lab systems.",
+      },
+      {
+        term: "Escalation logic",
+        definition:
+          "Rules that decide when an automated finding needs human review based on severity and confidence.",
+      },
+      {
+        term: "Automation reporting",
+        definition:
+          "Generated summaries of playbook runs, findings, and actions taken for tracking and improvement.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Playbook triggers on every log event and creates alert floods",
+        fix: "Check trigger filters and thresholds in the playbook, then narrow conditions to severity or pattern matches and re-test on a sample log set.",
+      },
+      {
+        problem: "API integration fails with authentication errors",
+        fix: "Verify the API key or token, its expiry, and required permissions, then test the connection with a single read call before re-enabling the workflow.",
+      },
+      {
+        problem: "Parsed log fields are missing or misaligned",
+        fix: "Inspect raw log samples against the parser pattern, correct field mappings or time formats, and re-run parsing on archived logs.",
+      },
+      {
+        problem: "Scheduled hygiene job never runs or runs twice",
+        fix: "Review the scheduler timezone, cron expression, and overlapping job locks, then check run history to confirm a single clean execution.",
+      },
+      {
+        problem: "Enriched alerts lack asset or owner context",
+        fix: "Confirm the asset inventory source is connected and current, repair the lookup key such as hostname or IP, and re-run enrichment on recent alerts.",
+      },
+    ],
+    readiness: [
+      "Build automation scripts that collect and parse logs from lab sources",
+      "Design SOAR-style playbooks for alert enrichment and escalation",
+      "Build API integrations that connect security lab tools",
+      "Deploy scheduled jobs for hygiene and posture checks",
+      "Explain how enrichment and escalation logic reduce manual triage effort",
+      "Evaluate playbook runs and reports to improve defensive workflows",
+    ],
     audience: [
       "Security practitioners",
       "DevOps practitioners",
@@ -8495,6 +14213,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Security gates in pipelines",
+        definition:
+          "Checkpoints in a delivery pipeline that block or flag builds when defensive scans find serious issues.",
+      },
+      {
+        term: "Secret handling",
+        definition:
+          "Practices for storing and injecting passwords, tokens, and keys safely so they never appear in code or logs.",
+      },
+      {
+        term: "Artifact protection",
+        definition:
+          "Controls that keep build outputs tamper-free through versioning, checksums, and restricted publishing.",
+      },
+      {
+        term: "Container image scanning",
+        definition:
+          "Automated checks of container images for known vulnerable packages and risky configurations before deployment.",
+      },
+      {
+        term: "Dependency scanning",
+        definition:
+          "Reviewing third-party libraries in a project for known vulnerabilities and outdated versions.",
+      },
+      {
+        term: "Infrastructure policy checks",
+        definition:
+          "Automated rules that verify lab infrastructure settings against allowed baselines before resources deploy.",
+      },
+      {
+        term: "Deployment guardrails",
+        definition:
+          "Approval steps and environment protections that prevent unsafe changes from reaching production-like labs.",
+      },
+      {
+        term: "Pipeline approvals",
+        definition:
+          "Defined review steps where a qualified person confirms security checks passed before release proceeds.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Pipeline gate blocks every build including safe changes",
+        fix: "Review gate thresholds and scan scope, distinguish blocking severities from warnings, and re-run the pipeline on a known-good sample.",
+      },
+      {
+        problem: "Secrets leak into build logs or committed files",
+        fix: "Search logs and history for the exposed value, rotate the secret, then move it to a managed secret store with masked pipeline variables.",
+      },
+      {
+        problem: "Image scan flags large numbers of low-risk findings",
+        fix: "Group findings by severity and fixability, update base images first, then document accepted low risks with review dates.",
+      },
+      {
+        problem: "Infrastructure policy check fails on valid lab templates",
+        fix: "Compare the template against the policy rule text, correct misnamed fields or regions, and validate with a minimal template.",
+      },
+      {
+        problem: "Dependency scan breaks after a version upgrade",
+        fix: "Check the lockfile and scanner version for format changes, pin versions, and re-run the scan on the prior known-good commit.",
+      },
+    ],
+    readiness: [
+      "Build pipeline stages with security gates and approval steps",
+      "Design secret handling and artifact protection workflows for sample services",
+      "Develop container image and dependency scanning checks",
+      "Deploy infrastructure policy checks for lab environments",
+      "Explain how deployment guardrails prevent unsafe releases",
+      "Evaluate scan results to prioritize defensive remediation",
+    ],
     audience: [
       "DevOps practitioners",
       "Platform engineers",
@@ -8604,6 +14394,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Layered defense",
+        definition:
+          "Stacking network, endpoint, and monitoring controls so one missed attack still meets another barrier.",
+      },
+      {
+        term: "Network security controls",
+        definition:
+          "Firewalls, segmentation, and filtering rules that limit how traffic moves between lab zones.",
+      },
+      {
+        term: "Endpoint defenses",
+        definition:
+          "Hardening, antivirus, and configuration controls that protect individual lab workstations and servers.",
+      },
+      {
+        term: "Detection coverage map",
+        definition:
+          "A chart showing which attack techniques are visible in network versus host telemetry and where gaps remain.",
+      },
+      {
+        term: "Host and network telemetry",
+        definition:
+          "Logs and sensor data from computers and network devices used to spot suspicious defensive events.",
+      },
+      {
+        term: "Deception sensors",
+        definition:
+          "Decoy systems and honeypots placed in isolated labs to attract and reveal attacker-like activity safely.",
+      },
+      {
+        term: "Response runbooks",
+        definition:
+          "Written step-by-step guides teams follow to contain, investigate, and recover from simulated incidents.",
+      },
+      {
+        term: "Coordinated response drills",
+        definition:
+          "Practice exercises where defenders rehearse roles, communication, and handoffs during a mock scenario.",
+      },
+      {
+        term: "Alert tuning",
+        definition:
+          "Adjusting detection thresholds and filters so real threats stand out with fewer false alarms.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Honeypot generates no alerts during a drill",
+        fix: "Verify network routes and firewall rules allow lab traffic to reach the sensor, then confirm the alerting agent is running and forwarding.",
+      },
+      {
+        problem: "Coverage map shows blind spots in host telemetry",
+        fix: "Audit which agents are installed and reporting, reinstall or reconfigure missing ones, and re-collect a day of logs.",
+      },
+      {
+        problem: "Runbook steps conflict between network and endpoint teams",
+        fix: "Walk through the runbook in a tabletop review, assign clear owners per step, and update handoff order before the next drill.",
+      },
+      {
+        problem: "Too many noisy alerts drown out drill objectives",
+        fix: "Raise thresholds or add exclusion filters for known lab noise, then re-baseline detection on a quiet capture window.",
+      },
+      {
+        problem: "Segmentation blocks legitimate lab monitoring traffic",
+        fix: "Trace the blocked flow in firewall logs, add a narrow allow rule for the monitoring collector, and re-test sensor visibility.",
+      },
+    ],
+    readiness: [
+      "Build layered defense layouts for lab networks and endpoints",
+      "Design detection coverage maps across network and host telemetry",
+      "Develop coordinated response runbooks for simulated scenarios",
+      "Deploy honeypots and alerting sensors in isolated labs",
+      "Explain how layered controls limit attacker movement",
+      "Evaluate drill results to close detection and response gaps",
+    ],
     audience: [
       "Security practitioners",
       "IT administrators",
@@ -8715,6 +14582,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Directory structure",
+        definition:
+          "Organized groups, roles, and naming standards that make user and system accounts easy to manage.",
+      },
+      {
+        term: "Least privilege",
+        definition:
+          "Giving each account only the permissions it needs so a compromised account causes less harm.",
+      },
+      {
+        term: "Multi-factor authentication (MFA)",
+        definition:
+          "Requiring two or more proofs of identity, such as a password plus a phone code, at sign-in.",
+      },
+      {
+        term: "Conditional access",
+        definition:
+          "Policies that allow or challenge sign-ins based on conditions like device, location, or risk level.",
+      },
+      {
+        term: "Joiner-mover-leaver workflow",
+        definition:
+          "Standard steps for creating, updating, and removing access as people join, change roles, or leave.",
+      },
+      {
+        term: "Approval trails",
+        definition:
+          "Recorded requests and approvals for access changes that show who authorized what and when.",
+      },
+      {
+        term: "Privileged access review",
+        definition:
+          "Periodic checks of high-power accounts to confirm each one is still needed and correctly scoped.",
+      },
+      {
+        term: "Just-in-time access",
+        definition:
+          "Granting elevated permissions only for a short approved window instead of permanently.",
+      },
+      {
+        term: "Directory monitoring",
+        definition:
+          "Watching sign-in and change logs for unusual identity activity such as mass permission grants.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "MFA rollout locks out legitimate lab users",
+        fix: "Check enrollment status and fallback methods, confirm time sync on authenticator apps, and provide temporary verified bypass with an expiry.",
+      },
+      {
+        problem: "Conditional access policy blocks an entire lab group",
+        fix: "Review policy conditions and assignments in audit logs, narrow the scope to the intended group, and test with a pilot account first.",
+      },
+      {
+        problem: "Leaver accounts retain access after departure",
+        fix: "Audit HR or roster feeds against the directory, disable orphaned accounts, and fix the workflow trigger that missed the event.",
+      },
+      {
+        problem: "Privilege review flags too many stale admin accounts",
+        fix: "Sort by last use and owner, remove or downgrade confirmed-stale accounts, and set shorter review cycles for remaining privileged roles.",
+      },
+      {
+        problem: "Just-in-time elevation never expires",
+        fix: "Inspect the time-bound policy and approval ticket linkage, correct the duration setting, and revoke lingering active elevations.",
+      },
+    ],
+    readiness: [
+      "Build directory structures with groups, roles, and naming standards",
+      "Design MFA and conditional access policies for lab tenants",
+      "Develop joiner-mover-leaver workflows with approval trails",
+      "Deploy privileged access reviews and just-in-time controls",
+      "Explain how least privilege reduces identity risk",
+      "Evaluate directory monitoring logs for unusual access activity",
+    ],
     audience: [
       "IT administrators",
       "Security practitioners",
@@ -8822,6 +14766,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Reference architecture",
+        definition:
+          "A reusable blueprint showing how identity, network, and data zones fit together securely.",
+      },
+      {
+        term: "Security zones",
+        definition:
+          "Separated network or data areas with different trust levels and controlled connections between them.",
+      },
+      {
+        term: "Control mapping",
+        definition:
+          "Linking each security control to the risk or requirement it addresses so coverage is visible.",
+      },
+      {
+        term: "Risk scenarios",
+        definition:
+          "Plain descriptions of what could go wrong and its impact, used to prioritize defensive designs.",
+      },
+      {
+        term: "Zero trust principles",
+        definition:
+          "Design rules that verify every user and device explicitly and grant only minimal access by default.",
+      },
+      {
+        term: "Zero-trust roadmap",
+        definition:
+          "A phased plan that moves an organization toward stronger identity, device, and data checks step by step.",
+      },
+      {
+        term: "Architecture review template",
+        definition:
+          "A standard checklist and document format for evaluating new systems before approval.",
+      },
+      {
+        term: "Defense in depth",
+        definition:
+          "Designing overlapping preventive, detective, and recovery controls across zones.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Control map shows overlapping controls with gaps elsewhere",
+        fix: "Realign each control to a single risk scenario, consolidate duplicates, and assign new controls to the uncovered scenarios.",
+      },
+      {
+        problem: "Zero-trust roadmap stalls on legacy lab systems",
+        fix: "Isolate legacy zones with strict gateways, set interim compensating controls, and sequence modernization by risk priority.",
+      },
+      {
+        problem: "Review template gets skipped or filled superficially",
+        fix: "Shorten required fields to decisions and risks, add example answers, and require sign-off before systems connect to shared zones.",
+      },
+      {
+        problem: "Reference architecture does not match actual lab zones",
+        fix: "Inventory deployed networks and identity stores, update the diagram to reality, and note approved exceptions separately.",
+      },
+      {
+        problem: "Stakeholders reject architecture as too complex",
+        fix: "Present a simplified zone view with phased milestones, tie each phase to a risk scenario, and collect feedback on priorities.",
+      },
+    ],
+    readiness: [
+      "Build reference architectures for identity, network, and data zones",
+      "Design control maps aligned to risk scenarios and requirements",
+      "Develop zero-trust roadmaps with phased defensive milestones",
+      "Deploy architecture review templates for new systems",
+      "Explain how zone design and control mapping manage risk",
+      "Evaluate proposed systems against architecture review criteria",
+    ],
     audience: [
       "Security practitioners",
       "Technology leaders",
@@ -8934,6 +14950,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Distributed ledger",
+        definition:
+          "A shared database replicated across many nodes where every participant holds a copy of the transaction history.",
+      },
+      {
+        term: "Consensus mechanisms",
+        definition:
+          "Rules such as proof of stake that let nodes agree on the next valid block without a central authority.",
+      },
+      {
+        term: "Smart contracts",
+        definition:
+          "Self-executing programs on the blockchain that enforce payment, access-control, or transfer logic automatically.",
+      },
+      {
+        term: "Fungible token standards",
+        definition:
+          "Interchangeable token formats where each unit is identical, used for payments and access credits.",
+      },
+      {
+        term: "Non-fungible token standards",
+        definition:
+          "Unique token formats where each token carries distinct metadata, used for collectibles and asset records.",
+      },
+      {
+        term: "Wallet integration",
+        definition:
+          "Connecting a decentralized application to user wallets so users can sign transactions and prove ownership.",
+      },
+      {
+        term: "Node integration",
+        definition:
+          "Connecting an application to a blockchain node to read chain state and submit transactions reliably.",
+      },
+      {
+        term: "Testnet deployment",
+        definition:
+          "Publishing contracts to a test network that mimics the main network so behavior can be verified safely.",
+      },
+      {
+        term: "Contract verification",
+        definition:
+          "Publishing source code alongside a deployed contract so anyone can confirm what the on-chain code does.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Transaction reverts with out-of-gas errors",
+        fix: "Estimate gas with the node client, raise the gas limit, and simplify storage writes in the failing function.",
+      },
+      {
+        problem: "Deployed contract behaves differently than local tests",
+        fix: "Confirm the network, compiler version, and constructor arguments match, then redeploy to the testnet and re-verify.",
+      },
+      {
+        problem: "Wallet fails to connect to the decentralized application",
+        fix: "Check the network ID and RPC endpoint in the app config, then re-request account access from the wallet.",
+      },
+      {
+        problem: "Token balances do not update after transfers",
+        fix: "Inspect approval allowances and transfer event logs, then fix the approval flow before retrying the transfer.",
+      },
+      {
+        problem: "Contract verification fails on the explorer",
+        fix: "Match the exact compiler version and optimization settings from deployment, then resubmit the flattened source.",
+      },
+    ],
+    readiness: [
+      "Explain how distributed ledgers and consensus establish trust without intermediaries",
+      "Build smart contracts for payments, access control, and asset transfers",
+      "Design fungible and non-fungible token contracts for digital assets",
+      "Build decentralized applications with wallet and node integration",
+      "Deploy smart contracts to test networks with verification workflows",
+      "Evaluate contract behavior for common failure and security risks",
+      "Deploy audited contract updates through repeatable release steps",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -9047,6 +15141,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Wallet-connected frontends",
+        definition:
+          "Web interfaces that connect to user wallets to display balances and initiate on-chain actions.",
+      },
+      {
+        term: "Transaction signing flows",
+        definition:
+          "The request, review, sign, and confirm sequence a user follows to approve a blockchain transaction.",
+      },
+      {
+        term: "Decentralized identity",
+        definition:
+          "Identity based on user-controlled keys and signatures rather than a central login database.",
+      },
+      {
+        term: "Signature-based authentication",
+        definition:
+          "Login by signing a challenge message with a wallet key so the app verifies ownership without a password.",
+      },
+      {
+        term: "Smart contract frontends",
+        definition:
+          "User interfaces that read contract state and write transactions through contract calls.",
+      },
+      {
+        term: "NFT minting",
+        definition:
+          "The process of creating a new unique token and recording its metadata on the blockchain.",
+      },
+      {
+        term: "NFT marketplace interactions",
+        definition:
+          "Listing, bidding, buying, and delisting flows that connect storefronts to marketplace contracts.",
+      },
+      {
+        term: "Testnet integration",
+        definition:
+          "Wiring a frontend to test-network contracts and faucets so flows can be tested without real funds.",
+      },
+      {
+        term: "Gas and confirmation UX",
+        definition:
+          "Interface patterns that explain fees, pending states, and confirmations so users understand transaction progress.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Wallet connection drops or shows the wrong network",
+        fix: "Detect the chain ID on load, prompt a network switch, and re-initialize the contract instances.",
+      },
+      {
+        problem: "Transaction stays pending and never confirms",
+        fix: "Check testnet gas price and nonce queue, then speed up or cancel and resubmit with updated fees.",
+      },
+      {
+        problem: "Signature login succeeds but session does not persist",
+        fix: "Verify the signed message, nonce expiry, and session storage handling, then fix nonce reuse.",
+      },
+      {
+        problem: "NFT metadata or images fail to load",
+        fix: "Validate the token URI and metadata JSON schema, then fix gateway URLs and add a fallback renderer.",
+      },
+      {
+        problem: "Contract reads return stale data after a write",
+        fix: "Wait for confirmation receipts before refreshing, then re-fetch state from the node instead of cache.",
+      },
+    ],
+    readiness: [
+      "Explain how wallets, keys, and signatures enable Web3 interaction",
+      "Build wallet-connected frontends with transaction signing flows",
+      "Design decentralized identity and authentication using signatures",
+      "Build NFT minting, listing, and marketplace interactions",
+      "Deploy Web3 frontends with testnet contract integrations",
+      "Evaluate transaction UX for fees, pending states, and errors",
+      "Deploy frontend updates that track contract address and ABI changes",
+    ],
     audience: [
       "Frontend developers",
       "Software developers",
@@ -9157,6 +15329,77 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    concepts: [
+      {
+        term: "Sensor circuits",
+        definition:
+          "Wiring that connects temperature, motion, and environmental sensors to a microcontroller for measurement.",
+      },
+      {
+        term: "Microcontrollers",
+        definition:
+          "Small programmable chips that read sensors, run firmware logic, and send data onward.",
+      },
+      {
+        term: "MQTT messaging",
+        definition:
+          "A lightweight publish-and-subscribe protocol that lets constrained devices send short messages efficiently.",
+      },
+      {
+        term: "Telemetry pipelines",
+        definition:
+          "The path sensor data follows from device to database to dashboard for monitoring.",
+      },
+      {
+        term: "Sampling and sleep modes",
+        definition:
+          "Firmware techniques that wake the device to take readings then sleep to save battery.",
+      },
+      {
+        term: "Threshold alerts",
+        definition: "Rules that trigger a notification when a reading crosses a configured limit.",
+      },
+      {
+        term: "Cloud dashboards",
+        definition: "Web views that chart live and historical device readings for operators.",
+      },
+      {
+        term: "Device provisioning",
+        definition:
+          "Registering each device with credentials and topics so it connects to the right messaging flows.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Sensor readings are noisy or drift over time",
+        fix: "Check wiring and power stability, add averaging and calibration offsets, then re-sample against a known reference.",
+      },
+      {
+        problem: "Device connects but MQTT messages never arrive",
+        fix: "Verify broker address, topic names, and credentials, then subscribe with a test client to isolate the break.",
+      },
+      {
+        problem: "Battery drains far faster than expected",
+        fix: "Measure wake time per cycle, lengthen sleep intervals, and disable unused peripherals in firmware.",
+      },
+      {
+        problem: "Dashboard shows gaps in telemetry",
+        fix: "Add local buffering with retry on reconnect, then backfill and confirm the ingestion rate limits.",
+      },
+      {
+        problem: "Alerts fire constantly or never fire",
+        fix: "Review threshold values and debounce windows, then tune hysteresis so brief spikes do not trigger.",
+      },
+    ],
+    readiness: [
+      "Explain how sensors, microcontrollers, and messaging form an IoT system",
+      "Build sensor circuits for temperature, motion, and environmental data",
+      "Design MQTT and HTTP messaging flows for constrained devices",
+      "Build firmware logic for sampling, sleep modes, and alerts",
+      "Deploy device telemetry to cloud dashboards and databases",
+      "Evaluate telemetry reliability under poor connectivity and power limits",
+      "Deploy registered devices with secure credentials and monitored topics",
+    ],
     audience: [
       "Software developers",
       "Cloud engineers",
@@ -9267,6 +15510,79 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Edge clusters",
+        definition:
+          "Small groups of compute nodes placed near devices so processing happens close to the data source.",
+      },
+      {
+        term: "Containerized edge workloads",
+        definition:
+          "Application code packaged in containers so it runs consistently on varied edge hardware.",
+      },
+      {
+        term: "Edge cluster topology",
+        definition:
+          "The arrangement of edge nodes, gateways, and cloud links designed for latency and resilience.",
+      },
+      {
+        term: "Stream processing",
+        definition:
+          "Analyzing continuous sensor or video data as it arrives rather than in batches.",
+      },
+      {
+        term: "Device fleet management",
+        definition:
+          "Registering, updating, and monitoring many edge devices and nodes from one control point.",
+      },
+      {
+        term: "Latency budgeting",
+        definition:
+          "Splitting a response-time target across sensing, network, and compute so each stage meets its share.",
+      },
+      {
+        term: "Offline resilience",
+        definition:
+          "Designing edge nodes to buffer data and keep serving locally when the cloud link drops.",
+      },
+      {
+        term: "Hardware-constrained optimization",
+        definition:
+          "Reducing image size, memory, and CPU use so workloads fit limited edge devices.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Edge inference latency exceeds the target",
+        fix: "Profile each pipeline stage, move hot processing closer to the sensor node, and trim model or frame size.",
+      },
+      {
+        problem: "Containers crash or get evicted on small edge nodes",
+        fix: "Check memory and CPU limits, shrink image layers, and set requests to match measured usage.",
+      },
+      {
+        problem: "Stream jobs fall behind during data bursts",
+        fix: "Inspect queue depth and partitioning, scale workers, and add backpressure with bounded buffers.",
+      },
+      {
+        problem: "Devices disconnect after network blips and never recover",
+        fix: "Add reconnect with backoff, local buffering, and health checks that re-register the fleet agent.",
+      },
+      {
+        problem: "Fleet updates leave nodes on mixed versions",
+        fix: "Pin versioned releases, roll out in staged groups, and roll back nodes that fail health verification.",
+      },
+    ],
+    readiness: [
+      "Explain how edge placement reduces latency versus cloud-only designs",
+      "Build containerized workloads optimized for edge hardware",
+      "Design edge cluster topologies for latency and resilience",
+      "Build stream processing jobs for sensor and video data",
+      "Deploy and monitor a managed fleet of edge devices",
+      "Evaluate edge pipelines for latency, throughput, and offline behavior",
+      "Deploy versioned updates across edge nodes with staged rollouts",
+    ],
     audience: [
       "Cloud engineers",
       "DevOps practitioners",
@@ -9378,6 +15694,79 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Digital twin",
+        definition:
+          "A living virtual replica of a physical asset that updates from real sensor data.",
+      },
+      {
+        term: "Geometric modeling",
+        definition:
+          "Building the 3D shape and layout of an asset so the twin matches the real object.",
+      },
+      {
+        term: "Behavioral modeling",
+        definition:
+          "Defining how an asset responds to inputs so the twin can mirror and predict its behavior.",
+      },
+      {
+        term: "Sensor fusion",
+        definition:
+          "Combining readings from multiple sensors into one consistent, accurate state estimate.",
+      },
+      {
+        term: "Real-time twin updates",
+        definition:
+          "Streaming telemetry into the twin so its state tracks the physical asset with minimal lag.",
+      },
+      {
+        term: "3D simulation dashboards",
+        definition:
+          "Interactive views that render the twin in 3D with live metrics and status overlays.",
+      },
+      {
+        term: "Predictive analytics",
+        definition:
+          "Using historical twin data to forecast failures or maintenance needs before they occur.",
+      },
+      {
+        term: "Twin data services",
+        definition:
+          "APIs and stores that ingest telemetry and serve current and historical twin state.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Twin state lags behind the physical asset",
+        fix: "Measure ingestion delay per stage, raise update frequency for key signals, and batch low-priority fields.",
+      },
+      {
+        problem: "Fused sensor values disagree or jump erratically",
+        fix: "Check timestamps and units per source, align clocks, then retune fusion weights and filters.",
+      },
+      {
+        problem: "3D view renders incorrectly or misses parts",
+        fix: "Validate model scale, coordinates, and asset IDs against the source geometry, then rebind the data mapping.",
+      },
+      {
+        problem: "Telemetry ingestion drops during spikes",
+        fix: "Add buffering and rate limits at the ingestion service, then replay missed batches from the device store.",
+      },
+      {
+        problem: "Predictions drift as equipment behavior changes",
+        fix: "Compare recent residuals against training baselines, then retrain thresholds on fresh labeled data.",
+      },
+    ],
+    readiness: [
+      "Explain how twins combine geometry, behavior, and live data",
+      "Build geometric and behavioral models of physical assets",
+      "Design sensor fusion pipelines for real-time twin updates",
+      "Build 3D visualizations and simulation dashboards",
+      "Deploy twin data services with live telemetry ingestion",
+      "Evaluate twin accuracy against physical measurements and logs",
+      "Deploy twin updates that track asset, sensor, and schema changes",
+    ],
     audience: [
       "Software developers",
       "Data engineers",
@@ -9488,6 +15877,82 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "12 weeks",
     level: "advanced",
     mode: "hybrid",
+    concepts: [
+      {
+        term: "Kinematics",
+        definition: "The math of how joints and wheels convert commands into positions and motion.",
+      },
+      {
+        term: "Motion constraints",
+        definition:
+          "Physical limits on joints, speed, and reach that safe robot motion must respect.",
+      },
+      {
+        term: "Control systems",
+        definition:
+          "Feedback loops that compare desired and actual motion and correct errors continuously.",
+      },
+      {
+        term: "Robot sensing",
+        definition:
+          "Using encoders, distance, and inertial sensors to measure what the robot is doing and what surrounds it.",
+      },
+      {
+        term: "ROS nodes",
+        definition:
+          "Small programs in the Robot Operating System that each handle one job like sensing or driving and exchange messages.",
+      },
+      {
+        term: "Perception pipelines",
+        definition:
+          "Processing sensor data to detect obstacles and features the robot must react to.",
+      },
+      {
+        term: "Navigation stacks",
+        definition:
+          "Combined mapping, localization, and planning layers that guide a mobile robot to its goal.",
+      },
+      {
+        term: "Path planning",
+        definition: "Computing a collision-free route from the current position to a target.",
+      },
+      {
+        term: "Obstacle avoidance",
+        definition:
+          "Reactive steering and stopping behaviors that keep the robot clear of unexpected objects.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Robot drifts or fails to drive straight",
+        fix: "Calibrate motor speeds and encoder ticks, then retune the controller gains on a flat test run.",
+      },
+      {
+        problem: "ROS nodes cannot communicate or topics are empty",
+        fix: "Confirm node names, topic spellings, and message types, then inspect connections with ROS topic tools.",
+      },
+      {
+        problem: "Localization jumps or loses track of position",
+        fix: "Check sensor mounting and odometry quality, then retune filter parameters in a mapped test area.",
+      },
+      {
+        problem: "Planner produces jerky or colliding paths",
+        fix: "Adjust costmap inflation, speed limits, and goal tolerances, then test in simulation before hardware.",
+      },
+      {
+        problem: "Obstacle avoidance reacts too late",
+        fix: "Raise sensor publish rates, shorten control loop timing, and lower maximum speed until stops are reliable.",
+      },
+    ],
+    readiness: [
+      "Explain how kinematics, sensing, and control produce robot motion",
+      "Build mobile robot assemblies with motors, sensors, and controllers",
+      "Design kinematic models and motion constraints for manipulators",
+      "Build ROS nodes for perception, navigation, and control",
+      "Deploy obstacle avoidance and path-planning behaviors",
+      "Evaluate robot runs for accuracy, stability, and safety margins",
+      "Deploy tested behaviors from simulation to physical robots",
+    ],
     audience: [
       "Software developers",
       "AI engineers",
@@ -9601,6 +16066,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "advanced",
     mode: "online",
+    concepts: [
+      {
+        term: "Perception pipelines",
+        definition:
+          "Vision and sensor stages that detect, track, and segment objects around a vehicle or drone.",
+      },
+      {
+        term: "Localization",
+        definition: "Estimating the vehicle's exact position by matching sensor data to a map.",
+      },
+      {
+        term: "Mapping",
+        definition:
+          "Building and updating a spatial model of the environment the system navigates.",
+      },
+      {
+        term: "Sensor fusion",
+        definition:
+          "Merging camera, lidar, radar, and inertial data into one reliable world model.",
+      },
+      {
+        term: "Path planning",
+        definition:
+          "Choosing a safe, efficient route that accounts for obstacles and traffic rules.",
+      },
+      {
+        term: "Decision logic",
+        definition:
+          "Rules and policies that select actions such as yielding, overtaking, or hovering in dynamic scenes.",
+      },
+      {
+        term: "Steering and braking control",
+        definition:
+          "Low-level controllers that convert planned trajectories into wheel and brake commands.",
+      },
+      {
+        term: "Flight control",
+        definition:
+          "Stabilization and guidance loops that keep a drone on its planned path in wind and uncertainty.",
+      },
+      {
+        term: "Simulation testing",
+        definition:
+          "Evaluating autonomy stacks in virtual scenarios before running on physical vehicles.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Detections flicker or miss objects in poor light",
+        fix: "Audit labeled edge cases, augment training data, and fuse complementary sensors to cover the gap.",
+      },
+      {
+        problem: "Localization drifts in tunnels or featureless areas",
+        fix: "Check sensor calibration and map freshness, then blend inertial odometry until features return.",
+      },
+      {
+        problem: "Planner freezes or oscillates in dense traffic",
+        fix: "Simplify the scenario, tune prediction horizons and safety margins, then re-test in simulation.",
+      },
+      {
+        problem: "Vehicle overshoots steering or brakes harshly",
+        fix: "Retune controller gains on logged trajectories and enforce acceleration and jerk limits.",
+      },
+      {
+        problem: "Simulation passes but physical tests behave differently",
+        fix: "Compare sensor noise and timing between sim and hardware, then close the gap with calibrated models.",
+      },
+    ],
+    readiness: [
+      "Explain how perception, localization, planning, and control form an autonomy stack",
+      "Build perception pipelines for detection, tracking, and segmentation",
+      "Design localization and mapping workflows with sensor fusion",
+      "Build path-planning and decision logic for dynamic environments",
+      "Deploy control systems for steering, braking, and flight",
+      "Evaluate autonomy runs in simulation for safety and edge cases",
+      "Deploy tested stacks from simulation to vehicles and drones with monitoring",
+    ],
     audience: [
       "AI engineers",
       "ML engineers",
@@ -9712,6 +16254,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Delivery Predictability",
+        definition:
+          "The ability to forecast what a team will ship and when, built from stable sprint planning, clear scope, and tracking of completed work over time.",
+      },
+      {
+        term: "Team Topologies",
+        definition:
+          "A way of organizing engineering groups into clear team types and roles so ownership, collaboration, and growth paths stay understandable.",
+      },
+      {
+        term: "Engineering Onboarding Plan",
+        definition:
+          "A structured first-weeks path of tasks, mentors, and checkpoints that helps a new engineer become productive and connected to the team.",
+      },
+      {
+        term: "DORA Metrics",
+        definition:
+          "Four delivery signals — deployment frequency, lead time, change failure rate, and recovery time — used to judge how healthy a team's shipping process is.",
+      },
+      {
+        term: "Capacity Planning",
+        definition:
+          "Estimating how much work a team can take on given people, skills, and time, so commitments are realistic and sustainable.",
+      },
+      {
+        term: "Coaching Conversations",
+        definition:
+          "Regular one-on-one discussions focused on goals, feedback, and growth, distinct from status updates or task check-ins.",
+      },
+      {
+        term: "Performance Review Calibration",
+        definition:
+          "A process where managers compare evaluations across engineers to keep ratings fair and consistent before finalizing reviews.",
+      },
+      {
+        term: "Operating Cadence",
+        definition:
+          "The repeating rhythm of standups, planning, reviews, and retros that keeps a team aligned and shipping reliably.",
+      },
+      {
+        term: "Quality Signals",
+        definition:
+          "Measures like defects, rework, and review findings that reveal whether speed is coming at the cost of product reliability.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Standups turning into long status meetings",
+        fix: "Diagnose by timing updates and noting repeat deep-dives, then reset the format to blockers and commitments and move detailed discussion to a parking lot.",
+      },
+      {
+        problem: "Unpredictable delivery with frequent scope spillover",
+        fix: "Check whether commitments exceed measured capacity, then shrink sprint scope, define done clearly, and track velocity over several sprints before forecasting.",
+      },
+      {
+        problem: "New hires slow to become productive",
+        fix: "Audit the onboarding path for missing buddies and starter tasks, then assign a mentor, sequence first-week tickets, and review progress at 30 days.",
+      },
+      {
+        problem: "Feedback only arriving at review time",
+        fix: "Look for gaps between one-on-ones, then start biweekly coaching conversations with written notes and one concrete growth action per session.",
+      },
+      {
+        problem: "Retros producing no lasting change",
+        fix: "Review past action items for follow-through, then limit each retro to one owner, one deadline, and a check-in at the next retro.",
+      },
+    ],
+    readiness: [
+      "Lead sprint planning, standups, reviews, and retros that improve predictability",
+      "Design team structures and roles for a growing engineering group",
+      "Build an onboarding plan that brings new engineers to productivity",
+      "Evaluate delivery metrics, capacity, and quality signals to guide decisions",
+      "Design feedback and coaching practices for working engineers",
+      "Build a performance review process that is fair and consistent",
+      "Explain how operating cadences connect daily work to reliable releases",
+    ],
     audience: [
       "Engineering managers",
       "Technology leaders",
@@ -9816,6 +16436,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Problem Framing",
+        definition:
+          "Defining the customer problem, who has it, and what success looks like before proposing features or technical scope.",
+      },
+      {
+        term: "User Stories and Acceptance Criteria",
+        definition:
+          "Short descriptions of user needs paired with testable conditions that tell engineers exactly when the work counts as done.",
+      },
+      {
+        term: "Product Requirements Document",
+        definition:
+          "A written spec covering goals, users, scope, constraints, and success measures that guides engineers through a build.",
+      },
+      {
+        term: "API Contracts",
+        definition:
+          "Agreed definitions of endpoints, inputs, outputs, and errors that let frontend, backend, and partner teams build against a shared interface.",
+      },
+      {
+        term: "Data Modeling for Products",
+        definition:
+          "Sketching the core entities, fields, and relationships a feature needs so integrations and storage decisions stay consistent.",
+      },
+      {
+        term: "Backlog Prioritization",
+        definition:
+          "Ordering work by customer value, effort, and technical constraints so the most important items get built first.",
+      },
+      {
+        term: "Outcome-Based Roadmaps",
+        definition:
+          "Plans organized around measurable results rather than feature lists, linking releases to the problems they solve.",
+      },
+      {
+        term: "Release Planning",
+        definition:
+          "Sequencing scope, dependencies, and rollout steps so a launch reaches users safely and on schedule.",
+      },
+      {
+        term: "Technical Constraints Analysis",
+        definition:
+          "Reviewing feasibility, dependencies, and limits with engineers so scope reflects what can actually be built and maintained.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Requirements engineers cannot build from",
+        fix: "Check stories for missing acceptance criteria and vague language, then rewrite them with testable conditions and walk through one example with the team.",
+      },
+      {
+        problem: "Scope creep mid-sprint",
+        fix: "Trace new requests back to the agreed problem statement, then park additions in the backlog and re-estimate before committing to changes.",
+      },
+      {
+        problem: "API integration breakage between teams",
+        fix: "Inspect whether the contract drifted without versioning, then freeze a shared contract, document changes, and add contract checks before merging.",
+      },
+      {
+        problem: "Roadmap churn from every stakeholder request",
+        fix: "Map requests to outcomes and effort, then re-rank the roadmap against agreed goals and publish what moved and why.",
+      },
+      {
+        problem: "Releases slipping on hidden dependencies",
+        fix: "List integration and data dependencies explicitly, then sequence the release plan around them with owners and fallback steps.",
+      },
+    ],
+    readiness: [
+      "Evaluate customer problems, usage data, and technical constraints to shape scope",
+      "Design product requirements engineers can build from",
+      "Build user stories with clear acceptance criteria",
+      "Architect API contracts and data models with developers",
+      "Evaluate integration requirements across systems and partners",
+      "Build prioritized backlogs tied to measurable outcomes",
+      "Design roadmaps and release plans linked to delivery sequencing",
+    ],
     audience: [
       "Product managers",
       "Software developers",
@@ -9921,6 +16619,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Reference Architecture",
+        definition:
+          "A standard blueprint showing how applications, data, and infrastructure should fit together so new systems follow a consistent pattern.",
+      },
+      {
+        term: "Platform Evaluation",
+        definition:
+          "Comparing frameworks, services, and vendors on fitness, cost, and longevity before committing the organization to a choice.",
+      },
+      {
+        term: "Integration Landscape",
+        definition:
+          "A map of how systems connect through APIs, events, and shared services, showing boundaries and points of reuse.",
+      },
+      {
+        term: "Shared Services",
+        definition:
+          "Common capabilities like identity or logging offered once centrally so product teams do not rebuild them separately.",
+      },
+      {
+        term: "Architecture Governance",
+        definition:
+          "The reviews, standards, and exception processes that keep technology decisions consistent across many teams.",
+      },
+      {
+        term: "Architecture Review Board",
+        definition:
+          "A cross-team forum that reviews major designs for risk, alignment, and reuse before they are approved to build.",
+      },
+      {
+        term: "Migration Planning",
+        definition:
+          "Sequencing the move from current systems to a target landscape in phases that limit risk and downtime.",
+      },
+      {
+        term: "Technology Standards",
+        definition:
+          "Approved choices for languages, platforms, and patterns that reduce duplication and simplify support.",
+      },
+      {
+        term: "Platform Boundaries",
+        definition:
+          "Clear lines showing what a platform provides versus what product teams own, preventing overlap and gaps.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Shadow platforms duplicating the same capability",
+        fix: "Inventory overlapping tools and their costs, then designate one shared service, publish its boundary, and route new requests through it.",
+      },
+      {
+        problem: "Review board seen as a rubber stamp or blocker",
+        fix: "Check whether reviews happen too late or lack criteria, then move reviews earlier, publish a checklist, and record decisions with rationale.",
+      },
+      {
+        problem: "Migration stalling halfway across systems",
+        fix: "Map remaining dependencies and owners, then re-sequence the plan into smaller phases with rollback steps and a named owner per phase.",
+      },
+      {
+        problem: "Standards ignored by delivery teams",
+        fix: "Find whether the standard is unclear or hard to adopt, then simplify the guidance, provide reference examples, and handle exceptions through a written request process.",
+      },
+      {
+        problem: "Integration sprawl with fragile point-to-point links",
+        fix: "Diagram current connections to spot duplication, then consolidate around shared integration patterns and retire one-off links per release.",
+      },
+    ],
+    readiness: [
+      "Architect enterprise reference architectures across applications, data, and infrastructure",
+      "Evaluate platforms, frameworks, and cloud services for long-term fitness",
+      "Design integration landscapes with clear shared services and boundaries",
+      "Build migration plans that sequence moves with limited risk",
+      "Govern architecture standards through reviews and exception processes",
+      "Explain platform choices and tradeoffs to technical and business partners",
+      "Design governance models that balance consistency with delivery speed",
+    ],
     audience: [
       "Technology leaders",
       "Engineering managers",
@@ -10024,6 +16800,78 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "End-to-End Solution Design",
+        definition:
+          "A complete blueprint from discovery through deployment and operations showing components, flows, and responsibilities.",
+      },
+      {
+        term: "Architecture Decision Records",
+        definition:
+          "Short written records capturing one decision, the options considered, and why the chosen path won, so future teams understand the reasoning.",
+      },
+      {
+        term: "Integration Patterns",
+        definition:
+          "Reusable ways for systems to connect, such as synchronous APIs, asynchronous events, file transfers, or third-party connectors.",
+      },
+      {
+        term: "Non-Functional Requirements",
+        definition:
+          "Constraints on performance, security, availability, and scale that a solution must meet alongside its features.",
+      },
+      {
+        term: "Delivery Estimation",
+        definition:
+          "Sizing effort, sequencing, and cost for a solution design so business sponsors can plan budgets and timelines.",
+      },
+      {
+        term: "Security by Design",
+        definition:
+          "Building authentication, authorization, and data protection into the solution from the start rather than adding them later.",
+      },
+      {
+        term: "Availability Design",
+        definition:
+          "Planning redundancy, failover, and recovery so a solution keeps running through failures at its required level.",
+      },
+      {
+        term: "Costed Solution Options",
+        definition:
+          "Comparing two or more design options with rough costs and tradeoffs so stakeholders can choose with full context.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Design rejected late for missing security needs",
+        fix: "Check non-functional requirements for gaps, then add identity, data protection, and audit needs to the design and re-review before costing.",
+      },
+      {
+        problem: "Integration failing under real data volumes",
+        fix: "Profile payload sizes and rates against the chosen pattern, then switch heavy flows to events or batches and retest at expected load.",
+      },
+      {
+        problem: "Estimates far below actual delivery cost",
+        fix: "Compare the estimate against operations and integration effort left out, then re-cost with run, support, and third-party fees included.",
+      },
+      {
+        problem: "Decisions revisited because rationale was lost",
+        fix: "Confirm no written record exists, then write a decision record per open choice with options, tradeoffs, and the agreed outcome.",
+      },
+      {
+        problem: "Solution missing operational ownership",
+        fix: "Trace each component to its run-and-support owner, then assign on-call, monitoring, and handover steps before deployment sign-off.",
+      },
+    ],
+    readiness: [
+      "Architect end-to-end solutions from discovery through deployment and operations",
+      "Design integration patterns across APIs, events, files, and third-party systems",
+      "Evaluate non-functional requirements for performance, security, and availability",
+      "Develop architecture decision records with options, tradeoffs, and rationale",
+      "Build costed solution designs with delivery estimates",
+      "Explain solution tradeoffs to business and engineering stakeholders",
+    ],
     audience: [
       "Technology leaders",
       "Backend developers",
@@ -10136,6 +16984,84 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Design Reviews",
+        definition:
+          "Structured sessions where engineers present a technical approach and peers probe risks, alternatives, and clarity before building.",
+      },
+      {
+        term: "Code Review Culture",
+        definition:
+          "Shared habits for giving timely, specific, kind feedback on changes so quality rises without slowing the team down.",
+      },
+      {
+        term: "Request for Comments",
+        definition:
+          "A written proposal circulated for async feedback, used to align on technical direction before committing to code.",
+      },
+      {
+        term: "Technical Standards",
+        definition:
+          "Agreed rules for testing, style, and documentation that keep a codebase consistent and maintainable.",
+      },
+      {
+        term: "Mentorship Plans",
+        definition:
+          "Goal-based pairings of mentor and mentee with regular sessions, practice tasks, and checkpoints for growth.",
+      },
+      {
+        term: "Pairing Routines",
+        definition:
+          "Scheduled sessions where two engineers work together on real tasks to spread knowledge and unblock tricky work.",
+      },
+      {
+        term: "Technical Tradeoff Analysis",
+        definition:
+          "Comparing approaches on effort, risk, and future cost so the team picks a pragmatic path and can explain it.",
+      },
+      {
+        term: "Influence Without Authority",
+        definition:
+          "Guiding decisions through clear writing, evidence, and relationships when you do not manage the people involved.",
+      },
+      {
+        term: "Code Stewardship",
+        definition:
+          "Ongoing care for code health through cleanup, ownership, and review habits that keep quality from decaying.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Review theater with rubber-stamp approvals",
+        fix: "Sample recent reviews for depth and turnaround, then set review checklists, require substantive comments, and rotate reviewers.",
+      },
+      {
+        problem: "RFCs ignored or decided before discussion",
+        fix: "Check whether the RFC window is too short or the decision is pre-baked, then publish a feedback deadline, list open questions, and respond to every comment.",
+      },
+      {
+        problem: "Standards documented but never followed",
+        fix: "Audit a sample of recent code against the standard, then pick three enforceable rules, automate checks where possible, and review the rest in design reviews.",
+      },
+      {
+        problem: "Mentorship fading after the first session",
+        fix: "Review whether pairs lack goals and cadence, then reset with one written goal, a biweekly slot, and a monthly progress check.",
+      },
+      {
+        problem: "Risk warnings not landing with non-technical partners",
+        fix: "Rewrite the tradeoff in business impact and options, then present the recommended path with cost, timeline, and what happens if deferred.",
+      },
+    ],
+    readiness: [
+      "Lead design reviews, code reviews, and RFC processes that raise quality",
+      "Architect pragmatic technical standards for testing, style, and documentation",
+      "Develop mentorship plans, pairing routines, and knowledge-sharing sessions",
+      "Evaluate technical tradeoffs and communicate risks to non-technical partners",
+      "Build review habits that balance rigor with delivery pace",
+      "Explain engineering direction through clear written proposals",
+      "Design knowledge-sharing practices that reduce single points of expertise",
+    ],
     audience: [
       "Software developers",
       "Backend developers",
@@ -10238,6 +17164,83 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "professional",
     mode: "online",
+    concepts: [
+      {
+        term: "Strategy Narrative",
+        definition:
+          "A written story linking technology bets to business goals so leaders and teams understand why each investment matters.",
+      },
+      {
+        term: "Portfolio Planning",
+        definition:
+          "Dividing engineering effort across new products, platforms, and maintenance so spending matches priorities.",
+      },
+      {
+        term: "Platform Leverage",
+        definition:
+          "Reusing shared platforms and tooling across teams to ship faster and with less duplicated effort.",
+      },
+      {
+        term: "Developer Experience",
+        definition:
+          "The quality of tools, environments, and workflows engineers use daily, which directly affects speed and morale.",
+      },
+      {
+        term: "Talent Systems",
+        definition:
+          "The combined practices for hiring, leveling, mobility, and succession that keep an engineering organization staffed and growing.",
+      },
+      {
+        term: "Operating Plans",
+        definition:
+          "Measurable quarterly or yearly plans with owners, milestones, and success signals tying strategy to execution.",
+      },
+      {
+        term: "Build Versus Reuse Analysis",
+        definition:
+          "Comparing the cost of building a capability in-house against reusing an existing platform or service.",
+      },
+      {
+        term: "Tech Debt Portfolio",
+        definition:
+          "A tracked list of maintenance and modernization needs, sized and prioritized alongside product work.",
+      },
+    ],
+    troubleshooting: [
+      {
+        problem: "Strategy deck ignored by delivery teams",
+        fix: "Check whether the narrative lacks measurable actions, then convert each bet into an operating plan with an owner, milestone, and success signal.",
+      },
+      {
+        problem: "All effort drifting to new features while platforms decay",
+        fix: "Measure the split across products, platforms, and maintenance, then rebalance the portfolio with a protected share for platform and upkeep work.",
+      },
+      {
+        problem: "Low reuse with every team rebuilding the same tooling",
+        fix: "Catalog duplicated efforts and their cost, then fund one shared platform, assign ownership, and track adoption per team.",
+      },
+      {
+        problem: "Hiring fast but leveling and mobility breaking down",
+        fix: "Audit leveling decisions and internal moves for consistency, then publish level expectations and a rotation path with review checkpoints.",
+      },
+      {
+        problem: "No way to tell if the strategy is working",
+        fix: "Confirm missing success signals, then attach one measurable indicator to each bet and review progress in a monthly operating review.",
+      },
+      {
+        problem: "Tech debt growing with no planned paydown",
+        fix: "List debt items with impact and effort, then schedule the top items into the portfolio alongside product commitments each cycle.",
+      },
+    ],
+    readiness: [
+      "Architect engineering strategy narratives linking technology bets to business goals",
+      "Evaluate portfolio investments across products, platforms, and maintenance",
+      "Design platform-leverage plans for reuse, developer experience, and speed",
+      "Develop talent systems covering hiring, leveling, mobility, and succession",
+      "Build measurable operating plans with owners and milestones",
+      "Explain engineering investment choices to business stakeholders",
+      "Evaluate progress against strategy signals and adjust course",
+    ],
     audience: [
       "Engineering managers",
       "Technology leaders",
