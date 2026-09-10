@@ -85,6 +85,44 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "beginner",
     mode: "online",
+    audience: [
+      "Students",
+      "Career changers",
+      "Software developers",
+      "Data analysts",
+      "Product managers",
+      "Operations staff",
+    ],
+    prerequisites: [
+      "No previous AI experience required",
+      "Basic computer literacy and web tools",
+      "Willingness to complete weekly hands-on exercises",
+    ],
+    technologies: [
+      "Generative AI models",
+      "Large language models",
+      "Prompt templates",
+      "AI chat tools",
+      "Embedding models",
+      "Vector databases",
+      "Python notebooks",
+    ],
+    projects: [
+      "Text generation playground",
+      "Summarization assistant",
+      "Prompt library collection",
+      "Knowledge Q&A prototype",
+      "Capstone: Generative AI foundations portfolio",
+    ],
+    skills: [
+      "Generative AI concepts",
+      "Prompt design",
+      "Text summarization",
+      "AI use-case mapping",
+      "Responsible AI basics",
+      "Prototype building",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Explain how modern LLMs are trained, served, and evaluated.",
       "Design prompts and structured outputs for reliable LLM behavior.",
@@ -112,6 +150,21 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
         answer:
           "Self-paced video modules plus weekly live office hours with HIGAET engineers and a private learner community.",
       },
+      {
+        question: "What will I build?",
+        answer:
+          "You will build a prompt library, a summarization workflow, and a capstone retrieval-grounded mini-app with evaluation notes.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as AI application developer, prompt engineer, chatbot developer, business analyst, and associate solutions engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Generative AI Foundations Course | HIGAET Academy",
@@ -138,6 +191,45 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Software developers",
+      "Backend developers",
+      "AI engineers",
+      "ML engineers",
+      "Data engineers",
+      "Career changers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and REST APIs",
+      "Familiarity with prompt experiments",
+      "Basic knowledge of cloud services",
+    ],
+    technologies: [
+      "Large language models",
+      "Orchestration frameworks",
+      "Evaluation harnesses",
+      "Observability tools",
+      "Retrieval pipelines",
+      "API gateways",
+      "Cost dashboards",
+      "CI pipelines",
+    ],
+    projects: [
+      "Orchestrated LLM application",
+      "Retrieval-augmented assistant",
+      "Offline evaluation pipeline",
+      "Observable LLM service",
+      "Capstone: Production LLM system with evals and cost controls",
+    ],
+    skills: [
+      "LLM orchestration",
+      "Retrieval integration",
+      "Evaluation pipelines",
+      "Observability setup",
+      "Cost control",
+      "Production deployment",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Architect LLM applications with clear separation of orchestration, retrieval, and tools.",
       "Build offline and online evaluation pipelines that catch regressions.",
@@ -155,6 +247,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Module 8 — Safety, abuse, and red-teaming",
       "Module 9 — Deployment patterns",
       "Module 10 — Capstone project review",
+    ],
+    faqs: [
+      {
+        question: "Who should take Applied LLM Engineering and what are the prerequisites?",
+        answer:
+          "This course is for software developers, ML practitioners, and backend engineers who want to build production LLM features. Prerequisites include working Python skills, basic API and Git familiarity, and comfort with JSON and command-line workflows.",
+      },
+      {
+        question: "What will I build in Applied LLM Engineering?",
+        answer:
+          "You will build a structured-output chatbot with tool calling, a document Q and A assistant with guardrails, and a capstone LLM microservice with logging, retries, and deployment-ready API endpoints.",
+      },
+      {
+        question: "What careers or roles does Applied LLM Engineering support?",
+        answer:
+          "Relevant roles include LLM Engineer, Applied AI Engineer, Backend Engineer for AI Features, AI Application Developer, Solutions Engineer, Platform Engineer, and Product Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Applied LLM Engineering Course | HIGAET Academy",
@@ -181,6 +295,44 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Software developers",
+      "Backend developers",
+      "AI engineers",
+      "Data engineers",
+      "Data scientists",
+      "ML engineers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and REST APIs",
+      "Basic understanding of large language models",
+      "Familiarity with databases and APIs",
+    ],
+    technologies: [
+      "Embedding models",
+      "Vector databases",
+      "Chunking tools",
+      "Retrieval frameworks",
+      "Reranking models",
+      "Large language models",
+      "Evaluation harnesses",
+    ],
+    projects: [
+      "Document ingestion pipeline",
+      "Semantic search service",
+      "Grounded Q&A assistant",
+      "Citation-aware RAG app",
+      "Capstone: Production RAG system with evaluation",
+    ],
+    skills: [
+      "Document chunking",
+      "Embedding pipelines",
+      "Vector retrieval",
+      "Grounded generation",
+      "Citation handling",
+      "RAG evaluation",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Choose chunking, embedding, and indexing strategies for your corpus.",
       "Diagnose retrieval failures using recall, precision, and groundedness metrics.",
@@ -194,6 +346,29 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 4 — Evaluating retrieval and generation",
       "Week 5 — Operating vector stores in production",
       "Week 6 — Capstone: a measurable RAG system",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take Retrieval-Augmented Generation Systems and what are the prerequisites?",
+        answer:
+          "This course is for developers, data engineers, and AI builders working with document search and grounded answers. Prerequisites include Python basics, familiarity with REST APIs, and basic understanding of embeddings and databases.",
+      },
+      {
+        question: "What will I build in Retrieval-Augmented Generation Systems?",
+        answer:
+          "You will build a chunking and indexing pipeline over sample docs, a cited Q and A system with reranking, and a capstone RAG service with evaluation checks and source-grounded responses.",
+      },
+      {
+        question: "What careers or roles does Retrieval-Augmented Generation Systems support?",
+        answer:
+          "Relevant roles include RAG Engineer, Search Engineer, Applied AI Engineer, Knowledge Systems Developer, Data Engineer, AI Solutions Engineer, and Support Automation Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "RAG Systems Course | HIGAET Academy",
@@ -229,10 +404,73 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "Self-paced exam window",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Software developers",
+      "AI engineers",
+      "ML engineers",
+      "Data engineers",
+      "Career changers",
+      "Cloud engineers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and REST APIs",
+      "Experience building LLM prototypes",
+      "Familiarity with deployment and monitoring basics",
+    ],
+    technologies: [
+      "Large language models",
+      "Prompt frameworks",
+      "Retrieval pipelines",
+      "Evaluation harnesses",
+      "Deployment platforms",
+      "Observability tools",
+      "Version control",
+      "API gateways",
+    ],
+    projects: [
+      "Designed AI solution blueprint",
+      "Built retrieval-grounded application",
+      "Evaluation and safety test suite",
+      "Operated deployment with monitoring",
+      "Capstone: End-to-end Generative AI engineering assessment",
+    ],
+    skills: [
+      "Solution design",
+      "Application building",
+      "Prompt operations",
+      "Evaluation methods",
+      "Deployment practices",
+      "System monitoring",
+      "Safety controls",
+    ],
+    hoursPerWeek: "5-7 hours/week",
     outcomes: [
       "Earn the HIGAET Certified Generative AI Engineer credential.",
       "Demonstrate competence across architecture, evaluation, and operations.",
       "Receive a verifiable digital badge accepted by HIGAET hiring partners.",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take Certified Generative AI Engineer and what are the prerequisites?",
+        answer:
+          "This course is for engineers and technical professionals preparing for applied generative AI engineering work. Prerequisites include intermediate Python, familiarity with APIs and cloud concepts, and basic machine learning vocabulary.",
+      },
+      {
+        question: "What will I build in Certified Generative AI Engineer?",
+        answer:
+          "You will build a prompt-to-prototype application, a multimodal content workflow with image and text inputs, and a capstone generative AI project with testing, documentation, and a demo walkthrough.",
+      },
+      {
+        question: "What careers or roles does Certified Generative AI Engineer support?",
+        answer:
+          "Relevant roles include Generative AI Engineer, AI Application Engineer, Prompt and Workflow Engineer, AI Prototyping Engineer, Solutions Architect, Forward Deployed Engineer, and Technical Consultant.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Certified Generative AI Engineer | HIGAET Academy",
@@ -264,10 +502,71 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "Self-paced exam window",
     level: "beginner",
     mode: "online",
+    audience: [
+      "Students",
+      "Career changers",
+      "Software developers",
+      "Product managers",
+      "Data analysts",
+      "Operations staff",
+    ],
+    prerequisites: [
+      "No previous AI experience required",
+      "Comfort with web applications and documents",
+      "Willingness to practice structured exercises",
+    ],
+    technologies: [
+      "Frontier language models",
+      "Prompt templates",
+      "Structured output schemas",
+      "Evaluation harnesses",
+      "Version control",
+      "Model playgrounds",
+      "Regression test suites",
+    ],
+    projects: [
+      "Prompt pattern collection",
+      "Structured output generator",
+      "Multi-model comparison study",
+      "Prompt regression suite",
+      "Capstone: Prompt operations portfolio with evaluation harness",
+    ],
+    skills: [
+      "Prompt design",
+      "Structured outputs",
+      "Output evaluation",
+      "Regression testing",
+      "Model comparison",
+      "Prompt operations",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Demonstrate disciplined prompt design across model families.",
       "Build evaluation harnesses for prompt quality and regression.",
       "Earn a verifiable HIGAET prompt engineering credential.",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take Certified Prompt Engineering Professional and what are the prerequisites?",
+        answer:
+          "This course is for writers, marketers, analysts, product staff, and developers who use LLMs daily. Prerequisites include basic computer skills, familiarity with a chat-based LLM tool, and comfort writing clear instructions.",
+      },
+      {
+        question: "What will I build in Certified Prompt Engineering Professional?",
+        answer:
+          "You will build a reusable prompt library for drafting and summarization, a structured-output template set for reports and briefs, and a capstone prompt playbook with before-and-after examples for a real workflow.",
+      },
+      {
+        question: "What careers or roles does Certified Prompt Engineering Professional support?",
+        answer:
+          "Relevant roles include Prompt Engineer, AI Content Specialist, Marketing Technologist, Business Analyst, Product Manager, Customer Operations Specialist, and Learning Designer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Certified Prompt Engineering Professional | HIGAET Academy",
@@ -303,6 +602,46 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "16 weeks",
     level: "intermediate",
     mode: "hybrid",
+    audience: [
+      "Software developers",
+      "Backend developers",
+      "Career changers",
+      "Data engineers",
+      "Cloud engineers",
+      "AI engineers",
+    ],
+    prerequisites: [
+      "Working proficiency in Python and Git",
+      "Experience building web APIs",
+      "Ability to commit to cohort schedule and reviews",
+    ],
+    technologies: [
+      "Large language models",
+      "Python",
+      "Orchestration frameworks",
+      "Vector databases",
+      "Evaluation harnesses",
+      "Deployment platforms",
+      "Version control",
+      "Portfolio tooling",
+    ],
+    projects: [
+      "LLM application build",
+      "Retrieval-grounded assistant",
+      "Evaluated deployment project",
+      "Open-source contribution project",
+      "Capstone: Generative AI engineer portfolio with interview narrative",
+    ],
+    skills: [
+      "Python application building",
+      "LLM integration",
+      "Retrieval systems",
+      "Evaluation practices",
+      "Deployment workflows",
+      "Code review collaboration",
+      "Technical communication",
+    ],
+    hoursPerWeek: "5-7 hours/week",
     outcomes: [
       "Ship four portfolio-grade Generative AI projects with HIGAET mentorship.",
       "Build a hiring-ready GitHub, resume, and interview narrative.",
@@ -319,6 +658,26 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
         question: "Is this full-time?",
         answer:
           "No. The bootcamp is designed for working professionals — expect 12–15 focused hours per week plus live weekend sessions.",
+      },
+      {
+        question: "Who should join the bootcamp?",
+        answer:
+          "Developers and career changers with working Python and Git skills who can commit to a cohort schedule with weekly reviews.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "You will build an LLM application, a retrieval-grounded assistant, an evaluated deployment, and a capstone portfolio project with an interview narrative.",
+      },
+      {
+        question: "What careers does this bootcamp support?",
+        answer:
+          "It supports roles such as AI engineer, LLM application developer, applied AI engineer, and backend engineer for AI features.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
       },
     ],
     metadata: {
@@ -351,10 +710,70 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    audience: [
+      "DevOps practitioners",
+      "Platform engineers",
+      "Cloud engineers",
+      "Backend developers",
+      "ML engineers",
+      "AI engineers",
+    ],
+    prerequisites: [
+      "Experience operating cloud services and APIs",
+      "Familiarity with LLM applications",
+      "Comfort with monitoring and incident workflows",
+    ],
+    technologies: [
+      "Observability platforms",
+      "Evaluation harnesses",
+      "Cost dashboards",
+      "Safety guardrails",
+      "Incident runbooks",
+      "CI pipelines",
+      "Model gateways",
+    ],
+    projects: [
+      "LLM observability setup",
+      "Evaluation-gated release pipeline",
+      "Cost control dashboard",
+      "Safety incident response drill",
+      "Capstone: Operated LLM workload with observability and incident plan",
+    ],
+    skills: [
+      "LLM observability",
+      "Evaluation gating",
+      "Cost management",
+      "Safety controls",
+      "Incident response",
+      "Release operations",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Stand up an end-to-end LLMOps stack with tracing, evals, and budgets.",
       "Run an incident response drill on a degraded LLM system.",
       "Translate model behavior into operational SLOs your business can trust.",
+    ],
+    faqs: [
+      {
+        question: "Who should take LLMOps Bootcamp and what are the prerequisites?",
+        answer:
+          "This course is for DevOps engineers, ML engineers, and backend developers responsible for shipping LLM systems. Prerequisites include Python and Git basics, familiarity with Docker and CI concepts, and comfort reading API logs.",
+      },
+      {
+        question: "What will I build in LLMOps Bootcamp?",
+        answer:
+          "You will build a versioned prompt and model deployment pipeline, an observability setup with latency and quality traces, and a capstone LLMOps release workflow with rollback steps and cost tracking.",
+      },
+      {
+        question: "What careers or roles does LLMOps Bootcamp support?",
+        answer:
+          "Relevant roles include LLMOps Engineer, MLOps Engineer, Platform Engineer, Site Reliability Engineer, AI Infrastructure Engineer, Release Engineer, and DevOps Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "LLMOps Bootcamp | HIGAET Academy",
@@ -385,10 +804,68 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "hybrid",
+    audience: [
+      "Technology leaders",
+      "Engineering managers",
+      "Product managers",
+      "Entrepreneurs",
+      "Operations staff",
+      "Researchers",
+    ],
+    prerequisites: [
+      "Experience managing teams or products",
+      "Basic familiarity with AI capabilities",
+      "No programming experience required",
+    ],
+    technologies: [
+      "AI capability maps",
+      "Use-case frameworks",
+      "Risk registers",
+      "Governance checklists",
+      "ROI models",
+      "Roadmap templates",
+    ],
+    projects: [
+      "AI opportunity assessment",
+      "Risk and governance map",
+      "AI roadmap draft",
+      "Capstone: AI strategy brief for leadership team",
+    ],
+    skills: [
+      "AI opportunity mapping",
+      "Risk assessment",
+      "Governance planning",
+      "Investment prioritization",
+      "Roadmap development",
+      "Stakeholder communication",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Build an AI opportunity portfolio mapped to business outcomes.",
       "Design an AI governance model appropriate to your sector.",
       "Lead AI investment conversations with confidence and rigor.",
+    ],
+    faqs: [
+      {
+        question: "Who should take AI Strategy for Leaders and what are the prerequisites?",
+        answer:
+          "This course is for managers, founders, directors, and non-technical leaders guiding AI adoption. Prerequisites include general business or product experience, with no coding required, plus familiarity with your team workflows.",
+      },
+      {
+        question: "What will I build in AI Strategy for Leaders?",
+        answer:
+          "You will build an AI opportunity map for your organization, a pilot proposal with success metrics and risk notes, and a capstone AI roadmap with phased rollout steps and governance checkpoints.",
+      },
+      {
+        question: "What careers or roles does AI Strategy for Leaders support?",
+        answer:
+          "Relevant roles include Product Manager, Program Manager, Operations Manager, Strategy Consultant, Innovation Lead, Department Head, Startup Founder, and Digital Transformation Lead.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "AI Strategy for Leaders | HIGAET Academy",
@@ -419,9 +896,66 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "2 days",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Software developers",
+      "AI engineers",
+      "Data scientists",
+      "ML engineers",
+      "Product managers",
+      "Quality engineers",
+    ],
+    prerequisites: [
+      "Basic familiarity with large language models",
+      "Comfort reading Python examples",
+      "No previous evaluation experience required",
+    ],
+    technologies: [
+      "Evaluation harnesses",
+      "Golden datasets",
+      "Scoring rubrics",
+      "Regression suites",
+      "Model playgrounds",
+      "Results dashboards",
+    ],
+    projects: [
+      "Golden set builder",
+      "Scoring rubric exercise",
+      "Regression test run",
+      "Capstone: LLM evaluation mini-suite with findings report",
+    ],
+    skills: [
+      "Golden set design",
+      "Quality scoring",
+      "Regression testing",
+      "Error analysis",
+      "Results reporting",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Author a golden-set evaluation suite for your own LLM workflow.",
       "Wire CI to fail builds on regressions in groundedness and quality.",
+    ],
+    faqs: [
+      {
+        question: "Who should take LLM Evaluation Workshop and what are the prerequisites?",
+        answer:
+          "This course is for builders and QA-minded practitioners who need to test LLM outputs. Prerequisites include basic Python or spreadsheet skills, familiarity with LLM chat tools, and comfort reviewing sample outputs against criteria.",
+      },
+      {
+        question: "What will I build in LLM Evaluation Workshop?",
+        answer:
+          "You will build a rubric-based grading set for sample responses, an automated check suite with golden examples, and a capstone eval report comparing two prompt versions with error analysis.",
+      },
+      {
+        question: "What careers or roles does LLM Evaluation Workshop support?",
+        answer:
+          "Relevant roles include AI QA Engineer, Evaluation Analyst, Prompt Engineer, Applied AI Engineer, Product Analyst, Trust and Safety Analyst, and Conversation Designer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "LLM Evaluation Workshop | HIGAET Academy",
@@ -452,10 +986,68 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "4–8 weeks (configurable)",
     level: "beginner",
     mode: "hybrid",
+    audience: [
+      "Operations staff",
+      "IT administrators",
+      "Product managers",
+      "Data analysts",
+      "Students",
+      "Engineering managers",
+    ],
+    prerequisites: [
+      "No previous AI experience required",
+      "Comfort with everyday office software",
+      "Willingness to complete applied exercises",
+    ],
+    technologies: [
+      "AI chat tools",
+      "Prompt templates",
+      "Data handling guides",
+      "Safety checklists",
+      "Use-case libraries",
+      "Collaboration platforms",
+    ],
+    projects: [
+      "Everyday prompting exercises",
+      "Safe data-handling walkthrough",
+      "Team use-case catalog",
+      "Capstone: Responsible AI use plan for team",
+    ],
+    skills: [
+      "AI fundamentals",
+      "Effective prompting",
+      "Safe data handling",
+      "Use-case identification",
+      "Responsible use practices",
+      "Team adoption planning",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Establish a shared AI vocabulary across business and technical teams.",
       "Equip every function with role-specific applied AI workflows.",
       "Roll out responsible-use guidelines aligned to your governance model.",
+    ],
+    faqs: [
+      {
+        question: "Who should take Enterprise AI Literacy Program and what are the prerequisites?",
+        answer:
+          "This course is for employees, team leads, and cross-functional staff adopting AI responsibly at work. Prerequisites include basic workplace software skills, with no programming required, and willingness to practice with approved AI tools.",
+      },
+      {
+        question: "What will I build in Enterprise AI Literacy Program?",
+        answer:
+          "You will build a safe-prompting checklist for everyday tasks, a before-and-after workflow using AI for drafting and summaries, and a capstone team guide covering use cases, limits, and data-handling rules.",
+      },
+      {
+        question: "What careers or roles does Enterprise AI Literacy Program support?",
+        answer:
+          "Relevant roles include Operations Associate, Customer Support Specialist, HR Coordinator, Marketing Associate, Sales Associate, Project Coordinator, Executive Assistant, and Data Entry Specialist.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Enterprise AI Literacy Program | HIGAET Academy",
@@ -490,6 +1082,44 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Software developers",
+      "Backend developers",
+      "AI engineers",
+      "Platform engineers",
+      "DevOps practitioners",
+      "Data engineers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and REST APIs",
+      "Familiarity with tool-calling concepts",
+      "Basic knowledge of client-server integration",
+    ],
+    technologies: [
+      "Model Context Protocol",
+      "MCP servers",
+      "MCP clients",
+      "Tool schemas",
+      "API connectors",
+      "Authentication controls",
+      "Test harnesses",
+    ],
+    projects: [
+      "MCP server build",
+      "Tool integration project",
+      "Secure MCP connector",
+      "Multi-tool agent workflow",
+      "Capstone: Production MCP-enabled assistant with tool suite",
+    ],
+    skills: [
+      "Protocol concepts",
+      "Server development",
+      "Tool schema design",
+      "Client integration",
+      "Access controls",
+      "Conformance testing",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Design MCP servers and function-calling contracts that survive real traffic.",
       "Orchestrate multi-tool workflows with state, retries, and human-in-the-loop.",
@@ -509,6 +1139,26 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
         question: "How is this different from the AI Agents program?",
         answer:
           "AI Agents goes wide on planning, multi-agent patterns, and operations. MCP Engineering goes deep on tool-use as a first-class engineering surface — server contracts, idempotency, and eval.",
+      },
+      {
+        question: "Who should take this course?",
+        answer:
+          "Developers comfortable with Python and REST APIs who want to build tool-using AI systems with contracts and evals.",
+      },
+      {
+        question: "What will I build?",
+        answer:
+          "You will build an MCP server with tool contracts, a secure connector, and a capstone tool-using assistant with an eval report.",
+      },
+      {
+        question: "What careers does this course support?",
+        answer:
+          "It supports roles such as MCP engineer, AI integration engineer, backend developer, and applied AI engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
       },
     ],
     metadata: {
@@ -541,6 +1191,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "AI engineers",
+      "ML engineers",
+      "Software developers",
+      "Data scientists",
+      "Product managers",
+      "Engineering managers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and REST APIs",
+      "Familiarity with LLM applications or RAG pipelines",
+      "Basic statistics and evaluation metrics",
+    ],
+    technologies: [
+      "LLM eval harnesses",
+      "Golden datasets",
+      "LLM-as-judge",
+      "Regression pipelines",
+      "Observability dashboards",
+      "Prompt versioning",
+      "Trajectory metrics",
+    ],
+    projects: [
+      "Golden-set eval suite for a Q&A assistant",
+      "LLM-as-judge grading pipeline",
+      "Regression harness for prompt changes",
+      "Capstone: End-to-end eval system with dashboards and guardrails",
+    ],
+    skills: [
+      "Eval dataset design",
+      "Groundedness measurement",
+      "Regression testing",
+      "Trajectory analysis",
+      "Failure-mode triage",
+      "Eval automation",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Author golden sets and eval harnesses for retrieval, generation, and tool-use.",
       "Run offline, online, and human-in-the-loop evaluations with clear SLOs.",
@@ -554,6 +1241,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 4 — Online evals: sampling, labeling, and feedback loops",
       "Week 5 — Regression testing in CI",
       "Week 6 — Capstone: an end-to-end eval suite",
+    ],
+    faqs: [
+      {
+        question: "Who should take AI Evals Engineering and what are the prerequisites?",
+        answer:
+          "This course is for engineers and technical evaluators building repeatable LLM test systems. Prerequisites include working Python skills, familiarity with test design and datasets, and basic statistics such as accuracy and pass rates.",
+      },
+      {
+        question: "What will I build in AI Evals Engineering?",
+        answer:
+          "You will build a dataset-backed eval harness with task-specific scorers, a regression suite for RAG and agent behaviors, and a capstone eval pipeline with dashboards and failure triage reports.",
+      },
+      {
+        question: "What careers or roles does AI Evals Engineering support?",
+        answer:
+          "Relevant roles include AI Evals Engineer, Quality Engineer for AI, Applied ML Engineer, Data Scientist, Test Automation Engineer, Model Risk Analyst, and AI Platform Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "AI Evals Engineering Course | HIGAET Academy",
@@ -580,6 +1289,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "AI engineers",
+      "Data engineers",
+      "Backend developers",
+      "Data scientists",
+      "Software developers",
+      "Researchers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and REST APIs",
+      "Basic familiarity with embeddings and databases",
+      "Understanding of data modeling concepts",
+    ],
+    technologies: [
+      "Knowledge graphs",
+      "Vector databases",
+      "Embedding models",
+      "Hybrid retrieval",
+      "Graph query languages",
+      "Reranking models",
+      "Entity resolution",
+    ],
+    projects: [
+      "Entity-grounded movie knowledge graph",
+      "Vector search index with hybrid ranking",
+      "Graph-augmented retrieval API",
+      "Capstone: Entity-grounded AI retrieval system with graph plus vector search",
+    ],
+    skills: [
+      "Graph modeling",
+      "Vector indexing",
+      "Hybrid ranking",
+      "Entity linking",
+      "Retrieval tuning",
+      "Schema design",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Model entities, relations, and constraints for graph-grounded retrieval.",
       "Operate vector stores with chunking, embeddings, and freshness controls.",
@@ -593,6 +1339,29 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 4 — Entity resolution and grounding",
       "Week 5 — Evaluating graph-augmented retrieval",
       "Week 6 — Capstone: a grounded retrieval system",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take Knowledge Graphs and Vector Systems and what are the prerequisites?",
+        answer:
+          "This course is for data engineers, backend developers, and AI engineers working with structured and semantic search. Prerequisites include basic Python and SQL, familiarity with JSON data, and introductory embeddings concepts.",
+      },
+      {
+        question: "What will I build in Knowledge Graphs and Vector Systems?",
+        answer:
+          "You will build an entity-and-relationship graph from sample records, a hybrid search service combining vectors and graph queries, and a capstone knowledge assistant with cited graph-backed answers.",
+      },
+      {
+        question: "What careers or roles does Knowledge Graphs and Vector Systems support?",
+        answer:
+          "Relevant roles include Knowledge Engineer, Graph Data Engineer, Search Engineer, Data Engineer, Semantic Search Developer, Ontology Analyst, and Applied AI Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Knowledge Graphs & Vector Systems Course | HIGAET Academy",
@@ -624,6 +1393,44 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Data engineers",
+      "AI engineers",
+      "ML engineers",
+      "Backend developers",
+      "Data scientists",
+      "Platform engineers",
+    ],
+    prerequisites: [
+      "Comfortable with Python and SQL",
+      "Familiarity with cloud storage and APIs",
+      "Basic data modeling knowledge",
+    ],
+    technologies: [
+      "Batch pipelines",
+      "Streaming systems",
+      "Data lakes",
+      "Feature stores",
+      "Data contracts",
+      "Workflow orchestration",
+      "Schema registries",
+    ],
+    projects: [
+      "Batch pipeline for AI training data",
+      "Streaming ingestion pipeline with contracts",
+      "Feature store for model and retrieval teams",
+      "Capstone: Production data platform serving ML and generative AI workloads",
+    ],
+    skills: [
+      "Pipeline design",
+      "Lakehouse modeling",
+      "Stream processing",
+      "Feature engineering",
+      "Data contract design",
+      "Orchestration",
+      "Data quality monitoring",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Design batch and streaming pipelines for AI workloads.",
       "Implement data quality, governance, and lineage that survives reorgs.",
@@ -639,6 +1446,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 6 — Governance, lineage, and cost",
       "Week 7 — Performance and scale",
       "Week 8 — Capstone: a production-grade pipeline",
+    ],
+    faqs: [
+      {
+        question: "Who should take Data Engineering for AI and what are the prerequisites?",
+        answer:
+          "This course is for software engineers, data analysts, and Python programmers moving into data engineering for AI workloads. Prerequisites include basic Python, basic SQL, and familiarity with command line and Git.",
+      },
+      {
+        question: "What will I build in Data Engineering for AI?",
+        answer:
+          "You will build a batch ETL pipeline with validation tests, a streaming ingestion pipeline for model features, and a capstone AI-ready data platform with curated datasets, feature tables, and documentation.",
+      },
+      {
+        question: "What careers or roles does Data Engineering for AI support?",
+        answer:
+          "Relevant roles include Data Engineer, AI Data Engineer, Analytics Engineer, ETL Developer, Data Platform Engineer, Machine Learning Data Specialist, and Data Operations Analyst.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Data Engineering for AI Course | HIGAET Academy",
@@ -670,6 +1499,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "hybrid",
+    audience: [
+      "ML engineers",
+      "AI engineers",
+      "DevOps practitioners",
+      "Data engineers",
+      "Software developers",
+      "Platform engineers",
+    ],
+    prerequisites: [
+      "Strong Python and ML workflow experience",
+      "Familiarity with containers and CI/CD",
+      "Experience training and versioning models",
+    ],
+    technologies: [
+      "Pipeline orchestration",
+      "Experiment tracking",
+      "Model registries",
+      "Container runtimes",
+      "CI/CD pipelines",
+      "Drift monitoring",
+      "Feature stores",
+    ],
+    projects: [
+      "Reproducible training DAG with experiment tracking",
+      "Model registry with staged promotion",
+      "Deployment pipeline with canary rollout",
+      "Capstone: Full ML lifecycle platform with drift-aware monitoring",
+    ],
+    skills: [
+      "Pipeline automation",
+      "Experiment management",
+      "Model versioning",
+      "Deployment orchestration",
+      "Drift detection",
+      "Reproducibility practices",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Stand up a pipeline with experiment tracking, model registry, and approval gates.",
       "Automate data, training, and evaluation with reproducible DAGs.",
@@ -683,6 +1549,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Module 4 — Deployment patterns and canaries",
       "Module 5 — Monitoring, drift, and rollback",
       "Module 6 — Capstone and operational review",
+    ],
+    faqs: [
+      {
+        question: "Who should take MLOps Pipeline Engineering and what are the prerequisites?",
+        answer:
+          "This course is for ML engineers, data scientists, and backend engineers who want to productionize ML systems. Prerequisites include Python, basic machine learning concepts, Git, and familiarity with APIs and containers.",
+      },
+      {
+        question: "What will I build in MLOps Pipeline Engineering?",
+        answer:
+          "You will build a versioned training pipeline with experiment tracking, a CI and CD pipeline for model deployment with monitoring, and a capstone end to end MLOps system with retraining, registry, and rollout controls.",
+      },
+      {
+        question: "What careers or roles does MLOps Pipeline Engineering support?",
+        answer:
+          "Relevant roles include MLOps Engineer, Machine Learning Engineer, ML Platform Engineer, Model Operations Analyst, AI Systems Engineer, DevOps Engineer for ML, and Applied ML Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "MLOps Pipeline Engineering | HIGAET Academy",
@@ -709,6 +1597,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "3 days",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Software developers",
+      "Frontend developers",
+      "Backend developers",
+      "AI engineers",
+      "Engineering managers",
+      "Entrepreneurs",
+    ],
+    prerequisites: [
+      "Comfortable with a modern programming language",
+      "Familiarity with git and terminal workflows",
+      "Basic experience building software projects",
+    ],
+    technologies: [
+      "Claude Code",
+      "AI coding agents",
+      "Prompt workflows",
+      "Repository context management",
+      "Automated testing",
+      "Code review tooling",
+      "Version control",
+    ],
+    projects: [
+      "AI-assisted CLI tool build",
+      "Agent-driven feature implementation",
+      "Tested refactor of a legacy module",
+      "Capstone: Production-quality app shipped with agentic coding workflows",
+    ],
+    skills: [
+      "Agentic coding workflows",
+      "Context engineering",
+      "Iterative prompting",
+      "Test-driven generation",
+      "Code review of AI output",
+      "Task decomposition",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Run verification-loop workflows that keep agentic code honest.",
       "Operate Claude Code across a real codebase with reviewable artifacts.",
@@ -718,6 +1643,30 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Day 1 — Agentic coding: when loops hold and when they don't",
       "Day 2 — Codebase-aware workflows and review",
       "Day 3 — Capstone: an agentic coding delivery",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take AI-native Software Engineering with Claude Code and what are the prerequisites?",
+        answer:
+          "This course is for developers, CS students, and technical founders who want to build software using Claude Code assisted workflows. Prerequisites include basic programming in JavaScript or Python, Git basics, and comfort using a code editor and terminal.",
+      },
+      {
+        question: "What will I build in AI-native Software Engineering with Claude Code?",
+        answer:
+          "You will build a CLI tool developed with AI-assisted planning and testing, a full-stack web app with AI-generated tests and refactors, and a capstone production-ready app with specs, review workflows, and documentation.",
+      },
+      {
+        question:
+          "What careers or roles does AI-native Software Engineering with Claude Code support?",
+        answer:
+          "Relevant roles include Software Engineer, Frontend Developer, Backend Developer, Full-Stack Developer, AI Tooling Specialist, QA Automation Engineer, and Developer Productivity Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "AI-native Software Engineering with Claude Code | HIGAET Academy",
@@ -749,6 +1698,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "advanced",
     mode: "online",
+    audience: [
+      "Software developers",
+      "Backend developers",
+      "AI engineers",
+      "ML engineers",
+      "Engineering managers",
+      "Platform engineers",
+    ],
+    prerequisites: [
+      "Strong backend or distributed systems experience",
+      "Familiarity with APIs, queues, and databases",
+      "Basic understanding of LLM applications",
+    ],
+    technologies: [
+      "Distributed systems",
+      "Load balancing",
+      "Caching layers",
+      "Message queues",
+      "Vector retrieval",
+      "Inference serving",
+      "Observability stacks",
+    ],
+    projects: [
+      "Scalable inference serving design",
+      "Retrieval-backed assistant architecture",
+      "Agentic workflow system with failure handling",
+      "Capstone: Interview-ready distributed AI system design with latency and cost analysis",
+    ],
+    skills: [
+      "Distributed architecture",
+      "Latency budgeting",
+      "Cost modeling",
+      "Failure-mode design",
+      "Scaling inference",
+      "Caching strategy",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Decompose requirements into scalable system architectures.",
       "Design for the AI-specific concerns: latency, cost, eval, and failure modes.",
@@ -764,6 +1750,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 6 — Cost, latency, and SLO design",
       "Week 7 — Failure modes and operability",
       "Week 8 — Mock reviews and design critiques",
+    ],
+    faqs: [
+      {
+        question: "Who should take System Design for the AI Era and what are the prerequisites?",
+        answer:
+          "This course is for backend engineers, full-stack developers, and engineering leads preparing for system design interviews and AI product work. Prerequisites include programming experience, basic API and database knowledge, and familiarity with cloud concepts.",
+      },
+      {
+        question: "What will I build in System Design for the AI Era?",
+        answer:
+          "You will design a scalable RAG service with retrieval and caching, an async AI inference architecture with queues and rate limits, and a capstone system design portfolio covering an AI product with diagrams, tradeoffs, and scaling plans.",
+      },
+      {
+        question: "What careers or roles does System Design for the AI Era support?",
+        answer:
+          "Relevant roles include Backend Engineer, Solutions Architect, Platform Engineer, AI Systems Designer, Cloud Architect, Technical Lead, and Infrastructure Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "System Design for the AI Era | HIGAET Academy",
@@ -795,6 +1803,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "8 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Cloud engineers",
+      "DevOps practitioners",
+      "Security practitioners",
+      "Backend developers",
+      "Platform engineers",
+      "IT administrators",
+    ],
+    prerequisites: [
+      "Familiarity with cloud consoles and Linux CLI",
+      "Basic networking and IAM concepts",
+      "Experience with CI/CD pipelines",
+    ],
+    technologies: [
+      "Cloud IAM",
+      "Container scanning",
+      "Infrastructure as code",
+      "Secrets management",
+      "CI security gates",
+      "Network policies",
+      "SIEM tooling",
+    ],
+    projects: [
+      "Hardened cloud landing zone with IAM guardrails",
+      "Secure CI/CD pipeline with image scanning",
+      "Secrets rotation and policy-as-code setup",
+      "Capstone: DevSecOps platform with continuous compliance monitoring",
+    ],
+    skills: [
+      "Threat modeling",
+      "IAM hardening",
+      "Pipeline security",
+      "Vulnerability remediation",
+      "Policy as code",
+      "Incident response basics",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Harden cloud control planes, network perimeters, and IAM with least privilege.",
       "Embed security into CI/CD with policy-as-code and supply-chain controls.",
@@ -810,6 +1855,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 6 — DevSecOps as a team practice",
       "Week 7 — Incident simulation",
       "Week 8 — Capstone: a hardened cloud deployment",
+    ],
+    faqs: [
+      {
+        question: "Who should take Cloud Security and DevSecOps and what are the prerequisites?",
+        answer:
+          "This course is for cloud engineers, DevOps practitioners, and developers responsible for secure deployments. Prerequisites include basic Linux, Git, networking fundamentals, and familiarity with a major cloud platform.",
+      },
+      {
+        question: "What will I build in Cloud Security and DevSecOps?",
+        answer:
+          "You will build a hardened CI and CD pipeline with secrets scanning and image checks, a cloud landing setup with IAM policies and logging, and a capstone secure deployment project with threat review and remediation runbooks.",
+      },
+      {
+        question: "What careers or roles does Cloud Security and DevSecOps support?",
+        answer:
+          "Relevant roles include DevSecOps Engineer, Cloud Security Engineer, Site Reliability Engineer, Platform Engineer, Security Operations Analyst, Cloud Administrator, and Release Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Cloud Security & DevSecOps Course | HIGAET Academy",
@@ -841,6 +1908,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Security practitioners",
+      "AI engineers",
+      "ML engineers",
+      "Technology leaders",
+      "Product managers",
+      "Engineering managers",
+    ],
+    prerequisites: [
+      "Familiarity with LLM applications and APIs",
+      "Basic security concepts such as auth and data handling",
+      "Understanding of software delivery lifecycles",
+    ],
+    technologies: [
+      "Prompt injection defenses",
+      "Red-teaming toolkits",
+      "Access controls",
+      "Audit logging",
+      "Content filtering",
+      "Model provenance",
+      "Policy frameworks",
+    ],
+    projects: [
+      "Threat model for an LLM application",
+      "Red-team exercise with mitigations",
+      "Logging and audit trail for AI actions",
+      "Capstone: Secure AI deployment plan with governance controls",
+    ],
+    skills: [
+      "AI threat analysis",
+      "Adversarial testing",
+      "Guardrail design",
+      "Audit readiness",
+      "Risk assessment",
+      "Secure deployment practices",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Map AI-specific attack surfaces: prompt injection, extraction, and abuse.",
       "Design governance controls mapped to regulation and enterprise policy.",
@@ -854,6 +1958,28 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 4 — Red-teaming and evaluation",
       "Week 5 — Policy, audit, and reporting",
       "Week 6 — Capstone: a secured AI system with governance packet",
+    ],
+    faqs: [
+      {
+        question: "Who should take AI Security and Governance and what are the prerequisites?",
+        answer:
+          "This course is for ML engineers, security analysts, product managers, and compliance staff working with AI systems. Prerequisites include basic understanding of ML or software systems, plus familiarity with data handling and access controls.",
+      },
+      {
+        question: "What will I build in AI Security and Governance?",
+        answer:
+          "You will build an AI risk assessment for a sample model deployment, a prompt injection and data leakage test suite, and a capstone AI security review package with controls, logging plan, and incident response checklist.",
+      },
+      {
+        question: "What careers or roles does AI Security and Governance support?",
+        answer:
+          "Relevant roles include AI Security Analyst, Product Security Engineer, AI Risk Analyst, Trust and Safety Analyst, Compliance Analyst for AI, Security Consultant, and AI Policy Analyst.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "AI Security & Governance Course | HIGAET Academy",
@@ -885,6 +2011,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "6 weeks",
     level: "beginner",
     mode: "online",
+    audience: [
+      "Students",
+      "Career changers",
+      "Data analysts",
+      "Product managers",
+      "Operations staff",
+      "Entrepreneurs",
+    ],
+    prerequisites: [
+      "No previous analytics experience required",
+      "Comfort with spreadsheets and basic math",
+      "Willingness to learn Python or SQL basics",
+    ],
+    technologies: [
+      "SQL",
+      "Spreadsheets",
+      "Python notebooks",
+      "Visualization libraries",
+      "Dashboards",
+      "Descriptive statistics",
+      "Data cleaning tools",
+    ],
+    projects: [
+      "Exploratory sales dataset analysis",
+      "SQL reporting pack with joins and aggregations",
+      "Interactive dashboard for KPI tracking",
+      "Capstone: End-to-end analytics report with findings and recommendations",
+    ],
+    skills: [
+      "Data wrangling",
+      "SQL querying",
+      "Descriptive analysis",
+      "Data visualization",
+      "Dashboard design",
+      "Insight communication",
+    ],
+    hoursPerWeek: "6-8 hours/week",
     outcomes: [
       "Query real datasets with readable, performant SQL.",
       "Clean, transform, and visualize data in Python.",
@@ -898,6 +2061,30 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 4 — Power BI: modeling and DAX",
       "Week 5 — Visualization and storytelling",
       "Week 6 — Capstone: an analytics portfolio piece",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take Data Analytics Fundamentals with SQL, Python and Power BI and what are the prerequisites?",
+        answer:
+          "This course is for beginners, career switchers, business analysts, and students starting in data analytics. No prior coding is required, though basic Excel and comfort with numbers are helpful.",
+      },
+      {
+        question: "What will I build in Data Analytics Fundamentals with SQL, Python and Power BI?",
+        answer:
+          "You will build SQL query projects for business reporting, Python notebooks for data cleaning and exploratory analysis, and a capstone Power BI dashboard with KPIs, filters, and insights from a real-world style dataset.",
+      },
+      {
+        question:
+          "What careers or roles does Data Analytics Fundamentals with SQL, Python and Power BI support?",
+        answer:
+          "Relevant roles include Data Analyst, Business Intelligence Analyst, Reporting Analyst, Operations Analyst, Marketing Analyst, Junior Data Analyst, and Business Analyst.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Data Analytics Fundamentals | HIGAET Academy",
@@ -924,6 +2111,44 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "10 weeks",
     level: "intermediate",
     mode: "hybrid",
+    audience: [
+      "Software developers",
+      "Frontend developers",
+      "Backend developers",
+      "AI engineers",
+      "Entrepreneurs",
+      "Product managers",
+    ],
+    prerequisites: [
+      "Comfortable with JavaScript and React basics",
+      "Familiarity with APIs and databases",
+      "Experience with git and Node tooling",
+    ],
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Edge runtime",
+      "Auth providers",
+      "Payment APIs",
+      "Observability tooling",
+      "LLM APIs",
+      "Relational databases",
+    ],
+    projects: [
+      "Typed Next.js app with auth and payments",
+      "RAG feature with structured outputs",
+      "Agent integration with production guardrails",
+      "Capstone: Production full-stack app with LLM features and observability",
+    ],
+    skills: [
+      "Full-stack TypeScript",
+      "Server rendering",
+      "API design",
+      "Auth integration",
+      "LLM feature integration",
+      "Testing and observability",
+    ],
+    hoursPerWeek: "5-7 hours/week",
     outcomes: [
       "Build a typed, tested full-stack app with auth, payments, and observability.",
       "Integrate LLM features (RAG, structured outputs, agents) production-grade.",
@@ -936,6 +2161,30 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Weeks 5–6 — Background jobs, queues, and observability",
       "Weeks 7–8 — LLM features: RAG and structured outputs",
       "Weeks 9–10 — Capstone: ship to production",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take Full-Stack Engineering with Next.js and AI Features and what are the prerequisites?",
+        answer:
+          "This course is for frontend and backend developers, bootcamp graduates, and JavaScript engineers moving to full-stack work. Prerequisites include JavaScript and React basics, Git, and familiarity with REST APIs.",
+      },
+      {
+        question: "What will I build in Full-Stack Engineering with Next.js and AI Features?",
+        answer:
+          "You will build a Next.js app with auth and database integration, an AI chat and search feature using an LLM API, and a capstone full-stack product with deployment, testing, and admin dashboard.",
+      },
+      {
+        question:
+          "What careers or roles does Full-Stack Engineering with Next.js and AI Features support?",
+        answer:
+          "Relevant roles include Full-Stack Developer, Frontend Engineer, Next.js Developer, Backend Engineer with Node, Web Application Developer, AI Features Developer, and Product Engineer.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "Full-Stack Engineering with Next.js | HIGAET Academy",
@@ -962,6 +2211,43 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
     duration: "4 weeks",
     level: "intermediate",
     mode: "online",
+    audience: [
+      "Technology leaders",
+      "Product managers",
+      "Engineering managers",
+      "Operations staff",
+      "Security practitioners",
+      "Entrepreneurs",
+    ],
+    prerequisites: [
+      "Familiarity with AI products or business processes",
+      "No advanced coding required",
+      "Interest in policy and risk management",
+    ],
+    technologies: [
+      "Risk registers",
+      "Policy templates",
+      "Impact assessments",
+      "Audit checklists",
+      "Incident playbooks",
+      "Documentation standards",
+      "Review boards",
+    ],
+    projects: [
+      "AI use-case risk register",
+      "Responsible-use policy draft",
+      "Pre-deployment review checklist",
+      "Capstone: Responsible deployment plan with governance model and monitoring",
+    ],
+    skills: [
+      "Risk framing",
+      "Policy drafting",
+      "Impact assessment",
+      "Stakeholder alignment",
+      "Oversight design",
+      "Responsible rollout planning",
+    ],
+    hoursPerWeek: "8-10 hours/week",
     outcomes: [
       "Map AI risks to concrete governance controls for your sector.",
       "Embed governance gates into the ML/GenAI delivery lifecycle.",
@@ -972,6 +2258,29 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
       "Week 2 — Risk mapping and control design",
       "Week 3 — Governance in the lifecycle: gates and reviews",
       "Week 4 — Reporting and assurance: a governance packet",
+    ],
+    faqs: [
+      {
+        question:
+          "Who should take AI Governance and Responsible Deployment and what are the prerequisites?",
+        answer:
+          "This course is for product leaders, operations teams, policy staff, and engineers involved in deploying AI responsibly. Prerequisites include general familiarity with AI products and organizational processes, no advanced coding required.",
+      },
+      {
+        question: "What will I build in AI Governance and Responsible Deployment?",
+        answer:
+          "You will build a responsible AI checklist and model documentation pack, an evaluation and bias review for a sample use case, and a capstone deployment governance plan with approval workflows, monitoring, and escalation procedures.",
+      },
+      {
+        question: "What careers or roles does AI Governance and Responsible Deployment support?",
+        answer:
+          "Relevant roles include AI Governance Analyst, Responsible AI Specialist, AI Program Manager, Risk and Compliance Analyst, AI Operations Manager, Trust and Safety Specialist, and Technology Policy Advisor.",
+      },
+      {
+        question: "What is the course fee?",
+        answer:
+          "The course fee is currently to be configured. Speak with a HIGAET advisor for the latest fee structure, cohort schedules, and available learning formats.",
+      },
     ],
     metadata: {
       title: "AI Governance & Responsible Deployment | HIGAET Academy",
