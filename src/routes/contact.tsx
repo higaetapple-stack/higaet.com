@@ -84,12 +84,6 @@ function ContactPage() {
                 value="+91 7780686821 (Mon–Sat, 10am–7pm IST)"
                 href="tel:+917780686821"
               />
-              <ContactBlock
-                icon={<Phone className="size-4" />}
-                title="Phone"
-                value="+91 9491927094 (Mon–Sat, 10am–7pm IST)"
-                href="tel:+919491927094"
-              />
             </div>
             <ContactBlock
               icon={<MapPin className="size-4" />}

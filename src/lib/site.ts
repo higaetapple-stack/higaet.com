@@ -70,13 +70,6 @@ export const ORG_JSONLD = {
       areaServed: "IN",
       availableLanguage: ["en"],
     },
-    {
-      "@type": "ContactPoint",
-      telephone: "+91-9491927094",
-      contactType: "customer service",
-      areaServed: "IN",
-      availableLanguage: ["en"],
-    },
   ],
   department: [
     {

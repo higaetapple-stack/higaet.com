@@ -52,11 +52,6 @@ export function Footer() {
                   +91 7780686821
                 </a>
               </li>
-              <li>
-                <a href="tel:+919491927094" className="hover:text-ink transition-colors">
-                  +91 9491927094
-                </a>
-              </li>
             </ul>
           </div>
 

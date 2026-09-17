@@ -127,10 +127,6 @@ function AdmissionsPage() {
                   <Phone className="size-4 text-academy" />{" "}
                   <a href="tel:+917780686821" className="underline">
                     +91 7780686821
-                  </a>
-                  {" / "}
-                  <a href="tel:+919491927094" className="underline">
-                    +91 9491927094
                   </a>{" "}
                   (Mon–Sat, 10am–7pm IST)
                 </li>

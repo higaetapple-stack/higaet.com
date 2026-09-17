@@ -38,10 +38,7 @@ export const LEAD_RECIPIENTS: Record<LeadDivisionKey, string> = {
   tech: CONTACT_EMAILS.partnerships,
 } as const;
 
-export const CONTACT_PHONES = [
-  { display: "+91 7780686821", href: "tel:+917780686821" },
-  { display: "+91 9491927094", href: "tel:+919491927094" },
-] as const;
+export const CONTACT_PHONES = [{ display: "+91 7780686821", href: "tel:+917780686821" }] as const;
 
 export const CONTACT_HOURS = "Mon–Sat, 10am–7pm IST" as const;
 
