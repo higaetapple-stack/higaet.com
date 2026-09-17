@@ -75,6 +75,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_genai_foundations",
+    introduction:
+      "Generative AI is the technology behind systems that write, summarize, and answer questions in fluent language, built on tokens, embeddings, and transformer models. It matters now because these models sit inside everyday tools for support, documents, and search, so anyone working with software or content needs a rigorous mental model of how they behave.\n\nIt is used to draft text, summarize long documents, and produce structured outputs like JSON for downstream applications, and it solves the problem of fluent first drafts at speed. It does not solve missing or wrong source data: a model will invent facts when asked beyond its evidence, it does not replace domain judgment, and dashboards of demo prompts do not prove reliability.\n\nBy the end the student will be able to build small text generation and summarization prototypes with consistent prompts, structured-output generators that parse reliably, and a basic evaluation check that scores model outputs against expected examples.",
+    whyExists:
+      "The gap is between a demo prompt that works once and a reliable mental model of tokens, context limits, fine-tuning trade-offs, and evaluation. The course teaches the arc from Model to Prompt to Context to Evaluation to responsible use, so students stop guessing and start designing prompts and checks that behave.",
     slug: "generative-ai-foundations",
     status: "published",
     visibility: "public",
@@ -258,6 +262,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_applied_llm_engineering",
+    introduction:
+      "Applied LLM engineering is the discipline of turning prompt experiments into production systems, combining orchestration, retrieval, tools, evals, observability, and cost control. It matters now because prototypes are easy while reliable LLM services that survive real traffic are rare and valuable.\n\nIt is used to build assistants and workflows that chain prompts, retrieval, and API tool calls with tracing and gated releases, solving multi-step tasks with grounded answers. It does not solve bad retrieval or missing evals: orchestration cannot fix irrelevant context, and monitoring dashboards do not fix unmeasured quality drift.\n\nBy the end the student will be able to build an orchestrated LLM application with separated retrieval and tool steps, an offline and online evaluation pipeline that catches regressions, and an observable deployment with tracing, cost controls, and rollback.",
+    whyExists:
+      "The gap is between a notebook demo and a production service where one silent step fails, costs spike, or quality drifts unnoticed. The course teaches the full arc from Model and Prompt through Context and Retrieval to Tools, Evaluation, Infrastructure, and Production, so engineers ship LLM systems that are observable and safe to change.",
     slug: "applied-llm-engineering",
     status: "published",
     visibility: "public",
@@ -443,6 +451,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_rag_systems",
+    introduction:
+      "Retrieval-Augmented Generation is the technique of answering from your own documents by chunking them, embedding them into a vector index, retrieving the best passages, and generating a cited answer. It matters now because organizations need assistants that answer from current internal knowledge rather than from a model's frozen training data.\n\nIt is used for document Q&A, support assistants, and search over policies or manuals, solving stale answers and invented facts by grounding responses in retrieved passages. It does not solve missing source data: RAG cannot answer what is not in the corpus, it does not fix bad chunking or stale indexes, and citations do not help if the underlying documents are wrong.\n\nBy the end the student will be able to build a document ingestion pipeline with chunking and embeddings, a vector search service with hybrid retrieval, reranking, and citation-aware answers, and a RAG evaluation suite measuring retrieval hit rate and answer faithfulness.",
+    whyExists:
+      "The gap is between a toy demo over ten documents and a pipeline that stays accurate, observable, and cheap as the corpus grows and goes stale. The course teaches the arc from Context to Retrieval to grounded generation to Evaluation to index operations, so students operate RAG that holds up at scale.",
     slug: "retrieval-augmented-generation-systems",
     status: "published",
     visibility: "public",
@@ -629,6 +641,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_cert_genai_engineer",
+    introduction:
+      "Generative AI engineering is the end-to-end practice of designing, building, and operating AI systems that combine models, prompts, retrieval, tools, evals, and safety controls. This credential matters now because employers need proof that an engineer can carry a system across design, build, and operate rather than just write a clever prompt.\n\nIt is used to deliver retrieval-grounded applications with structured outputs, evaluation harnesses, and monitored deployments with versioning and rollback. It does not solve shallow competence: a certificate cannot substitute for debugging real traces, and passing an assessment does not guarantee every future system will succeed without ongoing evals.\n\nBy the end the candidate will be able to produce a retrieval-grounded application with cited structured outputs, a repeatable evaluation and safety suite, and a versioned deployment with observability and rollback demonstrated under assessment conditions.",
+    whyExists:
+      "The gap is between scattered tutorials and validated competence across the whole arc from Model and Prompt through Context, Retrieval, Tools, Evaluation, Security, and Production. The credential exists to verify that arc in one proctored assessment spanning design, build, and operate.",
     slug: "certified-generative-ai-engineer",
     status: "published",
     visibility: "public",
@@ -799,6 +815,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cert_prompt_engineering",
+    introduction:
+      "Prompt engineering is the craft of writing instructions, examples, and output schemas that make frontier models behave consistently across tasks. It matters now because every team uses models daily, and small differences in framing decide whether outputs parse, stay on task, and survive model changes.\n\nIt is used to build reusable prompt patterns, few-shot templates, and structured-output generators for documents, extraction, and classification, solving inconsistency and unparseable answers. It does not solve missing knowledge or broken processes: prompts cannot fix absent source data, and versioning prompts does not help if nobody measures quality.\n\nBy the end the candidate will be able to produce a pattern-based prompt library with structured-output schemas, an evaluation harness scoring prompt quality across models, and a versioned prompt operations portfolio with regression suites.",
+    whyExists:
+      "The gap is between one-off clever prompts and prompt operations where wording changes are tested, versioned, and compared across models. The credential validates the arc from Prompt to structured Context to Evaluation to operations, proving repeatable mastery rather than luck.",
     slug: "certified-prompt-engineering-professional",
     status: "published",
     visibility: "public",
@@ -970,6 +990,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_bootcamp_ai_engineer",
+    introduction:
+      "AI engineering is the software discipline of shipping LLM-powered applications in Python, from APIs and orchestration frameworks through retrieval, evals, and deployment. It matters now because working engineers who can integrate models into tested, deployed services are the bottleneck for real adoption.\n\nIt is used to build grounded assistants and workflow tools inside a retailer, a support team, or an internal ops group, solving the jump from scripts to maintained services with reviews and tests. It does not solve fundamentals by itself: frameworks do not fix weak Python or missing evals, and a portfolio does not replace continued practice after the cohort.\n\nBy the end the student will be able to build a tested Python LLM application with API structure, a retrieval-grounded assistant wired through orchestration, and a deployed versioned service with evaluation results and a documented portfolio narrative.",
+    whyExists:
+      "The gap is between a competent coder and a Generative AI engineer who can design, evaluate, deploy, and explain a system end to end. The bootcamp teaches the arc from Model and Prompt through Context, Retrieval, Tools, Evaluation, and Production, with collaboration and communication layered on like a real team.",
     slug: "ai-engineer-bootcamp",
     status: "published",
     visibility: "public",
@@ -1149,6 +1173,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_bootcamp_llmops",
+    introduction:
+      "LLMOps is the operations discipline for running LLM workloads reliably: observability, evaluation-gated releases, cost management, guardrails, and incident response. It matters now because the costliest failures are silent quality decay, token-bill spikes, and safety incidents that no one detects until users complain.\n\nIt is used to run gateways with quotas and fallbacks, CI pipelines that block bad releases, and runbooks for outages and drift in live assistants. It does not solve bad product design: observability does not fix irrelevant retrieval, guardrails do not fix hostile requirements, and dashboards do not fix unactioned alerts.\n\nBy the end the student will be able to build LLM observability across prompts, tools, and outputs, an evaluation-gated release pipeline with cost and safety checks, and an incident runbook with guardrails, rollback steps, and stakeholder reporting.",
+    whyExists:
+      "The gap is between shipping a model endpoint and operating it through traffic spikes, drift, and incidents without losing trust or money. The bootcamp teaches the arc from Evaluation to Infrastructure to Security to Production, turning reactive firefighting into measured, gated operations.",
     slug: "llmops-bootcamp",
     status: "published",
     visibility: "public",
@@ -1315,6 +1343,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_exec_ai_strategy",
+    introduction:
+      "AI strategy is the leadership practice of converting hype into a funded portfolio: diagnosing where AI helps, scoping pilots with success metrics, and governing rollout responsibly. It matters now because every executive faces competing proposals and needs rigor to separate valuable bets from expensive distractions.\n\nIt is used to map opportunities across functions, prioritize investments by value and feasibility, and sequence roadmaps with governance checkpoints. It does not solve execution by itself: a roadmap does not write the pilot, metrics do not fix unclear ownership, and governance reviews do not help if they arrive after launch.\n\nBy the end the participant will be able to build an AI opportunity portfolio mapped to business outcomes, a pilot design with success metrics and risk notes, and a phased rollout roadmap with a governance model and investment narrative.",
+    whyExists:
+      "The gap is between scattered pilots that never graduate and a disciplined portfolio that moves from opportunity to pilot to graduate-or-stop decisions. The program teaches an arc from opportunity mapping to pilot design to metrics, governance, and investment prioritization, so leaders fund what works and stop what does not.",
     slug: "ai-strategy-for-leaders",
     status: "published",
     visibility: "public",
@@ -1470,6 +1502,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_workshop_evals",
+    introduction:
+      "LLM evaluation is the practice of proving a model change helped: golden sets, eval datasets, scoring rubrics, model judges, and regression pipelines. It matters now because LLM quality degrades silently, and without evals teams discover regressions from user complaints instead of from tests.\n\nIt is used to build smoke and full regression suites that run on every prompt or model change, with human sampling for what automatic scores miss. It does not solve bad coverage: evals cannot catch failure modes absent from the dataset, model judges do not fix vague rubrics, and dashboards do not fix stale golden answers.\n\nBy the end the student will be able to build a 20-item golden set with approved answers, a three-level scoring rubric with worked examples, and a before-and-after regression run with an error analysis and a one-page findings note.",
+    whyExists:
+      "The gap is between vibes-based prompt tweaking and evidence where every change is scored, ranked by failure impact, and gated before release. The workshop teaches the arc from golden sets and rubrics through judge calibration and regression to error analysis, compressing months of eval mistakes into two days.",
     slug: "llm-evaluation-workshop",
     status: "published",
     visibility: "public",
@@ -1627,6 +1663,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_enterprise_ai_literacy",
+    introduction:
+      "Enterprise AI literacy is the shared foundation that lets whole organizations use AI tools well: common vocabulary, effective prompting, safe data handling, and verification habits. It matters now because adoption stalls when every function invents its own words, pastes sensitive data into public tools, and trusts unchecked drafts.\n\nIt is used to run everyday workflows like drafting documents, summarizing meetings, and spotting repetitive tasks worth assisting, with norms for checking outputs against sources. It does not solve deep engineering: literacy does not build production pipelines, templates do not fix bad data, and training does not stick without champions and follow-up.\n\nBy the end a team will be able to build a shared prompt and template catalog for its workflows, a use-case catalog with responsible-use norms, and an adoption plan with champions, practice sessions, and safe-tooling guides.",
+    whyExists:
+      "The gap is between isolated enthusiasts and an organization where every function prompts, verifies, and handles data safely by default. The program teaches an arc from vocabulary to prompting to verification to responsible norms to sustained adoption, so habits survive after training ends.",
     slug: "enterprise-ai-literacy-program",
     status: "published",
     visibility: "public",
@@ -1795,6 +1835,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   // ============================================================
   {
     id: "academy_course_mcp_engineering",
+    introduction:
+      "MCP engineering turns language models into tool-using systems by exposing APIs through Model Context Protocol servers with strict schemas, auth, retries, and evaluation. It matters now because assistants are only useful when they can act on real internal tools and data without breaking under traffic.\n\nIt is used to build connectors and multi-tool agent workflows for a support team, an ops group, or an internal data service, solving discovery, calling, and result-grounding. It does not solve bad APIs or missing permissions: MCP cannot fix unreliable backends, schemas do not fix unclear tool semantics, and more tools do not help an agent that loops or ignores results.\n\nBy the end the student will be able to build an MCP server with function-calling contracts, a secure multi-tool connector with auth and retry handling, and a trajectory evaluation measuring groundedness across whole tool-call sequences.",
+    whyExists:
+      "The gap is between a demo that calls one tool once and a system whose calls survive malformed arguments, timeouts, and auth scopes in production. The course teaches the arc from Model to Tools to Context to Evaluation to Security to Production, so tool use stays reliable and checkable.",
     slug: "mcp-engineering",
     status: "published",
     visibility: "public",
@@ -1981,6 +2025,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_evals_engineering",
+    introduction:
+      "AI evaluation engineering is the discipline of proving that an AI system actually works — measuring accuracy, groundedness, and behavior change before users discover failures for you. It matters now because LLM outputs are probabilistic and silent regressions are the norm: a prompt tweak or model swap can degrade quality with no error in the logs.\n\nIt is used by product and platform teams to gate releases, compare models and prompts, and catch drift in production with golden sets and regression pipelines. It solves the problem of confident iteration on nondeterministic systems, but it does not solve missing product requirements or bad source data — an eval can only measure against a standard you have defined, and it cannot fix retrieval content that does not exist.\n\nBy the end you will be able to build an eval dataset with golden expected outputs, a model-and-prompt comparison harness with groundedness and trajectory scoring, and a regression pipeline that blocks degraded releases before they ship.",
+    whyExists:
+      "The gap is between a demo that looked good once and a production system that stays good across model updates, prompt edits, and shifting user inputs. This course teaches the arc from Model outputs to Prompt variants to Context and Retrieval quality to Tool trajectories to Evaluation gates that make releases safe, so students move from vibes-based testing to repeatable measurement.",
     slug: "ai-evals-engineering",
     status: "published",
     visibility: "public",
@@ -2161,6 +2209,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_knowledge_graphs_vectors",
+    introduction:
+      "Knowledge graphs and vector systems are the two complementary memories of modern AI: vectors find things that mean similar things, and graphs record the exact entities and relationships between them. Together they matter now because pure vector search hallucinates connections while pure rules cannot handle fuzzy language — hybrid retrieval grounds answers in both meaning and fact.\n\nThey are used by support teams, retailers, and research groups to power entity-grounded search, recommendations, and retrieval pipelines that need both semantic similarity and precise relationships. They solve fuzzy matching plus structured reasoning, but they do not solve missing or dirty source data — a graph built on stale records still returns stale answers, and embeddings cannot invent knowledge that was never ingested.\n\nBy the end you will be able to build a vector search index with hybrid ranking, an entity-grounded retrieval pipeline that joins graph traversals with semantic recall, and a knowledge-backed Q&A system that cites its sources.",
+    whyExists:
+      "The gap is between a toy semantic-search demo over clean sample data and a production retrieval system that stays accurate over messy, changing entity data at scale. The course teaches the arc from Model embeddings to Context chunking to Retrieval with hybrid ranking to Tools over graph stores to Evaluation of groundedness, so students can ship retrieval that is both flexible and trustworthy.",
     slug: "knowledge-graphs-and-vector-systems",
     status: "published",
     visibility: "public",
@@ -2347,6 +2399,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_data_engineering_ai",
+    introduction:
+      "Data engineering for AI is the practice of building the pipelines, lakes, and streaming systems that feed machine learning and generative AI reliably in production. It matters now because models only perform as well as the data behind them — stale features, broken pipelines, and missing contracts silently degrade everything downstream.\n\nIt is used by data and ML teams to move batch and streaming data into lakes, feature stores, and retrieval indexes that serve training and inference. It solves freshness, reproducibility, and scale for AI workloads, but it does not solve bad modeling choices or unclear product decisions — a perfect pipeline carrying the wrong schema still produces the wrong behavior.\n\nBy the end you will be able to build a batch and streaming pipeline for AI workloads, a feature store with data contracts for model and retrieval teams, and a production-grade data lake setup that serves both training and inference.",
+    whyExists:
+      "The gap is between a notebook trained on a static CSV and a production AI system fed by live, versioned, monitored data. The course teaches the arc from Sources to Pipelines to Models and feature stores to Decisions served reliably, so students learn to build the data foundation that makes ML and generative AI actually work.",
     slug: "data-engineering-for-ai",
     status: "published",
     visibility: "public",
@@ -2535,6 +2591,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_mlops_pipeline",
+    introduction:
+      "MLOps pipeline engineering is how machine learning moves from an experiment on one laptop to a deployed model that stays reliable over time. It matters now because models decay — data drifts, upstream schemas change, and an untracked training run cannot be reproduced when something breaks.\n\nIt is used by ML and platform teams to automate data preparation, training, evaluation, and deployment with reproducible DAGs, registries, and drift-aware monitoring. It solves reproducibility, safe rollout, and ongoing observability, but it does not solve choosing the wrong problem or the wrong model — a perfectly orchestrated pipeline around a poorly framed task still ships poor outcomes.\n\nBy the end you will be able to build a reproducible training DAG with versioned data and experiments, a model registry with staged deployment gates, and a drift-aware monitoring pipeline that flags degradation in production.",
+    whyExists:
+      "The gap is between a notebook with good offline metrics and a production model that survives data drift, retraining, and rollback pressure. The course teaches the arc from experiment tracking to pipeline automation to registry and deployment to monitoring and retraining, so students can operate the full ML lifecycle instead of shipping one-off models.",
     slug: "mlops-pipeline-engineering",
     status: "published",
     visibility: "public",
@@ -2715,6 +2775,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_claude_code_engineering",
+    introduction:
+      "Claude Code engineering is the craft of building real software with AI coding agents — steering them through specs, tests, and review instead of pasting snippets and hoping. It matters now because agent-assisted coding multiplies output but also multiplies the speed at which bugs, security holes, and architectural drift can enter a codebase.\n\nIt is used by software teams to scaffold features, refactor systems, and keep velocity high while holding quality through specs, tests, and review gates. It solves boilerplate speed and large-scale edits, but it does not solve unclear requirements or bad architecture — an agent will faithfully generate the wrong system faster if the design and acceptance criteria are missing.\n\nBy the end you will be able to build a spec-driven feature with agent-generated code and tests, a reviewed pull request workflow with AI-assisted checks, and a small production service shipped start to finish with agent assistance.",
+    whyExists:
+      "The gap is between a fun demo of generated code and a production codebase that stays tested, secure, and maintainable under agent-assisted velocity. The course teaches the arc from Idea to Design to Code to Test to Deploy and Operate with agents in the loop, so students learn to direct AI coders rather than inherit their mistakes.",
     slug: "ai-native-software-engineering-with-claude-code",
     status: "published",
     visibility: "public",
@@ -2898,6 +2962,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_system_design_ai_era",
+    introduction:
+      "System design for the AI era is the discipline of architecting distributed systems that carry LLM, retrieval, and agentic workloads without collapsing under latency, cost, or failure cascades. It matters now because AI features impose new pressures — token latency, GPU costs, eval-gated deploys, and nondeterministic failures — on top of every classic distributed-systems problem.\n\nIt is used by backend and platform teams to design APIs, queues, caches, and retrieval layers that keep AI products fast, affordable, and resilient. It solves scale, fault tolerance, and cost control for AI workloads, but it does not solve bad product framing or missing evaluation — elegant architecture cannot rescue a system whose quality bar was never defined.\n\nBy the end you will be able to build a distributed design for an LLM-powered product with latency and cost budgets, a retrieval-backed service design with caching and fallback paths, and an interview-ready architecture walkthrough covering trade-offs and failure modes.",
+    whyExists:
+      "The gap is between drawing boxes for a take-home exercise and designing systems that survive real AI traffic with its latency, cost, and eval constraints. The course teaches the arc from requirements to data and retrieval design to serving infrastructure to evaluation and operations, so students can reason about trade-offs the way production and interview rooms demand.",
     slug: "system-design-for-the-ai-era",
     status: "published",
     visibility: "public",
@@ -3085,6 +3153,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cloud_security_devsecops",
+    introduction:
+      "Cloud security and DevSecOps is the practice of shipping software fast without shipping vulnerabilities — baking identity, secrets, scanning, and policy into the deployment pipeline itself. It matters now because cloud estates grow faster than any manual review process, and a single misconfigured bucket or leaked secret can undo months of product work.\n\nIt is used by cloud, platform, and DevOps teams to secure infrastructure as code, container pipelines, and cloud accounts with automated guardrails. It solves repeatable hardening and early detection of misconfigurations, but it does not solve insecure application logic or unclear ownership — scanners cannot fix a flawed access model, and no pipeline replaces someone being accountable for risk.\n\nBy the end you will be able to build a hardened cloud deployment with identity and secrets management, a CI pipeline with security scanning and policy gates, and a monitored infrastructure setup with auditable configuration.",
+    whyExists:
+      "The gap is between a working deployment and a deployment that stays secure under real change velocity and audit pressure. The course teaches the arc from Idea to Code to Test to Deploy to Operate with security embedded at each gate, so students learn to make the safe path the fast path rather than a last-minute review.",
     slug: "cloud-security-and-devsecops",
     status: "published",
     visibility: "public",
@@ -3272,6 +3344,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_security_governance",
+    introduction:
+      "AI security and governance is the discipline of keeping LLM and agentic systems safe, compliant, and trustworthy — from prompt-injection defenses to data handling and audit trails. It matters now because AI systems touch sensitive data, call real tools, and generate authoritative-sounding output, which makes failures both more likely and more consequential.\n\nIt is used by product, security, and compliance teams to red-team models, enforce guardrails, and document decisions for review. It solves risk reduction and accountability for AI behavior, but it does not solve unclear product scope or poor evaluation — a policy document cannot substitute for measured quality, and guardrails cannot fix retrieval over data that should never have been connected.\n\nBy the end you will be able to build a threat model and red-team plan for an LLM feature, a guardrailed deployment with logging and review trails, and a governance packet documenting risks, controls, and escalation paths.",
+    whyExists:
+      "The gap is between a demo with a safety disclaimer and a production AI system that withstands adversarial inputs, tool misuse, and auditor questions. The course teaches the arc from Model risks to Prompt and Context controls to Retrieval boundaries to Tool permissions to Agents oversight to Evaluation to Security and Production monitoring, so students ship AI that is both capable and defensible.",
     slug: "ai-security-and-governance",
     status: "published",
     visibility: "public",
@@ -3453,6 +3529,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_data_analytics_fundamentals",
+    introduction:
+      "Data analytics fundamentals is the skill of turning raw records into decisions — cleaning data, asking precise questions, and communicating what the numbers actually say. It matters now because every team sits on more data than it can interpret, and dashboards without analytical thinking produce confident wrong answers.\n\nIt is used by analysts, operators, and product teams to explore datasets, build reports, and support decisions with evidence. It solves clarity about what happened and why, but it does not solve bad metrics or broken collection — analysis over the wrong definition or missing events only formalizes the error, and no chart fixes a decision nobody owns.\n\nBy the end you will be able to build a cleaned exploratory analysis of a real dataset, a dashboard report with clearly defined metrics, and a findings presentation that ties evidence to a recommended decision.",
+    whyExists:
+      "The gap is between spreadsheet tinkering and analysis that a team can trust and act on. The course teaches the arc from Sources to Pipelines to Models of the data to Decisions communicated clearly, so students move from making charts to making the reasoning behind decisions visible and checkable.",
     slug: "data-analytics-fundamentals",
     status: "comingSoon",
     visibility: "public",
@@ -3629,6 +3709,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_fullstack_nextjs",
+    introduction:
+      "Full-stack engineering with Next.js is how modern product teams ship complete web applications — typed frontend and backend, auth, payments, and observability on edge infrastructure. It matters now because users expect fast, reliable apps and teams expect one codebase that carries an idea from prototype to production.\n\nIt is used by product teams and founders to build SaaS products, marketplaces, and content platforms with server rendering, API routes, and LLM features integrated production-grade. It solves shipping whole products quickly with type safety and testing, but it does not solve finding product-market fit or defining good AI behavior — a polished app around a confused workflow still confuses users, and RAG cannot fix missing source content.\n\nBy the end you will be able to build a typed, tested full-stack app with auth, payments, and observability, an LLM feature integration with RAG and structured outputs, and a deployed production release on modern edge infrastructure.",
+    whyExists:
+      "The gap is between a tutorial app on localhost and a production product that handles real users, real money, and real AI latency and cost. The course teaches the arc from Idea to Design to Code to Test to Deploy to Operate, with Model-to-Production concerns woven into the AI features, so students ship like product teams do.",
     slug: "full-stack-engineering-with-nextjs",
     status: "published",
     visibility: "public",
@@ -3810,6 +3894,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_governance_responsible",
+    introduction:
+      "AI governance and responsible AI is the practice of making sure AI systems are fair, transparent, accountable, and used within clear organizational norms. It matters now because AI decisions affect hiring, lending, support, and safety — and shared vocabulary plus documented accountability are what let whole organizations adopt AI without chaos.\n\nIt is used by leaders, product teams, and operations staff to set responsible-use policies, assess risks, and review AI deployments before and after launch. It solves alignment and oversight across functions, but it does not solve technical quality on its own — a governance board cannot make an unevaluated model accurate, and norms cannot substitute for measured testing and monitoring.\n\nBy the end you will be able to build an AI opportunity and risk assessment for a realistic scenario, a responsible-use policy with clear roles and escalation paths, and a governance review packet for an AI deployment.",
+    whyExists:
+      "The gap is between enthusiasm for AI pilots and organization-wide adoption that stays responsible and auditable. The course teaches the arc from use-case diagnosis to risk assessment to norms and controls to production oversight, so students can connect principles to the concrete habits and artifacts that govern real deployments.",
     slug: "ai-governance-and-responsible-deployment",
     status: "published",
     visibility: "public",
@@ -4242,6 +4330,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_agentic_ai_engineering",
+    introduction:
+      "Agentic AI engineering is the discipline of building autonomous agents that can plan a task, use tools, remember context, and work through multi-step goals with guardrails. It matters now because teams are moving past single chat replies toward systems that can research, act, and collaborate to complete real workflows.\n\nSupport teams, operations staff, and retailers use agents for research, triage, and coordination work where a single prompt is not enough. Agents solve multi-step execution, task decomposition, and collaboration between specialized roles, but they do not fix unclear goals, missing permissions, or untrustworthy data — an agent with no guardrails or bad inputs still fails.\n\nBy the end you will be able to build a single agent with planning and reflection loops, a multi-agent system with defined roles and handoffs, and a persistent-memory assistant backed by state stores and conversation history.",
+    whyExists:
+      "The gap is between a toy demo that answers one question and a production agent that plans, remembers, uses tools, and stays within guardrails across long runs. This course teaches the arc from Model and Prompt through Context, Tools, and Agents to Evaluation, Security, Infrastructure, and Production, so students can orchestrate reliable multi-agent systems.",
     slug: "agentic-ai-engineering",
     status: "published",
     visibility: "public",
@@ -4429,6 +4521,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_agent_builder",
+    introduction:
+      "AI agent building is the practice of creating working assistants with visual no-code and low-code builders, knowledge bases, and integrations instead of writing everything from scratch. It matters now because many teams need a useful assistant for a real workflow quickly, without a full engineering project.\n\nSupport teams, small businesses, and operations staff use these agents to answer FAQs, route requests, and handle routine conversations from documents and knowledge sources. They solve fast deployment for well-scoped workflows with clear fallback and escalation paths, but they do not fix missing or outdated knowledge, poorly defined intents, or processes that truly need custom code.\n\nBy the end you will be able to build a conversational flow with intents, entities, and fallback paths, a knowledge-backed FAQ assistant grounded in documents, and a deployed assistant with escalation rules for a real workflow.",
+    whyExists:
+      "The gap is between a clickable prototype and a deployed assistant that answers from real knowledge, handles fallbacks, and escalates safely. This course teaches the arc from Model and Prompt through Context and Retrieval to Tools, Evaluation, and Production, so students can ship a dependable low-code agent for a live workflow.",
     slug: "ai-agent-builder",
     status: "published",
     visibility: "public",
@@ -4614,6 +4710,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_llm_engineering",
+    introduction:
+      "LLM engineering goes deep on how language models are chosen, adapted, and served reliably at scale. It matters now because model quality, latency, and cost decide whether an AI feature survives real usage.\n\nProduct and engineering teams use it to pick between open and hosted models, prepare instruction and preference data, and run scalable inference endpoints. It solves fit-for-purpose selection, domain adaptation through fine-tuning, and efficient serving with batching and caching, but it does not fix missing use-case data, unclear quality criteria, or a product nobody needs — a well-tuned model on the wrong task still fails.\n\nBy the end you will be able to build a model evaluation comparing quality, latency, and cost trade-offs, a cleaned instruction-tuning dataset with deduping, and a fine-tuned adapter plus a scalable inference endpoint with batching and caching.",
+    whyExists:
+      "The gap is between calling a demo API and running a production LLM that is the right model, trained on clean data, and served fast and affordably. This course teaches the arc from Model selection through Prompt and Context to Evaluation, Security, Infrastructure, and Production, so students can take models from dataset preparation to live endpoints.",
     slug: "llm-engineering",
     status: "published",
     visibility: "public",
@@ -4801,6 +4901,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_rag_application_engineering",
+    introduction:
+      "Retrieval-augmented generation (RAG) engineering builds assistants that answer from your own documents by retrieving the right passages before generating a grounded reply. It matters now because teams need AI answers they can trust, check, and trace back to sources.\n\nSupport teams, operations staff, and knowledge workers use RAG for document Q&A, policy lookup, and research over curated collections. It solves grounding answers in current sources with citations, but it does not fix missing, outdated, or messy source data — if the documents are absent or wrong, retrieval cannot invent the truth.\n\nBy the end you will be able to build a document ingestion pipeline with parsing, cleaning, and chunking, a hybrid search service with dense, lexical, and reranking stages, and a grounded Q&A API with citations and source links.",
+    whyExists:
+      "The gap is between a demo chatbot that guesses fluently and a production RAG system that ingests, chunks, indexes, reranks, cites, and evaluates answers over real documents. This course teaches the arc from Model and Prompt through Context and Retrieval to Evaluation, Security, Infrastructure, and Production, so students can ship grounded Q&A that holds up.",
     slug: "rag-application-engineering",
     status: "published",
     visibility: "public",
@@ -4985,6 +5089,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_mcp_application_engineering",
+    introduction:
+      "MCP engineering is the practice of building Model Context Protocol servers and clients so assistants can discover and use well-defined tools, resources, and prompts. It matters now because connecting models to real systems needs standard interfaces, not one-off integrations.\n\nEngineering teams use MCP to expose APIs, data sources, and actions behind schemas with auth and clear error handling. It solves reusable tool exposure, capability discovery, and consistent invocation, but it does not fix poorly designed underlying APIs, missing permissions, or unsafe actions — a standard protocol cannot rescue a bad tool.\n\nBy the end you will be able to build an MCP server exposing tools, resources, and prompts, a capability manifest with JSON schemas and error responses, and an MCP client that discovers and invokes server actions in a deployed setup.",
+    whyExists:
+      "The gap is between a hard-coded demo tool call and a production MCP interface with schemas, auth, versioning, and reliable deployment. This course teaches the arc from Model and Prompt through Context and Tools to Evaluation, Security, Infrastructure, and Production, so students can ship interoperable servers and clients.",
     slug: "mcp-application-engineering",
     status: "published",
     visibility: "public",
@@ -5168,6 +5276,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_evals",
+    introduction:
+      "AI evals engineering is how teams measure whether an AI system actually works, using offline test suites, judges, and live production monitors. It matters now because fluent output can hide regressions, unsafe refusals, and slow quality drift.\n\nEngineering, product, and operations teams use evals to test prompts, retrieval, and agents before release and to watch quality after launch. It solves repeatable scoring with gold sets and rubrics, regression detection, and drift and toxicity monitoring, but it does not fix a bad product idea, missing data, or unclear success criteria — measurement alone does not improve the system.\n\nBy the end you will be able to build an offline eval suite with gold sets and task rubrics, a scoring setup with LLM-judge and programmatic checks, and a regression suite plus an online monitor for drift, toxicity, and refusal behavior.",
+    whyExists:
+      "The gap is between eyeballing a few outputs and running a production quality system with gold sets, judges, regression gates, and live monitors. This course teaches the arc from Prompt, Context, Retrieval, Tools, and Agents through Evaluation to Security and Production, so students can prove quality and catch regressions.",
     slug: "ai-evals",
     status: "published",
     visibility: "public",
@@ -5352,6 +5464,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_automation_engineering",
+    introduction:
+      "AI automation engineering connects triggers, extraction, approvals, and integrations so routine work across documents, email, and spreadsheets runs reliably. It matters now because teams spend hours on repetitive intake, copying, and routing that AI workflows can handle with oversight.\n\nOperations staff, support teams, and retailers use it for invoice processing, form handling, and message triage with escalation paths. It solves trigger-based processing, structured extraction, and approval and exception handling, but it does not fix broken processes, unclear approval rules, or messy source documents — automation amplifies whatever workflow it is given.\n\nBy the end you will be able to build a trigger-based workflow for documents and messages, an extraction pipeline for invoices, forms, and emails, and an approval flow with escalations and an exception queue.",
+    whyExists:
+      "The gap is between a demo workflow that runs once and a production automation with triggers, schemas, approvals, integrations, and exception handling. This course teaches the arc from Model and Prompt through Context, Retrieval, and Tools to Evaluation, Security, Infrastructure, and Production, so students can automate operations safely.",
     slug: "ai-automation-engineering",
     status: "published",
     visibility: "public",
@@ -5533,6 +5649,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_product_management",
+    introduction:
+      "AI product management is the discipline of scoping, roadmapping, and shipping AI features that users trust and the business can sustain. It matters now because AI features fail without clear scope, success metrics, and staged validation.\n\nProduct managers, engineering managers, and entrepreneurs use it to write requirements, plan evaluations, and sequence data, model, and UX work. It solves tying model quality to user and business outcomes, pragmatic sequencing, and pilot learning, but it does not fix missing data, unrealistic expectations, or a model that cannot meet the bar — good roadmaps cannot rescue an infeasible idea.\n\nBy the end you will be able to build an AI product requirements document with success metrics and scope boundaries, an evaluation plan linking quality to outcomes, and a roadmap plus a pilot launch plan with feedback loops and staged rollout criteria.",
+    whyExists:
+      "The gap is between a demo that impresses once and a shipped AI feature with scoped requirements, evals, staged milestones, and measured rollout. This course teaches the arc from Model and Prompt through Context, Retrieval, Tools, and Agents to Evaluation, Security, Infrastructure, and Production, so students can move AI ideas from spec to pilot to launch.",
     slug: "ai-product-management",
     status: "published",
     visibility: "public",
@@ -5713,6 +5833,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_governance_safety",
+    introduction:
+      "AI governance and safety is the discipline of making AI systems trustworthy, lawful, and safe to operate — covering risk assessment, usage policies, safety testing, and release review. As generative AI moves into support desks, operations, and public-facing products, teams need people who can spot misuse, bias, and privacy risks before launch, and document them clearly.\n\nIt is used wherever AI affects people or decisions: a support team setting content guidelines for an assistant, a retailer reviewing a high-risk use case before rollout. It helps teams catch failure modes early, set clear rules, and handle incidents consistently. It does not solve poor model quality or missing data on its own — a policy document does not fix an unreliable assistant, and a checklist does not replace testing and monitoring.\n\nBy the end you will be able to build an AI risk register covering misuse, bias, privacy, and operational failures, a red-team test plan with documented findings and severity ratings, and a model-release review workflow for high-risk use cases.",
+    whyExists:
+      "Most AI courses stop at a working demo, while production demands evidence: what can go wrong, what is allowed, and who approves release. This course closes that gap across the Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production arc, with weight on evaluation, security, and production readiness — from risk registers and policies through red-team testing to release review workflows.",
     slug: "ai-governance-and-safety",
     status: "published",
     visibility: "public",
@@ -5898,6 +6022,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_application_engineering",
+    introduction:
+      "AI application engineering is how full AI applications get designed and shipped — language models combined with backends, retrieval, tool use, and clean interfaces. It matters now because a bare chatbot is rarely enough; users expect assistants that answer from real knowledge, act on data, and run reliably as deployed services.\n\nIt is used for support assistants, internal knowledge tools, and task helpers that read documents and call APIs. It solves grounding answers in curated sources and connecting models to databases and services behind a usable interface. It does not solve missing or messy source data — retrieval does not fix documents that do not exist — and it does not replace platform concerns like large-scale orchestration or deep model tuning.\n\nBy the end you will be able to build a retrieval-grounded Q&A application with chunking, embeddings, and cited responses, a tool-calling feature that connects a model to APIs and databases, and a containerized AI service with configuration and health checks.",
+    whyExists:
+      "The gap is between a notebook demo that answers nicely once and a deployed application that stays grounded, calls tools safely, and stays up. This course teaches that arc across Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production, with weight on context, retrieval, tools, and production deployment — from prompt and schema design through grounded pipelines to containerized services.",
     slug: "ai-application-engineering",
     status: "published",
     visibility: "public",
@@ -6081,6 +6209,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_systems_engineering",
+    introduction:
+      "AI systems engineering is the architecture behind AI platforms that scale — multiple services, orchestration, memory, evaluation, and operations working together. It matters now because single-service demos break under real load, long-running jobs, retries, and changing models, and teams need platforms that stay observable and reliable.\n\nIt is used to run agent workloads, queued jobs, and inference topologies for a support team or a retailer serving many users at once. It solves service boundaries, orchestration with retries, regression testing, and load-balanced inference with fallbacks. It does not fix a bad product idea or poor underlying data — orchestration does not rescue an assistant with nothing trustworthy to retrieve, and dashboards do not fix bad quality metrics.\n\nBy the end you will be able to build a multi-service AI platform with clear service and data boundaries, an orchestration layer for agents, queues, retries, and long-running jobs, and an evaluation harness with regression suites and quality gates plus a scalable inference topology.",
+    whyExists:
+      "The gap is between one working service and a platform that orchestrates agents, remembers state, passes quality gates, and survives traffic spikes and failures. This course teaches the full Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production arc at platform depth — from orchestration and memory through evaluation harnesses to load-balanced, observable production operations.",
     slug: "ai-systems-engineering",
     status: "published",
     visibility: "public",
@@ -6267,6 +6399,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_solutions_engineering",
+    introduction:
+      "AI solutions engineering is the practice of turning a client need into a working, costed, deliverable AI proposal — scoping, demoing, estimating, and handing over. It matters now because many AI projects stall between an exciting demo and an agreed plan with scope, data needs, cost, and acceptance criteria.\n\nIt is used by teams serving a support team, a retailer, or an operations group that needs a pilot tied to a real workflow. It solves scoping, demonstration prototypes, effort and operating-cost estimation, and pilot delivery with success measurement. It does not solve unclear ownership or missing data on the client side — a good proposal does not create training data that does not exist, and a demo does not guarantee a production rollout.\n\nBy the end you will be able to build a tailored AI solution proposal with scope, assumptions, and delivery milestones, a demonstration prototype addressing a specific client workflow, and a pilot solution with acceptance criteria, estimation models, and success measurement.",
+    whyExists:
+      "The gap is between a technically clever demo and a solution a client can buy, pilot, and operate — scoped, estimated, and handed over cleanly. This course follows a needs → scoping → prototype → estimation → pilot → handover arc mapped onto Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production, so students learn to connect technical choices to delivery plans and measurable outcomes.",
     slug: "ai-solutions-engineering",
     status: "published",
     visibility: "public",
@@ -6445,6 +6581,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_multimodal_ai_engineering",
+    introduction:
+      "Multimodal AI engineering is building applications that combine text, images, and audio — understanding pictures and documents, generating images, and working with voice. It matters now because users expect to point a camera at something, ask about a document, or talk to a system, not just type.\n\nIt is used for visual question answering, document understanding, captioned media libraries, and voice interaction for a retailer or a support team. It solves cross-modal tasks like finding images with text queries, transcribing and synthesizing speech, and controlling generation with prompts and safety filters. It does not solve poor source quality — a vision model does not fix blurry, missing, or mislabeled inputs — and generation controls do not replace review where accuracy matters.\n\nBy the end you will be able to build a vision-language application for captioning, visual QA, and document understanding, a cross-modal retrieval system spanning text, image, and audio indexes, and audio pipelines for transcription, synthesis, and voice interaction alongside controlled image generation workflows.",
+    whyExists:
+      "The gap is between a text-only demo and a production system where text, image, and audio inputs all need retrieval, generation controls, safety filters, and evaluation. This course teaches that stretch of the Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production arc — from vision-language models and cross-modal retrieval through generation workflows to deployed multimodal services.",
     slug: "multimodal-ai-engineering",
     status: "published",
     visibility: "public",
@@ -6627,6 +6767,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_api_engineering",
+    introduction:
+      "AI API engineering is designing the robust interfaces other developers build on — versioned endpoints for language-model and embedding services with streaming, auth, limits, and great developer experience. It matters now because every assistant, search box, and automation depends on APIs that stay fast, predictable, and fair under load.\n\nIt is used to serve chat, embeddings, and streaming completions to apps used by a support team or a retailer. It solves versioning, token-event streaming with timeouts and reconnects, key management, and rate limiting with quotas and usage metering. It does not fix a weak model or bad retrieval behind the endpoint — an elegant API does not make answers more accurate — and it does not replace evaluation of what the API serves.\n\nBy the end you will be able to build a versioned REST API exposing language-model and embedding services, streaming endpoints with token events, timeouts, and reconnect handling, and a rate-limited, metered API with authentication and key-management flows.",
+    whyExists:
+      "The gap is between an endpoint that works for one caller and a production API that versions cleanly, streams reliably, authenticates consumers, and enforces quotas under AI workload spikes. This course covers that part of the Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production arc — from model-service design through streaming and security to versioned, metered production infrastructure.",
     slug: "ai-api-engineering",
     status: "published",
     visibility: "public",
@@ -6807,6 +6951,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_workflow_engineering",
+    introduction:
+      "AI workflow engineering is automating everyday work by connecting AI steps to the tools teams already use — triggers, branches, approvals, and data steps running as reliable routines. It matters now because operations, support, and reporting drown in documents, messages, and spreadsheets that need the same careful handling every time.\n\nIt is used for content drafts, support triage, and reporting routines in a support team or an operations group. It solves trigger-based routines with filters and branches, approval gates and error notifications, and reusable templates for repeated tasks. It does not fix broken underlying processes — automation does not rescue unclear ownership or bad source data — and it does not replace review where judgment matters.\n\nBy the end you will be able to build an automated workflow connecting AI steps to everyday business tools, a trigger-based routine with filters, branches, and approval gates, and a reusable template for content, support, or reporting tasks deployed on a schedule with error notifications.",
+    whyExists:
+      "The gap is between a manual routine or a one-off script and a dependable workflow that triggers, branches, seeks approval, and notifies on failure. This course follows a triggers → data steps → AI steps → approvals → deployment arc within Model → Prompt → Context → Retrieval → Tools → Agents → Evaluation → Security → Infrastructure → Production, so students learn to turn daily work into reliable, reusable routines.",
     slug: "ai-workflow-engineering",
     status: "published",
     visibility: "public",
@@ -6983,6 +7131,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_full_stack_engineering",
+    introduction:
+      "Full stack engineering is building a complete web application end to end, from the interface a user sees through the API and database behind it to testing, security basics, observability, and cloud deployment. It matters now because most real products are small teams shipping whole features, and someone has to connect every layer without leaving gaps.\n\nIt is used to build database-backed web products such as a membership site, a booking tool, or an internal dashboard, solving the problem of turning an idea into a working, deployed system with validation, error handling, and environment configuration. It does not solve deep specialization problems: it will not replace dedicated security review, it does not fix a poorly modeled domain, and cloud hosting does not fix an untested codebase.\n\nBy the end you will be able to build a responsive web interface with semantic HTML, modern CSS, and TypeScript, a database-backed application with relational modeling and migrations behind versioned RESTful endpoints, and a cloud-deployed full-stack application with environment configuration and basic observability.",
+    whyExists:
+      "The gap is between a front-end demo wired to mock data and a production web application that validates input, migrates its database safely, handles errors clearly, and runs reliably in the cloud. The course teaches the full arc from idea to design to code to test to deploy to operate, so students can ship and maintain a whole system rather than one layer of it.",
     slug: "full-stack-engineering",
     status: "published",
     visibility: "public",
@@ -7180,6 +7332,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_frontend_engineering",
+    introduction:
+      "Frontend engineering is building the part of the web people actually touch: semantic HTML, CSS systems, TypeScript, and React, plus testing, accessibility, routing, and everyday performance habits. It matters now because users judge every product through its interface, and slow, confusing, or inaccessible pages lose them fast.\n\nIt is used for marketing pages, product dashboards, and interactive web apps, solving layout, reusable components, client-side state, and routing. It does not solve backend problems: a polished interface does not fix missing or inconsistent APIs, component libraries do not fix unclear product requirements, and performance habits do not fix oversized images or unmeasured bundles left unaddressed.\n\nBy the end you will be able to build accessible page layouts with semantic HTML and modern CSS, a reusable component library with consistent props, slots, and theming, and an interactive React application with routing and client-side state deployed with preview environments and rollbacks.",
+    whyExists:
+      "The gap is between a single styled page on a laptop and a production frontend that stays accessible, consistent, tested, and fast across browsers, screen sizes, and releases. The course teaches the arc from idea to design to code to test to deploy to operate, so students can build interfaces and keep them healthy in real hosting workflows.",
     slug: "frontend-engineering",
     status: "published",
     visibility: "public",
@@ -7374,6 +7530,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_backend_engineering",
+    introduction:
+      "Backend engineering is building the reliable server side: routing, middleware, validation, structured data modeling, authentication, background jobs, caching, testing, logging, and deployment. It matters now because every app depends on services that stay correct and available when traffic grows and data matters.\n\nIt is used for HTTP services, authenticated APIs, and job-backed workflows such as signup flows, billing updates, or notification pipelines, solving data integrity, access control, and operability. It does not solve everything: caching does not fix a wrong data model, background jobs do not fix unclear business rules, and logging does not fix unhandled failures without someone reading it.\n\nBy the end you will be able to build an HTTP service with routing, middleware, validation, and structured logging, a relational schema with constraints, indexes, transactions, and migrations, and an authenticated API with sessions, tokens, roles, and permission checks deployed with configuration, health checks, and database backups.",
+    whyExists:
+      "The gap is between an endpoint that works once locally and a production service that authenticates correctly, migrates data safely, recovers from failure, and can be observed and backed up. The course teaches the arc from idea to design to code to test to deploy to operate, so students can run backend systems others can depend on.",
     slug: "backend-engineering",
     status: "published",
     visibility: "public",
@@ -7568,6 +7728,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_api_engineering",
+    introduction:
+      "API engineering is designing the contracts other software builds on: careful REST and GraphQL design, versioning, authentication, validation, testing, documentation, rate limiting, and operational controls. It matters now because web and mobile clients, partners, and services all break when contracts drift or behave inconsistently.\n\nIt is used for public and internal APIs serving product clients and integrations, solving versioning, pagination, filtering, error contracts, and client-server alignment. It does not solve upstream problems: documentation does not fix an unstable domain model, rate limiting does not fix an overloaded database, and mock servers do not fix clients that ignore the contract.\n\nBy the end you will be able to build a versioned REST API with pagination, filtering, sorting, and error contracts, a GraphQL schema with types, resolvers, mutations, and query budgets, and a documented API with contract tests, mock servers, staging environments, and backward-compatible releases.",
+    whyExists:
+      "The gap is between an endpoint that returns JSON and a production API that stays versioned, validated, documented, tested against its clients, and safe to evolve without breaking them. The course teaches the arc from idea to design to code to test to deploy to operate, so students can own contracts through their full lifecycle.",
     slug: "api-engineering",
     status: "published",
     visibility: "public",
@@ -7762,6 +7926,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_system_design",
+    introduction:
+      "System design is how large systems scale: load balancing, caching, queues, sharding, replication, consistency models, failure handling, and consensus protocols. It matters now because traffic spikes, regional outages, and growing data force hard trade-offs no single server can dodge.\n\nIt is used to plan high-traffic services, read-heavy platforms, and background pipelines, solving capacity planning, cache behavior, and resilient workflows. It does not solve application problems by itself: a queue does not fix unclear requirements, caching does not fix a broken data model, and diagrams do not fix untested failure handling.\n\nBy the end you will be able to build a capacity model connecting traffic estimates to servers, storage, and bandwidth, a cache hierarchy with eviction and invalidation trade-offs, and a queue-based workflow with retries, dead letters, and ordering guarantees alongside a multi-region read pattern with replication-lag and failover planning.",
+    whyExists:
+      "The gap is between a whiteboard diagram that looks scalable and a production design that accounts for capacity, consistency, replication lag, retries, and failure modes. The course teaches the arc from idea to design to code to test to deploy to operate, so students can reason about scale and defend their trade-offs.",
     slug: "system-design",
     status: "published",
     visibility: "public",
@@ -7956,6 +8124,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_software_architecture",
+    introduction:
+      "Software architecture is designing systems that stay practical over time: clear components and boundaries, quality attributes, patterns, documentation, governance, trade-off records, and evolutionary design. It matters now because codebases live for years, and early boundary mistakes become expensive rewrites.\n\nIt is used to structure growing products and modernize legacy code, solving modularity, service boundaries, and decision discipline. It does not solve delivery problems alone: diagrams do not fix missing tests, patterns do not fix unclear ownership, and governance does not fix a design nobody reads.\n\nBy the end you will be able to build a modular monolith with explicit module boundaries and dependency rules, a service-boundary design using domain modeling and context mapping, and a set of architecture decision records with fitness functions and a staged modernization plan for an evolvable system.",
+    whyExists:
+      "The gap is between a working prototype and a production architecture that teams can understand, change safely, and evolve without constant rework. The course teaches the arc from idea to design to code to test to deploy to operate, so students can make durable structural decisions and record why they made them.",
     slug: "software-architecture",
     status: "published",
     visibility: "public",
@@ -8150,6 +8322,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_software_engineering",
+    introduction:
+      "Software engineering foundations are the habits behind reliable software: programming fundamentals, clean code, version control, testing, design patterns, and collaborative workflows. It matters now because real software is built by teams and changed constantly, so readability and discipline matter as much as syntax.\n\nIt is used for command-line tools, small web programs, and team-built releases, solving correctness, maintainability, and coordination. It does not solve product or operations problems: patterns do not fix misunderstood requirements, pull requests do not fix untested logic, and clean code does not fix missing deployment practice.\n\nBy the end you will be able to build tested command-line and small web programs using control flow, functions, and modules, a version-controlled project with branching, pull requests, and code review habits, and a tested team-built release evaluated against common patterns and maintainability criteria.",
+    whyExists:
+      "The gap is between code that runs once for one person and a production release that a team can review, test, change, and trust. The course teaches the arc from idea to design to code to test to deploy to operate, so beginners grow from writing programs into shipping software together.",
     slug: "software-engineering",
     status: "published",
     visibility: "public",
@@ -8344,6 +8520,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_application_engineering",
+    introduction:
+      "Application engineering is delivering complete production features across backend services, data models, and user interfaces, with testing, debugging, and release practices on realistic projects. It matters now because users experience features, not layers, and someone must wire the whole slice together.\n\nIt is used for product features such as account settings, listings with search and pagination, or form-driven workflows, solving end-to-end delivery from validation to interface state. It does not solve platform problems: feature code does not fix missing infrastructure, debugging does not fix unclear specifications, and a working feature does not guarantee safe operations.\n\nBy the end you will be able to build a layered application feature spanning interfaces, services, and data models, backend endpoints with validation, error handling, and paginated data access, and an interactive user interface that consumes APIs and manages application state through testing and release practice.",
+    whyExists:
+      "The gap is between a tutorial screen connected to sample data and a production feature that validates input, handles errors, pages data, and releases cleanly across the stack. The course teaches the arc from idea to design to code to test to deploy to operate, so students can own realistic features end to end.",
     slug: "application-engineering",
     status: "published",
     visibility: "public",
@@ -8532,6 +8712,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_web_engineering",
+    introduction:
+      "Web engineering is building modern web applications with semantic HTML, responsive CSS, and interactive JavaScript, including routing, forms, APIs, accessibility, and deployment fundamentals. It matters now because the browser remains the most common way people reach a product.\n\nIt is used for responsive sites, form-driven pages, and API-connected front ends, solving layout, interactivity, and accessible input handling. It does not solve service problems: good markup does not fix unreliable APIs, client-side validation does not replace server-side checks, and deployment does not fix untested accessibility.\n\nBy the end you will be able to build responsive pages with semantic markup, modern layouts, and reusable styles, interactive browser behavior with events, state, and form validation, and an accessible interface with keyboard support, contrast, and screen-reader labels connected to APIs and deployed to hosting.",
+    whyExists:
+      "The gap is between a static page that looks right and a production web application that routes, validates, handles API errors, stays accessible, and deploys repeatably. The course teaches the arc from idea to design to code to test to deploy to operate, so students can ship web apps people can actually use.",
     slug: "web-engineering",
     status: "published",
     visibility: "public",
@@ -8721,6 +8905,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_distributed_systems_engineering",
+    introduction:
+      "Distributed systems engineering is building software that runs across many machines: consistency, replication, partitioning, consensus, and fault tolerance. It matters now because availability and scale depend on systems that keep working when nodes fail or networks slow down.\n\nIt is used for replicated stores, partitioned services, and coordination layers, solving failure handling, scaling, and cross-node agreement. It does not solve correctness by itself: replication does not fix lost writes from bad client logic, consensus does not fix unclear consistency requirements, and more nodes do not fix untested recovery paths.\n\nBy the end you will be able to build a partitioned service with explicit consistency, availability, and latency trade-offs, a replicated data flow with conflict handling, versioning, and repair strategies, and consensus-driven coordination for leader election, locks, and configuration changes evaluated against consistency and isolation models.",
+    whyExists:
+      "The gap is between a single-node service that passes local tests and a production distributed system that survives partitions, handles conflicts, and coordinates correctly under failure. The course teaches the arc from idea to design to code to test to deploy to operate, so students can reason about and build resilient multi-node behavior.",
     slug: "distributed-systems-engineering",
     status: "published",
     visibility: "public",
@@ -8915,6 +9103,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_microservices_engineering",
+    introduction:
+      "Microservices engineering is building independently deployable services with clear boundaries, versioned contracts, saga transactions, mesh routing, and observability. It matters now because growing teams need to ship parts of a system without breaking the whole.\n\nIt is used to split growing products into owned services and connect them resiliently, solving decomposition, compatibility, and multi-service workflows. It does not solve organizational or design problems alone: services do not fix tangled domains, contracts do not fix unowned dependencies, and a mesh does not fix missing error budgets or untested fallbacks.\n\nBy the end you will be able to build service boundaries from domain decomposition with ownership and coupling analysis, versioned API contracts with schema validation, compatibility, and documentation, and a saga-based multi-service workflow with compensation logic running over mesh-routed services with traffic policies, retries, and circuit breaking.",
+    whyExists:
+      "The gap is between several small services that run in demos and a production microservice system with compatible contracts, compensated transactions, resilient communication, and observable deployments. The course teaches the arc from idea to design to code to test to deploy to operate, so students can decompose and run services independently.",
     slug: "microservices-engineering",
     status: "published",
     visibility: "public",
@@ -9109,6 +9301,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cloud_engineering",
+    introduction:
+      "Cloud engineering is how modern applications get reliable homes on the internet: virtual networks, on-demand computers, flexible storage, and identities that control who can touch what. Instead of buying and wiring physical servers, you rent and configure these building blocks in minutes, then automate, monitor, and pay only for what you use. It matters now because almost every team, from a small startup to a large retailer, runs on the cloud.\n\nCloud engineers build isolated networks with subnets and routing, deploy virtual machines and managed compute services, and lock things down with roles and least-privilege access. It solves elastic capacity, repeatable environments, and cost and operations visibility. It does not solve bad application design on its own, and automation does not fix unclear requirements or missing cost discipline.\n\nBy the end you will be able to build an isolated virtual network with subnets and routing rules, a repeatably deployed virtual machine workload from templates and scripts, and a least-privilege identity setup with cost and monitoring controls for a production-ready environment.",
+    whyExists:
+      "The gap is between clicking through a console demo and operating infrastructure that stays secure, repeatable, and affordable under real use. This course closes it across the arc from idea to design to provisioning to automation to monitoring to operation. You leave able to provision, automate, secure, and operate cloud foundations with steady confidence.",
     slug: "cloud-engineering",
     status: "published",
     visibility: "public",
@@ -9304,6 +9500,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_devops_engineering",
+    introduction:
+      "DevOps engineering is the discipline of shipping software quickly without breaking it: shared Git workflows, automated builds and tests, and safe, repeatable releases. It turns anxious deploy days into routine, reviewed, reversible steps with clear signals when something goes wrong. It matters now because users expect frequent improvements and teams need speed with stability.\n\nDevOps engineers design branching and review workflows, build continuous integration pipelines with tests and quality gates, and run staged rollouts with approvals and rollbacks plus observability and incident habits. It solves slow manual releases, inconsistent environments, and late discovery of defects. It does not fix unclear product decisions or poor code architecture, and dashboards and pipelines do not replace good testing culture.\n\nBy the end you will be able to build a continuous integration pipeline with automated tests and quality gates, a staged release workflow with approvals and rollback procedures, and an observable service setup with incident notes for collaborative delivery.",
+    whyExists:
+      "The gap is between a demo that passes once and delivery that stays reliable across many contributors and frequent changes. This course teaches the arc from idea to code to test to release to operate and improve. You leave able to build safe pipelines, release in stages, and steadily improve deployment speed and reliability.",
     slug: "devops-engineering",
     status: "published",
     visibility: "public",
@@ -9490,6 +9690,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_kubernetes_engineering",
+    introduction:
+      "Kubernetes is the standard way to run many containerized services together: it places your workloads, restarts failed ones, routes traffic, and scales capacity up and down. Learning it means you can take an application from a single container to a resilient cluster that handles updates and failures gracefully. It matters now because microservices and cloud-native platforms overwhelmingly run on Kubernetes.\n\nKubernetes engineers define pods with probes and resource controls, run rolling and staged updates with deployments, route traffic with services and ingress, and add persistent storage for stateful workloads. It solves bin-packing, self-healing, service discovery, and repeatable rollouts. It does not fix bad application architecture or missing observability, and Helm charts do not replace capacity planning and upgrade discipline.\n\nBy the end you will be able to build a health-checked pod deployment with rolling updates, a service discovery and ingress routing setup for internal and external traffic, and a stateful workload with persistent volumes plus Helm packaging and cluster observation.",
+    whyExists:
+      "The gap is between running a sample app on a local cluster and operating upgrades, storage, and reliability in a shared production cluster. This course follows the arc from workload definition to deployment to networking to storage to observation to upgrade and reliability. You leave able to operate Kubernetes workloads with confidence.",
     slug: "kubernetes-engineering",
     status: "published",
     visibility: "public",
@@ -9688,6 +9892,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_devsecops",
+    introduction:
+      "DevSecOps means building security into every step of delivery instead of bolting it on at the end: threat models, safe pipeline design, automated scans, and careful secrets handling. You learn to catch risky code, vulnerable dependencies, and leaky images early, then watch runtime and respond calmly. It matters now because fast releases multiply the cost of a single leaked secret or unpatched image.\n\nPractitioners write risk-ranked threat models, harden CI with least-privilege runners and signed artifacts, automate static analysis and image scanning, and manage secrets with rotation plus monitoring and incident habits. It solves early detection, repeatable policy checks, and safer handling of credentials. It does not eliminate all risk or fix fundamentally unsafe designs, and scanners do not replace judgment about what matters most.\n\nBy the end you will be able to build a threat model with risk-ranked pipeline controls, a hardened CI setup with scanning for code, dependencies, and images, and a secrets management and rotation workflow with monitoring and incident notes.",
+    whyExists:
+      "The gap is between a pipeline that ships fast and one that ships fast while keeping code, images, and credentials verifiably safe. This course teaches the arc from design to code to pipeline to artifact to runtime to response. You leave with disciplined habits for shifting security left without slowing delivery to a halt.",
     slug: "devsecops",
     status: "published",
     visibility: "public",
@@ -9868,6 +10076,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_platform_engineering",
+    introduction:
+      "Platform engineering is about making the easy way the safe way: paved-road templates, self-service environments, and guardrails so product teams can ship without reinventing infrastructure each time. A good internal platform cuts cognitive load and makes production delivery consistent across many teams. It matters now because organizations drown in tool sprawl without shared golden paths.\n\nPlatform engineers define platform users, boundaries, and success metrics, build golden-path templates for services and pipelines, and offer self-service environments with quotas, approvals, and lifecycle controls plus policy guardrails. It solves inconsistency, slow onboarding, and repeated one-off infrastructure work. It does not fix unclear ownership or poor service design, and templates do not replace listening to the developers who use them.\n\nBy the end you will be able to build a platform vision with users, boundaries, and success metrics, a golden-path service template with pipeline and infrastructure baselines, and a self-service environment with quotas, approvals, and lifecycle controls.",
+    whyExists:
+      "The gap is between scattered scripts each team maintains alone and a shared platform teams actually adopt and trust. This course follows the arc from user needs to platform design to templates to self-service to guardrails to measured improvement. You leave able to design platforms that reduce load and standardize reliable delivery.",
     slug: "platform-engineering",
     status: "published",
     visibility: "public",
@@ -10054,6 +10266,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_infrastructure_engineering",
+    introduction:
+      "AI infrastructure engineering is how GPU-powered systems move from notebooks to production: clusters for training, fast endpoints for inference, and pipelines for batch work with careful attention to latency and cost. You learn to plan capacity, serve models reliably, and observe what is really happening under load. It matters now because inference bills and latency decide whether an AI feature survives contact with real users.\n\nEngineers plan GPU cluster layouts with capacity and isolation, deploy inference endpoints with batching, caching, and autoscaling, and build batch and training pipelines with scheduling, retries, and checkpointing plus observability and cost controls. It solves throughput, latency optimization, and reliable scaling of model workloads. It does not fix a weak model or missing evaluation data, and autoscaling does not replace capacity planning and cost discipline.\n\nBy the end you will be able to build a GPU cluster layout with capacity and isolation planning, a scalable inference endpoint with batching, caching, and autoscaling policies, and a batch training pipeline with scheduling, retries, and checkpointing.",
+    whyExists:
+      "The gap is between a demo that answers once and infrastructure that serves many users at low latency and controlled cost. This course teaches the arc from model to compute to serving to batch pipelines to observability to cost and latency optimization to production. You leave able to design and run GPU infrastructure for real AI workloads.",
     slug: "ai-infrastructure-engineering",
     status: "published",
     visibility: "public",
@@ -10245,6 +10461,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cloud_architecture",
+    introduction:
+      "Cloud architecture is the art of drawing the blueprint before building: choosing compute, storage, and networking pieces and arranging them so systems scale, survive failures, and stay affordable and secure. Good patterns like decoupling with queues and events let each part evolve independently. It matters now because a sound architecture saves far more than clever firefighting later.\n\nArchitects design multi-tier solutions across compute, storage, and networking, add high-availability and disaster-recovery patterns across zones and regions, and weigh managed services against self-built components for scale and operations. It solves scaling, resilience, and operational clarity. It does not remove cost or complexity entirely, and managed services do not fix unclear requirements or insecure landing zones.\n\nBy the end you will be able to build a multi-tier cloud design across compute, storage, and networking, a high-availability and disaster-recovery pattern across zones and regions, and a decoupled event-driven design with cost-aware managed-service choices.",
+    whyExists:
+      "The gap is between deploying single resources and designing systems that stay up, scale, and stay affordable under real demand. This course follows the arc from requirements to design to patterns to trade-offs to secure landing zones to operation. You leave able to design resilient, cost-aware architectures with clear reasoning.",
     slug: "cloud-architecture",
     status: "published",
     visibility: "public",
@@ -10430,6 +10650,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_infrastructure_engineering",
+    introduction:
+      "Infrastructure engineering is the foundation under everything else: computers, networks, storage, and Linux servers configured, hardened, and kept healthy so applications have something solid to run on. You learn to provision machines and containers, set baselines, and troubleshoot when things fail. It matters now because cloud abstractions still rest on these fundamentals.\n\nInfrastructure engineers build virtual machines, containers, and networks for application stacks, harden and patch Linux servers with configuration baselines, and automate routine provisioning with scripts and templates plus monitoring and troubleshooting. It solves repeatability, baseline security, and faster recovery from failures. It does not fix bad application code or unclear service ownership, and automation does not replace understanding how systems actually work.\n\nBy the end you will be able to build a virtual machine and container hosting stack on a configured network, a hardened Linux server baseline with patching and configuration controls, and an automated provisioning workflow from scripts and templates with monitoring checks.",
+    whyExists:
+      "The gap is between following a setup tutorial once and keeping infrastructure provisioned, configured, and troubleshootable over time. This course teaches the arc from idea to provisioning to configuration to monitoring to troubleshooting to operation. You leave with foundations that support modern application delivery.",
     slug: "infrastructure-engineering",
     status: "published",
     visibility: "public",
@@ -10618,6 +10842,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_sre",
+    introduction:
+      "Site reliability engineering keeps services dependable while they keep changing: define what good looks like, measure it, budget for failure, and respond and automate calmly when things break. It blends software habits with operations discipline so reliability becomes a number, not a hope. It matters now because users judge every outage and slowdown instantly.\n\nSRE practitioners define service-level indicators, objectives, and error-budget policies, build golden-signal dashboards with alerts and runbooks, run incident response with clear roles and blameless reviews, and automate toil with scripts and self-healing checks. It solves vague reliability goals, noisy alerts, and repetitive manual work. It does not prevent all incidents or fix missing product clarity, and automation does not replace judgment during a real outage.\n\nBy the end you will be able to build a service-level objective and error-budget policy for a real service, a golden-signal dashboard with alerts and runbooks tied to user impact, and an incident response exercise with toil-reducing automation.",
+    whyExists:
+      "The gap is between reacting to pages and engineering reliability through objectives, budgets, and steady toil reduction. This course follows the arc from signals to objectives to alerts to response to review to automation. You leave able to practice SRE with calm, measurable habits.",
     slug: "site-reliability-engineering",
     status: "published",
     visibility: "public",
@@ -10805,6 +11033,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cloud_automation_engineering",
+    introduction:
+      "Cloud automation engineering replaces click-by-click setup with code: versioned infrastructure, reusable modules, policy checks, and pipelines that promote changes safely across environments. Once environments are code, they become reviewable, repeatable, and recoverable. It matters now because manual provisioning cannot keep pace with many services and environments.\n\nAutomation engineers write reusable infrastructure-as-code modules for networks, compute, and data services, promote versioned stacks across environments, and add policy checks for naming, tagging, cost, and security plus drift detection and safe rollouts. It solves drift, inconsistency, and slow risky manual changes. It does not fix unclear architecture or poor module boundaries, and pipelines do not replace testing changes before promotion.\n\nBy the end you will be able to build a reusable infrastructure-as-code module for networks, compute, and data services, a versioned environment promotion workflow across stages, and a policy-checked pipeline with drift detection and safe rollout practices.",
+    whyExists:
+      "The gap is between scripts that work once and versioned automation that stays consistent, compliant, and safe across environments. This course teaches the arc from manual steps to modules to versioned stacks to policy to pipelines to safe promotion and operation. You leave able to automate provisioning and operations with confidence.",
     slug: "cloud-automation-engineering",
     status: "published",
     visibility: "public",
@@ -10990,6 +11222,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_data_analytics",
+    introduction:
+      "Data analytics is the practice of turning raw business data into clear answers using SQL, Python, spreadsheets, and visualization, and it matters now because almost every team is expected to back decisions with evidence rather than opinion. You will learn to clean messy datasets, query them precisely, and present findings in plain language that managers can act on.\n\nAnalysts use these skills to build dashboards and reports that answer defined business questions, profile dataset quality, and explore trends with Python cleaning and SQL joins, aggregation, filtering, and windowed analysis. It does not solve deeper problems on its own: dashboards do not fix bad metrics or unclear questions, and no chart can compensate for missing, duplicated, or inconsistent source data.\n\nBy the end you will be able to build interactive business dashboards with clean visuals, SQL query packs for joins and windowed analysis, and Python data-cleaning and exploratory workflows capped by a business reporting project that profiles quality and delivers recommendations.",
+    whyExists:
+      "The gap is between a one-off spreadsheet chart and a trusted reporting workflow that survives messy sources, duplicates, and shifting questions. This course teaches the arc from Sources to Pipelines to Models to Decisions: profiling and cleaning data, querying it reliably with SQL and Python, then visualizing and reporting answers others can trust.",
     slug: "data-analytics",
     status: "published",
     visibility: "public",
@@ -11178,6 +11414,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_data_science",
+    introduction:
+      "Data science combines statistics, Python, and machine learning fundamentals to find patterns in data, predict outcomes, and explain what the evidence really means. It matters now because organizations hold more data than ever but still struggle to separate real effects from noise.\n\nData scientists use it to build regression and classification models, design experiments and hypothesis tests, and engineer features that improve signal, communicating results to non-technical audiences. It does not solve everything: a model cannot fix biased or thin data, correlation is not causation, and high accuracy on a notebook sample means little without proper validation.\n\nBy the end you will be able to build predictive models with Python machine learning libraries, feature engineering pipelines with leakage controls, and experiment and cross-validation suites with error analysis and clear performance reporting.",
+    whyExists:
+      "The gap is between a demo notebook that scores well once and a defensible analysis that generalizes to new data. This course teaches the arc from Sources to Pipelines to Models to Decisions: framing questions, engineering honest features, validating with cross-validation and hypothesis testing, then communicating insights that hold up.",
     slug: "data-science",
     status: "published",
     visibility: "public",
@@ -11363,6 +11603,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_data_engineering",
+    introduction:
+      "Data engineering is the discipline of building the pipelines, warehouses, and workflows that deliver clean, reliable datasets to analysts and models. It matters now because analytics and AI are only as good as the data supply behind them.\n\nEngineers use Python, SQL, and pipeline tools to build batch ingestion into warehouses, design dimensional models for reporting, and orchestrate scheduled workflows with retries and dependencies. It does not solve upstream problems by itself: pipelines do not fix unclear definitions, poor source quality, or schemas designed without the questions they must serve.\n\nBy the end you will be able to build batch ingestion pipelines into a warehouse, dimensional models and schemas for analytics workloads, and orchestrated workflows with validation tests, freshness checks, and anomaly detection.",
+    whyExists:
+      "The gap is between a script that loads a file once and a production dataset that stays fresh, tested, and documented every day. This course teaches the arc from Sources to Pipelines to Models to Decisions: ingesting structured and semi-structured data, modeling it for analytics, orchestrating it reliably, and guarding it with quality checks.",
     slug: "data-engineering",
     status: "published",
     visibility: "public",
@@ -11550,6 +11794,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_machine_learning",
+    introduction:
+      "Machine learning is the practice of training models on data to predict, classify, and rank, then tuning and comparing them so the best one actually holds up. It matters now because tabular, text, and time-based data sit at the center of pricing, risk, and personalization decisions.\n\nPractitioners use applied regression, classification, preprocessing, and feature pipelines to solve prediction tasks, with validation strategies that measure true generalization. It does not solve everything: models do not fix leaked or biased training data, no algorithm rescues a poorly framed target, and strong offline metrics do not guarantee business value.\n\nBy the end you will be able to build supervised models for regression, classification, and ranking, preprocessing and feature pipelines for tabular, text, and time-based data, and validation and tuning comparisons judged by precision, recall, calibration, and business-aligned metrics.",
+    whyExists:
+      "The gap is between a tutorial model that scores on a sample and a tuned model that generalizes to new data and a real decision. This course teaches the arc from data framing to preprocessing to training to honest evaluation: preventing leakage, comparing candidates fairly, and aligning metrics with the business outcome.",
     slug: "machine-learning",
     status: "published",
     visibility: "public",
@@ -11738,6 +11986,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_deep_learning_engineering",
+    introduction:
+      "Deep learning engineering is the craft of designing, training, and optimizing neural networks with modern frameworks for vision, text, and signal tasks. It matters now because pretrained models and GPUs have made powerful image and sequence systems accessible to small teams.\n\nEngineers use it to build convolutional and sequence models, run training loops with loss functions, optimizers, schedulers, and checkpointing, and adapt pretrained backbones through transfer learning and fine-tuning. It does not solve everything: neural networks do not fix tiny or mislabeled datasets, training tricks do not rescue the wrong architecture, and high training accuracy means little when a model overfits.\n\nBy the end you will be able to build convolutional and sequence models for image, text, and signal tasks, transfer learning workflows from pretrained backbones, and training and evaluation suites with task metrics, confusion analysis, and overfitting diagnostics.",
+    whyExists:
+      "The gap is between a notebook that trains once and an engineered model that is tuned, regularized, and honestly evaluated. This course teaches the arc from data and backbone selection to training loop design to transfer learning to diagnostics: building models that generalize instead of memorizing.",
     slug: "deep-learning-engineering",
     status: "published",
     visibility: "public",
@@ -11920,6 +12172,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_mlops",
+    introduction:
+      "MLOps is the discipline of operating machine learning systems reliably with pipelines, registries, deployment automation, monitoring, and incident response. It matters now because many models work in a notebook but fail silently once deployed.\n\nTeams use it to build automated training pipelines with versioned data, code, and artifacts, manage model registries and promotion across staging and production, and run CI and CD for ML services. Automation alone does not fix bad models or unclear ownership: pipelines do not rescue poor validation, and dashboards do not help without rollback criteria and someone on call.\n\nBy the end you will be able to build automated training pipelines with versioned artifacts, registry and promotion workflows across staging and production, and monitored ML services with drift detection, quality gates, and rollback plans.",
+    whyExists:
+      "The gap is between a hand-deployed model file and a production system that retrains, releases, and recovers safely. This course teaches the arc from versioned training to registry promotion to automated release to monitored operations: Model to Pipeline to Deployment to Evaluation to Production with rollback.",
     slug: "mlops",
     status: "published",
     visibility: "public",
@@ -12104,6 +12360,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_analytics",
+    introduction:
+      "AI analytics combines classic analytics with generative AI to automate reporting, summarize trends, and answer questions over business data faster. It matters now because teams drown in dashboards but still wait days for plain-language answers.\n\nAnalysts use it to build AI-assisted dashboards that highlight key drivers, design prompts and retrieval workflows over business tables and documents, and automate reporting pipelines with SQL, Python, and language models. It does not solve foundational problems: language models do not fix missing or dirty source data, fluent summaries are not automatically true, and retrieval does not help when nothing authoritative exists to retrieve.\n\nBy the end you will be able to build AI-assisted dashboards with trend summaries, automated reporting pipelines combining SQL, Python, and language models, and grounded question-answering workflows with accuracy and relevance checks.",
+    whyExists:
+      "The gap is between a chatbot demo that sounds confident and a grounded reporting assistant that cites real data and admits limits. This course teaches the arc from Sources to Pipelines to Models to Decisions, extended with Model to Prompt to Context to Retrieval to Evaluation: connecting language models to business data, then checking every generated insight for grounding and business relevance.",
     slug: "ai-analytics",
     status: "published",
     visibility: "public",
@@ -12295,6 +12555,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ml_engineering",
+    introduction:
+      "ML engineering is the practice of designing production machine learning services with APIs, orchestration, testing, and observability so predictions stay fast and trustworthy. It matters now because useful models must live inside real products, not notebooks.\n\nEngineers use it to build ML services with APIs, batch jobs, and versioned artifacts, design data flow, inference paths, and failure handling, and test data, features, models, and contracts. Good serving does not fix weak modeling: APIs do not rescue poor validation, and scaling does not help when latency budgets, fallbacks, and quality thresholds were never defined.\n\nBy the end you will be able to build production ML services with versioned artifacts and APIs, testing suites for data, features, models, and contracts, and readiness evaluations with load tests, latency budgets, and quality thresholds.",
+    whyExists:
+      "The gap is between a trained model and a dependable service that handles traffic, failures, and change. This course teaches the arc from data flow and inference design to testing to deployment to observability: Model to Tools to Evaluation to Infrastructure to Production, so services stay correct, fast, and recoverable.",
     slug: "ml-engineering",
     status: "published",
     visibility: "public",
@@ -12487,6 +12751,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_data_architecture",
+    introduction:
+      "Data architecture is the practice of planning how an organization models, stores, governs, and shares data across warehouses, lakehouses, and catalogs. It matters now because growing data estates become expensive, inconsistent, and untrusted without clear standards.\n\nArchitects use conceptual and logical modeling, warehouse and lakehouse design with zones, contracts, and SLAs, and governance frameworks for quality, lineage, ownership, and retention. Architecture alone does not fix culture: diagrams do not enforce ownership, catalogs do not clean data by themselves, and no platform choice rescues undefined domains.\n\nBy the end you will be able to build conceptual and logical data models for transactional and analytical domains, warehouse and lakehouse architectures with zones, contracts, and SLAs, and governance and tradeoff evaluations covering cost, latency, scalability, and maintainability.",
+    whyExists:
+      "The gap is between a set of disconnected databases and a governed platform teams can build on for years. This course teaches the arc from Sources to Pipelines to Models to Decisions at platform scale: modeling domains, designing zones and contracts, setting governance and SLAs, and weighing tradeoffs explicitly.",
     slug: "data-architecture",
     status: "published",
     visibility: "public",
@@ -12679,6 +12947,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_big_data_engineering",
+    introduction:
+      "Big data engineering is the discipline of processing very large batch and streaming datasets reliably with distributed systems like Spark, Kafka, and lakehouses. It matters now because event streams, logs, and large tables overwhelm single-machine workflows.\n\nEngineers use it to build partitioned, fault-tolerant batch jobs, streaming topologies with windows, watermarks, and exactly-once handling, and lakehouse tables with schema evolution, compaction, and time travel. Scale does not fix design errors: clusters do not rescue skewed keys, late data, or undefined event semantics.\n\nBy the end you will be able to build distributed batch jobs with partitioning and fault tolerance, streaming topologies with windows and watermarks, and lakehouse tables with evolution, compaction, and performance profiling using skew and resource analysis.",
+    whyExists:
+      "The gap is between a job that runs once on a sample and a system that keeps up with volume, late events, and schema change every day. This course teaches the arc from Sources to Pipelines to Models to Decisions at scale: partitioning and fault tolerance, streaming correctness, lakehouse maintenance, and honest performance evaluation.",
     slug: "big-data-engineering",
     status: "published",
     visibility: "public",
@@ -12871,6 +13143,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_applied_machine_learning",
+    introduction:
+      "Applied machine learning is the practice of scoping real business problems, engineering useful features, and validating models that earn their place in operations. It matters now because many teams can train a model but few can connect one to a decision worth automating.\n\nPractitioners use it for churn, demand, scoring, and recommendation-style problems, scoping use cases with success metrics and feasibility checks, and running end-to-end workflows from data collection to validation and handoff. Modeling alone does not create value: predictions do not fix unclear ownership, weak baselines, or success metrics nobody agreed on.\n\nBy the end you will be able to build applied models for churn, demand, scoring, and recommendation-style problems, scoped use-case briefs with metrics and feasibility checks, and end-to-end validation packages with business metrics, ablations, and stakeholder review.",
+    whyExists:
+      "The gap is between a technically decent model and a deployed solution that moves a business metric and survives handoff. This course teaches the arc from Sources to Pipelines to Models to Decisions: scoping feasible use cases, building focused workflows, and proving value with business metrics and stakeholder review before anything ships.",
     slug: "applied-machine-learning",
     status: "published",
     visibility: "public",
@@ -13061,6 +13337,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cybersecurity_engineering",
+    introduction:
+      "Cybersecurity engineering is the discipline of designing systems that stay safe under attack, starting with hardened networks, secure endpoints, and watchful monitoring. It matters now because almost every organization runs on connected systems, and small misconfigurations can turn into major incidents. This course teaches the foundations in beginner-friendly lab steps so you can see how defenses fit together.\n\nYou will use these foundations in IT and security support work: segmenting lab networks, hardening Windows and Linux endpoints, and building monitoring dashboards with open-source log tooling. These practices solve the problem of ad-hoc, unrepeatable security — replacing guesswork with baselines, checklists, and scanning workflows. They do not solve everything: checklists do not fix missing patches on their own, dashboards do not fix bad log sources, and scans do not fix unclear ownership of remediation.\n\nBy the end you will be able to build a hardened virtual lab network with segmented zones and baselines, an endpoint hardening checklist pack for Windows and Linux lab systems, and a security monitoring dashboard with a vulnerability scanning and remediation tracking workflow.",
+    whyExists:
+      "The gap is between watching a demo of a security tool and running a defensible environment day to day. This course closes it with an arc from lab design to hardening to monitoring to scanning and remediation: build segmented lab networks, apply endpoint baselines, collect logs into dashboards, then run scans and track fixes through to completion.",
     slug: "cybersecurity-engineering",
     status: "published",
     visibility: "public",
@@ -13255,6 +13535,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cloud_security",
+    introduction:
+      "Cloud security is the practice of keeping cloud accounts, storage, and workloads correctly configured and observable. It matters now because teams spin up cloud resources fast, and a single open storage bucket or overbroad identity policy can expose sensitive data. This course teaches least-privilege thinking and guardrails through controlled labs you can safely practice in.\n\nYou will use these skills wherever cloud workloads run: organizing lab accounts with guardrails, writing identity and access policies, securing storage and networks, and building centralized logging and alerting. This solves misconfiguration drift and blind spots — the most common sources of cloud incidents. It does not solve everything: policies do not fix insecure application code, logging does not fix unreviewed alerts, and guardrails do not fix unclear responsibility between teams.\n\nBy the end you will be able to build a secure cloud lab account structure with guardrails, a least-privilege identity and access policy set for lab workloads, and a centralized logging and alerting pipeline with a misconfiguration review routine.",
+    whyExists:
+      "The gap is between clicking through a cloud console and operating accounts that stay secure as they grow. This course closes it with an arc from account organization to identity to storage and network controls to logging: set up guarded lab accounts, apply least-privilege policies, secure workloads, then centralize activity logs and review misconfigurations on a repeatable cadence.",
     slug: "cloud-security",
     status: "published",
     visibility: "public",
@@ -13445,6 +13729,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_application_security",
+    introduction:
+      "Application security is the discipline of building software that resists abuse — from broken authentication to injection flaws. It matters now because web applications and APIs handle sensitive data and are constantly probed for weaknesses. This course teaches defensive coding and testing habits using sample applications you can safely break and fix in a lab.\n\nYou will use these habits in software teams: threat modeling a web app or API, designing secure authentication and session handling, and adding input validation and output encoding defenses. This solves whole classes of preventable flaws before they reach production. It does not solve everything: threat models do not fix unpatched libraries by themselves, code review does not fix missing security requirements, and pipeline checks do not fix flawed business logic.\n\nBy the end you will be able to build a threat model for a sample web application and API, a secure authentication and session-handling control set, and a lab pipeline with static and dependency checks plus input validation defenses.",
+    whyExists:
+      "The gap is between writing features that work and shipping software that withstands hostile input. This course closes it with an arc from design to code to verification: model threats, implement authentication and validation controls, then wire static and dependency checks into a lab pipeline so flaws are caught early and repeatably.",
     slug: "application-security",
     status: "published",
     visibility: "public",
@@ -13636,6 +13924,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_ai_security",
+    introduction:
+      "AI security is the defensive practice of keeping AI systems — especially LLM-powered apps — safe, private, and well-behaved. It matters now because teams are connecting models to real data and tools, where prompt injection, data leakage, and overbroad access can cause real harm. This course teaches safeguards and evaluation habits through guided lab apps.\n\nYou will use these controls wherever AI features ship: safeguard patterns for model inputs and outputs, data handling controls for training and retrieval pipelines, and access controls with logging for model endpoints. This solves the everyday risks of careless prompts, exposed data, and unmonitored model use. It does not solve everything: filters do not fix missing evaluation data, access controls do not fix a poorly chosen use case, and logging does not fix alerts nobody reviews.\n\nBy the end you will be able to build an LLM input-output safeguard pattern set for a lab app, a data handling control plan for training and retrieval pipelines, and a model endpoint setup with access controls, logging, and a prompt injection and leakage evaluation checklist.",
+    whyExists:
+      "The gap is between a chatbot demo and an AI feature that is safe to run for real users and real data. This course closes it with an arc from safeguards to data controls to evaluation to operations: design prompt safeguards, protect training and retrieval data, evaluate injection and leakage risks, then lock down model endpoints with access control and logging.",
     slug: "ai-security",
     status: "published",
     visibility: "public",
@@ -13827,6 +14119,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_soc_engineering",
+    introduction:
+      "SOC engineering is the craft of running security operations: turning streams of logs and alerts into detected, triaged, and resolved incidents. It matters now because defenders face far more alerts than they can read, and without good detections and playbooks the important signals get missed. This course teaches the workflow using simulated log data so you can practice safely.\n\nYou will use these workflows in security operations teams: building SIEM dashboards from endpoint and network logs, writing tuned detection rules, and following triage playbooks with severity levels and response timelines. This solves alert chaos — replacing scattered inboxes with prioritized queues and repeatable responses. It does not solve everything: dashboards do not fix missing log sources, detection rules do not fix unpatched systems, and playbooks do not fix understaffed on-call rotations.\n\nBy the end you will be able to build a SIEM dashboard from simulated endpoint and network logs, a tuned detection rule set with noise-reduction notes, and a triage playbook pack with case management workflows and an incident timeline.",
+    whyExists:
+      "The gap is between seeing alerts fire and running an operation that reliably catches and resolves incidents. This course closes it with an arc from visibility to detection to response: centralize simulated logs into dashboards, write and tune detection rules, then triage through playbooks and case workflows with severity levels and timelines.",
     slug: "soc-engineering",
     status: "published",
     visibility: "public",
@@ -14018,6 +14314,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_security_automation",
+    introduction:
+      "Security automation is the practice of letting scripts and playbooks do the repetitive defensive work — collecting logs, enriching alerts, and gathering evidence. It matters now because manual copy-paste triage cannot keep up with alert volume, and tired analysts miss things. This course teaches practical automation with APIs and scheduled jobs in a lab.\n\nYou will use these automations in security and IT teams: scripts for log collection and parsing, SOAR-style playbooks for enrichment and escalation, and scheduled jobs for hygiene and posture checks. This solves toil and inconsistency — the same checks run the same way every time. It does not solve everything: automation does not fix unclear response ownership, API integrations do not fix missing data, and scheduled jobs do not fix alerts nobody acts on.\n\nBy the end you will be able to build a log collection and parsing automation script set, a SOAR-style enrichment and escalation playbook with API integrations between lab tools, and a scheduled hygiene and posture check job with reporting workflows.",
+    whyExists:
+      "The gap is between manually clicking through alerts and running defenses that scale. This course closes it with an arc from collection to orchestration to scheduling: automate log gathering and parsing, connect lab tools through playbook integrations, then deploy scheduled posture checks with evidence collection and reporting.",
     slug: "security-automation",
     status: "published",
     visibility: "public",
@@ -14203,6 +14503,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_devsecops_security",
+    introduction:
+      "DevSecOps security is the discipline of embedding defensive checks directly into the software delivery pipeline. It matters now because fast releases can ship leaked secrets, vulnerable images, and misconfigured infrastructure if nothing checks along the way. This course teaches guardrails that help teams move fast without breaking trust, using sample services.\n\nYou will use these checks in engineering teams: pipeline stages with security gates and approvals, secret handling and artifact protection, and container image and dependency scanning. This solves late-discovered flaws — catching risky changes before they deploy. It does not solve everything: scanners do not fix insecure design, gates do not fix skipped reviews, and policy checks do not fix unclear deployment ownership.\n\nBy the end you will be able to build a delivery pipeline with security gates and approvals, a secret handling and artifact protection workflow, and a scanning stage covering container images, dependencies, and infrastructure policy checks for lab environments.",
+    whyExists:
+      "The gap is between a pipeline that ships fast and one that ships fast and safely. This course closes it with an arc from gates to secrets to scanning to policy: add security stages with approvals, protect secrets and artifacts, scan images and dependencies, then enforce infrastructure policy checks before deployment.",
     slug: "devsecops-security",
     status: "published",
     visibility: "public",
@@ -14384,6 +14688,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_cyber_defense_engineering",
+    introduction:
+      "Cyber defense engineering is the practice of designing layered defenses so that if one control fails, others still catch the attack. It matters now because single-point defenses are easily bypassed, while coordinated network, endpoint, and deception layers give defenders multiple chances to detect intruders. This course teaches the layered approach through isolated labs and drills.\n\nYou will use these designs to protect networks and endpoints: layered defense layouts, detection coverage maps across network and host telemetry, and coordinated response runbooks for simulated scenarios. This solves single-layer fragility and blind spots between tools. It does not solve everything: more layers do not fix unpatched systems by themselves, coverage maps do not fix missing log quality, and drills do not fix unclear escalation authority.\n\nBy the end you will be able to build a layered defense layout for a lab network with endpoint defenses, a detection coverage map across network and host telemetry, and a coordinated response runbook paired with honeypot and alerting sensors in an isolated lab.",
+    whyExists:
+      "The gap is between deploying individual security tools and engineering defenses that work as a system. This course closes it with an arc from layout to coverage to response: design layered network and endpoint defenses, map detection coverage across telemetry, then drill coordinated runbooks supported by deception sensors.",
     slug: "cyber-defense-engineering",
     status: "published",
     visibility: "public",
@@ -14572,6 +14880,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_identity_access_security",
+    introduction:
+      "Identity and access security is the identity-first approach to defense: making sure the right people and systems can reach the right resources — and nothing else. It matters now because stolen credentials and overbroad access are among the most common paths into an organization. This course teaches the lifecycle habits that keep access correct over time, in practice labs.\n\nYou will use these controls in IT and security teams: directory structures with groups and roles, MFA and conditional access policies, and joiner-mover-leaver workflows with approval trails. This solves access sprawl and lingering privileges that accumulate as people change roles. It does not solve everything: MFA does not fix unmanaged devices on its own, reviews do not fix unclear role definitions, and policies do not fix processes nobody follows.\n\nBy the end you will be able to build a directory structure with groups, roles, and naming standards, an MFA and conditional access policy set for a lab tenant, and a joiner-mover-leaver workflow with privileged access reviews and just-in-time controls.",
+    whyExists:
+      "The gap is between creating accounts once and keeping access correct as people join, move, and leave. This course closes it with an arc from structure to policy to lifecycle to review: organize directories and roles, enforce MFA and conditional access, run lifecycle workflows with approvals, then review privileged access on a repeatable cycle.",
     slug: "identity-and-access-security",
     status: "published",
     visibility: "public",
@@ -14756,6 +15068,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_security_architecture",
+    introduction:
+      "Security architecture is the discipline of designing how an organization's defenses fit together across identity, network, and data. It matters now because piecemeal tools create gaps and overlap, while a clear reference model lets every new system plug into consistent controls. This course teaches architecture as a communication skill, producing documents leaders can actually decide on.\n\nYou will use these artifacts when advising teams: reference architectures for identity, network, and data zones, control maps tied to risk scenarios, and zero-trust roadmaps with phased milestones. This solves incoherent defenses — replacing one-off exceptions with mapped, reviewable decisions. It does not solve everything: diagrams do not fix unimplemented controls, roadmaps do not fix unfunded priorities, and review templates do not fix decisions nobody enforces.\n\nBy the end you will be able to build a reference architecture covering identity, network, and data zones, a control map aligned to risk scenarios and requirements, and a zero-trust roadmap with an architecture review template for new systems.",
+    whyExists:
+      "The gap is between knowing individual controls and designing an enterprise that applies them coherently. This course closes it with an arc from models to mapping to planning to review: draft reference architectures, map controls to risks and requirements, phase a zero-trust roadmap, then run new systems through a repeatable architecture review.",
     slug: "security-architecture",
     status: "published",
     visibility: "public",
@@ -14940,6 +15256,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_blockchain_engineering",
+    introduction:
+      "Blockchain engineering is the practice of building on distributed ledgers — shared, tamper-evident records secured by consensus instead of a central database — and it matters now because payments, identity, and digital ownership increasingly need verifiable trust without intermediaries. You will learn how ledgers, consensus, smart contracts, and token standards fit together, in beginner-friendly steps that turn curiosity into working code.\n\nDecentralized applications use it for payments, access control, and asset transfers, plus fungible and non-fungible token systems where ownership must be provable. It solves verifiable execution and ownership well, but it does not solve bad trust design, it does not make everything faster or cheaper than a database, and it does not remove the need for careful testing and security review.\n\nBy the end you will be able to build a payment and access-control smart contract system, a fungible and non-fungible token suite for digital assets, and a wallet-integrated decentralized application deployed to a test network with verification workflows.",
+    whyExists:
+      "Most learners stop at a toy token deployed from a tutorial, which collapses the first time wallets, node connections, gas costs, and verification matter. This course teaches the full arc from protocol concepts to contracts to token design to dApp integration to testnet deployment and verification, so you can carry an idea through design, code, test, deploy, and operate like production demands.",
     slug: "blockchain-engineering",
     status: "published",
     visibility: "public",
@@ -15131,6 +15451,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_web3_engineering",
+    introduction:
+      "Web3 engineering is full-stack product engineering for decentralized systems — wallet-connected frontends, signature-based identity, and smart-contract backends — and it matters now because users expect to own assets and identity while still getting usable apps. You will learn how wallets, contracts, and frontends connect, starting from simple signing flows to complete products.\n\nIt is used for wallet-connected storefronts, decentralized login and authentication, and NFT minting, listing, and marketplace interactions. It solves user-owned assets and verifiable actions well, but it does not fix poor user experience, it does not remove gas fees, latency, or failed transactions, and slick frontends do not fix insecure contracts.\n\nBy the end you will be able to build a wallet-connected frontend with transaction signing flows, a signature-based decentralized identity and login system, and an NFT minting and marketplace app integrated with testnet contracts.",
+    whyExists:
+      "The gap is wide between a demo button that mints once on a local chain and a product that handles wallet states, rejected signatures, network switches, and contract errors gracefully. This course teaches the arc from wallets to signing to identity to contract frontends to testnet-integrated deployment, so your apps survive real users and real networks.",
     slug: "web3-engineering",
     status: "published",
     visibility: "public",
@@ -15319,6 +15643,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_iot_engineering",
+    introduction:
+      "IoT engineering connects the physical world to software through sensors, microcontrollers, and messaging, and it matters now because monitoring temperature, motion, and environments drives decisions in homes, farms, factories, and cities. You will learn how sensing, firmware, messaging, and cloud telemetry fit into one working loop.\n\nIt is used for connected monitoring such as environmental sensing, equipment alerts, and telemetry dashboards backed by databases. It solves continuous visibility and early warning well, but it does not fix unreliable power and networks, more sensors do not fix bad calibration, and dashboards do not fix bad measurements.\n\nBy the end you will be able to build a temperature, motion, and environmental sensor circuit with sampling and alert firmware, an MQTT and HTTP messaging flow for constrained devices, and a cloud-connected telemetry pipeline feeding dashboards and databases.",
+    whyExists:
+      "Toy demos blink an LED or post one reading, while production devices must handle sleep modes, sampling rates, dropped messages, and noisy sensors for weeks at a time. This course teaches the arc from sources to firmware to messaging to pipelines to decisions, so you can deploy monitoring solutions that keep working outside the lab.",
     slug: "iot-engineering",
     status: "published",
     visibility: "public",
@@ -15500,6 +15828,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_edge_computing_engineering",
+    introduction:
+      "Edge computing runs software close to where data is created — on gateways, on-site clusters, and smart devices — and it matters now because sensor streams and video cannot always wait for a distant cloud round trip. You will learn how containers, clusters, and stream processing deliver low-latency intelligent behavior.\n\nIt is used for on-site analytics, device fleet coordination, and real-time processing of sensor and video data where latency and resilience matter. It solves local responsiveness and continued operation during outages well, but it does not fix bad overall architecture, it does not remove tight hardware limits, and moving compute to the edge does not fix bad data or bad models.\n\nBy the end you will be able to build a containerized workload tuned for edge hardware, an edge cluster topology designed for latency and resilience, and a stream processing job for sensor and video data across a managed device fleet.",
+    whyExists:
+      "Many demos run one container on a laptop, which hides the hard parts: constrained hardware, flaky links, updates across fleets, and streams that never stop. This course teaches the arc from workload design to cluster topology to stream processing to fleet operation, so you can deliver edge systems that stay fast and reliable in the field.",
     slug: "edge-computing-engineering",
     status: "published",
     visibility: "public",
@@ -15684,6 +16016,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_digital_twin_engineering",
+    introduction:
+      "Digital twin engineering builds living virtual replicas of physical assets — machines, buildings, or processes — kept in sync with live sensor data and 3D simulation, and it matters now because operators want to monitor, predict, and test without touching real equipment. You will learn how geometry, behavior models, sensor fusion, and visualization combine into one system.\n\nTwins are used for asset monitoring, failure prediction, and what-if simulation driven by real-time telemetry. They solve continuous insight and safer experimentation well, but they do not fix missing or bad sensor data, simulation does not replace physical testing, and polished 3D views do not fix wrong models.\n\nBy the end you will be able to build a geometric and behavioral model of a physical asset, a sensor fusion pipeline for real-time twin updates, and a 3D simulation dashboard backed by a live telemetry ingestion service.",
+    whyExists:
+      "Static 3D demos impress but drift from reality the moment sensors drop, calibrations shift, or models go stale. This course teaches the arc from asset modeling to fusion pipelines to live data services to simulation and prediction, so your twins stay synchronized, trustworthy, and useful for real decisions.",
     slug: "digital-twin-engineering",
     status: "published",
     visibility: "public",
@@ -15867,6 +16203,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_robotics_engineering",
+    introduction:
+      "Robotics engineering brings machines to life through kinematics, sensing, control, and programming, and it matters now because mobile robots handle inspection, delivery, and automation tasks everywhere from warehouses to labs. You will learn by assembling and programming real behaviors step by step with ROS.\n\nRobots are used for mobile navigation, obstacle avoidance, manipulation, and sensor-driven control in structured and semi-structured spaces. They solve repeatable physical work well, but software alone does not fix weak mechanical builds, autonomy does not remove safety testing, and more sensors do not fix poor calibration or control tuning.\n\nBy the end you will be able to build a mobile robot assembly with motors, sensors, and controllers, ROS nodes for perception, navigation, and control, and an obstacle-avoidance and path-planning behavior with kinematic motion constraints.",
+    whyExists:
+      "The jump from a line-following demo to a robot that navigates, avoids obstacles, and recovers from surprises is where most beginners stall. This course teaches the arc from assembly to kinematics to sensing to ROS control to tested navigation, so you can design, code, test, deploy, and operate robots that behave reliably.",
     slug: "robotics-engineering",
     status: "published",
     visibility: "public",
@@ -16056,6 +16396,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_autonomous_systems_engineering",
+    introduction:
+      "Autonomous systems engineering is the stack that lets vehicles and drones perceive, localize, plan, and act on their own, and it matters now because safe autonomy depends on disciplined simulation and testing before anything flies or drives. You will learn each layer — perception, localization, planning, control — as pieces of one safety-minded system.\n\nIt is used for simulated vehicles and drones that detect and track objects, localize with sensor fusion and mapping, plan paths through dynamic scenes, and execute steering, braking, and flight commands. It solves structured autonomy and repeatable testing well, but it does not remove edge cases and safety review, simulation does not guarantee real-world performance, and perception does not fix bad maps or failed sensors.\n\nBy the end you will be able to build a perception pipeline for detection, tracking, and segmentation, a localization and mapping workflow with sensor fusion, and a planning-plus-control stack for navigation and steering, braking, and flight in dynamic environments.",
+    whyExists:
+      "Watching a simulated vehicle follow a perfect route hides the real work: noisy perception, localization drift, unpredictable obstacles, and control limits. This course teaches the arc from sensing to perception to localization to planning to control to simulated validation, so you can engineer autonomy that is tested, explainable, and safety-aware.",
     slug: "autonomous-systems-engineering",
     status: "published",
     visibility: "public",
@@ -16244,6 +16588,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_engineering_management",
+    introduction:
+      "Engineering management is the discipline of leading software teams so good people ship reliable products on purpose. It matters now because growing teams stall without clear cadences for hiring, coaching, planning, and delivery.\n\nYou will use it wherever engineering groups plan sprints, run standups and retros, structure teams and onboarding, and read delivery and quality signals. It solves unclear ownership, drift, and unpredictable delivery, but it does not fix a weak product idea, missing customer demand, or broken technical foundations on its own.\n\nBy the end you will be able to build a delivery operating cadence with planning and review routines, a team structure with roles and an onboarding plan, and a coaching and performance review system tied to delivery metrics.",
+    whyExists:
+      "Toy demos of leadership stop at running a standup; production leadership connects hiring, coaching, capacity, and quality signals into delivery teams can repeat. This course follows the arc from team design to delivery planning to coaching and performance systems to measurable operating cadences.",
     slug: "engineering-management",
     status: "published",
     visibility: "public",
@@ -16426,6 +16774,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_technical_product_management",
+    introduction:
+      "Technical product management is how customer needs become requirements, APIs, and roadmaps that engineers can actually build. It matters now because teams waste sprints on vague specs and unscoped integrations.\n\nYou will use it wherever product and engineering teams shape scope from customer problems and usage data, write requirements and acceptance criteria, and define API and data contracts. It solves fuzzy scope and misaligned backlogs, but it does not fix missing engineering capacity, unreliable data, or a product nobody wants.\n\nBy the end you will be able to build a scoped product requirements pack with user stories, an API and data-model contract for an integration, and a prioritized backlog and release plan tied to outcomes.",
+    whyExists:
+      "Toy demos stop at a feature list; production product work ties evidence, technical constraints, contracts, and sequencing into releases teams can deliver. This course follows the arc from customer evidence to requirements to API and data design to prioritized roadmaps and release plans.",
     slug: "technical-product-management",
     status: "published",
     visibility: "public",
@@ -16609,6 +16961,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
 
   {
     id: "academy_course_technology_architecture",
+    introduction:
+      "Technology architecture is the discipline of designing the whole technology landscape — applications, data, infrastructure, and platforms — around shared standards. It matters now because disconnected tools and one-off decisions pile into expensive, fragile estates.\n\nYou will use it wherever organizations set reference architectures, choose platforms and cloud services, and draw integration and platform boundaries. It brings long-term fitness and reuse, but it does not fix poor delivery habits, missing product focus, or bad data on its own.\n\nBy the end you will be able to build an enterprise reference architecture, a platform evaluation with migration options, and a governance model with standards and review routines.",
+    whyExists:
+      "Toy demos draw one clean diagram; production architecture must govern platforms, integrations, and exceptions across many teams over time. This course follows the arc from landscape mapping to platform evaluation to integration design to standards and governance.",
     slug: "technology-architecture",
     status: "published",
     visibility: "public",
@@ -16790,6 +17146,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_solution_architecture",
+    introduction:
+      "Solution architecture turns a business requirement into a secure, workable, costed design a team can deliver and operate. It matters now because projects fail in the gaps between requirements, integrations, and non-functional needs.\n\nYou will use it wherever teams design end-to-end solutions across APIs, events, files, and third-party systems, weighing performance, security, and availability. It solves vague designs and hidden tradeoffs, but it does not fix unclear business goals, missing funding, or weak delivery execution.\n\nBy the end you will be able to build an end-to-end solution design with estimates, an integration blueprint across systems, and an architecture decision record capturing options and tradeoffs.",
+    whyExists:
+      "Toy demos sketch boxes and arrows; production designs must be secure, costed, integrated, and operable with documented rationale. This course follows the arc from discovery to solution design to integration planning to decision records and delivery estimates.",
     slug: "solution-architecture",
     status: "published",
     visibility: "public",
@@ -16974,6 +17334,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_technical_leadership",
+    introduction:
+      "Technical leadership is how senior engineers raise quality and direction through reviews, standards, and mentorship rather than titles. It matters now because teams need influence that works across code, design, and people.\n\nYou will use it wherever engineers run design and code reviews, set testing and documentation standards, and mentor others through pairing and knowledge sharing. It solves inconsistent quality and siloed knowledge, but it does not fix broken management structures, missing product direction, or staffing gaps.\n\nBy the end you will be able to build a design and code review routine with RFC habits, a pragmatic set of testing and documentation standards, and a mentorship and knowledge-sharing plan for a team.",
+    whyExists:
+      "Toy demos stop at clean code tips; production technical leadership turns stewardship, reviews, and mentorship into habits teams repeat. This course follows the arc from code stewardship to review practice to standards to mentorship and risk communication.",
     slug: "technical-leadership",
     status: "published",
     visibility: "public",
@@ -17154,6 +17518,10 @@ export const ACADEMY_COURSES: readonly CourseEntry[] = [
   },
   {
     id: "academy_course_engineering_strategy",
+    introduction:
+      "Engineering strategy connects engineering investment — products, platforms, people — to business outcomes. It matters now because leaders must choose where scarce engineering time goes.\n\nYou will use it wherever organizations plan portfolios, invest in platforms and developer experience, and build hiring, leveling, and succession systems. It solves scattered bets and unclear priorities, but it does not fix weak execution, missing market fit, or day-to-day delivery problems.\n\nBy the end you will be able to build an engineering strategy narrative tied to business goals, a portfolio investment plan across products and platforms, and a talent operating plan covering hiring and leveling.",
+    whyExists:
+      "Toy demos write a vision slide; production strategy allocates real budgets, platform effort, and talent against measurable outcomes. This course follows the arc from strategy narrative to portfolio planning to platform leverage to talent systems and operating plans.",
     slug: "engineering-strategy",
     status: "published",
     visibility: "public",
