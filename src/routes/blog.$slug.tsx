@@ -17,6 +17,131 @@ const POSTS: Record<
     readTime: string;
   }
 > = {
+  "generative-ai-engineering": {
+    title: "Generative AI Engineering: The Complete Foundational Guide",
+    excerpt: "Learn standard practices for Generative AI Engineering: RAG, AI Agents, MCP, Prompt Engineering, Evaluation, and deployment.",
+    date: "2026-09-27",
+    tag: "AI & Generative Intelligence",
+    readTime: "15 min read",
+    content: `
+<h1>Generative AI Engineering: The Complete Foundational Guide</h1>
+<h2>Introduction</h2>
+<p>Generative AI engineering is the discipline of turning large language models into software people can rely on. Calling an AI API takes minutes; shipping an AI product takes engineering.</p>
+<h2>Quick Answer</h2>
+<p>Generative AI engineering moves beyond just prompting models by wrapping them in structured systems that include retrieved knowledge (RAG), tool calling (Agents), structured outputs, memory, guardrails, and rigorous evaluation pipelines.</p>
+<h2>Key Takeaways</h2>
+<ul>
+<li>**More than Prompts:** Systems demand engineering rigor.</li>
+<li>**RAG & Agents:** Context and capability define modern architecture.</li>
+<li>**Evaluations:** Testing must evolve from visual checks to automated harness testing.</li>
+</ul>
+<h2>What Is Generative AI Engineering?</h2>
+<h3>Simple Explanation</h3>
+<p>It's the process of building apps that use AI to generate text, images, or code reliably without making mistakes.</p>
+<h3>Technical Definition</h3>
+<p>The end-to-end practice of designing, building, orchestrating, and operating AI systems leveraging LLMs, retrievers (vector databases), tools, and multi-agent workflows.</p>
+<h3>Formal Definition</h3>
+<p>A specialized software engineering discipline bridging AI model capabilities with production reliability, applying MLOps, CI/CD, and strict evaluation metrics (AI Evals) to non-deterministic systems.</p>
+<h2>Why Does Generative AI Engineering Matter?</h2>
+<h3>Why It Matters Today</h3>
+<p>It bridges the gap between impressive research demos and robust business applications.</p>
+<h3>Industry Relevance</h3>
+<p>Organizations demand deterministic results from probabilistic models to deploy them safely.</p>
+<h3>Practical Relevance</h3>
+<p>It solves "language-shaped" unstructured problems dynamically without hardcoding explicit paths.</p>
+<h2>How Does Generative AI Engineering Work?</h2>
+<h3>Step 1: Modeling & Prompting</h3>
+<p>Selecting a foundation model and engineering structured, versioned prompts.</p>
+<h3>Step 2: Context Retrieval</h3>
+<p>Embedding internal documents and running vector similarity searches to ground answers.</p>
+<h3>Step 3: Action & Orchestration</h3>
+<p>Giving models tools via structured definitions to perform real-world actions.</p>
+<h3>Step 4: Guardrails & Evals</h3>
+<p>Checking inputs and outputs programmatically while evaluating system versions against a golden dataset.</p>
+<h2>Generative AI System Architecture</h2>
+<h3>Overview</h3>
+<p>Modern architecture separates prompts, retrieval logic, agentic tool loops, and client orchestration.</p>
+<h3>Components</h3>
+<h4>Foundation Models and LLMs</h4>
+<p>The reasoning and generation engine.</p>
+<h4>Embeddings & Vector Search</h4>
+<p>The semantic memory layer, organizing data by meaning rather than keywords.</p>
+<h4>Orchestration layer</h4>
+<p>The logic connecting context, history, and tools (e.g. ReAct, Plan-and-Execute).</p>
+<h3>Workflow</h3>
+<p>User Request -> Policy Guardrail -> Retriever -> Context Assembly -> LLM Generation -> Output Verification -> Client.</p>
+<h2>Core Concepts</h2>
+<ul>
+<li>**Prompt Engineering:** Structuring requests, versioning, few-shot examples.</li>
+<li>**Context Engineering:** Perfecting the data given to the model.</li>
+<li>**Structured Outputs:** Ensuring API-ready data shapes (JSON, Schema).</li>
+<li>**Tool Calling & MCP:** Using standard protocols like the Model Context Protocol to fetch live data.</li>
+<li>**Memory:** Distinguishing short-term scratchpad from long-term episodic retrieval.</li>
+</ul>
+<h2>Real-World Applications & Industry Use Cases</h2>
+<p>From legal document review to autonomous coding assistants, scalable customer support, and medical research synthesis.</p>
+<h2>Examples & Case Study</h2>
+<p>**Case Study: Automating Engineering Reviews**</p>
+<p>An application that fetches pull requests, evaluates code quality via an LLM toolset, verifies build logs, and posts detailed findings automatically.</p>
+<h2>AI Engineering vs ML Engineering vs Software Engineering</h2>
+<ul>
+<li>**Software Engineering:** Static logic and rules.</li>
+<li>**ML Engineering:** Training weights and optimizing inference serving.</li>
+<li>**AI Engineering:** Leveraging pre-trained foundation models into applications through prompts, RAG, and Agents.</li>
+</ul>
+<h2>Advantages & Limitations</h2>
+<p>**Advantages:** Extreme flexibility, handling unstructured data, autonomous planning.</p>
+<p>**Limitations:** Latency, high cost, non-determinism, and hallucinations if poorly grounded.</p>
+<h2>Risks, Security, Privacy, Governance & Guardrails</h2>
+<p>Implementing strict input sanitization against prompt injection, output filtering for brand safety, PII detection, and human-in-the-loop review for irreversible actions.</p>
+<h2>Testing, Observability, Reliability & Deployment</h2>
+<p>**Evaluation and AI Evals:** LLM-as-a-judge patterns against a baseline.</p>
+<p>**Cost & Latency Optimization:** Local fast models routing complex tasks to heavier models.</p>
+<p>**Infrastructure:** Tracing tools capturing prompt strings, tokens, and decisions continuously.</p>
+<h2>How to Implement Generative AI</h2>
+<p>Build smallest verifiable slice. Add retrieval. Add one tool. Add an eval dataset. Iterate.</p>
+<h2>Practical Project: Production-Ready Generative AI Knowledge Assistant</h2>
+<p>**Problem:** A corporate wiki is vast and search is broken.</p>
+<p>**Requirements:** Accurate, cited answers reflecting only the knowledge base.</p>
+<p>**Architecture & Data Flow:**</p>
+<p>1. Ingestion of docs.</p>
+<p>2. Chunking (200-500 words).</p>
+<p>3. Embeddings generated and Vector Storage applied.</p>
+<p>4. Retrieval fetching top-k chunks.</p>
+<p>5. Prompt/context construction packing chunks and strict 'cite sources' rules.</p>
+<p>6. Model generation delivering cited facts.</p>
+<p>7. Evaluated for tone and security before returning to the UI.</p>
+<h2>HIGAET Capstone: Enterprise Generative AI Engineering Platform</h2>
+<p>**Enterprise Solution:** Design a unified gateway implementing the Model Context Protocol, hosting dedicated RAG stores for different departments, standardizing evaluation test runners in CI/CD, and enforcing corporate data governance natively across a multi-agent framework.</p>
+<h2>Skills Required & Beginner → Advanced Learning Roadmap</h2>
+<p>From basics (Python, API, basic prompt) to RAG (Vector DBs, embedding models) to Agents (tool orchestration, graphs) to Production (evaluations, CI/CD for prompts, guardrails).</p>
+<h2>Career Applications</h2>
+<p>AI Application Engineer, Platform AI Engineer, AI Operations.</p>
+<h2>HIGAET Original Insight</h2>
+<h3>Perspective</h3>
+<p>AI Engineering is less about creating intelligence and more about constraining it.</p>
+<h3>Framework</h3>
+<p>The "Cone of Autonomy": start systems in a tight deterministic sleeve (RAG only) and expand tool permissions only as evaluations prove capability bounds.</p>
+<h3>Methodology</h3>
+<p>Treat prompts as software. Treat evaluation as primary, not an afterthought.</p>
+<h2>Frequently Asked Questions</h2>
+<p>**Q: Is RAG better than fine-tuning?**</p>
+<p>A: Usually. RAG updates data instantly and prevents hallucinations with exact citations. Fine-tuning is better for teaching the model new structural behavior or tone.</p>
+<h2>Conclusion</h2>
+<p>Generative AI Engineering demands rigor. Demos are cheap, production is earned.</p>
+<h2>Sources & References</h2>
+<ul>
+<li>HIGAET Knowledge Architecture documentation.</li>
+<li>AI Architecture Patterns Guide ([HIGAET internal]).</li>
+</ul>
+<h2>Continue Learning</h2>
+<ul>
+<li>HIGAET Certified Generative AI Engineer</li>
+<li>[Link to upcoming courses]</li>
+</ul>
+<p>---</p>
+    `,
+  },
   "the-state-of-ai-engineering-education": {
     title: "The state of AI engineering education in 2026",
     excerpt:

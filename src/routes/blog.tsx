@@ -8,6 +8,13 @@ type Post = { slug: string; title: string; excerpt: string; date: string; tag: s
 
 const POSTS: Post[] = [
   {
+    slug: "generative-ai-engineering",
+    title: "Generative AI Engineering: The Complete Foundational Guide",
+    excerpt: "Learn standard practices for Generative AI Engineering: RAG, AI Agents, MCP, Prompt Engineering, Evaluation, and deployment.",
+    date: "2026-09-27",
+    tag: "AI & Generative Intelligence",
+  },
+  {
     slug: "the-state-of-ai-engineering-education",
     title: "The state of AI engineering education in 2026",
     excerpt:
