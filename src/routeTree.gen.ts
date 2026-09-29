@@ -28,6 +28,7 @@ import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as FacultyRouteImport } from './routes/faculty'
 import { Route as FounderRouteImport } from './routes/founder'
+import { Route as GenerativeAiEngineeringRouteImport } from './routes/generative-ai-engineering'
 import { Route as GlobalEducationRouteImport } from './routes/global-education'
 import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as HealthzRouteImport } from './routes/healthz'
@@ -82,6 +83,7 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as DocsIndexRouteImport } from './routes/docs.index'
@@ -481,6 +483,11 @@ const FounderRoute = FounderRouteImport.update({
   path: '/founder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GenerativeAiEngineeringRoute = GenerativeAiEngineeringRouteImport.update({
+  id: '/generative-ai-engineering',
+  path: '/generative-ai-engineering',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlobalEducationRoute = GlobalEducationRouteImport.update({
   id: '/global-education',
   path: '/global-education',
@@ -754,6 +761,11 @@ const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => AuthRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -2532,6 +2544,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof DocsRouteWithChildren
   '/faculty': typeof FacultyRoute
   '/founder': typeof FounderRoute
+  '/generative-ai-engineering': typeof GenerativeAiEngineeringRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
   '/healthz': typeof HealthzRoute
@@ -2644,6 +2657,7 @@ export interface FileRoutesByFullPath {
   '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
   '/ai/': typeof AiIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/docs/': typeof DocsIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
@@ -2898,7 +2912,6 @@ export interface FileRoutesByTo {
   '/about-higaet': typeof AboutHigaetRoute
   '/advisors': typeof AdvisorsRoute
   '/auth': typeof AuthRouteWithChildren
-  '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRouteWithChildren
   '/constitution': typeof ConstitutionRoute
   '/constitution-amendments': typeof ConstitutionAmendmentsRoute
@@ -2907,6 +2920,7 @@ export interface FileRoutesByTo {
   '/cookies': typeof CookiesRoute
   '/faculty': typeof FacultyRoute
   '/founder': typeof FounderRoute
+  '/generative-ai-engineering': typeof GenerativeAiEngineeringRoute
   '/governance': typeof GovernanceRoute
   '/healthz': typeof HealthzRoute
   '/higaet-academy': typeof HigaetAcademyRoute
@@ -3014,6 +3028,7 @@ export interface FileRoutesByTo {
   '/verify/$token': typeof VerifyTokenRoute
   '/academy': typeof AcademyIndexRoute
   '/ai': typeof AiIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/docs': typeof DocsIndexRoute
   '/global-education': typeof GlobalEducationIndexRoute
   '/jobs': typeof JobsIndexRoute
@@ -3274,6 +3289,7 @@ export interface FileRoutesById {
   '/docs': typeof DocsRouteWithChildren
   '/faculty': typeof FacultyRoute
   '/founder': typeof FounderRoute
+  '/generative-ai-engineering': typeof GenerativeAiEngineeringRoute
   '/global-education': typeof GlobalEducationRouteWithChildren
   '/governance': typeof GovernanceRoute
   '/healthz': typeof HealthzRoute
@@ -3386,6 +3402,7 @@ export interface FileRoutesById {
   '/verify/$token': typeof VerifyTokenRoute
   '/academy/': typeof AcademyIndexRoute
   '/ai/': typeof AiIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/docs/': typeof DocsIndexRoute
   '/global-education/': typeof GlobalEducationIndexRoute
   '/jobs/': typeof JobsIndexRoute
@@ -3654,6 +3671,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/faculty'
     | '/founder'
+    | '/generative-ai-engineering'
     | '/global-education'
     | '/governance'
     | '/healthz'
@@ -3766,6 +3784,7 @@ export interface FileRouteTypes {
     | '/verify/$token'
     | '/academy/'
     | '/ai/'
+    | '/blog/'
     | '/docs/'
     | '/global-education/'
     | '/jobs/'
@@ -4020,7 +4039,6 @@ export interface FileRouteTypes {
     | '/about-higaet'
     | '/advisors'
     | '/auth'
-    | '/blog'
     | '/careers'
     | '/constitution'
     | '/constitution-amendments'
@@ -4029,6 +4047,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/faculty'
     | '/founder'
+    | '/generative-ai-engineering'
     | '/governance'
     | '/healthz'
     | '/higaet-academy'
@@ -4136,6 +4155,7 @@ export interface FileRouteTypes {
     | '/verify/$token'
     | '/academy'
     | '/ai'
+    | '/blog'
     | '/docs'
     | '/global-education'
     | '/jobs'
@@ -4395,6 +4415,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/faculty'
     | '/founder'
+    | '/generative-ai-engineering'
     | '/global-education'
     | '/governance'
     | '/healthz'
@@ -4507,6 +4528,7 @@ export interface FileRouteTypes {
     | '/verify/$token'
     | '/academy/'
     | '/ai/'
+    | '/blog/'
     | '/docs/'
     | '/global-education/'
     | '/jobs/'
@@ -4775,6 +4797,7 @@ export interface RootRouteChildren {
   DocsRoute: typeof DocsRouteWithChildren
   FacultyRoute: typeof FacultyRoute
   FounderRoute: typeof FounderRoute
+  GenerativeAiEngineeringRoute: typeof GenerativeAiEngineeringRoute
   GlobalEducationRoute: typeof GlobalEducationRouteWithChildren
   GovernanceRoute: typeof GovernanceRoute
   HealthzRoute: typeof HealthzRoute
@@ -4989,6 +5012,13 @@ declare module '@tanstack/react-router' {
       path: '/founder'
       fullPath: '/founder'
       preLoaderRoute: typeof FounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/generative-ai-engineering': {
+      id: '/generative-ai-engineering'
+      path: '/generative-ai-engineering'
+      fullPath: '/generative-ai-engineering'
+      preLoaderRoute: typeof GenerativeAiEngineeringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/global-education': {
@@ -5368,6 +5398,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/reset-password'
       preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -8214,10 +8251,12 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
@@ -8646,6 +8685,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocsRoute: DocsRouteWithChildren,
   FacultyRoute: FacultyRoute,
   FounderRoute: FounderRoute,
+  GenerativeAiEngineeringRoute: GenerativeAiEngineeringRoute,
   GlobalEducationRoute: GlobalEducationRouteWithChildren,
   GovernanceRoute: GovernanceRoute,
   HealthzRoute: HealthzRoute,
