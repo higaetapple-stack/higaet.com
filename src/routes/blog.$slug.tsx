@@ -248,9 +248,55 @@ const POSTS: Record<
   },
     "llm-eval-frameworks": {
     title: "LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses",
-    excerpt: "How to replace visual AI-quality checks with automated evaluation harnesses tied to golden datasets and CI gates.",
-    date: "2026-09-30", tag: "Technologies", readTime: "14 min read",
-    content: `<h1>LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses</h1><h2>Quick Answer</h2><p>Use automated harnesses comparing outputs to golden datasets — not visual checks.</p><h2>What Is LLM Evaluation?</h2><h3>Simple</h3><p>Measuring if outputs meet criteria.</p><h3>Technical</h3><p>Structured scoring over a test set; tracked per version.</p><h3>Formal</h3><p>Continuous evaluation protocol with statistical measures and harnesses.</p><h2>Why It Matters</h2><p>Non-deterministic systems need deterministic quality gates (t_1ec42740).</p><h2>How It Works</h2><h3>Step 1</h3><p>Gold dataset.</p><h3>Step 2</h3><p>Criteria rules.</p><h3>Step 3</h3><p>Harness per version.</p><h3>Step 4</h3><p>Track; block deploy on regression.</p><h2>Architecture</h2><p>Prompt -> Model -> Output -> Evaluator -> Score -> CI Gate.</p><h2>Components</h2><h4>Dataset</h4><p>Labeled gold.</p><h4>Criteria</h4><p>Rules.</p><h4>Evaluator</h4><p>LLM + human.</p><h4>Harness</h4><p>Run script.</p><h4>Dashboard</h4><p>Trends.</p><h4>CI Gate</h4><p>Fail build.</p><h2>Case Study</h2><p>Support bot: harness caught tone regression after accuracy prompt update.</p><h2>Advantages</h2><p>Reproducible; regression detection; governance.</p><h2>Limitations</h2><p>Gold dataset labor; evaluator bias; cost.</p><h2>Roadmap</h2><ul><li>50-200 gold samples</li><li>3-5 criteria</li><li>CI automation</li><li>Monthly refinement</li></ul><h2>Sources</h2><ul><li>HIGAET AI Evals guide</li><li>t_1ec42740 section</li></ul>`,
+    excerpt: "Production AI needs automated harnesses comparing outputs to golden datasets — not visual inspection.",
+    date: "2026-09-30",
+    tag: "Technologies",
+    readTime: "14 min read",
+    content: `<h1>LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses</h1>
+<h2>Executive Summary</h2>
+<p>Production AI requires evaluation as a primary engineering discipline — not an afterthought. This article explains how to design, build, and integrate automated evaluation harnesses that compare LLM outputs to golden datasets across defined dimensions (accuracy, tone, citation, safety), run continuously in CI, and block deployment on regression — replacing visual inspection with verifiable measurement.</p>
+<h2>Why It Matters Now</h2>
+<p>As agents deploy in enterprise settings (NIST 2026 AI Agent Standards; IBM agent evaluation framework 2026), the cost of unmeasured regression is growing: a prompt update that improves coherence but degrades citation accuracy, or introduces tone shifts that harm brand trust, will reach users before anyone notices. Evaluation must evolve from visual inspection to automated harness testing — exactly as HIGAET's Generative AI Engineering pillar requires.</p>
+<h2>What Is LLM Evaluation? (Simple / Technical / Formal)</h2>
+<h3>Simple Explanation</h3><p>Measuring whether a model's outputs meet defined criteria — using examples with correct answers as reference.</p>
+<h3>Technical Definition</h3><p>A structured process using evaluation datasets (labeled input/output pairs), scoring metrics (accuracy, relevance, faithfulness, BLEU/ROUGE for text comparison, LLM-as-judge for qualitative), and automated harnesses that run per version, tracking performance over time.</p>
+<h3>Formal Definition</h3><p>A continuous quality-assurance protocol for non-deterministic generative systems, combining reference-based metrics, human-label agreement, and automated harness execution tied to CI/CD gates, with statistical tracking of regression and improvement across prompt/model versions.</p>
+<h2>How Evaluation Works Internally</h2>
+<h3>Step 1 — Define Goals</h3><p>What must the agent achieve? (Correct answer? Proper citation? Safe tone? Completed task?) Write the criteria as rules, not impressions.</p>
+<h3>Step 2 — Build Golden Dataset</h3><p>Create 50–200 labeled examples covering normal, edge, and failure cases. Include diverse inputs that reflect real-world conditions. Annotate expected outputs with source references where applicable.</p>
+<h3>Step 3 — Define Metrics</h3><p>Per dimension: accuracy (correct answer rate), relevance (retrieved chunks match query intent), faithfulness (claims supported by sources), citation presence, tone consistency, safety (no PII/unsafe content). Use both reference-based metrics (BLEU/ROUGE for text similarity where applicable) and LLM-as-judge with calibrated rubrics.</p>
+<h3>Step 4 — Build Harness</h3><p>Write a script that takes a version (prompt + model), runs against the dataset, applies metrics, produces a score report. Run in CI on every commit.</p>
+<h3>Step 5 — Set Gates</h3><p>Define thresholds per metric (e.g., accuracy ≥ 85%; citation rate ≥ 90%). Block deployment if any critical metric regresses. Do not deploy on visual approval alone.</p>
+<h3>Step 6 — Monitor Continuously</h3><p>Track trends across versions. Detect drift early. Refine dataset monthly.</p>
+<h2>Architecture</h2>
+<p>Prompt Repository -> Version Control -> Evaluation Harness (dataset + criteria + evaluator + metrics) -> Score Report -> CI Gate (pass/fail) -> Deployment / Block -> Dashboard (trend tracking) -> Dataset Refinement (feedback loop).</p>
+<h2>Components</h2>
+<h4>Golden Dataset</h4><p>Labeled input/output/reference pairs; must cover diversity, edge cases, and failure modes.</p>
+<h4>Criteria / Metrics</h4><p>Dimension-specific rules (not vague "quality"). Example: "Answer must cite source chunk; citation URL must be present; claim must match chunk content."</p>
+<h4>Evaluator</h4><p>Can be LLM-as-judge (with calibrated rubric), human-label agreement, or metric-based; best results use hybrid.</p>
+<h4>Harness</h4><p>Executable script (Python/JS); runs deterministically; produces structured output.</p>
+<h4>CI Gate</h4><p>Deployment blocked on regression; requires human approval for threshold changes.</p>
+<h2>Real-World Use Cases</h2>
+<p><strong>Enterprise support agent:</strong> Golden dataset of 200 approved responses; harness measures accuracy (correct procedure), citation (source present), tone (professional). A prompt change improves accuracy (+5%) but reduces citation rate (−12%); harness blocks deploy; team fixes citation instruction before release.</p>
+<p><strong>Legal document review:</strong> Evaluation checks that extraction answers match source text (faithfulness) and that conclusions are supported; automated red-flag for unsupported claims.</p>
+<p><strong>Medical summary agent:</strong> Safety evaluation checks for PII leakage, unsupported diagnosis claims, and missing disclaimers — critical for governance.</p>
+<h2>Case Study: How a Team Missed a Regression</h2>
+<p>A team updated a prompt to make answers more concise. Visual inspection showed improvement. The harness (running in CI) revealed citation rate dropped from 94% to 61% — the shorter answers omitted source references. Without harness, regression reaches users; with harness, blocked at CI.</p>
+<h2>When to Use It</h2>
+<p>Every production AI system that answers questions, makes recommendations, or takes actions should have evaluation. Start with a small dataset (50 examples); expand as system matures.</p>
+<h2>When NOT to Use It</h2>
+<p>Not needed for pure ideation/demo (no production impact); not sufficient alone — must combine with guardrails, monitoring, and human review for irreversible actions.</p>
+<h2>Failure Modes</h2>
+<p><strong>Dataset too small:</strong> Missing failure modes means false confidence. <strong>Evaluator bias:</strong> LLM-as-judge can over-rate similar-to-training outputs. <strong>Overfitting to dataset:</strong> Optimize for test set, not real-world. Mitigate: hold out test set; refine dataset monthly.</p>
+<h2>Debugging</h2>
+<p>When score drops: check which metric regressed first; check which examples failed; compare to previous version; check retrieval quality (if RAG-based); check model version change; check prompt change.</p>
+<h2>Production Deployment</h2>
+<p>Integrate harness into CI pipeline. Run on every PR. Block deploy if critical metric regresses. Log scores per version. Monitor for drift from golden dataset in production via continuous sampling.</p>
+<h2>Key Takeaways</h2>
+<ul><li>Evaluation is primary — not afterthought.</li><li>Build golden dataset before any optimization.</li><li>Use structured criteria per dimension — not vague "quality."</li><li>Run harness in CI — block deploy on regression.</li><li>Monitor continuously; refine dataset monthly.</li><li>Combine with guardrails, identity, audit (NIST 2026, Agent Guard).</li></ul>
+<h2>References</h2>
+<ul><li>IBM — "What is AI Agent Evaluation?" (2026)</li><li>NIST — AI Agent Standards Initiative (Feb 2026)</li><li>ArXiv 2604.19818 — Beyond Task Success (agent evaluation + governance synthesis)</li><li>LangSmith — Agent Governance Platform (2026)</li><li>Agent Guard — verifiable audit trails (2026)</li><li>HIGAET Generative AI Engineering pillar (t_1ec42740)</li></ul>
+`,
   },
   "prompt-engineering-software": { title: "Prompt Engineering as Software: Versioning, Testing, Guardrails", excerpt: "Treat prompts as code: version, test, guardrail.", date: "2026-09-30", tag: "Technologies", readTime: "10 min read", content: `<h1>Prompt Engineering as Software</h1><h2>Quick Answer</h2><p>Prompts are software — version them, test them, guardrail them.</p>` },
   "enterprise-ai-governance": { title: "Enterprise AI Governance: Data Residency, PII Filtering, Red-Teaming", excerpt: "Governance framework for organizational AI.", date: "2026-09-30", tag: "AI & Generative Intelligence", readTime: "13 min read", content: `<h1>Enterprise AI Governance</h1><h2>Quick Answer</h2><p>Govern AI like software: residency, PII filters, red-team tests.</p>` },
