@@ -1,0 +1,67 @@
+# HIGAET Daily Blog Queue — dry-run
+generated_at: 2026-09-30T03:07:36.475668
+pipeline: HIGAET_blog_automation
+constraint: dry_run — no publish until APPROVE command
+scheduler_status: idle — awaiting first APPROVE
+max_articles: 10
+
+---
+id: t_1ec42740
+title: "Generative AI Engineering: The Complete Foundational Guide"
+status: PUBLISH_VERIFIED
+approval_command: APPROVE t_1ec42740 (completed)
+next_stage: —
+---
+id: t_blog_20260930_01
+title: "AI Agents & MCP Protocol: A Practitioner's Integration Guide"
+status: IDEA
+approval_command: APPROVE t_blog_20260930_01
+next_stage: RESEARCH
+---
+id: t_blog_20260930_02
+title: "Vector Databases for Production RAG: Chroma vs. Pinecone vs. Weaviate"
+status: IDEA
+approval_command: APPROVE t_blog_20260930_02
+next_stage: RESEARCH
+---
+id: t_blog_20260930_03
+title: "LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses"
+status: IDEA
+approval_command: APPROVE t_blog_20260930_03
+next_stage: RESEARCH
+---
+id: t_blog_20260930_04
+title: "Prompt Engineering as Software: Versioning, Testing, and Guardrails"
+status: IDEA
+approval_command: APPROVE t_blog_20260930_04
+next_stage: RESEARCH
+---
+id: t_blog_20260930_05
+title: "Enterprise AI Governance: Data Residency, PII Filtering, and Red-Teaming"
+status: IDEA
+approval_command: APPROVE t_blog_20260930_05
+next_stage: RESEARCH
+---
+id: t_blog_20260930_06
+title: "Fine-Tuning vs. RAG: Decision Matrix for AI Product Teams"
+status: RESEARCH
+approval_command: APPROVE t_blog_20260930_06
+next_stage: WRITE
+---
+id: t_blog_20260930_07
+title: "Cost & Latency Optimization: Routing Small Models to Heavy Inference"
+status: RESEARCH
+approval_command: APPROVE t_blog_20260930_07
+next_stage: WRITE
+---
+id: t_blog_20260930_08
+title: "Structured Output Schemas: JSON, Zod, and API-Ready Generation"
+status: WRITE
+approval_command: APPROVE t_blog_20260930_08
+next_stage: AUDIT
+---
+id: t_blog_20260930_09
+title: "Multi-Agent Orchestration: ReAct, Plan-and-Execute, and Tool Loops"
+status: WRITE
+approval_command: APPROVE t_blog_20260930_09
+next_stage: AUDIT

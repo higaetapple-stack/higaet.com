@@ -15,6 +15,13 @@ const POSTS: Post[] = [
     tag: "AI & Generative Intelligence",
   },
   {
+    slug: "ai-agents-mcp-protocol",
+    title: "AI Agents & MCP Protocol: A Practitioner's Integration Guide",
+    excerpt: "How the Model Context Protocol standardizes agent-tool integration — from retrieval (RAG) through orchestration (ReAct) to evaluation and deployment.",
+    date: "2026-09-30",
+    tag: "AI & Generative Intelligence",
+  },
+  {
     slug: "the-state-of-ai-engineering-education",
     title: "The state of AI engineering education in 2026",
     excerpt:

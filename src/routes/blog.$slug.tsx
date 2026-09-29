@@ -142,6 +142,48 @@ const POSTS: Record<
 <p>---</p>
     `,
   },
+  "ai-agents-mcp-protocol": {
+    title: "AI Agents & MCP Protocol: A Practitioner's Integration Guide",
+    excerpt: "How the Model Context Protocol standardizes agent-tool integration — from retrieval (RAG) through orchestration (ReAct) to evaluation and deployment.",
+    date: "2026-09-30",
+    tag: "AI & Generative Intelligence",
+    readTime: "15 min read",
+    content: `
+      <h1>AI Agents &amp; MCP Protocol: A Practitioner's Integration Guide</h1>
+      <h2>Quick Answer</h2>
+      <p>The Model Context Protocol (MCP) standardizes how AI agents read context and call external tools — turning ad-hoc API stitching into structured, verifiable integration. Start with retrieval (RAG) only; expand agent capabilities only where evaluation proves safe bounds.</p>
+      <h2>Why MCP Matters</h2>
+      <p>MCP replaces fragile one-off integrations with a single interface: a server exposing tools and resources, a client assembling prompts and context, and a specification ensuring agreement. For practitioners, it is the integration layer between retrieval, orchestration, and deployment.</p>
+      <h2>Core Concepts</h2>
+      <h3>The MCP Server</h3>
+      <p>A server exposes <code>resources</code> (read-only data) and <code>tools</code> (actions). Servers are stateless; session state lives in the client's context assembly.</p>
+      <h3>The MCP Client / Host</h3>
+      <p>The host maintains an MCP client per server, assembling prompts, managing authentication, and calling <code>tools</code> via typed JSON-RPC requests.</p>
+      <h3>The Protocol</h3>
+      <p>MCP operates over stdio or HTTP via JSON-RPC: <code>initialize</code>, <code>resources/read</code>, <code>tools/call</code>. This is the integration contract — vendor-neutral.</p>
+      <h2>Integration Pattern: Retrieval → Orchestration → Evaluation</h2>
+      <p>Following the Cone of Autonomy framework (from HIGAET's Generative AI Engineering pillar): start narrow with RAG, add one MCP tool, evaluate, then expand only on proven safe bounds.</p>
+      <h2>Case Study: Automating Engineering Reviews</h2>
+      <p>A multi-step agent using retrieval (PR chunks) → MCP server (read_file, run_linter, post_comment) → ReAct loop with output verification → human-in-the-loop for irreversible actions.</p>
+      <h2>Advantages &amp; Limitations</h2>
+      <p><strong>Advantages:</strong> Structured; vendor-neutral; evaluation-friendly; scope-defined security. <strong>Limitations:</strong> Extra latency hop; server maintenance; schema evolution requires versioning.</p>
+      <h2>Implementation Roadmap</h2>
+      <ul>
+        <li>Define smallest verifiable slice (one tool, one retrieval source).</li>
+        <li>Build MCP server for that capability.</li>
+        <li>Integrate into agent loop with structured outputs.</li>
+        <li>Add evaluation harness; establish golden dataset.</li>
+        <li>Expand tool permissions only as evaluations prove safe.</li>
+      </ul>
+      <h2>Sources &amp; References</h2>
+      <ul>
+        <li>HIGAET Knowledge Architecture (internal)</li>
+        <li>Model Context Protocol specification (Anthropic)</li>
+        <li>Generative AI Engineering pillar — HIGAET, 2026-09-27</li>
+        <li>HIGAET Capstone: Enterprise AI Engineering Platform guidelines</li>
+      </ul>
+    `,
+  },
   "the-state-of-ai-engineering-education": {
     title: "The state of AI engineering education in 2026",
     excerpt:
