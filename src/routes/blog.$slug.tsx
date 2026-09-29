@@ -345,8 +345,55 @@ const POSTS: Record<
   "fine-tuning-vs-rag": { title: "Fine-Tuning vs. RAG: Decision Matrix for AI Product Teams", excerpt: "When to fine-tune vs. retrieve — practical framework.", date: "2026-10-01", tag: "Technologies", readTime: "11 min read", content: `<h1>Fine-Tuning vs. RAG</h1><h2>Quick Answer</h2><p>Start with RAG; fine-tune only when behavior requires structural change.</p>` },
   "cost-latency-optimization": { title: "Cost & Latency Optimization: Routing Small Models to Heavy Inference", excerpt: "Route simple tasks to small fast models; reserve heavy inference.", date: "2026-10-01", tag: "Technologies", readTime: "10 min read", content: `<h1>Cost & Latency Optimization</h1><h2>Quick Answer</h2><p>Route by complexity; measure cost/latency per tier.</p>` },
   "structured-output-schemas": { title: "Structured Output Schemas: JSON, Zod, and API-Ready Generation", excerpt: "Schema-defined outputs with validation at generation time.", date: "2026-10-02", tag: "Technologies", readTime: "9 min read", content: `<h1>Structured Output Schemas</h1><h2>Quick Answer</h2><p>Define schema first; generate; validate.</p>` },
-  "multi-agent-orchestration": { title: "Multi-Agent Orchestration: ReAct, Plan-and-Execute, and Tool Loops", excerpt: "Build multi-agent workflows with tool loops and guardrails.", date: "2026-10-02", tag: "AI & Generative Intelligence", readTime: "13 min read", content: `<h1>Multi-Agent Orchestration</h1><h2>Quick Answer</h2><p>ReAct + plan + tool + guardrail + verify.</p>` },
-  "the-state-of-ai-engineering-education": {
+  "multi-agent-orchestration": {
+    title: "Multi-Agent Orchestration: ReAct, Plan-and-Execute, and Tool Loops",
+    excerpt: "Build multi-agent workflows with structured agent loops, tool interfaces, guardrails, and verification — not implicit coordination.",
+    date: "2026-09-30",
+    tag: "AI & Generative Intelligence",
+    readTime: "14 min read",
+    content: `<h1>Multi-Agent Orchestration: ReAct, Plan-and-Execute, and Tool Loops</h1>
+<h2>Executive Summary</h2>
+<p>Multi-agent systems fail when coordination is implicit. This article explains how to design explicit orchestration — ReAct reasoning loops, plan-and-execute planning, structured tool calling, guardrails, observation, and evaluation — so that multiple agents operate as a verifiable system rather than an unpredictable swarm.</p>
+<h2>Why Multi-Agent Orchestration Matters</h2>
+<p>Single-agent systems hit capability walls: retrieval, reasoning, action, and verification must all be handled by one loop. Multi-agent architectures distribute these functions — but only when coordination is explicit. The failure mode of implicit coordination is cascading error: one agent's bad output becomes another's input.</p>
+<h2>What Is Multi-Agent Orchestration?</h2>
+<h3>Simple Explanation</h3><p>Multiple specialized agents coordinate via structured messages and defined tool interfaces — not free-form collaboration.</p>
+<h3>Technical Definition</h3><p>A system design where specialized agents (retrieval, reasoning, action, evaluation) interact through typed interfaces with defined roles, state management, and verification at each handoff.</p>
+<h3>Formal Definition</h3><p>An architecture pattern distributing agent capabilities across specialized components with explicit coordination mechanisms (message passing, shared context, plan-and-execute sequencing), guardrail enforcement at transition points, and continuous evaluation of multi-step outcomes.</p>
+<h2>How It Works Internally</h2>
+<h3>Step 1 — Planning</h3><p>A planner decomposes the user's goal into sub-tasks with dependency ordering. Example: "Analyze PR" → read files (retrieval agent) → evaluate quality (evaluation agent) → post findings (action agent) — with verification at each step.</p>
+<h3>Step 2 — Agent Assignment</h3><p>Each sub-task is assigned to the agent best suited (retrieval for context, reasoning for synthesis, action for tool use). Assignment is explicit, not implicit.</p>
+<h3>Step 3 — Execution Loop (ReAct)</h3><p>Agent reasons (think), acts (tool call), observes (result), reasons again (adjust plan). The loop runs with structured outputs — not free-form text — at each step.</p>
+<h3>Step 4 — Observation and Verification</h3><p>Every step produces a trace: input, tool call, result, evaluation score. If a step fails verification, the loop stops — not continues blindly.</p>
+<h3>Step 5 — Human-in-the-Loop Gate</h3><p>Irreversible actions (post, delete, pay) require human approval. This is not a failure — it is the design.</p>
+<h2>Architecture Components</h2>
+<h4>Planner</h4><p>Defines sub-tasks, dependencies, order. Must be verifiable — plan quality can be evaluated against expected steps.</p>
+<h4>Retrieval Agent</h4><p>Embeds and retrieves context for specific task requirements.</p>
+<h4>Reasoning Agent</h4><p>Synthesizes retrieved context into structured outputs (analysis, recommendations).</p>
+<h4>Action Agent</h4><p>Invokes tools (MCP servers) with validated parameters; returns structured results.</p>
+<h4>Evaluation Agent</h4><p>Compares outputs to criteria; detects regression; recommends revision.</p>
+<h4>Guardrail / Policy Agent</h4><p>Checks outputs for policy compliance, PII, injection; can block or escalate.</p>
+<h3>Workflow</h3><p>User Request → Plan (structured) → Retrieve (context) → Reason (analysis) → Action (tool) → Verify (evaluation) → Review (human gate if irreversible) → Deliver.</p>
+<h2>Real-World Use Cases</h2>
+<p><strong>Engineering review automation:</strong> Planner selects files; retrieval agent fetches chunks; reasoning agent evaluates; action agent posts findings; evaluation agent verifies citations; human approves final comment.</p>
+<p><strong>Enterprise agent platform:</strong> Multi-department agents coordinated via shared context, with identity/auth at each step and audit logs for every transition.</p>
+<h2>Case Study: Engineering Review (ReAct + MCP + Verification)</h2>
+<p>Plan: analyze PR → retrieve code + build logs → evaluate quality (reference dataset) → post findings (with citation verification) → human review (irreversible). Each step traceable; evaluation catches missing citations; guardrail blocks unsupported claims.</p>
+<h2>Trade-Offs</h2>
+<p><strong>When to use:</strong> Complex tasks requiring multiple specialized capabilities with verification at each step.</p>
+<p><strong>When NOT to use:</strong> Simple queries where single-agent retrieval is sufficient; over-engineering adds latency and maintenance.</p>
+<h2>Failure Modes</h2>
+<p><strong>Cascade failure:</strong> One weak step propagates. Mitigate with verification at each transition.</p>
+<p><strong>Plan error:</strong> Wrong sub-task decomposition. Mitigate with plan evaluation against expected workflow.</p>
+<p><strong>Context loss:</strong> Multi-step context grows large. Mitigate with structured context assembly, not full history.</p>
+<p><strong>Tool misuse:</strong> Action agent calls wrong tool. Mitigate with schema validation and authorization.</p>
+<h2>Security &amp; Governance</h2>
+<p>Every agent identity must be verifiable; every tool call must have authorization; every action must have audit trail; guardrail proof must be verifiable; human gate required for irreversible actions (per Agent Guard / NIST 2026).</p>
+<h2>References</h2>
+<ul><li>Anthropic MCP Specification</li><li>NIST AI Agent Standards Initiative (Feb 2026)</li><li>ArXiv 2604.19818 — Beyond Task Success (agent evaluation + orchestration + trace-assurance)</li><li>LangSmith Agent Governance (2026)</li><li>Agent Guard — audit / identity (2026)</li><li>HIGAET Generative AI Engineering pillar (t_1ec42740)</li></ul>
+`,
+  },
+    "the-state-of-ai-engineering-education": {
     title: "The state of AI engineering education in 2026",
     excerpt:
       "Why traditional CS programs struggle to keep pace with applied AI — and what we built at HIGAET to close the gap.",
