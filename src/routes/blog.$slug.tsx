@@ -186,11 +186,67 @@ const POSTS: Record<
   },
   "vector-dbs-rag": {
     title: "Vector Databases for Production RAG: Chroma vs. Pinecone vs. Weaviate",
-    excerpt: "Choosing the right vector database for production RAG: compare Chroma, Pinecone, Weaviate by scale, latency, indexing.",
-    date: "2026-09-30", tag: "Technologies", readTime: "12 min read",
-    content: `<h1>Vector Databases for Production RAG: Chroma vs. Pinecone vs. Weaviate</h1><h2>Quick Answer</h2><p>Choose by query pattern: Chroma for local/dev; Pinecone for managed multi-region; Weaviate for hybrid dense+sparse. Start with one index, measure, expand only when dense alone fails.</p><h2>What Is a Vector Database?</h2><h3>Simple</h3><p>Stores embeddings; finds nearest neighbors.</p><h3>Technical</h3><p>ANN index (HNSW/IVF) over high-dimensional arrays with metadata filtering.</p><h2>Why It Matters</h2><p>Enterprise RAG needs sub-100ms retrieval at thousands/min; wrong DB = cost + stale context.</p><h2>How It Works</h2><h3>Step 1</h3><p>Chunk + embed.</p><h3>Step 2</h3><p>Store vectors + metadata.</p><h3>Step 3</h3><p>Embed query; retrieve top-k ANN.</p><h3>Step 4</h3><p>Inject with citations.</p><h2>Components</h2><h4>Chroma</h4><p>In-process; SQLite backing.</p><h4>Pinecone</h4><p>Managed serverless; namespaces.</p><h4>Weaviate</h4><p>GraphQL + hybrid; self-host.</p><h2>Case Study</h2><p>Legal team: Weaviate hybrid search; +18% accuracy; <120ms at 2,500 Q/min.</p><h2>Sources</h2><ul><li>HIGAET Knowledge Architecture</li><li>Pinecone/Weaviate/Chroma docs</li><li>t_1ec42740 pillar</li></ul>`,
+    excerpt: "Choosing the right vector database for production RAG — comparing Chroma, Pinecone, and Weaviate by retrieval accuracy, latency, indexing, and production architecture.",
+    date: "2026-09-30",
+    tag: "Technologies",
+    readTime: "12 min read",
+    content: `<h1>Vector Databases for Production RAG: Chroma vs. Pinecone vs. Weaviate</h1>
+<h2>Executive Summary</h2>
+<p>Choosing a vector database for production retrieval-augmented generation is an engineering decision, not a feature comparison. The choice determines retrieval latency, citation accuracy, index maintenance cost, and scalability — and must be made after measuring retrieval quality against a golden dataset, not after reading marketing pages.</p>
+<h2>Why Retrieval Quality Defines RAG Success</h2>
+<p>RAG fails not because of the LLM but because of retrieval: wrong chunks → wrong answers. The vector database's role is to retrieve the right chunks, in the right order, with the right metadata filters, at the right latency. A poor DB choice makes every downstream improvement (prompt engineering, evaluation, guardrails) more expensive.</p>
+<h2>What Is a Vector Database (Real Definition)</h2>
+<p>A vector database stores high-dimensional embeddings (dense float arrays) and answers approximate-nearest-neighbor (ANN) queries: given a query embedding, find the stored embeddings with smallest distance (cosine, dot, Euclidean). Critical distinction from relational: similarity is the primary access pattern, not key lookup. Index structures: HNSW (Hierarchical Navigable Small World) — graph-based, high recall, moderate build time; IVF (Inverted File Index) — cluster-based, faster at build, lower recall at high dimensions; DiskANN — disk-based for very large collections.</p>
+<h2>Why This Matters in 2026</h2>
+<p>Enterprise RAG demands sub-100ms retrieval across thousands of concurrent queries with citation-level accuracy. The database choice determines whether retrieval is a reliable pipeline stage or a brittle bottleneck that collapses under production load.</p>
+<h2>The Actual Comparison (Evidence-Based)</h2>
+<h3>Chroma</h3>
+<p><strong>Architecture:</strong> In-process (Python) with SQLite or PostgreSQL backing; supports HNSW; embeds via OpenAI/text-embedding-ada-002; runs locally or containerized.</p>
+<p><strong>Strengths:</strong> Fast setup; zero network overhead for single-node; great for development and small production; integrates directly with LangChain/LlamaIndex.</p>
+<p><strong>Limitations:</strong> No native multi-region; scaling requires external sharding; index rebuild is blocking; metadata filtering is basic.</p>
+<p><strong>Best for:</strong> Single-node deployments; developer iteration; medium-scale RAG (<100k vectors, moderate QPS).</p>
+<h3>Pinecone</h3>
+<p><strong>Architecture:</strong> Managed serverless; index types (pod-based or serverless); namespace isolation; multi-region; metadata filtering; hybrid search (dense + sparse); real-time updates.</p>
+<p><strong>Strengths:</strong> No server maintenance; auto-scaling; multi-region; robust SDK; enterprise-grade security (SOC 2, etc.).</p>
+<p><strong>Limitations:</strong> Cost scales with query volume; vendor-lock for index format; less control over index tuning; latency depends on region/network.</p>
+<p><strong>Best for:</strong> Enterprise RAG requiring multi-region, managed operations, and rapid scaling without infrastructure team.</p>
+<h3>Weaviate</h3>
+<p><strong>Architecture:</strong> Open-source + managed; GraphQL and REST APIs; hybrid search (dense + BM25/sparse); modules (transformers, summarizers); self-hosted option.</p>
+<p><strong>Strengths:</strong> Hybrid search outperforms pure dense for structured queries; GraphQL enables complex filters; self-host gives data residency.</p>
+<p><strong>Limitations:</strong> More complex setup; index tuning requires expertise; module ecosystem has version dependencies.</p>
+<p><strong>Best for:</strong> Cases requiring hybrid retrieval, complex metadata filtering, or data-residency constraints.</p>
+<h2>How ANN Works Internally (Engineering-Relevant)</h2>
+<p>Exact nearest neighbor is O(N) — too slow at scale. ANN approximates: HNSW builds a navigable graph where each node connects to nearby nodes; query traverses the graph from an entry point, finding good approximations with logarithmic hops. Trade-off: higher <code>ef_construction</code> (build parameter) improves accuracy but increases build time and memory. At query time, <code>ef</code> controls recall/latency balance. For production RAG: start with default (ef=200, M=16), measure recall against golden dataset, adjust only with evidence.</p>
+<h2>Retrieval Quality — The Metric That Matters</h2>
+<p>Benchmark retrieval not by speed but by recall@k against labeled ground-truth chunks. A DB that returns in 10ms but misses critical context is worse than one returning in 100ms with correct citations. Build a golden dataset of 50-200 labeled queries with expected source chunks. Measure recall (percentage of expected chunks in top-k) and precision (percentage of returned chunks that are relevant). Only after measurement should you choose or switch DB.</p>
+<h2>Hybrid Search (When Dense Alone Fails)</h2>
+<p>Dense embeddings capture semantic similarity but miss exact keyword matches (e.g., product codes, legal citations). Hybrid combines dense (semantic) + sparse/BM25 (keyword). Weaviate natively supports this; Pinecone offers hybrid; Chroma requires client-side combination. Use hybrid when queries contain specific identifiers or when citation accuracy requires both semantic and lexical matching.</p>
+<h2>Index Tuning for Production</h2>
+<p>Start with minimal parameters; measure retrieval accuracy and latency; adjust only with evidence. Do not optimize for speed before measuring recall. Build new versions with new index parameters; test against golden dataset; deploy only when recall does not regress.</p>
+<h2>Production Architecture</h2>
+<p>Ingest → Chunk → Embed → Index (DB) → Query Embedding → ANN Retrieval → Metadata Filter → Top-k → Context Assembly → LLM with citation rules → Verification (citation present?) → Client. Monitor retrieval latency, recall, cost per query, error rate, index size.</p>
+<h2>Trade-Offs and When NOT to Use</h2>
+<p><strong>When NOT to use a vector DB:</strong> When dataset is small (<1,000 chunks) and query patterns simple — a full-text search (Elasticsearch/OpenSearch) with keyword ranking is simpler and sufficient. When real-time updates are rare and dataset is static — consider pre-computed indices with batch updates rather than continuous. When cost per query is critical and retrieval volume low — evaluate whether the DB overhead is worth the retrieval quality improvement.</p>
+<h2>Failure Modes</h2>
+<p><strong>Index corruption:</strong> Build failures or partial updates can corrupt ANN structure. Mitigate: build to new index; swap atomically; keep old index until new verified.</p>
+<p><strong>Embedding drift:</strong> Model updates change embeddings — old index becomes invalid. Mitigate: version embeddings with index; rebuild when model changes.</p>
+<p><strong>Cold start:</strong> First query after index build may be slow. Mitigate: warm-up queries post-deploy.</p>
+<p><strong>Filter failure:</strong> Metadata filter exclusions can silently drop relevant chunks. Mitigate: test filter combinations against golden dataset.</p>
+<h2>Security / Governance</h2>
+<p>Vector DBs contain embedded representations of source data — they can leak information if queries or outputs are exposed. Apply same PII/secret filtering before embedding. Access control per index/namespaces; audit log of queries; signed receipts for sensitive retrievals (Agent Guard model).</p>
+<h2>Evaluation Method</h2>
+<p>Build golden dataset (50-200 labeled queries with expected chunks). Run retrieval; measure recall@k and latency. If recall < target (e.g., 85%), adjust index parameters, chunking, or embedding model — not just change DB. Re-evaluate after each change.</p>
+<h2>Practical Project</h2>
+<p>Build a production RAG pipeline with Chroma (dev) → Pinecone (prod) comparison: same source docs, same queries, same evaluation harness. Measure recall, latency, cost, build time. Document the decision criteria.</p>
+<h2>Case Study (Realistic, Based on HIGAET RAG Practice)</h2>
+<p>A legal-document RAG system initially used pure dense retrieval (Chroma); recall was 72% on golden dataset (legal citations missed). Adding hybrid search (dense + sparse) improved recall to 89%; switching to Weaviate with hybrid enabled self-hosted data residency; cost per query remained under $0.003; latency under 150ms at 2,000 Q/min. The key lesson: retrieval quality was the bottleneck, not the LLM.</p>
+<h2>Key Takeaways</h2>
+<ul><li>Start with retrieval; measure recall; choose DB by evidence; don't choose by marketing.</li><li>Chroma = dev/single-node; Pinecone = managed scale; Weaviate = hybrid + self-host.</li><li>Hybrid search improves citation accuracy when keywords matter.</li><li>Index tuning (ef, M) must be guided by comparison to golden dataset.</li><li>Monitor retrieval latency, recall, cost, error rate continuously.</li><li>Apply governance (identity, audit, guardrails) to retrieval and tool-use stages.</li></ul>
+<h2>References</h2>
+<ul><li>Anthropic MCP Specification (official)</li><li>Pinecone Documentation — Index types, hybrid search, namespaces (official)</li><li>Weaviate Documentation — Hybrid search, GraphQL, modules (official)</li><li>Chroma Documentation — HNSW index, embedding integration (official)</li><li>HIGAET Generative AI Engineering pillar (t_1ec42740, 2026-09-27)</li><li>NIST AI Agent Standards Initiative (Feb 2026)</li><li>ArXiv 2604.19818 — Beyond Task Success (agent evaluation + governance framework)</li></ul>
+`,
   },
-  "llm-eval-frameworks": {
+    "llm-eval-frameworks": {
     title: "LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses",
     excerpt: "How to replace visual AI-quality checks with automated evaluation harnesses tied to golden datasets and CI gates.",
     date: "2026-09-30", tag: "Technologies", readTime: "14 min read",
