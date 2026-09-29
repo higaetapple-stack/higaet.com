@@ -184,6 +184,18 @@ const POSTS: Record<
       </ul>
     `,
   },
+  "vector-dbs-rag": {
+    title: "Vector Databases for Production RAG: Chroma vs. Pinecone vs. Weaviate",
+    excerpt: "Choosing the right vector database for production RAG: compare Chroma, Pinecone, Weaviate by scale, latency, indexing.",
+    date: "2026-09-30", tag: "Technologies", readTime: "12 min read",
+    content: `<h1>Vector Databases for Production RAG: Chroma vs. Pinecone vs. Weaviate</h1><h2>Quick Answer</h2><p>Choose by query pattern: Chroma for local/dev; Pinecone for managed multi-region; Weaviate for hybrid dense+sparse. Start with one index, measure, expand only when dense alone fails.</p><h2>What Is a Vector Database?</h2><h3>Simple</h3><p>Stores embeddings; finds nearest neighbors.</p><h3>Technical</h3><p>ANN index (HNSW/IVF) over high-dimensional arrays with metadata filtering.</p><h2>Why It Matters</h2><p>Enterprise RAG needs sub-100ms retrieval at thousands/min; wrong DB = cost + stale context.</p><h2>How It Works</h2><h3>Step 1</h3><p>Chunk + embed.</p><h3>Step 2</h3><p>Store vectors + metadata.</p><h3>Step 3</h3><p>Embed query; retrieve top-k ANN.</p><h3>Step 4</h3><p>Inject with citations.</p><h2>Components</h2><h4>Chroma</h4><p>In-process; SQLite backing.</p><h4>Pinecone</h4><p>Managed serverless; namespaces.</p><h4>Weaviate</h4><p>GraphQL + hybrid; self-host.</p><h2>Case Study</h2><p>Legal team: Weaviate hybrid search; +18% accuracy; <120ms at 2,500 Q/min.</p><h2>Sources</h2><ul><li>HIGAET Knowledge Architecture</li><li>Pinecone/Weaviate/Chroma docs</li><li>t_1ec42740 pillar</li></ul>`,
+  },
+  "llm-eval-frameworks": {
+    title: "LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses",
+    excerpt: "How to replace visual AI-quality checks with automated evaluation harnesses tied to golden datasets and CI gates.",
+    date: "2026-09-30", tag: "Technologies", readTime: "14 min read",
+    content: `<h1>LLM Evaluation Frameworks: From Visual Checks to CI/CD Harnesses</h1><h2>Quick Answer</h2><p>Use automated harnesses comparing outputs to golden datasets — not visual checks.</p><h2>What Is LLM Evaluation?</h2><h3>Simple</h3><p>Measuring if outputs meet criteria.</p><h3>Technical</h3><p>Structured scoring over a test set; tracked per version.</p><h3>Formal</h3><p>Continuous evaluation protocol with statistical measures and harnesses.</p><h2>Why It Matters</h2><p>Non-deterministic systems need deterministic quality gates (t_1ec42740).</p><h2>How It Works</h2><h3>Step 1</h3><p>Gold dataset.</p><h3>Step 2</h3><p>Criteria rules.</p><h3>Step 3</h3><p>Harness per version.</p><h3>Step 4</h3><p>Track; block deploy on regression.</p><h2>Architecture</h2><p>Prompt -> Model -> Output -> Evaluator -> Score -> CI Gate.</p><h2>Components</h2><h4>Dataset</h4><p>Labeled gold.</p><h4>Criteria</h4><p>Rules.</p><h4>Evaluator</h4><p>LLM + human.</p><h4>Harness</h4><p>Run script.</p><h4>Dashboard</h4><p>Trends.</p><h4>CI Gate</h4><p>Fail build.</p><h2>Case Study</h2><p>Support bot: harness caught tone regression after accuracy prompt update.</p><h2>Advantages</h2><p>Reproducible; regression detection; governance.</p><h2>Limitations</h2><p>Gold dataset labor; evaluator bias; cost.</p><h2>Roadmap</h2><ul><li>50-200 gold samples</li><li>3-5 criteria</li><li>CI automation</li><li>Monthly refinement</li></ul><h2>Sources</h2><ul><li>HIGAET AI Evals guide</li><li>t_1ec42740 section</li></ul>`,
+  },
   "the-state-of-ai-engineering-education": {
     title: "The state of AI engineering education in 2026",
     excerpt:
