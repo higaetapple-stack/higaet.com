@@ -393,6 +393,55 @@ const POSTS: Record<
 <ul><li>Anthropic MCP Specification</li><li>NIST AI Agent Standards Initiative (Feb 2026)</li><li>ArXiv 2604.19818 — Beyond Task Success (agent evaluation + orchestration + trace-assurance)</li><li>LangSmith Agent Governance (2026)</li><li>Agent Guard — audit / identity (2026)</li><li>HIGAET Generative AI Engineering pillar (t_1ec42740)</li></ul>
 `,
   },
+    "ai-coding-agents": {
+    title: "AI Coding Agents: How They Work, How to Build One, and When They Fail",
+    excerpt: "Agentic software engineering — structured planning, retrieval, tool loops, guardrails, and verification — not just prompting.",
+    date: "2026-09-30",
+    tag: "AI & Generative Intelligence",
+    readTime: "14 min read",
+    content: `<h1>AI Coding Agents: How They Work, How to Build One, and When They Fail</h1>
+<h2>Executive Summary</h2>
+<p>AI coding agents — not assistants — autonomously plan, edit, test, and deploy code using structured tool loops, retrieval of code context, and verification against build/test evidence. Building one requires more than a prompt: it requires architecture (retrieval + reasoning + tool loop + guardrail + evaluation), identity, observation, and production deployment discipline.</p>
+<h2>Why This Matters Now</h2>
+<p>2026 engineering teams use AI for code review, documentation, test generation, and debugging — but only agentic systems with structured loops, observation, and verification scale safely. The gap between "AI writes code" and "AI codes safely in production" is the engineering discipline this article defines.</p>
+<h2>What Is an AI Coding Agent?</h2>
+<h3>Simple Explanation</h3><p>An AI that doesn't just suggest a line — it plans a task, retrieves relevant code, edits files, runs tests, verifies results, and reports to the user — with structured steps, not free-form chat.</p>
+<h3>Technical Definition</h3><p>A software agent combining retrieval (codebase context), reasoning (plan-and-execute or ReAct), structured tool use (file edit, test execution, build verification), observation (test/result tracking), evaluation (quality measurement against golden dataset), and guardrail enforcement (security, access, audit) to perform software development tasks with verifiable outcomes.</p>
+<h3>Formal Definition</h3><p>A production-grade agentic system for software engineering that integrates retrieval-augmented context assembly, structured reasoning loops, validated tool invocation (file/command/test), continuous observation of execution traces, evaluation against reference outputs, identity/authentication per action, and audit logging — operating within organizational governance (NIST 2026 AI Agent Standards; HIGAET pillar).</p>
+<h2>How It Works Internally</h2>
+<h3>Step 1 — Task Planning</h3><p>The agent decomposes the user's request into sub-tasks: identify files, read context, plan edits, define verification criteria, determine if irreversible (commit/push requires human approval).</p>
+<h3>Step 2 — Retrieval</h3><p>Retrieve relevant code chunks, documentation, build logs, and related files from the repository using vector search or structured lookup.</p>
+<h3>Step 3 — Reasoning / Planning</h3><p>Plan the sequence: which files first, which edits required, what tests must pass, which risks exist.</p>
+<h3>Step 4 — Structured Editing</h3><p>Apply edits via structured output (not free-form text) — define file path, line range, replacement content; validate syntax before writing.</p>
+<h3>Step 5 — Verification</h3><p>Run relevant tests; check build; verify syntax; compare to reference outputs; measure against evaluation criteria.</p>
+<h3>Step 6 — Reporting / Human Gate</h3><p>If task is complete and verified, report results with citations to sources. If irreversible (commit, deploy), require human approval.</p>
+<h2>Architecture</h2>
+<p>Retrieval (code/docs/context) → Planning Agent (task decomposition) → Reasoning Agent (analysis/synthesis) → Action Agent (structured edit/test/build call via MCP or direct interface) → Observation (test/build result) → Evaluation (compare to golden reference) → Guardrail (security/access verification) → Human Gate (irreversible) → Delivery with audit trace.</p>
+<h2>Components</h2>
+<h4>Retrieval Layer</h4><p>Code embedding (chunk by file/function), build-log retrieval, documentation indexing.</p>
+<h4>Planning Engine</h4><p>Task decomposition with dependency ordering; must be verifiable.</p>
+<h4>Editing Tool</h4><p>Structured file edit with validation; not free-form text injection.</p>
+<h4>Test/Verification Tool</h4><p>Run relevant tests; check syntax; build; compare to reference.</p>
+<h4>Observation</h4><p>Trace every step: input, retrieval, edit, test result, evaluation score, latency, cost.</p>
+<h4>Guardrail</h4><p>Prevent dangerous edits (system files, secrets); verify identity; enforce access controls.</p>
+<h4>Evaluation</h4><p>Compare agent outputs to approved references; block deploy on regression.</p>
+<h2>When to Use It</h2>
+<p>Teams with structured test suites, clean repos, and evaluation maturity that need to accelerate development of well-defined tasks (refactoring, documentation, test generation, bug fix with verification).</p>
+<h2>When NOT to Use It</h2>
+<p>When codebase is highly complex with deep dependencies; when evaluation dataset is immature; when security requirements demand full human review of every edit; when task requires creative design rather than structured execution.</p>
+<h2>Trade-Offs</h2>
+<p><strong>Pros:</strong> Accelerates repetitive engineering tasks; improves consistency; provides audit trail; scales with evaluation.</p>
+<p><strong>Cons:</strong> Requires retrieval quality; requires structured edit tools; requires evaluation; requires guardrails; can fail silently if observation is weak.</p>
+<h2>Real-World Use Case</h2>
+<p>A software team uses an agent to refactor 50 files to use a new API pattern. The agent: retrieves usages; plans edits; applies structured replacements; runs test suite; verifies no regression; reports results. A guardrail blocks edits to critical system files. Human approves the final commit.</p>
+<h2>Security & Governance</h2>
+<p>Every edit must have identity verification; every file change must have audit log; PII/secret scanning must apply before embedding; access must be scoped (agent can edit source files, not deploy secrets); kill switch must halt agent on failure.</p>
+<h2>Assessment / Evaluation</h2>
+<p>Measure: retrieval accuracy (did agent find correct files?), edit correctness (syntax/build/test pass rate), evaluation score (golden dataset comparison), cost per edit, latency per task, error rate (failed tasks / total), human approval rate.</p>
+<h2>References</h2>
+<ul><li>Anthropic MCP Specification (official) — structured tool interfaces</li><li>IBM / arXiv 2604.19824 (agent evaluation framework)</li><li>NIST AI Agent Standards Initiative (Feb 2026) — identity/auth/governance for agents</li><li>Agent Guard (2026) — audit trails for agent actions</li><li>HIGAET Generative AI Engineering pillar (t_1ec42740)</li></ul>
+`,
+  },
     "the-state-of-ai-engineering-education": {
     title: "The state of AI engineering education in 2026",
     excerpt:
