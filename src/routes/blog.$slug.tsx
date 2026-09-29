@@ -299,8 +299,50 @@ const POSTS: Record<
 `,
   },
   "prompt-engineering-software": { title: "Prompt Engineering as Software: Versioning, Testing, Guardrails", excerpt: "Treat prompts as code: version, test, guardrail.", date: "2026-09-30", tag: "Technologies", readTime: "10 min read", content: `<h1>Prompt Engineering as Software</h1><h2>Quick Answer</h2><p>Prompts are software — version them, test them, guardrail them.</p>` },
-  "enterprise-ai-governance": { title: "Enterprise AI Governance: Data Residency, PII Filtering, Red-Teaming", excerpt: "Governance framework for organizational AI.", date: "2026-09-30", tag: "AI & Generative Intelligence", readTime: "13 min read", content: `<h1>Enterprise AI Governance</h1><h2>Quick Answer</h2><p>Govern AI like software: residency, PII filters, red-team tests.</p>` },
-  "fine-tuning-vs-rag": { title: "Fine-Tuning vs. RAG: Decision Matrix for AI Product Teams", excerpt: "When to fine-tune vs. retrieve — practical framework.", date: "2026-10-01", tag: "Technologies", readTime: "11 min read", content: `<h1>Fine-Tuning vs. RAG</h1><h2>Quick Answer</h2><p>Start with RAG; fine-tune only when behavior requires structural change.</p>` },
+  "enterprise-ai-governance": {
+    title: "Enterprise AI Governance: Data Residency, PII Filtering, and Red-Teaming",
+    excerpt: "Governance framework for organizational AI — data residency, PII filtering, identity verification, red-team testing, audit trails.",
+    date: "2026-09-30",
+    tag: "AI & Generative Intelligence",
+    readTime: "13 min read",
+    content: `<h1>Enterprise AI Governance: Data Residency, PII Filtering, and Red-Teaming</h1>
+<h2>Executive Summary</h2>
+<p>Enterprise AI doesn't work without governance. This article explains how to build a governance framework that covers data residency, PII filtering, red-teaming, identity verification, audit trails, and guardrail evidence — aligned with NIST AI Agent Standards (Feb 2026), Agent Guard audit model, and HIGAET's Cone of Autonomy.</p>
+<h2>Why Governance Is Not Optional</h2>
+<p>Agent systems make autonomous decisions, access external data, and produce outputs that can be used without human review. Without governance, organizations face regulatory breach (GDPR, CCPA, sector rules), brand damage from harmful outputs, and operational failures from unmonitored agent behavior.</p>
+<h2>What Is Enterprise AI Governance?</h2>
+<h3>Simple Explanation</h3><p>The set of policies, controls, measurements, and verification methods that ensure AI systems operate within organizational boundaries.</p>
+<h3>Technical Definition</h3><p>A structured framework defining data handling rules, access controls, identity verification, audit logging, evaluation requirements, guardrail enforcement, and human-in-the-loop conditions for irreversible actions.</p>
+<h3>Formal Definition</h3><p>Organizational control system applying deterministic policies to agent identity, data residency, output filtering, and action authorization, with continuous measurement against defined governance criteria and verifiable audit evidence.</p>
+<h2>How Governance Works Internally</h2>
+<h3>Step 1 — Data Classification and Residency</h3><p>Classify all data by sensitivity. Define residency rules (region, air-gap, encryption). Map which agent actions can access which data classes. Enforce at retrieval layer (not just at output).</p>
+<h3>Step 2 — PII and Sensitive Data Filtering</h3><p>Filter inputs for PII/secret patterns before embedding; filter outputs for leaks. Use structured patterns (regulatory IDs, financial identifiers) not just keyword matching.</p>
+<h3>Step 3 — Identity and Authorization</h3><p>Every agent action must have verifiable identity (NIST 2026 identity infrastructure). Authorization is per-tool, per-user, per-team, with scoped permissions — not global.</p>
+<h3>Step 4 — Red-Teaming</h3><p>Run adversarial tests against agent prompts and tool access patterns: injection attempts, unauthorized access patterns, data exfiltration paths. Document findings; fix before deploy.</p>
+<h3>Step 5 — Guardrail Evidence</h3><p>Every claimed guardrail must produce verifiable evidence (execution trace, signed receipt, audit log). Design documents alone are insufficient.</p>
+<h3>Step 6 — Continuous Monitoring</h3><p>Monitor agent actions against policy; detect anomalies; trigger review; maintain audit logs for regulatory evidence.</p>
+<h2>Architecture</h2>
+<p>Policy Definition -> Data Classification -> Identity/Auth Service -> Retrieval Filter -> Agent Loop (with guardrail proof) -> Evaluation -> Audit Log -> Human Review Gate (irreversible) -> Deployment Monitor.</p>
+<h2>Components</h2>
+<h4>Data Residency Rules</h4><p>Region, encryption, access control, retention policy.</p>
+<h4>PII Filter</h4><p>Input/output scanning for sensitive patterns.</p>
+<h4>Identity Service</h4><p>Verifiable agent/user identity with authorization scopes.</p>
+<h4>Red-Team Framework</h4><p>Adversarial testing of agent access patterns.</p>
+<h4>Guardrail Evidence</h4><p>Execution proof, not design docs.</p>
+<h4>Audit Trail</h4><p>Signed logs linking identity, action, source, result.</p>
+<h2>Case Study</h2>
+<p>A financial services team deployed an agent with RAG + MCP. Governance framework required: data-residency (EU-only), PII filter (blocked 3% of outputs), identity verification per action, signed audit trail, red-team (found injection path in tool input), guardrail evidence (verified before deploy), human-in-the-loop for payment actions. The agent passed compliance review; the framework is now the organizational standard.</p>
+<h2>When to Use</h2>
+<p>Any enterprise AI deployment that accesses customer data, takes actions, or produces outputs used in regulated contexts.</p>
+<h2>When NOT to Use</h2>
+<p>Not a substitute for application security; does not replace model-level safety (guardrails at prompt/model level are complementary, not substitutes).</p>
+<h2>Trade-Offs</h2>
+<p>Governance slows initial deployment (identity setup, filter rules, audit infrastructure). It reduces long-term risk (breach, regulatory failure, brand damage) and enables audit-ready evidence.</p>
+<h2>References</h2>
+<ul><li>NIST AI Agent Standards Initiative (Feb 2026) — identity, authorization, interoperability, security</li><li>Agent Guard — verifiable audit trails / cryptographic receipts (2026)</li><li>arXiv 2604.19818 — governance + evaluation + trace-assurance framework</li><li>HIGAET Generative AI Engineering pillar (t_1ec42740)</li></ul>
+`,
+  },
+   title: "Fine-Tuning vs. RAG: Decision Matrix for AI Product Teams", excerpt: "When to fine-tune vs. retrieve — practical framework.", date: "2026-10-01", tag: "Technologies", readTime: "11 min read", content: `<h1>Fine-Tuning vs. RAG</h1><h2>Quick Answer</h2><p>Start with RAG; fine-tune only when behavior requires structural change.</p>` },
   "cost-latency-optimization": { title: "Cost & Latency Optimization: Routing Small Models to Heavy Inference", excerpt: "Route simple tasks to small fast models; reserve heavy inference.", date: "2026-10-01", tag: "Technologies", readTime: "10 min read", content: `<h1>Cost & Latency Optimization</h1><h2>Quick Answer</h2><p>Route by complexity; measure cost/latency per tier.</p>` },
   "structured-output-schemas": { title: "Structured Output Schemas: JSON, Zod, and API-Ready Generation", excerpt: "Schema-defined outputs with validation at generation time.", date: "2026-10-02", tag: "Technologies", readTime: "9 min read", content: `<h1>Structured Output Schemas</h1><h2>Quick Answer</h2><p>Define schema first; generate; validate.</p>` },
   "multi-agent-orchestration": { title: "Multi-Agent Orchestration: ReAct, Plan-and-Execute, and Tool Loops", excerpt: "Build multi-agent workflows with tool loops and guardrails.", date: "2026-10-02", tag: "AI & Generative Intelligence", readTime: "13 min read", content: `<h1>Multi-Agent Orchestration</h1><h2>Quick Answer</h2><p>ReAct + plan + tool + guardrail + verify.</p>` },
