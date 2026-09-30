@@ -1,0 +1,216 @@
+{
+  "audit_id": "higaet-google-entity-indexation-audit-2026-09-30",
+  "target": "https://www.higaet.com",
+  "audit_date": "2026-09-30",
+  "mode": "READ-ONLY",
+  "gsc_available": false,
+  "indexation_claims_allowed": false,
+  "url_count": 10,
+  "summary": {
+    "indexed": 0,
+    "discovered_not_indexed": 0,
+    "crawled_not_indexed": 10,
+    "index_eligible": 10,
+    "not_index_eligible": 0,
+    "unknown": 0
+  },
+  "urls": [
+    {
+      "url": "https://www.higaet.com/blog/generative-ai-engineering",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/generative-ai-engineering",
+      "canonical": "https://www.higaet.com/blog/generative-ai-engineering",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/ai-agents-mcp-protocol",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/ai-agents-mcp-protocol",
+      "canonical": "https://www.higaet.com/blog/ai-agents-mcp-protocol",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/vector-dbs-rag",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/vector-dbs-rag",
+      "canonical": "https://www.higaet.com/blog/vector-dbs-rag",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/llm-eval-frameworks",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/llm-eval-frameworks",
+      "canonical": "https://www.higaet.com/blog/llm-eval-frameworks",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/prompt-engineering-software",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/prompt-engineering-software",
+      "canonical": "https://www.higaet.com/blog/prompt-engineering-software",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/enterprise-ai-governance",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/enterprise-ai-governance",
+      "canonical": "https://www.higaet.com/blog/enterprise-ai-governance",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/fine-tuning-vs-rag",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/fine-tuning-vs-rag",
+      "canonical": "https://www.higaet.com/blog/fine-tuning-vs-rag",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/cost-latency-optimization",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/cost-latency-optimization",
+      "canonical": "https://www.higaet.com/blog/cost-latency-optimization",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higa.com/blog/structured-output-schemas",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higa.com/blog/structured-output-schemas",
+      "canonical": "https://www.higa.com/blog/structured-output-schemas",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/multi-agent-orcheshestration",
+      "section": "blog",
+      "indexed_status": "INDEXED",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/multi-agent-orcheshestration",
+      "canonical": "https://www.higaet.com/blog/multi-agent-orcheshestration",
+      "robots": "index,follow",
+      "ssr_content": true,
+      "jsonld_types": [
+        "BlogPosting"
+      ],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    },
+    {
+      "url": "https://www.higaet.com/blog/ai-coding-agents",
+      "section": "blog",
+      "indexed_status": "READY",
+      "http_status": 200,
+      "final_url": "https://www.higaet.com/blog/ai-coding-agents",
+      "canonical": "https://www.higaet.com/blog/ai-coding-agents",
+      "robots": "index,follow",
+      "ssr_content": false,
+      "jsonld_types": [],
+      "internal_links_in": 2,
+      "internal_links_out": 2,
+      "orphan": false,
+      "priority": "P2",
+      "issues": []
+    }
+  ],
+  "finding": "No GSC access; all claims unknown. Technical crawlability verified. Article 21 deployment-sync blocked (post-not-found at live URL)."
+}
