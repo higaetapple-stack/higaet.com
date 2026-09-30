@@ -1,0 +1,44 @@
+name: SSR Diagnostics (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose-prod:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: SSH diagnostics
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts || true
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" '
+            echo "== pwd =="; pwd
+            echo "== DEPLOY_DIR =="; ls -la /home/wnwpopno/higaet.com 2>/dev/null | head
+            echo "== current symlink =="; ls -la /home/wnwpopno/higaet.com/current
+            echo "== readlink current =="; readlink -f /home/wnwpopno/higaet.com/current
+            echo "== releases =="; ls -1t /home/wnwpopno/higaet.com/releases 2>/dev/null | head
+            echo "== nodevenv =="; ls -la /home/wnwpopno/nodevenv/higaet.com/22/bin 2>/dev/null | head
+            echo "== cPanel node app .htaccess =="; cat /home/wnwpopno/higaet.com/.htaccess 2>/dev/null | head -40
+            echo "== passenger-start / public_html =="; ls -la /home/wnwpopno/public_html/higaet.com 2>/dev/null | head
+            echo "== where do old assets live (world-visible public root)? =="
+            find /home/wnwpopno -maxdepth 5 -name "academy-BKb26T_L.js" 2>/dev/null | head
+            echo "== where do new assets live? =="
+            find /home/wnwpopno -maxdepth 6 -name "academy-wqCWIh6F.js" 2>/dev/null | head
+            echo "== litespeed cache dirs =="
+            find /home/wnwpopno -maxdepth 3 -name ".lscache" -o -name "litespeed-cache" 2>/dev/null | head
+            echo "== passenger-status =="
+            export PATH="$HOME/nodevenv/higaet.com/22/bin:$PATH"
+            passenger-status 2>/dev/null | head -40 || echo "passenger-status unavailable"
+            echo "== done =="
+          '
