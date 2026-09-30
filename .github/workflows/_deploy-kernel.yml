@@ -174,7 +174,7 @@ jobs:
             PREV=\$(cat \"\$ROOT/.previous-release\" 2>/dev/null || echo '')
             cd \"\$ROOT/releases\" 2>/dev/null && ls -1t | grep '^release-' | while read rel; do
               full=\"\$ROOT/releases/\$rel\"
-              if [ \"\$full\" = \"\$ACTIVE\" ] || [ \"\$full\" = \"\$PREV\" ]; then continue; fi
+              if [ \"\$full\" = \"\$ACTIVE\" ] || [ \"\$full\" = \"\$PREV\" ] || [ \"\$full\" = \"\$ROOT/releases/$RELEASE\" ]; then continue; fi
               rm -rf \"\$full\"
             done
             # Safeguard: also clear any leftover node_modules in the incoming release
