@@ -142,8 +142,7 @@ export const Route = createFileRoute("/academy/")({
 function AcademyHome() {
   const flagships = FLAGSHIP_SLUGS.map((s) => PROGRAMS.find((p) => p.slug === s)).filter(Boolean) as typeof PROGRAMS;
   // Provider-backed; sync registry impl but typed as ProviderResult<T | Promise<T>>.
-  let testimonials: readonly TestimonialEntry[] = [] as readonly TestimonialEntry[];
-  try { testimonials = (getAcademyTestimonials({ limit: 3 }) as readonly TestimonialEntry[]); } catch (e) { console.error('Academy testimonials loader failed', e); }
+  const testimonials = (getAcademyTestimonials({ limit: 3 }) as readonly TestimonialEntry[]);
 
 
 
