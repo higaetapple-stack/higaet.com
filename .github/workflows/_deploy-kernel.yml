@@ -148,6 +148,11 @@ jobs:
             -e "ssh -p $SSH_PORT" \
             dist/ \
             "$SSH_USER@$SSH_HOST:$DEPLOY_DIR/releases/$RELEASE/"
+          # Deploy .env to server (not in dist artifact, required by app.js)
+          rsync -az \
+            -e "ssh -p $SSH_PORT" \
+            .env \
+            "$SSH_USER@$SSH_HOST:$DEPLOY_DIR/releases/$RELEASE/" 2>/dev/null || echo "No .env to deploy"
 
       - name: Remote release validation
         run: |
