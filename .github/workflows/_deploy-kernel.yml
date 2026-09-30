@@ -164,6 +164,26 @@ jobs:
             echo \"SSR artifact: PASS\"
           "
 
+      - name: Free disk quota (prune stale releases/node_modules) — required before npm ci
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            ROOT='$DEPLOY_DIR'
+            # Protect the currently-active and previous release; drop older release dirs.
+            ACTIVE=\$(readlink -f \"\$ROOT/current\" 2>/dev/null || echo '')
+            PREV=\$(cat \"\$ROOT/.previous-release\" 2>/dev/null || echo '')
+            cd \"\$ROOT/releases\" 2>/dev/null && ls -1t | grep '^release-' | while read rel; do
+              full=\"\$ROOT/releases/\$rel\"
+              if [ \"\$full\" = \"\$ACTIVE\" ] || [ \"\$full\" = \"\$PREV\" ]; then continue; fi
+              rm -rf \"\$full\"
+            done
+            # Safeguard: also clear any leftover node_modules in the incoming release
+            # to guarantee npm ci starts from a clean tree (avoids partial/extracted state).
+            rm -rf \"\$ROOT/releases/$RELEASE/node_modules\"
+            df -h \"\$ROOT\" | tail -1
+            echo '[cleanup] stale releases pruned; disk quota freed'
+          "
+
       - name: Install dependencies (server-side)
         run: |
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
