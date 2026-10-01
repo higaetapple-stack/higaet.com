@@ -1,0 +1,65 @@
+name: Fix Live Production /academy (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-live:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect & fix live runtime via CI SSH
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts || true
+          echo "=== 1. CURRENT SYMLINK ===" 
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" 'ls -la /home/wnwpopno/higaet.com/current; readlink -f /home/wnwpopno/higaet.com/current'
+          echo "=== 2. PUBLIC_HTML ==="
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" 'ls -la /home/wnwpopno/public_html/higaet.com 2>/dev/null; readlink -f /home/wnwpopno/public_html/higaet.com 2>/dev/null || echo "NOT A SYMLINK"'
+          echo "=== 3. FIX PUBLIC_HTML ==="
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" '
+            if [ -d "/home/wnwpopno/public_html/higaet.com" ] && [ ! -L "/home/wnwpopno/public_html/higaet.com" ]; then
+              mv /home/wnwpopno/public_html/higaet.com /home/wnwpopno/public_html/higaet.com.old-$(date +%s)
+              ln -sf /home/wnwpopno/higaet.com/current /home/wnwpopno/public_html/higaet.com
+              echo "FIXED public_html to current symlink"
+            elif [ -L "/home/wnwpopno/public_html/higaet.com" ]; then
+              CURRENT_TARGET=$(readlink -f /home/wnwpopno/public_html/higaet.com)
+              DESIRED=/home/wnwpopno/higaet.com/current
+              echo "public_html symlink -> $CURRENT_TARGET"
+              if [ "$CURRENT_TARGET" != "/home/wnwpopno/higaet.com/current" ]; then
+                 rm /home/wnwpopno/public_html/higaet.com
+                 ln -sf /home/wnwpopno/higaet.com/current /home/wnwpopno/public_html/higaet.com
+                 echo "REPOINTED public_html symlink to current"
+              else
+                 echo "public_html symlink OK"
+              fi
+            else
+              ln -sf /home/wnwpopno/higaet.com/current /home/wnwpopno/public_html/higaet.com
+              echo "CREATED public_html symlink"
+            fi
+          '
+          echo "=== 4. NEW ASSET CHECK ==="
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" 'ls -la /home/wnwpopno/higaet.com/current/.output/public/assets/academy-wqCWIh6F.js 2>/dev/null || echo "new asset not in current release dir"'
+          echo "=== 5. LITESPEED PURGE ==="
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" '
+            ls /usr/local/lsws/bin/lswsctl 2>/dev/null && /usr/local/lsws/bin/lswsctl --fast 2>/dev/null || echo "lswsctl unavailable"
+            find /home/wnwpopno -maxdepth 3 \( -name ".lscache" -o -name "litespeed-cache" \) -type d 2>/dev/null | head -3 | while read d; do rm -rf "$d"/*.cache 2>/dev/null || true; echo "purged $d"; done || true
+            echo "LiteSpeed purge attempted"
+          '
+          echo "=== 6. PASSENGER RESTART ==="
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" 'touch /home/wnwpopno/higaet.com/current/tmp/restart.txt 2>/dev/null || true; echo "Passenger restart triggered via current/restart"'
+          echo "=== 7. VERIFY LIVE ==="
+          sleep 15
+          curl -s -o /dev/null -w "new asset wqCWIh6F=%{http_code}\n" --max-time 10 "https://www.higaet.com/assets/academy-wqCWIh6F.js"
+          curl -s -o /dev/null -w "old asset BKb26T=%{http_code}\n" --max-time 10 "https://www.higaet.com/assets/academy-BKb26T_L.js"
+          curl -s -o /dev/null -w "/academy HTTP=%{http_code} size=%{size_download}\n" --max-time 15 "https://www.higaet.com/academy"
+          curl -s -o /dev/null -w "/healthz=%{http_code}\n" --max-time 8 "https://www.higaet.com/healthz"
