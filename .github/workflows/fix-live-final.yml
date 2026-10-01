@@ -1,0 +1,77 @@
+name: Fix Live Production — Final /academy (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-live-final:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Final CI-SSH server fix (symlink + cache + reload)
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts || true
+          # All commands run on MilesWeb production host via CI SSH
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" '
+            echo "=== ACTIVE RELEASE ==="
+            ls -la /home/wnwpopno/higaet.com/current
+            echo "=== PUBLIC_HTML ==="
+            ls -la /home/wnwpopno/public_html/higaet.com
+            echo "=== CURRENT RELEASE ASSETS ==="
+            ls /home/wnwpopno/higaet.com/current/.output/public/assets/academy-wqCWIh6F.js 2>/dev/null || echo "NEW ASSET NOT IN CURRENT"
+            
+            # 1. Ensure public_html points to current (fix if needed)
+            if [ ! -L "/home/wnwpopno/public_html/higaet.com" ]; then
+              mv /home/wnwpopno/public_html/higaet.com /home/wnwpopno/public_html/higaet.com.old-$(date +%s) 2>/dev/null || true
+              ln -sf /home/wnwpopno/higaet.com/current /home/wnwpopno/public_html/higaet.com
+              echo "FIXED: public_html -> current"
+            elif [ "$(readlink -f /home/wnwpopno/public_html/higaet.com)" != "/home/wnwpopno/higaet.com/current" ]; then
+              rm /home/wnwpopno/public_html/higaet.com
+              ln -sf /home/wnwpopno/higaet.com/current /home/wnwpopno/public_html/higaet.com
+              echo "REPOINTED: public_html -> current"
+            else
+              echo "OK: public_html already -> current"
+            fi
+            
+            # 2. LiteSpeed cache purge (direct file/directory removal)
+            echo "=== LITESPEED PURGE ==="
+            find /home/wnwpopno -maxdepth 4 -type d \( -name ".lscache" -o -name ".lsws" -o -name "litespeed-cache" \) 2>/dev/null | while read d; do
+              echo "Found cache dir: $d"
+              rm -rf "$d"/*.cache 2>/dev/null || true
+              rm -rf "$d"/cache 2>/dev/null || true
+            done
+            # Also purge any tmp/restart markers that could stall
+            rm -rf /home/wnwpopno/higaet.com/current/tmp/* 2>/dev/null || true
+            
+            # 3. Passenger / Node reload (production-safe: touch restart + kill specific passenger worker if needed)
+            echo "=== PASSENGER RELOAD ==="
+            touch /home/wnwpopno/higaet.com/current/tmp/restart.txt 2>/dev/null || true
+            # Find and kill ONLY the HIGAET passenger/node process (safe because only this app uses this release)
+            PID=$(pgrep -f "node.*higaet" | head -1 || echo "")
+            if [ -n "$PID" ]; then
+              echo "Found HIGAET process PID=$PID — sending HUP then wait"
+              kill -HUP "$PID" 2>/dev/null || kill -TERM "$PID" 2>/dev/null || echo "kill skipped"
+              sleep 2
+            else
+              echo "No HIGAET node process found — relying on touch/restart"
+            fi
+            
+            # 4. Verify assets after reload
+            echo "=== LIVE ASSET CHECK (after reload) ==="
+            curl -s -o /dev/null -w "new wqCWIh6F=%{http_code}\n" --max-time 10 "https://www.higaet.com/assets/academy-wqCWIh6F.js"
+            curl -s -o /dev/null -w "old BKb26T=%{http_code}\n" --max-time 10 "https://www.higaet.com/assets/academy-BKb26T_L.js"
+            curl -s -o /dev/null -w "/healthz=%{http_code}\n" --max-time 8 "https://www.higaet.com/healthz"
+            curl -s -o /dev/null -w "/academy HTTP=%{http_code} size=%{size_download}\n" --max-time 15 "https://www.higaet.com/academy"
+            echo "=== /academy hero grep ==="
+            curl -s --max-time 15 "https://www.higaet.com/academy" | grep -o "Become an AI Engineer" | head -1 || echo "HERO MISSING"
+          '
