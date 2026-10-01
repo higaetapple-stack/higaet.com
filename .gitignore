@@ -1,3 +1,4 @@
+.hermes/kanban/blog-queue/
 # Logs
 logs
 *.log
@@ -37,3 +38,4 @@ dist-ssr
 *.pem
 *.key
 .cache/
+.hermes/kanban/blog-queue/
