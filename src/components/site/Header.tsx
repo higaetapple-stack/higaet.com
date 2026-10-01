@@ -17,6 +17,7 @@ const PRIMARY_NAV: NavLink[] = [
   { to: "/about", label: "About" },
   { to: "/blog", label: "Blog" },
   { to: "/careers", label: "Careers" },
+  { to: "/contact", label: "Contact" },
 ];
 
 export function Header() {
