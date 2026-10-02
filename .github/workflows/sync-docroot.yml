@@ -1,0 +1,67 @@
+name: Sync Served Docroot to Current Release (in-place, backed up)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Backup + sync public_html docroot to current release + restart + purge + verify
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            CUR=\"$DEPLOY_DIR/current\"
+            DOC=\"$DEPLOY_DIR\"   # this is already /home/***/higaet.com; the real vhost docroot
+            echo \"=== 0. confirm docroot is the real dir we must update (NOT symlink) ===\"
+            if [ -L \"\$DOC\" ]; then echo 'NOTE: DOC is a symlink to '\$(readlink -f \$DOC); fi
+            ls -la \"\$DOC/.output/public/assets/\" 2>/dev/null | grep -c '^academy' | xargs echo 'current badcount:'
+            echo \"=== 1. verify current release asset exists ===\"
+            ls \"\$CUR/.output/public/assets/academy.index-CYZ_IBTj.js\" 2>/dev/null && echo CUR_HAS_CYZ || echo CUR_NO_CYZ
+            echo \"=== 2. BACKUP docroot .output + app.js (rollback) ===\"
+            BK=\"\$DOC/.output.stale-bak-\$(date +%s)\"
+            mkdir -p \"\$BK\"
+            cp -a \"\$DOC/.output\" \"\$BK/\" 2>/dev/null || true
+            cp -a \"\$DOC/app.js\" \"\$BK/\" 2>/dev/null || true
+            echo \"backup at: \$BK\"
+            echo \"=== 3. SYNC current release into docroot (preserve structure, overwrite stale) ===\"
+            rsync -a --delete \
+              --exclude='releases' --exclude='current' --exclude='tmp' \
+              \"\$CUR/\" \"\$DOC/\" 2>/dev/null || {
+                # fallback if rsync excludes fight: plain copy of .output + app.js + package.json into docroot
+                cp -a \"\$CUR/.output\" \"\$DOC/\" && cp -a \"\$CUR/app.js\" \"\$DOC/\" && cp -a \"\$CUR/package.json\" \"\$DOC/\" 2>/dev/null || true
+                echo 'used fallback copy'
+              }
+            echo \"=== 4. docroot now has which academy chunk? ===\"
+            ls \"\$DOC/.output/public/assets/\" 2>/dev/null | grep '^academy.index-' | head
+            echo \"=== 5. Passenger restart (in the docroot Passenger sees) ===\"
+            touch \"\$DOC/tmp/restart.txt\" 2>/dev/null || touch \"\$DOC/../higaet.com/tmp/restart.txt\" 2>/dev/null || true
+            pkill -f 'node.*higaet' 2>/dev/null || true
+            echo \"=== 6. LiteSpeed purge ===\"
+            find \"\$DEPLOY_DIR\" -maxdepth 4 -type d \( -name '.lscache' -o -name '.lsws' \) 2>/dev/null | while read d; do rm -rf \"\$d\"/* 2>/dev/null || true; done
+            echo 'sync+restart done'
+          "
+          echo "=== 7. LIVE VERIFY (deployed hash must now serve 200) ==="
+          sleep 12
+          OK=0
+          for i in 1 2 3 4 5 6; do
+            C=$(curl -s -o /dev/null -w "%{http_code}" --max-time 12 "https://www.higaet.com/assets/academy.index-CYZ_IBTj.js")
+            if [ "$C" = "200" ]; then echo "PASS: deployed CYZ_IBTj live after attempt $i"; OK=1; break; fi
+            echo "attempt $i: deployed hash=$C"; sleep 15
+          done
+          curl -s -o /dev/null -w "/healthz=%{http_code}\n" --max-time 10 "https://www.higaet.com/healthz"
+          B=$(curl -s --max-time 15 "https://www.higaet.com/academy")
+          echo "academy bytes=$(echo \"\$B\" | wc -c | tr -d ' ')"
+          echo "hero=$(echo \"\$B\" | grep -ao 'Become an AI Engineer' | head -1 || echo MISSING)"
+          echo "errbound=$(echo \"\$B\" | grep -ac 'Something went wrong')"
+          if [ "$OK" != "1" ]; then echo "::error::deployed hash never went 200 live"; exit 1; fi
