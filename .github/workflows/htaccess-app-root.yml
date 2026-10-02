@@ -1,0 +1,60 @@
+name: Create .htaccess in App Root + Restart Passenger (recovery)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  htaccess:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create .htaccess in app root + restart
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          PARENT=$(dirname "$DEPLOY_DIR")
+          # Base64-encoded minimal Passenger .htaccess (no heredoc issues)
+          HTACCESS_B64="UGFzc2VuZ2VyQXBwUm9vdCAvaG9tZS93bndwb3Buby9oaWdhZXQuY29tClBhc3NlbmdlckRvY3VtZW50Um9vdCAvaG9tZS93bndwb3Buby9wdWJsaWNfaHRtbC9oaWdhZXQuY29tClBhc3Nlbmdlck5vZGVqcyAvaG9tZS93bndwb3Buby9ub2RldmVudi9oaWdhZXQuY29tLzIyL2Jpbi9ub2RlClBhc3NlbmdlckFwcFR5cGUgbm9kZQpQYXNzZW5nZXJTdGFydHVwRmlsZSBhcHAuanMKUGFzc2VuZ2VyRW52VmFyIE5PREVfRU5WIHByb2R1Y3Rpb24KPElmTW9kdWxlIG1vZF9yZXdyaXRlLmM+CiAgUmV3cml0ZUVuZ2luZSBPbgogIFJld3JpdGVDb25kICV7UkVFUVVFU1RfRklMTEVOQU1FfSAhLWYKICBSZXdyaXRlQ29uZCAlflJFUVVFU1RfRklMTEVOQU1FfSAhLWQKICBSZXdyaXRlUnVsZSBeKC4qKSQgL2luZGV4Lmh0bWwgW0xdCjwvSWZNb2R1bGU+Cg=="
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            echo '=== Check for .htaccess in release dirs ==='
+            find \"$DEPLOY_DIR/releases\" -maxdepth 2 -name '.htaccess' 2>/dev/null | head -5
+            echo '=== .htaccess in current release ==='
+            ls -la \"$DEPLOY_DIR/current/.htaccess\" 2>/dev/null || echo NO_HTACCESS_CURRENT
+            echo '=== write .htaccess to app root (DEPLOY_DIR) for cPanel selector ==='
+            echo \"$HTACCESS_B64\" | base64 -d > \"$DEPLOY_DIR/.htaccess\"
+            echo 'wrote .htaccess to app root'
+            echo '=== verify .htaccess in app root ==='
+            ls -la \"$DEPLOY_DIR/.htaccess\" 2>/dev/null && echo HAS_HTACCESS || echo NO_HTACCESS
+            echo '=== .htaccess content ==='
+            cat \"$DEPLOY_DIR/.htaccess\" 2>/dev/null | head -20
+            echo '=== restart markers ==='
+            for d in \"$PARENT/public_html/higaet.com\" \"$DEPLOY_DIR/current\" \"$DEPLOY_DIR\"; do
+              mkdir -p \"\$d/tmp\"
+              touch \"\$d/tmp/restart.txt\"
+              echo \"touched \$d/tmp/restart.txt\"
+            done
+            echo '=== .env present in app root ==='
+            ls -la \"$DEPLOY_DIR/.env\" 2>/dev/null && echo HAS_ENV || echo NO_ENV
+          "
+          echo '=== wait + verify ==='
+          sleep 25
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            H=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 'https://www.higaet.com/healthz')
+            echo "healthz=\$H attempt \$i"
+            [ "$H" = "200" ] && break
+            sleep 12
+          done
+          echo '=== final ==='
+          curl -s -o /dev/null -w 'healthz=%{http_code}\n' --max-time 10 'https://www.higaet.com/healthz'
+          curl -s -o /dev/null -w 'readyz=%{http_code}\n' --max-time 10 'https://www.higaet.com/readyz'
+          curl -s -o /dev/null -w 'root=%{http_code}\n' --max-time 12 'https://www.higaet.com/'
+          curl -s -o /dev/null -w 'academy=%{http_code}\n' --max-time 15 'https://www.higaet.com/academy'
+          curl -s -o /dev/null -w 'old CkNBjbAm=%{http_code}\n' --max-time 12 'https://www.higaet.com/assets/academy.index-CkNBjbAm.js'
+          curl -s -o /dev/null -w 'new CYZ_IBTj=%{http_code}\n' --max-time 12 'https://www.higaet.com/assets/academy.index-CYZ_IBTj.js'
