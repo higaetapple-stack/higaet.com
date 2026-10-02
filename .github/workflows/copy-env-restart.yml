@@ -1,0 +1,66 @@
+name: Copy .env to Served App Root + Restart Passenger
+
+on:
+  workflow_dispatch:
+
+jobs:
+  env-restart:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy .env to served app root + restart Passenger + verify
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          PARENT=$(dirname "$DEPLOY_DIR")
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            echo '=== copy .env to served app root (public_html/higaet.com) ==='
+            if [ -f \"$DEPLOY_DIR/.env\" ]; then
+              cp -a \"$DEPLOY_DIR/.env\" \"$PARENT/public_html/higaet.com/.env\"
+              chmod 600 \"$PARENT/public_html/higaet.com/.env\"
+              echo 'copied .env to served app root'
+            else
+              echo 'NO .env in DEPLOY_DIR'
+            fi
+            echo '=== also ensure .env in current release ==='
+            if [ -f \"$DEPLOY_DIR/.env\" ]; then
+              cp -a \"$DEPLOY_DIR/.env\" \"$DEPLOY_DIR/current/.env\"
+              chmod 600 \"$DEPLOY_DIR/current/.env\"
+              echo 'copied .env to current release'
+            fi
+            echo '=== verify .env in served app root ==='
+            ls -la \"$PARENT/public_html/higaet.com/.env\" 2>/dev/null && echo HAS_ENV || echo NO_ENV_STILL
+            echo '=== .env in current release ==='
+            ls -la \"$DEPLOY_DIR/current/.env\" 2>/dev/null && echo HAS_ENV_CURRENT || echo NO_ENV_CURRENT
+            echo '=== touch restart markers in ALL locations ==='
+            for d in \"$PARENT/public_html/higaet.com\" \"$DEPLOY_DIR/current\" \"$DEPLOY_DIR\"; do
+              mkdir -p \"\$d/tmp\"
+              touch \"\$d/tmp/restart.txt\"
+              echo \"touched \$d/tmp/restart.txt\"
+            done
+            echo '=== Passenger app root verification ==='
+            echo 'served app root:'; readlink -f \"$PARENT/public_html/higaet.com\"
+            echo 'current release:'; readlink -f \"$DEPLOY_DIR/current\"
+          "
+          echo '=== wait + verify ==='
+          sleep 20
+          for i in 1 2 3 4 5 6 7 8; do
+            H=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 'https://www.higaet.com/healthz')
+            echo "healthz=\$H attempt \$i"
+            [ "$H" = "200" ] && break
+            sleep 12
+          done
+          echo '=== final ==='
+          curl -s -o /dev/null -w 'healthz=%{http_code}\n' --max-time 10 'https://www.higaet.com/healthz'
+          curl -s -o /dev/null -w 'readyz=%{http_code}\n' --max-time 10 'https://www.higaet.com/readyz'
+          curl -s -o /dev/null -w 'root=%{http_code}\n' --max-time 12 'https://www.higaet.com/'
+          curl -s -o /dev/null -w 'academy=%{http_code}\n' --max-time 15 'https://www.higaet.com/academy'
+          curl -s -o /dev/null -w 'old CkNBjbAm=%{http_code}\n' --max-time 12 'https://www.higaet.com/assets/academy.index-CkNBjbAm.js'
+          curl -s -o /dev/null -w 'new CYZ_IBTj=%{http_code}\n' --max-time 12 'https://www.higaet.com/assets/academy.index-CYZ_IBTj.js'
