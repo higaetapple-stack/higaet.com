@@ -1,0 +1,49 @@
+name: Restore Serving Layer — rollback docroot to real dir
+
+on:
+  workflow_dispatch:
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore public_html real directory (rollback)
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts || true
+          PARENT=$(dirname "$DEPLOY_DIR")
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            PDOC=\"$PARENT/higaet.com\"
+            echo \"=== current docroot state ===\"
+            ls -la \"\$PDOC\" || echo \"no docroot\"
+            echo \"=== find backup real dir ===\"
+            ls -d \"\$PDOC\".old-* 2>/dev/null | head -3
+            OLD_DOC=\$(ls -d \"\$PDOC\".old-* 2>/dev/null | head -1 || echo '')
+            if [ -L \"\$PDOC\" ]; then
+              echo \"docroot is symlink -> \$(readlink -f \"\$PDOC\")\"
+              rm \"\$PDOC\"
+              echo \"removed symlink\"
+            fi
+            if [ -n \"\$OLD_DOC\" ] && [ -d \"\$OLD_DOC\" ]; then
+              mv \"\$OLD_DOC\" \"\$PDOC\"
+              echo \"RESTORED real dir: \$PDOC\"
+            fi
+            ls -la \"\$PDOC\" | head -20
+            echo \"=== healthz from server ===\"
+            curl -s -o /dev/null -w \"healthz %{http_code}\n\" --max-time 10 \"http://127.0.0.1/healthz\" || true
+          "
+          echo "=== live verify ==="
+          sleep 8
+          curl -s -o /dev/null -w "/healthz: %{http_code}\n" --max-time 12 "https://www.higaet.com/healthz"
+          curl -s -o /dev/null -w "/academy: %{http_code}\n" --max-time 12 "https://www.higaet.com/academy"
