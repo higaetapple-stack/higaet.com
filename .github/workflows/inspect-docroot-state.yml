@@ -1,4 +1,4 @@
-name: Inspect Docroot State (read-only, after sync incident)
+name: Inspect Docroot State (read-only)
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-      - name: Read-only inspect docroot top-level
+      - name: Read-only inspect docroot top-level + backups
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
@@ -21,19 +21,21 @@ jobs:
           ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
             DOC=\"$DEPLOY_DIR\"
-            echo '=== TOP-LEVEL LISTING OF DEPLOY DIR ==='
+            echo '=== TOP-LEVEL ls ==='
             ls -la \"\$DOC\" | head -40
-            echo '=== does top-level .env exist? ==='
-            ls -la \"\$DOC/.env\" 2>/dev/null && echo HAS_ENV || echo NO_ENV_TOPLEVEL
-            echo '=== .env copies anywhere in home ==='
-            find /home -maxdepth 3 -name '.env' 2>/dev/null | head
-            echo '=== current/.output assets snippet ==='
-            ls \"\$DOC/current/.output/public/assets/\" 2>/dev/null | grep '^academy.index-' | head
-            echo '=== current app.js? ==='
-            ls -la \"\$DOC/current/app.js\" 2>/dev/null || echo NO_APPJS_IN_CURRENT
-            echo '=== is current a symlink? ==='
-            ls -la \"\$DOC/current\" 2>/dev/null
-            echo '=== ssr server entry sizes (top-level vs current) ==='
+            echo '=== .output exists? size ==='
             ls -la \"\$DOC/.output/server/index.mjs\" 2>/dev/null || echo NO_TOPLEVEL_OUTPUT
-            ls -la \"\$DOC/current/.output/server/index.mjs\" 2>/dev/null || echo NO_CURRENT_OUTPUT
+            echo '=== backups (my .output.stale-bak and .old-*) ==='
+            ls -d \"\$DOC\"/.output.stale-bak-* 2>/dev/null
+            ls -d \"\$DOC\"/.old-* 2>/dev/null
+            echo '=== .env present? ==='
+            ls -la \"\$DOC/.env\" 2>/dev/null && echo HAS_ENV || echo NO_ENV
+            echo '=== current symlink ==='
+            readlink \"\$DOC/current\" 2>/dev/null || echo NO_CURRENT
+            echo '=== current release assets exist? ==='
+            ls \"\$DOC/current/.output/public/assets/\" 2>/dev/null | grep '^academy.index-' | head
+            echo '=== old bak contents: does it hold a .output? ==='
+            for b in \"\$DOC\"/.output.stale-bak-*; do [ -d \"\$b\" ] && echo \"\$b has:\" && ls \"\$b\" | head; done
+            echo '=== passenger procs ==='
+            pgrep -fal 'node.*higaet' || echo NO_NODE_PROC
           "
