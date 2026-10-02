@@ -1,0 +1,81 @@
+name: Fix Live Serving Layer — /academy (hash-verified)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  serving-fix:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Re-point docroot to current, reset Passenger, purge LiteSpeed, verify deployed hash
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts || true
+          PUB_DOC="$DEPLOY_DIR"
+          PARENT=$(dirname "$DEPLOY_DIR")
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            set -e
+            ROOT=\"$DEPLOY_DIR\"
+            echo \"=== 0. ACTIVE RELEASE ===\"
+            ls -la \$ROOT/current
+            echo \"CURRENT -> \$(readlink -f \$ROOT/current)\"
+            echo \"=== 1. DEPLOYED ASSET ON DISK ===\"
+            ls -la \$ROOT/current/.output/public/assets/academy.index-CYZ_IBTj.js 2>/dev/null || echo \"!! deployed academy chunk CYZ_IBTj NOT on disk in current\"
+            echo \"=== 2. PUBLIC_HTML DOCROOT (parent real dir) ===\"
+            PDOC=\"$PARENT\"
+            if [ -L \"\$PDOC/higaet.com\" ]; then
+              echo \"docroot symlink -> \$(readlink -f \$PDOC/higaet.com)\"
+            elif [ -d \"\$PDOC/higaet.com\" ]; then
+              echo \"docroot is REAL DIR\"
+            else
+              echo \"no docroot at \$PDOC/higaet.com\"
+            fi
+            # 3. Repoint the served docroot to current (backup real dir for rollback)
+            if [ -d \"\$PDOC/higaet.com\" ] && [ ! -L \"\$PDOC/higaet.com\" ]; then
+              mv \"\$PDOC/higaet.com\" \"\$PDOC/higaet.com.old-\$(date +%s)\" 2>/dev/null || true
+              ln -sfn \$ROOT/current \"\$PDOC/higaet.com\"
+              echo \"REPOINTED real-dir docroot -> current\"
+            elif [ -L \"\$PDOC/higaet.com\" ]; then
+              if [ \"\$(readlink -f \"\$PDOC/higaet.com\")\" != \"\$ROOT/current\" ]; then
+                rm \"\$PDOC/higaet.com\"
+                ln -sfn \$ROOT/current \"\$PDOC/higaet.com\"
+                echo \"REPOINTED stale symlink -> current\"
+              else
+                echo \"docroot symlink already -> current\"
+              fi
+            fi
+            echo \"=== 4. PASSENGER HARD RESET ===\"
+            touch \$ROOT/current/tmp/restart.txt 2>/dev/null || true
+            pkill -f \"node.*higaet.*index.mjs\" 2>/dev/null || true
+            pgrep -fal \"node.*higaet\" || echo \"no higaet node proc (Passenger will respawn)\"
+            echo \"=== 5. LITESPEED / CACHE PURGE ===\"
+            find \"$PARENT\" -maxdepth 4 -type d \\( -name \".lscache\" -o -name \".lsws\" -o -name \"litespeed-cache\" \\) 2>/dev/null | while read d; do
+              rm -rf \"\$d\"/* 2>/dev/null || true
+              echo \"purged: \$d\"
+            done
+            echo \"done server-side\"
+          "
+          echo "=== 6. LIVE VERIFY (deployed hash must serve) ==="
+          sleep 12
+          OK=0
+          for i in 1 2 3 4 5 6; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 12 "https://www.higaet.com/assets/academy.index-CYZ_IBTj.js")
+            if [ "$CODE" = "200" ]; then echo "PASS: deployed CYZ_IBTj live after attempt $i"; OK=1; break; fi
+            echo "attempt $i: deployed hash=$CODE (waiting for release)"; sleep 15
+          done
+          curl -s -o /dev/null -w "/academy HTTP=%{http_code} size=%{size_download}\n" --max-time 15 "https://www.higaet.com/academy"
+          curl -s --max-time 15 "https://www.higaet.com/academy" | grep -ao "Become an AI Engineer" | head -1 || echo "HERO MISSING"
+          EBC=$(curl -s --max-time 15 "https://www.higaet.com/academy" | grep -ac "Something went wrong")
+          echo "error-boundary-count=$EBC"
+          if [ "$OK" != "1" ]; then echo "::error::deployed hash never reached 200 on live"; exit 1; fi
