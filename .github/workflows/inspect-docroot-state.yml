@@ -1,0 +1,39 @@
+name: Inspect Docroot State (read-only, after sync incident)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only inspect docroot top-level
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            DOC=\"$DEPLOY_DIR\"
+            echo '=== TOP-LEVEL LISTING OF DEPLOY DIR ==='
+            ls -la \"\$DOC\" | head -40
+            echo '=== does top-level .env exist? ==='
+            ls -la \"\$DOC/.env\" 2>/dev/null && echo HAS_ENV || echo NO_ENV_TOPLEVEL
+            echo '=== .env copies anywhere in home ==='
+            find /home -maxdepth 3 -name '.env' 2>/dev/null | head
+            echo '=== current/.output assets snippet ==='
+            ls \"\$DOC/current/.output/public/assets/\" 2>/dev/null | grep '^academy.index-' | head
+            echo '=== current app.js? ==='
+            ls -la \"\$DOC/current/app.js\" 2>/dev/null || echo NO_APPJS_IN_CURRENT
+            echo '=== is current a symlink? ==='
+            ls -la \"\$DOC/current\" 2>/dev/null
+            echo '=== ssr server entry sizes (top-level vs current) ==='
+            ls -la \"\$DOC/.output/server/index.mjs\" 2>/dev/null || echo NO_TOPLEVEL_OUTPUT
+            ls -la \"\$DOC/current/.output/server/index.mjs\" 2>/dev/null || echo NO_CURRENT_OUTPUT
+          "
