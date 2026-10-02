@@ -1,0 +1,41 @@
+name: Read-Only Inspect Serving Layer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only inspect (no changes)
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          PARENT=$(dirname "$DEPLOY_DIR")
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            echo '=== current symlink ==='
+            readlink -f \"$DEPLOY_DIR/current\" 2>/dev/null
+            ls -la \"$DEPLOY_DIR/current/.output/public/assets/\" 2>/dev/null | grep -c academy
+            ls \"$DEPLOY_DIR/current/.output/public/assets/academy.index-CYZ_IBTj.js\" 2>/dev/null && echo HAS_CYZ || echo NO_CYZ
+            ls \"$DEPLOY_DIR/current/.output/public/assets/academy.index-CkNBjbAm.js\" 2>/dev/null && echo HAS_CK || echo NO_CK
+            echo '=== docroot public_html/higaet.com ==='
+            ls -la \"$PARENT/higaet.com\" | head -5
+            echo 'docroot real-dir? symlink?'
+            [ -L \"$PARENT/higaet.com\" ] && echo SYMLINK_TO=\$(readlink -f \"$PARENT/higaet.com\") || echo REAL_DIR
+            echo '=== does REAL docroot contain an old build (.output/server/index.mjs) ? ==='
+            ls -la \"$PARENT/higaet.com/.output/server/index.mjs\" 2>/dev/null && echo 'DOCROOT_HAS_OLD_NODE_BUILD' || echo 'DOCROOT_NO_NODE_BUILD'
+            ls -d \"$PARENT/higaet.com\".old-* 2>/dev/null | head
+            echo '=== which academy chunks exist in REAL docroot ==='
+            ls \"$PARENT/higaet.com/.output/public/assets/\" 2>/dev/null | grep '^academy.index-' | head
+            echo '=== nodevenv / app.js anywhere ==='
+            ls -la \"$PARENT/higaet.com/app.js\" 2>/dev/null && echo 'DOCROOT_HAS_APPJS' || echo 'DOCROOT_NO_APPJS'
+            find \"$PARENT\" -maxdepth 2 -name 'app.js' 2>/dev/null | head
+          "
