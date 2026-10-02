@@ -1,0 +1,41 @@
+name: Inspect Passenger/Node App Config (read-only)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cfg:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only inspect how the Node app is served
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            DOC=\"$DEPLOY_DIR\"
+            echo '=== .htaccess in docroot ==='
+            cat \"\$DOC/.htaccess\" 2>/dev/null || echo NO_HTACCESS
+            echo '=== docroot passenger config / wrapper files ==='
+            ls -la \"\$DOC\" | grep -aiE 'passenger|wrappercgi|htaccess|nodevenv|server.js' || echo NONE
+            echo '=== cPanel nodevenv ==='
+            ls -la /home/*/nodevenv/higaet.com/22/bin/ 2>/dev/null | head || echo NO_NODEVENV
+            echo '=== is there a passenger-app or app.sh launcher ==='
+            find \"\$DOC\" -maxdepth 2 -iname '*passenger*' -o -iname 'app.sh' -o -iname 'server.js' 2>/dev/null | head
+            echo '=== all running node processes (any) ==='
+            ps aux | grep -a '[n]ode' | head -20 || echo NO_NODE_PROCESSES
+            echo '=== top-level dirs (is this the web root?) ==='
+            ls -la \"\$DOC\" | head -30
+            echo '=== passenger gem / passenger-status ==='
+            which passenger-status passenger 2>/dev/null || echo NO_PASSENGER_CLI
+            echo '=== is current the served path? check for public_html ==='
+            ls -la /home/*/public_html/ 2>/dev/null | head -20
+            ls -la /home/*/public_html/higaet.com 2>/dev/null || echo NO_PUBLICHTML_HIGAET
+          "
