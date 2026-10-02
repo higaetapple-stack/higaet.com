@@ -1,0 +1,52 @@
+name: Restore .env + Restart Passenger (recovery)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore .env from known-good copy + restart + verify
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            DOC=\"$DEPLOY_DIR\"
+            echo \"=== .env present in docroot top-level? ===\"
+            ls -la \"\$DOC/.env\" 2>/dev/null && echo HAS_ENV || echo NO_ENV
+            echo \"=== known-good .env at higaet-source ===\"
+            ls -la /home/*/higaet-source/.env 2>/dev/null || ls -la \$HOME/higaet-source/.env 2>/dev/null
+            # resolve the real home path for higaet-source
+            SRCH=\$(ls -d /home/*/higaet-source 2>/dev/null | head -1 || echo '')
+            if [ -n \"\$SRCH\" ] && [ -f \"\$SRCH/.env\" ]; then
+              cp -a \"\$SRCH/.env\" \"\$DOC/.env\"
+              chmod 600 \"\$DOC/.env\"
+              echo \"RESTORED .env from \$SRCH/.env\"
+            fi
+            ls -la \"\$DOC/.env\" 2>/dev/null && echo CONFIRM_ENV || echo STILL_NO_ENV
+            echo \"=== .output still correct (130378)? ===\"
+            ls -la \"\$DOC/.output/server/index.mjs\" 2>/dev/null
+            echo '=== restart Passenger ==='
+            touch \"\$DOC/tmp/restart.txt\" 2>/dev/null || true
+            echo 'restart touched'
+          "
+          echo "=== live verify ==="
+          sleep 15
+          for i in 1 2 3 4 5 6; do
+            H=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "https://www.higaet.com/healthz")
+            if [ "$H" = "200" ]; then echo "healthz 200 attempt $i"; break; fi
+            echo "healthz=$H attempt $i"; sleep 12
+          done
+          curl -s -o /dev/null -w "/healthz=%{http_code}\n" --max-time 10 "https://www.higaet.com/healthz"
+          curl -s -o /dev/null -w "/academy=%{http_code}\n" --max-time 12 "https://www.higaet.com/academy"
+          curl -s -o /dev/null -w "old CkNBjbAm=%{http_code}\n" --max-time 12 "https://www.higaet.com/assets/academy.index-CkNBjbAm.js"
+          curl -s -o /dev/null -w "new CYZ_IBTj=%{http_code}\n" --max-time 12 "https://www.higaet.com/assets/academy.index-CYZ_IBTj.js"
