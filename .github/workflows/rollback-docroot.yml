@@ -1,0 +1,58 @@
+name: Full Rollback — Restore Docroot from Sync Backup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore docroot from pre-sync backup + ensure .env + restart Passenger
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        run: |
+          mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+            DOC=\"$DEPLOY_DIR\"
+            echo '=== find my sync backup (.output.stale-bak-*) ==='
+            BK=\$(ls -d \$DOC/.output.stale-bak-* 2>/dev/null | head -1 || echo '')
+            echo \"backup dir: \$BK\"
+            if [ -n \"\$BK\" ] && [ -d \"\$BK/.output\" ]; then
+              echo '=== restore .output from backup ==='
+              rm -rf \"\$DOC/.output\"
+              cp -a \"\$BK/.output\" \"\$DOC/.output\"
+              echo 'restored .output'
+              test -f \"\$BK/app.js\" && cp -a \"\$BK/app.js\" \"\$DOC/app.js\" && echo 'restored app.js'
+            else
+              echo '!! no backup found — cannot restore .output, site stays down; manual cPanel intervention required'
+            fi
+            echo '=== ensure .env present (copy from higaet-source if missing) ==='
+            if [ ! -f \"\$DOC/.env\" ]; then
+              SRCH=\$(ls -d /home/*/higaet-source 2>/dev/null | head -1 || echo '')
+              [ -n \"\$SRCH\" ] && [ -f \"\$SRCH/.env\" ] && cp -a \"\$SRCH/.env\" \"\$DOC/.env\" && chmod 600 \"\$DOC/.env\" && echo 'restored .env'
+            else
+              echo '.env present'
+            fi
+            echo '=== sizes restored: top-level index.mjs ==='
+            ls -la \"\$DOC/.output/server/index.mjs\" 2>/dev/null || echo 'NO TOPLEVEL OUTPUT'
+            echo '=== restart Passenger ==='
+            touch \"\$DOC/tmp/restart.txt\" 2>/dev/null || true
+            echo 'restart touched'
+          "
+          echo '=== live verify ==='
+          sleep 15
+          for i in 1 2 3 4 5 6; do
+            H=\$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 'https://www.higaet.com/healthz')
+            echo \"healthz=\$H attempt \$i\"
+            [ \"\$H\" = \"200\" ] && break
+            sleep 12
+          done
+          curl -s -o /dev/null -w 'healthz=%{http_code}\n' --max-time 10 'https://www.higaet.com/healthz'
+          curl -s -o /dev/null -w 'academy=%{http_code}\n' --max-time 12 'https://www.higaet.com/academy'
